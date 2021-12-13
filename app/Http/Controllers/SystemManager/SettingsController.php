@@ -794,8 +794,9 @@ class SettingsController extends Controller
         
         $date = $request->sys_dt_frmt;
         $time = $request->sys_tm_frmt;
+        $timezone = $request->timezone;
 
-        $datetime = array("sys_dt_frmt" => $date ,"sys_tm_frmt" =>$time);
+        $datetime = array("sys_dt_frmt" => $date ,"sys_tm_frmt" =>$time , "sys_timezone" => $timezone);
         
         $setting = SystemSetting::where("sys_key","=","sys_dt_frmt")->first();
 

@@ -1550,6 +1550,19 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="timezone">Default TimeZone</label> <br>
+                                    <select name="timezone" id="timezone" class="select2 form-control select2-hidden-accessible" style="width:100%;">
+                                        @foreach(timezone_identifiers_list() as $timezone)
+                                            <option value="{{$timezone}}">{{$timezone}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         
                         <button type="submit" id="saveBtn" onclick="saveSystemDateAndTime()" class="btn btn-success">Save</button>
                         <button style="display:none" id="processing" class="btn btn-success" type="button" disabled><i class="fas fa-circle-notch fa-spin"></i> Processing</button>
@@ -3633,13 +3646,8 @@
 @section('scripts')
 <script type="text/javascript" src="{{asset('assets/dist/js/flashy.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/extra-libs/pickr/pickr.min.js')}}"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<!-- <script src="{{ asset('js/pages/features/feature_list.js').'?ver='.rand()}}"></script> -->
 @include('js_files.system_manager.feature_list.feature_listJs')
 
-<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>

@@ -452,7 +452,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home </a></li>
                         <li class="breadcrumb-item"><a href="{{asset('/ticket-management')}}">Tickets Manager</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Ticket Details</li>
+                        <li class="breadcrumb-item active" aria-current="page">Ticket Details hkjkj</li>
                     </ol>
                 </nav>
             </div>
@@ -1610,14 +1610,11 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
 <input type="hidden" id="sys_date_format" value="{{$date_format}}">
 @endsection   
 @section('scripts')
-{{-- <script src="{{asset('assets/libs/tinymce/tinymce.min.js')}}"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 <script type="text/javascript" src="{{asset('assets/dist/js/flashy.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('js/moment.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/countdown/countdown.css')}}" />
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
-<!-- <script src="{{asset('public/js/atwho/atwho.js').'?ver='.rand()}}"></script>
-<script src="{{asset('public/js/atwho/caret.js').'?ver='.rand()}}"></script> -->
+
 @include('js_files.atwho.atwhoJs')
 @include('js_files.atwho.caretJs')
 
