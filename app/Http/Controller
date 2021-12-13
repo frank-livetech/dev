@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Http\Controllers\CustomerManager;
+
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use App\Models\Customer;
+use Throwable;
+
+class CustomerlookupController extends Controller
+{
+    public function customer_lookup(){
+        return view('customer_manager.customer_lookup.index');
+    }
+
+ public function service_stats(){
+        return view('customer_manager.service_stats.index');
+
+    }
+    public function get_customer(){
+
+        $data = array();
+
+        $customers = Customer::all();
+
+        foreach($customers as $customer){
+            $customer->Id =  $customer->id;
+            $customer->{'Woo Id'} =  $customer->woo_id;
+            $customer->Username = '<a href="customer-profile/'.$customer["woo_id"].'">'. $customer['woo_username'] .'</a>';
+            $customer->Name =  $customer->name;
+            $customer->Email =  $customer->email;
+            $customer->Address =  $customer->address;
+            $customer->Phone =  $customer->phone;
+            $customer->Company =  $customer->company_name;
+
+            array_push($data,$customer);
+
+        }
+
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        $response['customer'] = $data;
+        // dd($response);
+        return response()->json($response);
+        
+    }
+    public function customer_profile($customer_id){
+        
+        $customer = Customer::where('woo_id',$customer_id)->first();
+      
+        return view('customer_manager.customer_lookup.customerprofile',compact('customer'));
+    }
+
+    public function editOrDelete(Request $request){
+        try{
+            $customer = Customer::find($request->input('id'));
+            $response = [];
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            if($request->input('action') == 'edit'){
+                $customer->address = $request->input('address');
+                $customer->business_residential = $request->input('business_residential');
+                $customer->company_name = $request->input('company_name');
+                $customer->email = $request->input('email');
+                $customer->name = $request->input('name');
+                $customer->phone = $request->input('phone');
+                $customer->vertical = $request->input('vertical');
+                $response['message'] = 'Customer details Update Successfully!';
+                $response['action'] = 'edit';
+            }
+            if($customer->save()){
+                return response()->json($response);
+            }
+            
+        }catch(Throwable $err){
+            $response['message'] = 'Something Went wrong!';
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response,500);
+        }
+    }
+}
