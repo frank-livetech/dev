@@ -629,8 +629,7 @@ body[data-theme=dark] .close{
     <script src="{{asset( $path . 'js/jquery.min.js')}}"></script>
     <script src="{{asset( $path . 'js/popper.min.js')}}"></script>
     <script src="{{asset( $path . 'js/bootstrap.min.js')}}"></script>
-    <script src="{{asset( $path . 'js/bootstrap.min.js')}}"></script>
-
+    
     <script src="{{asset( $path . 'js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset( $path . 'js/datatable_basic.init.js')}}"></script>
     <script src="{{asset( $path . 'js/custom.min.js')}}"></script>

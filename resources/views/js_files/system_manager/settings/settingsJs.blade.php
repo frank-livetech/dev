@@ -1407,6 +1407,7 @@ $("#brand_settings").submit(function(event) {
 function saveSystemDateAndTime() {
     var sys_dt_frmt = $("#sys_dt_frmt").val();
     var sys_tm_frmt = $("#sys_time_frmt").val();
+    var timezone = $("#timezone").val();
 
     $.ajax({
         type: "POST",
@@ -1414,6 +1415,7 @@ function saveSystemDateAndTime() {
         data: {
             sys_dt_frmt: sys_dt_frmt,
             sys_tm_frmt: sys_tm_frmt,
+            timezone: timezone,
         },
         beforeSend: function(data) {
             $("#saveBtn").hide();

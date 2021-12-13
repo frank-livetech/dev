@@ -242,8 +242,28 @@ function setSlaPlanDeadlines(ret = false) {
 }
 
 function resetSlaPlan() {
+    // console.log(ticket_slaPlan , "ticket_slaPlan123");
+    if(ticket_slaPlan != null && ticket_slaPlan != "") {
+        var today = new Date();
+        var due_time = moment(today).add(ticket_slaPlan.due_deadline , 'h').format('hh:mm A');
+        var deadline_time = moment(today).add(ticket_slaPlan.reply_deadline , 'h').format('hh:mm A');
+        let mdate = moment(today).format('YYYY-MM-DD');
+
+        let replay_due = mdate +' '+ due_time;
+        replay_due = moment(replay_due).format('YYYY-MM-DDThh:mm:ss.SSS')
+        $("#ticket-rep-due").val(replay_due);
+
+        let replay_deadline = mdate +' '+ deadline_time;
+        replay_deadline = moment(replay_deadline).format('YYYY-MM-DDThh:mm:ss.SSS')
+        $("#ticket-res-due").val(replay_deadline);
+    }
+
     $("#reset_sla_plan_modal").modal("show");
 }
+
+$("#ticket-rep-due").on('change' , function() {
+    console.log( $(this).val() , "change");
+});
 
 function updateDeadlines() {
     let rep_deadline = $('#ticket-rep-due').val();
