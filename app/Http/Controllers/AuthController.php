@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\TicketStatus;
+use App\Models\Departments;
+use App\Models\DepartmentAssignments;
 use Illuminate\Support\Facades\Crypt;
 // use DB;
 
@@ -385,6 +388,9 @@ class AuthController extends Controller
                             $feature->sub_menu = $sub_menu;
                         }
                     }
+
+                    $depts = $this->listPermissions(\Auth::user()->id);
+                    Session::put('depts', $depts);
                     
                     Session::put('menus', $role_features->sortBy('sequence'));
 
@@ -456,6 +462,35 @@ class AuthController extends Controller
         } else {
             return back()->withInput()->withErrors(['email' => 'No such user exist.']);
         }
+    }
+    
+    private function listPermissions($uid) {
+    
+        $dept_assignments = DepartmentAssignments::where('user_id', $uid)->get()->pluck('dept_id')->toArray();
+        // return $dept_assignments;   
+        $departments = Departments::all();    
+        $statuses = TicketStatus::all();
+        $assigned_depts = array();
+        foreach ($departments as $dept) {
+            if(in_array($dept->id, $dept_assignments)){
+                $detp_statuses = array();
+                foreach($statuses as $status){
+
+                    $depts = $status->department_id;
+                    $depts = explode(',',$depts);
+                    if(in_array($dept->id, $depts)) {
+                        array_push($detp_statuses,$status);
+                    }
+                }
+                $dept->statuses = $detp_statuses;
+                array_push($assigned_depts,$dept);
+                
+            }else{
+
+            }
+        }
+            
+        return $assigned_depts;
     }
 
     public function userPostLogin(Request $request) {
