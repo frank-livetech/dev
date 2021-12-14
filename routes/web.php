@@ -460,6 +460,8 @@ Route::Post('/del-ticket-note','HelpdeskController@del_ticket_note');
 Route::get('/system-info','AboutController@System_info')->name('system_info.index');
 Route::get('/feature-suggestions','AboutController@feature_suggestions')->name('feature_suggestions.index');
 Route::get('/ticket-management/{type?}','HelpdeskController@ticket_management')->name('ticket_management.index');
+Route::get('/ticket-manager/{dept}/{sts}','HelpdeskController@ticket_manager')->name('ticket_manager.index');
+
 
 // Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage');
 Route::get('/add-ticket','HelpdeskController@addTicketPage');
@@ -509,6 +511,8 @@ Route::Post('/publish-ticket-reply','HelpdeskController@save_ticket_reply');
 Route::get('/general-info/{id}', 'HelpDesk\AssetManagerController@gen_info')->name("general.index");
 
 Route::get('/get-tickets/{status?}/{id?}','HelpdeskController@getTickets');
+Route::get('/get-filtered-tickets/{dept?}/{sts?}','HelpdeskController@getFilteredTickets');
+
 
 Route::get('/ticket-details/{id}','HelpdeskController@get_details');
 Route::post('/update_ticket','HelpdeskController@update_ticket');

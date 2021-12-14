@@ -8,6 +8,6 @@ class Departments extends Model
 {
     protected $table = 'departments';
     protected $fillable = [
-        'name','is_enabled','created_by','updated_by'
+        'name','is_enabled','slug','created_by','updated_by'
     ];
 }
