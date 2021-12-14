@@ -460,7 +460,7 @@ Route::Post('/del-ticket-note','HelpdeskController@del_ticket_note');
 Route::get('/system-info','AboutController@System_info')->name('system_info.index');
 Route::get('/feature-suggestions','AboutController@feature_suggestions')->name('feature_suggestions.index');
 Route::get('/ticket-management/{type?}','HelpdeskController@ticket_management')->name('ticket_management.index');
-Route::get('/ticket-manager/{dept}/{sts}','HelpdeskController@ticket_manager')->name('ticket_manager.index');
+Route::get('/ticket-manager/{dept}/{sts}','HelpdeskController@ticket_manager')->name('ticket-manager.index');
 
 
 // Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage');
