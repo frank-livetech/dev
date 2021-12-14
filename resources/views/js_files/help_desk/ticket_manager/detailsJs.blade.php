@@ -22,7 +22,7 @@ $.ajaxSetup({
 });
 
 $(function() {
-    $('#cust-creation-date').html(moment(ticket_customer.created_at).format(date_format));
+    $('#cust-creation-date').html(moment(ticket_customer.created_at).format(date_format + ' ' + 'hh:mm'));
     $('#creation-date').html(moment(ticket.created_at).format(date_format));
 
     let dt = new Date(ticket.sla_res_deadline_from);
@@ -39,7 +39,7 @@ $(function() {
     // });
     getLatestLogs();
 
-    $('#ticket-timestamp').html(moment(ticket.created_at).format(date_format));
+    $('#ticket-timestamp').html(moment(ticket.created_at).format(date_format + ' ' + 'hh:mm'));
     if ($("#mymce").length > 0) {
         tinymce.init({
             selector: "textarea#mymce",
@@ -242,7 +242,7 @@ function setSlaPlanDeadlines(ret = false) {
 }
 
 function resetSlaPlan() {
-    // console.log(ticket_slaPlan , "ticket_slaPlan123");
+    
     if(ticket_slaPlan != null && ticket_slaPlan != "") {
         var today = new Date();
         var due_time = moment(today).add(ticket_slaPlan.due_deadline , 'h').format('hh:mm A');
@@ -2194,7 +2194,7 @@ function get_ticket_notes() {
                         </div>
                         <div class="w-100">
                             <div class="col-12 p-0 d-flex">
-                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + moment(notes[i].created_at).format(date_format) + ` ` + type + `</h5>
+                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + moment(notes[i].created_at).format(date_format + ' ' + 'hh:mm') + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>

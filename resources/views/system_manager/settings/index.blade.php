@@ -1,12 +1,6 @@
 @extends('layouts.staff-master-layout')
 @push('css')
-<link rel="stylesheet" href="{{asset('assets/extra-libs/pickr/pickr.min.css')}}">
-<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
-<link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
-  <!-- This Page CSS -->
-  <link rel="stylesheet" type="text/css" href="{{asset('assets/libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css')}}">
+
 
  <link rel="stylesheet" type="text/css" href="{{asset('assets/libs/@claviska/jquery-minicolors/jquery.minicolors.css')}}">
 <style>
@@ -18,76 +12,74 @@
         background-color:#009efb !important;
         color:#fff !important;
     }
-    body[data-theme=dark] .nav-pills .nav-link.active
-    {
-    background-color: #313030  !important;
-    color: #fff !important;
-}
-.custom-control-label::before {
-    top: 4px !important;
-}
-.box{
-    background-color: #e263b0;
-    height: 30px;
-    width: 50px;
-    margin-left: 0;
-    margin-top: 7px;
-}
-.border-box{
-    border:1px solid #cdd0d0;
-    height:130px;
-    border-radius:5px;
-    overflow-y:auto;
-}
-.border-box p{
-    margin-bottom:2px;
-}
-.custom-control-input:checked~.custom-control-label::before {
-    color: #fff !important;
-    border-color: #4caf50 !important;
-    background-color: #4caf50 !important;
-    box-shadow: none;
-}
-.custom-switch .custom-control-label::before {
-    background: #f44336 !important;
-}
-.custom-switch .custom-control-label::after {
-    background-color: #fff !important;
-}
-.rightForm{
-    padding: 25px;
-    margin-top: 23px;
-    background: #e4f5ff;
-}
-.dd-handle-right{
-    color: #009efb !important;
-    /* border-color: #009efb !important; */
-    cursor:pointer;
-}
-#menu_settings .table-hover tbody tr:hover {
-   
-    background-color: transparent;
-}
-#menu_settings .table td, .table th {
-    padding: .75rem;
-    vertical-align: top;
-    border-top: 1px solid #009efb;
-}
-.select2-container--classic .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    background-color: #009efb;
-    border-color: #009efb;
-    color: #fff;
-}
-.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    body[data-theme=dark] .nav-pills .nav-link.active {
+        background-color: #313030  !important;
+        color: #fff !important;
+    }
+    .custom-control-label::before {
+        top: 4px !important;
+    }
+    .box{
+        background-color: #e263b0;
+        height: 30px;
+        width: 50px;
+        margin-left: 0;
+        margin-top: 7px;
+    }
+    .border-box{
+        border:1px solid #cdd0d0;
+        height:130px;
+        border-radius:5px;
+        overflow-y:auto;
+    }
+    .border-box p{
+        margin-bottom:2px;
+    }
+    .custom-control-input:checked~.custom-control-label::before {
+        color: #fff !important;
+        border-color: #4caf50 !important;
+        background-color: #4caf50 !important;
+        box-shadow: none;
+    }
+    .custom-switch .custom-control-label::before {
+        background: #f44336 !important;
+    }
+    .custom-switch .custom-control-label::after {
+        background-color: #fff !important;
+    }
+    .rightForm{
+        padding: 25px;
+        margin-top: 23px;
+        background: #e4f5ff;
+    }
+    .dd-handle-right{
+        color: #009efb !important;
+        /* border-color: #009efb !important; */
+        cursor:pointer;
+    }
+    #menu_settings .table-hover tbody tr:hover {
     
-    margin-bottom: 5px;
-}
-.srh-btn{
-    position: absolute;
-    top: 11px;
-    right: 22px;
-}
-
+        background-color: transparent;
+    }
+    #menu_settings .table td, .table th {
+        padding: .75rem;
+        vertical-align: top;
+        border-top: 1px solid #009efb;
+    }
+    .select2-container--classic .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        background-color: #009efb;
+        border-color: #009efb;
+        color: #fff;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        
+        margin-bottom: 5px;
+    }
+    .srh-btn{
+        position: absolute;
+        top: 11px;
+        right: 22px;
+    }
 </style>
 @endpush
 @section('body-content')
@@ -3644,31 +3636,21 @@
     }
 </style>
 @section('scripts')
-<script type="text/javascript" src="{{asset('assets/dist/js/flashy.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('assets/extra-libs/pickr/pickr.min.js')}}"></script>
-@include('js_files.system_manager.feature_list.feature_listJs')
 
-
-<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-
-<script src="{{asset('assets/libs/bootstrap-switch/dist/js/bootstrap-switch.min.js')}}"></script>
-<!-- <script src="{{asset('public/js/system_manager/settings/settings.js').'?ver='.rand()}}"></script> -->
-<script src="{{asset('js/tagsinput.js').'?ver='.rand()}}"></script>
-  <!--Custom JavaScript -->
-  <script src="{{asset('assets/dist/js/feather.min.js')}}"></script>
-    <script src="{{asset('assets/dist/js/custom.min.js')}}"></script>
+    @include('js_files.system_manager.settings.indexJs')
+    @include('js_files.system_manager.settings.settingsJs')
+    @include('js_files.system_manager.feature_list.feature_listJs')
+    
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
     <script src="{{asset('assets/libs/nestable/jquery.nestable.js')}}"></script>
-
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    
         <!-- This Page JS -->
     <script src="{{asset('assets/libs/jquery-asColor/dist/jquery-asColor.min.js')}}"></script>
     <script src="{{asset('assets/libs/jquery-asGradient/dist/jquery-asGradient.js')}}"></script>
     <script src="{{asset('assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js')}}"></script>
     <script src="{{asset('assets/libs/@claviska/jquery-minicolors/jquery.minicolors.min.js')}}"></script>
-<script src="{{asset('/assets/libs/tinymce/tinymce.min.js')}}"></script>
+    <script src="{{asset('/assets/libs/tinymce/tinymce.min.js')}}"></script>
 
-@include('js_files.system_manager.settings.indexJs')
-@include('js_files.system_manager.settings.settingsJs')
+
 
 @endsection

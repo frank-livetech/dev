@@ -16,6 +16,45 @@ let g_status_arr = null;
 
 $(document).ready(function() {
 
+    var today = new Date();
+    var dt_option = ``;
+    var tm_option = ``;
+
+    var format1 = moment(today).format('DD-MM-YYYY');
+    var format2 = moment(today).format('DD/MM/YYYY');
+    var format3 = moment(today).format('DD/MM/YY');
+    var format4 = moment(today).format('Do MMMM YYYY');
+    var format5 = moment(today).format('DD.MM.YYYY');
+    var format6 = moment(today).format('MM/DD/YYYY');
+
+    var time1 = moment(today).format('hh:mm:ss');
+    var time2 = moment(today).format('LT');
+
+    var arr = [
+        { frmt: "DD/MM/YYYY", date: format2 },
+        { frmt: "DD-MM-YYYY", date: format1 },
+        { frmt: "'DD/MM/YY", date: format3 },
+        { frmt: "Do MMMM YYYY", date: format4 },
+        { frmt: "DD.MM.YYYY", date: format5 },
+        { frmt: "MM/DD/YYYY", date: format6 },
+    ]
+
+    var time_arr = [
+        { frmt: "hh:mm:ss", tm: time1 },
+        { frmt: "LT", tm: time2 },
+    ]
+
+    for (var i = 0; i < arr.length; i++) {
+        dt_option += `<option value="` + arr[i].frmt + `" ` + (arr[i].frmt == arr[5].frmt ? "selected" : '-') + `> ` + arr[i].frmt + ` ` + " e.g. " + `    ` + arr[i].date + `</option>`;
+    }
+
+    for (var i = 0; i < time_arr.length; i++) {
+        tm_option += `<option value="` + time_arr[i].frmt + `">` + time_arr[i].frmt + ` ` + " e.g. " + `` + time_arr[i].tm + `</option>`;
+    }
+
+    $("#sys_dt_frmt").html(dt_option);
+    $("#sys_time_frmt").html(tm_option);
+
 
 
     getAllresTemp();
@@ -663,48 +702,6 @@ $(document).ready(function() {
             }
         });
     });
-
-
-    var today = new Date();
-    var dt_option = ``;
-    var tm_option = ``;
-
-    var format1 = moment(today).format('DD-MM-YYYY');
-    var format2 = moment(today).format('DD/MM/YYYY');
-    var format3 = moment(today).format('DD/MM/YY');
-    var format4 = moment(today).format('Do MMMM YYYY');
-    var format5 = moment(today).format('DD.MM.YYYY');
-    var format6 = moment(today).format('MM/DD/YYYY');
-
-    var time1 = moment(today).format('hh:mm:ss');
-    var time2 = moment(today).format('LT');
-
-    var arr = [
-        { frmt: "DD/MM/YYYY", date: format2 },
-        { frmt: "DD-MM-YYYY", date: format1 },
-        { frmt: "'DD/MM/YY", date: format3 },
-        { frmt: "Do MMMM YYYY", date: format4 },
-        { frmt: "DD.MM.YYYY", date: format5 },
-        { frmt: "MM/DD/YYYY", date: format6 },
-    ]
-
-    var time_arr = [
-        { frmt: "hh:mm:ss", tm: time1 },
-        { frmt: "LT", tm: time2 },
-    ]
-
-    for (var i = 0; i < arr.length; i++) {
-        dt_option += `<option value="` + arr[i].frmt + `" ` + (arr[i].frmt == arr[5].frmt ? "selected" : '-') + `> ` + arr[i].frmt + ` ` + " e.g. " + `    ` + arr[i].date + `</option>`;
-    }
-
-    for (var i = 0; i < time_arr.length; i++) {
-        tm_option += `<option value="` + time_arr[i].frmt + `">` + time_arr[i].frmt + ` ` + " e.g. " + `` + time_arr[i].tm + `</option>`;
-    }
-
-    $("#sys_dt_frmt").html(dt_option);
-    $("#sys_time_frmt").html(tm_option);
-
-
 
     departments_table_list = $('#ticket-departments-list').DataTable();
     status_table_list = $('#ticket-status-list').DataTable();
