@@ -58,7 +58,7 @@
                                                     <ul aria-expanded="false" class="collapse second-level">
                                                         @foreach($depts->statuses as $sts)
                                                             <li class="sidebar-item">
-                                                                <a href="/ticket-manager/{{$depts->slug}}/{{$sts->slug}}" class="sidebar-link">
+                                                                <a href="{{route('ticket-manager.index',[$depts->slug,$sts->slug])}}" class="sidebar-link">
                                                                     <i class="mdi mdi-octagram"></i>
                                                                     <span class="hide-menu"> {{$sts->name}}</span>
                                                                 </a>
