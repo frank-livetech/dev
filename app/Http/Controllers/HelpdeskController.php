@@ -67,7 +67,13 @@ class HelpdeskController extends Controller
         $this->middleware('auth');
     }
 
-    public function ticket_management(Request $request){
+    public function ticket_manager($dept,$sts){
+
+        $dept = Departments::where('slug',$dept)->first();
+        $dept = $dept->id;
+        $sts = TicketStatus::where('slug',$sts)->first();
+        $sts = $sts->id;
+        
         $departments = Departments::all();
         $statuses = TicketStatus::all();
         $priorities = TicketPriority::all();
@@ -105,7 +111,51 @@ class HelpdeskController extends Controller
 
         $staffs = User::where('user_type','!=',5)->where('user_type','!=',4)->get();
 
-        return view('help_desk.ticket_manager.index',compact('loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs'));
+        return view('help_desk.ticket_manager.index',compact('loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs','dept','sts'));
+
+    }
+
+    public function ticket_management(Request $request){
+        $departments = Departments::all();
+        $statuses = TicketStatus::all();
+        $priorities = TicketPriority::all();
+        $types = TicketType::all();
+        $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
+        $customers = Customer::where('is_deleted', 0)->get();
+        $ticket_format = TicketSettings::where('tkt_key','ticket_format')->first();
+
+        $tickets_followups = TicketFollowUp::where('passed', 0)->where('is_deleted', 0)->get();
+
+        foreach ($tickets_followups as $key => $value) {
+            if($value->is_recurring == 1) {
+                $tickets_followups[$key]->date = $this->follow_up_calculation($value);
+            }
+        }
+
+        $followUpsNew = [];
+
+        foreach ($tickets_followups as $key => $value) {
+            if($value->passed == 0) {
+                $followUpsNew[] = $value;
+            }
+        }
+        
+        $tickets_followups = $followUpsNew;
+
+        $url_type = '';
+        if(isset($request->type)) {
+            $url_type = $request->type;
+        }
+
+        $loggedInUser = \Auth::user()->id;
+        $date_format = Session('system_date');
+        $projects = Project::all();
+
+        $staffs = User::where('user_type','!=',5)->where('user_type','!=',4)->get();
+        $dept = '';
+        $sts = '';
+
+        return view('help_desk.ticket_manager.index',compact('dept','sts','loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs'));
     }
 
     public function addTicketPage() {
@@ -376,7 +426,181 @@ class HelpdeskController extends Controller
             throw new Exception($e->getMessage());
         }
     }
+    public function getFilteredTickets($dept = '' , $sts = ''){
+
+        // $cid = '';
+        // $sid = '';
+        // if(!empty($id)) {
+        //     if($statusOrUser == 'customer') $cid = $id;
+        //     else if($statusOrUser == 'staff') $sid = $id;
+        // }
+
+        $open_status = TicketStatus::where('name','Open')->first();
+        $closed_status = TicketStatus::where('name','Closed')->first();
+        $closed_status_id = $closed_status->id;
+        $cnd = '!=';
+        $is_del = 0;
+        // if($statusOrUser == 'closed') $cnd = '=';
+        // if($statusOrUser == 'trash') $is_del = 1;
+
+        if(\Auth::user()->user_type == 1) {
+            $tickets = DB::Table('tickets')
+            ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
+            ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
+            ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
+            ->join('ticket_types','ticket_types.id','=','tickets.type')
+            ->join('departments','departments.id','=','tickets.dept_id')
+            ->join('customers','customers.id','=','tickets.customer_id')
+            ->leftjoin('users','users.id','=','tickets.created_by')
+            ->where('tickets.status',$sts)
+            ->where('tickets.dept_id',$dept)
+            // ->when($statusOrUser == 'customer', function($q) use($id) {
+            //     return $q->where('tickets.customer_id', $id);
+            // })
+            // ->when($statusOrUser == 'staff', function($q) use($id) {
+            //     return $q->where('tickets.assigned_to', $id);
+            // })
+            // ->when($statusOrUser == 'closed', function($q) use($closed_status_id) {
+            //     return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
+            // })
+            // ->when($statusOrUser == 'trash', function($q) {
+            //     return $q->where('tickets.trashed', 1);
+            // })
+            // ->when(empty($statusOrUser), function($q) use($closed_status_id) {
+            //     return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
+            // })
+            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
+        
+        } else {
+            $aid = \Auth::user()->id;
+            $assigned_depts = DepartmentAssignments::where('user_id', $aid)->get()->pluck('dept_id')->toArray();
+
+            $tickets = DB::Table('tickets')
+            ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
+            ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
+            ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
+            ->join('ticket_types','ticket_types.id','=','tickets.type')
+            ->join('departments','departments.id','=','tickets.dept_id')
+            ->join('customers','customers.id','=','tickets.customer_id')
+            ->leftjoin('users','users.id','=','tickets.created_by')
+            // ->when($statusOrUser == 'customer', function($q) use ($id) {
+            //     return $q->where('tickets.customer_id', $id);
+            // })
+            // ->when($statusOrUser == 'closed', function($q) use ($closed_status_id) {
+            //     return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
+            // })
+            // ->when($statusOrUser == 'trash', function($q) {
+            //     return $q->where('tickets.trashed', 1);
+            // })
+            // ->when(empty($statusOrUser), function($q) use ($closed_status_id) {
+            //     return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
+            // })
+            ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
+                return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
+            })
+            ->where('tickets.status',$sts)
+            ->where('tickets.dept_id',$dept)
+            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
+        }
+
+        $total_tickets_count = $tickets->count();
+        $my_tickets_count = 0;
+        $open_tickets_count = 0;
+        $unassigned_tickets_count = 0;
+        $late_tickets_count = 0;
+        $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
+        $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
+        
+        foreach($tickets as $value) {
+            $value->tech_name = 'Unassigned';
+            if(!empty($value->assigned_to)) {
+                $u = User::where('id', $value->assigned_to)->first();
+                if(!empty($u)) $value->tech_name = $u->name;
+            }
+            else $unassigned_tickets_count++;
+
+            $rep = TicketReply::where('ticket_id', $value->id)->orderBy('created_at', 'desc')->first();
+            $repCount = TicketReply::where('ticket_id', $value->id)->count();
+            $value->lastReplier = '';
+            $value->replies = '';
+            if(!empty($rep)) {
+                if($rep['user_id']) {
+                    $user = User::where('id', $rep['user_id'])->first();
+                    if(!empty($user)) $value->lastReplier = $user->name;
+                } else if($rep['customer_id']) {
+                    $user = Customer::where('id', $rep['customer_id'])->first();
+                    if(!empty($user)) $value->lastReplier = $user->first_name.' '.$user->last_name;
+                }
+                $value->replies = $repCount;
+            }
+
+            if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
+            if($value->status == $open_status->id) $open_tickets_count++;
+
+            $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
+
+            $value->sla_plan = $this->getTicketSlaPlan($value->id);
+            
+            $dd = $this->getSlaDeadlineFrom($value->id);
+            $value->sla_rep_deadline_from = $dd[0];
+            $value->sla_res_deadline_from = $dd[1];
+
+            $lcnt = false;
+            if($value->sla_plan['title'] != self::NOSLAPLAN) {
+                if($value->reply_deadline != 'cleared') {
+                    $nowDate = Carbon::now();
+                    if(!empty($value->reply_deadline)) {
+                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
+                        if($timediff < 0) $lcnt = true;
+                    } else {
+                        $rep = Carbon::parse($value->sla_rep_deadline_from);
+                        $dt = explode('.', $value->sla_plan['reply_deadline']);
+                        $rep->addHours($dt[0]);
+                        if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
+                        $timediff = $nowDate->diffInSeconds($rep, false);
+                        if($timediff < 0) $lcnt = true;
+                    }
+                }
     
+                if(!$lcnt) {
+                    $nowDate = Carbon::now();
+                    if(!empty($value->resolution_deadline)) {
+                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                        if($timediff < 0) $lcnt = true;
+                    } else {
+                        $rep = Carbon::parse($value->sla_res_deadline_from);
+                        $dt = explode('.', $value->sla_plan['due_deadline']);
+                        $rep->addHours($dt[0]);
+                        if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
+                        $timediff = $nowDate->diffInSeconds($rep, false);
+                        if($timediff < 0) $lcnt = true;
+                    }
+                }
+            }
+            
+            $value->is_overdue = 0;
+            if($lcnt) {
+                $late_tickets_count++;
+                $value->is_overdue = 1;
+            }
+        }
+        
+        $response['message'] = 'Success';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        $response['tickets']= $tickets;
+        $response['total_tickets_count']= $total_tickets_count;
+        $response['my_tickets_count']= $my_tickets_count;
+        $response['open_tickets_count']= $open_tickets_count;
+        $response['unassigned_tickets_count']= $unassigned_tickets_count;
+        $response['late_tickets_count']= $late_tickets_count;
+        $response['closed_tickets_count']= $closed_tickets_count;
+        $response['trashed_tickets_count']= $trashed_tickets_count;
+        $response['date_format'] = Session('system_date');
+        
+        return response()->json($response);
+
+    }
     public function getTickets($statusOrUser='', $id='') {
         $cid = '';
         $sid = '';

@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="{{asset( $path . 'css/style.min.css')}}">
     <link rel="stylesheet" href="{{asset( $path . 'css/tagsinput.css')}}">
     <link rel="stylesheet" href="{{asset( $path . 'css/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{asset( $path . 'css/pickr.min.css')}}">
+    <link rel="stylesheet" href="{{asset( $path . 'css/flashy.min.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset( $path . 'css/countdown.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset( $path . 'css/theme2.css')}}" />
@@ -662,9 +664,12 @@ body[data-theme=dark] .close{
     <script src="{{asset( $path . 'js/sidebarmenu.js')}}"></script>
     <script src="{{asset( $path . 'js/toastr.min.js')}}"></script>
     <script src="{{asset( $path . 'js/waves.js')}}"></script>
+    <script src="{{asset( $path . 'js/pickr.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/bootstrap_switch.min.js')}}"></script>
 
     <script type="text/javascript" src="{{asset( $path . 'js/countdown.js')}}"></script>
     <script src="{{asset( $path . 'js/calendar.js')}}"></script>
+    <script src="{{asset( $path . 'js/tagsinput.js')}}"></script>
  
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>

@@ -4,6 +4,8 @@
     if(Auth::user()->user_type != 5) {
 
         $menus = Session('menus');
+        $departments = Session('depts');
+
 
         ?>
 
@@ -35,12 +37,40 @@
                                     <ul aria-expanded="false" class="collapse first-level" style="">
                                     @foreach($sub_menus as $sub_menu)
                                         @if($sub_menu->is_active == 1)
-                                        <li class="sidebar-item">
-                                            <a href="{{ route($sub_menu->route) }}" class="sidebar-link">
-                                                <i class="fa fa-arrow-right"></i>
-                                                <span class="hide-menu" style="cursor: pointer;">{{$sub_menu->title}}</span>
-                                            </a>
-                                        </li>
+
+                                            <li class="sidebar-item">
+                                                <a href="{{ route($sub_menu->route) }}" class="sidebar-link">
+                                                    <i class="fa fa-arrow-right" style="display:block !important"></i>
+                                                    <span class="hide-menu" style="cursor: pointer;">{{$sub_menu->title}}</span>
+                                                </a>
+                                            </li>
+
+                                            @if($sub_menu->title == 'Ticket Manager')
+                                                @foreach($departments as $depts)
+                                                
+                                                <li class="sidebar-item">
+
+                                                    <a class="has-arrow sidebar-link" href="javascript:void(0)" aria-expanded="false">
+                                                        <i class="mdi mdi-playlist-plus"></i>
+                                                        <span class="hide-menu">{{$depts->name}}</span>
+                                                    </a>
+
+                                                    <ul aria-expanded="false" class="collapse second-level">
+                                                        @foreach($depts->statuses as $sts)
+                                                            <li class="sidebar-item">
+                                                                <a href="{{route('ticket-manager.index',[$depts->slug,$sts->slug])}}" class="sidebar-link">
+                                                                    <i class="mdi mdi-octagram"></i>
+                                                                    <span class="hide-menu"> {{$sts->name}}</span>
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                       
+                                                    </ul>
+                                                </li>
+
+                                                @endforeach
+
+                                            @endif
                                         @endif
                                     @endforeach
                                     </ul>

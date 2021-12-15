@@ -71,16 +71,11 @@
     <div class="row">
         <div class="card">
             <div class="card-body">
-                
+<!--                 
                 <div class="col-12 d-flex p-0">
                     <h4 class="card-title">Tickets</h4>
-                    <button type="button" class="btn btn-info ml-auto mr-2" id="show-clndr" data-toggle="modal" data-target="#calendarModal">
-                        <i class="fas fa-calendar"></i>&nbsp;Calendar
-                    </button>
-                    <a href="{{url('add-ticket')}}" type="button" class="btn btn-success">
-                        <i class="mdi mdi-plus-circle"></i>&nbsp;Add ticket
-                    </a>
-                </div>
+                    
+                </div> -->
 
                 <!-- <div class="row mt-3 pl-3 pr-4">
                     <div class="col-md-3 pr-1">
@@ -130,6 +125,8 @@
                     </div>                    
 
                 </div> -->
+                <input hidden id="dept" value="{{$dept}}">
+                <input hidden id="sts" value="{{$sts}}">
 
                 <div class="row-flex-container mt-3">
                    
@@ -149,14 +146,14 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-sm-4 col-md-2">
+                    <!-- <div class="col-sm-4 col-md-2">
                         <a href="javascript:listTickets('open')" class="card card-hover border-warning">
                             <div class="box p-2 rounded warning text-center">
                                 <h1 class="font-weight-light " id="open_tickets_count"></h1>
                                 <h6 class="text-warning">Open</h6>
                             </div>
                         </a>
-                    </div>
+                    </div> -->
                     <div class="col-sm-4 col-md-2">
                         <a href="javascript:listTickets('unassigned')" class="card card-hover border-primary">
                             <div class="box p-2 rounded primary text-center">
@@ -185,6 +182,12 @@
 
                 <div class="row px-3 mt-3">
                     <div class="col-12 pb-3 text-right" id="action_btns">
+                        <button type="button" class="btn btn-info ml-auto mr-2" id="show-clndr" data-toggle="modal" data-target="#calendarModal">
+                            <i class="fas fa-calendar"></i>&nbsp;Calendar
+                        </button>
+                        <a href="{{url('add-ticket')}}" type="button" class="btn btn-success">
+                            <i class="mdi mdi-plus-circle"></i>&nbsp;Add ticket
+                        </a>
                         <button type="button" class="btn btn-primary" style="display: none;" id="btnBack" onclick="get_ticket_table_list();"><i class="fas fa-chevron-left"></i>&nbsp;Back</button>
                         <button type="button" class="btn btn-warning" id="btnSpam" onclick="moveToTrash()"><i class="far fa-question-circle"></i>&nbsp;Spam</button>
                         <button type="button" class="btn btn-info" id="btnMerge" onclick="merge_tickets()" style=""><i class="fas fa-random"></i>&nbsp;Merge</button>
@@ -195,7 +198,7 @@
 
                 <div class="row">
 
-                    <div class="col-3">
+                    <!-- <div class="col-3">
                         <ul class="list-group">
                             <li class="list-group-item p-1 list_department" id="">
                                 <a href="javascript:void(0)" class="active list-group-item-action d-flex align-items-center"><i class="font-18 align-middle mr-1 mdi mdi-inbox"></i> All Departments </a>
@@ -232,9 +235,9 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="col-9">
+                    <div class="col-12">
                         <div class="table-responsive" style="overflow: hidden;">
                             <table id="ticket-table-list" class="table table-striped table-bordered table-hover display ticket-table-list">
                                 <thead>
@@ -570,6 +573,7 @@
 
     let url_type = {!! json_encode($url_type) !!};
     let get_tickets_route = "{{asset('/get-tickets')}}";
+    let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
 
 </script>
 
