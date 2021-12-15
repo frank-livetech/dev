@@ -125,6 +125,7 @@
                             <a class="dropdown-item" href="{{url('company-profile')}}/{{Session::get('default_cmp_id')}}">
                                 <i i class="me-50" data-feather="credit-card"></i> Company Profile </a>
                         @endif
+                        
                         <a class="dropdown-item" type="button" href="{{ url('logout') }}">
                             <i class="me-50" data-feather="power" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"></i> 
                             Logout
