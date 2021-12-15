@@ -19,7 +19,7 @@ class AboutController extends Controller
     }
     
     public function feature_suggestions(){
-        return view('about.featuresuggestions.index');
+        return view('about.featuresuggestions.index-new');
 
     }
 }
