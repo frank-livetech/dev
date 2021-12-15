@@ -1,8 +1,5 @@
 @extends('layouts.staff-master-layout')
 @section('body-content')
-<link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"> --}}
-
 <style>
     .flagged-tr,
     .flagged-tr .sorting_1

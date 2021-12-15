@@ -42,31 +42,31 @@ function initializeTicketTable(p_name='') {
 
     $('#ticket-table-list').parent().css('overflow', 'auto');
 
-    $('#tk_select').multipleSelect({
-        width: 300,
-        onClick: function(view) {
-            var selectedItems = $('#tk_select').multipleSelect("getSelects");
-            for (var i = 0; i < 15; i++) {
-                columns = tickets_table_list.column(i).visible(0);
-            }
-            for (var i = 0; i < selectedItems.length; i++) {
-                var s = selectedItems[i];
-                tickets_table_list.column(s).visible(1);
-            }
-            $('#ticket-table-list').css('width', '100%');
-        },
-        onCheckAll: function() {
-            for (var i = 0; i < 15; i++) {
-                columns = tickets_table_list.column(i).visible(1);
-            }
-        },
-        onUncheckAll: function() {
-            for (var i = 0; i < 15; i++) {
-                columns = tickets_table_list.column(i).visible(0);
-            }
-            $('#ticket-table-list').css('width', '100%');
-        }
-    });
+    // $('#tk_select').multipleSelect({
+    //     width: 300,
+    //     onClick: function(view) {
+    //         var selectedItems = $('#tk_select').multipleSelect("getSelects");
+    //         for (var i = 0; i < 15; i++) {
+    //             columns = tickets_table_list.column(i).visible(0);
+    //         }
+    //         for (var i = 0; i < selectedItems.length; i++) {
+    //             var s = selectedItems[i];
+    //             tickets_table_list.column(s).visible(1);
+    //         }
+    //         $('#ticket-table-list').css('width', '100%');
+    //     },
+    //     onCheckAll: function() {
+    //         for (var i = 0; i < 15; i++) {
+    //             columns = tickets_table_list.column(i).visible(1);
+    //         }
+    //     },
+    //     onUncheckAll: function() {
+    //         for (var i = 0; i < 15; i++) {
+    //             columns = tickets_table_list.column(i).visible(0);
+    //         }
+    //         $('#ticket-table-list').css('width', '100%');
+    //     }
+    // });
     get_ticket_table_list();
 
     $('#select-all').change(function() {
@@ -159,6 +159,7 @@ function listTickets(f_key = '') {
     redrawTicketsTable(ticket_arr);
 }
 function redrawTicketsTable(ticket_arr) {
+    var la_color = ``;
     tickets_table_list.clear().draw();
     $.each(ticket_arr, function(key, val) {
         let prior = '<div class="text-center">' + val['priority_name'] + '</div>';
@@ -233,8 +234,11 @@ function redrawTicketsTable(ticket_arr) {
             }
             if(rep_due) {
                 // overdue or change format of the date
-                if(rep_due.diff(moment(), "seconds") < 0) rep_due = `<div class="text-center" title="${rep_due.format('YYYY-MM-DD hh:mm')}"><span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span></div>`;
-                else {
+                if(rep_due.diff(moment(), "seconds") < 0)  {
+                    rep_due = `<div class="text-center" title="${rep_due.format('YYYY-MM-DD hh:mm')}">
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
+                            </div>`;
+                }else {
                     // do the date formatting
                     // rep_due = rep_due.format('YYYY-MM-DD hh:mm');
                     rep_due = getClockTime(rep_due, 1);
@@ -251,6 +255,16 @@ function redrawTicketsTable(ticket_arr) {
         let replier = val['lastReplier'];
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
+        var last_activity = getDateDiff(moment(moment(val.lastActivity).toDate()).local());
+
+        if(last_activity.includes('d')) {
+            la_color = `#b71c1c`;
+        }else if(last_activity.includes('h')) {
+            la_color = `#5c83b4`;
+        }else if(last_activity.includes('min')) {
+            la_color = `#ff8c5a`;
+        }
+
         let row = `<tr>
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
@@ -261,7 +275,7 @@ function redrawTicketsTable(ticket_arr) {
             <td><a href="customer-profile/${val['customer_id']}">${val['customer_name']}</a></td>
             <td>${replier}</td>
             <td>${replies}</td>
-            <td data-order="${la.getTime()}">${getDateDiff(moment(moment(val.lastActivity).toDate()).local())}</td>
+            <td data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
             <td>${rep_due}</td>
             <td>${res_due}</td>
             <td>${val['tech_name']}</td>
@@ -363,19 +377,27 @@ function getClockTime(followUpDate, timediff) {
         let remTime = '';
         followUpDate = new Date(Date.parse(new Date()) + (followUpDate - today));
         let rem = getTimeRemaining(followUpDate);
+        var color = ``;
         if (rem && rem.hasOwnProperty('years') && rem.years > 0) remTime += rem.years + 'y ';
         if (rem && rem.hasOwnProperty('months') && rem.months > 0) remTime += rem.months + 'm ';
         if (rem && rem.hasOwnProperty('days') && rem.days > 0) remTime += rem.days + 'd ';
         if (rem && rem.hasOwnProperty('hours') && rem.hours > 0) remTime += rem.hours + 'h ';
         if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'min';
-        remTime = `<span style="color: rgb(139, 180, 103)">${remTime}</span>`;
+
+        if(remTime.includes('d')) {
+            color = `#8BB467`;
+        }else if(remTime.includes('h')) {
+            color = `#5c83b4`;
+        }else if(remTime.includes('min')) {
+            color = `#ff8c5a`;
+        }
+        remTime = `<span style="color:${color}">${remTime}</span>`;
         return remTime;
     }
 }
 function getDateDiff(date1, date2=new Date()) {
     var a = moment(date1);
     var b = moment(date2);
-
     // var years = b.diff(a, 'year');
     // a.add(years, 'years');
 
