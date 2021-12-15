@@ -86,6 +86,7 @@
 
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+    $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 @endphp
 
 <div class="page-breadcrumb">
@@ -3640,16 +3641,22 @@
     @include('js_files.system_manager.settings.indexJs')
     @include('js_files.system_manager.settings.settingsJs')
     @include('js_files.system_manager.feature_list.feature_listJs')
-    
+
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-    <script src="{{asset('assets/libs/nestable/jquery.nestable.js')}}"></script>
+    <!-- <script src="{{asset('assets/libs/nestable/jquery.nestable.js')}}"></script> -->
+    <script src="{{asset( $path . 'js/jquery.nestable.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_asColor.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_asGradient.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_asColorPicker.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_minicolors.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/tinymce.min.js')}}"></script>
     
         <!-- This Page JS -->
-    <script src="{{asset('assets/libs/jquery-asColor/dist/jquery-asColor.min.js')}}"></script>
-    <script src="{{asset('assets/libs/jquery-asGradient/dist/jquery-asGradient.js')}}"></script>
-    <script src="{{asset('assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js')}}"></script>
-    <script src="{{asset('assets/libs/@claviska/jquery-minicolors/jquery.minicolors.min.js')}}"></script>
-    <script src="{{asset('/assets/libs/tinymce/tinymce.min.js')}}"></script>
+    <!-- <script src="{{asset('assets/libs/jquery-asColor/dist/jquery-asColor.min.js')}}"></script> -->
+    <!-- <script src="{{asset('assets/libs/jquery-asGradient/dist/jquery-asGradient.js')}}"></script> -->
+    <!-- <script src="{{asset('assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js')}}"></script> -->
+    <!-- <script src="{{asset('assets/libs/@claviska/jquery-minicolors/jquery.minicolors.min.js')}}"></script> -->
+    <!-- <script src="{{asset('/assets/libs/tinymce/tinymce.min.js')}}"></script> -->
 
 
 
