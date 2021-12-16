@@ -91,7 +91,7 @@
                                         <div class="my-auto" style="text-align: center">
                                             <a href="javascript:listTickets('total')">
                                             <h2 class="fw-bolder mb-0" id="total_tickets_count"></h2>
-                                            <h4 class="card-text font-small-10 mb-0 mt-1 text-info">All Tickets</h4>
+                                            <h5 class="card-text font-small-10 mb-0 mt-1 text-info">All Tickets</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -105,7 +105,7 @@
                                         <div class="my-auto" style="text-align: center">
                                             <a href="javascript:listTickets('self')">
                                             <h2 class="fw-bolder mb-0" id="my_tickets_count"></h2>
-                                            <h4 class="card-text font-small-10 mb-0 mt-1 text-success">My Tickets</h4>
+                                            <h5 class="card-text font-small-10 mb-0 mt-1 text-success">My Tickets</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
                                         <div class="my-auto" style="text-align: center">
                                             <a href="javascript:listTickets('unassigned')">
                                             <h2 class="fw-bolder mb-0" id="unassigned_tickets_count"></h2>
-                                            <h4 class="card-text font-small-10 mb-0 mt-1 text-primary">Unassigned</h4>
+                                            <h5 class="card-text font-small-10 mb-0 mt-1 text-primary">Unassigned</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                                         <div class="my-auto" style="text-align: center">
                                             <a href="javascript:listTickets('overdue')">
                                             <h2 class="fw-bolder mb-0" id="closed_tickets_count"></h2>
-                                            <h4 class="card-text font-small-10 mb-0 mt-1 text-danger">Overdue</h4>
+                                            <h5 class="card-text font-small-10 mb-0 mt-1 text-danger">Overdue</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -147,7 +147,7 @@
                                         <div class="my-auto" style="text-align: center">
                                             <a href="javascript:listTickets('trash')">
                                             <h2 class="fw-bolder mb-0" id="trashed_tickets_count"></h2>
-                                            <h4 class="card-text font-small-10 mb-0 mt-1 text-success">Trash</h4>
+                                            <h5 class="card-text font-small-10 mb-0 mt-1 text-success">Trash</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -160,7 +160,6 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                
                                 <div class="row">
                                     <div class="col-md-2"></div>
                                     <div class="col-md-10" id="action_btns">
