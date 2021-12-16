@@ -13,14 +13,13 @@
     
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16"
-        href="{{asset('public/files/brand_files')}}/{{Session::get('site_favicon')}}">
+        href="{{asset('files/brand_files')}}/{{Session::get('site_favicon')}}">
     <title>{{Session::get('site_title')}}</title>
 
     @php
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
         $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
-
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
@@ -130,6 +129,7 @@
                             <a class="dropdown-item" href="{{url('company-profile')}}/{{Session::get('default_cmp_id')}}">
                                 <i i class="me-50" data-feather="credit-card"></i> Company Profile </a>
                         @endif
+                        
                         <a class="dropdown-item" type="button" href="{{ url('logout') }}">
                             <i class="me-50" data-feather="power" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"></i> 
                             Logout
@@ -167,7 +167,10 @@
     <!-- BEGIN: Vendor JS-->
     <script src="{{asset('app-assets/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
-
+    <script>
+        const colorUrl = "{{asset('get-color')}}";
+        const swal_message_time = 5000;
+    </script>
     <!-- BEGIN: Page Vendor JS-->
     <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
