@@ -88,6 +88,12 @@ class SettingsController extends Controller
 
 
         $time_zone = SystemSetting::where('sys_key','sys_timezone')->where('created_by', auth()->id())->first();
+        if($time_zone) {
+            $timeZone = $time_zone->sys_value;
+        }else{
+            $timeZone = 'America/New_York';
+        }
+
         $dateformat = SystemSetting::where('sys_key','sys_dt_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
         $timeformat = SystemSetting::where('sys_key','sys_tm_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
         

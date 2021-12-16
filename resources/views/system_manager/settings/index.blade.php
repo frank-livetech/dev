@@ -1550,7 +1550,7 @@
                                     <label for="timezone">Default TimeZone</label> <br>
                                     <select name="timezone" id="timezone" class="select2 form-control select2-hidden-accessible" style="width:100%;">
                                         @foreach(timezone_identifiers_list() as $timezone)
-                                            <option value="{{$timezone}}" {{$time_zone->sys_value == $timezone ? 'selected' : ''}}>{{$timezone}}</option>
+                                            <option value="{{$timezone}}" {{$timeZone == $timezone ? 'selected' : ''}}>{{$timezone}}</option>
                                         @endforeach
                                     </select>
                                 </div>
