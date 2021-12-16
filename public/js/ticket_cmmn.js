@@ -225,7 +225,7 @@ function redrawTicketsTable(ticket_arr) {
             '<div class="text-center"><input type="checkbox" name="chk_list[]" value= "' + val['id'] + '"></div>',
             restore_flag_btn,
             status,
-            `<a href="${ticket_details_route}/${val['coustom_id']}">${shortname}</a>`,
+            `<a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${shortname}</a>`,
             `<a href="${ticket_details_route}/${val['coustom_id']}">${custom_id}</a>`,
             prior,
             '<a href="customer-profile/' + val['customer_id'] + '">' + val['customer_name'] + '</a>',
