@@ -258,7 +258,7 @@ function redrawTicketsTable(ticket_arr) {
         var last_activity = getDateDiff(moment(moment(val.lastActivity).toDate()).local());
 
         if(last_activity.includes('d')) {
-            la_color = `#b71c1c`;
+            la_color = `red`;
         }else if(last_activity.includes('h')) {
             la_color = `#5c83b4`;
         }else if(last_activity.includes('min')) {
