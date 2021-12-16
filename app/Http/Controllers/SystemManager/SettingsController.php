@@ -85,7 +85,18 @@ class SettingsController extends Controller
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
 
-        return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
+
+
+        $time_zone = SystemSetting::where('sys_key','sys_timezone')->where('created_by', auth()->id())->first();
+        $dateformat = SystemSetting::where('sys_key','sys_dt_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
+        $timeformat = SystemSetting::where('sys_key','sys_tm_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
+        
+        $datetime = [
+            "date" =>  ($dateformat != null ? $dateformat->sys_value : 'MM/DD/YYYY'),
+            "time" =>  ($timeformat != null ? $timeformat->sys_value : 'hh:mm:ss'),
+        ];
+        // return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
+        return view('system_manager.settings.index', get_defined_vars());
     }
     
     public function staff_manager(){
