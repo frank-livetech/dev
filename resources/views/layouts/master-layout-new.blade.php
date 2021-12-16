@@ -174,7 +174,7 @@
 
 
     <!-- BEGIN: Vendor JS-->
-    <script src="{{asset('app-assets/vendors/js/vendors.min.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
     <script>
         const colorUrl = "{{asset('get-color')}}";
