@@ -20,6 +20,9 @@ $(document).ready(function() {
     var dt_option = ``;
     var tm_option = ``;
 
+    console.log(datetime.date , "datetime in file");
+    console.log(datetime.time , "datetime in file");
+
     var format1 = moment(today).format('DD-MM-YYYY');
     var format2 = moment(today).format('DD/MM/YYYY');
     var format3 = moment(today).format('DD/MM/YY');
@@ -33,7 +36,7 @@ $(document).ready(function() {
     var arr = [
         { frmt: "DD/MM/YYYY", date: format2 },
         { frmt: "DD-MM-YYYY", date: format1 },
-        { frmt: "'DD/MM/YY", date: format3 },
+        { frmt: "DD/MM/YY", date: format3 },
         { frmt: "Do MMMM YYYY", date: format4 },
         { frmt: "DD.MM.YYYY", date: format5 },
         { frmt: "MM/DD/YYYY", date: format6 },
@@ -45,11 +48,11 @@ $(document).ready(function() {
     ]
 
     for (var i = 0; i < arr.length; i++) {
-        dt_option += `<option value="` + arr[i].frmt + `" ` + (arr[i].frmt == arr[5].frmt ? "selected" : '-') + `> ` + arr[i].frmt + ` ` + " e.g. " + `    ` + arr[i].date + `</option>`;
+        dt_option += `<option value="${arr[i].frmt}" ${arr[i].frmt == datetime.date ? "selected" : '-'}> ` + arr[i].frmt + ` ` + " e.g. " + `    ` + arr[i].date + `</option>`;
     }
 
     for (var i = 0; i < time_arr.length; i++) {
-        tm_option += `<option value="` + time_arr[i].frmt + `">` + time_arr[i].frmt + ` ` + " e.g. " + `` + time_arr[i].tm + `</option>`;
+        tm_option += `<option value="${time_arr[i].frmt}" ${time_arr[i].frmt == datetime.time ? 'selected' : ''}>` + time_arr[i].frmt + ` ` + " e.g. " + `` + time_arr[i].tm + `</option>`;
     }
 
     $("#sys_dt_frmt").html(dt_option);
