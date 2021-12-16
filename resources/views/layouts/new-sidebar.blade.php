@@ -74,6 +74,7 @@
                                                         <a class="has-arrow sidebar-link" href="javascript:void(0)" aria-expanded="false">
                                                             <i data-feather='plus'></i>
                                                             <span class="hide-menu">{{$depts->name}}</span>
+                                                            <span class="badge badge-light-danger rounded-pill ms-auto me-2">2</span>
                                                         </a>
                                                         <ul aria-expanded="false" class="collapse second-level">
                                                             @foreach($depts->statuses as $sts)
@@ -82,6 +83,7 @@
                                                                     <a href="{{route('ticket-manager.index',[$depts->slug,$sts->slug])}}" class="sidebar-link">
                                                                         <i data-feather='corner-down-right'></i>
                                                                         <span class="hide-menu" data-bs-toggle="tooltip" data-bs-original-title="{{$sts->name}}"> {{$sts->name}}</span>
+                                                                        <span class="badge badge-light-danger rounded-pill ms-auto me-2">2</span>
                                                                     </a>
                                                                 </li>
                                                             @endforeach
