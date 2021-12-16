@@ -269,7 +269,7 @@ function redrawTicketsTable(ticket_arr) {
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
             <td>${status}</td>
-            <td><a href="${ticket_details_route}/${val['coustom_id']}">${shortname.substring(1,35) + '...'}</a></td>
+            <td><a href="${ticket_details_route}/${val['coustom_id']}">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}">${custom_id}</a></td>
             <td>${prior}</td>
             <td><a href="customer-profile/${val['customer_id']}">${val['customer_name']}</a></td>
