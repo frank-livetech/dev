@@ -215,8 +215,7 @@
                     height: 14
                 });
             }
-        })
-      
+        });
     </script>
     @yield('scripts')
 </body>

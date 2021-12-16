@@ -261,7 +261,7 @@ function redrawTicketsTable(ticket_arr) {
             la_color = `red`;
         }else if(last_activity.includes('h')) {
             la_color = `#5c83b4`;
-        }else if(last_activity.includes('min')) {
+        }else if(last_activity.includes('m')) {
             la_color = `#ff8c5a`;
         }
 
@@ -269,7 +269,7 @@ function redrawTicketsTable(ticket_arr) {
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
             <td>${status}</td>
-            <td><a href="${ticket_details_route}/${val['coustom_id']}">${shortname}</a></td>
+            <td><a href="${ticket_details_route}/${val['coustom_id']}">${shortname.substring(1,35) + '...'}</a></td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}">${custom_id}</a></td>
             <td>${prior}</td>
             <td><a href="customer-profile/${val['customer_id']}">${val['customer_name']}</a></td>
@@ -423,5 +423,46 @@ function getDateDiff(date1, date2=new Date()) {
         ret = 'Just Now'
     }
     return ret;
+}
+
+
+function getTimeRemaining(endtime) {
+  let time = Date.parse(endtime) - Date.parse(new Date());
+  time = new Date(time);
+  // let mn = 30.416666666666;
+  // var minutes = Math.floor((t / 1000 / 60) % 60);
+  // var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+  // var days = Math.floor(t / (1000 * 60 * 60 * 24) % mn);
+  // var months = Math.floor(t / (1000 * 60 * 60 * 24 * mn) % 12);
+  // var years = Math.floor(t / (1000 * 60 * 60 * 24 * mn * 12));
+
+  let tend = moment(endtime);
+  let t = moment();
+  let temp = t;
+  
+  let years = 0;
+  let months = Math.abs(tend.diff(t, 'months'));
+  while(months > 12){
+    years++;
+    months = months % 12;
+  }
+  
+  temp.add(years, 'years');
+  temp.add(months, 'months');
+
+  let days = Math.abs(temp.diff(tend, 'days'));
+  temp.add(days, 'days');
+  let hours = Math.abs(temp.diff(tend, 'hours'));
+  temp.add(hours, 'hours');
+  let minutes = Math.abs(temp.diff(tend, 'minutes'));
+
+  return {
+    'total': time,
+    'years': years,
+    'months': months,
+    'days': days,
+    'hours': hours,
+    'minutes': minutes+1
+  };
 }
 </script>

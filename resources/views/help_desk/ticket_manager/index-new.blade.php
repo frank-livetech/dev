@@ -42,6 +42,9 @@
         padding-right: 60px !important;
     }
 </style>
+@php
+    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+@endphp
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -81,7 +84,7 @@
         <div class="content-body">
             <section id="statistics-card">
                  <div class="row">
-                    <div class="col-md-1 col-sm-1"></div>
+                    <!-- <div class="col-md-1 col-sm-1"></div> -->
                         <div class="col-md-2 col-sm-2">
                             <div class="card border-info">
                                 <div class="card-body">
@@ -98,6 +101,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-2 col-sm-2">
                             <div class="card border-success">
                                 <div class="card-body">
@@ -112,6 +116,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-2 col-sm-2 col-lg-2">
                             <div class="card border-primary">
                                 <div class="card-body">
@@ -126,6 +131,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-2 col-sm-2 col-lg-2">
                             <div class="card border-danger">
                                 <div class="card-body">
@@ -140,6 +146,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-2 col-sm-2 col-lg-2">
                             <div class="card border-success">
                                 <div class="card-body">
@@ -154,6 +161,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="row mt-1">
@@ -479,7 +487,7 @@
 @endsection
 @section('scripts')
 <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
-<script src="{{asset('assets\extra-libs\calendar-master\js\calendar.js')}}"></script>
+<script src="{{asset($file_path . 'assets\extra-libs\calendar-master\js\calendar.js')}}"></script>
 <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
 <script>
