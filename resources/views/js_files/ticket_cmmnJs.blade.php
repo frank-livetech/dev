@@ -269,10 +269,10 @@ function redrawTicketsTable(ticket_arr) {
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
             <td>${status}</td>
-            <td><a href="${ticket_details_route}/${val['coustom_id']}">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
-            <td><a href="${ticket_details_route}/${val['coustom_id']}">${custom_id}</a></td>
+            <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
+            <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
             <td>${prior}</td>
-            <td><a href="customer-profile/${val['customer_id']}">${val['customer_name']}</a></td>
+            <td><a href="customer-profile/${val['customer_id']}" style="color:black">${val['customer_name']}</a></td>
             <td>${replier}</td>
             <td>${replies}</td>
             <td data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
