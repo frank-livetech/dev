@@ -15,14 +15,17 @@
                     <a class="navbar-brand mt-1" href="">
                         <span class="brand-logo ">
                             @if(Session::get('site_logo') != null && Session::get('site_logo') != " ")
-                                <img style=""
-                                id="logo_image" src="{{asset('files/brand_files/')}}/{{Session::get('site_logo')}}"
-                                alt="{{Session::get('site_title')}}" class="dark-logo" />
+                                @if(file_exists( public_path().'/'. $file_path  . Session::get('site_logo') ))
+                                    <img  id="logo_image" src="{{asset( $file_path . Session::get('site_logo'))}}"
+                                    alt="{{Session::get('site_title')}}" class="dark-logo" />
+                                @else
+                                    <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle" >
+                                @endif
                             @else
-                                <span style=" margin-left: 20px; background: gray; padding: 8px 14px; border-radius: 100%;">D</span>
+                            <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle">
                             @endif    
                         </span>
-                        <h4 class="brand-text">{{Session::get('site_logo_title')}} <small id="version"></small>  </h4>
+                        <h6 class="brand-text wrap-text">{{Session::get('site_logo_title')}} <small id="version"></small>  </h6>
                     </a></li>
                 <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>

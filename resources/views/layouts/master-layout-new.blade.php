@@ -120,8 +120,17 @@
                             {{-- <span class="user-status">{{ Auth::user()->email }}</span> --}}
                         </div>
                         <span class="avatar">
-                            <img class="round" 
-                                src="{{ \Auth::user()->profile_pic ? URL::asset('files/user_photos/'.\Auth::user()->profile_pic): URL::asset('files/user_photos/user-photo.jpg')}}" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
+                            @if(Auth::user()->profile_pic != null)
+                                @if(file_exists( public_path(). $file_path . '/files/user_photos/'. \Auth::user()->profile_pic))
+                                    <img src="{{ asset( $file_path . 'files/user_photos/'.\Auth::user()->profile_pic)}}"
+                                        alt="'s Photo" class="rounded-circle" width="50px">
+                                @else
+                                    <img src="{{asset(  $file_path . 'default_imgs/logo.png')}}" width="50px" alt="'s Photo" class="rounded-circle">
+                                @endif
+                            @else
+                                <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo"  width="50px" class="rounded-circle">
+                            @endif
+                            <span class="avatar-status-online"></span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         <a class="dropdown-item" href="{{url('my-profile')}}"><i class="me-50" data-feather="user"></i> Profile</a>
