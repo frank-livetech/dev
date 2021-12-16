@@ -378,10 +378,9 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('app-assets/js/scripts/pages/app-calendar.js')}}"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js"></script> --}}
-<script src="{{asset('app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
-<script src="{{asset('assets\extra-libs\calendar-master\js\calendar.js')}}"></script>
+<script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script>
+<script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
+
 
 @include('js_files.dashboardjs')
 
