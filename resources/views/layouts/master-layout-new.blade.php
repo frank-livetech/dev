@@ -13,10 +13,13 @@
     
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16"
-        href="{{asset('public/files/brand_files')}}/{{Session::get('site_favicon')}}">
+        href="{{asset('files/brand_files')}}/{{Session::get('site_favicon')}}">
     <title>{{Session::get('site_title')}}</title>
 
-
+    @php
+        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+    @endphp
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
@@ -48,11 +51,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/form-validation.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/pages/app-chat.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/pages/app-chat-list.css')}}">
-     <!-- Begin dashboard css-->
-     <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-     <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/charts/chart-apex.css')}}">
-     <!-- End dashboard css-->
-     
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -163,7 +161,10 @@
     <!-- BEGIN: Vendor JS-->
     <script src="{{asset('app-assets/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
-
+    <script>
+        const colorUrl = "{{asset('get-color')}}";
+        const swal_message_time = 5000;
+    </script>
     <!-- BEGIN: Page Vendor JS-->
     <script src="{{asset('app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
     <script src="{{asset('app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
@@ -182,14 +183,12 @@
     <script src="{{asset('app-assets/js/scripts/pages/app-chat.js')}}"></script>
 
     <!-- BEGIN: Page JS-->
-    <script src="{{asset('app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
+    {{-- <script src="{{asset('app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script> --}}
     <script src="{{asset('app-assets/js/scripts/pages/app-invoice-list.js')}}"></script>
     <script src="{{asset('app-assets/js/scripts/cards/card-statistics.js')}}"></script>
     <script src="{{asset('app-assets/js/scripts/tables/table-datatables-advanced.js')}}"></script>
     <script src="{{asset('app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
-    {{-- <script src="{{asset('app-assets/js/scripts/pages/app-calendar.js')}}"></script> --}}
-    {{-- <script src="{{asset('app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script> --}}
-    
+    <script src="{{asset('app-assets/js/scripts/tables/table-datatables-basic.js')}}"></script>
 
     <!-- END: Page JS-->
 

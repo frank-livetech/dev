@@ -3,6 +3,7 @@
     if(Auth::user()->user_type != 5) {
 
         $menus = Session('menus');
+        $departments = Session('depts');
 
         ?>
 
@@ -63,44 +64,51 @@
                                                 <span class="menu-item text-truncate" data-i18n="{{$sub_menu->title}}">{{$sub_menu->title}}</span>
                                             </a>
                                         </li>
+                                        @if($sub_menu->title == 'Ticket Manager')
+                                                @foreach($departments as $depts)
+                                                    {{-- 2nd level --}}
+                                                    <li class="sidebar-item">
+                                                        <a class="has-arrow sidebar-link" href="javascript:void(0)" aria-expanded="false">
+                                                            <i data-feather='plus'></i>
+                                                            <span class="hide-menu">{{$depts->name}}</span>
+                                                        </a>
+                                                        <ul aria-expanded="false" class="collapse second-level">
+                                                            @foreach($depts->statuses as $sts)
+                                                                {{-- 3rd level --}}
+                                                                <li class="sidebar-item">
+                                                                    <a href="{{route('ticket-manager.index',[$depts->slug,$sts->slug])}}" class="sidebar-link">
+                                                                        <i data-feather='corner-down-right'></i>
+                                                                        <span class="hide-menu" data-bs-toggle="tooltip" data-bs-original-title="{{$sts->name}}"> {{$sts->name}}</span>
+                                                                    </a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </li>
+                                                @endforeach
+                                            @endif
                                         @endif
                                     @endforeach
-                                    
                                     </ul>
                                 </li>
                             @endif
                         @endif
                     @endforeach
-                    <li class="nav-item has-sub" style=""><a class="d-flex align-items-center" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg><span class="menu-title text-truncate" data-i18n="Menu Levels">Menu Levels</span></a>
-                        <ul class="menu-content">
-                            <li><a class="d-flex align-items-center" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg><span class="menu-item text-truncate" data-i18n="Second Level">Second Level 2.1</span></a>
-                            </li>
-                            <li class="has-sub open" style=""><a class="d-flex align-items-center" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg><span class="menu-item text-truncate" data-i18n="Second Level">Second Level 2.2</span></a>
-                                <ul class="menu-content">
-                                    <li class=""><a class="d-flex align-items-center" href="#"><span class="menu-item text-truncate" data-i18n="Third Level">Third Level 3.1</span></a>
-                                    </li>
-                                    <li class="active"><a class="d-flex align-items-center" href="#"><span class="menu-item text-truncate" data-i18n="Third Level">Third Level 3.2</span></a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-            </ul>
-        </div>
-        <div class="navbar-footer ">
-            <div class="text-center ">
-                <a href="{{url('settings')}}" class="link" data-toggle="tooltip" title="Settings"><i class="me-50" data-feather="settings"></i></a>
+                    </ul>
+                </div>
+                <div class="navbar-footer ">
+                    <div class="text-center ">
+                        <a href="{{url('settings')}}" class="link" data-toggle="tooltip" title="Settings"><i class="me-50" data-feather="settings"></i></a>
 
-                <a href="{{ url('logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('logout-form1').submit();" class="link"
-                    data-toggle="tooltip" title="Logout"><i class="me-50" data-feather="power"></i></a>
-                <form id="logout-form1" action="{{ url('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
+                        <a href="{{ url('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form1').submit();" class="link"
+                            data-toggle="tooltip" title="Logout"><i class="me-50" data-feather="power"></i></a>
+                        <form id="logout-form1" action="{{ url('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                    
+                </div>
             </div>
-            
-        </div>
-    </div>
     <!-- END: Main Menu-->
 
     

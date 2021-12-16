@@ -381,7 +381,8 @@
 <script src="{{asset('app-assets/js/scripts/pages/app-calendar.js')}}"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js"></script> --}}
 <script src="{{asset('app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
-<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/pages/app-calendar.css')}}">
+<script src="{{asset('assets\extra-libs\calendar-master\js\calendar.js')}}"></script>
+
 @include('js_files.dashboardjs')
 
 <script type="text/javascript">
