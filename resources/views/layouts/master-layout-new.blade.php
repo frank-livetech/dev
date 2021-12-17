@@ -11,15 +11,25 @@
     <meta name="author" content="">
     <meta name="_token" content="{{csrf_token()}}" />
     
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16"
-        href="{{asset('files/brand_files')}}/{{Session::get('site_favicon')}}">
     <title>{{Session::get('site_title')}}</title>
 
     @php
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
         $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
+
+    <!-- Favicon icon -->
+    
+        @if( Session::get('site_favicon') != null)
+            @if(file_exists( public_path(). $file_path . Session::get('site_favicon') ) )
+                <link rel="icon" type="image/png" sizes="16x16"
+            href="{{asset($file_path . Session::get('site_favicon') ) }}">
+            @else
+                <img src="{{asset(  $file_path . 'default_imgs/favicon.png')}}" width="50px" alt="'s Photo" class="rounded-circle">
+            @endif
+        @else
+            <img src="{{asset( $file_path . 'default_imgs/favicon.png')}}" alt="'s Photo"  width="50px" class="rounded-circle">
+        @endif
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
@@ -53,7 +63,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-chat-list.css')}}">
      <!-- Begin dashboard css-->
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-     <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/plugins/charts/chart-apex.css')}}">
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/pages/ui-feather.css')}}">
      <!-- End dashboard css-->
      
