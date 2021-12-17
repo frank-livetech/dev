@@ -15,8 +15,15 @@
         EventTargetWholeDay: false,
         DisabledDays: [],
     };
-
+    console.clear();
     $(document).ready(function() {
+
+        tickets_logs_list = $('#ticket-logs-list').DataTable({
+            ordering: false
+        });
+
+        ticketLogs(); 
+
         $("#tsearch").keyup(function(e) {
 
             let value = $(this).val();
@@ -143,11 +150,10 @@
         // get_all_followups();
         searchFollowUps(true);
 
-        console.log({!! json_encode($staff_att_data) !!})
 
         let tt = $('#staff_table').DataTable({
             ordering: false,
-            data: {!! json_encode($staff_att_data) !!},
+            data:  {!! json_encode($staff_att_data) !!} ,
             columns: [
                 {
                     render: function (data, type, full, meta) {
@@ -194,13 +200,10 @@
             tt.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                 cell.innerHTML = i+1;
             } );
-        } ).draw();
+        }).draw();
+    });
 
-        tickets_logs_list = $('#ticket-logs-list').DataTable({
-            ordering: false
-        });
-    
-
+    function ticketLogs() {
         $.ajax({
             type: 'GET',
             url: "{{asset('/get_ticket_log')}}",
@@ -225,7 +228,7 @@
                 console.log(errMsg);
             }
         });
-    });
+    }
 
     function staffatt(btn_text) {
         // var btn_text = $('.clock_btn').text();
@@ -455,7 +458,7 @@
     }
 
     function show_followups(restOfM) {
-        ShowCalendar(restOfM);
+        // ShowCalendar(restOfM);
 
         var system_date_format = $("#system_date_format").val();
 

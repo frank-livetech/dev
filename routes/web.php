@@ -278,7 +278,10 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
 
     Route::Post('/save-department','SettingsController@save_department');
+    Route::get('/get_all_counts','SettingsController@get_all_counts');
+
     Route::get('/get-departments','SettingsController@get_departments');
+
     Route::post('/show_departments','SettingsController@showDepartmentPermission');
 
     Route::post('/save_email_recap_noti','SettingsController@SaveEmailRecapNotification');
