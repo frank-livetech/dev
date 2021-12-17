@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css')}}">
     <!-- END: Vendor CSS-->
-    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/bootstrap.css')}}">
@@ -54,6 +54,7 @@
      <!-- Begin dashboard css-->
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/plugins/charts/chart-apex.css')}}">
+     <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/pages/ui-feather.css')}}">
      <!-- End dashboard css-->
      
     <!-- END: Page CSS-->
@@ -203,8 +204,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/cards/card-statistics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/tables/table-datatables-advanced.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
-   
-
+    <script src="{{asset($file_path . 'app-assets/js/scripts/ui/ui-feather.js')}}"></script>
     <!-- END: Page JS-->
 
     <script>
