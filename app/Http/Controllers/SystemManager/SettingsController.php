@@ -21,6 +21,8 @@ use App\Models\ProjectType;
 use App\Models\SlaPlan;
 use App\Models\TicketSettings;
 use App\Models\SystemSetting;
+use App\Models\Tickets;
+use App\Models\DepartmentAssignments;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
@@ -1286,6 +1288,50 @@ class SettingsController extends Controller
         Notification::where('receiver_id', \Auth::user()->id)->update(['read_at' => Carbon::now()]);
         
         return view('notification.notification',compact('notifications'));
+    }
+
+    public function get_all_counts(){
+
+        $uid = \Auth::user()->id;
+        $dept_assignments = DepartmentAssignments::where('user_id', $uid)->get()->pluck('dept_id')->toArray();
+        // return $dept_assignments;   
+        $departments = Departments::all();    
+        $statuses = TicketStatus::all();
+        $assigned_depts = array();
+        for($d = 0 ; $d < sizeof($departments) ; $d++) {
+            if(in_array($departments[$d]->id, $dept_assignments)){
+                $dept_statuses = array();
+                for($i = 0 ; $i < sizeof($statuses) ; $i++){
+                    $depts = $statuses[$i]->department_id;
+                    $depts = explode(',',$depts);
+                    if(in_array($departments[$d]->id, $depts)) {
+                        $sts_count = Tickets::where('status',$statuses[$i]->id)->where('dept_id',$departments[$d]->id)->count();
+                        
+                        $statuses[$i]['sts_count'] = $sts_count;
+                        
+                        array_push($dept_statuses,$statuses[$i]);
+                    }
+                }
+                
+                $departments[$d]['dept_count'] = Tickets::where('dept_id',$departments[$d]->id)->count();
+                
+                $departments[$d]['statuses'] = $dept_statuses;
+                return $departments[$d];
+                array_push($assigned_depts,$departments[$d]);
+                
+            }else{
+
+            }
+        }
+        $response['message'] = 'Data';
+        $response['counts'] = $assigned_depts;
+
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        return response()->json($response);
+            
+        // return $assigned_depts;
+
     }
 
 }
