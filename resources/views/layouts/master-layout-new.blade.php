@@ -208,6 +208,9 @@
     <!-- END: Page JS-->
 
     <script>
+        $(document).ready(function() {
+            getAllCounts();
+        });
         $(window).on('load', function() {
             if (feather) {
                 feather.replace({
@@ -216,9 +219,32 @@
                 });
             }
         });
+
+        var url = "{{asset('/get_all_counts')}}";
+
+        function getAllCounts(){
+            $.ajax({
+                url: url,
+                type: "get",
+                dataType: 'json',
+                cache: false,
+                async:false,
+                success: function(data) {
+                    console.log(data)
+
+                    
+
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            });
+            
+        }
     </script>
     @yield('scripts')
 </body>
 <!-- END: Body-->
+
 
 </html>
