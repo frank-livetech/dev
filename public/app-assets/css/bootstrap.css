@@ -50,6 +50,7 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(34, 41, 47, 0); }
 
+
 hr {
   margin: 1rem 0;
   color: #ebe9f1;
@@ -168,11 +169,13 @@ sup {
   top: -.5em; }
 
 a {
-  color: #7367f0;
+  color: #000;
   text-decoration: none; }
-
+td>a{
+  color: #c9060b;
+}
 a:hover {
-  color: #6d62e4;
+  color: #fab81c;
   text-decoration: none; }
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
