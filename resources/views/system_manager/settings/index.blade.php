@@ -2720,6 +2720,18 @@
                             <input class="form-control" type="text" name="name" id="dep_name" placeholder="" required>
                             <input class="form-control" type="text" name="dep_id" id="dep_id" hidden>
                         </div>
+                        <div class="form-group">
+                            <label for="departmrnt" class="d-flex mb-2 align-items-center">
+                                <span>Department Slug</span>
+                            </label>
+                            <input class="form-control" type="text" name="slug" id="slug" placeholder="" required>
+                        </div>
+                        <label for="departmrnt" class="d-flex mb-2 align-items-center">
+                            <span>Show Counter</span>
+                            <div class="ml-auto">
+                                <input type="checkbox" name="dept_counter" id="dept_counter">
+                            </div>
+                        </label>
                         <div class="form-group text-center">
                             <button type="Submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
@@ -2753,13 +2765,29 @@
                             <select class="select2 form-control" id="department_id2"
                                 multiple="multiple" style="height: 36px;width: 100%;" required>
                             </select>
-
                         </div>
 
                         <div class="form-group">
-                            <label for="departmrnt">Priority Color</label>
+                            <label for="departmrnt">Status Color</label>
                             <input class="form-control" type="color" name="status_color" id="status_color" placeholder="Priority Color">
                         </div>
+
+                        <div class="form-group">
+                            <label for="squence">Status Slug</label>
+                            <input class="form-control" type="text" name="slug" id="slug" placeholder="" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="squence">Status SeqNo#</label>
+                            <input class="form-control" type="number" name="seq_no" id="seq_no" placeholder="" required>
+                        </div>
+
+                        <label for="departmrnt" class="d-flex mb-2 align-items-center">
+                            <span>Show Counter</span>
+                            <div class="ml-auto">
+                                <input type="checkbox" name="status_counter" id="status_counter">
+                            </div>
+                        </label>
 
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-rounded btn-primary">Save</button>
