@@ -8,6 +8,6 @@ class TicketStatus extends Model
 {
     protected $table = 'ticket_statuses';
     protected $fillable = [
-        'name', 'department_id','color','slug','created_by','updated_by'
+        'name', 'department_id','color','slug','seq_no','status_counter','created_by','updated_by'
     ];
 }

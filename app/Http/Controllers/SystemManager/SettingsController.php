@@ -199,9 +199,15 @@ class SettingsController extends Controller
         $dept_created_by=\Auth::user()->id;
         try{
             if(!empty($request->dep_id)){
-            
+                $dept_counter = 0;
+                if($request->has('dept_counter')){
+                    $dept_counter = 1;
+                }
                 $departments_id = Departments::where('id',$request->dep_id)->first();
                 $departments_id->name = $data['name'];
+                $departments_id->slug = $data['slug'];
+                $departments_id->dept_counter = $dept_counter;
+
                 $departments_id->updated_by = \Auth::user()->id;
             
             if($departments_id){
@@ -214,6 +220,11 @@ class SettingsController extends Controller
 
             }
          }else{
+                $dept_counter = 0;
+                if($request->has('dept_counter')){
+                    $dept_counter = 1;
+                }
+                $data['dept_counter'] = $dept_counter;
                 $data['created_by']= $dept_created_by;
                 $save_department = Departments::create($data);
                 $response['message'] = 'department Saved Successfully!';
@@ -336,11 +347,19 @@ class SettingsController extends Controller
         }
 
         if(empty($request->status_id)) {
+            $status_counter = 0;
+            if($request->has('status_counter')){
+                $status_counter = 1;
+            }
 
             TicketStatus::create([
                 "name" => $request->name,
                 "department_id" => $request->department_id,
                 "color" => $request->status_color,
+                "seq_no" => $request->seq_no,
+                'slug' => $request->slug,
+                "status_counter" => $status_counter,
+
             ]);
 
             $response['message'] = 'Status Added Successfully!';
@@ -352,9 +371,17 @@ class SettingsController extends Controller
             $status = TicketStatus::where('id',$request->status_id)->first();
 
             if($status) {
+                $status_counter = 0;
+                if($request->has('status_counter')){
+                    $status_counter = 1;
+                }
                 $status->name = $request->name;
                 $status->department_id = $request->department_id;
                 $status->color = $request->status_color;
+                $status->seq_no = $request->seq_no;
+                $status->slug = $request->slug;
+                $status->status_counter = $status_counter;
+
                 $status->created_by = \Auth::user()->id;
                 $status->save();
 
