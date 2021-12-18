@@ -182,7 +182,7 @@ class HelpdeskController extends Controller
 
         $page_control = 'super';
 
-        return view('help_desk.ticket_manager.add_ticket',compact('departments','priorities','users','types','customers','id', 'responseTemplates', 'page_control'));
+        return view('help_desk.ticket_manager.add_ticket_new',compact('departments','priorities','users','types','customers','id', 'responseTemplates', 'page_control'));
     }
 
     public function update_ticket(Request $request) {
