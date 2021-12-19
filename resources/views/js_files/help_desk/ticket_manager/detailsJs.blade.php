@@ -729,14 +729,14 @@ function saveRequest() {
 }
 
 function getTicketDetailsContent() {
-    let tdet = `<div class="col-12 content">${ticket_details.ticket_detail}</div>`;
+    let tdet = `<div class="col-12">${ticket_details.ticket_detail}</div>`;
 
     if(ticket_details.attachments) {
         let attchs = ticket_details.attachments.split(',');
         tdet += '<div class="col-12 row">';
         attchs.forEach(item => {
             // tdet += `<p><a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
-            var tech =  `{{asset('public/files/tickets/${ticket_details.id}/${item}')}}`;
+            var tech =  `{{asset('/files/tickets/${ticket_details.id}/${item}')}}`;
             var ter = getExt(tech);
 
             // return ter;
@@ -748,9 +748,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne">
                             <span class="overlayAttach"></span>
 
-                                <img src="{{asset ('public/files/file_icon/Pdf.png')}}" alt="">
+                                <img src="{{asset ('/files/file_icon/Pdf.png')}}" alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -762,9 +762,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
 
-                                <img src="{{asset ('public/files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
+                                <img src="{{asset ('/files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -776,9 +776,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
 
-                                <img src="{{asset ('public/files/file_icon/Png.png')}}" class="imgIcon" width="48" alt="">
+                                <img src="{{asset ('files/tickets/${ticket_details.id}/${item}')}}" class="imgIcon"  alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -790,9 +790,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
 
-                                <img src="{{asset ('public/files/file_icon/Docs.png')}}" class="imgIcon" width="48" alt="">
+                                <img src="{{asset ('files/file_icon/Docs.png')}}" class="imgIcon" width="48" alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -804,9 +804,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
 
-                                <img src="{{asset ('public/files/file_icon/Ppt.png')}}" class="imgIcon" width="48" alt="">
+                                <img src="{{asset ('files/file_icon/Ppt.png')}}" class="imgIcon" width="48" alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -818,9 +818,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
 
-                                <img src="{{asset ('public/files/file_icon/Files.png')}}" class="imgIcon"  alt="">
+                                <img src="{{asset ('files/file_icon/Files.png')}}" class="imgIcon"  alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }

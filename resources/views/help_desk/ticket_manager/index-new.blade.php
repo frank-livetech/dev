@@ -67,12 +67,6 @@
                     </div>
                 </div>
             </div>
-             {{-- <div class="content-header-right text-md-end col-md-7 col-12 d-md-block d-none">
-                <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fa fa-cog" aria-hidden="true"></i>&nbsp; Support Dashboard</button>
-                <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fas fa-chart-line" aria-hidden="true"></i>&nbsp; CFO Dashboard</button>
-                <button type="button" class="btn btn-success waves-effect waves-float waves-light"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp; Clock in</button>
-    
-            </div>  --}}
         </div>
 
         @if($date_format) 
