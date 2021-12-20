@@ -150,7 +150,7 @@ $(function() {
         minimumResultsForSearch: 10
     });
 
-    // resetSlaPlan();
+    
     setSlaPlanDeadlines();
 
     $('.note-type-ticket').on('change', function() {
@@ -171,7 +171,7 @@ function setSlaPlanDeadlines(ret = false) {
     let res_due = '';
     let rep_due = '';
     let resetable = false;
-    console.log(ticket_slaPlan , "ticket_slaPlan");
+
     if (ticket_slaPlan.title != 'No SLA Assigned') {
         if (ticket.hasOwnProperty('resolution_deadline') && ticket.resolution_deadline) {
             // use ticket reset deadlines
@@ -193,8 +193,10 @@ function setSlaPlanDeadlines(ret = false) {
                 // do date formatting
                 // res_due = res_due.format(date_format);
                 res_due = getClockTime(res_due, 1);
+
             }
         }
+
         $('#sla-rep_due').parent().removeClass('d-none');
         if (ticket.hasOwnProperty('reply_deadline') && ticket.reply_deadline) {
             // use ticket reset deadlines
@@ -209,6 +211,8 @@ function setSlaPlanDeadlines(ret = false) {
             rep_due = moment(moment(ticket.sla_rep_deadline_from).toDate()).local().add(hm[0], 'hours');
             if (hm.length > 1) rep_due.add(hm[1], 'minutes');
         }
+
+        
 
         if (rep_due) {
             // overdue or change format of the date
@@ -243,16 +247,22 @@ function setSlaPlanDeadlines(ret = false) {
 }
 
 function resetSlaPlan() {
-    
-    if(ticket_slaPlan != null && ticket_slaPlan != "") {
+    console.log(ticket , "ticket");
+    if(ticket != null) {
+        if(ticket.reply_deadline == null ) {
+            if(ticket_slaPlan != null && ticket_slaPlan != "") {
+                var today = new Date();
+                var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
+                $("#ticket-rep-due").val(reply_deadline);
 
-        var today = new Date();
-        var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
-        $("#ticket-rep-due").val(reply_deadline);
-
-        var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
-        $("#ticket-res-due").val(deadline_time);
+                var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
+                $("#ticket-res-due").val(deadline_time);
+            }
+        }else{
+            setSlaPlanDeadlines();
+        }
     }
+
 
     $("#reset_sla_plan_modal").modal("show");
 }
