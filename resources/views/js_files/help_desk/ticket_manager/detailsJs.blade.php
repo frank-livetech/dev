@@ -40,6 +40,7 @@ $(function() {
     getLatestLogs();
 
     $('#ticket-timestamp').html(moment(ticket.created_at).format(date_format + ' ' + 'hh:mm'));
+
     if ($("#mymce").length > 0) {
         tinymce.init({
             selector: "textarea#mymce",
@@ -91,6 +92,7 @@ $(function() {
             listReplies();
         });
     }
+    
     if ($("#ticket_details_edit").length > 0) {
         tinymce.init({
             selector: "textarea#ticket_details_edit",
@@ -148,6 +150,7 @@ $(function() {
         minimumResultsForSearch: 10
     });
 
+    // resetSlaPlan();
     setSlaPlanDeadlines();
 
     $('.note-type-ticket').on('change', function() {
@@ -168,7 +171,7 @@ function setSlaPlanDeadlines(ret = false) {
     let res_due = '';
     let rep_due = '';
     let resetable = false;
-
+    console.log(ticket_slaPlan , "ticket_slaPlan");
     if (ticket_slaPlan.title != 'No SLA Assigned') {
         if (ticket.hasOwnProperty('resolution_deadline') && ticket.resolution_deadline) {
             // use ticket reset deadlines
@@ -192,7 +195,6 @@ function setSlaPlanDeadlines(ret = false) {
                 res_due = getClockTime(res_due, 1);
             }
         }
-
         $('#sla-rep_due').parent().removeClass('d-none');
         if (ticket.hasOwnProperty('reply_deadline') && ticket.reply_deadline) {
             // use ticket reset deadlines
@@ -221,7 +223,6 @@ function setSlaPlanDeadlines(ret = false) {
             }
         }
     }
-
     if (ret) return { rep_due: rep_due, res_due: res_due };
 
     if (rep_due) $('#sla-rep_due').html(rep_due);
@@ -244,18 +245,13 @@ function setSlaPlanDeadlines(ret = false) {
 function resetSlaPlan() {
     
     if(ticket_slaPlan != null && ticket_slaPlan != "") {
+
         var today = new Date();
-        var due_time = moment(today).add(ticket_slaPlan.due_deadline , 'h').format('hh:mm A');
-        var deadline_time = moment(today).add(ticket_slaPlan.reply_deadline , 'h').format('hh:mm A');
-        let mdate = moment(today).format('YYYY-MM-DD');
+        var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
+        $("#ticket-rep-due").val(reply_deadline);
 
-        let replay_due = mdate +' '+ due_time;
-        replay_due = moment(replay_due).format('YYYY-MM-DDThh:mm:ss.SSS')
-        $("#ticket-rep-due").val(replay_due);
-
-        let replay_deadline = mdate +' '+ deadline_time;
-        replay_deadline = moment(replay_deadline).format('YYYY-MM-DDThh:mm:ss.SSS')
-        $("#ticket-res-due").val(replay_deadline);
+        var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
+        $("#ticket-res-due").val(deadline_time);
     }
 
     $("#reset_sla_plan_modal").modal("show");

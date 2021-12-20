@@ -15,7 +15,7 @@
         EventTargetWholeDay: false,
         DisabledDays: [],
     };
-    console.clear();
+    // console.clear();
     $(document).ready(function() {
 
         tickets_logs_list = $('#ticket-logs-list').DataTable({

@@ -48,8 +48,8 @@
                                                 {{-- <div class="valid-tooltip">Looks good!</div> --}}
                                             </div>
                                             <div class="col-md-4 mb-1">
-                                                <label class="form-label" for="select2-basic">Select Department<span class="text-danger">*</span></label>
-                                                <select class="select2 form-select" id="select2-basic">
+                                                <label class="form-label" for="dept_id">Select Department<span class="text-danger">*</span></label>
+                                                <select class="select2 form-select" name="dept_id" id="dept_id">
                                                     @if($departments != null && $departments != "") 
                                                     @foreach($departments as $key => $department)
                                                         @if ($key == 0)
