@@ -239,7 +239,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/form-select2.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-navs.js')}}"></script>
-   
+    <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script>
     <!-- END: Page JS-->
 
     <script>

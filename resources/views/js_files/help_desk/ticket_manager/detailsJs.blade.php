@@ -2158,10 +2158,11 @@ function get_ticket_notes() {
                     let timeOut = '';
                     let autho = '';
                     if (notes[i].created_by == loggedInUser_id) {
-                        autho = `<div class="ml-auto">
-                            <span class="fas fa-edit text-primary ml-2" onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')" style="cursor: pointer;"></span>
+                        autho = `<div class="ml-auto" style= "float:right;bottom: 28px;position: relative;">
                             
-                            <span class="fas fa-trash text-danger" onclick="deleteTicketNote(this, '` + notes[i].id + `')" style="cursor: pointer;"></span>
+                        <span class="fas fa-trash text-danger" style= "float:right;cursor:pointer;" onclick="deleteTicketNote(this, '` + notes[i].id + `')" style="cursor: pointer;"></span>
+                        <span class="fas fa-edit text-primary ml-2" style= "float:right;padding-right:5px;cursor:pointer" onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')" style="cursor: pointer;"></span>
+                        
                         </div>`;
                     }
 
@@ -2193,8 +2194,8 @@ function get_ticket_notes() {
                             <img src="${profile_img_path}" alt="User" width="40">
                         </div>
                         <div class="w-100">
-                            <div class="col-12 p-0 d-flex">
-                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + moment(notes[i].created_at).format(date_format + ' ' + 'hh:mm') + ` ` + type + `</h5>
+                            <div class="col-12 p-0 ">
+                                <h5 class="note-head note-class">Note by ` + notes[i].name + ` ` + moment(notes[i].created_at).format(date_format + ' ' + 'hh:mm') + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>
@@ -2505,7 +2506,7 @@ function addAttachment(type, olderAttach='') {
     if(olderAttach) {
         $('#'+type+'_attachments').append(`<div class="input-group pt-3">
             <div class="custom-file text-left">
-                <input type="file" class="custom-file-input" id="${type}_attachment_${ticket_attachments_count}" disabled>
+                <input type="file" class="form-control" id="${type}_attachment_${ticket_attachments_count}" disabled>
                 <label class="custom-file-label" for="${type}_attachment_${ticket_attachments_count}">${olderAttach}</label>
             </div>
             <div class="input-group-append">
@@ -2515,8 +2516,8 @@ function addAttachment(type, olderAttach='') {
     } else {
         $('#'+type+'_attachments').append(`<div class="input-group pt-3">
             <div class="custom-file text-left">
-                <input type="file" class="custom-file-input ${type}_attaches" id="${type}_attachment_${ticket_attachments_count}">
-                <label class="custom-file-label" for="${type}_attachment_${ticket_attachments_count}">Choose file</label>
+                <input type="file" class="form-control ${type}_attaches" id="${type}_attachment_${ticket_attachments_count}">
+                <label class="custom-file-label" for="${type}_attachment_${ticket_attachments_count}"></label>
             </div>
             <div class="input-group-append">
                 <button class="btn btn-dark" type="button" title="Remove" onclick="this.parentElement.parentElement.remove()"><span class="fa fa-window-close"></span></button>
