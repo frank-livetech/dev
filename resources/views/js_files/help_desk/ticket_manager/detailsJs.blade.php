@@ -247,10 +247,10 @@ function resetSlaPlan() {
     if(ticket_slaPlan != null && ticket_slaPlan != "") {
 
         var today = new Date();
-        var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm:ss');
+        var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
         $("#ticket-rep-due").val(reply_deadline);
 
-        var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm:ss') 
+        var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
         $("#ticket-res-due").val(deadline_time);
     }
 
