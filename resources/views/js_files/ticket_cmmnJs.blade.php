@@ -42,31 +42,6 @@ function initializeTicketTable(p_name='') {
 
     $('#ticket-table-list').parent().css('overflow', 'auto');
 
-    // $('#tk_select').multipleSelect({
-    //     width: 300,
-    //     onClick: function(view) {
-    //         var selectedItems = $('#tk_select').multipleSelect("getSelects");
-    //         for (var i = 0; i < 15; i++) {
-    //             columns = tickets_table_list.column(i).visible(0);
-    //         }
-    //         for (var i = 0; i < selectedItems.length; i++) {
-    //             var s = selectedItems[i];
-    //             tickets_table_list.column(s).visible(1);
-    //         }
-    //         $('#ticket-table-list').css('width', '100%');
-    //     },
-    //     onCheckAll: function() {
-    //         for (var i = 0; i < 15; i++) {
-    //             columns = tickets_table_list.column(i).visible(1);
-    //         }
-    //     },
-    //     onUncheckAll: function() {
-    //         for (var i = 0; i < 15; i++) {
-    //             columns = tickets_table_list.column(i).visible(0);
-    //         }
-    //         $('#ticket-table-list').css('width', '100%');
-    //     }
-    // });
     get_ticket_table_list();
 
     $('#select-all').change(function() {

@@ -684,7 +684,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                             </div>
                             <div class="col-md-3">
                                 <p>
-                                    <a type="button" class="ml-2 float-right" href="javascript:resetSlaPlan();">Reset</a>
+                                    <a type="button" class="ml-2 float-right" href="javascript:void(0)" onclick="resetSlaPlan();">Reset</a>
 
                                     <span class="float-right">&nbsp;&nbsp;|&nbsp;</span>
                                     
