@@ -406,6 +406,13 @@ class AuthController extends Controller
                         Session::put('is_live', 0);
                     }
 
+                    $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+                    if($timezone) {
+                        Session::put('timezone', $timezone->sys_value);
+                    }else{
+                        Session::put('timezone', 'America/New_York');
+                    }
+
                     $default_comp_id = Company::where("is_default", "=", 1)->first();
                     if ($default_comp_id == '' || $default_comp_id == null) {
                         Session::put('default_cmp_id', 0);

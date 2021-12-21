@@ -14,7 +14,7 @@ let date_format = {!! json_encode($date_format) !!};
 
 var ticket_attach_path = `{{asset('public/files')}}`;
 var ticket_attach_path_search = 'public/files';
-
+var time_zone = $("#usrtimeZone").val();
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -22,24 +22,19 @@ $.ajaxSetup({
 });
 
 $(function() {
-    $('#cust-creation-date').html(moment(ticket_customer.created_at).format(date_format + ' ' + 'hh:mm'));
-    $('#creation-date').html(moment(ticket.created_at).format(date_format));
+    console.log(ticket , "ticket start");
+    $('#cust-creation-date').html( timeZoneDate(ticket_customer.created_at , time_zone , date_format ));
+    $('#creation-date').html(timeZoneDate(ticket.created_at , time_zone , date_format ));
 
     let dt = new Date(ticket.sla_res_deadline_from);
     if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
-    $('#updation-date').html(moment(dt).format(date_format));
+    $('#updation-date').html(timeZoneDate(dt , time_zone , date_format ));
     
     // settle company name and phone values
     setCustomerCompany();
-
-    console.log(companies_list, "companies_list");
-
-    // tickets_logs_list = $('#ticket-logs-list').DataTable({
-    //     ordering: false
-    // });
     getLatestLogs();
 
-    $('#ticket-timestamp').html(moment(ticket.created_at).format(date_format + ' ' + 'hh:mm'));
+    $('#ticket-timestamp').html( timeZoneDate(ticket.created_at , time_zone , date_format ) );
 
     if ($("#mymce").length > 0) {
         tinymce.init({
@@ -167,6 +162,13 @@ $(function() {
     });
 });
 
+// convert current date to provided timezone date with format
+function timeZoneDate(date , timezone , format) {
+    let tkt = new Date(date);
+    let get_timezone_date_time  = tkt.toLocaleString('en-US', { timeZone: timezone });
+    return get_timezone_date_time = moment(get_timezone_date_time).format(format + ' ' + 'hh:mm A');
+}
+
 function setSlaPlanDeadlines(ret = false) {
     let res_due = '';
     let rep_due = '';
@@ -247,13 +249,16 @@ function setSlaPlanDeadlines(ret = false) {
 }
 
 function resetSlaPlan() {
-    console.log(ticket , "ticket");
+    console.log(ticket);
     if(ticket != null) {
-        if(ticket.reply_deadline == null ) {
+        if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
                 var today = new Date();
-                var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
-                $("#ticket-rep-due").val(reply_deadline);
+
+                if(ticket.reply_deadline != "cleared") {
+                    var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
+                    $("#ticket-rep-due").val(reply_deadline);
+                }                
 
                 var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
                 $("#ticket-res-due").val(deadline_time);
@@ -262,7 +267,6 @@ function resetSlaPlan() {
             setSlaPlanDeadlines();
         }
     }
-
 
     $("#reset_sla_plan_modal").modal("show");
 }
@@ -1077,6 +1081,10 @@ function publishReply(ele, type = 'publish') {
                 cache: false,
                 success: function(data) {
 
+                    var update_at = data.tkt_update_at;
+                    let time = timeZoneDate( update_at , time_zone , date_format ) 
+                    $("#updation-date").html(time);
+
                     $(ele).attr('disabled', false);
                     $(ele).find('.spinner-border').hide();
 
@@ -1145,7 +1153,7 @@ function composeReply() {
     }
 }
 
-function editReply(rindex) {
+function editReply(rindex) {publishReply(this)
     tinyMCE.editors.mymce.setContent(ticketReplies[rindex].reply);
 
     if(ticketReplies[rindex].attachments) {
@@ -2094,6 +2102,11 @@ $("#save_ticket_note").submit(function(event) {
 
             if (data.success) {
                 // send mail notification regarding ticket action
+
+                var update_at = data.tkt_update_at;
+                let time = timeZoneDate( update_at , time_zone , date_format ) 
+                $("#updation-date").html(time);
+
                 let note_status = 'added';
                 let note_temp = 'ticket_note_create';
                 if ($('#note-id').val()) {
@@ -2200,8 +2213,8 @@ function get_ticket_notes() {
                             <img src="${profile_img_path}" alt="User" width="40">
                         </div>
                         <div class="w-100">
-                            <div class="col-12 p-0 ">
-                                <h5 class="note-head note-class">Note by ` + notes[i].name + ` ` + moment(notes[i].created_at).format(date_format + ' ' + 'hh:mm') + ` ` + type + `</h5>
+                            <div class="col-12 p-0 d-flex">
+                                <h5 class="note-head">Note by ` + notes[i].name + ` ` +  timeZoneDate(notes[i].created_at , time_zone , date_format)  + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>

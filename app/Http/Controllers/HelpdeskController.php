@@ -641,7 +641,7 @@ class HelpdeskController extends Controller
             ->when(empty($statusOrUser), function($q) use($closed_status_id) {
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
             })
-            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
+            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.id', 'desc')->get();
         
         } else {
             $aid = \Auth::user()->id;
@@ -670,7 +670,7 @@ class HelpdeskController extends Controller
             ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
                 return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
             })
-            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
+            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.id', 'desc')->get();
         }
 
         $total_tickets_count = $tickets->count();
@@ -931,6 +931,7 @@ class HelpdeskController extends Controller
             $response['status_code'] = 200;
             $response['success'] = true;
             $response['data'] = $save_reply;
+            $response['tkt_updated_at'] =  $ticket->updated_at;
             return response()->json($response);
     
         }catch(Exception $e) {
@@ -977,6 +978,8 @@ class HelpdeskController extends Controller
 
         $home = new HomeController();
         $tickets = $home->getCustomerTickets($ticket_customer->id);
+
+        
         
         $total_tickets_count = $tickets->count();
         $open_tickets_count = 0;
@@ -1008,9 +1011,10 @@ class HelpdeskController extends Controller
         $ticket_slaPlan = (Object) $this->getTicketSlaPlan($id);
         
         $dd = $this->getSlaDeadlineFrom($id);
+        
         $details->sla_rep_deadline_from = $dd[0];
         $details->sla_res_deadline_from = $dd[1];
-
+        // dd($details->toArray());
 
         $ticket_overdue_bg_color = TicketSettings::where('tkt_key','overdue_ticket_background_color')->first();
         if(isset($ticket_overdue_bg_color->tkt_value)) $ticket_overdue_bg_color = $ticket_overdue_bg_color->tkt_value;
@@ -1034,7 +1038,7 @@ class HelpdeskController extends Controller
         if(Auth::user()->user_type == 5) {
             return view('help_desk.ticket_manager.cust_ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }else{
-            return view('help_desk.ticket_manager.ticket_details_new',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
+            return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }
     }
     
@@ -1624,6 +1628,7 @@ class HelpdeskController extends Controller
             $response['sla_updated'] = $sla_updated;
             $response['status_code'] = 200;
             $response['success'] = true;
+            $response['tkt_update_at'] = $ticket->updated_at;
             $response['data'] = $note;
             return response()->json($response);
 
@@ -2016,12 +2021,12 @@ class HelpdeskController extends Controller
             $file = $request->file('attachment');
 
             //Move Uploaded File
-            // $file->move($target_dir, $file->getClientOriginalName());
             if($file->move($target_dir, $request->fileName.'.'.$file->getClientOriginalExtension())) {
                 if($request->module == 'tickets') {
                     if(!empty($ticket->attachments)) $ticket->attachments .= ','.$request->fileName.'.'.$file->getClientOriginalExtension();
                     else $ticket->attachments = $request->fileName.'.'.$file->getClientOriginalExtension();
     
+                    $response['tkt_updated_at'] = $ticket->attachments;
                     $response['attachments'] = $ticket->attachments;
                     $ticket->save();
                 } else {
@@ -2031,11 +2036,13 @@ class HelpdeskController extends Controller
                 $response['message'] = 'Failed to move file';
                 $response['status_code'] = 500;
                 $response['success'] = false;
+                $response['tkt_updated_at'] = '123';
                 return response()->json($response);
             }
 
             $response['status_code'] = 200;
             $response['success'] = true;
+            $response['tkt_updated_at'] = '12';
             return response()->json($response);
         } catch(Exception $e) {
             $response['message'] = $e->getMessage();
