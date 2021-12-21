@@ -348,7 +348,7 @@ function editRequest() {
     $('#cancel_request_btn').css('display', 'block');
 
     $('#ticket_subject_edit').val(ticket.subject);
-    // $('#ticket_details_edit').val(ticket.ticket_detail);
+     $('#ticket_details_edit').val(ticket.ticket_detail);
     tinyMCE.editors.ticket_details_edit.setContent($('#ticket_details_p').html());
 }
 

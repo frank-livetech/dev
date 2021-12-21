@@ -531,7 +531,7 @@
             $('#ticket_attachments').append(`<div class="input-group mt-3">
                 <div class="custom-file text-left">
                     <input type="file" class="form-control ticket_attaches" id="ticket_attachment_${ticket_attachments_count}">
-                    <label class="custom-file-label" for="ticket_attachment_${ticket_attachments_count}"></label>
+                    
                 </div>
                 <div class="input-group-append">
                     <button class="btn btn-dark" type="button" title="Remove" onclick="console.log(this.parentElement.parentElement.remove())"><span class="fa fa-window-close"></span></button>

@@ -448,6 +448,35 @@ body.dark-layout {
 .dark-layout .pagination:not([class*='pagination-']) .page-item .page-link {
   background-color: #242b3d;
   color: #b4b7bd; }
+  .dark-layout #card-sla{
+    color: unset !important;
+    background-color: #283046 !important;
+  }
+.dark-layout .note-class{
+  color: black
+}
+.dark-layout .note-details{
+  color: black
+}
+.dark-layout .drop-dpt{
+background-color: #283046 !important ;
+}
+.dark-layout .tox-menubar{
+  color: white !important;
+  background-color: #283046 !important;
+}
+.dark-layout .tox-mbtn{
+  color: white !important;
+}
+.dark-layout .tox-toolbar{
+  background-color: #283046 !important;
+}
+.dark-layout .tox-tbtn {
+  color: white !important;
+}
+.dark-layout .tox .tox-tbtn svg{
+  fill: white !important; ;
+}
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item .page-link:hover {
   color: #7367f0; }
