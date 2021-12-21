@@ -403,26 +403,26 @@ $(document).ready(function() {
             form_data.append("sla_status", 0);
         }
 
-        if($('#rep-deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
-        if($('#due-deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
+        // if($('#rep-deadline').val() > 12) {
+        //     Swal.fire({
+        //         position: 'center',
+        //         icon: 'error',
+        //         title: 'Deadline cannnot be greater than 12 hours',
+        //         showConfirmButton: false,
+        //         timer: swal_message_time
+        //     });
+        //     return false;
+        // }
+        // if($('#due-deadline').val() > 12) {
+        //     Swal.fire({
+        //         position: 'center',
+        //         icon: 'error',
+        //         title: 'Deadline cannnot be greater than 12 hours',
+        //         showConfirmButton: false,
+        //         timer: swal_message_time
+        //     });
+        //     return false;
+        // }
         // if ($("#custumCheck").is(":checked")) {
         //     form_data.append("is_default", 1);
         // } else {
