@@ -1081,6 +1081,10 @@ function publishReply(ele, type = 'publish') {
                 cache: false,
                 success: function(data) {
 
+                    var update_at = data.tkt_update_at;
+                    let time = timeZoneDate( update_at , time_zone , date_format ) 
+                    $("#updation-date").html(time);
+
                     $(ele).attr('disabled', false);
                     $(ele).find('.spinner-border').hide();
 
@@ -1149,7 +1153,7 @@ function composeReply() {
     }
 }
 
-function editReply(rindex) {
+function editReply(rindex) {publishReply(this)
     tinyMCE.editors.mymce.setContent(ticketReplies[rindex].reply);
 
     if(ticketReplies[rindex].attachments) {

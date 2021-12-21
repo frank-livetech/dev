@@ -931,6 +931,7 @@ class HelpdeskController extends Controller
             $response['status_code'] = 200;
             $response['success'] = true;
             $response['data'] = $save_reply;
+            $response['tkt_updated_at'] =  $ticket->updated_at;
             return response()->json($response);
     
         }catch(Exception $e) {
@@ -1037,7 +1038,7 @@ class HelpdeskController extends Controller
         if(Auth::user()->user_type == 5) {
             return view('help_desk.ticket_manager.cust_ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }else{
-            return view('help_desk.ticket_manager.ticket_details_new',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
+            return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }
     }
     
@@ -2024,6 +2025,8 @@ class HelpdeskController extends Controller
                 if($request->module == 'tickets') {
                     if(!empty($ticket->attachments)) $ticket->attachments .= ','.$request->fileName.'.'.$file->getClientOriginalExtension();
                     else $ticket->attachments = $request->fileName.'.'.$file->getClientOriginalExtension();
+    
+                    $response['tkt_updated_at'] = $ticket->attachments;
                     $response['attachments'] = $ticket->attachments;
                     $ticket->save();
                 } else {
@@ -2039,6 +2042,7 @@ class HelpdeskController extends Controller
 
             $response['status_code'] = 200;
             $response['success'] = true;
+            $response['tkt_updated_at'] = '12';
             return response()->json($response);
         } catch(Exception $e) {
             $response['message'] = $e->getMessage();
