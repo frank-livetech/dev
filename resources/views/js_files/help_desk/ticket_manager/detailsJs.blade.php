@@ -247,7 +247,7 @@ function setSlaPlanDeadlines(ret = false) {
 }
 
 function resetSlaPlan() {
-    console.log(ticket , "ticket");
+    console.log("reset sla");
     if(ticket != null) {
         if(ticket.reply_deadline == null ) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
