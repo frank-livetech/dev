@@ -452,7 +452,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route('home')}}">Home </a></li>
                         <li class="breadcrumb-item"><a href="{{asset('/ticket-management')}}">Tickets Manager</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Ticket Details hkjkj</li>
+                        <li class="breadcrumb-item active" aria-current="page">Ticket Details</li>
                     </ol>
                 </nav>
             </div>
@@ -460,6 +460,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
     </div>
 </div>
 <input type="hidden" id="loggedInUser_id" value="{{\Auth::user()->id}}">
+<input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
 
 <div class="container-fluid">
                 
