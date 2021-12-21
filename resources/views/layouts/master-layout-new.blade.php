@@ -20,7 +20,7 @@
 
     <!-- Favicon icon -->
     
-        @if( Session::get('site_favicon') != null)
+        {{-- @if( Session::get('site_favicon') != null)
             @if(file_exists( public_path(). $file_path . Session::get('site_favicon') ) )
                 <link rel="icon" type="image/png" sizes="16x16"
             href="{{asset($file_path . Session::get('site_favicon') ) }}">
@@ -29,7 +29,7 @@
             @endif
         @else
             <img src="{{asset( $file_path . 'default_imgs/favicon.png')}}" alt="'s Photo"  width="50px" class="rounded-circle">
-        @endif
+        @endif --}}
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
@@ -59,6 +59,7 @@
 
     <!-- BEGIN: Page CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/charts/chart-apex.css')}}">
@@ -237,7 +238,8 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/ui/ui-feather.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/form-select2.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
-   
+    <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-navs.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script>
     <!-- END: Page JS-->
 
     <script>

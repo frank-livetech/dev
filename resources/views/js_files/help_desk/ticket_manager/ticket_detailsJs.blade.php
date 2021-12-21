@@ -309,7 +309,7 @@
         var phone = ticket_customer.phone ? ticket_customer.phone : 'Phone not added';
         var company = ticket_customer.company_name ? ticket_customer.company_name : 'Company not provided';
 
-        $('#search_customer_result').html(`<div style="font-size:14px" class="bg-success text-left font-weight-bold text-dark mt-2 p-2 border shadow-sm rounded">${ticket_customer.first_name} ${ticket_customer.last_name} (ID : ${ticket_customer.id}) | ${company} | ${ticket_customer.email} | ${phone}</div>`);
+        $('#search_customer_result').html(`<div style="font-size:14px;font-weight:600;color:white !important" class="bg-success text-left font-weight-bold text-dark p-2 border shadow-sm rounded">${ticket_customer.first_name} ${ticket_customer.last_name} (ID : ${ticket_customer.id}) | ${company} | ${ticket_customer.email} | ${phone}</div>`);
 
         $('#username-fill').val(ticket_customer.email);
         $('#phone-fill').val(ticket_customer.phone);
@@ -435,4 +435,5 @@
             });
         }
     }
+    
 </script>
