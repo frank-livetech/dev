@@ -30,31 +30,31 @@ $(function() {
 
     $('#ticket-logs-list').parent().css('overflow', 'auto');
 
-    $('#tk_log_select').multipleSelect({
-        width: 300,
-        onClick: function(view) {
-            var selectedItems = $('#tk_log_select').multipleSelect("getSelects");
-            for (var i = 0; i < 3; i++) {
-                columns = tickets_logs_list.column(i).visible(0);
-            }
-            for (var i = 0; i < selectedItems.length; i++) {
-                var s = selectedItems[i];
-                tickets_logs_list.column(s).visible(1);
-            }
-            $('#ticket-logs-list').css('width', '100%');
-        },
-        onCheckAll: function() {
-            for (var i = 0; i < 3; i++) {
-                columns = tickets_logs_list.column(i).visible(1);
-            }
-        },
-        onUncheckAll: function() {
-            for (var i = 0; i < 3; i++) {
-                columns = tickets_logs_list.column(i).visible(0);
-            }
-            $('#ticket-logs-list').css('width', '100%');
-        }
-    });
+    // $('#tk_log_select').multipleSelect({
+    //     width: 300,
+    //     onClick: function(view) {
+    //         var selectedItems = $('#tk_log_select').multipleSelect("getSelects");
+    //         for (var i = 0; i < 3; i++) {
+    //             columns = tickets_logs_list.column(i).visible(0);
+    //         }
+    //         for (var i = 0; i < selectedItems.length; i++) {
+    //             var s = selectedItems[i];
+    //             tickets_logs_list.column(s).visible(1);
+    //         }
+    //         $('#ticket-logs-list').css('width', '100%');
+    //     },
+    //     onCheckAll: function() {
+    //         for (var i = 0; i < 3; i++) {
+    //             columns = tickets_logs_list.column(i).visible(1);
+    //         }
+    //     },
+    //     onUncheckAll: function() {
+    //         for (var i = 0; i < 3; i++) {
+    //             columns = tickets_logs_list.column(i).visible(0);
+    //         }
+    //         $('#ticket-logs-list').css('width', '100%');
+    //     }
+    // });
 
     initializeTicketTable('tickets');
     getLatestLogs();
@@ -443,7 +443,7 @@ function getLatestLogs() {
 
                     tickets_logs_list.row.add([
                         (i + 1),
-                        element.action_perform+' at '+moment(element.created_at).format($('#system_date_format').val() + ' ' + 'hh:mm:ss'),
+                        element.action_perform+' at '+moment(element.created_at).format($('#system_date_format').val() + ' ' + 'hh:mm A'),
                     ]).draw(false).node();
                 }
             } else {

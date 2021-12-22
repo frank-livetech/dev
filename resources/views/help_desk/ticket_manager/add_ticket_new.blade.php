@@ -45,11 +45,10 @@
                                                 <label class="form-label" for="validationTooltip01">Subject <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="subject" name="subject" required="">
                                                 <span class="text-danger small" id="subject_error"></span>
-                                                {{-- <div class="valid-tooltip">Looks good!</div> --}}
                                             </div>
                                             <div class="col-md-4 mb-1">
                                                 <label class="form-label" for="dept_id">Select Department<span class="text-danger">*</span></label>
-                                                <select class="select2 form-select" name="dept_id" id="dept_id">
+                                                <select class="select2 form-select" style="width:100%" onchange="showDepartStatus(this.value)" name="dept_id" id="dept_id">
                                                     @if($departments != null && $departments != "") 
                                                     @foreach($departments as $key => $department)
                                                         @if ($key == 0)
