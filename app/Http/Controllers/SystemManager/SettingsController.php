@@ -1292,7 +1292,7 @@ class SettingsController extends Controller
 
     public function get_all_counts(){
 
-        $counts = DB::select("SELECT departments.id,departments.name,departments.dept_counter , ticket_statuses.id as sts_id , ticket_statuses.name as sts_name,ticket_statuses.status_counter , (SELECT COUNT(*) from tickets WHERE tickets.dept_id = departments.id) as tkt_dept_count , (SELECT COUNT(*) from tickets WHERE ticket_statuses.id = tickets.status AND tickets.dept_id = departments.id) as tkt_sts_count from departments LEFT JOIN ticket_statuses on find_in_Set(departments.id,ticket_statuses.department_id) LEFT JOIN deptartment_assignments on deptartment_assignments.dept_id = departments.id WHERE deptartment_assignments.user_id = ".\Auth::user()->id);
+        $counts = DB::select("SELECT departments.id,departments.name,departments.dept_counter , ticket_statuses.id as sts_id , ticket_statuses.name as sts_name,ticket_statuses.status_counter , (SELECT COUNT(*) from tickets WHERE tickets.dept_id = departments.id AND tickets.status <> 33) as tkt_dept_count , (SELECT COUNT(*) from tickets WHERE ticket_statuses.id = tickets.status AND tickets.dept_id = departments.id) as tkt_sts_count from departments LEFT JOIN ticket_statuses on find_in_Set(departments.id,ticket_statuses.department_id) LEFT JOIN deptartment_assignments on deptartment_assignments.dept_id = departments.id WHERE deptartment_assignments.user_id = ".\Auth::user()->id);
         $response['message'] = 'Data';
         $response['counts'] = $counts;
         $response['status_code'] = 200;
