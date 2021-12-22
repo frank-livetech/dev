@@ -276,7 +276,7 @@
                         }
                         if(counts[i].status_counter == 1){
                             if(counts[i].tkt_sts_count > 0){
-                                $('#sts_cnt_'+counts[i].sts_id).html(counts[i].tkt_sts_count);
+                                $('#sts_cnt_'+counts[i].id+'_'+counts[i].sts_id).html(counts[i].tkt_sts_count);
                             }
                         }
                     }
