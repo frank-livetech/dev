@@ -2426,16 +2426,7 @@ function getLatestLogs() {
             if (data.success) {
                 console.log(data);
                 var obj = data.logs;
-                // tickets_logs_list.clear().draw();
 
-                // for (let i = 0; i < data.logs.length; i++) {
-                //     const element = data.logs[i];
-
-                //     tickets_logs_list.row.add([
-                //         element.id,
-                //         element.action_perform
-                //     ]).draw(false).node();
-                // }
                 $('#ticket-logs-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#ticket-logs-list').DataTable({
@@ -2452,7 +2443,7 @@ function getLatestLogs() {
                         },
                         {
                             "render": function(data, type, full, meta) {
-                                return full.action_perform != null ? full.action_perform+' at '+moment(full.created_at).format($('#sys_date_format').val()) : '-';
+                                return full.action_perform != null ? full.action_perform+' at '+ moment(full.created_at).format($('#sys_date_format').val() + ' ' + 'hh:mm A') : '-';
                             }
                         },
                     ],

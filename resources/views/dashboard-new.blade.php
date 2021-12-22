@@ -3,6 +3,13 @@
 @php
     $file_path = $live->sys_value == 1 ? 'public/' : '/';
 @endphp
+
+@if(Session('system_date'))
+    <input type="hidden" id="system_date_format" value="{{Session('system_date')}}">
+@else
+    <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
+@endif
+
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
