@@ -476,7 +476,7 @@ class AuthController extends Controller
         $dept_assignments = DepartmentAssignments::where('user_id', $uid)->get()->pluck('dept_id')->toArray();
         // return $dept_assignments;   
         $departments = Departments::all();    
-        $statuses = TicketStatus::all();
+        $statuses = TicketStatus::orderBy('seq_no', 'Asc')->get();
         $assigned_depts = array();
         foreach ($departments as $dept) {
             if(in_array($dept->id, $dept_assignments)){
