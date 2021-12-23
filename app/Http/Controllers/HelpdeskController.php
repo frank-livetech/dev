@@ -163,7 +163,7 @@ class HelpdeskController extends Controller
         $departments = Departments::all();
         $priorities = TicketPriority::all();
         $types = TicketType::all();
-        $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
+        $users = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
         $customers = Customer::where('is_deleted', 0)->get();
 
         $responseTemplates = ResponseTemplate::get();
