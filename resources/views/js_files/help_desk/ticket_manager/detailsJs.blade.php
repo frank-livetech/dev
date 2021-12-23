@@ -2177,10 +2177,10 @@ function get_ticket_notes() {
                     let timeOut = '';
                     let autho = '';
                     if (notes[i].created_by == loggedInUser_id) {
-                        autho = `<div class="ml-auto" style= "float:right;bottom: 28px;position: relative;">
+                        autho = `<div class="ml-auto">
                             
                         <span class="fas fa-trash text-danger" style= "float:right;cursor:pointer;" onclick="deleteTicketNote(this, '` + notes[i].id + `')" style="cursor: pointer;"></span>
-                        <span class="fas fa-edit text-primary ml-2" style= "float:right;padding-right:5px;cursor:pointer" onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')" style="cursor: pointer;"></span>
+                        <span class="fas fa-edit text-primary ml-2" style= "float:right;padding-right:5px;cursor:pointer;" onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')" style="cursor: pointer;"></span>
                         
                         </div>`;
                     }

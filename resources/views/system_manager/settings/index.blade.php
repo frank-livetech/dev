@@ -3289,12 +3289,12 @@
                         </div>
                         <div class="form-group">
                             <label for="departmrnt">Reply Deadline</label>
-                            <input class="form-control" min="1" max="12" type="number" name="reply_deadline" placeholder="" id="rep-deadline" required>
+                            <input class="form-control" type="number" name="reply_deadline" placeholder="" id="rep-deadline" required>
                             <small class="text-right"> The number of hours by which a ticket should be replied to (following a reply from an end user). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
                         <div class="form-group">
                             <label for="departmrnt">Resolution due Deadline</label>
-                            <input class="form-control" min="1" max="12" type="number" name="due_deadline" placeholder="" id="due-deadline" required>
+                            <input class="form-control" type="number" name="due_deadline" placeholder="" id="due-deadline" required>
                             <small>The number of hours by which tickets which have been assigned this SLA plan should be resolved (set to a resolved type status). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
                         <div class="form-group">

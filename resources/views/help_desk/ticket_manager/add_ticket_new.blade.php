@@ -144,10 +144,21 @@
                                                             <span class="text-danger small" id="customer_id_error"></span>
                                                         </div>
 
-                                                        <div class="col-md-4">
+                                                        {{-- <div class="col-md-4">
                                                             <label class="form-label">Due Date </label>
                                                             <input type="text" id="fp-date-time" class="form-control flatpickr-date-time flatpickr-input active" placeholder="MM-YYYY-DD HH:MM" readonly="readonly">
-                                                            {{-- <input class="form-control" type="date" id="deadline" name="deadline" onkeydown="return false"> --}}
+                                                            <input class="form-control" type="date" id="deadline" name="deadline" onkeydown="return false">
+                                                        </div> --}}
+                                                        <div class="col-sm-4" id="select_customer">
+                                                            <label class="form-label">Response Template</label>
+                                                            <select class="select2 form-control custom-select dropdown w-100" id="res-template" style="width:100%">
+                                                                <option value="">Select</option>
+                                                                @if(!empty($responseTemplates))
+                                                                    @foreach($responseTemplates as $res)
+                                                                        <option value="{{$res->id}}">{{$res->title}}</option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
                                                         </div>
 
                                                         <div class="col-12" id="new_customer_div">
@@ -211,7 +222,7 @@
                                                         </div>
                                                 </div>                            
                                         
-                                                    <div class="row mt-1">
+                                                    {{-- <div class="row mt-1">
                                                         <div class="col-sm-4" id="select_customer">
                                                             <label class="form-label">Response Template</label>
                                                             <select class="select2 form-control custom-select dropdown w-100" id="res-template" style="width:100%">
@@ -223,7 +234,7 @@
                                                                 @endif
                                                             </select>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                             @endif
                                                     <div class="row mt-2">
                                                         <div class="col-12 p-0">
