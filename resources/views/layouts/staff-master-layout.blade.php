@@ -758,7 +758,7 @@ body[data-theme=dark] .close{
             $(".breadcrumb").removeClass("black");
             $('input[type="date"]').removeClass('dark-calendar');
             light("{{Session::get('text_light')}}", "{{Session::get('bg_light')}}");
-
+            
         } else {
 
             $('body').attr("data-theme", 'dark');
