@@ -962,7 +962,7 @@ function listReplies() {
                 <li class="media">
                     <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + moment(reply.date).format(date_format) + `</span><span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + timeZoneDate(reply.date , time_zone , date_format ) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
