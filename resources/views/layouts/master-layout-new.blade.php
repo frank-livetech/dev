@@ -266,7 +266,20 @@
                 async:false,
                 success: function(data) {
                     console.log(data)
-
+                    let counts = data.counts;
+                    for(var i = 0 ; i < counts.length ; i++){
+                        console.log(counts[i].dept_counter)
+                        if(counts[i].dept_counter == 1){
+                            if(counts[i].tkt_dept_count > 0){
+                                $('#dept_cnt_'+counts[i].id).html(counts[i].tkt_dept_count);
+                            }
+                        }
+                        if(counts[i].status_counter == 1){
+                            if(counts[i].tkt_sts_count > 0 && counts[i].sts_name != 'Closed'){
+                                $('#sts_cnt_'+counts[i].id+'_'+counts[i].sts_id).html(counts[i].tkt_sts_count);
+                            }
+                        }
+                    }
                     
 
                 },

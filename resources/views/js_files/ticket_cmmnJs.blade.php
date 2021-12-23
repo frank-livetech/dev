@@ -255,7 +255,7 @@ function redrawTicketsTable(ticket_arr) {
             <td>${res_due}</td>
             <td>${val['tech_name']}</td>
             <td>${val['department_name']}</td>
-            <td>${moment(val['created_at']).format(date_formate)}</td>
+            <td>${moment(val['created_at']).format(date_formate + ' ' + 'hh:mm A')}</td>
         </tr>`;
         
         tickets_table_list.row.add($(row)).draw();
