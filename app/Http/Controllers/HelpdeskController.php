@@ -2473,7 +2473,7 @@ class HelpdeskController extends Controller
     }
 
     public function getDepartmentStatus(Request $request) {
-        $status = TicketStatus::whereRaw("find_in_set($request->id,department_id)")->get();
+        $status = TicketStatus::whereRaw("find_in_set($request->id,department_id)")->orderBy('seq_no', 'Asc')->get();
         $dept_assigns = DepartmentAssignments::where('dept_id', $request->id)->get()->pluck('user_id')->toArray();
         $users = User::whereIn('id', $dept_assigns)->get();
 
