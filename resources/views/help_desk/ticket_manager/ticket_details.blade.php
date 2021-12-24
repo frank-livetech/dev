@@ -699,7 +699,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                 
             <div class="card p-0 dropD">
                 <div class="card-body p-0" style="padding:0 !important;background-color: #009efb">
-                    <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
+                    <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important; background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color : ' ')}} ">
                         <div class="col-md-2 br-white" id="dep-label">
                             <label class="control-label col-sm-12 end_padding" >Department</label>
                             <h5 class="end_padding selected-label"  id="dep-h5">Selected</h5>
@@ -739,7 +739,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-2 br-white" id="prio-label">
+                        <div class="col-md-2 br-white" id="prio-label" style="background-color:{{($current_priority == null) ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ')}} ">
                             <label class="control-label col-sm-12 end_padding" >Priority</label>
                             <h5 class="end_padding selected-label" id="prio-h5"></h5>
                             <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">

@@ -957,6 +957,10 @@ class HelpdeskController extends Controller
         $id = $ticket->id;
         // $details = Tickets::with('ticketReplies')->where('id', $id)->first();
         $details = Tickets::where('id', $id)->first();
+        
+        $current_status = TicketStatus::where('id' , $details->status)->first();
+        $current_priority= TicketPriority::where('id' , $details->priority)->first();
+
         $details['ticketReplies'] = TicketReply::where('ticket_id', $details->id)->orderBy('created_at', 'DESC')->get();
         $departments = Departments::all();
         // $ticket = Tickets::all();
@@ -1036,9 +1040,11 @@ class HelpdeskController extends Controller
         $date_format = Session('system_date');
 
         if(Auth::user()->user_type == 5) {
-            return view('help_desk.ticket_manager.cust_ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
+            return view('help_desk.ticket_manager.cust_ticket_details', get_defined_vars());
+            // return view('help_desk.ticket_manager.cust_ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }else{
-            return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
+            return view('help_desk.ticket_manager.ticket_details',get_defined_vars());
+            // return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }
     }
     
