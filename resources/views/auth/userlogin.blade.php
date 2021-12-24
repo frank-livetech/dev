@@ -180,10 +180,10 @@
         </div>
     </footer>
  
-    <script src="{{asset('/assets/libs/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{asset($file_path .'/assets/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{asset('/assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
-    <script src="{{asset('/assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset($file_path .'/assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
+    <script src="{{asset($file_path .'/assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
@@ -192,7 +192,7 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-    <script src="{{asset('/assets/dist/js/firebase.js')}}"></script>
+    <script src="{{asset($file_path .'/assets/dist/js/firebase.js')}}"></script>
  
     <script>
     $('[data-toggle="tooltip"]').tooltip();
