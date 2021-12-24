@@ -18,17 +18,13 @@
     @else
         <title>Login Page</title>
     @endif
-    @php
-        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
-        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
-    @endphp
 	<link rel="canonical" href="https://www.wrappixel.com/templates/monsteradmin/" />
     @php
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
         $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
     <!-- Custom CSS -->
-    <link href="{{asset($path .'/css/style.min.css')}}" rel="stylesheet">
+    <link href="{{asset($path .'css/style.min.css')}}" rel="stylesheet">
     <style>
         .footer{
             position:absolute;
@@ -179,20 +175,21 @@
             </div>
         </div>
     </footer>
- 
-    <script src="{{asset($file_path .'assets/libs/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{asset($path . 'js/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{asset($file_path .'assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
-    <script src="{{asset($file_path .'assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset($path . 'js/popper.min.js')}}"></script>
+    <script src="{{asset($path . 'js/firebase.js')}}"></script>
+    <script src="{{asset($path . 'js/bootstrap.min.js')}}"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
+
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-    <script src="{{asset($file_path .'assets/dist/js/firebase.js')}}"></script>
  
     <script>
     $('[data-toggle="tooltip"]').tooltip();
