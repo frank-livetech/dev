@@ -20,9 +20,10 @@
     @endif
 	<link rel="canonical" href="https://www.wrappixel.com/templates/monsteradmin/" />
     @php
-        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
-        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+        $file_path = $is_live == 1 ? 'public/' : '/';
+        $path = $is_live == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
+
     <!-- Custom CSS -->
     <link href="{{asset($path .'css/style.min.css')}}" rel="stylesheet">
     <style>
