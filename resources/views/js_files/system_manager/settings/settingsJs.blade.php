@@ -2639,6 +2639,10 @@ function updateEmailQueue() {
             from_name: from_name,
             from_mail: from_mail,
             is_default: isDefault,
+            mail_dept_id: mail_dept_id,
+            mail_type_id: mail_type_id,
+            mail_status_id: mail_status_id,
+            mail_priority_id: mail_priority_id,
             id: email_id,
             php_mailer: 'yes',
         }
@@ -2904,7 +2908,10 @@ function save_pop3_mail() {
             from_name: from_name,
             from_mail: from_mail,
             is_default: isDefault,
-            
+            mail_dept_id: mail_dept_id,
+            mail_type_id: mail_type_id,
+            mail_status_id: mail_status_id,
+            mail_priority_id: mail_priority_id,
             php_mailer: 'yes',
             id: $('#save-mail').find('#editId').val(),
         }
