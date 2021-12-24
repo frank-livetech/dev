@@ -43,10 +43,10 @@ use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\ProjectManager\ProjectManagerController;
 use App\Models\DepartmentPermissions;
 use Faker\Calculator\Ean;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
+use Session;
 
 require '../vendor/autoload.php';
 
@@ -1545,7 +1545,7 @@ class HelpdeskController extends Controller
             $ticket = Tickets::findOrFail($data['ticket_id']);
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-
+            
             if(array_key_exists('id', $data)){
                 $note = TicketNote::findOrFail($data['id']);
 
@@ -1554,7 +1554,8 @@ class HelpdeskController extends Controller
                 $note->note = $data['note'];
                 $note->visibility = (array_key_exists('visibility', $data)) ? $data['visibility'] : '';
                 $note->updated_by = \Auth::user()->id;
-                $note->updated_at = Carbon::now();
+                date_default_timezone_set(Session::get('timezone'));
+                $note->updated_at = date('Y-m-d h:m:s');
 
                 $note->save();
 
@@ -1563,6 +1564,8 @@ class HelpdeskController extends Controller
                 $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note updated by '. $name_link;
             }else{
                 $data['created_by'] = \Auth::user()->id;
+                date_default_timezone_set(Session::get('timezone'));
+                $note['created_at'] = date('Y-m-d h:m:s');
                 $note = TicketNote::create($data);
 
                 $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note added by '. $name_link;
@@ -1801,11 +1804,12 @@ class HelpdeskController extends Controller
 
                 $note->is_deleted = 1;
                 $note->deleted_by = \Auth::user()->id;
-                $note->deleted_at = Carbon::now();
+                date_default_timezone_set(Session::get('timezone'));
+                $note->deleted_at =  date('Y-m-d H:i:s');
 
                 $note->save();
-
-                $ticket->updated_at = Carbon::now();
+                date_default_timezone_set(Session::get('timezone'));
+                $ticket->updated_at =  date('Y-m-d H:i:s');
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
