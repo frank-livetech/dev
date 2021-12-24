@@ -461,7 +461,6 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
 </div>
 <input type="hidden" id="loggedInUser_id" value="{{\Auth::user()->id}}">
 <input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
-
 <div class="container-fluid">
                 
     <div class="row">
@@ -736,7 +735,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                             <select class="select2 form-control " id="status" name="status" style="width: 100%; height:36px;">
                                 
                                 @foreach($statuses as $status)
-                                    <option value="{{$status->id}}" {{ $status->id == $details->status ? 'selected' : '' }}>{{$status->name}}</option>
+                                    <option value="{{$status->id}}" data-color="{{$status->color}}" {{ $status->id == $details->status ? 'selected' : '' }}>{{$status->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -746,7 +745,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                             <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
                                 {{-- <option value="">Select Priority</option> --}}
                                 @foreach($priorities as $priority)
-                                    <option value="{{$priority->id}}" {{$priority->id == $details->priority ? 'selected' : ''}}>{{$priority->name}}</option>
+                                    <option value="{{$priority->id}}" data-color="{{$priority->priority_color}}" {{$priority->id == $details->priority ? 'selected' : ''}}>{{$priority->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -1581,7 +1580,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
 
 <!-- reset sla plan modal -->
 <div id="reset_sla_plan_modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-info p-2">
                 <span>
@@ -1590,13 +1589,27 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
             </div>
             <div class="modal-body">
                 <form id="sla_plan_reset_form" enctype="multipart/form-data" onsubmit="return false" method="post" action="{{asset('/update-ticket-deadlines')}}">
-                    <div class="form-group">
-                        <label for="ticket-rep-due">Reply Due</label>
-                        <input type="datetime-local" id="ticket-rep-due" name="" class="form-control">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label for="ticket-rep-due">Reply Due</label>
+                                <input type="datetime-local" id="ticket-rep-due" name="" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary mt-4" onclick="resetTktSLA(1)">Reset</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="ticket-res-due">Resolution Due</label>
-                        <input type="datetime-local" id="ticket-res-due" name="" class="form-control">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label for="ticket-res-due">Resolution Due</label>
+                                <input type="datetime-local" id="ticket-res-due" name="" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary mt-4" onclick="resetTktSLA(2)">Reset</button>
+                        </div>
                     </div>
                     <div class="form-group text-right mt-3">
                         <button class="btn btn-rounded btn-success" type="button" onclick="updateDeadlines();">Save</button>
