@@ -589,11 +589,12 @@ class AuthController extends Controller
         
         return Redirect($route);
     }
+
     public function userLogin() {
-
-
         $settings = BrandSettings::first();
-        return view('auth.userlogin', compact('settings'));
+        $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+        $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+        return view('auth.userlogin', get_defined_vars());
     }
     public function userRegister() {
 
