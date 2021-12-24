@@ -1590,25 +1590,25 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
             <div class="modal-body">
                 <form id="sla_plan_reset_form" enctype="multipart/form-data" onsubmit="return false" method="post" action="{{asset('/update-ticket-deadlines')}}">
                     <div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-11">
                             <div class="form-group">
                                 <label for="ticket-rep-due">Reply Due</label>
                                 <input type="datetime-local" id="ticket-rep-due" name="" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-primary mt-4" onclick="resetTktSLA(1)">Reset</button>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-primary mt-4" onclick="resetTktSLA(1)"> <i class="fas fa-history"></i> </button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-11">
                             <div class="form-group">
                                 <label for="ticket-res-due">Resolution Due</label>
                                 <input type="datetime-local" id="ticket-res-due" name="" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-primary mt-4" onclick="resetTktSLA(2)">Reset</button>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-primary mt-4" onclick="resetTktSLA(2)"> <i class="fas fa-history"></i> </button>
                         </div>
                     </div>
                     <div class="form-group text-right mt-3">
