@@ -134,6 +134,7 @@
                 // var ticket_detail = $('#ticket_detail').val();
                 var assigned_to = $("#assigned_to").val();
                 var deadline = $("#deadline").val();
+                var user_role = $("#for_customer_role").val();
 
                 form_Data = {
                     subject:subject,
@@ -197,14 +198,16 @@
                     $("#email_error").html(' ');
 
                     if(!customer_id) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: "Please select a customer!",
-                            showConfirmButton: false,
-                            timer: swal_message_time,
-                        });
-                        return false;
+                        if(user_role != 5) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: "Please select a customer!",
+                                showConfirmButton: false,
+                                timer: swal_message_time,
+                            });
+                            return false;
+                        }
                     }
                 }
 

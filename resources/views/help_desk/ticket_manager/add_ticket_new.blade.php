@@ -31,6 +31,7 @@
     <input type="hidden" id="for_customer_profile_id" value="{{Auth::user()->id}}">
     @endif
     <input type="hidden" id="previous_url" value="{{url()->previous()}}">
+    <input type="hidden" id="for_customer_role" value="{{auth()->user()->user_type}}">
 
             <div class="content-body">
                 <section id="statistics-card">
