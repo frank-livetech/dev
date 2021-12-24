@@ -962,7 +962,7 @@ function listReplies() {
                 <li class="media">
                     <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + moment(reply.date).format(date_format) + `</span><span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + timeZoneDate(reply.date , time_zone , date_format ) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
@@ -2102,10 +2102,10 @@ $("#save_ticket_note").submit(function(event) {
 
             if (data.success) {
                 // send mail notification regarding ticket action
-
-                var update_at = data.tkt_update_at;
-                let time = timeZoneDate( update_at , time_zone , date_format ) 
-                $("#updation-date").html(time);
+                console.log(data.tkt_update_at , "data.tkt_update_at");
+                let upd_dt = timeZoneDate(data.tkt_update_at, time_zone , date_format );
+                console.log(upd_dt);
+                $("#updation-date").html(upd_dt);
 
                 let note_status = 'added';
                 let note_temp = 'ticket_note_create';
@@ -2214,12 +2214,14 @@ function get_ticket_notes() {
                         </div>
                         <div class="w-100">
                             <div class="col-12 p-0 d-flex">
-                                <h5 class="note-head">Note by ` + notes[i].name + ` ` +  timeZoneDate(notes[i].created_at , time_zone , date_format)  + ` ` + type + `</h5>
+                                <h5 class="note-head">Note by ` + notes[i].name + ` ` +  moment(notes[i].created_at ).format(date_format + ' ' + 'hh:mm A')  + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>
                         </div>
                     </div>`;
+
+                    
 
                     if (timeOut) {
                         timeouts_list.push(setTimeout(function() {
