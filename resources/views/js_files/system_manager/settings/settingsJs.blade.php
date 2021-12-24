@@ -2638,6 +2638,7 @@ function updateEmailQueue() {
             mailserver_password: mailserver_password,
             from_name: from_name,
             from_mail: from_mail,
+            is_default: isDefault,
             id: email_id,
             php_mailer: 'yes',
         }
@@ -2902,6 +2903,8 @@ function save_pop3_mail() {
             mailserver_password: mailserver_password,
             from_name: from_name,
             from_mail: from_mail,
+            is_default: isDefault,
+            
             php_mailer: 'yes',
             id: $('#save-mail').find('#editId').val(),
         }
