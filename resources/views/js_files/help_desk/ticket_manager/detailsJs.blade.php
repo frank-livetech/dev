@@ -1309,6 +1309,7 @@ $('#type').change(function() {
 $('#status').change(function() {
     var status = $(this).val();
 
+    var color = $('#status option:selected').data('color');
     // no change to do update
     if (status == ticket.status) return false;
 
@@ -1325,6 +1326,7 @@ $('#status').change(function() {
         success: function(data) {
             if (data.success == true) {
                 ticket.status = status;
+                $("#dropD").css('background-color' ,color + ' !important');
                 $('#follow_up_status').val(ticket.status).trigger("change");
                 
                 // send mail notification regarding ticket action
@@ -1344,7 +1346,7 @@ $('#status').change(function() {
 
 $('#priority').change(function() {
     var priority = $(this).val();
-
+    var color = $('#priority option:selected').data('color');
     // no change to do update
     if (priority == ticket.priority) return false;
 
@@ -1361,6 +1363,7 @@ $('#priority').change(function() {
         success: function(data) {
             if (data.success == true) {
                 ticket.priority = priority;
+                $("#prio-label").css('background-color' ,color + ' !important');
                 $('#follow_up_priority').val(ticket.priority).trigger("change");
                 
                 // send mail notification regarding ticket action
@@ -2674,5 +2677,17 @@ function matchStart(params, data) {
 
     // Return `null` if the term should not be displayed
     return null;
+}
+
+
+
+
+// reset fields
+function resetTktSLA(value) {
+    if(value  == 1) {
+        $("#ticket-rep-due").val("");
+    }else{
+        $("#ticket-res-due").val("");
+    }
 }
 </script>
