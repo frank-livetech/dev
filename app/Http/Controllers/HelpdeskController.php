@@ -963,7 +963,7 @@ class HelpdeskController extends Controller
         $ticket_customer = Customer::firstWhere('id',$details->customer_id);
         $vendors = Vendors::all();
         $types = TicketType::all();
-        $statuses = TicketStatus::all();
+        $statuses = TicketStatus::orderBy('seq_no', 'desc')->get();
         $priorities = TicketPriority::all();
 
         $assigned_users = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
