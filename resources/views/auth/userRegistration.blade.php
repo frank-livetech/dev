@@ -24,7 +24,7 @@
     @endphp
     <link rel="canonical" href="https://www.wrappixel.com/templates/monsteradmin/" />
     <!-- Custom CSS -->
-    <link href="{{asset($path .'/css/style.min.css')}}" rel="stylesheet">
+    <link href="{{asset($path .'css/style.min.css')}}" rel="stylesheet">
     <style>
         .footer{
             position:absolute;
@@ -59,7 +59,7 @@
                         @if($settings->login_logo != null && $settings->login_logo != "")
                             <img src="{{asset('public/files/brand_files')}}/{{$settings->login_logo}}" width="300" class=" d-block mx-auto" alt="">
                         @else
-                            <img src="{{ asset('files/user_photos/logo.gif')}}" class=" d-block mx-auto" width="300" style=" " />
+                            <img src="{{asset('files/user_photos/logo.gif')}}" class=" d-block mx-auto" width="300" style=" " />
                         @endif
                     @else
                         <img src="{{ asset('files/user_photos/logo.gif')}}" class=" d-block mx-auto" width="300" style=" " />
@@ -322,10 +322,11 @@
         </div>
     </footer>
  
-    <script src="{{asset('/assets/libs/jquery/dist/jquery.min.js')}}"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{asset('/assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
-    <script src="{{asset('/assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/popper.min.js')}}"></script>
+
+    <script src="{{asset( $path . 'js/bootstrap.min.js')}}"></script>
+
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
@@ -334,7 +335,8 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-    <script src="{{asset('/assets/dist/js/firebase.js')}}"></script>
+    <!-- <script src="{{asset('assets/dist/js/firebase.js')}}"></script> -->
+    <script src="{{asset( $path . 'js/firebase.js')}}"></script>
  
     <script>
         $('[data-toggle="tooltip"]').tooltip();
