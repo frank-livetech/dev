@@ -160,6 +160,7 @@ class MailController extends Controller
             $mail->from_name = $data['from_name'];
             $mail->from_mail = $data['from_mail'];
             $mail->updated_by = \Auth::user()->id;
+            $mail->is_default = $data['is_default'];
             $mail->php_mailer = $data['php_mailer'];
             $mail->save();
         }else{
