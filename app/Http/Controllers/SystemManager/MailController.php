@@ -5,7 +5,7 @@ namespace App\Http\Controllers\SystemManager;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelpdeskController;
 use App\Http\Controllers\GeneralController;
-
+use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Crypt;
@@ -421,16 +421,11 @@ class MailController extends Controller
                                         // echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT "Re: '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
                                          echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
         
-                                        $log_data = array();
-                                        $log_data['module'] = 'Tickets';
-                                        $log_data['table_ref'] = 'ticket_replies';
-                                        $log_data['ref_id'] = $rep->id;
-                                        $log_data['action_perform'] = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
-                                        Activitylog::create($log_data);
-                                        
-                                        
-                                        $log_data['table_ref'] = 'sla_rep_deadline_from';
-                                        Activitylog::create($log_data);
+
+                                        $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
+                                        $log = new ActivitylogController();
+                                        $log->saveActivityLogs('Tickets' , 'ticket_replies' , $rep->id , auth()->id() , $action_perform);
+                                        $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $rep->id , auth()->id() , $action_perform);
                                     }
                                     
                                 }
@@ -482,12 +477,10 @@ class MailController extends Controller
                                         self::$mailserver_username = $eq_value->mailserver_username;
                                         self::$mailserver_password = $eq_value->mailserver_password;
             
-                                        $log_data = array();
-                                        $log_data['module'] = 'Tickets';
-                                        $log_data['table_ref'] = 'tickets';
-                                        $log_data['ref_id'] = $ticket->id;
-                                        $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By CRON';
-                                        Activitylog::create($log_data);
+
+                                        $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By CRON';
+                                        $log = new ActivitylogController();
+                                        $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
                                         
                                         try {
                                             $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron');

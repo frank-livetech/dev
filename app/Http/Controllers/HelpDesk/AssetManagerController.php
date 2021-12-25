@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HelpDesk;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
 use Validator;
 use App\User;
@@ -231,28 +232,20 @@ class AssetManagerController extends Controller
 
             $assetRes = Assets::create($asset);
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $logs_data = array();
-            $logs_data['module'] = $module;
-            $logs_data['table_ref'] = $ref;
-            $logs_data['ref_id'] = $assetRes->id;
-            $logs_data['action_perform'] = $module . ' # '. $assetRes->id .' Created By '. $name_link;
-            $logs_data['created_by'] = \Auth::user()->id;
-            Activitylog::create($logs_data);
+            $action_perform = $module . ' # '. $assetRes->id .' Created By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs($module , $ref , $assetRes->id , auth()->id() , $action_perform);
 
             if(!empty($assetRes->ticket_id)) {
                 $ticket = Tickets::findOrFail($assetRes->ticket_id);
+                date_default_timezone_set(Session::get('timezone'));
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
                 
-                $log_data = array();
-                $log_data['module'] = 'Tickets';
-                $log_data['table_ref'] = 'tickets';
-                $log_data['ref_id'] = $ticket->ticket_id;
-                $log_data['action_perform'] = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset added By '. $name_link;
-                $log_data['created_by'] = \Auth::user()->id;
-                
-                Activitylog::create($log_data);
+                $action_perform = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset added By '. $name_link;
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'tickets' ,  $ticket->ticket_id , auth()->id() , $action_perform);
             }
             
             unset($data['customer_id']);
@@ -310,27 +303,20 @@ class AssetManagerController extends Controller
         $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
         if(!empty($asset->ticket_id)) {
             $ticket = Tickets::findOrFail($asset->ticket_id);
+            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
             
-            $log_data = array();
-            $log_data['module'] = 'Tickets';
-            $log_data['table_ref'] = 'tickets';
-            $log_data['ref_id'] = $ticket->ticket_id;
-            $log_data['action_perform'] = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset deleted By '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            
-            Activitylog::create($log_data);
+            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+            $action_perform = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset deleted By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->ticket_id , auth()->id() , $action_perform);
         }
 
-        $log_data = array();
-        $log_data['module'] = 'Asset Deleted';
-        $log_data['table_ref'] = 'asset_templates_form';
-        $log_data['ref_id'] = $data['id'];
-        $log_data['action_perform'] = ' Asset # '.$data['id'].' Deleted By '. $name_link;
-        $log_data['created_by'] = \Auth::user()->id;
-        Activitylog::create($log_data);
+        $action_perform = ' Asset # '.$data['id'].' Deleted By '. $name_link;
+        $log = new ActivitylogController();
+        $log->saveActivityLogs('Asset Deleted' , 'asset_templates_form' , $data['id'] , auth()->id() , $action_perform);
    
         $response['message'] = 'Asset Delete Successfully!';
         $response['status_code'] = 200;
@@ -491,19 +477,15 @@ class AssetManagerController extends Controller
 
             if(!empty($asset->ticket_id)) {
                 $ticket = Tickets::findOrFail($asset->ticket_id);
+                date_default_timezone_set(Session::get('timezone'));
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $log_data = array();
-                $log_data['module'] = 'Tickets';
-                $log_data['table_ref'] = 'tickets';
-                $log_data['ref_id'] = $asset->ticket_id;
-                $log_data['action_perform'] = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset updated By '. $name_link;
-                $log_data['created_by'] = \Auth::user()->id;
-                
-                Activitylog::create($log_data);
+                $action_perform = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset updated By '. $name_link;
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'ticket_replies' , $asset->ticket_id , auth()->id() , $action_perform);
             }
 
             $response['message'] = 'Record Updated Successfully';
@@ -619,13 +601,12 @@ class AssetManagerController extends Controller
             }
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $log_data = array();
-            $log_data['module'] = $request->has('module') ? $request->module : 'Assets';
-            $log_data['table_ref'] = $request->has('ref') ? $request->ref : 'Assets';
-            $log_data['ref_id'] = $request->asset_id;
-            $log_data['action_perform'] = ' '. $request->module .' # '. $request->asset_id.' Updated By '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            Activitylog::create($log_data);
+            $module = $request->has('module') ? $request->module : 'Assets';
+            $table_ref = $request->has('ref') ? $request->ref : 'Assets';
+            $action_perform = ' '. $request->module .' # '. $request->asset_id.' Updated By '. $name_link;
+            
+            $log = new ActivitylogController();
+            $log->saveActivityLogs( $module , $table_ref , $request->asset_id , auth()->id() , $action_perform);
 
             $response['message'] = 'Asset Updated Successfully';
             $response['status_code'] = 200;
