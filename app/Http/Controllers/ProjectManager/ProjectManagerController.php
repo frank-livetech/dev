@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\ProjectManager;
 use App\Http\Controllers\Controller;
-
+use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Projectfolder;
@@ -199,13 +199,9 @@ class ProjectManagerController extends Controller
       $project->save();
 
       $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-      $log_data = array();
-      $log_data['module'] = 'Project Description';
-      $log_data['table_ref'] = 'project_description';
-      $log_data['ref_id'] = $project->id;
-      $log_data['action_perform'] = 'Project '.$project->name.' Description Updated By '. $name_link;
-      $log_data['created_by'] = \Auth::user()->id;
-      Activitylog::create($log_data);
+      $action_perform = 'Project '.$project->name.' Description Updated By '. $name_link;
+      $log = new ActivitylogController();
+      $log->saveActivityLogs('Project Description' , 'project_description' , $project->id , auth()->id() , $action_perform);
 
       $response['message'] = 'Project Description Saved Successfully';
       $response['status_code'] = 200;
@@ -235,13 +231,9 @@ class ProjectManagerController extends Controller
       $project_note->save();
 
       $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-      $log_data = array();
-      $log_data['module'] = 'Project Notes';
-      $log_data['table_ref'] = 'note_created';
-      $log_data['ref_id'] = $project_note->id;
-      $log_data['action_perform'] = 'Project Note # '.$project_note->id.' Created By '. $name_link;
-      $log_data['created_by'] = \Auth::user()->id;
-      Activitylog::create($log_data);
+      $action_perform = 'Project Note # '.$project_note->id.' Created By '. $name_link;
+      $log = new ActivitylogController();
+      $log->saveActivityLogs('Project Notes' , 'note_created' ,  $project_note->id , auth()->id() , $action_perform);
 
       if($request->tag_emails != null && $request->tag_emails != '') {
 
@@ -296,13 +288,9 @@ class ProjectManagerController extends Controller
       $project_note->save();
 
       $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-      $log_data = array();
-      $log_data['module'] = 'Project Notes';
-      $log_data['table_ref'] = 'note_updated';
-      $log_data['ref_id'] = $project_note->id;
-      $log_data['action_perform'] = 'Project Note # '.$project_note->id.' Updated By '. $name_link;
-      $log_data['created_by'] = \Auth::user()->id;
-      Activitylog::create($log_data);
+      $action_perform = 'Project Note # '.$project_note->id.' Updated By '. $name_link;
+      $log = new ActivitylogController();
+      $log->saveActivityLogs('Project Notes' , 'note_updated' ,  $project_note->id , auth()->id() , $action_perform);
 
       if($request->tag_emails != null && $request->tag_emails != '') {
 
@@ -339,13 +327,9 @@ class ProjectManagerController extends Controller
       ProjectNotes::where('id',$request->id)->delete();
 
       $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-      $log_data = array();
-      $log_data['module'] = 'Project Notes';
-      $log_data['table_ref'] = 'note_deleted';
-      $log_data['ref_id'] = $request->id;
-      $log_data['action_perform'] = 'Project Note # '.$request->id.' Deleted By '. $name_link;
-      $log_data['created_by'] = \Auth::user()->id;
-      Activitylog::create($log_data);
+      $action_perform = 'Project Note # '.$request->id.' Deleted By '. $name_link;
+      $log = new ActivitylogController();
+      $log->saveActivityLogs('Project Notes' , 'note_deleted' , $request->ticket_id , auth()->id() , $action_perform);
 
       $response['message'] = 'Project Notes Deleted Successfully';
       $response['status_code'] = 200;
@@ -417,14 +401,9 @@ class ProjectManagerController extends Controller
 
                 $folder->save();
 
-                $log_data = array();
-                $log_data['module'] = 'Project Folder';
-                $log_data['table_ref'] = 'project_folder';
-                $log_data['ref_id'] = $data['id'];
-                $log_data['action_perform'] = 'Project Folder '. $data['name'] .' Updated By '. $name_link;
-                $log_data['created_by'] = \Auth::user()->id;
-              
-                Activitylog::create($log_data);
+                $action_perform = 'Project Folder '. $data['name'] .' Updated By '. $name_link;
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
 
               }else{
                 // if( !is_dir('/files/Projects Folders/'.$data['name']) ) {
@@ -435,14 +414,10 @@ class ProjectManagerController extends Controller
                 $data['created_by'] = \Auth::user()->id;
                 $data = Projectfolder::create($data);
 
-                $log_data = array();
-                $log_data['module'] = 'Project Folder';
-                $log_data['table_ref'] = 'project_folder';
-                $log_data['ref_id'] = $data['id'];
-                $log_data['action_perform'] = 'Project Folder '. $data['name'] .' Created By '. $name_link;
-                $log_data['created_by'] = \Auth::user()->id;
-              
-                Activitylog::create($log_data);
+                $action_perform =  'Project Folder '. $data['name'] .' Created By '. $name_link;
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
+
               }
 
               
@@ -476,13 +451,9 @@ class ProjectManagerController extends Controller
       DB::table('projects_folder')->where('id',$request->id)->delete();
 
       $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-      $log_data = array();
-      $log_data['module'] = 'Project Folder Deleted';
-      $log_data['table_ref'] = 'project_folder_deleted';
-      $log_data['ref_id'] = $request->id;
-      $log_data['action_perform'] = 'Project Folder ' . $folder->name . ' Deleted By '. $name_link;
-      $log_data['created_by'] = \Auth::user()->id;
-      Activitylog::create($log_data);
+      $action_perform = 'Project Folder ' . $folder->name . ' Deleted By '. $name_link;
+      $log = new ActivitylogController();
+      $log->saveActivityLogs( 'Project Folder Deleted' , 'project_folder_deleted' , $request->id , auth()->id() , $action_perform);
 
       $response['message'] = 'Folder Deleted Successfully!';
       $response['status_code'] = 200;
@@ -530,28 +501,18 @@ class ProjectManagerController extends Controller
 
               $project->save();
 
-              $log_data = array();
-              $log_data['module'] = 'Project';
-              $log_data['table_ref'] = 'project';
-              $log_data['ref_id'] = $data['id'];
-              $log_data['action_perform'] = 'Project Updated By '. $name_link;
-              $log_data['created_by'] = \Auth::user()->id;
-            
-              Activitylog::create($log_data);
+              $action_perform = 'Project Updated By '. $name_link;
+              $log = new ActivitylogController();
+              $log->saveActivityLogs('Project' , 'project' , $data['id'] , auth()->id() , $action_perform);
             }else{
                 $data['project_slug'] = $slug[0];
                 $data['created_by'] = \Auth::user()->id;
                 $data['project_roadmap_table'] =  $data['project_slug'].'-prj-roadmap';
                 $data = Project::create($data);
 
-                $log_data = array();
-                $log_data['module'] = 'Project';
-                $log_data['table_ref'] = 'project';
-                $log_data['ref_id'] = $data['id'];
-                $log_data['action_perform'] = 'Project Created By '. $name_link;
-                $log_data['created_by'] = \Auth::user()->id;
-              
-                Activitylog::create($log_data);
+                $action_perform = 'Project Created By '. $name_link;
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Project' , 'project' , $data['id'] , auth()->id() , $action_perform);
                
             }
 
@@ -579,14 +540,9 @@ class ProjectManagerController extends Controller
 
     $project->delete();
     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-    $log_data = array();
-    $log_data['module'] = 'Project Deleted';
-    $log_data['table_ref'] = 'project_deleted';
-    $log_data['ref_id'] = $request->id;
-    $log_data['action_perform'] = 'Project Deleted '. $$project->name .'  By '. $name_link;
-    $log_data['created_by'] = \Auth::user()->id;
-    
-    Activitylog::create($log_data);
+    $action_perform = 'Project Deleted '. $$project->name .'  By '. $name_link;
+    $log = new ActivitylogController();
+    $log->saveActivityLogs('Project Deleted' , 'project_deleted' , $request->id , auth()->id() , $action_perform);
 
     $response['message'] = 'Project Deleted Successfully!';
     $response['status_code'] = 200;
@@ -705,13 +661,9 @@ class ProjectManagerController extends Controller
         //     ->update(['is_deleted'=>1,'deleted_by'=>\Auth::user()->id]);
 
         $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-        $log_data = array();
-        $log_data['module'] = 'Task Deleted';
-        $log_data['table_ref'] = 'task_deleted';
-        $log_data['ref_id'] = $request->task_id;
-        $log_data['action_perform'] = 'Task #'. $request->task_id .' Deleted By '. $name_link;
-        $log_data['created_by'] = \Auth::user()->id;
-        Activitylog::create($log_data);
+        $action_perform = 'Task #'. $request->task_id .' Deleted By '. $name_link;
+        $log = new ActivitylogController();
+        $log->saveActivityLogs('Task Deleted' , 'task_deleted' , $request->task_id , auth()->id() , $action_perform);
 
         $response['message'] = 'Task Deleted Successfully!';
         $response['status_code'] = 200;
@@ -872,14 +824,9 @@ class ProjectManagerController extends Controller
             ]);
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-
-            $log_data = array();
-            $log_data['module'] = 'Task Updated';
-            $log_data['table_ref'] = 'task_updated';
-            $log_data['ref_id'] = $id;
-            $log_data['action_perform'] = 'Task # ' . $id . ' updated By '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            Activitylog::create($log_data);
+            $action_perform = 'Task # ' . $id . ' updated By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Task Updated' , 'task_updated' , $id , auth()->id() , $action_perform);
           
             $attachments = [];
             $old_attachs = TaskAttachments::where('project_id', $data['project_id'])->where('task_id', $id)->get();
@@ -941,14 +888,11 @@ class ProjectManagerController extends Controller
             }
 
             $query_insert = Tasks::insertGetId($data);
+            
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $log_data = array();
-            $log_data['module'] = 'Task Created';
-            $log_data['table_ref'] = 'task_created';
-            $log_data['ref_id'] = $query_insert;
-            $log_data['action_perform'] = 'Task # '. $query_insert .' Created By '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            Activitylog::create($log_data);
+            $action_perform = 'Task # '. $query_insert .' Created By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Task Created' , 'task_created' , $query_insert , auth()->id() , $action_perform);
 
             for($i=0; $i<sizeof($attachments); $i++){
                 $image = $request->file('attachment_'.$i);

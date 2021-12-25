@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\CustomerManager\CustomerlookupController;
+use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
 use App\Models\Departments;
 use App\Models\DepartmentAssignments;
@@ -236,15 +237,12 @@ class HelpdeskController extends Controller
                 $data['updated_by'] = \Auth::user()->id;
                 $ticket->update($data);
 
-                $log_data = array();
-                $log_data['module'] = 'Tickets';
-                $log_data['table_ref'] = 'tickets';
-                $log_data['ref_id'] = $request->id;
+                // save activity logs
                 $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                $log_data['action_perform'] = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
-                $log_data['created_by'] = \Auth::user()->id;
-                
-                Activitylog::create($log_data);
+                $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
 
                 $response['message'] = 'Ticket Updated Successfully!';
                 $response['status_code'] = 200;
@@ -259,10 +257,9 @@ class HelpdeskController extends Controller
         }
     }
 
-    public function save_tickets(Request $request){
+    public function save_tickets(Request $request){    
         $data = $request->all();
         $response = array();
-        // $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
         try {
             if ($request->has('newcustomer')) {
                 // $customer = Customer::where('email', $data['email'])->first();
@@ -298,6 +295,9 @@ class HelpdeskController extends Controller
                 $data['type'] = $tt->id;
             }
 
+            date_default_timezone_set(Session::get('timezone'));
+            $data['created_at'] = Carbon::now();
+            $data['updated_at'] = Carbon::now();
             $ticket = Tickets::create($data);
 
             // ticket assoc with sla plan
@@ -329,15 +329,12 @@ class HelpdeskController extends Controller
             }
             $ticket->save();
             
-            $log_data = array();
-            $log_data['module'] = 'Tickets';
-            $log_data['table_ref'] = 'tickets';
-            $log_data['ref_id'] = $ticket->id;
-            $log_data['created_by'] = \Auth::user()->id;
+
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-            $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
-            Activitylog::create($log_data);
-            
+            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
+
             $response['id'] = $ticket->id;
             $response['message'] = 'Ticket Added Successfully!';
             $response['status_code'] = 200;
@@ -816,14 +813,14 @@ class HelpdeskController extends Controller
                 if(\Auth::user()->user_type == $customer_role_id) {
                     $ticket->trashed = 0;
                     $ticket->save();
+
+                    // save activity logs
                     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                    Activitylog::create([
-                        "module" => "Tickets",
-                        "table_ref" => "tickets",
-                        "ref_id" => $ticket->id,
-                        "created_by" => \Auth::user()->id,
-                        "action_perform" => 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Recycled By by '. $name_link,
-                    ]);
+                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Recycled By by '. $name_link;
+
+                    $log = new ActivitylogController();
+                    $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
+
                 } else {
                     $response['message'] = 'Please restore this ticket first!';
                     $response['status_code'] = 500;
@@ -879,6 +876,8 @@ class HelpdeskController extends Controller
                 $save_reply['cc'] = $data['cc'];
                 $save_reply['is_published'] = $data['is_published'];
                 $save_reply['attachments'] = $data['attachments'];
+                
+                date_default_timezone_set(Session::get('timezone'));
                 $save_reply['updated_at'] = Carbon::now();
                 $save_reply['updated_by'] = \Auth::user()->id;
 
@@ -891,19 +890,17 @@ class HelpdeskController extends Controller
                 $action_perf = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
             }
 
+            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->save();
 
             $sla_updated = false;
 
             if($data['is_published'] == 1) {
-                Activitylog::create([
-                    "module" => "Tickets",
-                    "table_ref" => "ticket_replies",
-                    "ref_id" => $ticket->id,
-                    "created_by" => \Auth::user()->id,
-                    "action_perform" => $action_perf
-                ]);
+
+                // save activity logs
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'ticket_replies' , $ticket->id , auth()->id() , $action_perf);
 
                 $settings = $this->getTicketSettings(['reply_due_deadline']);
                 if(isset($settings['reply_due_deadline'])) {
@@ -914,13 +911,8 @@ class HelpdeskController extends Controller
 
                         $sla_updated = $ticket->reply_deadline;
                         
-                        Activitylog::create([
-                            "module" => "Tickets",
-                            "table_ref" => "sla_rep_deadline_from",
-                            "ref_id" => $ticket->id,
-                            "created_by" => \Auth::user()->id,
-                            "action_perform" => $action_perf
-                        ]);
+                        $log = new ActivitylogController();
+                        $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $ticket->id , auth()->id() , $action_perf);
                     }
                 }
             }
@@ -1062,13 +1054,10 @@ class HelpdeskController extends Controller
                 
                 // Add Delete log
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $log_data = array();
-                $log_data['module'] = 'Tickets';
-                $log_data['table_ref'] = 'tickets';
-                $log_data['ref_id'] = $del_tkt->id;
-                $log_data['created_by'] = \Auth::user()->id;
-                $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Permanently Deleted By '. $name_link;
-                Activitylog::create($log_data);
+                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Permanently Deleted By '. $name_link;
+                
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
             }
 
             $response['message'] = 'Data Removed Successfully!';
@@ -1094,14 +1083,12 @@ class HelpdeskController extends Controller
                 $del_tkt->trashed = 1;
                 $del_tkt->updated_at = Carbon::now();
                 $del_tkt->save();
+
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $log_data = array();
-                $log_data['module'] = 'Tickets';
-                $log_data['table_ref'] = 'tickets';
-                $log_data['ref_id'] = $del_tkt->id;
-                $log_data['created_by'] = \Auth::user()->id;
-                $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Moved to trash By '. $name_link;
-                Activitylog::create($log_data);
+                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Moved to trash By '. $name_link;
+
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
             }
 
             $response['message'] = 'Data Successfully Moved to trash!';
@@ -1119,7 +1106,6 @@ class HelpdeskController extends Controller
     public function recycle_tickets(Request $request){
         $data  = $request->tickets;
         try {
-            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
             for($i=0; $i< sizeof($data);$i++){
                 $del_tkt = Tickets::where('id',$data[$i])->first();
                 
@@ -1128,13 +1114,11 @@ class HelpdeskController extends Controller
                 $del_tkt->updated_by = \Auth::user()->id;
                 $del_tkt->save();
                 
-                $log_data = array();
-                $log_data['module'] = 'Tickets';
-                $log_data['table_ref'] = 'tickets';
-                $log_data['ref_id'] = $del_tkt->id;
-                $log_data['created_by'] = \Auth::user()->id;
-                $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Recycled By '. $name_link;
-                Activitylog::create($log_data);
+                $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Recycled By '. $name_link;
+
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
             }
 
             $response['message'] = 'Data Recycled Successfully!';
@@ -1165,14 +1149,12 @@ class HelpdeskController extends Controller
             $flag_tkt->updated_by = \Auth::user()->id;
             $flag_tkt->save();
             
-            $log_data = array();
-            $log_data['module'] = 'Tickets';
-            $log_data['table_ref'] = 'tickets';
-            $log_data['ref_id'] = $flag_tkt->id;
+
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/'.$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a>) '.$msg.' '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            Activitylog::create($log_data);
+            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a>) '.$msg.' '. $name_link;
+
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'tickets' , $flag_tkt->id , auth()->id() , $action_perform);
 
             $response['message'] = 'Ticket Flagged Successfully!';
             $response['status_code'] = 200;
@@ -1208,17 +1190,16 @@ class HelpdeskController extends Controller
             $data['created_by'] = \Auth::user()->id;
             $ticket_followUp = TicketFollowUp::create($data);
 
+            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
+
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            Activitylog::create([
-                "module" => "Tickets",
-                "table_ref" => "ticket_follow_up",
-                "ref_id" => $ticket->id,
-                "created_by" => \Auth::user()->id,
-                "action_perform" => 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up added by '. $name_link,
-            ]);
+            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up added by '. $name_link;
+
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id, auth()->id() , $action_perform);
 
             $response['message'] = 'Ticket Follow Up Added Successfully!';
             $response['status_code'] = 200;
@@ -1302,14 +1283,10 @@ class HelpdeskController extends Controller
             $flwup->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up "'.$logData.'" by ' . $name_link;
 
-            Activitylog::create([
-                "module" => "Tickets",
-                "table_ref" => "ticket_follow_up",
-                "ref_id" => $ticket->id,
-                "created_by" => \Auth::user()->id,
-                "action_perform" => 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up "'.$logData.'" by ' . $name_link,
-            ]);
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id, auth()->id() , $action_perform);
 
             $response['status_code'] = 200;
             $response['success'] = true;
@@ -1517,17 +1494,16 @@ class HelpdeskController extends Controller
 
             $followUp->save();
 
+            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
+
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            Activitylog::create([
-                "module" => "Tickets",
-                "table_ref" => "ticket_follow_up",
-                "ref_id" => $ticket->id,
-                "created_by" => \Auth::user()->id,
-                "action_perform" => 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up deleted by '. $name_link,
-            ]);
+            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up deleted by '. $name_link;
+
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id , auth()->id() , $action_perform);
 
             $response['message'] = 'Follow Up deleted successfully!';
             $response['status_code'] = 200;
@@ -1577,6 +1553,7 @@ class HelpdeskController extends Controller
                 $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note added by '. $name_link;
             }
 
+            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
@@ -1590,23 +1567,13 @@ class HelpdeskController extends Controller
 
                     $sla_updated = 'cleared';
 
-                    Activitylog::create([
-                        "module" => "Tickets",
-                        "table_ref" => "sla_rep_deadline_from",
-                        "ref_id" => $ticket->id,
-                        "created_by" => \Auth::user()->id,
-                        "action_perform" => $action_performed
-                    ]);
+                    $log = new ActivitylogController();
+                    $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $ticket->id , auth()->id() , $action_performed);
                 }
             }
 
-            Activitylog::create([
-                "module" => "Tickets",
-                "table_ref" => "ticket_notes",
-                "ref_id" => $ticket->id,
-                "created_by" => \Auth::user()->id,
-                "action_perform" => $action_performed
-            ]);
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id , auth()->id() , $action_performed);
 
             if($request->tag_emails != null && $request->tag_emails != '') {
 
@@ -1818,14 +1785,12 @@ class HelpdeskController extends Controller
                 $ticket->updated_at =  date('Y-m-d H:i:s');
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
+
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                Activitylog::create([
-                    "module" => "Tickets",
-                    "table_ref" => "ticket_notes",
-                    "ref_id" => $ticket->id,
-                    "created_by" => \Auth::user()->id,
-                    "action_perform" => 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link,
-                ]);
+                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
+    
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id, auth()->id() , $action_perform);
             }
 
             $response['message'] = 'Ticket Note Deleted Successfully!';
@@ -1902,19 +1867,17 @@ class HelpdeskController extends Controller
                         $item->ticket_id = $ticket->id;
                         $item->save();
                     }
+
                     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                    $log_data = array();
-                    $log_data['module'] = 'Tickets';
-                    $log_data['table_ref'] = 'tickets';
-                    $log_data['ref_id'] = $ticket->id;
-                    $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/'.$value->coustom_id.'">'.$value->coustom_id.'</a>) merged into (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) By '. $name_link;
-                    $log_data['created_by'] = \Auth::user()->id;
-                    
-                    Activitylog::create($log_data);
+                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$value->coustom_id.'">'.$value->coustom_id.'</a>) merged into (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) By '. $name_link;
+        
+                    $log = new ActivitylogController();
+                    $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id, auth()->id() , $action_perform);
 
                     $value->delete();
                 }
 
+                date_default_timezone_set(Session::get('timezone'));
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
@@ -1962,18 +1925,12 @@ class HelpdeskController extends Controller
             $ticket->reply_deadline = null;
             $ticket->resolution_deadline = null;
             $ticket->save();
-            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $log_data = array();
-            $log_data['module'] = 'Tickets';
-            $log_data['table_ref'] = 'sla_rep_deadline_from';
-            $log_data['ref_id'] = $request->ticket_id;
-            $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Sla Plan Association Updated By '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            
-            Activitylog::create($log_data);
 
-            $log_data['table_ref'] = 'sla_res_deadline_from';
-            Activitylog::create($log_data);
+            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Sla Plan Association Updated By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $request->ticket_id , auth()->id() , $action_perform);
+            $log->saveActivityLogs('Tickets' , 'sla_res_deadline_from' , $request->ticket_id , auth()->id() , $action_perform);
 
             $response['status_code'] = 200;
             $response['success'] = true;
@@ -1996,15 +1953,11 @@ class HelpdeskController extends Controller
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $log_data = array();
-            $log_data['module'] = 'Tickets';
-            $log_data['table_ref'] = 'tickets';
-            $log_data['ref_id'] = $request->ticket_id;
-            $log_data['action_perform'] = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) reply & resolution deadlines Updated By '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            
-            Activitylog::create($log_data);
+            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) reply & resolution deadlines Updated By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'tickets' , $request->ticket_id , auth()->id() , $action_perform);
 
+            
             $response['message'] = 'Deadlines reset successfully';
             $response['status_code'] = 200;
             $response['success'] = true;

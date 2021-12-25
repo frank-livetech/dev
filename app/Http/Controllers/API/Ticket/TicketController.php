@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\Ticket;
 use App\Http\Controllers\Controller;
-
+use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -35,16 +35,12 @@ class TicketController extends Controller
             $ticket->coustom_id = $ticket_settings->tkt_value == 'random' ? $this->sernum() : '#'.$ticket->id;
             $ticket->seq_custom_id = $tickets_count+1;
             $ticket->save();
-            $log_data = array();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
 
-            $log_data['module'] = 'Tickets';
-            $log_data['table_ref'] = 'tickets';
-            $log_data['ref_id'] = $ticket->id;
-            $log_data['action_perform'] = 'Ticket (ID'.$ticket->coustom_id.') Created By '. $name_link;
-            $log_data['created_by'] = \Auth::user()->id;
-            $activity_log = Activitylog::create($log_data);
+            $action_perform = 'Ticket (ID'.$ticket->coustom_id.') Created By '. $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'tickets' ,$ticket->id , auth()->id() , $action_perform);
             
            // $this->sendNotificationMail($data,$ticket);
             $response['message'] = 'Tickets Added Successfully!';
