@@ -22,19 +22,23 @@ $.ajaxSetup({
 });
 
 $(function() {
-    console.log(ticket , "ticket start");
-    $('#cust-creation-date').html( timeZoneDate(ticket_customer.created_at , time_zone , date_format ));
-    $('#creation-date').html(timeZoneDate(ticket.created_at , time_zone , date_format ));
+    console.log(ticket , "adffafadsfadfadf");
+    var ticket_created_at_val = $("#ticket_created_at_val").val();
+    alert(ticket_created_at_val);
+    $('#cust-creation-date').html(moment(ticket_customer.created_at).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a'));
+
+    $('#creation-date').text(moment(ticket_created_at_val).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a'));
+
+    
 
     let dt = new Date(ticket.sla_res_deadline_from);
     if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
-    $('#updation-date').html(timeZoneDate(dt , time_zone , date_format ));
+    $('#updation-date').html( moment(dt).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') );
     
     // settle company name and phone values
     setCustomerCompany();
     getLatestLogs();
-
-    $('#ticket-timestamp').html( timeZoneDate(ticket.created_at , time_zone , date_format ) );
+    $('#ticket-timestamp').text( moment(ticket_created_at_val).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') );
 
     if ($("#mymce").length > 0) {
         tinymce.init({
@@ -165,8 +169,9 @@ $(function() {
 // convert current date to provided timezone date with format
 function timeZoneDate(date , timezone , format) {
     let tkt = new Date(date);
-    let get_timezone_date_time  = tkt.toLocaleString('en-US', { timeZone: timezone });
-    return get_timezone_date_time = moment(get_timezone_date_time).format(format + ' ' + 'hh:mm A');
+    return tkt;
+    // let get_timezone_date_time  = tkt.toLocaleString('en-US', { timeZone: timezone });
+    // return  get_timezone_date_time = moment(date).format(format + ' ' + 'hh:mm A');
 }
 
 function setSlaPlanDeadlines(ret = false) {

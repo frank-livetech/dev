@@ -299,6 +299,7 @@ class HelpdeskController extends Controller
             $data['created_at'] = Carbon::now();
             $data['updated_at'] = Carbon::now();
             $ticket = Tickets::create($data);
+            
 
             // ticket assoc with sla plan
             $settings = $this->getTicketSettings(['default_reply_and_resolution_deadline']);
@@ -328,6 +329,8 @@ class HelpdeskController extends Controller
                 $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
             }
             $ticket->save();
+
+            // return false;
             
 
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
