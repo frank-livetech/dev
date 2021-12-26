@@ -440,8 +440,8 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
     border-color: #e6e7e8 #252629 #fff #fff;
 }
 </style>
-
 <input type="text" id="current_url" value="{{url()->current()}}">
+<input type="hidden" id="ticket_created_at_val" value="{{date_format($ticket->created_at , 'c')}}">
 
 <div class="page-breadcrumb">
     <div class="row">
