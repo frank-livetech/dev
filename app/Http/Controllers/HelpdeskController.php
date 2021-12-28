@@ -258,6 +258,9 @@ class HelpdeskController extends Controller
     }
 
     public function save_tickets(Request $request){    
+        date_default_timezone_set(Session::get('timezone'));
+        $current_date = Carbon::now();
+
         $data = $request->all();
         $response = array();
         try {
@@ -284,6 +287,7 @@ class HelpdeskController extends Controller
             
             $data['created_by'] = \Auth::user()->id;
             
+            
             if(!isset($data['status'])) {
                 // set default open status
                 $os = TicketStatus::where('name','Open')->first();
@@ -295,12 +299,10 @@ class HelpdeskController extends Controller
                 $data['type'] = $tt->id;
             }
 
-            date_default_timezone_set(Session::get('timezone'));
-            $data['created_at'] = Carbon::now();
-            $data['updated_at'] = Carbon::now();
+            $data['created_at'] = $current_date;
+            $data['updated_at'] = $current_date;
             $ticket = Tickets::create($data);
-            
-
+                                  
             // ticket assoc with sla plan
             $settings = $this->getTicketSettings(['default_reply_and_resolution_deadline']);
             if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -318,6 +320,8 @@ class HelpdeskController extends Controller
                     ]);
                 }
             }
+
+            
             
             $newG = new GeneralController();
             $ticket->coustom_id = $newG->randomStringFormat(self::CUSTOMID_FORMAT);
@@ -330,14 +334,12 @@ class HelpdeskController extends Controller
             }
             $ticket->save();
 
-            // return false;
-            
-
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
             $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
             $log = new ActivitylogController();
-            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
+            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);            
 
+            // return false;
             $response['id'] = $ticket->id;
             $response['message'] = 'Ticket Added Successfully!';
             $response['status_code'] = 200;

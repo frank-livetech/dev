@@ -75,6 +75,8 @@
             <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
         @endif
 
+        <input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
+
         <div class="content-body">
             <section id="statistics-card">
                  <div class="row">
@@ -484,6 +486,7 @@
 <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
 <script src="{{asset($file_path . 'assets\extra-libs\calendar-master\js\calendar.js')}}"></script>
 <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
 
 <script>
 
