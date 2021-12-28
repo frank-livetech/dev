@@ -6,6 +6,8 @@
     }
 });
 
+var usrtimeZone = $("#usrtimeZone").val();
+
 let modalCal = document.getElementById('calendarModal');
 var settings = {
     Color: '',
@@ -443,7 +445,7 @@ function getLatestLogs() {
 
                     tickets_logs_list.row.add([
                         (i + 1),
-                        element.action_perform+' at '+moment(element.created_at).format($('#system_date_format').val() + ' ' + 'hh:mm A'),
+                        element.action_perform+' at '+moment(element.created_at).parseZone(usrtimeZone).format($('#system_date_format').val() + ' ' + 'hh:mm A'),
                     ]).draw(false).node();
                 }
             } else {

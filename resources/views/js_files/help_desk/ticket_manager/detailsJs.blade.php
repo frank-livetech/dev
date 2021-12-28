@@ -24,7 +24,6 @@ $.ajaxSetup({
 $(function() {
     console.log(ticket , "adffafadsfadfadf");
     var ticket_created_at_val = $("#ticket_created_at_val").val();
-    alert(ticket_created_at_val);
     $('#cust-creation-date').html(moment(ticket_customer.created_at).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a'));
 
     $('#creation-date').text(moment(ticket_created_at_val).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a'));
