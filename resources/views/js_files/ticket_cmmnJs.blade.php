@@ -412,7 +412,7 @@ function calculateDateDiff(date1, date2) {
     if(mins > 0) ret += mins+'m';
 
     if (ret == ''){
-        ret = 'Just Now'
+        ret = '0 m'
     }
     return ret;
 }
