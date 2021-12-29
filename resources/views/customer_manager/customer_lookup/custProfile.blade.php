@@ -334,35 +334,35 @@ background-color:rgba(218,165,32,0.3);
         <div class="col-lg-9 col-xlg-9 col-md-7">
             <!-- <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
-                    <a href="http://localhost/framework/ticket-management/self" class="card border-info card-hover">
+                    <a href="http://localhost/framework/ticket-manager/self" class="card border-info card-hover">
                         <div class="box p-2 rounded  text-center">
                             <h4 class="mb-0 text-info ">Domain Manager</h4>
                         </div>
                     </a>
                 </div>    
                 <div class="col-lg-4 col-md-4 col-sm-6">
-                    <a href="http://localhost/framework/ticket-management/self" class="card  border-primary card-hover">
+                    <a href="http://localhost/framework/ticket-manager/self" class="card  border-primary card-hover">
                         <div class="box p-2 rounded text-center">
                             <h4 class="mb-0 text-primary ">My Servers</h4>
                         </div>
                     </a>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
-                    <a href="http://localhost/framework/ticket-management/open" class="card border-warning card-hover">
+                    <a href="http://localhost/framework/ticket-manager/open" class="card border-warning card-hover">
                         <div class="box p-2 rounded  text-center">
                             <h4 class="mb-0 text-warning ">Backups</h4>
                         </div>
                     </a>
                 </div>
                 <div class="col-lg-6 col-md-4 col-sm-6">
-                    <a href="http://localhost/framework/ticket-management/unassigned" class="card border-success card-hover">
+                    <a href="http://localhost/framework/ticket-manager/unassigned" class="card border-success card-hover">
                         <div class="box p-2 rounded text-center">
                             <h4 class="mb-0 text-success ">Something special coming soon</h4>
                         </div>
                     </a>
                 </div>
                 <div class="col-lg-6 col-md-4 col-sm-6">
-                    <a href="http://localhost/framework/ticket-management/late" class="card  border-danger card-hover">
+                    <a href="http://localhost/framework/ticket-manager/late" class="card  border-danger card-hover">
                         <div class="box p-2 rounded text-center">
                             <h4 class="mb-0 text-danger ">Something special coming soon</h4>
                         </div>
