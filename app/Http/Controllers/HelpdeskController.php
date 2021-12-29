@@ -1620,7 +1620,7 @@ class HelpdeskController extends Controller
             $response['sla_updated'] = $sla_updated;
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['tkt_update_at'] = $res_updated_at->res_updated_at;
+            $response['tkt_update_at'] = $res_updated_at->updated_at;
             $response['data'] = $note;
             return response()->json($response);
 
