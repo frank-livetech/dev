@@ -1373,7 +1373,7 @@ class HelpdeskController extends Controller
                 $rec_time = explode(':', $followUp->recurrence_time);
 
                 // set some timezone for proper hour and mins setting
-                $followUpDate->timezone("Asia/Karachi");
+                $followUpDate->timezone(Session::get('timezone'));
 
                 $followUpDate->hour = $rec_time[0];
                 $followUpDate->minute = $rec_time[1];
@@ -1569,13 +1569,14 @@ class HelpdeskController extends Controller
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
 
-            $res_updated_at =  Tickets::where('id' , $request->ticket_id)->first();
+            
             
             $sla_updated = false;
             $settings = $this->getTicketSettings(['reply_due_deadline_when_adding_ticket_note']);
             if(isset($settings['reply_due_deadline_when_adding_ticket_note'])) {
                 if($settings['reply_due_deadline_when_adding_ticket_note'] == 1) {
                     $ticket->reply_deadline = 'cleared';
+                    $ticket->updated_at = $current_date;
                     $ticket->save();
 
                     $sla_updated = 'cleared';
@@ -1612,14 +1613,14 @@ class HelpdeskController extends Controller
                 }
         
             }
-
-            
+            $check =  Tickets::where('id' , $request->ticket_id)->first();
+            // dd($check); exit();
 
             $response['message'] = 'Ticket Note Saved Successfully!';
             $response['sla_updated'] = $sla_updated;
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['tkt_update_at'] = $res_updated_at->updated_at;
+            $response['tkt_update_at'] = $check->updated_at;
             $response['data'] = $note;
             return response()->json($response);
 

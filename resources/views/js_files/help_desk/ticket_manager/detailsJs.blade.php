@@ -966,6 +966,9 @@ function listReplies() {
 
                 tdet += '';
             }
+
+            let b  = new Date(reply.date).toLocaleString('en-US', { timeZone: time_zone });
+            let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm a');
             
             $('#ticket-replies').append(`
                 <li class="media">
@@ -1090,8 +1093,9 @@ function publishReply(ele, type = 'publish') {
                 cache: false,
                 success: function(data) {
 
-                    var update_at = moment(data.tkt_update_at).format(date_format + ' ' + 'hh:mm a');
-                    $("#updation-date").html(update_at);
+                    let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
+                    let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm a');
+                    $("#updation-date").html(tkt_updted_date);
 
                     $(ele).attr('disabled', false);
                     $(ele).find('.spinner-border').hide();
@@ -2111,8 +2115,9 @@ $("#save_ticket_note").submit(function(event) {
         success: function(data) {
             // console.log(data);
             if (data.success) {
-                let tkt_updted_date = moment(data.tkt_update_at).format(date_format + ' ' + 'hh:mm a');
-                console.log(tkt_updted_date , "tkt_updted_date");
+
+                let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
+                let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm a');
                 // send mail notification regarding ticket action
                 $("#updation-date").html(tkt_updted_date);
 
