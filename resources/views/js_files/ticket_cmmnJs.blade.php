@@ -311,6 +311,7 @@ function flagTicket(ele, id) {
         }
     });
 }
+
 function getClosedOrTrashedTickets(key) {
     let ret = $.ajax({
         type: "get",
@@ -326,6 +327,7 @@ function getClosedOrTrashedTickets(key) {
         }
     });
 }
+
 function ticket_notify(id, template, action_name) {
     $.ajax({
         type: 'POST',
@@ -341,6 +343,7 @@ function ticket_notify(id, template, action_name) {
         }
     });
 }
+
 function getClockTime(followUpDate, timediff) {
     if (timediff >= 0) {
         let today = new Date();
@@ -365,6 +368,7 @@ function getClockTime(followUpDate, timediff) {
         return remTime;
     }
 }
+
 function getDateDiff(date1, date2=new Date()) {
     var a = moment(date1);
     var b = moment(date2);
@@ -412,13 +416,10 @@ function calculateDateDiff(date1, date2) {
     if(mins > 0) ret += mins+'m';
 
     if (ret == ''){
-        ret = 'Just Now'
+        ret = '0m'
     }
     return ret;
 }
-
-
-
 
 function getTimeRemaining(endtime) {
   let time = Date.parse(endtime) - Date.parse(new Date());

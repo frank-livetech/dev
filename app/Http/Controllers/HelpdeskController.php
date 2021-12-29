@@ -1565,7 +1565,6 @@ class HelpdeskController extends Controller
                 $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note added by '. $name_link;
             }
 
-            $ticket->res_updated_at = $current_date;
             $ticket->updated_at = $current_date;
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
@@ -1620,7 +1619,7 @@ class HelpdeskController extends Controller
             $response['sla_updated'] = $sla_updated;
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['tkt_update_at'] = $res_updated_at->res_updated_at;
+            $response['tkt_update_at'] = $res_updated_at->updated_at;
             $response['data'] = $note;
             return response()->json($response);
 
