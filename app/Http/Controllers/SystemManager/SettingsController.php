@@ -1117,6 +1117,9 @@ class SettingsController extends Controller
     }
 
     public function SLASetting(Request $request) {
+
+        date_default_timezone_set(Session::get('timezone'));
+        $current_date = Carbon::now();
         
         $data = array(  
             "reply_due_deadline" => $request->reply_due_deadline,
@@ -1150,6 +1153,8 @@ class SettingsController extends Controller
                 $sys_setting->tkt_key = $key;
                 $sys_setting->tkt_value = $value;
                 $sys_setting->created_by =\Auth::user()->id;
+                $sys_setting->created_at = $current_date;
+                $sys_setting->updated_at = $current_date;
                 $sys_setting->save();
             }
 
@@ -1165,6 +1170,8 @@ class SettingsController extends Controller
                 $sys_setting->tkt_key = $key;
                 $sys_setting->tkt_value = $value;
                 $sys_setting->created_by =\Auth::user()->id;
+                $sys_setting->created_at = $current_date;
+                $sys_setting->updated_at = $current_date;
                 $sys_setting->save();
             }
 

@@ -2,6 +2,8 @@
     // Ticket CMMN Script Blade 
     let tickets_table_list = '';
 let page_name = '';
+var system_date_format = $("#system_date_format").val();
+var usrtimeZone = $("#usrtimeZone").val();
 function initializeTicketTable(p_name='') {
     page_name = p_name;
     tickets_table_list = $('#ticket-table-list').DataTable({
@@ -222,6 +224,9 @@ function redrawTicketsTable(ticket_arr) {
             }
         }
 
+        var last_act = val.lastActivity;
+        let region_current_date = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
+
         let la = new Date(val.lastActivity);
         let replies = 0
         if(val['replies'] > 0){
@@ -230,7 +235,8 @@ function redrawTicketsTable(ticket_arr) {
         let replier = val['lastReplier'];
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
-        var last_activity = getDateDiff(moment(moment(val.lastActivity).toDate()).local());
+        // var last_activity = getDateDiff2( moment( moment(val.lastActivity).toDate() ).local() );
+        var last_activity = calculateDateDiff( last_act , region_current_date );
 
         if(last_activity.includes('d')) {
             la_color = `red`;
@@ -259,23 +265,6 @@ function redrawTicketsTable(ticket_arr) {
         </tr>`;
         
         tickets_table_list.row.add($(row)).draw();
-        // tickets_table_list.row.add([
-        //     '<div class="text-center"><input type="checkbox" name="select_all" value= "' + val['id'] + '"></div>',
-        //     restore_flag_btn,
-        //     status,
-        //     `<a href="${ticket_details_route}/${val['coustom_id']}">${shortname}</a>`,
-        //     `<a href="${ticket_details_route}/${val['coustom_id']}">${custom_id}</a>`,
-        //     prior,
-        //     `<a href="customer-profile/${val['customer_id']}">${val['customer_name']}</a>`,
-        //     val['lastReplier'],
-        //     val['replies'],
-        //     getDateDiff(moment(moment(val.lastActivity).toDate()).local()),
-        //     rep_due,
-        //     res_due,
-        //     val['tech_name'],
-        //     val['department_name'],
-        //     moment(val['created_at']).format(date_formate),
-        // ]).draw(false).node().id = 'tr-' + val['id'];
     });
 
     $(".list_department").on('click', function () {
@@ -399,6 +388,30 @@ function getDateDiff(date1, date2=new Date()) {
     }
     return ret;
 }
+
+function calculateDateDiff(date1, date2) {
+    var a = moment(date1);
+    var b = moment(date2);
+    var days = b.diff(a, 'days');
+    a.add(days, 'days');
+
+    var hours = b.diff(a, 'hours');
+    a.add(hours, 'hours');
+
+    var mins = b.diff(a, 'minutes');
+
+    let ret = '';
+    if(days > 0) ret += days+'d ';
+    if(hours > 0) ret += hours+'h ';
+    if(mins > 0) ret += mins+'m';
+
+    if (ret == ''){
+        ret = 'Just Now'
+    }
+    return ret;
+}
+
+
 
 
 function getTimeRemaining(endtime) {
