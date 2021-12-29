@@ -288,7 +288,7 @@
 
                                         toastr.success(data.message, { timeOut: 5000 });
                                         var preivous_url = $("#previous_url").val();
-                                        // window.location = preivous_url;
+                                        window.location = preivous_url;
                                         
                                         // Swal.fire({
                                         //     title: 'Success',
