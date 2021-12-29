@@ -1565,7 +1565,6 @@ class HelpdeskController extends Controller
                 $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note added by '. $name_link;
             }
 
-            $ticket->res_updated_at = $current_date;
             $ticket->updated_at = $current_date;
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
