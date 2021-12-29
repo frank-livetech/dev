@@ -28,11 +28,16 @@ $(function() {
 
     $('#creation-date').text(moment(ticket_created_at_val).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a'));
 
-    
+    // old code
+    // let dt = new Date(ticket.sla_res_deadline_from);
+    // if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
 
-    let dt = new Date(ticket.sla_res_deadline_from);
-    if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
-    $('#updation-date').html( moment(dt).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') );
+    // updted dt ---> new code
+    let res = moment(ticket.sla_res_deadline_from).valueOf();
+    let rep = moment(ticket.sla_rep_deadline_from).valueOf();
+    let updt_dt = rep > res ? ticket.sla_rep_deadline_from : ticket.sla_res_deadline_from;
+    
+    $('#updation-date').html( moment(updt_dt).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') );
     
     // settle company name and phone values
     setCustomerCompany();
@@ -966,7 +971,7 @@ function listReplies() {
                 <li class="media">
                     <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + timeZoneDate(reply.date , time_zone , date_format ) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + moment(reply.date).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
@@ -1085,9 +1090,8 @@ function publishReply(ele, type = 'publish') {
                 cache: false,
                 success: function(data) {
 
-                    var update_at = data.tkt_update_at;
-                    let time = timeZoneDate( update_at , time_zone , date_format ) 
-                    $("#updation-date").html(time);
+                    var update_at = moment(data.tkt_update_at).format(date_format + ' ' + 'hh:mm a');
+                    $("#updation-date").html(update_at);
 
                     $(ele).attr('disabled', false);
                     $(ele).find('.spinner-border').hide();
@@ -2106,13 +2110,11 @@ $("#save_ticket_note").submit(function(event) {
         processData: false,
         success: function(data) {
             // console.log(data);
-
             if (data.success) {
+                let tkt_updted_date = moment(data.tkt_update_at).format(date_format + ' ' + 'hh:mm a');
+                console.log(tkt_updted_date , "tkt_updted_date");
                 // send mail notification regarding ticket action
-                console.log(data.tkt_update_at , "data.tkt_update_at");
-                let upd_dt = timeZoneDate(data.tkt_update_at, time_zone , date_format );
-                console.log(upd_dt);
-                $("#updation-date").html(upd_dt);
+                $("#updation-date").html(tkt_updted_date);
 
                 let note_status = 'added';
                 let note_temp = 'ticket_note_create';

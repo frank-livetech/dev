@@ -235,8 +235,14 @@ function redrawTicketsTable(ticket_arr) {
         let replier = val['lastReplier'];
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
-        // var last_activity = getDateDiff2( moment( moment(val.lastActivity).toDate() ).local() );
-        var last_activity = calculateDateDiff( last_act , region_current_date );
+        let a = {
+            "1st" : last_act , 
+            "2nd" : moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A') , 
+            "3rd" : region_current_date,
+        }
+        console.table(a);
+        let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
+        var last_activity = calculateDateDiff( c , region_current_date );
 
         if(last_activity.includes('d')) {
             la_color = `red`;
