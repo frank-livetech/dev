@@ -22,27 +22,25 @@ $.ajaxSetup({
 });
 
 $(function() {
-    console.log(ticket , "adffafadsfadfadf");
-    var ticket_created_at_val = $("#ticket_created_at_val").val();
-    $('#cust-creation-date').html(moment(ticket_customer.created_at).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a'));
-
-    $('#creation-date').text(moment(ticket_created_at_val).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a'));
+    console.log(ticket , "ticket");
+    $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
+    $('#creation-date').text( convertDate(ticket.created_at)  );
 
     // old code
-    // let dt = new Date(ticket.sla_res_deadline_from);
-    // if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
+    let dt = new Date(ticket.sla_res_deadline_from);
+    if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
 
     // updted dt ---> new code
-    let res = moment(ticket.sla_res_deadline_from).valueOf();
-    let rep = moment(ticket.sla_rep_deadline_from).valueOf();
-    let updt_dt = rep > res ? ticket.sla_rep_deadline_from : ticket.sla_res_deadline_from;
+    // let res = moment(ticket.sla_res_deadline_from).valueOf();
+    // let rep = moment(ticket.sla_rep_deadline_from).valueOf();
+    // let updt_dt = rep > res ? ticket.sla_rep_deadline_from : ticket.sla_res_deadline_from;
     
-    $('#updation-date').html( moment(updt_dt).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') );
+    $('#updation-date').html( convertDate(dt) );
     
     // settle company name and phone values
     setCustomerCompany();
     getLatestLogs();
-    $('#ticket-timestamp').text( moment(ticket_created_at_val).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') );
+    $('#ticket-timestamp').text( convertDate(ticket.created_at) );
 
     if ($("#mymce").length > 0) {
         tinymce.init({
@@ -65,7 +63,7 @@ $(function() {
                 // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
 
                 input.onchange = function() {
-                    console.log({ cb, value, meta });
+                    
                     var file = this.files[0];
 
                     var reader = new FileReader();
@@ -78,8 +76,6 @@ $(function() {
                             base64 = await downloadPNGFromAnyImageSrc(reader.result);
                         }
 
-                        console.log(reader);
-
                         var blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
                         cb(blobInfo.blobUri(), { title: file.name });
@@ -91,7 +87,6 @@ $(function() {
         }).then(function() {
             listReplies();
         }).catch(function(error) {
-            console.log(error);
             listReplies();
         });
     }
@@ -158,24 +153,30 @@ $(function() {
 
     $('.note-type-ticket').on('change', function() {
         $('.note-visibilty').prop('disabled',false);
-        console.log('t');
     });
     $('.note-type-user').on('change', function() {
         $('.note-visibilty').prop('disabled',true);
-        console.log('u');
     });
     $('.note-type-user-org').on('change', function() {
         $('.note-visibilty').prop('disabled',true);
-        console.log('or');
     });
 });
 
 // convert current date to provided timezone date with format
-function timeZoneDate(date , timezone , format) {
-    let tkt = new Date(date);
-    return tkt;
-    // let get_timezone_date_time  = tkt.toLocaleString('en-US', { timeZone: timezone });
-    // return  get_timezone_date_time = moment(date).format(format + ' ' + 'hh:mm A');
+function convertDate(date) {
+    var d = new Date(date);
+
+    var min = d.getMinutes();
+    var dt = d.getDate();
+    var d_utc = d.getUTCHours();
+
+    d.setMinutes(min);
+    d.setDate(dt);
+    d.setUTCHours(d_utc);
+
+    let a = d.toLocaleString("en-US" , {timeZone: time_zone});
+    var converted_date = moment(a).format(date_format + ' ' +'hh:mm a');
+    return converted_date;
 }
 
 function setSlaPlanDeadlines(ret = false) {
@@ -258,7 +259,6 @@ function setSlaPlanDeadlines(ret = false) {
 }
 
 function resetSlaPlan() {
-    console.log(ticket);
     if(ticket != null) {
         if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
@@ -281,7 +281,7 @@ function resetSlaPlan() {
 }
 
 $("#ticket-rep-due").on('change' , function() {
-    console.log( $(this).val() , "change");
+    
 });
 
 function updateDeadlines() {
@@ -656,7 +656,6 @@ function saveRequest() {
 
         let fileSizeErr = false;
         $('.tickets_attaches').each(function(index) {
-            console.log(this.files);
             if(this.files.length && (this.files[0].size / (1024*1024)).toFixed(2) > 2) fileSizeErr = this.files[0].name;
         });
         if(fileSizeErr !== false) {
@@ -688,7 +687,6 @@ function saveRequest() {
                     let mssg = 'Subject updated';
                     // upload attachments
                     $('.tickets_attaches').each(function(index) {
-                        console.log(this.files);
                         if(this.files.length) {
                             // mssg = 'Subject updated with attachments';
 
@@ -713,7 +711,6 @@ function saveRequest() {
                                     }
                                 },
                                 error: function(data) {
-                                    console.log(data);
                                 }
                             });
                         }
@@ -974,7 +971,7 @@ function listReplies() {
                 <li class="media">
                     <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + moment(reply.date).parseZone(time_zone).format(date_format + ' ' + 'hh:mm a') + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.date) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
@@ -1012,7 +1009,6 @@ function publishReply(ele, type = 'publish') {
         } else {
             let fileSizeErr = false;
             $('.replies_attaches').each(function(index) {
-                console.log(this.files);
                 if(this.files.length && (this.files[0].size / (1024*1024)).toFixed(2) > 2) fileSizeErr = this.files[0].name;
             });
             if(fileSizeErr !== false) {
@@ -1037,7 +1033,6 @@ function publishReply(ele, type = 'publish') {
 
             // upload attachments
             $('.replies_attaches').each(function(index) {
-                console.log(this.files);
                 if(this.files.length) {
                     // mssg = 'Subject updated with attachments';
                     let fname = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index;
@@ -1064,7 +1059,6 @@ function publishReply(ele, type = 'publish') {
                             }
                         },
                         error: function(data) {
-                            console.log(data);
                         }
                     });
                 }
@@ -1081,8 +1075,6 @@ function publishReply(ele, type = 'publish') {
             if (edit_reply_mode !== false) {
                 params.id = ticketReplies[edit_reply_mode].id;
             }
-
-            console.log(params);
 
             $.ajax({
                 type: "post",
@@ -2005,7 +1997,6 @@ function createFollowUp(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            // console.log(data);
 
             if (data.success) {
                 // send mail notification regarding ticket action
@@ -2057,7 +2048,6 @@ function createFollowUp(event) {
             }
         },
         failure: function(errMsg) {
-            console.log(errMsg);
         }
     });
 }
@@ -2162,7 +2152,6 @@ $("#save_ticket_note").submit(function(event) {
             }
         },
         failure: function(errMsg) {
-            console.log(errMsg);
         }
     });
 });
@@ -2174,9 +2163,10 @@ function get_ticket_notes() {
         url: ticket_notes_route,
         data: { id: ticket_details.id },
         success: function(data) {
-            console.log(data , "notes data");
+            
             if (data.success) {
                 notes = data.notes;
+                console.log(notes , "notes");
                 var type = '';
 
                 if (timeouts_list.length) {
@@ -2228,7 +2218,7 @@ function get_ticket_notes() {
                         </div>
                         <div class="w-100">
                             <div class="col-12 p-0 d-flex">
-                                <h5 class="note-head">Note by ` + notes[i].name + ` ` +  moment(notes[i].created_at ).format(date_format + ' ' + 'hh:mm A')  + ` ` + type + `</h5>
+                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + convertDate(notes[i].created_at) + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>
@@ -2248,7 +2238,7 @@ function get_ticket_notes() {
             }
         },
         failure: function(errMsg) {
-            console.log(errMsg);
+            
         }
     });
 }
@@ -2421,7 +2411,6 @@ function flagTicket() {
             }
         },
         failure: function(errMsg) {
-            console.log(errMsg);
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -2440,7 +2429,7 @@ function getLatestLogs() {
         data: { id: asset_ticket_id },
         success: function(data) {
             if (data.success) {
-                console.log(data);
+                
                 var obj = data.logs;
 
                 $('#ticket-logs-list').DataTable().destroy();
@@ -2465,11 +2454,11 @@ function getLatestLogs() {
                     ],
                 });
             } else {
-                console.log(data.message);
+                
             }
         },
         failure: function(errMsg) {
-            console.log(errMsg);
+            
         }
     });
 }
@@ -2482,7 +2471,6 @@ function ticket_notify(template, action_name, data_id = '') {
             data: { id: asset_ticket_id, template: template, action: action_name, data_id: data_id },
             success: function(data) {
                 if (!data.success) {
-                    console.log(data.message);
 
                     // try again
                     // $.ajax({
@@ -2501,7 +2489,7 @@ function ticket_notify(template, action_name, data_id = '') {
                 }
             },
             failure: function(errMsg) {
-                console.log(errMsg);
+                
             }
         });
     }
@@ -2519,8 +2507,6 @@ async function downloadPNGFromAnyImageSrc(src) {
             canvas.height = img.height;
             canvas.getContext("2d").drawImage(img, 0, 0);
 
-            //get image/png from convas
-            console.log("Image Loaded");
             resolve(canvas.toDataURL("image/png"));
         };
         img.src = src;

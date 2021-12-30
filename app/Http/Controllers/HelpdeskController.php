@@ -233,7 +233,7 @@ class HelpdeskController extends Controller
                 }
                 unset($data['id']);
                 unset($data['attachments']);
-                date_default_timezone_set(Session::get('timezone'));
+
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
                 $ticket->update($data);
@@ -259,7 +259,6 @@ class HelpdeskController extends Controller
     }
 
     public function save_tickets(Request $request){    
-        date_default_timezone_set(Session::get('timezone'));
         $current_date = Carbon::now();
 
         $data = $request->all();
@@ -726,12 +725,25 @@ class HelpdeskController extends Controller
                         $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
                         if($timediff < 0) $lcnt = true;
                     } else {
+
                         $rep = Carbon::parse($value->sla_rep_deadline_from);
                         $dt = explode('.', $value->sla_plan['reply_deadline']);
                         $rep->addHours($dt[0]);
-                        if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
-                        $timediff = $nowDate->diffInSeconds($rep, false);
-                        if($timediff < 0) $lcnt = true;
+
+                        // if(array_key_exists(1, $dt)) {
+                        //     $rep->addMinutes($dt[1]);
+                        // }
+
+                        if(strtotime($rep) < strtotime($nowDate)) {
+                            $lcnt = true;
+                        }
+
+                        // $timediff = $nowDate->diffInSeconds($rep, false);
+                        
+                        // if($timediff < 0){
+                        //     $lcnt = true;
+                        // }
+                        
                     }
                 }
     
@@ -744,9 +756,16 @@ class HelpdeskController extends Controller
                         $rep = Carbon::parse($value->sla_res_deadline_from);
                         $dt = explode('.', $value->sla_plan['due_deadline']);
                         $rep->addHours($dt[0]);
-                        if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
-                        $timediff = $nowDate->diffInSeconds($rep, false);
-                        if($timediff < 0) $lcnt = true;
+                        // if(array_key_exists(1, $dt)) {
+                        //     $rep->addMinutes($dt[1]);
+                        // }
+
+                        if(strtotime($rep) < strtotime($nowDate)) {
+                            $lcnt = true;
+                        }
+
+                        // $timediff = $nowDate->diffInSeconds($rep, false);
+                        // if($timediff < 0) $lcnt = true;
                     }
                 }
             }
@@ -818,7 +837,6 @@ class HelpdeskController extends Controller
             if($ticket->trashed === 1) {
                 if(\Auth::user()->user_type == $customer_role_id) {
                     $ticket->trashed = 0;
-                    date_default_timezone_set(Session::get('timezone'));
                     $ticket->updated_at = Carbon::now();
                     $ticket->save();
 
@@ -885,7 +903,6 @@ class HelpdeskController extends Controller
                 $save_reply['is_published'] = $data['is_published'];
                 $save_reply['attachments'] = $data['attachments'];
                 
-                date_default_timezone_set(Session::get('timezone'));
                 $save_reply['updated_at'] = Carbon::now();
                 $save_reply['updated_by'] = \Auth::user()->id;
 
@@ -898,7 +915,6 @@ class HelpdeskController extends Controller
                 $action_perf = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
             }
 
-            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->save();
 
@@ -1088,7 +1104,6 @@ class HelpdeskController extends Controller
             for($i=0; $i< sizeof($data);$i++) {
                 
                 $del_tkt = Tickets::where('id',$data[$i])->first();
-                date_default_timezone_set(Session::get('timezone'));
                 $current_date = Carbon::now();
 
                 $del_tkt->trashed = 1;
@@ -1121,7 +1136,6 @@ class HelpdeskController extends Controller
                 $del_tkt = Tickets::where('id',$data[$i])->first();
                 
                 $del_tkt->trashed = 0;
-                date_default_timezone_set(Session::get('timezone'));
                 $del_tkt->updated_at = Carbon::now();
                 $del_tkt->updated_by = \Auth::user()->id;
                 $del_tkt->save();
@@ -1157,7 +1171,6 @@ class HelpdeskController extends Controller
                 $flag_tkt->is_flagged = 1;
             }
 
-            date_default_timezone_set(Session::get('timezone'));
             $flag_tkt->updated_at = Carbon::now();
             $flag_tkt->updated_by = \Auth::user()->id;
             $flag_tkt->save();
@@ -1203,7 +1216,6 @@ class HelpdeskController extends Controller
             $data['created_by'] = \Auth::user()->id;
             $ticket_followUp = TicketFollowUp::create($data);
 
-            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
@@ -1263,7 +1275,6 @@ class HelpdeskController extends Controller
                                 $ticket->assigned_to = $flwup->follow_up_assigned_to;
                                 $ticket->status = $flwup->follow_up_status;
                                 $ticket->type = $flwup->follow_up_type;
-                                date_default_timezone_set(Session::get('timezone'));
                                 $ticket->updated_at = Carbon::now();
                                 $ticket->save();
                                 
@@ -1286,7 +1297,6 @@ class HelpdeskController extends Controller
 
                             $logData .= (empty($logData)) ? 'added a note' : ', added a note';
                         }
-                        date_default_timezone_set(Session::get('timezone'));
                         $flwup->updated_at = Carbon::now();
             
                         // $ticket = Tickets::findOrFail($flwup->ticket_id);
@@ -1508,7 +1518,6 @@ class HelpdeskController extends Controller
 
             $followUp->save();
 
-            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
@@ -1535,7 +1544,6 @@ class HelpdeskController extends Controller
     public function save_ticket_note(Request $request) {       
         $data = $request->all();
         $response = array();
-        date_default_timezone_set(Session::get('timezone'));
         $current_date = Carbon::now();
         try{
             $action_performed = '';
@@ -1793,11 +1801,9 @@ class HelpdeskController extends Controller
 
                 $note->is_deleted = 1;
                 $note->deleted_by = \Auth::user()->id;
-                date_default_timezone_set(Session::get('timezone'));
                 $note->deleted_at =  Carbon::now();
 
                 $note->save();
-                date_default_timezone_set(Session::get('timezone'));
                 $ticket->updated_at =  Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
@@ -1893,7 +1899,6 @@ class HelpdeskController extends Controller
                     $value->delete();
                 }
 
-                date_default_timezone_set(Session::get('timezone'));
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
@@ -1962,7 +1967,6 @@ class HelpdeskController extends Controller
     public function updateTicketDeadlines(Request $request) {
         try {
 
-            date_default_timezone_set(Session::get('timezone'));
             $current_date = Carbon::now();
 
             $ticket = Tickets::findOrFail($request->ticket_id);
@@ -2012,7 +2016,6 @@ class HelpdeskController extends Controller
                     $response['tkt_updated_at'] = $ticket->attachments;
                     $response['attachments'] = $ticket->attachments;
 
-                    date_default_timezone_set(Session::get('timezone'));
                     $ticket->updated_at =Carbon::now();
                     $ticket->save();
                 } else {

@@ -1118,7 +1118,6 @@ class SettingsController extends Controller
 
     public function SLASetting(Request $request) {
 
-        date_default_timezone_set(Session::get('timezone'));
         $current_date = Carbon::now();
         
         $data = array(  
