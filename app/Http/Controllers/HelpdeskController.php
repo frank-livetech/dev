@@ -298,9 +298,6 @@ class HelpdeskController extends Controller
                 $tt = TicketType::where('name', 'Issue')->first();
                 $data['type'] = $tt->id;
             }
-
-            $data['created_at'] = $current_date;
-            $data['updated_at'] = $current_date;
             $ticket = Tickets::create($data);
                                   
             // ticket assoc with sla plan
@@ -1544,7 +1541,6 @@ class HelpdeskController extends Controller
     public function save_ticket_note(Request $request) {       
         $data = $request->all();
         $response = array();
-        $current_date = Carbon::now();
         try{
             $action_performed = '';
             $ticket = Tickets::findOrFail($data['ticket_id']);
@@ -1560,31 +1556,28 @@ class HelpdeskController extends Controller
                 $note->visibility = (array_key_exists('visibility', $data)) ? $data['visibility'] : '';
                 $note->updated_by = \Auth::user()->id;
                 
-                $note->updated_at = $current_date;
+                $note->updated_at = Carbon::now();
                 $note->save();
+
 
                 $data = $note;
                 $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note updated by '. $name_link;
             }else{
                 $data['created_by'] = \Auth::user()->id;
-                $note['created_at'] = $current_date;
                 $note = TicketNote::create($data);
 
                 $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note added by '. $name_link;
             }
-
-            $ticket->updated_at = $current_date;
+            $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
-
-            
             
             $sla_updated = false;
             $settings = $this->getTicketSettings(['reply_due_deadline_when_adding_ticket_note']);
             if(isset($settings['reply_due_deadline_when_adding_ticket_note'])) {
                 if($settings['reply_due_deadline_when_adding_ticket_note'] == 1) {
                     $ticket->reply_deadline = 'cleared';
-                    $ticket->updated_at = $current_date;
+                    $ticket->updated_at = Carbon::now();
                     $ticket->save();
 
                     $sla_updated = 'cleared';

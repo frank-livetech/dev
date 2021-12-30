@@ -22,7 +22,8 @@ $.ajaxSetup({
 });
 
 $(function() {
-    console.log(ticket , "ticket");
+    // console.log(ticket , "ticket");
+    // console.log(ticket.created_at , "ticket");
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );
 
@@ -175,6 +176,7 @@ function convertDate(date) {
     d.setUTCHours(d_utc);
 
     let a = d.toLocaleString("en-US" , {timeZone: time_zone});
+    // return a;
     var converted_date = moment(a).format(date_format + ' ' +'hh:mm a');
     return converted_date;
 }
@@ -968,7 +970,7 @@ function listReplies() {
                 <li class="media">
                     <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.date) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + jsTimeZone(reply.date) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
@@ -2175,6 +2177,7 @@ function get_ticket_notes() {
                 timeouts_list = [];
 
                 for (let i in notes) {
+
                     let timeOut = '';
                     let autho = '';
                     if (notes[i].created_by == loggedInUser_id) {
@@ -2215,7 +2218,7 @@ function get_ticket_notes() {
                         </div>
                         <div class="w-100">
                             <div class="col-12 p-0 d-flex">
-                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + convertDate(notes[i].created_at) + ` ` + type + `</h5>
+                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + jsTimeZone(notes[i].created_at) + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>
@@ -2238,6 +2241,23 @@ function get_ticket_notes() {
             
         }
     });
+}
+
+
+function jsTimeZone(date) {
+    let d = new Date(date);
+    
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDay();
+    var hour = d.getHours();
+    var min = d.getMinutes();
+    var mili = d.getMilliseconds();
+            
+    // year , month , day , hour , minutes , seconds , miliseconds;
+    let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
+    let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
+    return converted_date;
 }
 
 function editNote(id, note, type ,color) {
