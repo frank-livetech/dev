@@ -963,9 +963,6 @@ function listReplies() {
 
                 tdet += '';
             }
-
-            let b  = new Date(reply.date).toLocaleString('en-US', { timeZone: time_zone });
-            let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm a');
             
             $('#ticket-replies').append(`
                 <li class="media">
