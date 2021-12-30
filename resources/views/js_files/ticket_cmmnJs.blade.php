@@ -74,9 +74,9 @@ function get_ticket_table_list() {
         dataType: 'json',
         cache: false,
         success: function(data) {
-            console.log(data, "data");
+            // console.log(data, "data");
             date_formate = data.date_format;
-            console.log(data.tickets);
+            // console.log(data.tickets);
             ticketsList = data.tickets;
             listTickets(url_type);
             if(page_name == 'tickets') ShowCalendarModel();
@@ -107,7 +107,7 @@ function listTickets(f_key = '') {
         return true;
     }
     let ticket_arr = ticketsList;
-    console.log(ticket_arr , "ticket_arr abc");
+    // console.log(ticket_arr , "ticket_arr abc");
     if (f_key) {
         switch (f_key) {
             case 'self':
@@ -138,6 +138,7 @@ function listTickets(f_key = '') {
 function redrawTicketsTable(ticket_arr) {
     var la_color = ``;
     tickets_table_list.clear().draw();
+    console.log(ticket_arr , "ticket_arr");
     $.each(ticket_arr, function(key, val) {
         let prior = '<div class="text-center">' + val['priority_name'] + '</div>';
         if (val['priority_color']) {
@@ -199,15 +200,18 @@ function redrawTicketsTable(ticket_arr) {
                     // res_due = getDateDiff(res_due);
                 }
             }
-    
+
             if(val.hasOwnProperty('reply_deadline') && val.reply_deadline) {
                 // use ticket reset deadlines
                 if(val.reply_deadline != 'cleared') rep_due = moment(moment(val.reply_deadline).toDate()).local();
             } else {
+       
                 // use sla deadlines
                 let hm = val.sla_plan.reply_deadline.split('.');
-                rep_due = moment(moment(val.sla_rep_deadline_from).toDate()).local().add(hm[0], 'hours');
+                rep_due = moment( moment(val.sla_rep_deadline_from).toDate() ).local().add(hm[0], 'hours');
+                console.log(rep_due , "final"); 
                 if(hm.length > 1) rep_due.add(hm[1], 'minutes');
+                console.log(rep_due , ":ow");
             }
             if(rep_due) {
                 // overdue or change format of the date
@@ -235,12 +239,7 @@ function redrawTicketsTable(ticket_arr) {
         let replier = val['lastReplier'];
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
-        let a = {
-            "1st" : last_act , 
-            "2nd" : moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A') , 
-            "3rd" : region_current_date,
-        }
-        console.table(a);
+
         let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
         var last_activity = calculateDateDiff( c , region_current_date );
 
@@ -335,11 +334,11 @@ function ticket_notify(id, template, action_name) {
         data: { id: id, template: template, action: action_name},
         success: function(data) {
             if (!data.success) {
-                console.log(data.message);
+                // console.log(data.message);
             }
         },
         failure: function(errMsg) {
-            console.log(errMsg);
+            // console.log(errMsg);
         }
     });
 }

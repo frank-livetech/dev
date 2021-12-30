@@ -12,8 +12,6 @@ class ActivitylogController extends Controller
 
     public function saveActivityLogs($module , $table_ref , $ref_id , $created_by , $action) {
 
-        date_default_timezone_set(Session::get('timezone'));
-
         $log_data = array(
             "module" => $module , 
             "table_ref" => $table_ref , 

@@ -238,7 +238,6 @@ class AssetManagerController extends Controller
 
             if(!empty($assetRes->ticket_id)) {
                 $ticket = Tickets::findOrFail($assetRes->ticket_id);
-                date_default_timezone_set(Session::get('timezone'));
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
@@ -303,7 +302,6 @@ class AssetManagerController extends Controller
         $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
         if(!empty($asset->ticket_id)) {
             $ticket = Tickets::findOrFail($asset->ticket_id);
-            date_default_timezone_set(Session::get('timezone'));
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
@@ -477,7 +475,6 @@ class AssetManagerController extends Controller
 
             if(!empty($asset->ticket_id)) {
                 $ticket = Tickets::findOrFail($asset->ticket_id);
-                date_default_timezone_set(Session::get('timezone'));
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
