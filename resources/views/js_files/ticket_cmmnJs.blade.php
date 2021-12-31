@@ -228,8 +228,8 @@ function redrawTicketsTable(ticket_arr) {
             }
         }
 
-        var last_act = val.lastActivity;
-        let region_current_date = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
+        // var last_act = val.lastActivity;
+        // let region_current_date = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
 
         let la = new Date(val.lastActivity);
         let replies = 0
@@ -240,8 +240,8 @@ function redrawTicketsTable(ticket_arr) {
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
 
-        let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
-        var last_activity = calculateDateDiff( c , region_current_date );
+        // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
+        var last_activity = getDateDiff( val.lastActivity );
 
         if(last_activity.includes('d')) {
             la_color = `red`;
@@ -250,7 +250,6 @@ function redrawTicketsTable(ticket_arr) {
         }else if(last_activity.includes('m')) {
             la_color = `#ff8c5a`;
         }
-
         let row = `<tr>
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
@@ -266,7 +265,7 @@ function redrawTicketsTable(ticket_arr) {
             <td>${res_due}</td>
             <td>${val['tech_name']}</td>
             <td>${val['department_name']}</td>
-            <td>${moment(val['created_at']).format(date_formate + ' ' + 'hh:mm A')}</td>
+            <td>${ jsTimeZone(val['created_at']) }</td>
         </tr>`;
         
         tickets_table_list.row.add($(row)).draw();
@@ -277,6 +276,23 @@ function redrawTicketsTable(ticket_arr) {
         tickets_table_list.column(13).search( name ).draw();
     });
 }
+
+function jsTimeZone(date) {
+    let d = new Date(date);
+    
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDay();
+    var hour = d.getHours();
+    var min = d.getMinutes();
+    var mili = d.getMilliseconds();
+            
+    // year , month , day , hour , minutes , seconds , miliseconds;
+    let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
+    let converted_date = new_date.toLocaleString("en-US", {timeZone: usrtimeZone});
+    return moment(converted_date).format(date_format + ' ' +'hh:mm a');
+}
+
 function flagTicket(ele, id) {
     $.ajax({
         type: 'post',
