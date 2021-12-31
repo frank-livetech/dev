@@ -724,10 +724,7 @@ function saveRequest() {
                     // refresh logs
                     getLatestLogs();
 
-                    var d = flashy('Initial Request Updated Successfully!', {
-                        type: 'flashy__success',
-                        stop: true
-                    });
+                    toastr.success( 'Initial Request Updated Successfully' , { timeOut: 5000 });
 
                     $('#ticket_subject_heading').css('display', 'block');
                     $('#ticket_details_p').css('display', 'block');
@@ -1122,10 +1119,7 @@ function publishReply(ele, type = 'publish') {
                         // let msg = 'Added';
                         // if (edit_reply_mode !== false) msg = 'Updated';
                         // if (type != 'publish') msg = 'saved as draft';
-                        var d = flashy(data.message, {
-                            type: 'flashy__success',
-                            stop: true
-                        });
+                        toastr.success( data.message , { timeOut: 5000 });
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -1218,11 +1212,7 @@ $('#dept_id').change(function() {
 
                 // refresh logs
                 getLatestLogs();
-
-                var d = flashy('Departments Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Departments Updated Successfully!' , { timeOut: 5000 });
             } else {
                 $('#dept_id').val(ticket.dept_id).trigger('change');
 
@@ -1265,10 +1255,7 @@ $('#assigned_to').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Tech Lead Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Tech Lead Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -1301,10 +1288,7 @@ $('#type').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Type Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Type Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -1339,10 +1323,7 @@ $('#status').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Status Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Status Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -1376,10 +1357,7 @@ $('#priority').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Priority Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Priority Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -2339,10 +2317,7 @@ function deleteTicketNote(ele, id) {
 
                         $(ele).closest('#note-div-' + id).remove();
 
-                        flashy(data.message, {
-                            type: 'flashy__success',
-                            stop: true
-                        });
+                        toastr.success( data.message , { timeOut: 5000 });
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -2407,16 +2382,10 @@ function flagTicket() {
 
                 if (ticket.is_flagged === 0) {
                     ticket.is_flagged = 1;
-                    flashy('Flagged Successfully!', {
-                        type: 'flashy__success',
-                        stop: true
-                    });
+                    toastr.success( 'Flagged Successfully!' , { timeOut: 5000 });
                 } else {
                     ticket.is_flagged = 0;
-                    flashy('Flag removed Successfully!', {
-                        type: 'flashy__success',
-                        stop: true
-                    });
+                    toastr.success( 'Flagged removed Successfully!' , { timeOut: 5000 });
                 }
             } else {
                 Swal.fire({
