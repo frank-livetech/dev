@@ -693,6 +693,8 @@ function saveRequest() {
             success: function(data) {
                 if (data.success == true) {
                     ticket_details.ticket_detail = content;
+                    updateTicketDate();
+
                     let mssg = 'Subject updated';
                     // upload attachments
                     $('.tickets_attaches').each(function(index) {
@@ -1221,7 +1223,7 @@ $('#dept_id').change(function() {
             if (data.success == true) {
                 ticket.dept_id = dept_id;
                 $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
-
+                updateTicketDate();
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Deptartment updated');
 
@@ -1263,6 +1265,7 @@ $('#assigned_to').change(function() {
             if (data.success == true) {
                 ticket.assigned_to = assigned_to;
                 $('#follow_up_assigned_to').val(ticket.assigned_to).trigger("change");
+                updateTicketDate();
 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Assignment updated');
@@ -1296,6 +1299,7 @@ $('#type').change(function() {
             if (data.success == true) {
                 ticket.type = type;
                 $('#follow_up_type').val(ticket.type).trigger("change");
+                updateTicketDate();
                 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Type updated');
@@ -1331,6 +1335,7 @@ $('#status').change(function() {
                 ticket.status = status;
                 $("#dropD").css('background-color' ,color + ' !important');
                 $('#follow_up_status').val(ticket.status).trigger("change");
+                updateTicketDate();
                 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Status updated');
@@ -1365,6 +1370,7 @@ $('#priority').change(function() {
                 ticket.priority = priority;
                 $("#prio-label").css('background-color' ,color + ' !important');
                 $('#follow_up_priority').val(ticket.priority).trigger("change");
+                updateTicketDate();
                 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Priority updated');
@@ -2057,6 +2063,12 @@ function visibilityOptions() {
     }
 }
 
+function updateTicketDate(){
+    var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
+    new_date =  moment(new_date).format(date_format + ' ' +'hh:mm a');
+    $("#updation-date").html(new_date);
+}
+
 $("#save_ticket_note").submit(function(event) {
     event.preventDefault();
 
@@ -2389,7 +2401,7 @@ function flagTicket() {
             if (data.success) {
                 // send mail notification regarding ticket action
                 let nn = (ticket.is_flagged == 1) ? 'Flag removed' : 'Flagged';
-
+                updateTicketDate();
                 ticket_notify('ticket_update', nn);
 
                 // refresh logs
