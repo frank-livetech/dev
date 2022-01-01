@@ -141,7 +141,7 @@
                                         </a>
                                     </div>
                                     <div class="d-grid col-4">
-                                        <a href="{{asset('/ticket-management')}}">
+                                        <a href="{{asset('/ticket-manager')}}">
                                         <div class="card card_shadow card_back border-info card-hover text-center">
                                             <div class="card-header">
                                                 <div class="">
@@ -154,7 +154,7 @@
                                         </a>
                                     </div>
                                     <div class="d-grid col-4">
-                                        <a href="{{asset('/ticket-management/self')}}">
+                                        <a href="{{asset('/ticket-manager/self')}}">
                                         <div class="card card_shadow card_back border-success card-hover text-center">
                                             <div class="card-header">
                                                 <div class="">
@@ -167,7 +167,7 @@
                                         </a>
                                     </div>
                                     <div class="d-grid col-4">
-                                        <a href="{{asset('/ticket-management/open')}}">
+                                        <a href="{{asset('/ticket-manager/open')}}">
                                         <div class="card card_shadow card_back border-warning card-hover text-center" >
                                             <div class="card-header">
                                                 <div class="">
@@ -180,7 +180,7 @@
                                         </a>
                                     </div>
                                     <div class="d-grid col-4">
-                                        <a href="{{asset('/ticket-management/unassigned')}}">
+                                        <a href="{{asset('/ticket-manager/unassigned')}}">
                                         <div class="card card_shadow card_back border-primary card-hover text-center" >
                                             <div class="card-header">
                                                 <div class="">
@@ -193,7 +193,7 @@
                                         </a>
                                     </div>
                                     <div class="d-grid col-4">
-                                        <a href="{{asset('/ticket-management/overdue')}}">
+                                        <a href="{{asset('/ticket-manager/overdue')}}">
                                         <div class="card card_shadow card_back border-danger card-hover text-center" >
                                             <div class="card-header">
                                                 <div class="">
