@@ -162,11 +162,36 @@ function redrawTicketsTable(ticket_arr) {
         }
         var name = val['subject'] ?? '';
         var shortname = '';
+
         if (name && name.length > 40) {
             shortname = name.substring(0, 40) + " ...";
         } else {
             shortname = name;
         }
+
+        var cust_name = val['customer_name'] ?? '';
+        var short_cust_name = '';
+
+        if (cust_name && cust_name.length > 15) {
+            short_cust_name = cust_name.substring(0, 15) + " ...";
+        } else {
+            short_cust_name = cust_name;
+        }
+
+
+        var dep_name = val['department_name'] ?? '';
+        var short_dep_name = '';
+
+        if (dep_name && dep_name.length > 15) {
+            short_dep_name = dep_name.substring(0, 15) + " ...";
+        } else {
+            short_dep_name = dep_name;
+        }
+
+
+       
+
+
         let restore_flag_btn = '';
         if (in_recycle_mode) {
             restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-trash-restore text-primary" title="Restore" style="cursor:pointer;" onclick="restoreTicket(' + val['id'] + ');"></span></div>';
@@ -236,9 +261,16 @@ function redrawTicketsTable(ticket_arr) {
         if(val['replies'] > 0){
             replies = val['replies'];
         }
-        let replier = val['lastReplier'];
+        let replier = val['lastReplier'] ;
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
+        var short_replier = '';
+
+        if (replier && replier.length > 15) {
+            short_replier = replier.substring(0, 15) + " ...";
+        } else {
+            short_replier = replier;
+        }
 
         // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
         var last_activity = getDateDiff( val.lastActivity );
@@ -256,15 +288,15 @@ function redrawTicketsTable(ticket_arr) {
             <td>${status}</td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
-            <td>${prior}</td>
-            <td><a href="customer-profile/${val['customer_id']}" style="color:black">${val['customer_name']}</a></td>
-            <td>${replier}</td>
-            <td>${replies}</td>
-            <td data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
-            <td>${rep_due}</td>
-            <td>${res_due}</td>
+            <td class='text-center'>${prior}</td>
+            <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
+            <td>${(short_replier.length > 15 ? short_replier.substring(0,15) + '...' : short_replier)}</td>
+            <td class='text-center'>${replies}</td>
+            <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
+            <td class='text-center'>${rep_due}</td>
+            <td class='text-center'>${res_due}</td>
             <td>${val['tech_name']}</td>
-            <td>${val['department_name']}</td>
+            <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
             <td>${ jsTimeZone(val['created_at']) }</td>
         </tr>`;
         
