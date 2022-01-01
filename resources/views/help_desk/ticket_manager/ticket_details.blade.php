@@ -1640,7 +1640,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
 {{-- Linked Assets JS --}}
 <!-- <script src="{{asset('public/js/help_desk/asset_manager/actions.js').'?ver='.rand()}}"></script> -->
 <!-- {{-- <script src="{{asset('public/js/help_desk/ticket_manager/tickets.js').'?ver='.rand()}}"></script> --}} -->
-<script src="{{asset('js/tagsinput.js')}}"></script>
+<!-- <script src="{{asset('js/tagsinput.js')}}"></script> -->
 <!-- <script src="{{asset('public/js/help_desk/asset_manager/asset.js').'?ver='.rand()}}"></script> -->
 
     @include('js_files.help_desk.asset_manager.actionsJs')

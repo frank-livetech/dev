@@ -15,28 +15,24 @@
         href="{{asset('public/files/brand_files')}}/{{Session::get('site_favicon')}}">
     <title>{{Session::get('site_title')}}</title>
 
+    @php
+        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+    @endphp
+
     <!-- Custom CSS -->
-    {{-- <link href="{{asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css')}}" rel="stylesheet"> --}}
-    <link href="{{asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css')}}" rel="stylesheet">
-    <link href="{{asset('assets/libs/jsgrid/jsgrid.min.css')}}" rel="stylesheet">
-    <link href="{{asset('assets/libs/jsgrid/jsgrid-theme.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css"
-        href="{{asset('assets/libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css')}}">
+    <link rel="stylesheet" href="{{asset( $path . 'css/bootstrap_switch.min.css')}}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{{asset( $path . 'css/jsgrid-theme.min.css')}}">
+    <link rel="stylesheet" href="{{asset( $path . 'css/jsgrid.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/libs/select2/dist/css/select2.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/dist/css/flashy.min.css')}}">
-
-    <link href="{{asset('css/style.min.css')}}" rel="stylesheet">
-    <link href="{{asset('css/custom_css.css')}}" rel="stylesheet">
-    <link href="{{asset('css/tagsinput.css')}}" rel="stylesheet" type="text/css">
-    <!-- <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"> -->
-
-    
-
+    <link rel="stylesheet" href="{{asset( $path . 'css/style.min.css')}}">
+    <link rel="stylesheet" href="{{asset( $path . 'css/custom_css.css')}}">
+    <link rel="stylesheet" href="{{asset( $path . 'css/tagsinput.css')}}">    
     <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
     <link rel="stylesheet" href="{{asset('/assets/libs/datatables/media/css/jquery.dataTables.min.css')}}">
-
-
-    <link rel="stylesheet" href="{{asset('public/toastr/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{asset( $path . 'css/toastr.min.css')}}">
 
  <!-- This page CSS -->
  <link href="{{asset('/assets/extra-libs/jquery-steps/jquery.steps.css')}}" rel="stylesheet">
@@ -301,31 +297,23 @@ body[data-theme=dark] .close{
         <header class="topbar">
             <nav class="top-navbar navbar navbar-expand-md navbar-dark">
                 <div class="navbar-nav">
-                    <a class="navbar-brand sidebartoggler waves-effect waves-light"> <img style="padding-left:15px; height: 50px;"
-                            id="logo_image" src="{{asset('files/brand_files/')}}/{{Session::get('site_logo')}}"
-                            alt="{{Session::get('site_title')}}" class="dark-logo" />&nbsp;<span
-                            id="logo_title">{{Session::get('site_logo_title')}}</span><span id="version"></span></a>
-                    <!-- <a class="nav-link sidebartoggler waves-effect waves-light mt-2" href="javascript:void(0)"
-                        data-sidebartype="mini-sidebar">
-                        <i class="icon-arrow-left-circle"
-                            style="line-height:inherit !important;display:none;"></i>
-                            <i class="icon-arrow-right-circle"
-                            style="line-height:inherit !important;display:none;"></i>
-                            </a> -->
+                    <a class="navbar-brand sidebartoggler waves-effect waves-light"> 
+                        @if(Session::get('site_logo') != null && Session::get('site_logo') != "")
+                            @if(file_exists( public_path().'/files/brand_files/'. Session::get('site_logo') ))
+                                <img id="logo_image" src="{{asset('files/brand_files/')}}/{{Session::get('site_logo')}}"
+                                alt="{{Session::get('site_title')}}" class="dark-logo" />
+                            @else
+                                <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle" width="65" height="72">
+                            @endif
+                        @else
+                            <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle" width="65" height="72">
+                        @endif
+                            &nbsp;<span id="logo_title">{{Session::get('site_logo_title')}}</span><span id="version"></span></a>
+                   
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item d-none d-md-block" style="padding-top: 18px;">
-                            <!-- <label class="switch">
-                                <input type="checkbox" id="togBtn" class=""
-                                    {{ \Auth::user()->theme == 'light' ? 'checked': ''}}>
-                                <div class="slider round">
-                                    ADDED HTML -->
-                                    <!-- <span class="on">Light</span>
-                                    <span class="off">Dark</span> -->
-                                    <!--END-->
-                                <!--</div>
-                            </label> -->
                             <input type="checkbox" id="toggle_checkbox"  {{ \Auth::user()->theme == 'dark' ? 'checked': ''}}>
 
                             <label class="switch" for="toggle_checkbox">
@@ -439,11 +427,52 @@ body[data-theme=dark] .close{
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
+    <script src="{{asset( $path . 'js/jquery.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/popper.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/bootstrap.min.js')}}"></script>
+    
+    <script src="{{asset( $path . 'js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/datatable_basic.init.js')}}"></script>
+    <script src="{{asset( $path . 'js/custom.min.js')}}"></script>
+
+    <script src="{{asset( $path . 'js/app_color.js')}}"></script>
+    <script src="{{asset( $path . 'js/app_style_switcher.js')}}"></script>
+    <script src="{{asset( $path . 'js/app.init.js')}}"></script>
+    <script src="{{asset( $path . 'js/app.min.js')}}"></script>
+
+
+    <script src="{{asset( $path . 'js/c3.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/chat.js')}}"></script>    
+    <script src="{{asset( $path . 'js/custom2.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/d3.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/feather.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/feather2.min.js')}}"></script>
+
+    
+    <script src="{{asset( $path . 'js/jquery.nestable.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery.sparkline.min.js')}}"></script>
+
+    <script src="{{asset( $path . 'js/jquery.steps.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/moment.js')}}"></script>
+    <script src="{{asset( $path . 'js/perfect_scrollbar.jquery.min.js')}}"></script>
+    
+    <script src="{{asset( $path . 'js/select2.full.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/select2.init.js')}}"></script>
+    <script src="{{asset( $path . 'js/select2.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/sidebarmenu.js')}}"></script>
+    <script src="{{asset( $path . 'js/toastr.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/waves.js')}}"></script>
+    <script src="{{asset( $path . 'js/pickr.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/bootstrap_switch.min.js')}}"></script>
+
+    <script type="text/javascript" src="{{asset( $path . 'js/countdown.js')}}"></script>
+    <script src="{{asset( $path . 'js/calendar.js')}}"></script>
+    <script src="{{asset( $path . 'js/tagsinput.js')}}"></script>
 
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{asset('/assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
+    <!-- <script src="{{asset('/assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
     <script src="{{asset('/assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <!-- apps -->
     <script src="{{asset('/js/app.min.js')}}"></script>
     <script src="{{asset('/js/app.init.js')}}"></script>
     <script src="{{asset('/js/app-style-switcher.js')}}"></script>
@@ -451,15 +480,10 @@ body[data-theme=dark] .close{
 
     <script src="{{asset('public/toastr/toastr.min.js')}}"></script>
     <script src="{{asset('public/toastr/toastr-init.js')}}"></script>
-
-    <!-- slimscrollbar scrollbar JavaScript -->
     <script src="{{asset('/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js')}}"></script>
     <script src="{{asset('/assets/libs/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
-    <!--Wave Effects -->
     <script src="{{asset('/js/waves.js')}}"></script>
-    <!--Menu sidebar -->
     <script src="{{asset('/js/sidebarmenu.js')}}"></script>
-    <!--Custom JavaScript -->
     <script src="{{asset('/js/feather.min.js')}}"></script>
     <script src="{{asset('/js/custom.min.js')}}"></script>
     <script src="{{asset('/js/pages/chat/chat.js')}}"></script>
@@ -467,7 +491,6 @@ body[data-theme=dark] .close{
 
     <script src="{{asset('/assets/libs/d3/dist/d3.min.js')}}"></script>
     <script src="{{asset('/assets/libs/c3/c3.min.js')}}"></script>
-    <!--<script src="dist/js/pages/dashboards/dashboard1.js"></script>-->
     <script src="{{asset('/assets/libs/datatables/media/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('/js/pages/datatable/custom-datatable.js')}}"></script>
     <script src="{{asset('/js/pages/datatable/datatable-basic.init.js')}}"></script>
@@ -477,7 +500,7 @@ body[data-theme=dark] .close{
     <script src="{{asset('/assets/libs/select2/dist/js/select2.full.min.js')}}"></script>
     <script src="{{asset('/assets/libs/select2/dist/js/select2.min.js')}}"></script>
     <script src="{{asset('/js/pages/forms/select2/select2.init.js')}}"></script>
-    <script src="{{asset('/js/moment.js')}}"></script>
+    <script src="{{asset('/js/moment.js')}}"></script> -->
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>

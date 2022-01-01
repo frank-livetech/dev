@@ -1,4 +1,4 @@
-@extends('layouts.staff-master-layout')
+@extends('layouts.customer-layout')
 @section('body-content')
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap" rel="stylesheet">

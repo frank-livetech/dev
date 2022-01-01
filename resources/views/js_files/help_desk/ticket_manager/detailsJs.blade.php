@@ -22,7 +22,7 @@ $.ajaxSetup({
 });
 
 $(function() {
-    console.log(ticket , "ticket");
+
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );
 
@@ -175,6 +175,7 @@ function convertDate(date) {
     d.setUTCHours(d_utc);
 
     let a = d.toLocaleString("en-US" , {timeZone: time_zone});
+    // return a;
     var converted_date = moment(a).format(date_format + ' ' +'hh:mm a');
     return converted_date;
 }
@@ -723,10 +724,7 @@ function saveRequest() {
                     // refresh logs
                     getLatestLogs();
 
-                    var d = flashy('Initial Request Updated Successfully!', {
-                        type: 'flashy__success',
-                        stop: true
-                    });
+                    toastr.success( 'Initial Request Updated Successfully' , { timeOut: 5000 });
 
                     $('#ticket_subject_heading').css('display', 'block');
                     $('#ticket_details_p').css('display', 'block');
@@ -852,6 +850,7 @@ function getTicketDetailsContent() {
 
 function listReplies() {
     $('#ticket-replies').html('');
+    console.log(ticketReplies , "ticketReplies");
     ticketReplies = ticketReplies.sort(function(a, b) {
         var keyA = new Date(a.updated_at),
             keyB = new Date(b.updated_at);
@@ -968,7 +967,7 @@ function listReplies() {
                 <li class="media">
                     <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.date) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.created_at) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
@@ -1082,9 +1081,10 @@ function publishReply(ele, type = 'publish') {
                 cache: false,
                 success: function(data) {
 
-                    let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
-                    let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm a');
-                    $("#updation-date").html(tkt_updted_date);
+                    var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
+                    new_date =  moment(new_date).format(date_format + ' ' +'hh:mm a');
+                    $("#updation-date").html(new_date);
+                    
 
                     $(ele).attr('disabled', false);
                     $(ele).find('.spinner-border').hide();
@@ -1119,10 +1119,7 @@ function publishReply(ele, type = 'publish') {
                         // let msg = 'Added';
                         // if (edit_reply_mode !== false) msg = 'Updated';
                         // if (type != 'publish') msg = 'saved as draft';
-                        var d = flashy(data.message, {
-                            type: 'flashy__success',
-                            stop: true
-                        });
+                        toastr.success( data.message , { timeOut: 5000 });
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -1215,11 +1212,7 @@ $('#dept_id').change(function() {
 
                 // refresh logs
                 getLatestLogs();
-
-                var d = flashy('Departments Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Departments Updated Successfully!' , { timeOut: 5000 });
             } else {
                 $('#dept_id').val(ticket.dept_id).trigger('change');
 
@@ -1262,10 +1255,7 @@ $('#assigned_to').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Tech Lead Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Tech Lead Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -1298,10 +1288,7 @@ $('#type').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Type Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Type Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -1336,10 +1323,7 @@ $('#status').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Status Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Status Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -1373,10 +1357,7 @@ $('#priority').change(function() {
                 // refresh logs
                 getLatestLogs();
 
-                var d = flashy('Priority Updated Successfully!', {
-                    type: 'flashy__success',
-                    stop: true
-                });
+                toastr.success( 'Priority Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
@@ -2175,6 +2156,7 @@ function get_ticket_notes() {
                 timeouts_list = [];
 
                 for (let i in notes) {
+
                     let timeOut = '';
                     let autho = '';
                     if (notes[i].created_by == loggedInUser_id) {
@@ -2215,7 +2197,7 @@ function get_ticket_notes() {
                         </div>
                         <div class="w-100">
                             <div class="col-12 p-0 d-flex">
-                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + convertDate(notes[i].created_at) + ` ` + type + `</h5>
+                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + jsTimeZone(notes[i].created_at) + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>
@@ -2238,6 +2220,23 @@ function get_ticket_notes() {
             
         }
     });
+}
+
+
+function jsTimeZone(date) {
+    let d = new Date(date);
+    
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDay();
+    var hour = d.getHours();
+    var min = d.getMinutes();
+    var mili = d.getMilliseconds();
+            
+    // year , month , day , hour , minutes , seconds , miliseconds;
+    let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
+    let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
+    return moment(converted_date).format(date_format + ' ' +'hh:mm a');
 }
 
 function editNote(id, note, type ,color) {
@@ -2318,10 +2317,7 @@ function deleteTicketNote(ele, id) {
 
                         $(ele).closest('#note-div-' + id).remove();
 
-                        flashy(data.message, {
-                            type: 'flashy__success',
-                            stop: true
-                        });
+                        toastr.success( data.message , { timeOut: 5000 });
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -2386,16 +2382,10 @@ function flagTicket() {
 
                 if (ticket.is_flagged === 0) {
                     ticket.is_flagged = 1;
-                    flashy('Flagged Successfully!', {
-                        type: 'flashy__success',
-                        stop: true
-                    });
+                    toastr.success( 'Flagged Successfully!' , { timeOut: 5000 });
                 } else {
                     ticket.is_flagged = 0;
-                    flashy('Flag removed Successfully!', {
-                        type: 'flashy__success',
-                        stop: true
-                    });
+                    toastr.success( 'Flagged removed Successfully!' , { timeOut: 5000 });
                 }
             } else {
                 Swal.fire({
