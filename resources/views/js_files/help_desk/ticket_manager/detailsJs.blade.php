@@ -978,13 +978,20 @@ function listReplies() {
             if(reply.user_type == 5){
                 user_type = 'User'
             }
+            // let new = '';
+            var now = moment( new Date().toLocaleString('en-US', { timeZone: time_zone }));
 
+            var end = moment(reply.created_at); // another date
+            var duration = moment.duration(now.diff(end));
+            var days = duration.asHours();
+            console.log(days + ' sadasdasd' + now)
             
             $('#ticket-replies').append(`
                 <li class="media">
-                    <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
+                    <img class="mr-3" src="${user_photo_url}" width="50" height="50" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp; <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.created_at) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;float:right" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" style="cursor: pointer;float:right" ></span>&nbsp;</h5> 
+                        <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
