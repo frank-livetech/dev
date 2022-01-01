@@ -290,14 +290,17 @@ function updateDeadlines() {
     let res_deadline = $('#ticket-res-due').val();
 
     if (!rep_deadline && !res_deadline) {
-        Swal.fire({
-            position: 'center',
-            icon: "error",
-            title: "Please enter date to reset!",
-            showConfirmButton: false,
-            timer: swal_message_time
-        });
-        return false;
+        // Swal.fire({
+        //     position: 'center',
+        //     icon: "error",
+        //     title: "Please enter date to reset!",
+        //     showConfirmButton: false,
+        //     timer: swal_message_time
+        // });
+        // return false;
+        rep_deadline = 'cleared';
+        res_deadline = 'cleared';
+
     }
 
     let formData = {
@@ -962,12 +965,19 @@ function listReplies() {
 
                 tdet += '';
             }
+
+            let user_type = 'Staff';
+
+            if(reply.user_type == 5){
+                user_type = 'User'
+            }
+
             
             $('#ticket-replies').append(`
                 <li class="media">
                     <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.created_at) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp; <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.created_at) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
