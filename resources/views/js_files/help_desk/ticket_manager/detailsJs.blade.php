@@ -250,8 +250,8 @@ function setSlaPlanDeadlines(ret = false) {
     if (rep_due) $('#sla-rep_due').html(rep_due);
     if (res_due) $('#sla-res_due').html(res_due);
 
-    if (!rep_due && !res_due) $('.sla-selc').hide();
-    else $('.sla-selc').show();
+    // if (!rep_due && !res_due) $('.sla-selc').hide();
+    // else $('.sla-selc').show();
 
     // any deadline is overdue can be reset
     if (resetable) {
