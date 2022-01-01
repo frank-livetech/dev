@@ -285,7 +285,7 @@ function redrawTicketsTable(ticket_arr) {
         let row = `<tr>
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
-            <td>${status}</td>
+            <td class='text-center'>${status}</td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
             <td class='text-center'>${prior}</td>
