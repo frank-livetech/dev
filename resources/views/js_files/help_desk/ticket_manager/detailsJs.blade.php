@@ -188,8 +188,8 @@ function setSlaPlanDeadlines(ret = false) {
     if (ticket_slaPlan.title != 'No SLA Assigned') {
         if (ticket.hasOwnProperty('resolution_deadline') && ticket.resolution_deadline) {
             // use ticket reset deadlines
-            if(ticket.reply_deadline == 'cleared') {
-                $('#sla-rep_due').parent().addClass('d-none');
+            if(ticket.resolution_deadline == 'cleared') {
+                $('#sla-res_due').parent().addClass('d-none');
             } else {
                 res_due = moment(moment(ticket.resolution_deadline).toDate()).local();
                 $('#ticket-res-due').val(ticket.resolution_deadline);
