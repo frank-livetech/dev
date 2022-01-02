@@ -1,4 +1,6 @@
 @extends('layouts.master-layout-new')
+@section('About','open')
+@section('Feature Suggestion','active')
 @section('body')
 
 <div class="app-content content">
