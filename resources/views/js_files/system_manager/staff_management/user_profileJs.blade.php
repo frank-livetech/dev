@@ -599,8 +599,14 @@
         formData.append('user_id', $("#user_id").val());
         formData.append('dept_id', dept_id);
         formData.append('assignment', 'set');
-
+        $('.yes_sub_check_'+dept_id).prop('checked' , true);
+        
         updateAssignment(formData);
+
+        $('.yes_sub_check_'+dept_id).each(function () {
+            let name = $(this).attr('dep');
+            saveNotificationPermission(1 , dept_id , name);
+        });
     }
 
     function closeThisAccordin(dept_id) {
@@ -612,7 +618,14 @@
         formData.append('dept_id', dept_id);
         formData.append('assignment', 'unset');
 
+        $('.no_sub_check' +dept_id).prop('checked' , true);
+
         updateAssignment(formData);
+
+        $('.no_sub_check'+dept_id).each(function () {
+            let name = $(this).attr('dep');
+            saveNotificationPermission(0, dept_id , name);
+        });
     }
 
     function updateAssignment(formData) {

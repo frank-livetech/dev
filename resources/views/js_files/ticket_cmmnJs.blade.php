@@ -276,11 +276,13 @@ function redrawTicketsTable(ticket_arr) {
         var last_activity = getDateDiff( val.lastActivity );
 
         if(last_activity.includes('d')) {
-            la_color = `red`;
+            la_color = `#FF0000`;
         }else if(last_activity.includes('h')) {
-            la_color = `#5c83b4`;
+            la_color = `#FF8C5A`;
         }else if(last_activity.includes('m')) {
-            la_color = `#ff8c5a`;
+            la_color = `#5C83B4`;
+        }else if(last_activity.includes('s')) {
+            la_color = `#8BB467`;
         }
         let row = `<tr>
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
@@ -419,11 +421,6 @@ function getClockTime(followUpDate, timediff) {
 function getDateDiff(date1, date2=new Date()) {
     var a = moment(date1);
     var b = moment(date2);
-    // var years = b.diff(a, 'year');
-    // a.add(years, 'years');
-
-    // var months = b.diff(a, 'months');
-    // a.add(months, 'months');
 
     var days = b.diff(a, 'days');
     a.add(days, 'days');
@@ -434,14 +431,12 @@ function getDateDiff(date1, date2=new Date()) {
     var mins = b.diff(a, 'minutes');
 
     let ret = '';
-    // if(years > 0) ret += years+'y ';
-    // if(months > 0) ret += months+'m ';
     if(days > 0) ret += days+'d ';
     if(hours > 0) ret += hours+'h ';
     if(mins > 0) ret += mins+'m';
 
     if (ret == ''){
-        ret = 'Just Now'
+        ret = '0s'
     }
     return ret;
 }
