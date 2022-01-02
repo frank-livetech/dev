@@ -334,7 +334,7 @@ class CustomerlookupController extends Controller
 
         $date_format = Session('system_date');
 
-        return view('customer_manager.customer_lookup.index',compact('google','customers','countries','brand','wp_value','google_key','date_format'));
+        return view('customer_manager.customer_lookup.index-new',compact('google','customers','countries','brand','wp_value','google_key','date_format'));
     }
 
     public function customersList(){
@@ -484,7 +484,7 @@ class CustomerlookupController extends Controller
 
         $date_format = Session('system_date');
 
-        return view('customer_manager.customer_lookup.customerprofile',compact('google','nmi_integration','customer','company', 'countries', 'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key', 'date_format'));
+        return view('customer_manager.customer_lookup.customerprofile-new',compact('google','nmi_integration','customer','company', 'countries', 'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key', 'date_format'));
     }
 
     public function myprofile($name, $type = null) {
