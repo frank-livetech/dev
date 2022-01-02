@@ -55,7 +55,7 @@ function get_asset_table_list() {
                         "render": function(data, type, full, meta) {
                             return `
                         <button title="Edit Type" class="btn btn-success btn-circle" onclick="editAsset(` + full.id + `);">
-                            <i class="mdi mdi-grease-pencil" aria-hidden="true"></i>
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
                         </button>
                     
                         <button class="btn btn-danger btn-circle" title="Delete Asset" onclick="deleteAsset(` + full.id + `);">

@@ -48,7 +48,7 @@
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
-    <div class="content-wrapper container-xxl p-0">
+    <div class="content-wrapper p-0">
         <div class="content-header row">
             <div class="content-header-left col-md-7 col-12 mb-2">
                 <div class="row breadcrumbs-top">
@@ -181,7 +181,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="table-responsive" style="overflow: hidden;">
-                                            <table id="ticket-table-list" class="table table-striped table-bordered table-hover display mb-0 ticket-table-list">
+                                            <table id="ticket-table-list" class="table table-bordered table-hover display mb-0 ticket-table-list">
                                                 <thead>
                                                     <tr>
                                                         <th>
