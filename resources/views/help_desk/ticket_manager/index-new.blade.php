@@ -12,21 +12,63 @@
     {
         color: red !important;
     }
-    table th, td{
+   
+    .pr-0{
+        padding-right: 0 !important;
+    }
+    
+    table.dataTable th {
+            padding: 20px 10px !important;
+            vertical-align: middle !important;
+        }
+        table.dataTable .custom{
+        padding-right: 186px !important;
+    }
+    .pr-ticket{
+        min-width: 84px !important;
+    }
+    .pr-replies{
+        min-width: 95px !important;
+    }
+    .pr-due{
+        min-width: 125px !important;
+    }
+    .pr-activity{
+    min-width: 97px !important;
+    padding-right: 19px !important;
+
+    }
+    .pr-tech {
+        min-width: 109px !important;
+    }
+    table.dataTable .custom-cst{
+        padding-right: 37px !important;
+    }
+    table.dataTable td{
+        padding:7px !important;
+        font-size:12px;
+    }
+    table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
+        display:none;
+    }
+    /* table th, td{
         padding-top: 5px !important; 
         padding-bottom: 5px !important; 
     }
     table td{
         padding-top: 0px !important; 
         padding-bottom: 0px !important; 
-    }
-    #ticket-table-list td {
-        min-width: 120px;
-    }
-    #ticket-table-list td:nth-child(1), td:nth-child(2) {
+    } */
+    /* #ticket-table-list td {
+        min-width: 60px;
+        padding-right:0;
+    } */
+    
+    /* #ticket-table-list td:nth-child(1), td:nth-child(2) {
         min-width: 20px !important;
         max-width: 20px !important;
-    }
+    } */
     /* .row-flex-container {
         display: flex;
         flex-wrap: wrap;
@@ -41,6 +83,7 @@
     .select2-container .select2-selection--single .select2-selection__rendered {
         padding-right: 60px !important;
     }
+    
 </style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -191,18 +234,18 @@
                                                         </th>
                                                         <th></th>
                                                         <th>Status</th>
-                                                        <th>Subject</th>
-                                                        <th>Ticket ID</th>
-                                                        <th>Priority</th>
-                                                        <th>Customer</th>
-                                                        <th>Last Replier</th>
+                                                        <th class='custom'>Subject</th>
+                                                        <th class='pr-ticket'>Ticket ID</th>
+                                                        <th >Priority</th>
+                                                        <th class='custom-cst'>Customer</th>
+                                                        <th class='pr-replies custom-cst'>Last Replier</th>
                                                         <th>Replies</th>
-                                                        <th>Last Activity</th>
-                                                        <th>Reply Due</th>
-                                                        <th>Resolution Due</th>
-                                                        <th>Assigned Tech</th>
-                                                        <th>Department</th>
-                                                        <th>Creation Date</th>
+                                                        <th class='pr-activity '>Last Activity</th>
+                                                        <th class='pr-ticket'>Reply Due</th>
+                                                        <th class='pr-due'>Resolution Due</th>
+                                                        <th class='pr-tech custom-cst'>Assigned Tech</th>
+                                                        <th class='custom-cst'>Department</th>
+                                                        <th class='pr-tech custom-cst'>Creation Date</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
