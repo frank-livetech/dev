@@ -6,7 +6,6 @@
         $departments = Session('depts');
 
         ?>
-
     <!-- BEGIN: Main Menu-->
     <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header">
@@ -71,8 +70,9 @@
                                                 @foreach($departments as $depts)
                                                     {{-- 2nd level --}}
                                                     <li class="sidebar-item">
-                                                        <a class="has-arrow sidebar-link" href="javascript:void(0)" aria-expanded="false">
-                                                            <i data-feather='plus'></i>
+                                                        <a class="has-arrow sidebar-link slogan" href="javascript:void(0)" aria-expanded="false">
+                                                            <i class="slogan_i_plus" data-feather='plus'></i>
+                                                            <i class="slogan_i_minus" data-feather='minus'></i>
                                                             <span class="hide-menu">{{$depts->name}}</span>
                                                             <span class="badge badge-light-danger rounded-pill ms-auto me-2" id="dept_cnt_{{$depts->id}}"></span>
                                                         </a>
@@ -80,7 +80,7 @@
                                                             @foreach($depts->statuses as $sts)
                                                                 {{-- 3rd level --}}
                                                                 <li class="sidebar-item thirdlvl">
-                                                                    <a href="{{route('ticket-manager.index',[$depts->slug,$sts->slug])}}" class="sidebar-link">
+                                                                    <a href="{{route('ticket-manager.index',[$depts->slug,$sts->slug])}}" class="slogan sidebar-link">
                                                                         <span class="hide-menu"> {{$sts->name}}</span>
                                                                         <span class="badge badge-light-danger rounded-pill ms-auto me-2" id="sts_cnt_{{$depts->id}}_{{$sts->id}}"></span>
                                                                     </a>
