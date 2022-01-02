@@ -245,6 +245,7 @@
     <script>
         $(document).ready(function() {
             getAllCounts();
+            $(this).find(".slogan_i_minus").hide();
         });
         $(window).on('load', function() {
             if (feather) {
@@ -289,6 +290,22 @@
             });
             
         }
+        $('.sidebar-link').click(function(){
+           
+            if($(this).parent().hasClass('open')){
+                $(".slogan_i_minus").hide()
+                $(".slogan_i_plus").show()
+                $(this).find(".slogan_i_plus").show();
+                $(this).find(".slogan_i_minus").hide();
+            }
+            else{
+                $(".slogan_i_minus").hide()
+                $(".slogan_i_plus").show()
+                $(this).find(".slogan_i_plus").hide();
+                $(this).find(".slogan_i_minus").show();
+              
+            }
+        })
     </script>
     @yield('scripts')
 </body>

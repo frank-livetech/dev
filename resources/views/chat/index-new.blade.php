@@ -1,5 +1,5 @@
 @extends('layouts.master-layout-new')
-
+@section('Live Support Chat','active')
 @section('body')
 <div class="app-content content chat-application">
     <div class="content-overlay"></div>

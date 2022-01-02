@@ -150,7 +150,6 @@ class MailController extends Controller
 
     public function updateEmail(Request $request) {
         $data = $request->all();
-
         if($request->php_mailer == 'yes') {
             $mail = Mail::find($request->id);
             $mail->mailserver_hostname = $data['mailserver_hostname'];
@@ -1028,16 +1027,20 @@ class MailController extends Controller
                 
                 if($sla !== HelpdeskController::NOSLAPLAN) {
                     $sla_from = $helpd->getSlaDeadlineFrom($tckt[0]['values']['id']);
-
+                    
                     if(!empty($tckt[0]['values']['reply_deadline']) && !empty($tckt[0]['values']['resolution_deadline'])) {
-                        $res = Carbon::parse($tckt[0]['values']['resolution_deadline']);
+                        if($tckt[0]['values']['resolution_deadline'] != 'cleared'){
+                            $res = Carbon::parse($tckt[0]['values']['resolution_deadline']);
+                        }
+                        
                         $rep = Carbon::parse($sla_from[1]);
                     } else {
-                        $res = Carbon::parse($tckt[0]['values']['created_at']);
-                        $dt = explode('.', $slaPlan['due_deadline']);
-                        $res->addHours($dt[0]);
-                        if(array_key_exists(1, $dt)) $res->addMinutes($dt[1]);
-                        
+                        if($tckt[0]['values']['resolution_deadline'] != 'cleared'){
+                            $res = Carbon::parse($tckt[0]['values']['created_at']);
+                            $dt = explode('.', $slaPlan['due_deadline']);
+                            $res->addHours($dt[0]);
+                            if(array_key_exists(1, $dt)) $res->addMinutes($dt[1]);
+                        }
                         $rep = Carbon::parse($sla_from[0]);
                         $dt = explode('.', $slaPlan['reply_deadline']);
                         $rep->addHours($dt[0]);
@@ -1046,7 +1049,7 @@ class MailController extends Controller
                 }
             }
 
-            if(!empty($rep)) {
+            if(!empty($rep) && $rep != 'cleared') {
                 $crb = new Carbon();
                 $date_diff = '';
                 foreach ($crb->diffAsCarbonInterval($rep, false)->toArray() as $key => $value) {
@@ -1056,7 +1059,7 @@ class MailController extends Controller
 
                 $rep = $rep->format('j F Y g:i:s A').$date_diff;
             }
-            if(!empty($res)) {
+            if(!empty($res) && $res != 'cleared') {
                 $crb = new Carbon();
                 $date_diff = '';
                 foreach ($crb->diffAsCarbonInterval($res, false)->toArray() as $key => $value) {

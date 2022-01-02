@@ -15,7 +15,7 @@
                                 </li>
                                 <li class="breadcrumb-item">Help Desk
                                 </li>
-                                <li class="breadcrumb-item active"><a href="{{url('ticket-management')}}">Tickets Manager</a>
+                                <li class="breadcrumb-item active"><a href="{{url('ticket-manager')}}">Tickets Manager</a>
                                 </li>
                                 <li class="breadcrumb-item active">Add Ticket
                                 </li>
@@ -135,7 +135,7 @@
                                                                 @if($customers != null && $customers != "")
                                                                     @foreach($customers as $key => $customer)
                                                                         @if ($key == 0)
-                                                                            <option value="{{$customer->id}}" selected>{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}}</option>
+                                                                            <option value="{{$customer->id}}" >{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}}</option>
                                                                         @else
                                                                             <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}} </option>
                                                                         @endif

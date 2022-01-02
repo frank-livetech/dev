@@ -162,11 +162,36 @@ function redrawTicketsTable(ticket_arr) {
         }
         var name = val['subject'] ?? '';
         var shortname = '';
+
         if (name && name.length > 40) {
             shortname = name.substring(0, 40) + " ...";
         } else {
             shortname = name;
         }
+
+        var cust_name = val['customer_name'] ?? '';
+        var short_cust_name = '';
+
+        if (cust_name && cust_name.length > 15) {
+            short_cust_name = cust_name.substring(0, 15) + " ...";
+        } else {
+            short_cust_name = cust_name;
+        }
+
+
+        var dep_name = val['department_name'] ?? '';
+        var short_dep_name = '';
+
+        if (dep_name && dep_name.length > 15) {
+            short_dep_name = dep_name.substring(0, 15) + " ...";
+        } else {
+            short_dep_name = dep_name;
+        }
+
+
+       
+
+
         let restore_flag_btn = '';
         if (in_recycle_mode) {
             restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-trash-restore text-primary" title="Restore" style="cursor:pointer;" onclick="restoreTicket(' + val['id'] + ');"></span></div>';
@@ -236,35 +261,44 @@ function redrawTicketsTable(ticket_arr) {
         if(val['replies'] > 0){
             replies = val['replies'];
         }
-        let replier = val['lastReplier'];
+        let replier = val['lastReplier'] ;
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
+        var short_replier = '';
+
+        if (replier && replier.length > 15) {
+            short_replier = replier.substring(0, 15) + " ...";
+        } else {
+            short_replier = replier;
+        }
 
         // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
         var last_activity = getDateDiff( val.lastActivity );
 
         if(last_activity.includes('d')) {
-            la_color = `red`;
+            la_color = `#FF0000`;
         }else if(last_activity.includes('h')) {
-            la_color = `#5c83b4`;
+            la_color = `#FF8C5A`;
         }else if(last_activity.includes('m')) {
-            la_color = `#ff8c5a`;
+            la_color = `#5C83B4`;
+        }else if(last_activity.includes('s')) {
+            la_color = `#8BB467`;
         }
         let row = `<tr>
             <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
-            <td>${status}</td>
+            <td class='text-center'>${status}</td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
-            <td>${prior}</td>
-            <td><a href="customer-profile/${val['customer_id']}" style="color:black">${val['customer_name']}</a></td>
-            <td>${replier}</td>
-            <td>${replies}</td>
-            <td data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
-            <td>${rep_due}</td>
-            <td>${res_due}</td>
+            <td class='text-center'>${prior}</td>
+            <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
+            <td>${(short_replier.length > 15 ? short_replier.substring(0,15) + '...' : short_replier)}</td>
+            <td class='text-center'>${replies}</td>
+            <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
+            <td class='text-center'>${rep_due}</td>
+            <td class='text-center'>${res_due}</td>
             <td>${val['tech_name']}</td>
-            <td>${val['department_name']}</td>
+            <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
             <td>${ jsTimeZone(val['created_at']) }</td>
         </tr>`;
         
@@ -387,11 +421,6 @@ function getClockTime(followUpDate, timediff) {
 function getDateDiff(date1, date2=new Date()) {
     var a = moment(date1);
     var b = moment(date2);
-    // var years = b.diff(a, 'year');
-    // a.add(years, 'years');
-
-    // var months = b.diff(a, 'months');
-    // a.add(months, 'months');
 
     var days = b.diff(a, 'days');
     a.add(days, 'days');
@@ -402,14 +431,12 @@ function getDateDiff(date1, date2=new Date()) {
     var mins = b.diff(a, 'minutes');
 
     let ret = '';
-    // if(years > 0) ret += years+'y ';
-    // if(months > 0) ret += months+'m ';
     if(days > 0) ret += days+'d ';
     if(hours > 0) ret += hours+'h ';
     if(mins > 0) ret += mins+'m';
 
     if (ret == ''){
-        ret = 'Just Now'
+        ret = '0s'
     }
     return ret;
 }
