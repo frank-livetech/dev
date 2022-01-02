@@ -538,7 +538,7 @@
                     
                 </div>
                 <div class="input-group-append">
-                    <button class="btn btn-dark" type="button" title="Remove" onclick="console.log(this.parentElement.parentElement.remove())"><span class="fa fa-window-close"></span></button>
+                    <button class="btn btn-dark" type="button" title="Remove" onclick="console.log(this.parentElement.parentElement.remove())"><span class="fa fa-times"></span></button>
                 </div>
             </div>`);
 
