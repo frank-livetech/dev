@@ -191,7 +191,7 @@
                                 </li>
                                 <li class="breadcrumb-item">Help Desk
                                 </li>
-                                <li class="breadcrumb-item active"><a href="{{url('ticket-management')}}">Tickets Manager</a>
+                                <li class="breadcrumb-item active"><a href="{{url('ticket-manager')}}">Tickets Manager</a>
                                 </li>
                                 <li class="breadcrumb-item active">Ticket Detail
                                 </li>

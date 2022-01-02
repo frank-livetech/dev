@@ -22,7 +22,7 @@
                             @if ($page_control == 'customer')
                                 <a href="{{url()->previous()}}">Customer Profile</a>
                             @else
-                                <a href="{{asset('/ticket-management')}}">Ticket Manager</a>
+                                <a href="{{asset('/ticket-manager')}}">Ticket Manager</a>
                             @endif
                             </li>
                         @endif

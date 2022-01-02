@@ -188,8 +188,13 @@ function setSlaPlanDeadlines(ret = false) {
     if (ticket_slaPlan.title != 'No SLA Assigned') {
         if (ticket.hasOwnProperty('resolution_deadline') && ticket.resolution_deadline) {
             // use ticket reset deadlines
-            res_due = moment(moment(ticket.resolution_deadline).toDate()).local();
-            $('#ticket-res-due').val(ticket.resolution_deadline);
+            if(ticket.resolution_deadline == 'cleared') {
+                $('#sla-res_due').parent().addClass('d-none');
+            } else {
+                res_due = moment(moment(ticket.resolution_deadline).toDate()).local();
+                $('#ticket-res-due').val(ticket.resolution_deadline);
+            }
+            
         } else if (ticket_slaPlan.due_deadline) {
             // use sla deadlines
             let hm = ticket_slaPlan.due_deadline.split('.');
@@ -245,8 +250,8 @@ function setSlaPlanDeadlines(ret = false) {
     if (rep_due) $('#sla-rep_due').html(rep_due);
     if (res_due) $('#sla-res_due').html(res_due);
 
-    if (!rep_due && !res_due) $('.sla-selc').hide();
-    else $('.sla-selc').show();
+    // if (!rep_due && !res_due) $('.sla-selc').hide();
+    // else $('.sla-selc').show();
 
     // any deadline is overdue can be reset
     if (resetable) {
@@ -290,14 +295,17 @@ function updateDeadlines() {
     let res_deadline = $('#ticket-res-due').val();
 
     if (!rep_deadline && !res_deadline) {
-        Swal.fire({
-            position: 'center',
-            icon: "error",
-            title: "Please enter date to reset!",
-            showConfirmButton: false,
-            timer: swal_message_time
-        });
-        return false;
+        // Swal.fire({
+        //     position: 'center',
+        //     icon: "error",
+        //     title: "Please enter date to reset!",
+        //     showConfirmButton: false,
+        //     timer: swal_message_time
+        // });
+        // return false;
+        rep_deadline = 'cleared';
+        res_deadline = 'cleared';
+
     }
 
     let formData = {
@@ -685,6 +693,8 @@ function saveRequest() {
             success: function(data) {
                 if (data.success == true) {
                     ticket_details.ticket_detail = content;
+                    updateTicketDate();
+
                     let mssg = 'Subject updated';
                     // upload attachments
                     $('.tickets_attaches').each(function(index) {
@@ -962,12 +972,26 @@ function listReplies() {
 
                 tdet += '';
             }
+
+            let user_type = 'Staff';
+
+            if(reply.user_type == 5){
+                user_type = 'User'
+            }
+            // let new = '';
+            var now = moment( new Date().toLocaleString('en-US', { timeZone: time_zone }));
+
+            var end = moment(reply.created_at); // another date
+            var duration = moment.duration(now.diff(end));
+            var days = duration.asHours();
+            console.log(days + ' sadasdasd' + now)
             
             $('#ticket-replies').append(`
                 <li class="media">
-                    <img class="mr-3" src="${user_photo_url}" width="60" alt="Profile Image">
+                    <img class="mr-3" src="${user_photo_url}" width="50" height="50" alt="Profile Image">
                     <div class="media-body">
-                        <h5 class="mt-0 mb-1">From <span class="text-primary">` + reply.name + `</span> <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">on ` + convertDate(reply.created_at) + `</span> <span class="fa fa-edit" style="cursor: pointer;" onclick="editReply('${index}')"></span></h5>
+                        <h5 class="mt-0 mb-1"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;float:right" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" style="cursor: pointer;float:right" ></span>&nbsp;</h5> 
+                        <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
@@ -1206,7 +1230,7 @@ $('#dept_id').change(function() {
             if (data.success == true) {
                 ticket.dept_id = dept_id;
                 $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
-
+                updateTicketDate();
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Deptartment updated');
 
@@ -1248,6 +1272,7 @@ $('#assigned_to').change(function() {
             if (data.success == true) {
                 ticket.assigned_to = assigned_to;
                 $('#follow_up_assigned_to').val(ticket.assigned_to).trigger("change");
+                updateTicketDate();
 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Assignment updated');
@@ -1281,6 +1306,7 @@ $('#type').change(function() {
             if (data.success == true) {
                 ticket.type = type;
                 $('#follow_up_type').val(ticket.type).trigger("change");
+                updateTicketDate();
                 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Type updated');
@@ -1316,6 +1342,7 @@ $('#status').change(function() {
                 ticket.status = status;
                 $("#dropD").css('background-color' ,color + ' !important');
                 $('#follow_up_status').val(ticket.status).trigger("change");
+                updateTicketDate();
                 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Status updated');
@@ -1350,6 +1377,7 @@ $('#priority').change(function() {
                 ticket.priority = priority;
                 $("#prio-label").css('background-color' ,color + ' !important');
                 $('#follow_up_priority').val(ticket.priority).trigger("change");
+                updateTicketDate();
                 
                 // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Priority updated');
@@ -2042,6 +2070,12 @@ function visibilityOptions() {
     }
 }
 
+function updateTicketDate(){
+    var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
+    new_date =  moment(new_date).format(date_format + ' ' +'hh:mm a');
+    $("#updation-date").html(new_date);
+}
+
 $("#save_ticket_note").submit(function(event) {
     event.preventDefault();
 
@@ -2374,7 +2408,7 @@ function flagTicket() {
             if (data.success) {
                 // send mail notification regarding ticket action
                 let nn = (ticket.is_flagged == 1) ? 'Flag removed' : 'Flagged';
-
+                updateTicketDate();
                 ticket_notify('ticket_update', nn);
 
                 // refresh logs

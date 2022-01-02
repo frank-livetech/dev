@@ -745,24 +745,26 @@ class HelpdeskController extends Controller
                 }
     
                 if(!$lcnt) {
-                    $nowDate = Carbon::now();
-                    if(!empty($value->resolution_deadline)) {
-                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
-                        if($timediff < 0) $lcnt = true;
-                    } else {
-                        $rep = Carbon::parse($value->sla_res_deadline_from);
-                        $dt = explode('.', $value->sla_plan['due_deadline']);
-                        $rep->addHours($dt[0]);
-                        // if(array_key_exists(1, $dt)) {
-                        //     $rep->addMinutes($dt[1]);
-                        // }
+                    if($value->resolution_deadline != 'cleared') {
+                        $nowDate = Carbon::now();
+                        if(!empty($value->resolution_deadline)) {
+                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                            if($timediff < 0) $lcnt = true;
+                        } else {
+                            $rep = Carbon::parse($value->sla_res_deadline_from);
+                            $dt = explode('.', $value->sla_plan['due_deadline']);
+                            $rep->addHours($dt[0]);
+                            // if(array_key_exists(1, $dt)) {
+                            //     $rep->addMinutes($dt[1]);
+                            // }
 
-                        if(strtotime($rep) < strtotime($nowDate)) {
-                            $lcnt = true;
+                            if(strtotime($rep) < strtotime($nowDate)) {
+                                $lcnt = true;
+                            }
+
+                            // $timediff = $nowDate->diffInSeconds($rep, false);
+                            // if($timediff < 0) $lcnt = true;
                         }
-
-                        // $timediff = $nowDate->diffInSeconds($rep, false);
-                        // if($timediff < 0) $lcnt = true;
                     }
                 }
             }
@@ -1018,9 +1020,11 @@ class HelpdeskController extends Controller
             if( empty($rep['user_id']) ){
                 $user = Customer::where('id', $rep['customer_id'])->first();
                 $rep['name'] = $user['first_name'] . ' ' . $user['last_name'];
+                $rep['user_type'] = 5;
             }else{
                 $user = User::where('id', $rep['user_id'])->first();
                 $rep['name'] = $user['name'];
+                $rep['user_type'] = $user['user_type'];
             }
         }
 

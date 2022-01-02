@@ -233,7 +233,7 @@
                             </a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <a href="{{asset('/ticket-management')}}" class="card card_shadow card_back border-info card-hover">
+                            <a href="{{asset('/ticket-manager')}}" class="card card_shadow card_back border-info card-hover">
                                 <div class="box p-2 rounded  text-center">
                                     <h2>{{$total_tickets_count}}</h2>
                                     <h6 class="text-info">All Tickets</h6>
@@ -241,7 +241,7 @@
                             </a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <a href="{{asset('/ticket-management/self')}}" class="card card_shadow card_back  border-success card-hover">
+                            <a href="{{asset('/ticket-manager/self')}}" class="card card_shadow card_back  border-success card-hover">
                                 <div class="box p-2 rounded text-center">
                                     <h2>{{$my_tickets_count}}</h2>
                                     <h6 class="text-success">My Tickets</h6>
@@ -249,7 +249,7 @@
                             </a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <a href="{{asset('/ticket-management/open')}}" class="card card_shadow card_back border-warning card-hover">
+                            <a href="{{asset('/ticket-manager/open')}}" class="card card_shadow card_back border-warning card-hover">
                                 <div class="box p-2 rounded  text-center">
                                     <h2>{{$open_tickets_count}}</h2>
                                     <h6 class="text-warning">Open</h6>
@@ -257,7 +257,7 @@
                             </a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <a href="{{asset('/ticket-management/unassigned')}}" class="card card_shadow card_back border-primary card-hover">
+                            <a href="{{asset('/ticket-manager/unassigned')}}" class="card card_shadow card_back border-primary card-hover">
                                 <div class="box p-2 rounded text-center">
                                     <h2>{{$unassigned_tickets_count}}</h2>
                                     <h6 class="text-primary">Unassigned</h6>
@@ -265,7 +265,7 @@
                             </a>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <a href="{{asset('/ticket-management/overdue')}}" class="card card_shadow card_back  border-danger card-hover">
+                            <a href="{{asset('/ticket-manager/overdue')}}" class="card card_shadow card_back  border-danger card-hover">
                                 <div class="box p-2 rounded text-center">
                                     <h2>{{$late_tickets_count}}</h2>
                                     <h6 class="text-danger">Overdue</h6>
@@ -459,7 +459,7 @@
                                     </a>
                                 </div>
                                 <!-- <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="{{asset('/ticket-management/unassigned')}}" class="card card_shadow card_back border-success card-hover">
+                                    <a href="{{asset('/ticket-manager/unassigned')}}" class="card card_shadow card_back border-success card-hover">
                                         <div class="box p-2 rounded text-center">
                                             <h2 class=" total_inactive_count" id="total_inactive_count">{{$staff_inactive_count}}</h2>
                                             <h6 class="text-success ">Unassign Tickets</h6>
