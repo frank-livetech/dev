@@ -1,4 +1,6 @@
 @extends('layouts.master-layout-new')
+@section('Help Desk','open')
+@section('Ticket Manager','active')
 @section('body')
 <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 <style>
