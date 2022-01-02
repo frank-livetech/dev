@@ -69,7 +69,7 @@ class CompanyController extends Controller
         $countries = [];
         if($google_key === 0) $countries = DB::Table('countries')->get();
         
-        return view('customer_manager.company_lookup.index',compact('google','companies','countries','is_default','google_key'));
+        return view('customer_manager.company_lookup.index-new',compact('google','companies','countries','is_default','google_key'));
     }
 
     public function get_customer(){
@@ -434,7 +434,7 @@ class CompanyController extends Controller
         
         $date_format = Session('system_date');
 
-        return view('customer_manager.company_lookup.companyprofile',compact('google','company','customer','tags','activity_logs', 'countries', 'is_default', 'google_key','sla_plans','company_staff', 'date_format'));
+        return view('customer_manager.company_lookup.companyprofile-new',compact('google','company','customer','tags','activity_logs', 'countries', 'is_default', 'google_key','sla_plans','company_staff', 'date_format'));
     }
 
     public function uploadCompanyImage(Request $request) {

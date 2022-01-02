@@ -1,227 +1,227 @@
 <script>
     // Staff_profile SCript Blade
     $(document).ready(function(){
-    values();
-    const textDark = Pickr.create({
-        el: '#text-dark',
-        theme: 'nano',
-        default: "{{session('text_dark')}}",
-        components: {
+        values();
+        const textDark = Pickr.create({
+            el: '#text-dark',
+            theme: 'nano',
+            default: "{{session('text_dark')}}",
+            components: {
 
-            // Main components
-            preview: true,
-            opacity: true,
-            hue: true,
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
 
-            // Input / output Options
-            interaction: {
-                save: true
-            }
-        }
-    });
-
-    textDark.on('change', function (color) {
-        const newColor = color.toHEXA().toString();
-        dark(newColor, "{{Session::get('bg_dark')}}");
-    }).on('save', function (color) {
-        const newColor = color.toHEXA().toString();
-        $.ajax({
-            type: "post",
-            url: save_staff_color_route,
-            data: { action: 'textDark', color: newColor },
-            success: function (data) {
-                if (data['success'] == true) {
-                    dark(newColor, "{{Session::get('bg_dark')}}");
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
-                } else {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
+                // Input / output Options
+                interaction: {
+                    save: true
                 }
             }
         });
-    });
-    const bgDark = Pickr.create({
-        el: '#bg-dark',
-        theme: 'nano',
-        default: "{{session('bg_dark')}}",
-        components: {
 
-            // Main components
-            preview: true,
-            opacity: true,
-            hue: true,
+        textDark.on('change', function (color) {
+            const newColor = color.toHEXA().toString();
+            dark(newColor, "{{Session::get('bg_dark')}}");
+        }).on('save', function (color) {
+            const newColor = color.toHEXA().toString();
+            $.ajax({
+                type: "post",
+                url: save_staff_color_route,
+                data: { action: 'textDark', color: newColor },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        dark(newColor, "{{Session::get('bg_dark')}}");
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    }
+                }
+            });
+        });
+        const bgDark = Pickr.create({
+            el: '#bg-dark',
+            theme: 'nano',
+            default: "{{session('bg_dark')}}",
+            components: {
 
-            // Input / output Options
-            interaction: {
-                save: true
-            }
-        }
-    });
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
 
-    bgDark.on('change', function (color) {
-        const newColor = color.toHEXA().toString();
-        dark("{{Session::get('text_dark')}}", newColor)
-    }).on('save', function (color) {
-        const newColor = color.toHEXA().toString();
-        $.ajax({
-            type: "post",
-            url: save_staff_color_route,
-            data: { action: 'bgDark', color: newColor },
-            success: function (data) {
-                if (data['success'] == true) {
-                    dark("{{Session::get('text_dark')}}", newColor)
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
-                } else {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
+                // Input / output Options
+                interaction: {
+                    save: true
                 }
             }
         });
-    });
-    const textLight = Pickr.create({
-        el: '#text-light',
-        theme: 'nano',
-        default: "{{session('text_light')}}",
-        components: {
 
-            // Main components
-            preview: true,
-            opacity: true,
-            hue: true,
+        bgDark.on('change', function (color) {
+            const newColor = color.toHEXA().toString();
+            dark("{{Session::get('text_dark')}}", newColor)
+        }).on('save', function (color) {
+            const newColor = color.toHEXA().toString();
+            $.ajax({
+                type: "post",
+                url: save_staff_color_route,
+                data: { action: 'bgDark', color: newColor },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        dark("{{Session::get('text_dark')}}", newColor)
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    }
+                }
+            });
+        });
+        const textLight = Pickr.create({
+            el: '#text-light',
+            theme: 'nano',
+            default: "{{session('text_light')}}",
+            components: {
 
-            // Input / output Options
-            interaction: {
-                save: true
-            }
-        }
-    });
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
 
-    textLight.on('change', function (color) {
-        const newColor = color.toHEXA().toString();
-        light(newColor, "{{Session::get('bg_light')}}")
-    }).on('save', function (color) {
-        const newColor = color.toHEXA().toString();
-        $.ajax({
-            type: "post",
-            url: save_staff_color_route,
-            data: { action: 'textLight', color: newColor },
-            success: function (data) {
-                if (data['success'] == true) {
-                    light(newColor, "{{Session::get('bg_light')}}")
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
-                } else {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
+                // Input / output Options
+                interaction: {
+                    save: true
                 }
             }
         });
-    });
-    const bglight = Pickr.create({
-        el: '#bg-light',
-        theme: 'nano',
-        default: "{{session('bg_light')}}",
-        components: {
 
-            // Main components
-            preview: true,
-            opacity: true,
-            hue: true,
+        textLight.on('change', function (color) {
+            const newColor = color.toHEXA().toString();
+            light(newColor, "{{Session::get('bg_light')}}")
+        }).on('save', function (color) {
+            const newColor = color.toHEXA().toString();
+            $.ajax({
+                type: "post",
+                url: save_staff_color_route,
+                data: { action: 'textLight', color: newColor },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        light(newColor, "{{Session::get('bg_light')}}")
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    }
+                }
+            });
+        });
+        const bglight = Pickr.create({
+            el: '#bg-light',
+            theme: 'nano',
+            default: "{{session('bg_light')}}",
+            components: {
 
-            // Input / output Options
-            interaction: {
-                save: true
-            }
-        }
-    });
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
 
-    bglight.on('change', function (color) {
-        const newColor = color.toHEXA().toString();
-        light("{{Session::get('text_light')}}", newColor)
-    }).on('save', function (color) {
-        const newColor = color.toHEXA().toString();
-        $.ajax({
-            type: "post",
-            url: save_staff_color_route,
-            data: { action: 'bgLight', color: newColor },
-            success: function (data) {
-                if (data['success'] == true) {
-                    light("{{Session::get('text_light')}}", newColor)
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
-                } else {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: data['message'],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
+                // Input / output Options
+                interaction: {
+                    save: true
                 }
             }
         });
-    });
 
-    tickets_table_list = $('#ticket_table').DataTable({
-        processing: true,
-        // scrollX: true,
-        pageLength: 20,
-        fixedColumns: true,
-        "autoWidth": false,
-        'columnDefs': [
-            { className: "overflow-wrap", targets: "_all" },
-            { width: '10px', orderable: false, searchable: false, 'className': 'dt-body-center', targets: 0 },
-            { width: '110px', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
-            { orderable: false, targets: 0 },
-            { orderable: false, targets: 1 }
-        ],
-        order: [[2, 'asc']],
-        createdRow: function(row, data, dataIndex){
-            console.log($(data[1]).attr('class'));
-            if($(data[1]).attr('class').match('flagged')){
-                $(row).addClass('flagged-tr');
+        bglight.on('change', function (color) {
+            const newColor = color.toHEXA().toString();
+            light("{{Session::get('text_light')}}", newColor)
+        }).on('save', function (color) {
+            const newColor = color.toHEXA().toString();
+            $.ajax({
+                type: "post",
+                url: save_staff_color_route,
+                data: { action: 'bgLight', color: newColor },
+                success: function (data) {
+                    if (data['success'] == true) {
+                        light("{{Session::get('text_light')}}", newColor)
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data['message'],
+                            showConfirmButton: false,
+                            timer: 2500
+                        })
+                    }
+                }
+            });
+        });
+
+        tickets_table_list = $('#ticket_table').DataTable({
+            processing: true,
+            // scrollX: true,
+            pageLength: 20,
+            fixedColumns: true,
+            "autoWidth": false,
+            'columnDefs': [
+                { className: "overflow-wrap", targets: "_all" },
+                { width: '10px', orderable: false, searchable: false, 'className': 'dt-body-center', targets: 0 },
+                { width: '110px', targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                { orderable: false, targets: 0 },
+                { orderable: false, targets: 1 }
+            ],
+            order: [[2, 'asc']],
+            createdRow: function(row, data, dataIndex){
+                console.log($(data[1]).attr('class'));
+                if($(data[1]).attr('class').match('flagged')){
+                    $(row).addClass('flagged-tr');
+                }
             }
-        }
+        });
+        get_ticket_table_list();
     });
-    get_ticket_table_list();
-});
 
 function values(){
     var state, country;

@@ -1552,7 +1552,7 @@ function get_status_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             return `<div class="d-flex justify-content-center">
-                                <button class="btn btn-circle btn-success mr-2" title="Edit Department" onclick="editStatus(` + full.id + `,'` + full.name + `','` + full.department_id + `','` + full.color + `')">
+                                <button class="btn btn-circle btn-success mr-2" title="Edit Department" onclick="editStatus(` + full.id + `,'` + full.name + `','` + full.department_id + `','` + full.color + `' ,'` + full.slug + `' ,'` + full.seq_no + `' ,'` + full.status_counter + `')">
                                     <i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>
                                 
                                     <button class="btn btn-circle btn-danger" title = "Delete Status" onclick = "deleteStatus(` + full.id + `)">
@@ -2137,11 +2137,17 @@ function editResponseTemp(id, title, cat_id, temp_html, view_access) {
 
 }
 
-function editStatus(id, name, depart_id, color) {
+function editStatus(id, name, depart_id, color,slug,seq_no,sts_counter) {
 
     $('#status_name').val(name);
     $('#status_id').val(id);
     $('#status_color').val(color);
+    $('#slug').val(slug);
+    $('#seq_no').val(seq_no);
+    if(sts_counter == 1){
+        $('#status_counter').prop('checked');
+    }
+
     var dept_id = depart_id.split(",");
     $('#department_id2').val(dept_id).trigger('change');
 

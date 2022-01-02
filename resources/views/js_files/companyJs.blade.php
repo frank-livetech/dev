@@ -217,10 +217,10 @@ function get_all_companies() {
                         <!--<td>` + count + `</td>-->
                         <td><a href="company-profile/` + data[i].id + `"><i class="fas fa-eye"></i></a></td>
                         
-                        <td contenteditable="true"  onBlur="updateValue(this,'name',` + data[i].id + `,'` + data[i].name + `')">` + (data[i].name != null ? data[i].name : '-') + `</td>
-                        <td contenteditable="true"  onBlur="updateValue(this,'poc_first_name',` + data[i].id + `,'` + data[i].poc_first_name + `')">` + (data[i].poc_first_name != null ? data[i].poc_first_name : '-') + `</td>
-                        <td contenteditable="true"  onBlur="updateValue(this,'poc_last_name',` + data[i].id + `,'` + data[i].poc_last_name + `')">` + (data[i].poc_last_name != null ? data[i].poc_last_name : '-') + `</td>
-                        <td contenteditable="true"  onBlur="updateValue(this,'email',` + data[i].id + `,'` + data[i].email + `')">` + (data[i].email != null ? data[i].email : '-') + `</td>
+                        <td>` + (data[i].name != null ? data[i].name : '-') + `</td>
+                        <td>` + (data[i].poc_first_name != null ? data[i].poc_first_name : '-') + `</td>
+                        <td>` + (data[i].poc_last_name != null ? data[i].poc_last_name : '-') + `</td>
+                        <td>` + (data[i].email != null ? data[i].email : '-') + `</td>
                         <td><a href="tel:` + (data[i].phone != null ? data[i].phone : '-') + `">` + (data[i].phone != null ? data[i].phone : '-') + `</a></td>
                         <td>` + address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</td>
                         

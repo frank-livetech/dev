@@ -153,11 +153,11 @@ $(function() {
 function fieldAdd(code) {
     $( /*html*/ `<div class="row connectedSortable border firstfield" id="sortable-row-${g_count}">
         <div class="col-md-12 appends" data-id="${g_count}" data-col="12">
-            <div class="card card-hover m-3">
-                <div class="card-body">
+            <div class="card card-hover m-1 style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;"">
+                <div class="card-body" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
                     <div class="d-flex justify-content-between">
                         <div class="title">
-                            <h3 class="card-title small mb-0"><i class="fas fa-grip-vertical pr-2" style="color:grey;"></i>${template[code].title}</h3>
+                            <h5 class="card-title small mb-0"><i class="fas fa-grip-vertical pr-2" style="color:grey;"></i> ${template[code].title}</h5>
                         </div>
                         <div class="actions" style="position:absolute; top:18px;right:8px">
                             <i onclick="removeField(${g_count}, this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>

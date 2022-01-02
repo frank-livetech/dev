@@ -395,9 +395,9 @@ function get_all_customers() {
                     </td>
                     <!-- <td>${count}</td>-->
                     <td><a href="customer-profile/${data[i].id}"><i class="fas fa-eye"></i></a></td>
-                    <td contenteditable="true" onBlur="updateValue(this,'first_name', ${data[i].id},'${data[i].first_name}')">${(data[i].first_name != null ? data[i].first_name : '-')}</td>
-                    <td contenteditable="true" onBlur="updateValue(this, 'last_name', ${data[i].id}, '${data[i].last_name}')">${(data[i].last_name != null ? data[i].last_name : '-')}</td>
-                    <td contenteditable="true" onBlur="updateValue(this,'email', ${data[i].id}, '${data[i].email}')">${(data[i].email != null ? data[i].email : '-')}</td>
+                    <td>${(data[i].first_name != null ? data[i].first_name : '-')}</td>
+                    <td>${(data[i].last_name != null ? data[i].last_name : '-')}</td>
+                    <td>${(data[i].email != null ? data[i].email : '-')}</td>
                     <td><a href="tel: ${(data[i].phone != null ? data[i].phone : '-')}">${(data[i].phone != null ? data[i].phone : '-')}</a></td>
                     <td>${(data[i].company != null ? data[i].company.name : '-')}</td>
                     <td>${address}, ${apt_address}<br>${ct_name} ${st_name} ${zip}<br>${cn_name}</td>

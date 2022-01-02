@@ -794,14 +794,14 @@
                                                 @foreach ($obj['permissions'] as $j => $data)
                                                     @if (array_key_exists(0, $data) && array_key_exists(1, $data))
                                                         <div class="d-flex justify-content-between">
-                                                            <div class="text-dark">{{$data[0]}}</div>
+                                                            <div class="text-dark">{{$data[0]}} </div>
                                                             <div class="row">
                                                                 <div class="custom-control custom-radio">
-                                                                    <input type="radio" onclick="saveNotificationPermission(1, {{$obj['id']}},'{{$j}}')" id="yes_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" class="custom-control-input" {{($data[1] == 1) ? 'checked': ''}}>
+                                                                    <input type="radio" onclick="saveNotificationPermission(1, {{$obj['id']}},'{{$j}}')" id="yes_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="custom-control-input yes_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? 'checked': ''}}>
                                                                     <label class="custom-control-label" for="yes_{{$j}}_{{$obj['id']}}">Yes</label>
                                                                 </div>
                                                                 <div class="custom-control custom-radio ml-2">
-                                                                    <input type="radio" onclick="saveNotificationPermission(0, {{$obj['id']}},'{{$j}}')" id="no_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" class="custom-control-input" {{($data[1] == 1) ? '': 'checked'}}>
+                                                                    <input type="radio" onclick="saveNotificationPermission(0, {{$obj['id']}},'{{$j}}')" id="no_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="custom-control-input no_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? '': 'checked'}}>
                                                                     <label class="custom-control-label" for="no_{{$j}}_{{$obj['id']}}">No</label>
                                                                 </div>
                                                             </div>

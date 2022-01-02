@@ -226,7 +226,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="table-responsive" style="overflow: hidden;">
-                                            <table id="ticket-table-list" class="table table-striped table-bordered table-hover display mb-0 ticket-table-list">
+                                            <table id="ticket-table-list" class="table table-bordered table-hover display mb-0 ticket-table-list">
                                                 <thead>
                                                     <tr>
                                                         <th>
