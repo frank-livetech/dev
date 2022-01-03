@@ -1,4 +1,6 @@
 @extends('layouts.master-layout-new')
+@section('Customer Manager','open')
+@section('Customer Lookup','active')
 <style>
     .float-right{
         float: right
