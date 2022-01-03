@@ -2724,7 +2724,7 @@
                             <label for="departmrnt" class="d-flex mb-2 align-items-center">
                                 <span>Department Slug</span>
                             </label>
-                            <input class="form-control" type="text" name="slug" id="slug" placeholder="" required>
+                            <input class="form-control" type="text" name="dept_slug" id="dept_slug" placeholder="" required>
                         </div>
                         <label for="departmrnt" class="d-flex mb-2 align-items-center">
                             <span>Show Counter</span>
