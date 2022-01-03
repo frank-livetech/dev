@@ -207,7 +207,7 @@ class SettingsController extends Controller
                 }
                 $departments_id = Departments::where('id',$request->dep_id)->first();
                 $departments_id->name = $data['name'];
-                $departments_id->slug = $data['slug'];
+                $departments_id->dept_slug = $data['dept_slug'];
                 $departments_id->dept_counter = $dept_counter;
 
                 $departments_id->updated_by = \Auth::user()->id;
