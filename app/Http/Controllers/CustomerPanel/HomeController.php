@@ -116,7 +116,8 @@ class HomeController
         
         // return view('customer_manager.customer_lookup.customerprofile',compact('prof_state','customer','company', 'countries' , 'states' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format'));
         // return view('customer_manager.customer_lookup.custProfile',compact('prof_state','customer','company', 'countries' , 'states' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format'));
-        return view('customer_manager.customer_lookup.custProfile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
+        // return view('customer_manager.customer_lookup.custProfile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
+        return view('customer.customer_profile.customer_profile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
     }
 
     public function addTicketPage(){
@@ -130,8 +131,8 @@ class HomeController
         $responseTemplates = ResponseTemplate::get();
 
         $page_control = 'customer';
-
-        return view('help_desk.ticket_manager.add_ticket',compact('departments','priorities','users','types','customers', 'responseTemplates', 'page_control'));
+        // return view('help_desk.ticket_manager.add_ticket',compact('departments','priorities','users','types','customers', 'responseTemplates', 'page_control'));
+        return view('customer.customer_tkt.customer_tkt',compact('departments','priorities','users','types','customers', 'responseTemplates', 'page_control'));
     }
 
     public function getCustomerTickets($customer_id) {

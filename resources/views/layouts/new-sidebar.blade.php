@@ -24,7 +24,7 @@
                             <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle">
                             @endif    
                         </span>
-                        <h6 class="brand-text wrap-text">{{Session::get('site_logo_title')}} <small id="version"></small>  </h6>
+                        <h6 class="brand-text wrap-text" >{{Session::get('site_logo_title')}} <small id="version"></small>  </h6>
                     </a></li>
                 <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>
             </ul>
@@ -36,26 +36,31 @@
                     @foreach(Session('menus') as $menu )
                         @if($menu->route != "NULL") 
                             @if($menu->is_active == 1) 
-                                <li class="nav-item @yield( $menu->title )">
+                                <li class=" nav-item {{ (request()->is($menu->route)) ? 'active' : '' }}">
                                     <a class="d-flex align-items-center" href="{{ route($menu->route) }}">
                                         <span> <?php echo $menu->menu_icon; ?> </span>
+                                        
+                                        {{-- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="<?php echo $menu->menu_icon; ?>"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> --}}
                                         <span class="menu-title text-truncate" data-i18n="{{$menu->title}}">{{$menu->title}}</span>
                                     </a>
                                 </li>
                             @endif
                         @else
                             @if($menu->is_active == 1)
-                                <li class=" nav-item @yield( $menu->title )">
+                                <li class=" nav-item ">
                                     <a class="d-flex align-items-center">
                                         <?php echo $menu->menu_icon; ?>
+                                        
+                                        {{-- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="<?php echo $menu->menu_icon; ?>"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> --}}
                                         <span class="menu-title text-truncate" data-i18n="{{$menu->title}}">{{$menu->title}}</span>
+                                        
                                     </a>
                                         
                                     @php $sub_menus = $menu->sub_menu; @endphp
                                     <ul aria-expanded="false" class="menu-content" style="">
                                     @foreach($sub_menus as $sub_menu)
                                         @if($sub_menu->is_active == 1)
-                                        <li class="@yield( $sub_menu->title )">
+                                        <li class=" {{ (request()->is($menu->route)) ? 'active' : '' }}">
                                             <a class="d-flex align-items-center" href="{{ route($sub_menu->route) }}">
                                                 <i data-feather="circle"></i>
                                                 <span class="menu-item text-truncate" data-i18n="{{$sub_menu->title}}">{{$sub_menu->title}}</span>

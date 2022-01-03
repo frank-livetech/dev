@@ -1,5 +1,9 @@
 /*Custom Sidebar Changes*/
 
+.brand-text {
+    font-size: 1.33em !important;
+}
+
 .slogan:after {
     opacity: 0;
 }

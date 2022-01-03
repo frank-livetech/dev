@@ -361,8 +361,9 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
 Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], function () {
 
-    Route::get('/myprofile','HomeController@profile');
-    Route::get('/add-ticket','HomeController@addTicketPage');
+    Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
+    Route::get('/add-tkt','HomeController@addTicketPage');
+    // Route::get('/add-ticket','HomeController@addTicketPage');
 
 });
 
