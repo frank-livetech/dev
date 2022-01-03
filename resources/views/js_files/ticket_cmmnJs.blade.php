@@ -404,13 +404,13 @@ function getClockTime(followUpDate, timediff) {
         if (rem && rem.hasOwnProperty('months') && rem.months > 0) remTime += rem.months + 'm ';
         if (rem && rem.hasOwnProperty('days') && rem.days > 0) remTime += rem.days + 'd ';
         if (rem && rem.hasOwnProperty('hours') && rem.hours > 0) remTime += rem.hours + 'h ';
-        if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'min';
+        if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'm';
 
         if(remTime.includes('d')) {
             color = `#8BB467`;
         }else if(remTime.includes('h')) {
             color = `#5c83b4`;
-        }else if(remTime.includes('min')) {
+        }else if(remTime.includes('m')) {
             color = `#ff8c5a`;
         }
         remTime = `<span style="color:${color}">${remTime}</span>`;

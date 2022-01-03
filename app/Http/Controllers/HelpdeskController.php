@@ -70,7 +70,7 @@ class HelpdeskController extends Controller
 
     public function ticket_manager($dept,$sts){
 
-        $dept = Departments::where('slug',$dept)->first();
+        $dept = Departments::where('dept_slug',$dept)->first();
         $dept = $dept->id;
         $sts = TicketStatus::where('slug',$sts)->first();
         $sts = $sts->id;

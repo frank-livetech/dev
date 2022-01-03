@@ -71,7 +71,10 @@
                                                         <ul aria-expanded="false" class="collapse second-level">
                                                             @foreach($depts->statuses as $sts)
                                                                 {{-- 3rd level --}}
-                                                                <li class="sidebar-item thirdlvl">
+                                                                @php
+                                                                    $url = 'ticket-manager/' . $depts->dept_slug . '/' . $sts->slug;
+                                                                @endphp
+                                                                <li class="sidebar-item thirdlvl {{Request::path() == $url ? 'active' : ''}}">
                                                                     <a href="{{route('ticket-manager.index',[$depts->dept_slug,$sts->slug])}}" class="slogan sidebar-link">
                                                                         <span class="hide-menu"> {{$sts->name}}</span>
                                                                         <span class="badge badge-light-danger rounded-pill ms-auto me-2" id="sts_cnt_{{$depts->id}}_{{$sts->id}}"></span>
