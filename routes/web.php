@@ -29,7 +29,9 @@ Route::post('/save-user-register', 'AuthController@saveUserDetails')->name('user
 //Auth::routes();
 Route::get('/login', 'AuthController@index')->name('login');
 Route::post('/login', 'AuthController@postLogin'); 
-Route::post('/logout', 'AuthController@logout');
+
+Route::get('/logout', 'AuthController@logout')->name('logout');
+
 Route::get('/forgetPassword', 'AuthController@forgetPassword');
 Route::post('/recoverPassword','AuthController@recoverPassword');
 Route::get('/activate/{email}/{code}','AuthController@changePasswordPage');
