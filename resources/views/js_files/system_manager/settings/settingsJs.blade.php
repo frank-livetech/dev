@@ -1491,7 +1491,7 @@ function get_departments_table_list() {
                         "render": function(data, type, full, meta) {
                             return `
                                 <div class="d-flex justify-content-center">
-                                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="editDepartment(` + full.id + `,'` + full.name + `')"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>
+                                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="editDepartment(` + full.id + `,'` + full.name + `','`+full.dept_slug+`','`+full.dept_counter+`')"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>
 
                                     <button class="btn btn-circle btn-danger mr-2 ml-2" title="Delete Department"
                                     onclick = "deleteDepartment(` + full.id + `)"><i class="fa fa-trash " aria-hidden="true"></i></button>
@@ -2107,10 +2107,14 @@ function deleteDepartment(id) {
     })
 }
 
-function editDepartment(id, name) {
+function editDepartment(id, name,slug,dept_counter) {
 
     $('#dep_name').val(name);
     $('#dep_id').val(id);
+    $('#dept_slug').val(slug);
+    if(dept_counter == 1){
+        $('#dept_counter').prop('checked');
+    }
     $('#save-department').modal('show');
 
     var label = $("#dept").text();
