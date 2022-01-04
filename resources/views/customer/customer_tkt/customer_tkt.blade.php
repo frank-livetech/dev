@@ -209,13 +209,13 @@
                                                     </div> --}}
                                             @endif
                                                     <div class="row mt-2">
-                                                        <div class="col-12 p-0">
+                                                        <div class="col-md-12 ">
                                                             <label class="control-label">Problem Details<span class="text-danger">*</span></label>
                                                             <textarea class="form-control" rows="3" id="ticket_detail" name="ticket_detail"></textarea>
                                                             <span class="text-danger small" id="ticket_detail_error"></span>
                                                         </div>
                                                         <div id="ticket_attachments"></div>
-                                                        <div class="col-12 p-0 mt-3" id="">
+                                                        <div class="col-md-12 mt-3" id="">
                                                             <button class="btn btn-outline-primary btn-sm" type="button" onclick="addAttachment()"><span class="fa fa-plus"></span> Add Attachment</button>
                                                             {{-- <button id="clear-dropzone"  class="btn btn-outline-primary mb-1">
                                                                 <i data-feather="trash" class="me-25"></i>

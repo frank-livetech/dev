@@ -42,11 +42,30 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 use Illuminate\Support\Facades\URL;
+use App\Models\Vendors;
+use App\Models\DepartmentAssignments;
+use App\Models\Project;
+use Genert\BBCode\BBCode;
+use App\Models\SlaPlan;
+use App\Models\SlaPlanAssoc;
+use App\Http\Controllers\ActivitylogController;
+use App\Models\Activitylog;
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
 class HomeController
 {
+
+     // *************   PROPERTIES   ****************
+
+     const DEFAULTSLA_TITLE = 'Default SLA';
+     const NOSLAPLAN = 'No SLA Assigned';
+     const CUSTOMID_FORMAT = 'XXX-999-9999';
+
+
+
+
+
     public function profile($name,$type = null) {
 
         $user = User::where('id', \Auth::user()->id)->first();
@@ -221,7 +240,7 @@ class HomeController
         ->where('tickets.customer_id', $customer_id)
         ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->get();
         
-        
+
         return $tickets;
     }
 
@@ -329,5 +348,79 @@ class HomeController
             return view('customer.customer_tkt.cust_tkt_details',get_defined_vars());
             // return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
      
+    }
+
+    public function getTicketSlaPlan($ticketID) {
+        try {
+            $sla_plan = array(
+                "id" => "",
+                "title" => self::NOSLAPLAN,
+                "reply_deadline" => "",
+                "due_deadline" => "",
+                "bg_color" => "#fff"
+            );
+    
+            $settings = $this->getTicketSettings(['default_reply_time_deadline', 'default_resolution_deadline', 'overdue_ticket_background_color']);
+
+            $sla_plan['bg_color'] = $settings['overdue_ticket_background_color'];
+
+            $sla_assoc = SlaPlanAssoc::where('ticket_id', $ticketID)->first();
+            if(!empty($sla_assoc)) {
+                $sla_plann = SlaPlan::where('id', $sla_assoc->sla_plan_id)->first();
+                if(!empty($sla_plann)) {
+                    $sla_plan['id'] = $sla_plann->id;
+                    $sla_plan['title'] = $sla_plann->title;
+                    $sla_plan['reply_deadline'] = $sla_plann->reply_deadline;
+                    $sla_plan['due_deadline'] = $sla_plann->due_deadline;
+
+                    // use default set deadlines in case of empty
+                    if(empty($sla_plan['reply_deadline'])) $sla_plan['reply_deadline'] = $settings['default_reply_time_deadline'];
+                    
+                    if(empty($sla_plan['due_deadline'])) $sla_plan['due_deadline'] = $settings['default_resolution_deadline'];
+                }
+            }
+    
+            return $sla_plan;
+        } catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function getTicketSettings($settings) {
+        try{
+            $list = TicketSettings::all();
+            $ret = array();
+
+            foreach ($list->toArray() as $value) {
+                foreach ($settings as $set) {
+                    if($value['tkt_key'] == $set) {
+                        $ret[$set] = $value['tkt_value'];
+                    }
+                }
+            }
+
+            return $ret;
+        } catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+    public function getSlaDeadlineFrom($ticketID) {
+        try {
+            $ticket = Tickets::findOrFail($ticketID);
+            // $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->orWhere([
+            //     ['table_ref', 'tickets'], ['table_ref', 'ticket_replies'], ['table_ref', 'ticket_notes']
+            // ])->orderBy('created_at', 'desc')->first();
+            // $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_deadline_from')->orderBy('created_at', 'desc')->first();
+            $deadlines = [];
+            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_rep_deadline_from')->orderBy('created_at', 'desc')->first();
+            $deadlines[0] = empty($logs) ? $ticket->created_at : $logs->created_at;
+
+            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_res_deadline_from')->orderBy('created_at', 'desc')->first();
+            $deadlines[1] = empty($logs) ? $ticket->created_at : $logs->created_at;
+            
+            return $deadlines;
+        } catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 }

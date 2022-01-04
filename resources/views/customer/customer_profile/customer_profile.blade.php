@@ -193,6 +193,14 @@ background-color:rgba(218,165,32,0.3);
 #domainModal p{
     margin-bottom:0;
 }
+.editPencil{
+    position:absolute;
+    top:15px;
+    right: 15px;
+}
+.pull-right{
+    float:right !important;
+}
 </style>
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
 <div class="container-fluid">
@@ -239,7 +247,7 @@ background-color:rgba(218,165,32,0.3);
                         <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle" width="100"
                             height="100" id="profile-user-img" />
                         @endif
-                        <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal"><i
+                        <a type="button" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal"><i
                                 class="fa fa-pencil-alt picEdit"></i></a>
 
                         <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} - {{$customer->last_name}}
@@ -651,12 +659,12 @@ background-color:rgba(218,165,32,0.3);
 
 
                         <input type="hidden" name="customer-id" id="customer-id" value="{{$customer->id}}">
-                        <div class="row">
+                        <div class="row mt-1 ">
                             <div class="col-md-12 form-group text-right">
-                                <div>
-                                    <button type="submit" id="saveBtn" class="btn btn-success">Update
+                                <div >
+                                    <button type="submit" id="saveBtn" class="btn btn-success pull-right ">Update
                                         Profile</button>
-                                    <button style="display:none" id="processing" class="btn btn-success"
+                                    <button style="display:none" id="processing" class="btn btn-success pull-right"
                                         type="button" disabled><i class="fas fa-circle-notch fa-spin"></i>
                                         Processing</button>
                                 </div>
@@ -2004,7 +2012,7 @@ background-color:rgba(218,165,32,0.3);
                     <hr>
                     <button class="btn btn-success" style="float:right">Edit</button>
                     <button class="btn btn-info" style="float:right;margin-right:2px;">Duplicate</button>
-                    <button class="btn btn-primary">Update Profile</button>
+                    <button class="btn btn-primary" >Update Profile</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

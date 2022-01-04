@@ -185,9 +185,19 @@
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item active"><a href="">
                                             
-                                            {{ (request()->is('myprofile')) ? 'Profile' :  '' }}
-                                            {{(request()->is('add-tkt')) ? 'Submit Ticket' : ''}}
-                                            {{(request()->is('view-tkt')) ? 'My Ticket' : ''}}
+                                            @if(request()->is('myprofile'))
+                                                Profile
+                                            
+                                            @elseif(request()->is('add-tkt'))
+                                                Submit Ticket
+                                           
+                                            @elseif(request()->is('view-tkt'))
+                                                My Ticket
+                                           
+                                            @else
+                                                Ticket Details
+                                           
+                                            @endif
                                         </a>
                                         </li>
                                     </ol>

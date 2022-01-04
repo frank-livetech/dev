@@ -366,7 +366,7 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
     Route::get('/add-tkt','HomeController@addTicketPage');
     Route::get('/view-tkt','HomeController@viewTicketPage');
-    Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details');
+    Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details')->name('customer.tkt_dtl');
 
     // Route::get('/add-ticket','HomeController@addTicketPage');
 
