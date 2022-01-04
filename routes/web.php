@@ -365,6 +365,9 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
     Route::get('/add-tkt','HomeController@addTicketPage');
+    Route::get('/view-tkt','HomeController@viewTicketPage');
+    Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details');
+
     // Route::get('/add-ticket','HomeController@addTicketPage');
 
 });
@@ -525,7 +528,6 @@ Route::post('/update_ticket','HelpdeskController@update_ticket');
 Route::post('/merge_tickets','HelpdeskController@mergeTickets');
 
 Route::post('/searchEmails','HelpdeskController@searchEmails');
-
 
 Route::post('/ticket_notification','HelpdeskController@ticket_notification');
 Route::post('/send_notification','HelpdeskController@send_notification');

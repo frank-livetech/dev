@@ -382,16 +382,300 @@ background-color:rgba(218,165,32,0.3);
                     </a>
                 </div>
             </div> -->
-            
             <div class="card">
                 <div class="card-body">
-                    <!-- Tabs -->
+                    <form id="update_customer" action="{{asset('/update-user')}}" method="POST">
+                        <h2 class="font-weight-bold text-dark">Personal Info</h2>
+
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name"
+                                    value="{{$customer->first_name}}" required>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name"
+                                    value="{{$customer->last_name}}" required>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" id="prof_email" name="prof_email"
+                                    value="{{$customer->email}}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                        @if($customer->has_account != 0)
+                            <div class="col-md-4 form-group">
+                                <label>Password</label>
+                                <div class="user-password-div">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="password" name="password" id="password"
+                                            placeholder="password" class="form-control form-control-line"
+                                            value="{{$customer->password}}">
+                                        <!-- <span toggle="#password-field"
+                                            class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span> -->
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label>Confirm Password</label>
+                                <div class="user-confirm-password-div">
+                                    <input name="confirm_password" class="form-control form-control-line"
+                                        type="password" placeholder="Confirm Password"
+                                        value="{{$customer->password}}">
+                                    <!-- <span toggle="#password-field"
+                                        class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span> -->
+                                </div>
+                            </div>
+                        @endif
+
+                            <div class="col-md-4 form-group">
+                                <label>Phone No</label>
+                                <input type="text" id="prof_phone" name="prof_phone"
+                                    value="{{$customer->phone}}" class="form-control form-control-line">
+                                    <span class="text-danger small" id="phone_error"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Customer Type</label>
+                                <div class=" d-flex justify-content-center">
+                                    <select id="cust_type" name="cust_type"
+                                        class="form-control form-control-line">
+                                        <option value="">Customer Type</option>
+                                        @foreach ($customer_types as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Select Company</label>
+                                <div class="d-flex justify-content-center flex-btn-form-group">
+                                    <select id="company_id" name="company_id"
+                                        class="form-control form-control-line">
+                                        <option value="">Select Company</option>
+                                        @foreach ($company as $item)
+                                            <option value="{{$item->id}}"{{$item->id == $customer->company_id ? 'selected' : ''}}>{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#addCompanyModal"
+                                        id="new-company" class="btn-new btn btn-info">New</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if($customer->has_account == 0)
+                        <div class="row mb-2 mt-2">
+                            <div class="custom-control custom-checkbox mr-sm-2">
+                                <input type="checkbox" class="custom-control-input" id="customer_login">
+                                <label class="custom-control-label" for="customer_login">Create Customer Login
+                                    Account</label>
+                            </div>
+                        </div>
+                        @endif
+
+                        <input type="hidden" name="customer_id" value="{{$customer->id}}">
+
+                        <div class="row">
+                            <div class="col-12 form-group">
+                                <label>Street Address</label>
+                                <a type="button" data-bs-toggle="modal" data-bs-target="#Address-Book"
+                                    class="float-right" style="color:#009efb;">View Address Book</a>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class=" form-control" name="address"
+                                            value="{{$customer->address}}" id="prof_address"
+                                            placeholder="House number and street name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class=" form-control" name="apt_address"
+                                            value="{{$customer->apt_address}}" id="apt_address"
+                                            placeholder="Apartment, suit, unit etc. (optional)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label>City</label>
+                                <input type="text" class="form-control" value="{{$customer->cust_city}}"
+                                    id="prof_city">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>State</label>
+
+                                @if($google_key == 1)
+                                    <input type="text" class=" form-control " value="{{$customer->cust_state}}" id="prof_state" name="prof_state"
+                                        style="width: 100%; height:36px;">
+                                @else
+                                    <select class="select2 form-control " id="prof_state" name="prof_state" style="width: 100%; height:36px;"></select>
+                                @endif
+                                
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>Zip Code</label>
+                                <input type="tel" maxlength="5" class="form-control"
+                                    value="{{$customer->cust_zip}}" id="prof_zip">
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <label>Country</label>
+                                @if($google_key == 1)
+                                    <input type="text" class="form-control" value="{{$customer->country}}" id="prof_country" name="prof_country" style="width: 100%; height:36px;">
+                                @else
+                                    <select class="select2 form-control" id="prof_country" name="prof_country" style="width: 100%; height:36px;" onchange="listStates(this.value, 'prof_state', 'cust_state')">
+                                        <option value="">Select Country</option>
+                                        @foreach ($countries as $cty)
+                                            @if(!empty($customer->country) && $customer->country == $cty->name)
+                                                <option value="{{$cty->name}}" selected>{{$cty->name}}</option>
+                                            @else
+                                                <option value="{{$cty->name}}" {{$cty->short_name == 'US' ? 'selected' : ''}}>{{$cty->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                @endif
+
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <input id="is_bill_add" type="checkbox" name="is_bill_add"
+                                    {{$customer->is_bill_add == 1 ? 'checked' : ''}}>
+                                <label class="mb-0" for="is_bill_add">Bill To & Ship To Addresses Are
+                                    Different</label>
+                            </div>
+
+                        </div>
+
+                        <div class="row" id="compBillAdd"
+                            style="display:{{$customer->is_bill_add == 1 ? 'flex' : 'none'}}">
+                            <div class="col-12 form-group">
+                                <label>Street Address</label>
+                                <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#Address-Book"  class="float-right" style="color:#009efb;">Address Book</a> -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class=" form-control"
+                                            value="{{$customer->bill_st_add}}" id="bill_st_add"
+                                            name="bill_st_add" placeholder="House number and street name" {{$customer->is_bill_add == 1 ? 'required' : ''}}>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" class=" form-control"
+                                            value="{{$customer->bill_apt_add}}" id="bill_apt_add"
+                                            name="bill_apt_add"
+                                            placeholder="Apartment, suit, unit etc. (optional)">
+                                    </div>
+                                </div>
+
+                                <!-- <textarea class="form-control" name="address" id="update_address" rows="3">{{$customer->address}}</textarea> -->
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>City</label>
+                                <input type="text" class="form-control" value="{{$customer->bill_add_city}}" id="bill_add_city" name="bill_add_city">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>State</label>
+                                @if($google_key == 1)
+                                    <input type="text" class="form-control" value="{{$customer->bill_add_state}}" id="bill_add_state" name="bill_add_state" style="width: 100%; height:36px;">
+                                @else
+                                <select class="select2 form-control" id="bill_add_state" name="bill_add_state" style="width: 100%; height:36px;"></select>
+                                @endif
+                                
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label>Zip Code</label>
+                                <input type="tel" maxlength="5" class="form-control" value="{{$customer->bill_add_zip}}" id="bill_add_zip" name="bill_add_zip">
+                            </div>
+
+                            <div class="col-md-3 form-group">
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    
+                                    @if($google_key == 1)
+                                    <input type="text" class="form-control" value="{{$customer->bill_add_country}}" id="bill_add_country" name="bill_add_country" style="width: 100%; height:36px;">
+                                @else
+                                    <select class="select2 form-control" id="bill_add_country" name="bill_add_country" style="width: 100%; height:36px;" onchange="listStates(this.value, 'bill_add_state', 'bill_add_state')">
+                                        <option value="">Select Country</option>
+                                        @foreach ($countries as $cty)
+                                            @if (!empty($customer->bill_add_country) && $customer->bill_add_country == $cty->name)
+                                                <option value="{{$cty->name}}" selected>{{$cty->name}}</option>
+                                            @else
+                                                <option value="{{$cty->name}}" {{$cty->short_name == 'US' ? "selected" : ''}}>{{$cty->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2 class="mt-4 font-weight-bold text-dark">Social</h2>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Twitter</label>
+                                <input type="text" class="form-control" id="prof_twitter"
+                                    value="{{$customer->twitter}}" placeholder="https://twitter.com/username">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Facebook</label>
+                                <input type="text" class="form-control" id="prof_fb" value="{{$customer->fb}}"
+                                    placeholder="https://facebook.com/yourprofile">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Instagram</label>
+                                <input type="text" class="form-control" id="prof_insta"
+                                    value="{{$customer->isnta}}" placeholder="https://instagram.com/username">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Pinterest</label>
+                                <input type="text" class="form-control" id="prof_pinterest"
+                                    value="{{$customer->pinterest}}"
+                                    placeholder="https://pinterest.com/@Username">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Linkedin</label>
+                                <input type="text" class="form-control" id="prof_linkedin"
+                                    value="{{$customer->linkedin}}"
+                                    placeholder="https://linkedin.com/@Username">
+                            </div>
+                        </div>
+
+
+                        <input type="hidden" name="customer-id" id="customer-id" value="{{$customer->id}}">
+                        <div class="row">
+                            <div class="col-md-12 form-group text-right">
+                                <div>
+                                    <button type="submit" id="saveBtn" class="btn btn-success">Update
+                                        Profile</button>
+                                    <button style="display:none" id="processing" class="btn btn-success"
+                                        type="button" disabled><i class="fas fa-circle-notch fa-spin"></i>
+                                        Processing</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+            <!-- <div class="card">
+                <div class="card-body">
+                    Tabs
                     <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab"
                                 aria-controls="pills-setting" aria-selected="false">User Details</a>
-                            <!-- <a class="nav-link active" id="pills-user-detail" data-bs-toggle="pill" href="#user-detail"
-                                role="tab" aria-controls="pills-user-detail" aria-selected="true"></a> -->
+                            <a class="nav-link active" id="pills-user-detail" data-bs-toggle="pill" href="#user-detail"
+                                role="tab" aria-controls="pills-user-detail" aria-selected="true"></a>
                         </li>
 
                         <li class="nav-item">
@@ -399,7 +683,7 @@ background-color:rgba(218,165,32,0.3);
                                 aria-controls="pills-tickets" aria-selected="false">Tickets</a>
                         </li>
 
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" id="orders-profile-tab" data-bs-toggle="pill" href="#orders" role="tab"
                                 aria-controls="pills-profile" aria-selected="false">Orders</a>
                         </li>
@@ -412,35 +696,35 @@ background-color:rgba(218,165,32,0.3);
                         <li class="nav-item">
                             <a class="nav-link" id="pills-assets-tab" data-bs-toggle="pill" href="#assets" role="tab"
                                 aria-controls="pills-assets" aria-selected="false">Assets</a>
-                        </li> -->
+                        </li>
 
-                        <!--<li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab"
                                 aria-controls="pills-setting" aria-selected="false">Setting</a>
-                        </li>-->
+                        </li>
 
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" id="pills-timeline-tab" data-bs-toggle="pill" href="#current-month" role="tab"
                                 aria-controls="pills-timeline" aria-selected="true">History</a>
-                        </li> -->
+                        </li>
 
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" id="payment-profile-tab" data-bs-toggle="pill" href="#payment" role="tab"
                                 aria-controls="pills-profile" aria-selected="false">Payments</a>
-                        </li> -->
-                        <!-- <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" id="notifications-profile-tab" data-bs-toggle="pill" href="#notification"
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
-                        </li> -->
-                        <!-- <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes</a>
-                        </li> -->
+                        </li>
 
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" id="domain-profile-tab" data-bs-toggle="pill" href="#ticket_domain" role="tab" aria-controls="pills-profile" aria-selected="false">Domain</a>
-                        </li> -->
+                        </li>
                     </ul>
-                    <!-- Tabs -->
+                    Tabs
                     <div class="tab-content" id="pills-tabContent">
 
                         <div class="tab-pane fade" id="user-detail" role="tabpanel"
@@ -691,7 +975,7 @@ background-color:rgba(218,165,32,0.3);
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#assetModal" style="float:right;margin-bottom:5px;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset</button>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#assetCatModal" style="float:right;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset Category</button>
                                     </div>
-                                </div> --}}
+                                </div> 
                                 <div class="row">
 
                                     <div class="col-sm-12">
@@ -799,7 +1083,7 @@ background-color:rgba(218,165,32,0.3);
                                                                         <a class="buttonPush" href="javascript:fieldAdd('url')" >
                                                                             <div class="card border-cyan card-hover mb-2">
                                                                                 <div class="box p-2 rounded">
-                                                                                    <!-- <h5 class="font-weight-light text-cyan"></h5> -->
+                                                                                    <h5 class="font-weight-light text-cyan"></h5>
                                                                                     <h6 class="text-cyan"><i class="fas fa-laptop-code pr-2"></i>URL </h6>
                                                                                 </div>
                                                                             </div>
@@ -807,7 +1091,7 @@ background-color:rgba(218,165,32,0.3);
                                                                         <a class="buttonPush" href="javascript:fieldAdd('address')" >
                                                                             <div class="card border-cyan card-hover mb-2">
                                                                                 <div class="box p-2 rounded">
-                                                                                    <!-- <h5 class="font-weight-light text-cyan"></h5> -->
+                                                                                    <h5 class="font-weight-light text-cyan"></h5>
                                                                                     <h6 class="text-cyan"><i class="fas fa-map-marked-alt pr-2"></i>Address </h6>
                                                                                 </div>
                                                                             </div>
@@ -856,7 +1140,7 @@ background-color:rgba(218,165,32,0.3);
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> <!-- end card-->
+                                            </div>
 
                                             <div class="card mb-0">
                                                 <div class="card-header" id="headingTwo">
@@ -902,7 +1186,7 @@ background-color:rgba(218,165,32,0.3);
                                                         </form>
                                                     </div>
                                                 </div>
-                                            </div> <!-- end card-->
+                                            </div> 
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12">
@@ -923,7 +1207,7 @@ background-color:rgba(218,165,32,0.3);
                                                             style="float:right;"><i class="mdi mdi-plus-circle"></i>&nbsp;Add
                                                             Asset Template
                                                         </button>
-                                                    </div> -->
+                                                    </div>
 
                                                 </div>
                                                 <br>
@@ -983,7 +1267,7 @@ background-color:rgba(218,165,32,0.3);
                                     </a>
                                     <!-- <button type="button" class="btn btn-info ml-auto mb-auto" onclick="ShowTicketsModel()">
                                         <i class="fas fa-plus"></i>&nbsp;Add ticket
-                                    </button> -->
+                                    </button>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-6 col-md-4">
@@ -1098,7 +1382,7 @@ background-color:rgba(218,165,32,0.3);
                                                         placeholder="password" class="form-control form-control-line"
                                                         value="{{$customer->password}}">
                                                     <!-- <span toggle="#password-field"
-                                                        class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span> -->
+                                                        class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span> 
                                                 </span>
                                             </div>
                                         </div>
@@ -1109,7 +1393,7 @@ background-color:rgba(218,165,32,0.3);
                                                     type="password" placeholder="Confirm Password"
                                                     value="{{$customer->password}}">
                                                 <!-- <span toggle="#password-field"
-                                                    class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span> -->
+                                                    class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span> 
                                             </div>
                                         </div>
                                     @endif
@@ -1237,7 +1521,7 @@ background-color:rgba(218,165,32,0.3);
                                         style="display:{{$customer->is_bill_add == 1 ? 'flex' : 'none'}}">
                                         <div class="col-12 form-group">
                                             <label>Street Address</label>
-                                            <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#Address-Book"  class="float-right" style="color:#009efb;">Address Book</a> -->
+                                            <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#Address-Book"  class="float-right" style="color:#009efb;">Address Book</a>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <input type="text" class=" form-control"
@@ -1252,7 +1536,7 @@ background-color:rgba(218,165,32,0.3);
                                                 </div>
                                             </div>
 
-                                            <!-- <textarea class="form-control" name="address" id="update_address" rows="3">{{$customer->address}}</textarea> -->
+                                            <!-- <textarea class="form-control" name="address" id="update_address" rows="3">{{$customer->address}}</textarea>
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>City</label>
@@ -1351,12 +1635,12 @@ background-color:rgba(218,165,32,0.3);
                             </div>
                         </div>
 
-                        <!-- <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
+                        <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
                             <hr>
                             <div class="card-body">
                                 No Data Found.
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="tab-pane fade" id="ticket_domain" role="tabpanel" aria-labelledby="domain-profile-tab">
                             <hr>
@@ -1440,9 +1724,9 @@ background-color:rgba(218,165,32,0.3);
                     </div>
                 </div>
                
-            </div>
+            </div> -->
         </div>
-        <!-- Column -->
+      
     </div>
 
     {{-- Details --}}
