@@ -484,7 +484,9 @@ class CustomerlookupController extends Controller
 
         $date_format = Session('system_date');
 
-        return view('customer_manager.customer_lookup.customerprofile-new',compact('google','nmi_integration','customer','company', 'countries', 'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key', 'date_format'));
+        $customers = Customer::where('id','!=', $customer_id)->select('email')->get()->toArray();
+
+        return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
     }
 
     public function myprofile($name, $type = null) {
@@ -1738,7 +1740,7 @@ class CustomerlookupController extends Controller
             ]);
         }
 
-        $mailer = new MailController();
+        // $mailer = new MailController();
 
         if($request->has('first_name')) {
             if(empty(trim($customer->first_name))) {
@@ -1860,7 +1862,7 @@ class CustomerlookupController extends Controller
                             "status" => 1
                         ]);
                         
-                        $mailer->UserRegisteration($request->email);
+                        // $mailer->UserRegisteration($request->email);
                     }
                 }
             }

@@ -1,6 +1,73 @@
 
 
 <script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
+
+    var customer_subscription_table = '';
+    var subscriptionsList = {!!json_encode($subscriptions) !!};
+
+    let customer = {!! json_encode($customer) !!};
+    let all_customers_emails = {!! json_encode($customers) !!};
+    console.log(all_customers_emails , "all_customers_emails");
+    let ticket_format = {!!json_encode($ticket_format) !!};
+    let statuses_list = {!!json_encode($statuses) !!};
+
+    let open_status_id = statuses_list[statuses_list.map(function(itm) {
+        return itm.name
+    }).indexOf('Open')].id;
+    let closed_status_id = statuses_list[statuses_list.map(function(itm) {
+        return itm.name
+    }).indexOf('Closed')].id;
+
+
+    var orders_table_list = '';
+
+    // asset templates data
+    var get_assets_route = "{{asset('/get-assets')}}";
+    var del_asset_route = "{{asset('/delete-asset')}}";
+    var save_asset_records_route = "{{asset('/save-asset-records')}}";
+    var templates_fetch_route = "{{asset('/get-asset-templates')}}";
+    var template_submit_route = "{{asset('/save-asset-template')}}";
+    var templates = null;
+    var asset_customer_uid = customer.id;
+    var asset_company_id = '';
+
+    var general_info_route = "{{asset('/general-info')}}";
+    var asset_company_id = '';
+    var asset_project_id = '';
+    var asset_ticket_id = '';
+    var invoice_url = "{{url('create_pdf_invoice')}}";
+
+    var show_asset = "{{asset('/show-single-assets')}}";
+    var update_asset = "{{asset('/update-assets')}}";
+    let timeouts_list = [];
+    let gl_color_notes = '';
+    let gl_sel_note_index = null;
+    let notes = [];
+    let tkts_ids = [];
+
+    let ticketsList = [];
+    let get_tickets_route = "{{asset('/get-tickets')}}/customer/"+customer.id;
+    let ticket_details_route = "{{asset('/ticket-details')}}";
+    let ticket_notify_route = "{{asset('/ticket_notification')}}";
+    let flag_ticket_route = "{{asset('/flag_ticket')}}";
+    let loggedInUser = {!! json_encode(\Auth::user()->id) !!};
+    let date_format = $('#system_date_format').val();
+    let url_type = '';
+
+    let autocomplete;
+    let autocomplete1;
+    let address1Field;
+    let address2Field;
+    let address11Field;
+    let address21Field;
+    let postal1Field;
+
+
     document.addEventListener('DOMContentLoaded', function () {
         CollectJS.configure({
             "paymentSelector" : "#payButton",
@@ -146,14 +213,6 @@
             }
         });
     });
-
-    let autocomplete;
-    let autocomplete1;
-    let address1Field;
-    let address2Field;
-    let address11Field;
-    let address21Field;
-    let postal1Field;
 
     function initMapReplace(){
     
@@ -319,273 +378,6 @@
             listTickets('open');
         }
 
-
-        var googleObject = {!! json_encode($google) !!};
-        console.log(googleObject);
-        if(!$.isEmptyObject(googleObject)){
-
-            if( googleObject.hasOwnProperty('api_key')){
-
-                var api_key = googleObject.api_key;
-                $("#google_api_key").val(api_key);
-                console.log(api_key);
-                
-                if(api_key!=''){
-
-                    var script ="https://maps.googleapis.com/maps/api/js?key="+api_key+"&libraries=places&sensor=false&callback=initMapReplace";
-                    var s = document.createElement("script");
-                    s.type = "text/javascript";
-                    s.src = script;
-                    $("head").append(s);
-
-                }
-                const allScripts = document.getElementsByTagName( 'script' );
-                [].filter.call(
-                allScripts, 
-                ( scpt ) => scpt.src.indexOf( 'key='+api_key ) >0
-                )[ 0 ].remove();
-                        // window.google = {};
-            }
-        }
-        
-        get_cust_card();
-        var url = window.location.href;
-        if (window.location.href.indexOf("#Success") > -1) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: "Order paid SuccessFully! ",
-                showConfirmButton: false,
-                timer: 2500
-            });
-            window.location = url.split("#")[0];
-        }
-        if (window.location.href.indexOf("#Error") > -1) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: "Order payment Failed! ",
-                showConfirmButton: false,
-                timer: 2500
-            })
-            window.location = url.split("#")[0];
-        }
-
-    
-    });
-
-    $(document).ready(function() {
-        
-
-        $("#twt").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Twitter Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#fb_icon").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Facebook Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#pintrst").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Pinterest Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#inst").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Instagram Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#lkdn").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Linkedin Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-
-        $(".user-password-div").on('click', '.show-password-btn', function() {
-            $(this).toggleClass("fa-eye fa-eye-slash");
-            var input = $(".user-password-div input[name='password']");
-            if (input.attr("type") === "password") {
-                input.attr("type", "text");
-            } else {
-                input.attr("type", "password");
-            }
-        });
-        
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                    $('#ppNew').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function readURL1(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                    $('#profile-user-img').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#upload_customer_img").submit(function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: "{{url('upload_customer_img')}}",
-                type: 'POST',
-                data: new FormData(this),
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if (data.status == 200 && data.success == true) {
-                        toastr.success(data.message, {
-                            timeOut: 5000
-                        });
-                        $("#editPicModal").modal('hide');
-                        var ter = $(".custom-file-label").text();
-
-                        let url = '{{asset("files/user_photos/Customers")}}';
-                        $('#profile-user-img').attr('src', url + '/' + ter);
-                    } else {
-                        toastr.error(data.message, {
-                            timeOut: 5000
-                        });
-                    }
-                    console.log(data, "data");
-                },
-                error: function(e) {
-                    console.log(e)
-                }
-
-            });
-        });
-
-        $("#customFilePP").change(function() {
-            // alert("Bingo");
-            var ter = $("#customFilePP").val();
-            // alert(ter);
-            var terun = ter.replace(/^.*\\/, "");
-            $(".custom-file-label").text(terun);
-            readURL(this);
-        });
-
-    });
-</script>
-<script type="text/javascript">
-    var customer_subscription_table = '';
-    var subscriptionsList = {!!json_encode($subscriptions) !!};
-
-    let customer = {!! json_encode($customer) !!};
-    let ticket_format = {!!json_encode($ticket_format) !!};
-    let statuses_list = {!!json_encode($statuses) !!};
-
-    let open_status_id = statuses_list[statuses_list.map(function(itm) {
-        return itm.name
-    }).indexOf('Open')].id;
-    let closed_status_id = statuses_list[statuses_list.map(function(itm) {
-        return itm.name
-    }).indexOf('Closed')].id;
-
-
-    var orders_table_list = '';
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-        }
-    });
-
-    // asset templates data
-    var get_assets_route = "{{asset('/get-assets')}}";
-    var del_asset_route = "{{asset('/delete-asset')}}";
-    var save_asset_records_route = "{{asset('/save-asset-records')}}";
-    var templates_fetch_route = "{{asset('/get-asset-templates')}}";
-    var template_submit_route = "{{asset('/save-asset-template')}}";
-    var templates = null;
-    var asset_customer_uid = customer.id;
-    var asset_company_id = '';
-
-    var general_info_route = "{{asset('/general-info')}}";
-    var asset_company_id = '';
-    var asset_project_id = '';
-    var asset_ticket_id = '';
-    var invoice_url = "{{url('create_pdf_invoice')}}";
-
-    var show_asset = "{{asset('/show-single-assets')}}";
-    var update_asset = "{{asset('/update-assets')}}";
-    let timeouts_list = [];
-    let gl_color_notes = '';
-    let gl_sel_note_index = null;
-    let notes = [];
-    let tkts_ids = [];
-
-    let ticketsList = [];
-    let get_tickets_route = "{{asset('/get-tickets')}}/customer/"+customer.id;
-    let ticket_details_route = "{{asset('/ticket-details')}}";
-    let ticket_notify_route = "{{asset('/ticket_notification')}}";
-    let flag_ticket_route = "{{asset('/flag_ticket')}}";
-    let loggedInUser = {!! json_encode(\Auth::user()->id) !!};
-    let date_format = $('#system_date_format').val();
-    let url_type = '';
-
-    $('.form-group small').addClass('d-none');
-
-    $(document).ready(function() {
         try {
             if(countries_list.length) {
                 if($('#prof_country').val()) $('#prof_country').trigger('change');
@@ -679,394 +471,416 @@
             }
         });
 
-        $("#prof_phone").keyup(function() {
 
-            var regex = new RegExp("^[0-9]+$");
+        var googleObject = {!! json_encode($google) !!};
+        console.log(googleObject);
+        if(!$.isEmptyObject(googleObject)){
 
-            if(!regex.test($(this).val())) {
-                $("#phone_error").html("Only numeric values allowed");
-            }else{
-                $("#phone_error").html(" ");
-            }
-            if($(this).val() == '') {
-                $("#phone_error").html(" ");
-            }
-        });
+            if( googleObject.hasOwnProperty('api_key')){
 
-        $('#update_customer').submit(function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            
+                var api_key = googleObject.api_key;
+                $("#google_api_key").val(api_key);
+                console.log(api_key);
+                
+                if(api_key!=''){
 
-            var update_password = $('#password').val();
-            var customer_id = $("#customer_id").val();
+                    var script ="https://maps.googleapis.com/maps/api/js?key="+api_key+"&libraries=places&sensor=false&callback=initMapReplace";
+                    var s = document.createElement("script");
+                    s.type = "text/javascript";
+                    s.src = script;
+                    $("head").append(s);
 
-            var bill_st_add = '';
-            var bill_apt_add = '';
-            var bill_country = '';
-            var bill_state = '';
-            var bill_city = '';
-            var bill_zip = '';
-            // var is_bill_add = '';
-            var customer_login = 0;
-            var cust_type = $("#cust_type").val();
-
-            let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
-
-            if (cpwd && cpwd != update_password) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Passwords do not match!',
-                    showConfirmButton: false,
-                    timer: 2500
-                });
-                return false;
-            }
-
-            if (!update_password) {
-                update_password = customer.password;
-            }
-
-            if (customer.password != update_password) {
-                // let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
-                if (cpwd != update_password) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Passwords do not match!',
-                        showConfirmButton: false,
-                        timer: 2500
-                    });
-                    return false;
                 }
+                const allScripts = document.getElementsByTagName( 'script' );
+                [].filter.call(
+                allScripts, 
+                ( scpt ) => scpt.src.indexOf( 'key='+api_key ) >0
+                )[ 0 ].remove();
+                        // window.google = {};
             }
-
-            // if ($('#is_bill_add').prop("checked") == true) {
-
-            //     bill_st_add = $('#bill_st_add').val();
-            //     bill_apt_add = $('#bill_apt_add').val();
-            //     bill_country = $('#bill_add_country').val()
-            //     bill_state = $('#bill_add_state').val();
-            //     bill_city = $('#bill_add_city').val();
-            //     bill_zip = $('#bill_add_zip').val();
-            //     is_bill_add = 1;
-            // }
-
-            if ($("#customer_login").is(':checked')) {
-                customer_login = 1;
-            } else {
-                customer_login = 0;
-            }
-
-
-            var fb = $("#prof_fb").val();
-            var pin = $("#prof_pinterest").val();
-            var twt = $("#prof_twitter").val();
-            var insta = $("#prof_insta").val();
-            var link = $("#prof_linkedin").val();
-            var phone = $('#prof_phone').val();
-
-            if( fb != '') {
-                var FBurl = /^(http|https)\:\/\/facebook.com|facebook.com\/.*/i;
-                if(!fb.match(FBurl)) {
-                    toastr.error('Provide a valid facebook link', { timeOut: 5000 });
-                    return false;
-                }
-            }
-
-            if( pin != '') {
-                var FBurl = /^(http|https)\:\/\/pinterest.com|pinterest.com\/.*/i;
-                if(!pin.match(FBurl)) {
-                    toastr.error('Provide a valid Pinterest link', { timeOut: 5000 });
-                    return false;
-                }
-            }
-            if( twt != '') {
-                var FBurl = /^(http|https)\:\/\/twitter.com|twitter.com\/.*/i;
-                if(!twt.match(FBurl)) {
-                    toastr.error('Provide a valid Twitter link', { timeOut: 5000 });
-                    return false;
-                }
-            }
-            if( insta != '') {
-                var FBurl = /^(http|https)\:\/\/instagram.com|instagram.com\/.*/i;
-                if(!insta.match(FBurl)) {
-                    toastr.error('Provide a valid Instagram link', { timeOut: 5000 });
-                    return false;
-                }
-            }
-            if( link != '') {
-                var FBurl = /^(http|https)\:\/\/linkedin.com|linkedin.com\/.*/i;
-                if(!link.match(FBurl)) {
-                    toastr.error('Provide a valid Linkedin link', { timeOut: 5000 });
-                    return false;
-                }
-            }
-
-            var regex = new RegExp("^[0-9]+$");
-
-            if(!regex.test(phone)) {
-                $("#phone_error").html("Only numeric values allowed");
-                return false;
-            }
-            
-            var phone_type = $("#phone_type").val();
-            var form = {
-                customer_id: customer_id,
-                first_name: $('#first_name').val(),
-                last_name: $('#last_name').val(),
-                email: $('#prof_email').val(),
-                password: $('#password').val(),
-                phone: phone,
-                address: $('#prof_address').val(),
-                apt_address: $('#apt_address').val(),
-
-                company_id: $('#company_id').val(),
-                cust_type: cust_type,
-                country: $('#prof_country').val(),
-                state: $('#prof_state').val(),
-                city: $('#prof_city').val(),
-                zip: $('#prof_zip').val(),
-                fb: $('#prof_fb').val(),
-                twitter: $('#prof_twitter').val(),
-                insta: $('#prof_insta').val(),
-                pinterest: $('#prof_pinterest').val(),
-                linkedin: $('#prof_linkedin').val(),
-                // bill_st_add: bill_st_add,
-                // bill_apt_add: bill_apt_add,
-                // bill_add_country: bill_country,
-                // bill_add_state: bill_state,
-                // bill_add_city: bill_city,
-                // bill_add_zip: bill_zip,
-                // is_bill_add: is_bill_add,
-                customer_login: customer_login,
-                phone_type:phone_type,
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "{{url('update_customer_profile')}}",
-                data: form,
-                dataType: 'json',
-                beforeSend: function(data) {
-                    $("#saveBtn").hide();
-                    $("#processing").show();
-                },
-                success: function(data) {
-                    console.log(data);
-                    if(data.status_code == 200 && data.success == true) {
-
-                        values();
-                        toastr.success(data.message, { timeOut: 5000 });
-
-                        let type = 'Wordpress';
-                        let slug = 'customer-lookup';
-                        let icon = 'fas fa-user-alt';
-                        let title = 'WP Customer';
-                        let desc = 'WP Customer Updated by ' + $("#curr_user_name").val();
-                        sendNotification(type,slug,icon,title,desc);
-
-
-                        customer.password = update_password;
-                        $(".user-confirm-password-div input[name='confirm_password']").val('');
-
-
-                        $("#cust_name").text($("#first_name").val() + " " + $("#last_name").val());
-                        $("#cust_email").text($("#prof_email").val());
-                        $("#cust_add").text($("#prof_address").val());
-                        $("#cust_apprt").text($("#apt_address").val());
-                        $("#cust_zip").text($("#prof_zip").val());
-                        $("#cust_city").text($("#prof_city").val());
-
-
-                        var state = $("#prof_state").val();
-
-                        $("#cust_state").text(state);
-                        
-                        var country = $("#prof_country").val();
-
-                        $("#cust_country").text(country);
-
-
-
-                        $("#twt").attr('href', $("#prof_twitter").val());
-                        $("#fb_icon").attr('href', $("#prof_fb").val());
-                        $("#inst").attr('href', $("#prof_insta").val());
-                        $("#lkdn").attr('href', $("#prof_linkedin").val());
-                        $("#pintrst").attr('href', $("#prof_pinterest").val());
-                    }else if(data.status == 201 && data.success == true) {
-                        toastr.warning(data.message, { timeOut: 5000 });
-                    }else{
-                        toastr.error(data.message, { timeOut: 5000 });
-                    }
-                },
-                complete: function(data) {
-                    $("#saveBtn").show();
-                    $("#processing").hide();
-                },
-                error: function(e) {
-                    console.log(e);
-                    if (e.responseJSON.errors.email != null) {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: e.responseJSON.errors.email[0],
-                            showConfirmButton: false,
-                            timer: 2500
-                        });
-                    }
-                    if (e.responseJSON.errors.password != null) {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: e.responseJSON.errors.password[0],
-                            showConfirmButton: false,
-                            timer: 2500
-                        });
-                    }
-
-
-                    $("#saveBtn").show();
-                    $("#processing").hide();
-                }
+        }
+        
+        get_cust_card();
+        var url = window.location.href;
+        if (window.location.href.indexOf("#Success") > -1) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: "Order paid SuccessFully! ",
+                showConfirmButton: false,
+                timer: 2500
             });
-        });
-   
-        $("#companyForm").submit(function(event) {
-            event.preventDefault();
-            var poc_first_name = $('#poc_first_name').val();
-            var poc_last_name = $('#poc_last_name').val();
-            var name = $('#name').val();
-            var email = $('#cemail').val();
-            var phone = $('#phone').val();
-            var country = $("#country").val();
-            var state = $("#state").val();
-            var city = $("#city").val();
-            var zip = $("#zip").val();
-            var address = $('#address').val();
-            var user_id = $("#user_id").val()
+            window.location = url.split("#")[0];
+        }
+        if (window.location.href.indexOf("#Error") > -1) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: "Order payment Failed! ",
+                showConfirmButton: false,
+                timer: 2500
+            })
+            window.location = url.split("#")[0];
+        }
+
+    
+    });
 
 
-            var a = checkEmptyFields(poc_first_name, $("#err"));
-            var b = checkEmptyFields(poc_last_name, $("#err1"));
-            var c = checkEmptyFields(name, $("#err2"));
-            var d = checkValidEmail(email, $("#err3"));
-            var e = checkEmptyFields(phone, $("#err4"));
+    $("#prof_email").focusout(function(){
+        let user_email = $(this).val();
 
-            var regex = new RegExp("^[0-9]+$");
+        var item = all_customers_emails.find(item => item.email === user_email);
+        if( item != null && item != "" && item != undefined) {
 
-            if(!regex.test(phone)) {
-                $("#err4").html("Only numeric values allowed");
+            if(item.email == user_email) {
+                toastr.error('The email has already been taken.', { timeOut: 5000 });
+            }
+
+        }
+        
+
+    });
+
+       
+    // here
+    $("#twt").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Twitter Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $("#fb_icon").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Facebook Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $("#pintrst").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Pinterest Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $("#inst").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Instagram Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $("#lkdn").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Linkedin Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $('#update_customer').submit(function(event) {
+        event.preventDefault();
+
+        var update_password = $('#password').val();
+        var customer_id = $("#customer_id").val();
+
+        var bill_st_add = '';
+        var bill_apt_add = '';
+        var bill_country = '';
+        var bill_state = '';
+        var bill_city = '';
+        var bill_zip = '';
+        var customer_login = 0;
+        var cust_type = $("#cust_type").val();
+
+        let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
+
+        if (cpwd && cpwd != update_password) {
+            toastr.error('Passwords do not match!', { timeOut: 5000 });
+            return false;
+        }
+
+        if (!update_password) {
+            update_password = customer.password;
+        }
+
+        if (customer.password != update_password) {
+            if (cpwd != update_password) {
+                toastr.error('Passwords do not match!', { timeOut: 5000 });
                 return false;
             }
+        }
 
-            if (a && b && c && d && e == true) {
+        if ($("#customer_login").is(':checked')) {
+            customer_login = 1;
+        } else {
+            customer_login = 0;
+        }
 
-                var formData = {
-                    poc_first_name: poc_first_name,
-                    poc_last_name: poc_last_name,
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    country: country,
-                    state: state,
-                    city: city,
-                    zip: zip,
-                    address: address,
-                    user_id: user_id
+
+        var fb = $("#prof_fb").val();
+        var pin = $("#prof_pinterest").val();
+        var twt = $("#prof_twitter").val();
+        var insta = $("#prof_insta").val();
+        var link = $("#prof_linkedin").val();
+        var phone = $('#prof_phone').val();
+
+        if( fb != '') {
+            var FBurl = /^(http|https)\:\/\/facebook.com|facebook.com\/.*/i;
+            if(!fb.match(FBurl)) {
+                toastr.error('Provide a valid facebook link', { timeOut: 5000 });
+                return false;
+            }
+        }
+
+        if( pin != '') {
+            var FBurl = /^(http|https)\:\/\/pinterest.com|pinterest.com\/.*/i;
+            if(!pin.match(FBurl)) {
+                toastr.error('Provide a valid Pinterest link', { timeOut: 5000 });
+                return false;
+            }
+        }
+        if( twt != '') {
+            var FBurl = /^(http|https)\:\/\/twitter.com|twitter.com\/.*/i;
+            if(!twt.match(FBurl)) {
+                toastr.error('Provide a valid Twitter link', { timeOut: 5000 });
+                return false;
+            }
+        }
+        if( insta != '') {
+            var FBurl = /^(http|https)\:\/\/instagram.com|instagram.com\/.*/i;
+            if(!insta.match(FBurl)) {
+                toastr.error('Provide a valid Instagram link', { timeOut: 5000 });
+                return false;
+            }
+        }
+        if( link != '') {
+            var FBurl = /^(http|https)\:\/\/linkedin.com|linkedin.com\/.*/i;
+            if(!link.match(FBurl)) {
+                toastr.error('Provide a valid Linkedin link', { timeOut: 5000 });
+                return false;
+            }
+        }
+
+        var regex = new RegExp("^[0-9]+$");
+
+        if(!regex.test(phone)) {
+            $("#phone_error").html("Only numeric values allowed");
+            return false;
+        }
+        
+        var phone_type = $("#phone_type").val();
+        var form = {
+            customer_id: customer_id,
+            first_name: $('#first_name').val(),
+            last_name: $('#last_name').val(),
+            email: $('#prof_email').val(),
+            password: $('#password').val(),
+            phone: phone,
+            address: $('#prof_address').val(),
+            apt_address: $('#apt_address').val(),
+
+            company_id: $('#company_id').val(),
+            cust_type: cust_type,
+            country: $('#prof_country').val(),
+            state: $('#prof_state').val(),
+            city: $('#prof_city').val(),
+            zip: $('#prof_zip').val(),
+            fb: $('#prof_fb').val(),
+            twitter: $('#prof_twitter').val(),
+            insta: $('#prof_insta').val(),
+            pinterest: $('#prof_pinterest').val(),
+            linkedin: $('#prof_linkedin').val(),
+            customer_login: customer_login,
+            phone_type:phone_type,
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "{{url('update_customer_profile')}}",
+            data: form,
+            dataType: 'json',
+            beforeSend: function(data) {
+                $("#saveBtn").hide();
+                $("#processing").show();
+            },
+            success: function(data) {
+                console.log(data);
+                if(data.status_code == 200 && data.success == true) {
+
+                    values();
+                    toastr.success(data.message, { timeOut: 5000 });
+
+                    let type = 'Wordpress';
+                    let slug = 'customer-lookup';
+                    let icon = 'fas fa-user-alt';
+                    let title = 'WP Customer';
+                    let desc = 'WP Customer Updated by ' + $("#curr_user_name").val();
+                    sendNotification(type,slug,icon,title,desc);
+
+
+                    customer.password = update_password;
+                    $(".user-confirm-password-div input[name='confirm_password']").val('');
+
+
+                    $("#cust_name").text($("#first_name").val() + " " + $("#last_name").val());
+                    $("#cust_email").text($("#prof_email").val());
+                    $("#cust_add").text($("#prof_address").val());
+                    $("#cust_apprt").text($("#apt_address").val());
+                    $("#cust_zip").text($("#prof_zip").val());
+                    $("#cust_city").text($("#prof_city").val());
+
+
+                    var state = $("#prof_state").val();
+
+                    $("#cust_state").text(state);
+                    
+                    var country = $("#prof_country").val();
+
+                    $("#cust_country").text(country);
+
+
+
+                    $("#twt").attr('href', $("#prof_twitter").val());
+                    $("#fb_icon").attr('href', $("#prof_fb").val());
+                    $("#inst").attr('href', $("#prof_insta").val());
+                    $("#lkdn").attr('href', $("#prof_linkedin").val());
+                    $("#pintrst").attr('href', $("#prof_pinterest").val());
+                }else if(data.status == 201 && data.success == true) {
+                    toastr.warning(data.message, { timeOut: 5000 });
+                }else{
+                    toastr.error(data.message, { timeOut: 5000 });
+                }
+            },
+            complete: function(data) {
+                $("#saveBtn").show();
+                $("#processing").hide();
+            },
+            error: function(e) {
+                console.log(e);
+                if (e.responseJSON.errors.email != null) {
+                    toastr.error(e.responseJSON.errors.email[0], { timeOut: 5000 });
+                }
+                if (e.responseJSON.errors.password != null) {
+                    toastr.error(e.responseJSON.errors.password[0], { timeOut: 5000 });
                 }
 
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                    },
-                    type: "POST",
-                    url: "{{url('save-company')}}",
-                    data: formData,
-                    dataType: 'json',
-                    beforeSend: function(data) {
-                        $('.loader_container').show();
-                    },
-                    success: function(data) {
-                        toastr.success(data.message, {
-                            timeOut: 5000
-                        });
 
-                        $('#company_id').append('<option value="' + data.result +'" selected>' + $('#companyForm #name').val() + '</option>');
-
-                        $('#addCompanyModal').modal('hide');
-                        $('#companyForm').trigger('reset');
-                    },
-                    complete: function(data) {
-                        $('.loader_container').hide();
-                    },
-                    error: function(e) {
-                        console.log(e)
-                    }
-                });
-
-
+                $("#saveBtn").show();
+                $("#processing").hide();
             }
-
-            // Handle click on "Select all" control
-            $('#select-all').on('click', function() {
-                // Get all rows with search applied
-                var rows = customerTable.rows({
-                    'search': 'applied'
-                }).nodes();
-                // Check/uncheck checkboxes for all rows in the table
-                $('input[type="checkbox"]', rows).prop('checked', this.checked);
-            });
-            
         });
+    });
 
-        $("#payment_token").change(function(event) {
-            var fname = $('#fname').val();
-            var lname = $('#lname').val();
-            var address1 = $('#address1').val();
-            var city = $('#city').val();
-            var state = $('#state').val();
-            var zip = $('#zip').val();
-            var card_type = $('#card_type').val();
-            var  exp= $('#exp').val()
-            var email= $('#cust_email1').val()
+    $("#prof_phone").keyup(function() {
+
+        var regex = new RegExp("^[0-9]+$");
+
+        if(!regex.test($(this).val())) {
+            $("#phone_error").html("Only numeric values allowed");
+        }else{
+            $("#phone_error").html(" ");
+        }
+        if($(this).val() == '') {
+            $("#phone_error").html(" ");
+        }
+    });
+
+    $("#companyForm").submit(function(event) {
+        event.preventDefault();
+        var poc_first_name = $('#poc_first_name').val();
+        var poc_last_name = $('#poc_last_name').val();
+        var name = $('#name').val();
+        var email = $('#cemail').val();
+        var phone = $('#phone').val();
+        var country = $("#country").val();
+        var state = $("#state").val();
+        var city = $("#city").val();
+        var zip = $("#zip").val();
+        var address = $('#address').val();
+        var user_id = $("#user_id").val()
+
+
+        var a = checkEmptyFields(poc_first_name, $("#err"));
+        var b = checkEmptyFields(poc_last_name, $("#err1"));
+        var c = checkEmptyFields(name, $("#err2"));
+        var d = checkValidEmail(email, $("#err3"));
+        var e = checkEmptyFields(phone, $("#err4"));
+
+        var regex = new RegExp("^[0-9]+$");
+
+        if(!regex.test(phone)) {
+            $("#err4").html("Only numeric values allowed");
+            return false;
+        }
+
+        if (a && b && c && d && e == true) {
+
             var formData = {
-                fname: fname,
-                lname: lname,
-                address1: address1,
-                city: city,
+                poc_first_name: poc_first_name,
+                poc_last_name: poc_last_name,
+                name: name,
+                email: email,
+                phone: phone,
+                country: country,
                 state: state,
+                city: city,
                 zip: zip,
-                card_type: card_type,
-                exp: exp,
-                email:email,
-                payment_token: $(this).val(),
-                cardlastDigits:$('#cardlastDigits').val(),
-                customer_id:$('#customer_id').val()
+                address: address,
+                user_id: user_id
             }
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 },
                 type: "POST",
-                url: "{{url('save-cust-card')}}",
+                url: "{{url('save-company')}}",
                 data: formData,
                 dataType: 'json',
                 beforeSend: function(data) {
                     $('.loader_container').show();
                 },
                 success: function(data) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: data.success ? 'success' : 'error',
-                        title: data.message,
-                        showConfirmButton: false,
-                        timer: 2500
+                    toastr.success(data.message, {
+                        timeOut: 5000
                     });
-                    get_cust_card()
-                    console.log(data)
-            
+
+                    $('#company_id').append('<option value="' + data.result +'" selected>' + $('#companyForm #name').val() + '</option>');
+
+                    $('#addCompanyModal').modal('hide');
+                    $('#companyForm').trigger('reset');
                 },
                 complete: function(data) {
                     $('.loader_container').hide();
@@ -1075,90 +889,245 @@
                     console.log(e)
                 }
             });
+
+
+        }
+
+        // Handle click on "Select all" control
+        $('#select-all').on('click', function() {
+            // Get all rows with search applied
+            var rows = customerTable.rows({
+                'search': 'applied'
+            }).nodes();
+            // Check/uncheck checkboxes for all rows in the table
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
         });
+            
+    });
 
-        $("#save_tickets").submit(function(event) {
-            event.preventDefault();
-            var formData = new FormData($(this)[0]);
-            var action = $(this).attr('action');
-            var method = $(this).attr('method');
-            var subject = $('#subject').val().replace(/\s+/g, " ").trim();
-            var dept_id = $('#dept_id').val();
-            var priority = $('#priority').val();
-            var type = $('#type').val();
-            var ticket_detail = $('#ticket_detail').val();
-            if (subject == '' || subject == null) {
-                $('#select-subject').css('display', 'block');
-                return false;
-            } else if (dept_id == '' || dept_id == null) {
-                $('#select-department').css('display', 'block');
-                return false;
-            } else if (priority == '' || priority == null) {
-                $('#select-priority').css('display', 'block');
-                return false;
-            } else if (type == '' || type == null) {
-                $('#select-type').css('display', 'block');
-                return false;
-            } else if (ticket_detail == '' || ticket_detail == null) {
-                $('#pro-details').css('display', 'block');
-                return false;
-            }
-            formData.append('status', open_status_id);
-            formData.append('customer_id', customer.id);
-
-            $(this).find('#btnSaveTicket').attr('disabled', true);
-            $(this).find('#btnSaveTicket .spinner-border').show();
-
-            setTimeout(() => {
-                $.ajax({
-                    type: method,
-                    url: action,
-                    data: formData,
-                    async: false,
-                    cache: false,
-                    contentType: false,
-                    enctype: 'multipart/form-data',
-                    processData: false,
-                    success: function(data) {
-                        // $('#btnSaveTicket').attr('disabled', false);
-                        // $('#btnSaveTicket .spinner-border').show();
-
-                        console.log(data, "ticket data");
-                        if (data.success) {
-                            $('#ticketModal').modal('hide');
-                            $("#save_tickets").trigger("reset");
-                            $('#dept_id').val('').trigger("change");
-                            $('#priority').val('').trigger("change");
-                            $('#type').val('').trigger("change");
-                            get_ticket_table_list();
-                            $('#btnSaveTicket').attr('disabled', false);
-                            $('#btnSaveTicket .spinner-border').hide();
-
-                        } else {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: (data.success) ? 'success' : 'error',
-                                title: data.message,
-                                showConfirmButton: false,
-                                timer: 2500,
-
-                            })
-                            $('#btnSaveTicket').attr('disabled', false);
-                            $('#btnSaveTicket .spinner-border').hide();
-                        }
-
-                    },
-                    failure: function(errMsg) {
-
-                        console.log(errMsg);
-                        // $('#btnSaveTicket').attr('disabled', false);
-                        // $('#btnSaveTicket .spinner-border').hide();
-                    }
+    $("#payment_token").change(function(event) {
+        var fname = $('#fname').val();
+        var lname = $('#lname').val();
+        var address1 = $('#address1').val();
+        var city = $('#city').val();
+        var state = $('#state').val();
+        var zip = $('#zip').val();
+        var card_type = $('#card_type').val();
+        var  exp= $('#exp').val()
+        var email= $('#cust_email1').val()
+        var formData = {
+            fname: fname,
+            lname: lname,
+            address1: address1,
+            city: city,
+            state: state,
+            zip: zip,
+            card_type: card_type,
+            exp: exp,
+            email:email,
+            payment_token: $(this).val(),
+            cardlastDigits:$('#cardlastDigits').val(),
+            customer_id:$('#customer_id').val()
+        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            type: "POST",
+            url: "{{url('save-cust-card')}}",
+            data: formData,
+            dataType: 'json',
+            beforeSend: function(data) {
+                $('.loader_container').show();
+            },
+            success: function(data) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: data.success ? 'success' : 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2500
                 });
-            }, 1000);
+                get_cust_card()
+                console.log(data)
+        
+            },
+            complete: function(data) {
+                $('.loader_container').hide();
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        });
+    });
+
+    $("#save_tickets").submit(function(event) {
+            event.preventDefault();
+        var formData = new FormData($(this)[0]);
+        var action = $(this).attr('action');
+        var method = $(this).attr('method');
+        var subject = $('#subject').val().replace(/\s+/g, " ").trim();
+        var dept_id = $('#dept_id').val();
+        var priority = $('#priority').val();
+        var type = $('#type').val();
+        var ticket_detail = $('#ticket_detail').val();
+        if (subject == '' || subject == null) {
+            $('#select-subject').css('display', 'block');
+            return false;
+        } else if (dept_id == '' || dept_id == null) {
+            $('#select-department').css('display', 'block');
+            return false;
+        } else if (priority == '' || priority == null) {
+            $('#select-priority').css('display', 'block');
+            return false;
+        } else if (type == '' || type == null) {
+            $('#select-type').css('display', 'block');
+            return false;
+        } else if (ticket_detail == '' || ticket_detail == null) {
+            $('#pro-details').css('display', 'block');
+            return false;
+        }
+        formData.append('status', open_status_id);
+        formData.append('customer_id', customer.id);
+
+        $(this).find('#btnSaveTicket').attr('disabled', true);
+        $(this).find('#btnSaveTicket .spinner-border').show();
+
+        setTimeout(() => {
+            $.ajax({
+                type: method,
+                url: action,
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                success: function(data) {
+                    // $('#btnSaveTicket').attr('disabled', false);
+                    // $('#btnSaveTicket .spinner-border').show();
+
+                    console.log(data, "ticket data");
+                    if (data.success) {
+                        $('#ticketModal').modal('hide');
+                        $("#save_tickets").trigger("reset");
+                        $('#dept_id').val('').trigger("change");
+                        $('#priority').val('').trigger("change");
+                        $('#type').val('').trigger("change");
+                        get_ticket_table_list();
+                        $('#btnSaveTicket').attr('disabled', false);
+                        $('#btnSaveTicket .spinner-border').hide();
+
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: (data.success) ? 'success' : 'error',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2500,
+
+                        })
+                        $('#btnSaveTicket').attr('disabled', false);
+                        $('#btnSaveTicket .spinner-border').hide();
+                    }
+
+                },
+                failure: function(errMsg) {
+
+                    console.log(errMsg);
+                    // $('#btnSaveTicket').attr('disabled', false);
+                    // $('#btnSaveTicket .spinner-border').hide();
+                }
+            });
+        }, 1000);
+
+    });
+
+
+    $(".user-password-div").on('click', '.show-password-btn', function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $(".user-password-div input[name='password']");
+        if (input.attr("type") === "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+    
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#ppNew').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readURL1(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#profile-user-img').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#upload_customer_img").submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            url: "{{url('upload_customer_img')}}",
+            type: 'POST',
+            data: new FormData(this),
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                if (data.status == 200 && data.success == true) {
+                    toastr.success(data.message, {
+                        timeOut: 5000
+                    });
+                    $("#editPicModal").modal('hide');
+                    var ter = $(".custom-file-label").text();
+
+                    let url = '{{asset("files/user_photos/Customers")}}';
+                    $('#profile-user-img').attr('src', url + '/' + ter);
+                } else {
+                    toastr.error(data.message, {
+                        timeOut: 5000
+                    });
+                }
+                console.log(data, "data");
+            },
+            error: function(e) {
+                console.log(e)
+            }
 
         });
     });
+
+    $("#customFilePP").change(function() {
+        // alert("Bingo");
+        var ter = $("#customFilePP").val();
+        // alert(ter);
+        var terun = ter.replace(/^.*\\/, "");
+        $(".custom-file-label").text(terun);
+        readURL(this);
+    });
+    // till here
+
+    $('.form-group small').addClass('d-none');
 
     function checkEmptyFields(input, err) {
         if (input == '') {
@@ -1812,10 +1781,5 @@
     }
 </script>
 
-
-{{-- Linked assets JS --}}
-
-<!-- <script src="{{asset('public/js/customer_manager/customer_lookup/orders.js').'?ver='.rand()}}"></script> -->
-<!-- <script src="{{asset('public/js/ticket_cmmn.js').'?ver='.rand()}}"></script> -->
 @include('js_files.ticket_cmmnJs')
 @include('js_files.statesJs')
