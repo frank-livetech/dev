@@ -161,14 +161,9 @@
                                 <i i class="me-50" data-feather="credit-card"></i> Company Profile </a>
                         @endif
                         
-                        <a class="dropdown-item" type="button" href="{{ url('logout') }}">
-                            <i class="me-50" data-feather="power" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"></i> 
-                            Logout
+                        <a class="dropdown-item" type="button" href="{{ route('logout') }}">
+                            <i class="me-50" data-feather="power"></i>  Logout
                         </a>
-                        <form id="logout-form" action="{{ url('logout') }}" method="POST"
-                            style="display: none;">
-                            @csrf
-                        </form>
                     </div>
                 </li>
             </ul>

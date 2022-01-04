@@ -1547,7 +1547,7 @@ function getClockTime(followUpDate, timediff) {
         if (rem && rem.hasOwnProperty('months') && rem.months > 0) remTime += rem.months + 'm ';
         if (rem && rem.hasOwnProperty('days') && rem.days > 0) remTime += rem.days + 'd ';
         if (rem && rem.hasOwnProperty('hours') && rem.hours > 0) remTime += rem.hours + 'h ';
-        if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'min';
+        if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'm';
 
         remTime = `(<span style="color: rgb(139, 180, 103)">${remTime}</span>)`;
 
