@@ -1523,9 +1523,9 @@
                         let autho = '';
                         if (notes[i].created_by == loggedInUser_id) {
                             autho = `<div class="ml-auto">
-                                <span class="fas fa-edit text-primary ml-2" onclick="editNote(this, ` + (i) + `)" style="cursor: pointer;"></span>
+                                <span class="fas fa-edit text-primary ml-2" onclick="editNote(this, ` + (i) + `)" style="cursor: pointer;position:relative;bottom:25px"></span>
                                 
-                                <span class="fas fa-trash text-danger" onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')" style="cursor: pointer;"></span>
+                                <span class="fas fa-trash text-danger" onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')" style="cursor: pointer;position:relative;bottom:25px"></span>
                             </div>`;
                         }
 

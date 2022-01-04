@@ -1491,18 +1491,18 @@ function listFollowups() {
 
             if (prv_clicked != 'collapse-' + g_followUps[i].id) clsp = 'collapsed';
 
-            flups += `<div class="card-header" id="followup-${g_followUps[i].id}" style="color:blackbackground-color: rgba(0, 0, 0, .0);">
+            flups += `<div class="card-header mb-1" id="followup-${g_followUps[i].id}" style="color:black;background-color: rgba(0, 0, 0, .113);">
                 <h5 class="m-0">
-                    <a class="custom-accordion-title d-flex align-items-center ${clsp}" data-toggle="collapse" href="#collapse-${g_followUps[i].id}" aria-expanded="${clsp ? false : true}" aria-controls="collapseThree" style="color: inherit;">
+                    <a class="custom-accordion-title d-flex align-items-center ${clsp}" data-bs-toggle="collapse" href="#collapse-${g_followUps[i].id}" aria-expanded="${clsp ? false : true}" aria-controls="collapseThree" style="color: inherit;">
                     ${countFlups+1}. Will run a follow-up at ${moment(followUpDate).format(date_format)} created by ${g_followUps[i].creator_name} ${remTime}</strong>&nbsp;
                     ` + autho + `
-                        <span class="ml-auto"><i class="mdi mdi-chevron-down accordion-arrow"></i></span>
+                        <span class="ml-auto"><i class="fas fa-chevron-down accordion-arrow"></i></span>
                         
                     </a>
                 </h5>
             </div>
-            <div id="collapse-${g_followUps[i].id}" class="${clsp ? 'collapse' : 'show'}  flpcollapse" aria-labelledby="followup-${g_followUps[i].id}" data-parent="#accordion">
-                <div class="card-body">
+            <div id="collapse-${g_followUps[i].id}" class="${clsp ? 'collapse' : 'show'}  flpcollapse" aria-labelledby="followup-${g_followUps[i].id}" data-bs-parent="#accordion">
+                <div class="">
                     ${details}
                 </div>
             </div>`;
@@ -2196,8 +2196,8 @@ function get_ticket_notes() {
                     if (notes[i].created_by == loggedInUser_id) {
                         autho = `<div class="ml-auto">
                             
-                        <span class="fas fa-trash text-danger" style= "float:right;cursor:pointer;" onclick="deleteTicketNote(this, '` + notes[i].id + `')" style="cursor: pointer;"></span>
-                        <span class="fas fa-edit text-primary ml-2" style= "float:right;padding-right:5px;cursor:pointer;" onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')" style="cursor: pointer;"></span>
+                        <span class="fas fa-trash text-danger" style= "float:right;cursor:pointer;position:relative;bottom:25px" onclick="deleteTicketNote(this, '` + notes[i].id + `')" style="cursor: pointer;"></span>
+                        <span class="fas fa-edit text-primary ml-2" style= "float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px" onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')" style="cursor: pointer;"></span>
                         
                         </div>`;
                     }
@@ -2230,7 +2230,7 @@ function get_ticket_notes() {
                             <img src="${profile_img_path}" alt="User" width="40">
                         </div>
                         <div class="w-100">
-                            <div class="col-12 p-0 d-flex">
+                            <div class="col-12 p-0">
                                 <h5 class="note-head">Note by ` + notes[i].name + ` ` + jsTimeZone(notes[i].created_at) + ` ` + type + `</h5>
                                 ` + autho + `
                             </div>
