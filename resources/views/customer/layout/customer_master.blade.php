@@ -183,7 +183,12 @@
                                 <h2 class="content-header-title float-start mb-0">Dashboard</h2>
                                 <div class="breadcrumb-wrapper">
                                     <ol class="breadcrumb">
-                                        <li class="breadcrumb-item active"><a href="">Profile</a>
+                                        <li class="breadcrumb-item active"><a href="">
+                                            
+                                            {{ (request()->is('myprofile')) ? 'Profile' :  '' }}
+                                            {{(request()->is('add-tkt')) ? 'Submit Ticket' : ''}}
+                                            {{(request()->is('view-tkt')) ? 'My Ticket' : ''}}
+                                        </a>
                                         </li>
                                     </ol>
                                 </div>
