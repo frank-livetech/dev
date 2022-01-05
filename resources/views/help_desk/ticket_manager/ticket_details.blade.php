@@ -378,9 +378,9 @@ a{
     border: 1px solid #e6e7e8;
     text-align: center;
     width: 100%;
-    height: 94px;
+    min-height: 94px;
     /* padding: 29px 12px; */
-    padding-top: 21%;
+    /* padding-top: 21%; */
     transition: 0.3s ease;
 }
 .borderOne:hover .downFile

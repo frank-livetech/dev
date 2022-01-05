@@ -77,7 +77,7 @@
 .fileName{
     position: absolute;
     padding-right:19px;
-    top: 182px;
+    top: 7px;
     font-size: 11px;
     display:none;
     color:#fff;
@@ -86,7 +86,7 @@
 .downFile{
     position: absolute;
     bottom: 4px;
-    right: 500px;
+    right: 55px;
     /* left: 46%; */
     border-radius: 50%;
     color: green;
@@ -110,10 +110,11 @@
     border: 1px solid #e6e7e8;
     text-align: center;
     width: 100%;
-    height: 94px;
+    min-height: 94px;
     /* padding: 29px 12px; */
     /* padding-top: 21%; */
     transition: 0.3s ease;
+    position: relative;
 }
 .borderOne:hover .downFile
 {
@@ -125,7 +126,7 @@
    display:block;
 }
 .borderOne img{
-    width: 100%;
+    width: 35px;
 }
 .xlIcon{
     width:41px;
@@ -136,17 +137,16 @@
 .overlayAttach{
     position: absolute;
     background: rgba(0,0,0,0.5);
-    top: 180px;
-    right: 460px;
-    left: 15px;
-    bottom: 0;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
     display:none;
-    
 }
 .card__corner {
     position: absolute;
     bottom: 0;
-    right: 460px;
+    right: 15px;
     z-index: 2;
     width: 1.5em;
     height: 1.5em;
@@ -173,7 +173,10 @@
 .float-right{
     float: right
 }
-
+.attImg{
+    height:117px;
+    width:auto !important;
+}
 </style>
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -202,133 +205,130 @@
             </div>
         </div>
         <input type="hidden" id="loggedInUser_id" value="{{\Auth::user()->id}}">
+        <input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
         <div class="content-body">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="copyToClipBoard()"> 
-                                        <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
+                <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="copyToClipBoard()"> 
+                                <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
+                                
+                                {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
+                                <i data-feather='edit' onclick="openProModal();" style="float:right; cursor:pointer;" tooltip="Edit"></i>
+                            </h5>
+                            <div class="profile-pic mt-3">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 text-center">
+                                        <!-- Image path -->
+                                        @php
+                                            $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+                                        @endphp
+                                        @if($ticket_customer->avatar_url != NULL)
+                                            @if(file_exists( public_path().'/'. $ticket_customer->avatar_url ))
+                                                <img src="../files/user_photos/cust_profile_img/{{$ticket_customer->avatar_url}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                            @else
+                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            @endif
+                                        @else($ticket_customer->avatar_url == NULL)
+                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                        @endif
+                                        <br><br>
                                         
-                                        {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
-                                        <i data-feather='edit' onclick="openProModal();" style="float:right; cursor:pointer;" tooltip="Edit"></i>
-                                    </h5>
-                                    <div class="profile-pic mt-3">
-                                        <div class="row">
-                                            <div class="col-lg-3 col-md-3 text-center">
-                                                <!-- Image path -->
-                                                @php
-                                                    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
-                                                @endphp
-                                                @if($ticket_customer->avatar_url != NULL)
-                                                    @if(file_exists( public_path().'/'. $ticket_customer->avatar_url ))
-                                                        <img src="../files/user_photos/cust_profile_img/{{$ticket_customer->avatar_url}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
-                                                    @else
-                                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                    @endif
-                                                @else($ticket_customer->avatar_url == NULL)
-                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                @endif
-                                                <br><br>
-                                                
-                                            </div>
-                                            <div class="col-lg-9 col-md-8 innerBox" id="style-5" style="">
-                                                <p style="margin-bottom: 0.2rem; !important">Name : <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $ticket_customer->first_name }} {{ $ticket_customer->last_name }} </a></p>
-                                                <p style="margin-bottom: 0.2rem; !important" id="cst-company"></p>
-                                                <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $ticket_customer->phone }}" id="cst-direct-line">{{ $ticket_customer->phone }}</a> </p>
-                                                <p style="margin-bottom: 0.2rem; !important" id="cst-company-name"></p>
-                                                <p style="margin-bottom: 0.2rem; !important">Email : <a href="mailto:{{ $ticket_customer->email }}" id="cst-email">{{ $ticket_customer->email }}</a>  </p>
-                                                <p style="margin-bottom: 0.2rem; !important">Client Since : <span id="cust-creation-date"></span></p>
-                                            </div>
-                                            <hr>
-                                            <div class="row ">
-                                                <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
-                                                    <h3 class="font-weight-bold" style="text-align:center"> <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
-                                                    <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
-                                                </div>
-                                                <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
-                                                    <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
-                                                    <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
-                                                </div>
-                                                <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
-                                                    <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
-                                                    <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
+                                    </div>
+                                    <div class="col-lg-9 col-md-8 innerBox" id="style-5" style="">
+                                        <p style="margin-bottom: 0.2rem; !important">Name : <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $ticket_customer->first_name }} {{ $ticket_customer->last_name }} </a></p>
+                                        <p style="margin-bottom: 0.2rem; !important" id="cst-company"></p>
+                                        <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $ticket_customer->phone }}" id="cst-direct-line">{{ $ticket_customer->phone }}</a> </p>
+                                        <p style="margin-bottom: 0.2rem; !important" id="cst-company-name"></p>
+                                        <p style="margin-bottom: 0.2rem; !important">Email : <a href="mailto:{{ $ticket_customer->email }}" id="cst-email">{{ $ticket_customer->email }}</a>  </p>
+                                        <p style="margin-bottom: 0.2rem; !important">Client Since : <span id="cust-creation-date"></span></p>
+                                    </div>
+                                    <hr>
+                                    <div class="row ">
+                                        <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
+                                            <h3 class="font-weight-bold" style="text-align:center"> <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
+                                            <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
+                                        </div>
+                                        <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
+                                            <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
+                                            <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
+                                        </div>
+                                        <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
+                                            <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
+                                            <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    
+                                    
+                                </div>   
+                                
+                                <!--<a href="mailto:danielkristeen@gmail.com">danielkristeen@gmail.com</a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card" id="style-5" style="height:281px; overflow-y:auto; overflow-x:hidden">
+                        <div class="card-header ">
+                            <div class="align-items-center">
+                                <div class="mail-items">
+                                    <h3 class="mb-0">Initial Request&nbsp;&nbsp;<span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span><span style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn"><a onclick="editRequest()"><i data-feather='edit-3'></i></a></span><span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn"><a onclick="cancelEditRequest()"><i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span><span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn"><a onclick="saveRequest()"><i data-feather='save'></i></a></span></h3>
+                                    <br>
+                                    <h4 id="ticket_subject_heading">Subject : {{$details->subject}}</h4>
+                                    <hr>
+                                    <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">
+                                        <div class="row mt-3">
+                                            <div class="col-sm-12">
+                                                <div class="row " >
+                                                    <h4 class="control-label col-sm-12" required="">Subject</h4><span id="subject" style="display:none;color:red">subject cannot be empty</span>
+                                                    <div class=" col-sm-10">
+                                                        <input type="text" id="ticket_subject_edit" class="form-control" required>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            
-                                            
-                                        </div>   
-                                        
-                                        <!--<a href="mailto:danielkristeen@gmail.com">danielkristeen@gmail.com</a>-->
+                                    </div>    
+                                    <div class="form-group" id="ticket_details_edit_div" style="display:none">
+                                        <div class="row mt-3">
+                                            <h4 class="control-label col-sm-12" required="">Ticket Details</h4><span id="ticket-details" style="display:none;color:red">Ticket Details cannot be empty</span>
+                                            <div class="col-md-12">
+                                                <textarea class="form-control col-sm-12" rows="3" id="ticket_details_edit" name="ticket_details_edit" required ></textarea>
+                                            </div>
+                                            <div class="col-12 pt-3">
+                                                
+                                                <button class="btn btn-outline-primary btn-sm" type="button" onclick="addAttachment('tickets')"><span class="fa fa-plus"></span> Add Attachment</button>
+                                                <div class="form-group" id="tickets_attachments"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
-                        <div class="col-md-7">
-                            <div class="card" id="style-5" style="height:281px; overflow-y:scroll; overflow-x:auto">
-                                <div class="card-header ">
-                                    <div class="align-items-center">
-                                        <div class="mail-items">
-                                            <h3 class="mb-0">Initial Request&nbsp;&nbsp;<span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span><span style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn"><a onclick="editRequest()"><i data-feather='edit-3'></i></a></span><span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn"><a onclick="cancelEditRequest()"><i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span><span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn"><a onclick="saveRequest()"><i data-feather='save'></i></a></span></h3>
-                                            <br>
-                                            <h4 id="ticket_subject_heading">Subject : {{$details->subject}}</h4>
-                                            <hr>
-                                            <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">
-                                                <div class="row mt-3">
-                                                    <div class="col-sm-12">
-                                                        <div class="row " >
-                                                            <h4 class="control-label col-sm-12" required="">Subject</h4><span id="subject" style="display:none;color:red">subject cannot be empty</span>
-                                                            <div class=" col-sm-10">
-                                                                <input type="text" id="ticket_subject_edit" class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>    
-                                            <div class="form-group" id="ticket_details_edit_div" style="display:none">
-                                                <div class="row mt-3">
-                                                    <h4 class="control-label col-sm-12" required="">Ticket Details</h4><span id="ticket-details" style="display:none;color:red">Ticket Details cannot be empty</span>
-                                                    <div class="col-md-12">
-                                                        <textarea class="form-control col-sm-12" rows="3" id="ticket_details_edit" name="ticket_details_edit" required ></textarea>
-                                                    </div>
-                                                    <div class="col-12 pt-3">
-                                                        
-                                                        <button class="btn btn-outline-primary btn-sm" type="button" onclick="addAttachment('tickets')"><span class="fa fa-plus"></span> Add Attachment</button>
-                                                        <div class="form-group" id="tickets_attachments"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="card-body mail-message-wrapper">
+                            <div class="mail-message">
+                                <div class="row" id="ticket_details_p"></div>
+                            </div>
+                        </div>
+                        {{-- <div class="card-footer">
+                            <div class="mail-attachments">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i data-feather='paperclip'></i>&nbsp;
+                                    <h5 class="fw-bolder text-body mb-0">1 Attachments</h5>
+                                </div>
+                                <div class="row d-flex flex-column">
+                                    <a href="#" class="mb-50">
+                                        <img src="../../../app-assets/images/icons/doc.png" class="me-25" alt="png" height="18">
+                                        <small class="text-muted fw-bolder">interdum.docx</small>
+                                    </a>
                                     
                                 </div>
-                                <div class="card-body mail-message-wrapper">
-                                    <div class="mail-message">
-                                        <div class="row" id="ticket_details_p"></div>
-                                    </div>
-                                </div>
-                                {{-- <div class="card-footer">
-                                    <div class="mail-attachments">
-                                        <div class="d-flex align-items-center mb-1">
-                                            <i data-feather='paperclip'></i>&nbsp;
-                                            <h5 class="fw-bolder text-body mb-0">1 Attachments</h5>
-                                        </div>
-                                        <div class="row d-flex flex-column">
-                                            <a href="#" class="mb-50">
-                                                <img src="../../../app-assets/images/icons/doc.png" class="me-25" alt="png" height="18">
-                                                <small class="text-muted fw-bolder">interdum.docx</small>
-                                            </a>
-                                            
-                                        </div>
-                                    </div>
-                                </div> --}}
-                            </div>  
-                        </div>
-                    </div>
+                            </div>
+                        </div> --}}
+                    </div>  
                 </div>
             </div>
             <div class="row">
