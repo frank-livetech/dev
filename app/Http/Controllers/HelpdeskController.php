@@ -563,7 +563,7 @@ class HelpdeskController extends Controller
     
                 if(!$lcnt) {
                     $nowDate = Carbon::now();
-                    if(!empty($value->resolution_deadline)) {
+                    if(!empty($value->resolution_deadline) && $value->resolution_deadline != 'cleared') {
                         $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
                         if($timediff < 0) $lcnt = true;
                     } else {
