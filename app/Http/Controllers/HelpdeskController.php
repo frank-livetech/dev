@@ -112,7 +112,7 @@ class HelpdeskController extends Controller
 
         $staffs = User::where('user_type','!=',5)->where('user_type','!=',4)->get();
 
-        return view('help_desk.ticket_manager.index-new',compact('loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs','dept','sts'));
+        return view('help_desk.ticket_manager.index',compact('loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs','dept','sts'));
 
     }
 
@@ -156,7 +156,7 @@ class HelpdeskController extends Controller
         $dept = '';
         $sts = '';
 
-        return view('help_desk.ticket_manager.index-new',compact('dept','sts','loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs'));
+        return view('help_desk.ticket_manager.index',compact('dept','sts','loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs'));
     }
 
     public function addTicketPage() {
