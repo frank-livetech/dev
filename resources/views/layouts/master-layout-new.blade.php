@@ -252,6 +252,33 @@
         });
 
         var url = "{{asset('/get_all_counts')}}";
+        function sendNotification(type,slug,icon,title,description) {
+            $.ajax({
+                type: 'POST',
+                url: "{{url('send_notification')}}",
+                data: { 
+                    type:type,
+                    slug:slug,
+                    icon:icon,
+                    title: title, 
+                    description: description},
+                success: function(data) {
+                    console.log(data);
+                    if(!data.success) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2500
+                        });
+                    }
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            });
+        }
 
         function getAllCounts(){
             $.ajax({

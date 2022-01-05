@@ -1410,7 +1410,7 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                         </form>
                         <div class="col-12 pb-3 px-0" id="search_customer_result" style="max-height: 300px !important; overflow-y: auto;"></div>
 
-                        <div class="col-12">
+                        <!-- <div class="col-12">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="username-fill">Email</label>
@@ -1422,6 +1422,19 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                                     <input type="tel" class="form-control" name="phone-fill" id="phone-fill" value="{{$ticket_customer->phone}}">
                                     <small style="display: none; color: red;" id="phone-fill-err">Please enter valid phone number upto length 10</small>
                                 </div>
+                            </div>
+                        </div> -->
+
+                        <div class="col-12">
+                            <div class="" style="margin-top: 10px;">
+                                <label for="cc">CC</label>
+                                <input type="text" id="cc" name="cc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="" style="margin-top: 10px;">
+                                <label for="cc">BCC</label>
+                                <input type="text" id="bcc" name="bcc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
                             </div>
                         </div>
                     </div>

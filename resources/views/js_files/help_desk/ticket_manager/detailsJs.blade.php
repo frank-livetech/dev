@@ -419,7 +419,6 @@ function editRequest() {
     $('#cancel_request_btn').css('display', 'block');
 
     $('#ticket_subject_edit').val(ticket.subject);
-    // $('#ticket_details_edit').val(ticket.ticket_detail);
 
     if(ticket_details.attachments) {
         let attchs = ticket_details.attachments.split(',');
@@ -430,7 +429,11 @@ function editRequest() {
         });
     }
 
-    tinyMCE.editors.ticket_details_edit.setContent($('#ticket_details_p .content').html());
+    if(ticket != null && ticket != "") {
+        tinyMCE.editors.ticket_details_edit.setContent(ticket.ticket_detail);
+    }
+
+    
 }
 
 function cancelEditRequest() {

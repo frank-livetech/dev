@@ -763,7 +763,7 @@ h6 {
                                                         <div class="col-sm-12">
                                                             <input name="version" class="form-control" type="text"
                                                                 value="" placeholder="Version"
-                                                                list="rm_title_datalist" required id="version" />
+                                                                list="rm_title_datalist" id="version" />
                                                             <datalist id="rm_title_datalist">
                                                                 @foreach($versions as $version)
                                                                     <option value="{{$version->version}}">{{$version->version}} </option>
@@ -777,7 +777,7 @@ h6 {
                                                             :</label>
                                                         <div class="col-sm-12">
                                                             <input name="title" id="title" class="form-control" type="text"
-                                                                value="" placeholder="Title" required />
+                                                                value="" placeholder="Title" />
                                                         </div>
                                                     </div>
 
@@ -785,7 +785,7 @@ h6 {
                                                         <label class="control-label col-sm-12">Status
                                                             :</label>
                                                         <div class="col-sm-12">
-                                                            <select name="task_status" id="task_status" class="form-control" style="width:100%" required onchange="checkTaskStatus(this);">
+                                                            <select name="task_status" id="task_status" class="form-control" style="width:100%" onchange="checkTaskStatus(this);">
                                                                 <option value="danger">Pending</option>
                                                                 <option value="default">Working</option>
                                                                 <option value="success">Complete</option>
@@ -812,7 +812,7 @@ h6 {
                                                         <label class="control-label col-sm-12">Priority
                                                             :</label>
                                                         <div class="col-sm-12">
-                                                            <select name="task_priority" id="task_priority" class="form-control" style="width:100%" required>
+                                                            <select name="task_priority" id="task_priority" class="form-control" style="width:100%">
                                                                 <option value="" selected disabled>Select</option>
                                                                 <option value="Low">Low</option>
                                                                 <option value="Normal" selected>Normal</option>
@@ -826,14 +826,14 @@ h6 {
                                                         <div class="form-group col-md-4">
                                                             <label class="control-label col-sm-12">Start Date</label>
                                                             <div class="col-sm-12">
-                                                                <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                                                <input type="date" class="form-control" id="start_date" name="start_date">
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group col-md-4">
                                                             <label class="control-label col-sm-12">Due Date </label>
                                                             <div class="col-sm-12">
-                                                                <input type="date" class="form-control" id="due_date" name="due_date" required>
+                                                                <input type="date" class="form-control" id="due_date" name="due_date">
                                                             </div>
                                                         </div>
 
@@ -853,7 +853,7 @@ h6 {
                                                         <div class="col-sm-12">
                                                         <select class="select form-control"
                                                             id="assign_to" name="assign_to"
-                                                            style="height: 36px;width: 100%;" required>
+                                                            style="height: 36px;width: 100%;">
                                                             <option value="">Select</option>
                                                             @foreach($users as $user)
                                                                 <option value="{{$user->id}}">{{$user->name}}</option>
@@ -865,7 +865,7 @@ h6 {
                                                     <div class="form-group col-md-6">
                                                         <label class="control-label col-sm-12">Work Technology :</label>
                                                         <div class="col-sm-12">
-                                                        <select class="select form-control"  id="work_tech" name="work_tech" style="height: 36px;width: 100%;" required>
+                                                        <select class="select form-control"  id="work_tech" name="work_tech" style="height: 36px;width: 100%;">
 
                                                             <option value="">Select</option>
                                                             <option value="Wordpress">Wordpress</option>
@@ -882,7 +882,7 @@ h6 {
                                                     <div class="form-group col-md-6">
                                                         <label class="control-label col-sm-12">Task Type :</label>
                                                         <div class="col-sm-12">
-                                                            <select class="select form-control"  id="task_type" name="task_type" style="height: 36px;width: 100%;" required>
+                                                            <select class="select form-control"  id="task_type" name="task_type" style="height: 36px;width: 100%;">
                                                                 <option value="">Select</option>
                                                                 <option value="bug">Bug</option>
                                                                 <option value="improvemenet">Improvement</option>

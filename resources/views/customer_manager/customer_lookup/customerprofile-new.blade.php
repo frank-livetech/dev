@@ -1268,7 +1268,7 @@
     
                         <div class="tab-pane fade active show" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
                             <div class="card-body">
-                                <form id="update_customer" action="{{asset('/update-user')}}" method="POST">
+                                <form id="update_customer" action="{{url('update_customer_profile')}}" method="POST">
                                     <h2 class="mt-4 font-weight-bold text-dark">Personal Info</h2>
     
                                     <div class="row">
@@ -2333,6 +2333,7 @@
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
 
 @include('js_files.customer_lookup.customerprofileJs')
+
 {{-- <style>
     .flagged-tr {
         background-color: #FFE4C4 !important;

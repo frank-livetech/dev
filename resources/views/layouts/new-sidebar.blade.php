@@ -53,12 +53,23 @@
                                     <ul aria-expanded="false" class="menu-content" style="">
                                     @foreach($sub_menus as $sub_menu)
                                         @if($sub_menu->is_active == 1)
-                                        <li class="@yield( $sub_menu->title )">
-                                            <a class="d-flex align-items-center" href="{{ route($sub_menu->route) }}">
-                                                <i data-feather="circle"></i>
-                                                <span class="menu-item text-truncate" data-i18n="{{$sub_menu->title}}">{{$sub_menu->title}}</span>
-                                            </a>
-                                        </li>
+                                        
+                                        @if($sub_menu->title == "Ticket Manager" && Request::path() == 'ticket-manager')
+                                            <li class="active">
+                                                <a class="d-flex align-items-center" href="{{ route($sub_menu->route) }}">
+                                                    <i data-feather="circle"></i>
+                                                    <span class="menu-item text-truncate" data-i18n="{{$sub_menu->title}}"> {{$sub_menu->title}} </span>
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li class="@yield( $sub_menu->title )">
+                                                <a class="d-flex align-items-center" href="{{ route($sub_menu->route) }}">
+                                                    <i data-feather="circle"></i>
+                                                    <span class="menu-item text-truncate" data-i18n="{{$sub_menu->title}}"> {{$sub_menu->title}} </span>
+                                                </a>
+                                            </li>
+                                        @endif
+
                                         @if($sub_menu->title == 'Ticket Manager')
                                                 @foreach($departments as $depts)
                                                     {{-- 2nd level --}}

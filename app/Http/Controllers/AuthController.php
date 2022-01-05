@@ -560,6 +560,13 @@ class AuthController extends Controller
                         Session::put('site_logo_title', 'Dashboard');
                     }
 
+                    $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+                    if($live) {
+                        Session::put('is_live', $live->sys_value);
+                    }else{
+                        Session::put('is_live', 0);
+                    }
+
                     if (\Auth::user()->user_type == 5) {
 
                         return redirect()->intended('myprofile/' . $user->account_id);

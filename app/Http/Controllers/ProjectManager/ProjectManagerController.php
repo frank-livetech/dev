@@ -784,27 +784,28 @@ class ProjectManagerController extends Controller
         
         $id = $request->id;
         
-        $validator = Validator::make($request->all(), [ 
+        // $validator = Validator::make($request->all(), [ 
           
-          'title' => ['required', 'string', 'max:255'],
-          'version' => ['required', 'string'],
-          'task_status' => ['required', 'string'],
-          'work_tech' => ['required', 'string'],
-          // 'task_description' => ['required', 'string']
+        //   'title' => ['required', 'string', 'max:255'],
+        //   'version' => ['required', 'string'],
+        //   'task_status' => ['required', 'string'],
+        //   'work_tech' => ['required', 'string'],
+        //   // 'task_description' => ['required', 'string']
           
-        ]);
+        // ]);
         
-        if ($validator->fails()) {
+        // if ($validator->fails()) {
           
-          $response['message'] = $validator->messages()->first();
-          $response['status_code'] = 200;
-          $response['success'] = false;
-          return response()->json($response);
+        //   $response['message'] = $validator->messages()->first();
+        //   $response['status_code'] = 200;
+        //   $response['success'] = false;
+        //   return response()->json($response);
           
-        }
+        // }
         
         $response = array();
         if(!empty($id)){
+
             DB::table('tasks')->where('id', $id)->update([
               'version'=>$data['version'],
               'title'=>$data['title'],
