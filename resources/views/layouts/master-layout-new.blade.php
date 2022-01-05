@@ -285,6 +285,7 @@
             });
             
         }
+        
         $('.sidebar-link').click(function(){
            
             if($(this).parent().hasClass('open')){
@@ -300,7 +301,7 @@
                 $(this).find(".slogan_i_minus").show();
               
             }
-        })
+        });
     </script>
     @yield('scripts')
 </body>
