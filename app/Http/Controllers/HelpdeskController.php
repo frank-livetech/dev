@@ -560,21 +560,22 @@ class HelpdeskController extends Controller
                         if($timediff < 0) $lcnt = true;
                     }
                 }
-    
-                if(!$lcnt) {
-                    $nowDate = Carbon::now();
-                    if(!empty($value->resolution_deadline) && $value->resolution_deadline != 'cleared') {
-                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
-                        if($timediff < 0) $lcnt = true;
-                    } else {
-                        $rep = Carbon::parse($value->sla_res_deadline_from);
-                        $dt = explode('.', $value->sla_plan['due_deadline']);
-                        $rep->addHours($dt[0]);
-                        if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
-                        $timediff = $nowDate->diffInSeconds($rep, false);
-                        if($timediff < 0) $lcnt = true;
+                if($value->resolution_deadline != 'cleared') {
+                    if(!$lcnt) {
+                        $nowDate = Carbon::now();
+                        if(!empty($value->resolution_deadline)) {
+                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                            if($timediff < 0) $lcnt = true;
+                        } else {
+                            $rep = Carbon::parse($value->sla_res_deadline_from);
+                            $dt = explode('.', $value->sla_plan['due_deadline']);
+                            $rep->addHours($dt[0]);
+                            if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
+                            $timediff = $nowDate->diffInSeconds($rep, false);
+                            if($timediff < 0) $lcnt = true;
+                        }
                     }
-                }
+                }   
             }
             
             $value->is_overdue = 0;
