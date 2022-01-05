@@ -866,12 +866,12 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                                             <div class="card mb-0">
                                                 <div class="card-header" id="departments_collapse">
                                                     <h5 class="m-0">
-                                                        <a class="custom-accordion-title d-flex align-items-center pt-2 pb-2 collapsed" data-toggle="collapse" href="#collapseDepartments" aria-expanded="false" aria-controls="collapseOne">
+                                                        <a class="custom-accordion-title d-flex align-items-center pt-2 pb-2 collapsed" data-bs-toggle="collapse" href="#collapseDepartments" aria-expanded="false" aria-controls="collapseOne">
                                                             Category<span class="ml-auto"><i class="mdi mdi-chevron-down accordion-arrow"></i></span>
                                                         </a>
                                                     </h5>
                                                 </div>
-                                                <div id="collapseDepartments" class="collapse" aria-labelledby="departments_collapse" data-parent="#accordion" style="">
+                                                <div id="collapseDepartments" class="collapse" aria-labelledby="departments_collapse" data-bs-parent="#accordion" style="">
                                                     <div class="card-body">
                                                         <div class="widget-header widget-header-small">
                                                             <div class="row">
