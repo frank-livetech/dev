@@ -215,7 +215,7 @@
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
-                                <i data-feather='edit' onclick="openProModal();" style="float:right; cursor:pointer;" tooltip="Edit"></i>
+                                <i data-feather='edit-3' onclick="openProModal();" style="float:right; cursor:pointer;" tooltip="Edit"></i>
                             </h5>
                             <div class="profile-pic mt-2">
                                 <div class="row">
@@ -248,15 +248,15 @@
                                     <div class="row ">
                                         <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
                                             <h3 class="font-weight-bold" style="text-align:center"> <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
-                                            <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
+                                            <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
                                         </div>
                                         <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
                                             <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
-                                            <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
+                                            <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
                                         </div>
                                         <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
                                             <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
-                                            <h6 style=""><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
+                                            <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -335,83 +335,91 @@
                 <div class="col-12">
                     <div class="card">
                         <div class=" nav-vertical">
-                            <div class="nav nav-tabs nav-left flex-column" id="v-pills-tab" role="tablist" style="border-right:1px solid rgb(185, 183, 183);">
-                                <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">Notes</a>
-                                <a class="nav-link" id="v-pills-assets-tab" data-bs-toggle="tab" href="#v-pills-assets" role="tab" aria-controls="v-pills-assets" aria-selected="false">Asset Manager</a>
-                                <a class="nav-link" id="v-pills-billing-tab" data-bs-toggle="tab" href="#v-pills-billing" role="tab" aria-controls="v-pills-billing" aria-selected="false">Billing Details</a>
-                                <a class="nav-link" id="v-pills-audit-tab" data-bs-toggle="tab" href="#v-pills-audit" role="tab" aria-controls="v-pills-audit" aria-selected="false">Audit</a>
-                                <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">Follow Ups</a>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="nav nav-tabs nav-left w-100" id="v-pills-tab" role="tablist" style="border-right:1px solid rgb(185, 183, 183);">
+                                        <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">Notes</a>
+                                        <a class="nav-link" id="v-pills-assets-tab" data-bs-toggle="tab" href="#v-pills-assets" role="tab" aria-controls="v-pills-assets" aria-selected="false">Asset Manager</a>
+                                        <a class="nav-link" id="v-pills-billing-tab" data-bs-toggle="tab" href="#v-pills-billing" role="tab" aria-controls="v-pills-billing" aria-selected="false">Billing Details</a>
+                                        <a class="nav-link" id="v-pills-audit-tab" data-bs-toggle="tab" href="#v-pills-audit" role="tab" aria-controls="v-pills-audit" aria-selected="false">Audit</a>
+                                        <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">Follow Ups</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="tab-content" id="v-pills-tabContent style-5" style="max-height: 187px; overflow-y: auto;">
+                                        <div class="tab-pane fade show active p-2" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
+                                            <div class="col-12 text-right">
+                                                <button class="btn btn-success" data-bs-toggle="modal" onclick="openNotesModal()" style="float: right; margin-bottom: 3px"><i class="fa fa-plus-circle"></i> Add Note</button>
+                                            </div>
+                                            <div class="col-12" id="v-pills-notes-list"></div>
+                                        </div>
+                
+                                        <div class="tab-pane fade show p-2" id="v-pills-assets" role="tabpanel" aria-labelledby="v-pills-assets-tab">
+                                            <div class="row">
+                                            <div class="col-12 px-0 text-right">
+                                                <button type="button" class="btn btn-success" onclick="ShowAssetModel()" style="float: right">
+                                                    <i class="fa fa-plus-circle"></i>&nbsp;Add Asset
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 px-0 my-2">
+                                                <div class="table-responsive" width='200px'>
+                                                    <table id="asset-table-list"
+                                                        class="table table-striped w-100 table-bordered no-wrap asset-table-list">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
+                                                                <th>ID</th>
+                                                                <th>Asset Title</th>
+                                                                <th>Template Name</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                            
+                                                    </table>
+                            
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        
+                                        <div class="tab-pane fade p-2" id="v-pills-billing" role="tabpanel" aria-labelledby="v-pills-billing-tab"></div>
+                                        
+                                        <div class="tab-pane fade p-2" id="v-pills-audit" role="tabpanel" aria-labelledby="v-pills-audit-tab">
+                                            <div class="col-md-12 audit-log">
+                                                <div class="table-responsive">
+                                                    <table id="ticket-logs-list"
+                                                        class="table table-striped table-bordered no-wrap ticket-table-list w-100">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width='20'>ID</th>
+                                                                <th>Activity</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                
+                                        <div class="tab-pane fade p-2" id="v-pills-followup" role="tabpanel" aria-labelledby="v-pills-followup-tab">
+                                            <div class="w-100">
+                                                <button class="btn btn-success float-right" onclick="showFollowUpModal()">
+                                                    <span class="fa fa-plus-circle"></span> Add Follow Up
+                                                </button>
+                                            </div>
+                                            <div id="accordion" class="custom-accordion">
+                                                <div class="card mb-0 shadow-none">
+                                                    <div class="w-100 pt-4" id="clockdiv"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tab-content col-10 p-0" id="v-pills-tabContent style-5" style="max-height: 300px; overflow-y: auto;">
-                                <div class="tab-pane fade show active p-2" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
-                                    <div class="col-12 text-right">
-                                        <button class="btn btn-success" data-bs-toggle="modal" onclick="openNotesModal()" style="float: right; margin-bottom: 3px"><i class="fa fa-plus-circle"></i> Add Note</button>
-                                    </div>
-                                    <div class="col-12" id="v-pills-notes-list"></div>
-                                </div>
-        
-                                <div class="tab-pane fade show p-2" id="v-pills-assets" role="tabpanel" aria-labelledby="v-pills-assets-tab">
-                                    <div class="row">
-                                    <div class="col-12 px-0 text-right">
-                                        <button type="button" class="btn btn-success" onclick="ShowAssetModel()" style="float: right">
-                                            <i class="fa fa-plus-circle"></i>&nbsp;Add Asset
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12 px-0 my-2">
-                                        <div class="table-responsive" width='200px'>
-                                            <table id="asset-table-list"
-                                                class="table table-striped w-100 table-bordered no-wrap asset-table-list">
-                                                <thead>
-                                                    <tr>
-                                                        <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
-                                                        <th>ID</th>
-                                                        <th>Asset Title</th>
-                                                        <th>Template Name</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                    
-                                            </table>
-                    
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                                
-                                <div class="tab-pane fade p-2" id="v-pills-billing" role="tabpanel" aria-labelledby="v-pills-billing-tab"></div>
-                                
-                                <div class="tab-pane fade p-2" id="v-pills-audit" role="tabpanel" aria-labelledby="v-pills-audit-tab">
-                                    <div class="col-md-12 audit-log">
-                                        <div class="table-responsive">
-                                            <table id="ticket-logs-list"
-                                                class="table table-striped table-bordered no-wrap ticket-table-list w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <th width='20'>ID</th>
-                                                        <th>Activity</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-        
-                                <div class="tab-pane fade p-2" id="v-pills-followup" role="tabpanel" aria-labelledby="v-pills-followup-tab">
-                                    <div class="w-100">
-                                        <button class="btn btn-success float-right" onclick="showFollowUpModal()">
-                                            <span class="fa fa-plus-circle"></span> Add Follow Up
-                                        </button>
-                                    </div>
-                                    <div id="accordion" class="custom-accordion">
-                                        <div class="card mb-0 shadow-none">
-                                            <div class="w-100 pt-4" id="clockdiv"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
+                           
                         </div>
                     </div>
                 </div>
@@ -450,7 +458,7 @@
                             <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
                                 <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white">
                                     <label class="control-label col-sm-12 end_padding text-white mb-1" ><strong>Department</strong></label>
-                                    <h5 class="end_padding selected-label text-white"  id="dep-h5">Selected</h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white"  id="dep-h5">Selected</h5>
                                     <select class="select2 form-control  " id="dept_id" name="dept_id" style="width: 100%; height:36px;">
                                         
                                         @foreach($departments as $department)
@@ -460,7 +468,7 @@
                                 </div>
                                 <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white">
                                     <label class="control-label col-sm-12 end_padding text-white mb-1"><strong>Tech Lead</strong></label>
-                                    <h5 class="end_padding selected-label text-white"  id="tech-h5">Selected</h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white"  id="tech-h5">Selected</h5>
                                     <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
                                         <option value="">Unassigned</option>
                                         @foreach($users as $user)
@@ -470,7 +478,7 @@
                                 </div>
                                 <div class="col-md-2 br-white" id="type-label" style="border-right: 1px solid white">
                                     <label class="control-label col-sm-12 end_padding text-white mb-1"><strong>Type</strong></label>
-                                    <h5 class="end_padding selected-label text-white"  id="type-h5">Selected</h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white"  id="type-h5">Selected</h5>
                                     <select class="select2 form-control " id="type" name="type" style="width: 100%; height:36px;">
                                         @foreach($types as $type)
                                             <option value="{{$type->id}}" {{ $type->id == $details->type ? 'selected' : '' }}>{{$type->name}}</option>
@@ -479,7 +487,7 @@
                                 </div>
                                 <div class="col-md-2 br-white" id="status-label" style="border-right: 1px solid white">
                                     <label class="control-label col-sm-12 end_padding text-white mb-1"><strong>Status</strong></label>
-                                    <h5 class="end_padding selected-label text-white"  id="status-h5"></h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white"  id="status-h5"></h5>
                                     <select class="select2 form-control " id="status" name="status" style="width: 100%; height:36px;">
                                         
                                         @foreach($statuses as $status)
@@ -489,7 +497,7 @@
                                 </div>
                                 <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white">
                                     <label class="control-label col-sm-12 end_padding text-white mb-1" ><strong>Priority</strong></label>
-                                    <h5 class="end_padding selected-label text-white" id="prio-h5"></h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white" id="prio-h5"></h5>
                                     <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
                                         {{-- <option value="">Select Priority</option> --}}
                                         @foreach($priorities as $priority)
