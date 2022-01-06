@@ -211,13 +211,13 @@
                 <div class="col-md-5">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="copyToClipBoard()"> 
+                            <h5 class="card-title mb-0">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="copyToClipBoard()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
                                 <i data-feather='edit' onclick="openProModal();" style="float:right; cursor:pointer;" tooltip="Edit"></i>
                             </h5>
-                            <div class="profile-pic mt-3">
+                            <div class="profile-pic mt-2">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 text-center">
                                         <!-- Image path -->
@@ -271,7 +271,7 @@
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <div class="card" id="style-5" style="height:281px; overflow-y:auto; overflow-x:hidden">
+                    <div class="card" id="style-5" style="height:255px; overflow-y:auto; overflow-x:hidden">
                         <div class="card-header ">
                             <div class="align-items-center">
                                 <div class="mail-items">
@@ -521,7 +521,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body" >
-                            <h4 class="card-title">Ticket Replies
+                            <h4 class="card-title mb-0">Ticket Replies
                                 <a href="#v-pills-tab" class="btn btn-success float-right" onclick="composeReply()">
                                     Compose 
                                 </a>

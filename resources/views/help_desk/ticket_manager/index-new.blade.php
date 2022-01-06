@@ -26,7 +26,7 @@
         padding-right: 186px !important;
     }
     .pr-ticket{
-        min-width: 84px !important;
+        min-width: 89px !important;
     }
     .pr-replies{
         min-width: 95px !important;

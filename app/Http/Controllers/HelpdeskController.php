@@ -1062,7 +1062,7 @@ class HelpdeskController extends Controller
             return view('help_desk.ticket_manager.cust_ticket_details', get_defined_vars());
             // return view('help_desk.ticket_manager.cust_ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }else{
-            return view('help_desk.ticket_manager.ticket_details',get_defined_vars());
+            return view('help_desk.ticket_manager.ticket_details_new',get_defined_vars());
             // return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }
     }
