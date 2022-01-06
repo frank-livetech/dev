@@ -234,6 +234,15 @@ class HelpdeskController extends Controller
                 unset($data['id']);
                 unset($data['attachments']);
 
+               
+                if($request->has('status')){
+                    $os = TicketStatus::where('id',$request->status)->first();
+                    if($os && $os->name == 'Closed'){
+                        $data['reply_deadline'] = 'cleared';
+                        $data['resolution_deadline'] = 'cleared';
+                    }
+                }
+
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
                 $ticket->update($data);
