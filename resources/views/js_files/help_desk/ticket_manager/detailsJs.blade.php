@@ -885,6 +885,7 @@ function listReplies() {
                     var tech =  `{{asset('public/files/replies/${ticket_details.id}/${item}')}}`;
                     var ter = getExt(tech);
 
+                    
                     // return ter;
                     if(ter == "pdf" ){
                         tdet+= `<div class="col-md-2 mt-1">
@@ -987,11 +988,23 @@ function listReplies() {
             var end = moment(reply.created_at); // another date
             var duration = moment.duration(now.diff(end));
             var days = duration.asHours();
-            console.log(days + ' sadasdasd' + now)
+            var replier_img = ``;
+
+            if(reply.reply_user != null && reply.reply_user != "") {
+                if(reply.reply_user.profile_pic != null) {
+                    replier_img += `<img src="{{asset('files/user_photos/${reply.reply_user.profile_pic}')}}" width="40px" height="40px" class="img-fluid" />`;
+                }else{
+                    replier_img += `<img src="{{asset('files/user_photos/user-photo.jpg')}}" width="40px" height="40px" class="img-fluid" />`;
+                }                
+            }else{
+                replier_img += `<img src="{{asset('files/user_photos/user-photo.jpg')}}" width="40px" height="40px" class="img-fluid" />`;
+            }
+
+
             
             $('#ticket-replies').append(`
                 <li class="media">
-                    <img class="mr-3" src="${user_photo_url}" width="50" height="50" alt="Profile Image">
+                    ${replier_img}
                     <div class="media-body">
                         <h5 class="mt-0 mb-1"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;float:right" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" style="cursor: pointer;float:right" ></span>&nbsp;</h5> 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
@@ -1107,7 +1120,6 @@ function publishReply(ele, type = 'publish') {
                 enctype: 'multipart/form-data',
                 cache: false,
                 success: function(data) {
-
                     var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
                     new_date =  moment(new_date).format(date_format + ' ' +'hh:mm a');
                     $("#updation-date").html(new_date);
