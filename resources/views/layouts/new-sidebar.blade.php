@@ -74,8 +74,9 @@
                                                 @foreach($departments as $depts)
                                                     {{-- 2nd level --}}
                                                     <li class="sidebar-item">
-                                                        <a class="has-arrow sidebar-link" href="javascript:void(0)" aria-expanded="false">
-                                                            <i data-feather='plus'></i>
+                                                        <a class="has-arrow sidebar-link slogan" href="javascript:void(0)" aria-expanded="false">
+                                                            <i data-feather='plus' class='slogan_i_plus'></i>
+                                                            <i data-feather='minus' class='slogan_i_minus'></i>
                                                             <span class="hide-menu">{{$depts->name}}</span>
                                                             <span class="badge badge-light-danger rounded-pill ms-auto me-2" id="dept_cnt_{{$depts->id}}"></span>
                                                         </a>
