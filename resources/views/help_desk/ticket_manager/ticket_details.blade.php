@@ -439,6 +439,12 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
     border-width: 1.5em 1.5em 0 0;
     border-color: #e6e7e8 #252629 #fff #fff;
 }
+.label-info {
+    background-color: #7460ee !important;
+    padding:0.25rem !important;
+    color:white !important;
+    border-radius: 4px !important;
+}
 </style>
 <input type="text" id="current_url" value="{{url()->current()}}">
 <input type="hidden" id="ticket_created_at_val" value="{{date_format($ticket->created_at , 'c')}}">
@@ -1428,13 +1434,17 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                         <div class="col-12">
                             <div class="" style="margin-top: 10px;">
                                 <label for="cc">CC</label>
-                                <input type="text" id="cc" name="cc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+
+                                <input type="text" id="cc" name="cc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" style="height:36px">
+
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="" style="margin-top: 10px;">
                                 <label for="cc">BCC</label>
-                                <input type="text" id="bcc" name="bcc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+
+                                <input type="text" id="bcc" name="bcc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" style="height:36px">
+
                             </div>
                         </div>
                     </div>
