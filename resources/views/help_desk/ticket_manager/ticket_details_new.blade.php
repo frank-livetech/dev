@@ -1,6 +1,35 @@
 @extends('layouts.master-layout-new')
 @section('body')
 <style>
+    #dropD {
+    padding-left: 15px;
+}
+    .mt-0{
+        margin: unset
+    }
+    .badge-primary{
+        background-color:#4eafcb
+    }
+    .card-body.drop-dpt{
+        padding: 0 !important;
+    }
+    span.select2-container.select2-container--default.select2-container--open{
+        top: 3.9844px !important
+    }
+    .badge-secondary {
+    color: #fff;
+    background-color: #868e96;
+    }
+    .media-body{
+        width:575px
+    }
+    .mr-3{
+        margin-right: 1rem !important;
+    }
+    .media {
+    display: flex;
+    align-items: flex-start;
+}
     .innerBox{
         font-size: 15px;
         height: 100px;
@@ -271,7 +300,7 @@
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <div class="card" id="style-5" style="height:255px; overflow-y:auto; overflow-x:hidden">
+                    <div class="card" id="style-5" style="height:250px; overflow-y:auto; overflow-x:hidden">
                         <div class="card-header ">
                             <div class="align-items-center">
                                 <div class="mail-items">
@@ -453,12 +482,12 @@
                     @endif
         
                         
-                    <div class="card">
-                        <div class="card-body drop-dpt" style="background-color: #0075be">
+                    <div class="card" >
+                        <div class="card-body drop-dpt " style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color : ' ')}}">
                             <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
-                                <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white">
-                                    <label class="control-label col-sm-12 end_padding text-white mb-1" ><strong>Department</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white"  id="dep-h5">Selected</h5>
+                                <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
+                                    <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5">Selected</h5>
                                     <select class="select2 form-control  " id="dept_id" name="dept_id" style="width: 100%; height:36px;">
                                         
                                         @foreach($departments as $department)
@@ -466,9 +495,9 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white">
-                                    <label class="control-label col-sm-12 end_padding text-white mb-1"><strong>Tech Lead</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white"  id="tech-h5">Selected</h5>
+                                <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
+                                    <label class="control-label col-sm-12 end_padding text-white "><strong>Tech Lead</strong></label>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5">Selected</h5>
                                     <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
                                         <option value="">Unassigned</option>
                                         @foreach($users as $user)
@@ -476,37 +505,37 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="type-label" style="border-right: 1px solid white">
-                                    <label class="control-label col-sm-12 end_padding text-white mb-1"><strong>Type</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white"  id="type-h5">Selected</h5>
+                                <div class="col-md-2 br-white" id="type-label" style="border-right: 1px solid white;padding: 12px;">
+                                    <label class="control-label col-sm-12 end_padding text-white "><strong>Type</strong></label>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="type-h5">Selected</h5>
                                     <select class="select2 form-control " id="type" name="type" style="width: 100%; height:36px;">
                                         @foreach($types as $type)
                                             <option value="{{$type->id}}" {{ $type->id == $details->type ? 'selected' : '' }}>{{$type->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="status-label" style="border-right: 1px solid white">
-                                    <label class="control-label col-sm-12 end_padding text-white mb-1"><strong>Status</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white"  id="status-h5"></h5>
+                                <div class="col-md-2 br-white" id="status-label" style="border-right: 1px solid white;padding: 12px;">
+                                    <label class="control-label col-sm-12 end_padding text-white "><strong>Status</strong></label>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="status-h5"></h5>
                                     <select class="select2 form-control " id="status" name="status" style="width: 100%; height:36px;">
                                         
                                         @foreach($statuses as $status)
-                                            <option value="{{$status->id}}" {{ $status->id == $details->status ? 'selected' : '' }}>{{$status->name}}</option>
+                                            <option value="{{$status->id}}" data-color="{{$status->color}}" {{ $status->id == $details->status ? 'selected' : '' }}>{{$status->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white">
-                                    <label class="control-label col-sm-12 end_padding text-white mb-1" ><strong>Priority</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white" id="prio-h5"></h5>
+                                <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white;;padding: 12px;background-color:{{($current_priority == null) ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ')}}">
+                                    <label class="control-label col-sm-12 end_padding text-white " ><strong>Priority</strong></label>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="prio-h5"></h5>
                                     <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
                                         {{-- <option value="">Select Priority</option> --}}
                                         @foreach($priorities as $priority)
-                                            <option value="{{$priority->id}}" {{$priority->id == $details->priority ? 'selected' : ''}}>{{$priority->name}}</option>
+                                             <option value="{{$priority->id}}" data-color="{{$priority->priority_color}}" {{$priority->id == $details->priority ? 'selected' : ''}}>{{$priority->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 chim text-center {{$details->is_flagged == 1 ? 'flagSpot' : ''}}">
-                                    <a type="button" class="text-white mt-2" id="flag" style="font-size: 20px">
+                                <div class="col-md-2 chim text-center {{$details->is_flagged == 1 ? 'flagSpot' : ''}}" style=";padding: 12px;">
+                                    <a type="button" class="text-white" id="flag" style="font-size: 20px">
                                         <i  class="fas fa-flag"></i>
                                     </a>    
                                     <!-- <span style="cursor:pointer;" onclick="flagTicket(this, 33);" aria-hidden="true"></span> -->
@@ -584,7 +613,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="note_title">Notes</h4>
-                        <button type="button" class="btn-close text-danger" onclick="notesModalClose()">×</button>
+                        <button type="button" class="btn-close text-danger" onclick="notesModalClose()"></button>
                     </div>
                     <div class="modal-body">
                         <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post">
@@ -973,7 +1002,7 @@
 
  <!--  Modal Edit pro start -->
 <div class="modal fade" id="pro_edit" role="dialog" data-backdrop="static"  aria-labelledby="" aria-hidden="true">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
                 <h4 class="modal-title" id="" style="color:#009efb;">Update Ticket Customer</h4>
@@ -982,7 +1011,7 @@
             <div class="modal-body">
                 <div class="modal-body">
                     <div class="row" id="normal-cut-selc">
-                        <div class="col-11">
+                        <div class="col-md-12">
                         <form class="d-flex w-100 position-relative" action="{{asset('/search-customer')}}" method="post" id="search-customer" autocomplete="off">
                             <input type="text" style="background-color:white !important; color:#263238 !important;" class="form-control text-dark" id="ct-search" name="ct-search" placeholder="Search Customer">
                             <i class="fas fa-search text-info" style="position: absolute; top: 10px; font-size: 1.2rem; right: 26px; cursor: pointer;" onclick="searchTicketCustomer()"></i>
@@ -990,9 +1019,9 @@
                         </form>
                     </div>
                         <div class="row mt-1">
-                        <div class="col-12 " id="search_customer_result" style="max-height: 300px !important; overflow-y: auto;"></div>
+                        <div class="col-md-12 " id="search_customer_result" style="max-height: 300px !important; overflow-y: auto;"></div>
                         </div>
-                        <div class="col-11">
+                        <div class="col-md-12">
                             <div class="row mt-1">
                                 <div class="form-group col-md-6">
                                     <label for="username-fill">Email</label>
@@ -1063,7 +1092,7 @@
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
                 <h4 class="modal-title" id="myLargeModalLabel" style="color:#009efb;">Add Asset</h4>
-                <button type="button" class="close ml-auto" onclick="closeAssetModal()">×</button>
+                <button type="button" class="btn-close ml-auto" onclick="closeAssetModal()"></button>
             </div>
             <form class="form-horizontal" id="save_asset_form" enctype="multipart/form-data" action="{{asset('/save-asset')}}" method="post">
                 <div class="modal-body">
@@ -1101,6 +1130,8 @@
             <div class="modal-header bg-info p-2">
                 <span>
                     <h4 style="color:#fff !important;" id="headinglabel"> Update - <span id="modal-title"></span>  </h4>
+                    <button type="button" class="btn-close ml-auto" onclick="closeAssetModal()"></button>
+               
                 </span>
             </div>
             <div class="modal-body">
@@ -1129,12 +1160,11 @@
 
 <!-- update sla plan modal -->
 <div id="sla_plan_modal" class="modal fade" role="dialog"  data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog ">
         <div class="modal-content">
-            <div class="modal-header bg-info p-2">
-                <span>
-                    <h4 style="color:#fff !important;">Update SLA Plan</h4>
-                </span>
+            <div class="modal-header d-flex align-items-center">
+                    <h4 class="modal-title">Update SLA Plan</h4>
+                    <button type="button" data-bs-dismiss="modal" class="btn-close" onclick="closeAssetModal()"></button>
             </div>
             <div class="modal-body">
                 <form id="sla_plan_form" enctype="multipart/form-data" onsubmit="return false">
@@ -1154,8 +1184,8 @@
                         </select>
                     </div>
                     <div class="form-group text-right mt-3">
-                        <button class="btn btn-rounded btn-success" type="button" onclick="setSlaPlan()">Save</button>
-                        <button class="btn btn-rounded btn-danger" type="button" data-dismiss="modal">Close</button>
+                        <button class="btn btn-rounded btn-success float-right" type="button" onclick="setSlaPlan()">Save</button>
+                        <button class="btn btn-rounded btn-danger float-right" style="margin-right: 5px" type="button" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
@@ -1167,10 +1197,9 @@
 <div id="reset_sla_plan_modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
     <div class="modal-dialog ">
         <div class="modal-content">
-            <div class="modal-header bg-info p-2">
-                <span>
-                    <h4 style="color:#fff !important;">Reset SLA Plan</h4>
-                </span>
+            <div class="modal-header">
+                    <h4 class="modal-title">Reset SLA Plan</h4>
+                    <button type="button" data-bs-dismiss="modal" class="btn-close" onclick="closeAssetModal()"></button>
             </div>
             <div class="modal-body">
                 <form id="sla_plan_reset_form" enctype="multipart/form-data" onsubmit="return false" method="post" action="{{asset('/update-ticket-deadlines')}}">
@@ -1178,13 +1207,13 @@
                         <label for="ticket-rep-due">Reply Due</label>
                         <input type="datetime-local" id="ticket-rep-due" name="" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group pt-1">
                         <label for="ticket-res-due">Resolution Due</label>
                         <input type="datetime-local" id="ticket-res-due" name="" class="form-control">
                     </div>
                     <div class="form-group text-right mt-3">
-                        <button class="btn btn-rounded btn-success float-right " type="button" onclick="updateDeadlines();">Save</button>
-                        <button class="btn btn-rounded btn-danger float-right mr-1" type="button" data-dismiss="modal">Close</button>
+                        <button class="btn btn-rounded btn-success float-right" type="button" onclick="updateDeadlines();">Save</button>
+                        <button class="btn btn-rounded btn-danger float-right" style="margin-right: 5px" type="button" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>

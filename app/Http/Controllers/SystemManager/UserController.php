@@ -71,7 +71,7 @@ class UserController extends Controller
         $roles = Role::all();
         // $roles = Role::where('id','!=','1')->get();
 
-        return view('system_manager.staff_management.index',compact('tags','roles'));
+        return view('system_manager.staff_management.index-new',compact('tags','roles'));
     }
 
     public function insertUsers(Request $request) {
