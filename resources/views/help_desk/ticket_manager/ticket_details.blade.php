@@ -378,9 +378,9 @@ a{
     border: 1px solid #e6e7e8;
     text-align: center;
     width: 100%;
-    height: 94px;
+    min-height: 94px;
     /* padding: 29px 12px; */
-    padding-top: 21%;
+    /* padding-top: 21%; */
     transition: 0.3s ease;
 }
 .borderOne:hover .downFile
@@ -1434,13 +1434,17 @@ body[data-theme=dark] .card .card__corner .card__corner-triangle {
                         <div class="col-12">
                             <div class="" style="margin-top: 10px;">
                                 <label for="cc">CC</label>
+
                                 <input type="text" id="cc" name="cc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" style="height:36px">
+
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="" style="margin-top: 10px;">
                                 <label for="cc">BCC</label>
+
                                 <input type="text" id="bcc" name="bcc" class="form-control" placeholder="Email"  data-role="tagsinput" value="" style="height:36px">
+
                             </div>
                         </div>
                     </div>
