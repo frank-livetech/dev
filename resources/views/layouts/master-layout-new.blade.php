@@ -52,6 +52,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/bootstrap-extended.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/colors.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/tagsinput.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/components.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/dark-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/bordered-layout.css')}}">
@@ -223,6 +224,7 @@
     <script src="{{asset($file_path . 'app-assets/js/core/app.js')}}"></script>
     <!-- END: Theme JS-->
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-chat.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/js/scripts/tagsinput.js')}}"></script>
 
     <!-- BEGIN: Page JS-->
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
@@ -241,8 +243,6 @@
         $(document).ready(function() {
             getAllCounts();
             $(this).find(".slogan_i_minus").hide();
-        });
-        $(window).on('load', function() {
             if (feather) {
                 feather.replace({
                     width: 14,
@@ -250,6 +250,9 @@
                 });
             }
         });
+        // $(window).on('load', function() {
+            
+        // });
 
         var url = "{{asset('/get_all_counts')}}";
         function sendNotification(type,slug,icon,title,description) {

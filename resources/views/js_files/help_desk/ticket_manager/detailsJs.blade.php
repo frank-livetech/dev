@@ -21,7 +21,55 @@ $.ajaxSetup({
     }
 });
 
-$(function() {
+$(document).ready(function() {
+
+    tinymce.init({
+        selector: "textarea#mymce",
+        // theme: "modern",
+        height: 300,
+        file_picker_types: 'image',
+        plugins: [
+            "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+            "save table contextmenu directionality emoticons template paste textcolor"
+        ],
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons",
+        // file_picker_types: 'file image media',
+        // media_live_embeds: true,
+        file_picker_callback: function(cb, value, meta) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
+
+            input.onchange = function() {
+                
+                var file = this.files[0];
+
+                var reader = new FileReader();
+                reader.onload = async function() {
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache = tinymce.editors.mymce.editorUpload.blobCache;
+                    var base64 = reader.result.split(',')[1];
+
+                    if (reader.result.includes('/svg') || reader.result.includes('/SVG')) {
+                        base64 = await downloadPNGFromAnyImageSrc(reader.result);
+                    }
+
+                    var blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), { title: file.name });
+                };
+                reader.readAsDataURL(file);
+            };
+            input.click();
+        },
+    }).then(function() {
+        listReplies();
+    }).catch(function(error) {
+        listReplies();
+    });
+
 
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );
@@ -42,54 +90,6 @@ $(function() {
     getLatestLogs();
     $('#ticket-timestamp').text( convertDate(ticket.created_at) );
 
-    if ($("#mymce").length > 0) {
-        tinymce.init({
-            selector: "textarea#mymce",
-            // theme: "modern",
-            height: 300,
-            file_picker_types: 'image',
-            plugins: [
-                "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                "save table contextmenu directionality emoticons template paste textcolor"
-            ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons",
-            // file_picker_types: 'file image media',
-            // media_live_embeds: true,
-            file_picker_callback: function(cb, value, meta) {
-                var input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
-                // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
-
-                input.onchange = function() {
-                    
-                    var file = this.files[0];
-
-                    var reader = new FileReader();
-                    reader.onload = async function() {
-                        var id = 'blobid' + (new Date()).getTime();
-                        var blobCache = tinymce.editors.mymce.editorUpload.blobCache;
-                        var base64 = reader.result.split(',')[1];
-
-                        if (reader.result.includes('/svg') || reader.result.includes('/SVG')) {
-                            base64 = await downloadPNGFromAnyImageSrc(reader.result);
-                        }
-
-                        var blobInfo = blobCache.create(id, file, base64);
-                        blobCache.add(blobInfo);
-                        cb(blobInfo.blobUri(), { title: file.name });
-                    };
-                    reader.readAsDataURL(file);
-                };
-                input.click();
-            },
-        }).then(function() {
-            listReplies();
-        }).catch(function(error) {
-            listReplies();
-        });
-    }
     
     if ($("#ticket_details_edit").length > 0) {
         tinymce.init({
@@ -160,6 +160,33 @@ $(function() {
     $('.note-type-user-org').on('change', function() {
         $('.note-visibilty').prop('disabled',true);
     });
+
+
+});
+
+$('#res-template').change(function() {
+    if( $(this).val() == "" ) {
+        tinymce.activeEditor.setContent('');
+    }else{
+        let content = tinymce.activeEditor.getContent();
+        let res = res_templates_list.find(item => item.id == $(this).val());
+        if(content.length == 0)  {
+            tinymce.activeEditor.setContent(`<p>${res.temp_html}</p>`);
+        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'All template changes will be lost!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.value) {
+                tinymce.activeEditor.setContent(res.temp_html ? res.temp_html + content : '');
+            }
+        });
+    }
 });
 
 // convert current date to provided timezone date with format
@@ -1032,13 +1059,13 @@ function publishReply(ele, type = 'publish') {
         content = $('#tinycontenteditor').html();
 
         if (!content || content == '<p></p>') {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Please type some reply.',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
+            // Swal.fire({
+            //     position: 'center',
+            //     icon: 'error',
+            //     title: 'Please type some reply.',
+            //     showConfirmButton: false,
+            //     timer: swal_message_time
+            // });
             $('#reply').css('display', 'block');
             return false;
         } else {
