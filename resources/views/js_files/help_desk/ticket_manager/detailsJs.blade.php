@@ -1029,10 +1029,10 @@ function listReplies() {
 
             
             $('#ticket-replies').append(`
-                <li class="media">
+                <li class="media" id="reply__${index}">
                     <span class="mr-3">${replier_img}</span>
                     <div class="media-body">
-                        <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;float:right;position:relative;left:333px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" style="cursor: pointer;float:right;position:relative;left:328px;" ></span>&nbsp;</h5> 
+                        <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;float:right;position:relative;left:333px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;float:right;position:relative;left:328px;" ></span>&nbsp;</h5> 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
                         <div class="" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
@@ -1049,6 +1049,48 @@ function listReplies() {
                 $('#reply-html-' + reply.id).find('img').attr('height', 120);
                 $('#reply-html-' + reply.id).find('img').css('margin', '0 8px 8px 0');
             }
+        }
+    });
+}
+
+function deleteReply(id , index) {
+    Swal.fire({
+        title: 'Do you want to delete?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{url('delete-ticket-reply')}}",
+                data: {  id:id },
+                dataType: 'json',
+                beforeSend: function(data) {
+                    // $("#saveBtn").hide();
+                    $("#processbtn").show();
+                },
+                success: function(data) {
+                    if (data.status_code == 200 && data.success == true) {
+                        toastr.success(data.message, { timeOut: 5000 });
+                        $("#reply__"+index).remove();
+                    } else {
+                        toastr.error(data.message, { timeOut: 5000 });
+                    }
+                },
+                complete: function(data) {
+                    // $("#saveBtn").show();
+                    $("#processbtn").hide();
+                },
+                error: function(e) {
+                    console.log(e)
+                }
+            });
         }
     });
 }

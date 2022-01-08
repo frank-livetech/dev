@@ -591,10 +591,10 @@
                                             <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
                                             @if( array_key_exists(0 , $shared_emails) )
                                                 <input type="text" id="to_mails" name="to_mails"
-                                                 class="form-control" placeholder="Email" 
+                                                 class="form-control border" placeholder="Email" 
                                                  data-role="tagsinput" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}" required>
                                             @else
-                                                <input type="text" id="to_mails" name="to_mails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+                                                <input type="text" id="to_mails" name="to_mails" class="form-control border" placeholder="Email"  data-role="tagsinput" value="" required>
                                             @endif
                                         </div>
                                     </div>

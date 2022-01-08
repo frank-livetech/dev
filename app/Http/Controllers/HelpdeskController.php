@@ -1081,6 +1081,20 @@ class HelpdeskController extends Controller
             // return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }
     }
+
+
+    public function delete_ticket_reply(Request $request) {
+
+        $reply = TicketReply::find($request->id);
+        $reply->delete();
+
+        return response()->json([
+            "message" => "Ticket Reply Deleted Successfully!",
+            "status_code" => 200 , 
+            "success" => true,
+        ]);
+    }
+
     
     public function del_tkt(Request $request){
         $data  = $request->tickets;

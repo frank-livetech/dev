@@ -516,6 +516,7 @@ Route::get('/get-all-templates','HelpDesk\AssetManagerController@getAllTemplates
 
 Route::post('/save-asset-template','HelpDesk\AssetManagerController@save_form');
 Route::Post('/publish-ticket-reply','HelpdeskController@save_ticket_reply');
+Route::post('/delete-ticket-reply','HelpdeskController@delete_ticket_reply');
 
 Route::get('/general-info/{id}', 'HelpDesk\AssetManagerController@gen_info')->name("general.index");
 
