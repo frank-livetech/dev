@@ -226,7 +226,15 @@ class HomeController
         return view('customer.customer_tkt.customer_tkt',compact('departments','priorities','users','types','customers', 'responseTemplates', 'page_control'));
     }
 
-    public function getCustomerTickets($customer_id) {
+    public function getCustomerTickets() {
+        $customer =  Customer::where('email' , auth()->user()->email)->first();
+
+        $open_status = TicketStatus::where('name','Open')->first();
+
+        $open_tickets_count = 0;
+        $late_tickets_count = 0;
+        $my_tickets_count = 0;
+        $unassigned_tickets_count = 0;
         $tickets = DB::Table('tickets')
         ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'))
         ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -234,12 +242,118 @@ class HomeController
         ->join('ticket_types','ticket_types.id','=','tickets.type')
         ->join('departments','departments.id','=','tickets.dept_id')
         ->join('customers','customers.id','=','tickets.customer_id')
-        ->where('tickets.customer_id', $customer_id)
+        ->where('tickets.customer_id', $customer->id)
         ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->get();
-        
 
-        return $tickets;
+
+        foreach($tickets as $value) {
+
+            $value->tech_name = 'Unassigned';
+            if(!empty($value->assigned_to)) {
+                $u = User::where('id', $value->assigned_to)->first();
+                if(!empty($u)) $value->tech_name = $u->name;
+            }
+            else $unassigned_tickets_count++;
+
+            $rep = TicketReply::where('ticket_id', $value->id)->orderBy('created_at', 'desc')->first();
+            $repCount = TicketReply::where('ticket_id', $value->id)->count();
+            $value->lastReplier = '';
+            $value->replies = '';
+            if(!empty($rep)) {
+                if($rep['user_id']) {
+                    $user = User::where('id', $rep['user_id'])->first();
+                    if(!empty($user)) $value->lastReplier = $user->name;
+                } else if($rep['customer_id']) {
+                    $user = Customer::where('id', $rep['customer_id'])->first();
+                    if(!empty($user)) $value->lastReplier = $user->first_name.' '.$user->last_name;
+                }
+                $value->replies = $repCount;
+            }
+
+            if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
+            if($value->status == $open_status->id) $open_tickets_count++;
+
+            $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
+
+            $value->sla_plan = $this->getTicketSlaPlan($value->id);
+            
+            $dd = $this->getSlaDeadlineFrom($value->id);
+            $value->sla_rep_deadline_from = $dd[0];
+            $value->sla_res_deadline_from = $dd[1];
+
+            $lcnt = false;
+            if($value->sla_plan['title'] != self::NOSLAPLAN) {
+                if($value->reply_deadline != 'cleared') {
+                    $nowDate = Carbon::now();
+                    if(!empty($value->reply_deadline)) {
+                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
+                        if($timediff < 0) $lcnt = true;
+                    } else {
+
+                        $rep = Carbon::parse($value->sla_rep_deadline_from);
+                        $dt = explode('.', $value->sla_plan['reply_deadline']);
+                        $rep->addHours($dt[0]);
+
+                        // if(array_key_exists(1, $dt)) {
+                        //     $rep->addMinutes($dt[1]);
+                        // }
+
+                        if(strtotime($rep) < strtotime($nowDate)) {
+                            $lcnt = true;
+                        }
+
+                        // $timediff = $nowDate->diffInSeconds($rep, false);
+                        
+                        // if($timediff < 0){
+                        //     $lcnt = true;
+                        // }
+                        
+                    }
+                }
+    
+                if(!$lcnt) {
+                    if($value->resolution_deadline != 'cleared') {
+                        $nowDate = Carbon::now();
+                        if(!empty($value->resolution_deadline)) {
+                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                            if($timediff < 0) $lcnt = true;
+                        } else {
+                            $rep = Carbon::parse($value->sla_res_deadline_from);
+                            $dt = explode('.', $value->sla_plan['due_deadline']);
+                            $rep->addHours($dt[0]);
+                            // if(array_key_exists(1, $dt)) {
+                            //     $rep->addMinutes($dt[1]);
+                            // }
+
+                            if(strtotime($rep) < strtotime($nowDate)) {
+                                $lcnt = true;
+                            }
+
+                            // $timediff = $nowDate->diffInSeconds($rep, false);
+                            // if($timediff < 0) $lcnt = true;
+                        }
+                    }
+                }
+            }
+            
+            $value->is_overdue = 0;
+            if($lcnt) {
+                $late_tickets_count++;
+                $value->is_overdue = 1;
+            }
+        }
+        
+        $response['message'] = 'Success';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        $response['tickets']= $tickets;
+        $response['total_tickets_count']= count($tickets);
+        $response['open_tickets_count']= $open_tickets_count;
+        $response['late_tickets_count']= $late_tickets_count;
+        return response()->json($response);
     }
+
+    
 
     
     public function get_tkt_details($id) {
@@ -422,6 +536,7 @@ class HomeController
     }
 
 
+    // save company
     public function saveCompany (Request $request) {
         $check_company = Company::where('email',$request->email)->first();
 
@@ -453,10 +568,7 @@ class HomeController
         }
     }
 
-
-
     // update customer
-
     public function update_customer_profile(Request $request) {
 
         // return dd($request->all());
@@ -568,4 +680,5 @@ class HomeController
             'message' => 'Customer updated successfully!',
         ]);
     }
+
 }

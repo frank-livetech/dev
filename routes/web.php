@@ -370,6 +370,7 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
 
     Route::post('save_company','HomeController@saveCompany')->name('customer.saveCompany');
     Route::post('update_customer','HomeController@update_customer_profile')->name('customer.updateCustomer');
+    Route::get('/customer-tickets','HomeController@getCustomerTickets')->name('customer.getCustomerTickets');
 
     // Route::get('/add-ticket','HomeController@addTicketPage');
 
