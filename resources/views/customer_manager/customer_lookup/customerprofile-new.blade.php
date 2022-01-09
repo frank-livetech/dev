@@ -1489,15 +1489,14 @@
     
     
                                     <input type="hidden" name="customer-id" id="customer-id" value="{{$customer->id}}">
-                                    <div class="row mt-1">
-                                        <div class="col-md-12 form-group text-right">
-                                            <div>
-                                                <button type="submit" id="saveBtn" class="btn btn-success float-right">Update
-                                                    Profile</button>
-                                                <button style="display:none" id="processing" class="btn btn-success"
-                                                    type="button" disabled><i class="fas fa-circle-notch fa-spin float-right"></i>
+                                    <div class="row mt-1 mb-2 float-right">
+                                        <div class="col-md-12 form-group">
+                                            <button type="submit" id="saveBtn" class="btn btn-success">Update Profile</button>
+                                            
+                                            <button id="processing" style="display:none" class="btn btn-success"
+                                                    type="button" disabled>
+                                                    <i class="fas fa-circle-notch fa-spin"></i>
                                                     Processing</button>
-                                            </div>
                                         </div>
     
                                     </div>

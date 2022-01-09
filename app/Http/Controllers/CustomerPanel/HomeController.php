@@ -67,11 +67,8 @@ class HomeController
 
 
     public function profile($name,$type = null) {
-
         $user = User::where('id', \Auth::user()->id)->first();
         $customer_id = Customer::where('email',$user->email)->first();
-        // return $customer_id->id;
-        
         $customer = Customer::with('company')->where('id',$customer_id->id)->first();
         if(!empty($customer)) {
             $credential = User::where('email', $customer->email)->first();
@@ -422,5 +419,153 @@ class HomeController
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
         }
+    }
+
+
+    public function saveCompany (Request $request) {
+        $check_company = Company::where('email',$request->email)->first();
+
+        if($check_company) {
+
+            return response()->json([
+                "message" =>  'Email Already Taken try another one!',
+                "status_code" => 500,
+                "success" => false,
+            ]);
+
+        }else{
+
+            $data = array(
+                "poc_first_name" => $request->poc_first_name ,
+                "poc_last_name" => $request->poc_last_name ,
+                "name" => $request->name ,
+                "email" => $request->email ,
+                "phone" => $request->phone ,
+            );
+
+            $company = Company::create($data);
+
+            $response['message'] = 'Company Added Successfully!';
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['result'] = $company->id;
+            return response()->json($response);
+        }
+    }
+
+
+
+    // update customer
+
+    public function update_customer_profile(Request $request) {
+
+        // return dd($request->all());
+
+        $data = array(
+            "email" => $request->email,
+            "phone" => $request->phone,
+
+            "address" => $request->address,
+            "apt_address" => $request->apt_address,
+            "company_id" => $request->company_id,
+            "cust_type" => $request->cust_type,
+            "country" => $request->country,
+
+            "cust_state" => $request->state,
+            "cust_city" => $request->city,
+            "cust_zip" => $request->zip,
+            "fb" => $request->fb,
+            "twitter" => $request->twitter,
+
+            "insta" => $request->insta,
+            "pinterest" => $request->pinterest,
+            "linkedin" => $request->linkedin,
+            "bill_st_add" => $request->bill_st_add,
+            "bill_apt_add" => $request->bill_apt_add,
+
+            "bill_add_country" => $request->bill_add_country,
+            "bill_add_state" => $request->bill_add_state,
+            "bill_add_city" => $request->bill_add_city,
+            "bill_add_zip" => $request->bill_add_zip,
+            "is_bill_add" => $request->is_bill_add,
+
+        );
+
+        $customer = Customer::find($request->customer_id);
+        $old_email = $customer->email;
+
+        if($old_email != $request->email) {
+            $request->validate([
+                "email" => "required|email|unique:customers",
+            ]);
+        }
+
+        if($request->has('first_name')) {
+            if(empty(trim($customer->first_name))) {
+                response()->json([
+                    'message' => 'Please enter valid first name!',
+                    'status_code' => 500,
+                    'success' => false
+                ]);
+            }
+            $data['first_name'] = $request->first_name;
+        }
+        if($request->has('last_name')) {
+            if(empty(trim($customer->first_name))) {
+                response()->json([
+                    'message' => 'Please enter valid last name!',
+                    'status_code' => 500,
+                    'success' => false
+                ]);
+            }
+            $data['last_name'] = $request->last_name;
+        };
+
+        if($request->customer_login) {
+            $data['has_account'] = $request->customer_login;
+        }
+        $customer = Customer::where('id', $request->customer_id)->update($data);
+        if($customer) {
+            $is_user = User::where("email", $old_email)->first();
+
+            $pwd = Str::random(15);
+            if($request->has('password')) {
+                if(!empty($request->password)) {
+                    $pwd = $request->password;
+                }
+            }
+
+            if($is_user) {
+                $data = ["email" => $request->email];
+
+                if($request->has('password')) {
+                    if(!empty($request->password) && $request->password != Crypt::decryptString($is_user->alt_pwd)) {
+                        $data["password"] = Hash::make($request->password);
+                        $data["alt_pwd"] = Crypt::encryptString($request->password);
+                    }
+                }
+                DB::table("users")->where("email", $old_email)->update($data);
+            } else {
+                if($request->has('customer_login')) {
+                    if($request->customer_login == 1) {
+                        DB::table("users")->insert([
+                            "name" => $request->first_name . " " . $request->last_name,
+                            "email" => $request->email,
+                            "password" => Hash::make($pwd),
+                            "alt_pwd" => Crypt::encryptString($pwd),
+                            "user_type" => 5,
+                            "status" => 1
+                        ]);
+                        
+                    }
+                }
+            }
+        }
+            
+        return response()->json([
+            'status_code' => 200, 
+            'success' => true, 
+            'message' => 'Customer updated successfully!',
+        ]);
     }
 }
