@@ -2,9 +2,46 @@
 @push('css')
 <link href="{{asset('assets/libs/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet" />
     <style>
-        .f-btn{
-            float: right
-        }
+            .f-btn{
+                float: right
+            }
+            .buttons-copy {
+                background: #238fac;
+                color: #fff;
+                border-color: hsl(193, 66%, 41%);
+                font-weight: 700
+            }
+            .buttons-excel{
+                background: #026e39;
+                color: #fff;
+                border-color: #026e39;
+                font-weight: 700
+            }
+            .buttons-pdf{
+                background: #CC4438;
+                color: #fff;
+                font-weight: 700;
+                border-color: #CC4438;
+            }
+            .float-right{
+                float: right
+            }
+            .mti-2 {
+                margin-top: 1.9rem !important;
+                }
+            .demo-inline-spacing {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between !important;
+                align-items: center;
+                background-color: rgb(243, 239, 239);
+                padding: 14px;
+                border-radius: 5px
+            }
+            .demo-inline-spacing > * {
+                margin-right: unset;
+                margin-top: unset;
+}   
     </style>
 @endpush
 @section('body')
@@ -235,18 +272,16 @@
                         <div class="tab-pane fade" id="last-orders" role="tabpanel" aria-labelledby="payroll-tab">
     
                             <div class="card-body" style="overflow: overlay;">
-                                <div class="row ml-2">
-                                    <div class="custom-control custom-radio">
+                                    <div class="form-check form-check-inline">
                                         <!-- <label for="customRadio">From</label> -->
-                                        <input type="radio" id="today" onclick="filterData('today')" name="customRadio" class="custom-control-input" checked>
-                                        <label class="custom-control-label" for="today">Today</label>
+                                        <input type="radio" id="today" onclick="filterData('today')" name="customRadio" class="form-check-input" checked>
+                                        <label class="form-check-label" for="today">Today</label>
                                     </div>
-                                    <div class="custom-control custom-radio ml-3">
+                                    <div class="form-check form-check-inline">
                                         <!-- <label for="customRadio">To</label> -->
-                                        <input type="radio" id="date_range" onclick="filterData('date_range')" name="customRadio" class="custom-control-input">
-                                        <label class="custom-control-label" for="date_range">Date Range</label>
+                                        <input type="radio" id="date_range" onclick="filterData('date_range')" name="customRadio" class="form-check-input">
+                                        <label class="form-check-label" for="date_range">Date Range</label>
                                     </div>
-                                </div>
     
                                 <div class="row my-2">
                                     <label class="col-12">{{$general_staff_note}}</label>
@@ -415,10 +450,11 @@
                         </div>
     
                         <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
-                            <div class="card-body p-4">
+                            <div class="card-body p-1">
+                                <hr>
                                 <form action="{{asset('/update-staff')}}" method="post" enctype="multipart/form-data" id="update_user">
                                     <h2 class="mt-4 font-weight-bold text-dark">Personal Info</h2>
-                                    <div class="form-row">
+                                    <div class="row">
                                         <input type="hidden" value="{{$profile->id}}" id="profile_id">
     
                                         <div class="col-md-6 form-group">
@@ -431,7 +467,7 @@
                                         </div>
                                     </div>
     
-                                    <div class="form-row">
+                                    <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label for="example-email">Email</label><span class="text-danger">*</span>
                                             <input type="email" value="{{$profile->email}}" placeholder="Email" class="form-control " name="email" id="email" disabled required>
@@ -443,30 +479,34 @@
                                             <span class="text-danger small" id="phone_error"></span>
                                         </div>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label>Password</label> <span class="text-danger">*</span>
-                                            <div class=" user-password-div">
-                                                <span class="block input-icon input-icon-right">
+                                            <div class=" input-group form-password-toggle input-group-merge">
+                                                
                                                     <input type="password" name="password" id="update_password" class="form-control" value="{{$profile->alt_pwd}}">
-                                                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span>
-                                                </span>
+                                                    <div class="input-group-text cursor-pointer">
+                                                        <i data-feather="eye"></i>
+                                                    </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label>Confirm Password</label>
     
-                                            <div class="user-confirm-password-div">
+                                            <div class="input-group form-password-toggle input-group-merge">
                                                 <!-- <span class="block input-icon input-icon-right"><i class="ace-icon fa fa-check green check-match"></i>
                                                             </span> -->
                                                 <input class="form-control " type="password" name="confirm_password" value="{{$profile->alt_pwd}}">
-                                                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2" ></span>
+                                                <div class="input-group-text cursor-pointer">
+                                                    <i data-feather="eye"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
     
     
-                                    <div class="form-row">
+                                    <div class="row mt-1">
                                         <div class="col-12">
                                             <label>Street Address</label>
                                             <div class="row">
@@ -481,7 +521,7 @@
                                     </div>
     
     
-                                    <div class="form-row">
+                                    <div class="row mt-1">
                                         <div class="col-md-3 form-group">
                                             <label>City</label>
     
@@ -528,7 +568,7 @@
     
     
                                     <h2 class="mt-4 font-weight-bold text-dark">Social</h2>
-                                    <div class="form-row">
+                                    <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label class="small">Facebook</label>
                                             <input type="url" name="fb" class="form-control" value="{{$profile->fb}}" placeholder="https://facebook.com/yourprofile" id="update_fb">
@@ -538,7 +578,7 @@
                                             <input type="url" name="pinterest" class="form-control" value="{{$profile->pinterest}}" placeholder="https://pinterest.com/@Username" value="{{$profile->pinterest}}" id="update_pinterest">
                                         </div>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label class="small">Twitter</label>
                                             <input type="url" name="twitter" class="form-control" value="{{$profile->twitter}}" placeholder="https://twitter.com/username" value="{{$profile->twitter}}" id="update_twt">
@@ -548,14 +588,14 @@
                                             <input type="url" name="insta" class="form-control" value="{{$profile->insta}}" placeholder="https://instagram.com/username" value="{{$profile->insta}}" id="update_ig">
                                         </div>
                                     </div>
-                                    <div class="form-row">
+                                    <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label class="small">LinkedIn</label>
                                             <input type="url" name="linkedin" class="form-control" value="{{$profile->linkedin}}" placeholder="https://linkedin.com/username" value="{{$profile->linkedin}}" id="update_linkedin">
                                         </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-12 form-group">
+                                    
+                                    
+                                        <div class="col-md-6 form-group">
                                             <label class="small">Website</label>
                                             <input type="text" id="website" name="website" class="form-control" value="{{$profile->website}}" placeholder="https://www.yoursite.com" id="update_website">
                                             <span class="text-danger small" id="website_error"></span>
@@ -563,7 +603,7 @@
                                     </div>
     
     
-                                    <div class="form-row mt-4">
+                                    <div class="row mt-1">
                                         <div class="col-md-12 form-group">
                                             <label>Notes</label>
     
@@ -572,11 +612,11 @@
                                         </div>
                                     </div>
     
-                                    <div class="row mt-3">
+                                    <div class="row mt-2">
                                         <div class="col-sm-12 text-right">
-                                            <button class="btn btn-success rounded" id="usr_btn" type="submit"><i class="fas fa-check-circle"></i> Save</button>
+                                            <button class="btn btn-success rounded float-right" id="usr_btn" type="submit"><i class="fas fa-check-circle"></i> Save</button>
                                             <button type="button" style="display:none" disabled id="usr_process" 
-                                                class="btn  rounded btn-success"> 
+                                                class="btn  rounded btn-success float-right"> 
                                                 <i class="fas fa-circle-notch fa-spin"> </i> Processing 
                                             </button>
                                         </div>
@@ -590,12 +630,14 @@
     
                         <div class="tab-pane fade" id="user_docs_tab" role="tabpanel" aria-labelledby="pills-documents-tab">
                             <div class="card-body">
-                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
                                     <button type="submit" style="float:right" class="btn btn-success" onclick="ShowDocumentModel()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add
                                         Document </button>
                                 </div>
-    
+                            </div>
                                 <!--  -->
+                                <div class="row">
                                 <div class="table-responsive pt-3">
                                     <table id="user_docs_table" class="table table-striped table-bordered w-100 asset-table-list">
                                         <thead>
@@ -611,16 +653,17 @@
                                     </table>
                                 </div>
                             </div>
+                            </div>
                         </div>
     
                         <div class="tab-pane fade" id="user_bucket_tab" role="tabpanel" aria-labelledby="pills-bucket-tab">
                             <div class="card-body">
                                 <form action="">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group mb-4 ">
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-4">
                                                 <label class="mr-sm-2" for="task_status">Status</label>
-                                                <select class="custom-select mr-sm-2" id="task_status">
+                                                <select class="select2 form-control"" id="task_status">
                                                     <option selected="">Choose...</option>
                                                     <option value="danger">Pending</option>
                                                     <option value="default">Work in progress</option>
@@ -628,22 +671,19 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="">From Date</label>
                                                 <input type="date" id="from" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="">To Date</label>
                                                 <input type="date" id="to" class="form-control">
                                             </div>
                                         </div>
-    
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 text-right">
+                                        <div class="col-md-3 mt-2">
                                             <div class="form-group">
                                                 <button onclick="getAllTasksList()" type="button" class="btn btn-success"> Search</button>
                                             </div>
@@ -727,45 +767,45 @@
                                 {{-- <div class="notification_div"></div> --}}
                                 <div>
                                     @foreach ($departments as $obj)
-                                    <div id="accordion" class="custom-accordion mb-4">
+                                    <div id="accordion" class="custom-accordion">
                                         <div class="card mb-0 card_shadow">
                                             <div class="card-header" id="headingOne">
-                                                <div class="d-flex justify-content-between">
+                                                <div class="demo-inline-spacing">
                                                     <h5 class="m-0">
                                                         <a class="custom-accordion-title d-flex align-items-center pt-2 pb-2 {{($obj['assignment'] == 1) ? '' : 'collapsed'}}" data-bs-toggle="collapse" aria-expanded="{{($obj['assignment'] == 1) ? 'true' : 'false'}}" aria-controls="collapseOne">
                                                         {{$obj['name']}}<span class="ml-auto"></span>
                                                         </a>
                                                     </h5>
                                                     <div>
-                                                        <div class="row mt-2 mr-1">
-                                                            <div class="custom-control custom-radio">
-                                                                <input type="radio" onclick="openThisAccordin({{$obj['id']}})" id="customRadio1_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="custom-control-input" {{($obj['assignment'] == 1) ? 'checked' : ''}}>
-                                                                <label class="custom-control-label" for="customRadio1_{{$obj['id']}}">Yes</label>
+                                                        
+                                                            <div class="form-check form-check-success">
+                                                                <input type="radio" onclick="openThisAccordin({{$obj['id']}})" id="customRadio1_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="form-check-input" {{($obj['assignment'] == 1) ? 'checked' : ''}}>
+                                                                <label class="form-check-label" for="customRadio1_{{$obj['id']}}">Yes</label>
                                                             </div>
-                                                            <div class="custom-control custom-radio ml-2">
-                                                                <input type="radio" onclick="closeThisAccordin({{$obj['id']}})" id="customRadio2_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="custom-control-input">
-                                                                <label class="custom-control-label" for="customRadio2_{{$obj['id']}}">No</label>
+                                                            <div class="form-check form-check-danger">
+                                                                <input type="radio" onclick="closeThisAccordin({{$obj['id']}})" id="customRadio2_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="form-check-input">
+                                                                <label class="form-check-label" for="customRadio2_{{$obj['id']}}">No</label>
                                                             </div>
-                                                        </div>
+                                                       
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="collapseOne_{{$obj['id']}}" class="{{($obj['assignment'] == 1) ? 'show' : 'collapse'}}" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                                            <div id="collapseOne_{{$obj['id']}}" class="{{($obj['assignment'] == 1) ? 'show' : 'collapse'}}" aria-labelledby="headingOne" data-bs-parent="#accordion" style="">
                                                 <div class="card-body">
                                                     @foreach ($obj['permissions'] as $j => $data)
                                                         @if (array_key_exists(0, $data) && array_key_exists(1, $data))
-                                                            <div class="d-flex justify-content-between">
+                                                            <div class="demo-inline-spacing">
                                                                 <div class="text-dark">{{$data[0]}} </div>
-                                                                <div class="row">
-                                                                    <div class="custom-control custom-radio">
-                                                                        <input type="radio" onclick="saveNotificationPermission(1, {{$obj['id']}},'{{$j}}')" id="yes_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="custom-control-input yes_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? 'checked': ''}}>
-                                                                        <label class="custom-control-label" for="yes_{{$j}}_{{$obj['id']}}">Yes</label>
+                                                                <span>
+                                                                    <div class="form-check form-check-success">
+                                                                        <input type="radio" onclick="saveNotificationPermission(1, {{$obj['id']}},'{{$j}}')" id="yes_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="form-check-input yes_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? 'checked': ''}}>
+                                                                        <label class="form-check-label" for="yes_{{$j}}_{{$obj['id']}}">Yes</label>
                                                                     </div>
-                                                                    <div class="custom-control custom-radio ml-2">
-                                                                        <input type="radio" onclick="saveNotificationPermission(0, {{$obj['id']}},'{{$j}}')" id="no_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="custom-control-input no_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? '': 'checked'}}>
-                                                                        <label class="custom-control-label" for="no_{{$j}}_{{$obj['id']}}">No</label>
+                                                                    <div class="form-check form-check-danger">
+                                                                        <input type="radio" onclick="saveNotificationPermission(0, {{$obj['id']}},'{{$j}}')" id="no_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="form-check-input no_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? '': 'checked'}}>
+                                                                        <label class="form-check-label" for="no_{{$j}}_{{$obj['id']}}">No</label>
                                                                     </div>
-                                                                </div>
+                                                                </span>
                                                             </div>
                                                         @endif
                                                     @endforeach
@@ -796,14 +836,14 @@
             <div class="modal-dialog modal-lg" style="width:50%;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="blue bigger" style="color:#009efb;">Add Certificate</h3>
-                        <button type="button" class="close btn waves-effect waves-light btn-success" data-dismiss="modal">&times;</button>
+                        <h3 class="blue bigger">Add Certificate</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div id="timeline-1" class="" style="background: white;">
-                                    <div class="row">
+                                    <div class="row mt-1">
                                         <div class="col-md-12">
                                             <div class="widget-box widget-color-dark">
                                                 <div class="widget-body">
@@ -814,13 +854,8 @@
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     
                                                                 <input name="id" style="display: none;" class="form-control" type="text" value="" readonly="readonly">
-    
                                                                 <input type="hidden" name="user_id" id="user_id" value="{{$profile->id}}">
-    
-    
                                                                 <div class="form-horizontal">
-    
-    
                                                                     <div class="form-group">
                                                                         <label class="control-label col-sm-4">Name
                                                                             :</label>
@@ -830,7 +865,7 @@
                                                                         </div>
                                                                     </div>
     
-                                                                    <div class="form-group">
+                                                                    <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-6">Category Name
                                                                             :</label>
                                                                         <div class="col-sm-12">
@@ -838,7 +873,7 @@
                                                                         </div>
                                                                     </div>
     
-                                                                    <div class="form-group">
+                                                                    <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Details
                                                                             :</label>
                                                                         <div class="col-sm-12">
@@ -846,7 +881,7 @@
                                                                         </div>
                                                                     </div>
     
-                                                                    <div class="form-group">
+                                                                    <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Attachment
                                                                             :</label>
                                                                         <div class="col-sm-12">
@@ -854,7 +889,6 @@
     
                                                                                 <div class="custom-file">
                                                                                     <input class="custom-file-input form-control" name="image" id="cer_image" accept="image/*" type="file">
-                                                                                    <label class="custom-file-label" for="image">Choose file</label>
                                                                                 </div>
                                                                             </div>
                                                                             <!-- <input type="file" name="image" id="image" accept="image/*" class="custom-file-input form-control"> -->
@@ -893,11 +927,11 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header d-flex align-items-center">
-                        <h4 class="modal-title" id="myLargeModalLabel" style="color:#009efb;">Add Ticket</h4>
-                        <button type="button" class="close ml-auto" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Add Ticket</h4>
+                        <button type="button" class="btn-close " data-bs-dismiss="modal" aria-hidden="true"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal mt-4" id="save_tickets" action="{{asset('save-tickets')}}" method="post">
+                        <form class="form-horizontal mt-1" id="save_tickets" action="{{asset('save-tickets')}}" method="post">
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
     
@@ -921,7 +955,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="row">
+                                            <div class="row mt-1">
     
                                                 <div class="col-sm-4">
                                                     <label class="control-label col-sm-12">Select Status<span style="color:red !important;">*</span></label><span id="select-status" style="display:none; color:red !important;">Please Select Status</span>
@@ -959,7 +993,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="row mt-3">
+                                            <div class="row mt-1">
     
                                                 <div class="col-sm-4">
                                                     <label class="control-label col-sm-12">Select Type
@@ -984,7 +1018,7 @@
                                                     </select>
                                                 </div>
     
-                                                <div class="col-sm-4 checkbox checkbox-info">
+                                                <div class="col-sm-4 checkbox checkbox-info mti-2">
                                                     <input id="new-form" value="1" type="checkbox" name="newcustomer">
                                                     <label class="mb-0" for="checkbox4">New Customer</label>
                                                 </div>
@@ -992,7 +1026,7 @@
                                         </div>
     
                                         <div class="form-group">
-                                            <div class="row mt-3">
+                                            <div class="row ">
     
                                                 <div class="col-sm-12" id="new-customer" style="display:none;">
                                                     <div class="row">
@@ -1036,7 +1070,7 @@
                                         </div>
     
                                         <div class="form-group">
-                                            <div class="row mt-3">
+                                            <div class="row mt-1">
                                                 <!--<div class="col-sm-4">-->
                                                 <!--    <input type="file" class="file-upload form-control-file" id="exampleInputFile">-->
                                                 <!--                        </div>-->
@@ -1048,8 +1082,8 @@
                                             </div>
                                         </div>
                                     </fieldset>
-                                    <div class="text-right">
-                                        <button type="submit" class="btn waves-effect waves-light btn-success">Save</button>
+                                    <div class="text-right mt-1">
+                                        <button type="submit" class="btn waves-effect waves-light btn-success float-right">Save</button>
                                     </div>
     
     
@@ -1068,7 +1102,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="blue bigger" style="color:#009efb;">Add New Document</h3>
-                        <button type="button" class="close btn waves-effect waves-light btn-danger" data-dismiss="modal">&times;</button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -1099,7 +1133,7 @@
                                                                         </div>
                                                                     </div>
     
-                                                                    <div class="form-group">
+                                                                    <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-6">Category Name
                                                                             :</label>
                                                                         <div class="col-sm-12">
@@ -1107,7 +1141,7 @@
                                                                         </div>
                                                                     </div>
     
-                                                                    <div class="form-group">
+                                                                    <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Details
                                                                             :</label>
                                                                         <div class="col-sm-12">
@@ -1115,7 +1149,7 @@
                                                                         </div>
                                                                     </div>
     
-                                                                    <div class="form-group">
+                                                                    <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Attachment
                                                                             :</label>
                                                                         <div class="col-sm-12">
@@ -1123,7 +1157,7 @@
                                                                         </div>
                                                                     </div>
     
-                                                                    <div class="form-group">
+                                                                    <div class="form-group mt-2">
                                                                         <div class="col-sm-offset-4 col-sm-12">
                                                                             <button type="submit" class="btn btn-success pull-right" style="float: right;">Add</button>
                                                                         </div>
@@ -1155,8 +1189,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editPicModalLabel">Profile Picture</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        
                     </button>
                 </div>
                 <div class="modal-body">
@@ -1169,15 +1203,15 @@
                         @endif
                     </div>
                     <form class="mt-4" id="upload_user_img">
-                        <div class="input-group">
+                        <div class="input">
                             <div class="custom-file">
                                 <input type="hidden" name="staff_id" id="staff_id" value="{{$profile->id}}">
-                                <input type="file" name="profile_img" class="custom-file-input" id="customFilePP">
-                                <label class="custom-file-label po" for="customFilePP">Choose file</label>
+                                <input type="file" name="profile_img" class="form-control" id="customFilePP">
+                                
                             </div>
                         </div>
                         <div class="text-right mt-3">
-                            <button type="submit" class="btn btn-success rounded"> <i class="fas fa-check-circle"></i> Save changes</button>
+                            <button type="submit" class="btn btn-success rounded float-right"> <i class="fas fa-check-circle"></i> Save changes</button>
                         </div>
     
                     </form>
