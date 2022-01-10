@@ -7,6 +7,7 @@
     var ticket_customer =  {!! json_encode($ticket_customer) !!};
     var temp_sel_customer =  ticket_customer.id;
     var ticket_details =  {!! json_encode($details) !!};
+    let res_templates_list = {!! json_encode($responseTemplates) !!};
         
     var all_users = {!! json_encode($allusers) !!};
 
@@ -106,40 +107,6 @@
 
     }
   
-</script>
-<script>
-    $(document).ready(function() {
-        // $.ajax({
-        //     type: "GET",
-        
-        //     url: "{{asset('/get_company_lookup')}}",
-        //     dataType: 'json',
-        //     beforeSend:function(data) {
-        //         $('.loader_container').show();
-        //     },
-        //     success: function(data) {
-                
-        //         data = data.companies;
-        //         var select= `<option value="">Select</option>`;
-        //         var option = ``;
-                
-        //         for(var i =0; i < data.length; i++) {
-        //             option += `<option value="`+data[i].id+`">`+data[i].name+`</option>`;
-        //         }
-
-        //         $("#company_list").html(select + option);
-
-
-        //     },
-        //     complete:function(data) {
-        //         $('.loader_container').hide();
-        //     },
-        //     error: function(e) {
-        //         console.log(e)
-        //     }
-        // });
-    }
-    );
 
     $("#csearch").keyup(function(e) {
         let value = $(this).val();
@@ -302,7 +269,8 @@
     }
 
     function openProModal() {
-        // $('#csearch').val(ticket_customer.first_name+' '+ticket_customer.last_name);
+        
+        $("#up_tkt_cust_title").text("Update Ticket Customer");
         $('#csearch').val('');
         $('#ct-search').val('');
 
@@ -314,15 +282,21 @@
         $('#username-fill').val(ticket_customer.email);
         $('#phone-fill').val(ticket_customer.phone);
 
+
+        $("#tkt_cust_id").val("");
+        $("#tkt_cust_comp_id").val("");
+
         $('#pro_edit').modal('show');
     }
 
     function newCustomer(mode) {
         if(mode == 'cancel') {
+            $("#up_tkt_cust_title").text("Update Ticket Customer");
             $('#new-cust-cont').hide();
             $('.newcustbtn').hide();
             $('#normal-cut-selc').show();
             $('.upt-cust-btn').show();
+            $("#new_company").hide();
         } else if(mode == 'save') {
             let formData = new FormData($('#save_newtickcust_form')[0]);
             formData.append('ticket_id', asset_ticket_id);
@@ -369,11 +343,14 @@
                     console.log(errMsg);
                 }
             });
+
         } else {
+            $("#up_tkt_cust_title").text("Ticket New Customer");
             $('#normal-cut-selc').hide();
             $('.upt-cust-btn').hide();
             $('.newcustbtn').show();
             $('#new-cust-cont').show();
+            $("#new_company").hide();
         }
     }
 
@@ -406,6 +383,7 @@
                     var result = ``;
 
                     if (data.length > 0) {
+                        
                         data.forEach(element => {
                             var phone = element.phone ? element.phone : 'Phone not added';
                             var company = element.name ? element.name : 'Company not provided';
@@ -436,4 +414,95 @@
         }
     }
     
+
+
+
+    const ticketCustomer = {
+
+        select_customer : (value) => {
+            var comp_id = $("#tkt_all_customers").find(':selected').data('comp');
+            $("#tkt_cust_id").val(value);
+            $("#tkt_cust_comp_id").val(comp_id);
+        },
+
+        update_customer: () => {
+
+            var tkt_cc = $("#tkt_cc").val();
+            var tkt_bcc = $("#tkt_bcc").val();
+            var cust_id = $("#tkt_cust_id").val();
+
+            if(!cust_id && temp_sel_customer) cust_id = temp_sel_customer;
+
+            Swal.fire({
+                title: 'Do you want to update ticket customer?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        },
+                        type: "POST",
+                        url: "{{url('update-ticket-customer')}}",
+                        data: { 
+                            ticket_id: asset_ticket_id,
+                            customer_id : cust_id,
+                            tkt_cc: tkt_cc,
+                            tkt_bcc: tkt_bcc,
+                        },
+                        dataType: 'json',
+                        beforeSend: function(data) {
+                            // $("#saveBtn").hide();
+                            $("#processbtn").show();
+                        },
+                        success: function(data) {
+                            if (data.status_code == 200 && data.success == true) {
+                                toastr.success(data.message, { timeOut: 5000 });
+                                $("#pro_edit").modal('hide');
+                                ticket_customer = data.data;
+                                temp_sel_customer = ticket_customer.id;
+
+                                $("#tkt_cust_id").val(cid);
+                                $('#cst-name').text(ticket_customer.first_name+' '+ticket_customer.last_name);
+                                $('#cst-email').text(ticket_customer.email);
+                                $('#cst-direct-line').text(ticket_customer.phone);
+
+                                // ticket_customer.company_id = comp;
+                                setCustomerCompany();
+                                
+                            } else {
+                                toastr.error(data.message, { timeOut: 5000 });
+                            }
+                        },
+                        complete: function(data) {
+                            // $("#saveBtn").show();
+                            $("#processbtn").hide();
+                        },
+                        error: function(e) {
+                            console.log(e)
+                        }
+                    });
+                }
+            });
+        },
+
+        openCompany : () => {
+            $("#new_company_field").val("1");
+            $("#new_company_input").hide();
+            $("#new_company").show();
+            $("#exists_comp").show();
+        },
+
+        closeCompany: () => {
+            $("#new_company_input").show();
+            $("#new_company").hide();
+            $("#new_company_field").val("0");
+            $("#exists_comp").hide();
+        }
+
+    }
 </script>

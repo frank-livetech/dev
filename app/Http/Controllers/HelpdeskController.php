@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Models\Customer;
+use App\Models\TicketSharedEmails;
 use App\Models\Tickets;
 use App\Models\Vendors;
 use App\Models\TicketReply;
@@ -983,7 +984,8 @@ class HelpdeskController extends Controller
         $id = $ticket->id;
         // $details = Tickets::with('ticketReplies')->where('id', $id)->first();
         $details = Tickets::where('id', $id)->first();
-        
+        $shared_emails = TicketSharedEmails::where('ticket_id',$details->id)->get()->toArray();
+
         $current_status = TicketStatus::where('id' , $details->status)->first();
         $current_priority= TicketPriority::where('id' , $details->priority)->first();
 
@@ -992,6 +994,9 @@ class HelpdeskController extends Controller
         $departments = Departments::all();
         // $ticket = Tickets::all();
         $ticket_customer = Customer::firstWhere('id',$details->customer_id);
+        $all_customers = Customer::with('company')->get();
+        $all_companies = Company::all();
+        $responseTemplates = ResponseTemplate::get();
         $vendors = Vendors::all();
         $types = TicketType::all();
         $statuses = TicketStatus::orderBy('seq_no', 'desc')->get();
@@ -1076,6 +1081,20 @@ class HelpdeskController extends Controller
             // return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }
     }
+
+
+    public function delete_ticket_reply(Request $request) {
+
+        $reply = TicketReply::find($request->id);
+        $reply->delete();
+
+        return response()->json([
+            "message" => "Ticket Reply Deleted Successfully!",
+            "status_code" => 200 , 
+            "success" => true,
+        ]);
+    }
+
     
     public function del_tkt(Request $request){
         $data  = $request->tickets;
@@ -1716,25 +1735,53 @@ class HelpdeskController extends Controller
     public function update_ticket_customer(Request $request) {
         try {
             $data = $request->all();
-            // $customer = Customer::find($data["id"]);
-            // $customer->first_name = $data["first_name"];
-            // $customer->last_name = $data["last_name"];
-            // $customer->phone = $data["phone"];
-            // $customer->company_id = $data["company"];
-            // $customer->updated_at = Carbon::now();
-            // $customer->save();
+
             if(isset($data['new_customer'])) {
                 $data['customer_id'] = $this->addTicketCustomer($request);
                 $customer = Customer::find($data["customer_id"]);
+
+                if($data['new_company'] != 0) {
+                    Company::create([ 
+                        "name" => $data['company_name'] != null ? $data['company_name']  : '',
+                        "poc_first_name" => $data['cmp_first_name'] != null ? $data['cmp_first_name']  : '',
+                        "poc_last_name" => $data['cmp_last_name'] != null ? $data['cmp_last_name']  : '',
+                        "phone" => $data['cmp_phone'] != null ? $data['cmp_phone']  : '',
+                    ]);
+                }
+
             } else {
                 $customer = Customer::find($data["customer_id"]);
-                if(isset($data['email']) || isset($data['phone'])) {
-                    if($data['email'] != $customer->email || $data['phone'] != $customer->phone) {
-                        $customer->email = $data['email'];
-                        $customer->phone = $data['phone'];
-                        $customer->updated_at = Carbon::now();
-                        $customer->save();
+
+                $tkt_share = array();
+
+                if($data['tkt_cc'] != null && $data['tkt_cc'] != "") {
+                    $tkt_share['email'] = $data['tkt_cc'];
+                    $tkt_share['mail_type'] = 1;
+                    $tkt_share['ticket_id'] = $data['ticket_id'];
+
+                    $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 1)->first();
+
+                    if($shared_emails) {
+                        $shared_emails->email = $data['tkt_cc'];
+                        $shared_emails->save();
+                    }else{
+                        TicketSharedEmails::create($tkt_share);
                     }
+                }
+
+                if($data['tkt_bcc'] != null && $data['tkt_bcc'] != "") {
+                    $tkt_share['email'] = $data['tkt_bcc'];
+                    $tkt_share['mail_type'] = 2;
+                    $tkt_share['ticket_id'] = $data['ticket_id'];
+
+                    $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 2)->first();
+                    if($shared_emails) {
+                        $shared_emails->email = $data['tkt_bcc'];
+                        $shared_emails->save();
+                    }else{
+                        TicketSharedEmails::create($tkt_share);
+                    }
+
                 }
             }
 
