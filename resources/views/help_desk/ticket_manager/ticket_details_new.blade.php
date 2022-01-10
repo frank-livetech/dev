@@ -206,6 +206,27 @@
     height:117px;
     width:auto !important;
 }
+.tag {
+    width: fit-content !important;
+    padding: 0.25rem;
+    border-radius: 4px;
+    margin-left: 4px;
+    margin-top: 4px;
+}
+.bootstrap-tagsinput > .bootstrap-tagsinput {
+    width: 100% !important;
+    border: 1px solid #ccc;
+}
+.bootstrap-tagsinput {
+    display: flex !important;
+    margin-top: 5px !important;
+    box-shadow: none !important;
+    flex-wrap: wrap !important;
+    border:0px;
+}
+.label-info {
+    background-color: #6d5eac !important;
+}
 </style>
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -564,10 +585,32 @@
                                 </a>
                             </h4>
                             <div class="mt-4 d-none" id="compose-reply">
-                                <div class="" style="margin-top: 10px;">
-                                    <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
-                                    <input type="text" id="to_mails" name="to_mails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="" style="margin-top: 10px;">
+                                            <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
+                                            @if( array_key_exists(0 , $shared_emails) )
+                                                <input type="text" id="to_mails" name="to_mails"
+                                                 class="form-control border" placeholder="Email" 
+                                                 data-role="tagsinput" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}" required>
+                                            @else
+                                                <input type="text" id="to_mails" name="to_mails" class="form-control border" placeholder="Email"  data-role="tagsinput" value="" required>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4" id="select_customer">
+                                        <label class="form-label">Response Template</label>
+                                        <select class="select2 form-control custom-select dropdown w-100" id="res-template" style="width:100%">
+                                            <option value="">Select</option>
+                                            @if(!empty($responseTemplates))
+                                                @foreach($responseTemplates as $res)
+                                                    <option value="{{$res->id}}">{{$res->title}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
+                                
         
                                 <label style="margin-top: 10px;">Write a reply</label>
                                 <textarea id="mymce" name="reply"></textarea>
@@ -999,39 +1042,62 @@
     </div>
 
     <div style="display: none;" id="tinycontenteditor"></div>
-
  <!--  Modal Edit pro start -->
 <div class="modal fade" id="pro_edit" role="dialog" data-backdrop="static"  aria-labelledby="" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
-                <h4 class="modal-title" id="" style="color:#009efb;">Update Ticket Customer</h4>
+                <h4 class="modal-title" id="up_tkt_cust_title" style="color:#009efb;">Update Ticket Customer</h4>
                 <button class="btn-close ml-auto" onclick="closeModal()"></button>
             </div>
             <div class="modal-body">
                 <div class="modal-body">
-                    <div class="row" id="normal-cut-selc">
-                        <div class="col-md-12">
-                        <form class="d-flex w-100 position-relative" action="{{asset('/search-customer')}}" method="post" id="search-customer" autocomplete="off">
-                            <input type="text" style="background-color:white !important; color:#263238 !important;" class="form-control text-dark" id="ct-search" name="ct-search" placeholder="Search Customer">
-                            <i class="fas fa-search text-info" style="position: absolute; top: 10px; font-size: 1.2rem; right: 26px; cursor: pointer;" onclick="searchTicketCustomer()"></i>
-                            <i class="fas fa-circle-notch fa-spin text-primary" id="cust_loader" style="position: absolute; top:10px;font-size:1.2rem; right:10px;display:none"></i>
-                        </form>
-                    </div>
-                        <div class="row mt-1">
-                        <div class="col-md-12 " id="search_customer_result" style="max-height: 300px !important; overflow-y: auto;"></div>
+                    <input type="hidden" id="tkt_cust_id">
+                    <input type="hidden" id="tkt_cust_comp_id">
+
+                    <div id="normal-cut-selc">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label" for="select2-basic">Select Customer</label>
+                                <select class="select2 form-select" id="tkt_all_customers" onchange="ticketCustomer.select_customer(this.value)">
+                                    @foreach($all_customers as $customer)
+                                        @php
+                                            $company_name = $customer->company == null ? 'Company not provided' : ($customer->company->name != null ? $customer->company->name : 'Company not provided');
+                                            $company_id = $customer->company == null ? '' : ($customer->company->id != null ? $customer->company->id : '');
+                                        @endphp
+                                        <option value="{{$customer->id}}" data-comp="{{$company_id}}" {{$customer->id == $ticket->customer_id ? 'selected' : ''}}>
+                                                {{$customer->first_name}} {{$customer->last_name}} (ID: {{$customer->id}}) | {{$company_name}} 
+                                                {{$customer->email != null ? '| ' . $customer->email : ''}} 
+                                                {{$customer->phone != null ? '| ' . $customer->phone : ''}} 
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="row mt-1">
-                                <div class="form-group col-md-6">
-                                    <label for="username-fill">Email</label>
-                                    <input type="email" class="form-control" name="email-fill" id="username-fill" value="{{$ticket_customer->email}}">
-                                    <small style="display: none; color: red;" id="username-fill-err">Please enter email</small>
+                        <div class="row mt-2">
+                            <div class="form-group form-group-default required">
+                                <label>CC</label>
+                                <input class="tagsinput custom-tag-input" type="text" style="display: none;">
+                                <div class="bootstrap-tagsinput" style="display:flex !important">
+                                    @if( array_key_exists(0 , $shared_emails) )
+                                        <input id="tkt_cc" class="meta_tags" size="2" type="text" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : ''}}">
+                                    @else
+                                        <input id="tkt_cc" class="meta_tags" size="2" type="text">
+                                    @endif
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="phone-fill">Phone</label>
-                                    <input type="tel" class="form-control" name="phone-fill" id="phone-fill" value="{{$ticket_customer->phone}}">
-                                    <small style="display: none; color: red;" id="phone-fill-err">Please enter valid phone number upto length 10</small>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="form-group form-group-default required">
+                                <label>BCC</label>
+                                <input class="tagsinput custom-tag-input" type="text" style="display: none;">
+                                <div class="bootstrap-tagsinput" style="display:flex !important">
+                                    @if( array_key_exists(1 , $shared_emails) )
+                                        <input id="tkt_bcc" class="meta_tags" size="2" type="text" value="{{$shared_emails[1]['mail_type'] == 2 ? $shared_emails[1]['email'] : ''}}">
+                                    @else
+                                        <input id="tkt_bcc" class="meta_tags" size="2" type="text">
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -1063,23 +1129,76 @@
                                 </div>
                             </div>
                         </div>
-                            <div class="form-row mt-1">
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="login_account">
-                                        <label class="custom-control-label" for="login_account">Create customer login account</label>
+
+                        <div class="form-row mt-1">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="login_account">
+                                    <label class="custom-control-label" for="login_account">Create customer login account</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2" id="new_company_input">
+                            <div class="col-md-8 form-group " id="customer_email">
+                                <label for="company" class="small">Company Name</label>
+                                <select id="company_id" name="company_id"  class="select2 form-select">
+                                    <option value=""> Choose Company </option>
+                                    @foreach($all_companies as $company)
+                                        <option value="{{$company->id}}"> {{$company->name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-1" id="reverting">
+                                <button type="button" onclick="ticketCustomer.openCompany()" id="new-Company-button" 
+                                    class="btn btn-success cmp_btn" style="margin-top:20px;;margin-right: 10px"> New </button>
+                            </div>
+                        </div>
+
+                        <div class="row" id="exists_comp" style="display:none">
+                            <div class="col-md-4">
+                                <button type="button" onclick="ticketCustomer.closeCompany()" id="existing_comp" class="btn btn-danger " style="margin-top:20px;;margin-right: 10px"> Existing Company </button>
+                            </div>
+                        </div>
+                            
+
+                            <div class="col-sm-12 p-2 mt-2 bg-light" id="new_company" style="display:none">
+                                <h3>Create New Company </h3>
+                                <input type="hidden" name="new_company" id="new_company_field" value="0">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="name" class="small">Company Name <span class="text-danger">*</span> </label>
+                                        <input type="text" name="company_name" id="cmp_name" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="poc_first_name" class="small">Owner First Name</label>
+                                        <input type="text" name="cmp_first_name" id="poc_first_name" class="form-control">
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="poc_last_name" class="small">Owner Last Name</label>
+                                        <input type="text" name="cmp_last_name" class="form-control" id="poc_last_name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="phone" class="small">Phone</label>
+                                        <input type="tel" name="cmp_phone" class="form-control" id="cmp_phone">
                                     </div>
                                 </div>
                             </div>
+
+
                         </form>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success upt-cust-btn" onclick="newCustomer('new')">New Customer</button>
                     <button type="button" class="btn btn-success newcustbtn" style="display: none;" onclick="newCustomer('save')">Save</button>
                     <button type="button" class="btn btn-secondary newcustbtn" style="display: none;" onclick="newCustomer('cancel')">Cancel</button>
-                    {{-- <button type="button" class="btn btn-info" onclick="closeModal()">Close</button> --}}
-                    <button type="button" class="btn btn-primary upt-cust-btn" onclick="setCustomerUpdates()">Update</button>
+                    <button type="button" class="btn btn-primary upt-cust-btn" onclick="ticketCustomer.update_customer()">Update</button>
                 </div>
             </div>
         </div><!-- /.modal-content -->
@@ -1240,7 +1359,7 @@
 {{-- Linked Assets JS --}}
 <!-- <script src="{{asset('public/js/help_desk/asset_manager/actions.js').'?ver='.rand()}}"></script> -->
 <!-- {{-- <script src="{{asset('public/js/help_desk/ticket_manager/tickets.js').'?ver='.rand()}}"></script> --}} -->
-<script src="{{asset('js/tagsinput.js')}}"></script>
+
 <!-- <script src="{{asset('public/js/help_desk/asset_manager/asset.js').'?ver='.rand()}}"></script> -->
 
     @include('js_files.help_desk.asset_manager.actionsJs')
@@ -1259,6 +1378,8 @@
             .prop("checked", "")
             .end();
     });
+
+    $(".meta_tags").tagsinput('items')
     
 </script>
 

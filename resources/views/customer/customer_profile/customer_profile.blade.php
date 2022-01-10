@@ -201,6 +201,56 @@ background-color:rgba(218,165,32,0.3);
 .pull-right{
     float:right !important;
 }
+.flagged-tr {
+    background-color: #FFE4C4 !important;
+}
+
+blockquote {
+    margin: unset !important;
+}
+
+.sl-item {
+    margin: unset !important;
+}
+
+.profile-pic-div label {
+    background: black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-pic-div label:hover img {
+    opacity: 0.5;
+}
+
+.profile-pic-div label:hover span {
+    display: inline-block;
+}
+
+.profile-pic-div label span {
+    color: white;
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 35px;
+}
+
+.soc-ico {
+    font-size: 32px;
+}
+
+.soc-card {
+    justify-content: space-between;
+    display: flex;
+}
+
+.select2-selection,
+.select2-container--default,
+.select2-selection--single {
+    border-color: #848484 !important;
+}
 </style>
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
 <div class="container-fluid">
@@ -317,7 +367,7 @@ background-color:rgba(218,165,32,0.3);
                    <h2 class="mt-4 font-weight-bold text-dark">Social Links</h2>
                     <div class="d-flex justify-content-center">
                     
-                        <a href="{{$customer->twitter}}" id="twt" title="Twitter" class="btn" target="_blank"
+                        <a href="{{$customer->twitter}}"  id="twt" title="Twitter" class="btn" target="_blank"
                             style="color: #009efb; font-size:24px">
                             <i class="fab fa-twitter"></i>
                         </a>
@@ -327,17 +377,17 @@ background-color:rgba(218,165,32,0.3);
                             <i class="fab fa-facebook"></i>
                         </a>
 
-                        <a href="{{$customer->pinterest}}" id="pintrst" title="Pinterest" class="btn" target="_blank"
+                        <a href="{{$customer->pinterest}}"  id="pintrst" title="Pinterest" class="btn" target="_blank"
                             style="color:#DF1A26; font-size:24px">
                             <i class="fab fa-pinterest"></i>
                         </a>
 
-                        <a href="{{$customer->insta}}" id="inst" title="Instagram" class="btn" target="_blank"
+                        <a href="{{$customer->insta}}"  id="inst" title="Instagram" class="btn" target="_blank"
                             style="color:#e1306c; font-size:24px">
                             <i class="fab fa-instagram"></i>
                         </a>
 
-                        <a href="{{$customer->linkedin}}" id="lkdn" title="Linkedin" class="btn" target="_blank"
+                        <a href="{{$customer->linkedin}}"  id="lkdn" title="Linkedin" class="btn" target="_blank"
                             style="color:#0e76a8; font-size:24px">
                             <i class="fab fa-linkedin"></i>
                         </a>
@@ -2456,69 +2506,5 @@ background-color:rgba(218,165,32,0.3);
 </div><!-- /.modal Notes Modal -->
 @endsection
 @section('scripts')
-<!-- jQuery ui files-->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-@include('js_files.help_desk.asset_manager.templateJs')
-@include('js_files.help_desk.asset_manager.actionsJs')
-@include('js_files.help_desk.asset_manager.assetJs')
-@include('js_files.statesJs')
-@include('js_files.customer_lookup.custProfileJs')
-
-{{-- Linked assets JS --}}
-
-<!-- <script src="{{asset('public/js/customer_manager/customer_lookup/orders.js').'?ver='.rand()}}"></script> -->
-
-<style>
-    .flagged-tr {
-        background-color: #FFE4C4 !important;
-    }
-
-    blockquote {
-        margin: unset !important;
-    }
-
-    .sl-item {
-        margin: unset !important;
-    }
-
-    .profile-pic-div label {
-        background: black;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .profile-pic-div label:hover img {
-        opacity: 0.5;
-    }
-
-    .profile-pic-div label:hover span {
-        display: inline-block;
-    }
-
-    .profile-pic-div label span {
-        color: white;
-        display: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        margin-top: 35px;
-    }
-
-    .soc-ico {
-        font-size: 32px;
-    }
-
-    .soc-card {
-        justify-content: space-between;
-        display: flex;
-    }
-
-    .select2-selection,
-    .select2-container--default,
-    .select2-selection--single {
-        border-color: #848484 !important;
-    }
-</style>
+    @include('customer.Js.customer_profileJs')
 @endsection

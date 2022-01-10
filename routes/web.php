@@ -368,6 +368,10 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
     Route::get('/view-tkt','HomeController@viewTicketPage');
     Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details')->name('customer.tkt_dtl');
 
+    Route::post('save_company','HomeController@saveCompany')->name('customer.saveCompany');
+    Route::post('update_customer','HomeController@update_customer_profile')->name('customer.updateCustomer');
+    Route::get('/customer-tickets','HomeController@getCustomerTickets')->name('customer.getCustomerTickets');
+
     // Route::get('/add-ticket','HomeController@addTicketPage');
 
 });
@@ -399,7 +403,7 @@ Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin'
     Route::post('/upload_customer_img','CustomerlookupController@uploadCustomerImage');
     Route::get('/customer-stats','CustomerStatsController@index')->name('customer.stats');
     Route::get('/service-stats','CustomerlookupController@service_stats')->name('service.stats');
-    Route::Post('/save-company','CompanyController@save_company');
+    Route::Post('/save-company','CompanyController@save_company')->name('admin.saveCompany');
 
     Route::get('/company-staff','CompanyController@showCompanyStaff');
 
@@ -516,6 +520,7 @@ Route::get('/get-all-templates','HelpDesk\AssetManagerController@getAllTemplates
 
 Route::post('/save-asset-template','HelpDesk\AssetManagerController@save_form');
 Route::Post('/publish-ticket-reply','HelpdeskController@save_ticket_reply');
+Route::post('/delete-ticket-reply','HelpdeskController@delete_ticket_reply');
 
 Route::get('/general-info/{id}', 'HelpDesk\AssetManagerController@gen_info')->name("general.index");
 

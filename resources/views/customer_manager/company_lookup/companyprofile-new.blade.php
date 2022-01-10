@@ -1213,9 +1213,13 @@ blockquote {
                                         </div>
                                     </div>
                                    
-                                    <div class="row mt-1">
+                                    <div class="row mt-1 float-btn mb-3">
                                         <div class="col-sm-12 ">
-                                            <button type="submit" class="btn btn-success rounded float-btn"><i class="fas fa-save"></i> Update Profile</button>
+                                            <button type="submit" class="btn btn-success rounded" id="comp_update_Btn"><i class="fas fa-save"></i> Update Profile</button>
+                                            <button style="display:none" id="comp_pro_btn" class="btn btn-success"
+                                                    type="button" disabled>
+                                                    <i class="fas fa-circle-notch fa-spin"></i>
+                                                    Processing</button>
                                         </div>
                                     </div>
                                 </form>

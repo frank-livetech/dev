@@ -193,17 +193,72 @@ background-color:rgba(218,165,32,0.3);
 #domainModal p{
     margin-bottom:0;
 }
-</style>
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
-<div class="container-fluid">
-    <!-- ============================================================== -->
-    <!-- Start Page Content -->
-    <!-- ============================================================== -->
-    <!-- Row -->
+.flagged-tr {
+    background-color: #FFE4C4 !important;
+}
 
+blockquote {
+    margin: unset !important;
+}
+
+.sl-item {
+    margin: unset !important;
+}
+
+.profile-pic-div label {
+    background: black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-pic-div label:hover img {
+    opacity: 0.5;
+}
+
+.profile-pic-div label:hover span {
+    display: inline-block;
+}
+
+.profile-pic-div label span {
+    color: white;
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 35px;
+}
+
+.soc-ico {
+    font-size: 32px;
+}
+
+.soc-card {
+    justify-content: space-between;
+    display: flex;
+}
+
+.select2-selection,
+.select2-container--default,
+.select2-selection--single {
+    border-color: #848484 !important;
+}
+</style>
+<div class="container-fluid">
+
+    @if(Session::get('system_date')) 
+        <input type="hidden" id="system_date_format" value="{{Session::get('system_date')}}">
+    @else
+        <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
+    @endif
+
+    @if(Session::get('timezone')) 
+        <input type="hidden" id="timezone" value="{{Session::get('timezone')}}">
+    @else
+        <input type="hidden" id="timezone" value="DD-MM-YYYY">
+    @endif
 
     <div class="row">
-        <!-- Column -->
         <div class="col-md-12">
         @if($errors->any())
         
@@ -230,14 +285,6 @@ background-color:rgba(218,165,32,0.3);
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- <div class="text-right mb-3">
-                        <a href="{{url('add-tkt')}}" class="btn btn-info ml-auto mb-auto">
-                            <i class="fas fa-plus"></i>&nbsp;Add ticket
-                        </a>
-                        <button type="button" class="btn btn-info ml-auto mb-auto" onclick="ShowTicketsModel()">
-                            <i class="fas fa-plus"></i>&nbsp;Add ticket
-                        </button>
-                    </div> -->
                     <div class="row mt-3">
                         <div class="col-6 col-md-4">
                             <div class="card card-hover border-bottom border-success">
@@ -265,50 +312,30 @@ background-color:rgba(218,165,32,0.3);
                         </div>
                     </div>
 
-                    <div class="col-12 mb-3 d-none">
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="0">#</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="1">Status</a>
-                        -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="2">Subject</a>
-                        -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                            data-column="3">TicketID</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                            data-column="4">Priority</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                            data-column="5">Customer</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="6">Last
-                            Replier</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="7">Replies</a>
-                        -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="8">Last
-                            Activity</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="9">Reply
-                            Due</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="10">Resolution
-                            Due</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="11">Assigned
-                            Tech</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                            data-column="12">Department</a> -
-                        <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="13">Creation
-                            Date</a>
-                    </div>
-
                     <div class="table-responsive">
-                        <table id="ticket_table"
+                        <table id="ticket-table-list"
                             class="table table-striped table-bordered display w-100">
                             <thead>
                                 <tr>
-                                    <th>Sr#</th>
-                                    <th>Subject</th>
-                                    <th>TicketID</th>
-                                    <th>Last Update</th>
-                                    <th>Last Replier</th>
-                                    <th>Department</th>
-                                    <th>Type</th>
+                                    <th>
+                                        <div class="text-center">
+                                            <input type="checkbox" name="select_all[]" id="select-all">
+                                        </div>
+                                    </th>
+                                    <th></th>
                                     <th>Status</th>
-                                    <th>Priority</th>
+                                    <th class='custom'>Subject</th>
+                                    <th class='pr-ticket'>Ticket ID</th>
+                                    <th >Priority</th>
+                                    <th class='custom-cst'>Customer</th>
+                                    <th class='pr-replies custom-cst'>Last Replier</th>
+                                    <th>Replies</th>
+                                    <th class='pr-activity '>Last Activity</th>
+                                    <th class='pr-ticket'>Reply Due</th>
+                                    <th class='pr-due'>Resolution Due</th>
+                                    <th class='pr-tech custom-cst'>Assigned Tech</th>
+                                    <th class='custom-cst'>Department</th>
+                                    <th class='pr-tech custom-cst'>Creation Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -318,792 +345,30 @@ background-color:rgba(218,165,32,0.3);
                 </div>
             </div>
         </div>
-
-
     </div>
-
-    {{-- Details --}}
-    <div class="row" style="display: none;">
-        <div class="col-12">
-            <div class="card" id="detailsCard">
-            </div>
-        </div>
-    </div>
-    {{-- Details End --}}
 
     <input type="hidden" id="customer_id" value="{{$customer->id}}">
-
-    <!--Add card model-->
-
-
-    <!--Address Book model-->
-    <div class="modal fade" id="Address-Book" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-                    <h4 class="modal-title" id="myLargeModalLabel">ADDRESS BOOK</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12" style="text-align:right;">
-                            <div class="col-md-12">
-                                <button id="add_new_add" class=" float-right btn btn-success"
-                                    onclick="New_Bill_Add()"><i class="mdi mdi-plus-circle"></i> Add New </button>
-                            </div>
-                        </div>
-                        <div class="col-md-12 row mt-2" id="NewBillAdd" style="display:none;">
-                            <div class="col-12 form-group">
-                                <label>Street Address</label>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <input type="text" class=" form-control" value="" id=""
-                                            placeholder="House number and street name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" class=" form-control" value="" id=""
-                                            placeholder="Apartment, suit, unit etc. (optional)">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label>City</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label>Zip Code</label>
-                                <input type="text" class="form-control">
-                            </div>
-
-                            <div class="col-md-3 form-group">
-                                <label>State</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-3 form-group">
-                                    <label>Country</label>
-                                    <input type="text" class="form-control">
-                            </div>
-                            <div class="col-md-12 float-right">
-                                <button type="submit" style="float:right;" class="btn btn-success ">Save</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="table-responsive mt-3">
-                        <table id="zero_config" class="table table-striped table-bordered no-wrap">
-                            <thead>
-                                <tr role="row">
-                                    <th>Street address</th>
-                                    <th>Apt</th>
-                                    <th>City</th>
-                                    <th>State</th>
-                                    <th>Zip</th>
-                                    <th>Country</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                                <tr>
-                                    <td>NN2-E</td>
-                                    <td>542</td>
-                                    <td>Lahore</td>
-                                    <td>Punjab</td>
-                                    <td>54000</td>
-                                    <td>Pakistan</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr role="row">
-                                    <th>Street address</th>
-                                    <th>Apt</th>
-                                    <th>City</th>
-                                    <th>State</th>
-                                    <th>Zip</th>
-                                    <th>Country</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal end -->
-
-    <!--order number model-->
-    <div class="modal fade" id="show-order" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-
-                    <h4 class="modal-title" id="myLargeModalLabel">Order 1234</h4>
-                    <div class="alert alert-success" role="alert" style="position:relative;left:477px;margin:unset;">
-                        <i class="dripicons-checkmark "></i><strong>Processing</strong>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h3>Billing Details</h3>
-                            <p>Eugenia karahalias 743 sandra ave west islip, NY 11795</p>
-                        </div>
-                        <div class="col-md-6">
-
-                        </div>
-                        <div class="col-md-3">
-                            <p>Subscription ####</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h3>Email</h3>
-                            <p>Eve123@gmail.com</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h3>Phone</h3>
-                            <p>514-565-3456</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h3>Payment via</h3>
-                            <p>Credit card (123456)</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h3>Product</h3>
-
-                        </div>
-                        <div class="col-md-2">
-                            <h3>Quality</h3>
-
-                        </div>
-                        <div class="col-md-2">
-                            <h3>Tax</h3>
-
-                        </div>
-                        <div class="col-md-2">
-                            <h3>Total</h3>
-
-                        </div>
-
-                    </div>
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p>Huntress Cyber security -workstation
-                                its huntress wo</p>
-
-                        </div>
-                        <div class="col-md-2">
-                            <h3>2</h3>
-
-                        </div>
-                        <div class="col-md-2">
-                            <h3>$0.00</h3>
-
-                        </div>
-                        <div class="col-md-2">
-                            <h3>$6.98</h3>
-
-                        </div>
-
-                    </div>
-                    <hr>
-                    <button class="btn btn-success" style="float:right">Edit</button>
-                    <button class="btn btn-info" style="float:right;margin-right:2px;">Duplicate</button>
-                    <button class="btn btn-primary">Update Profile</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal end -->
-
-    <!-- add new company -->
-    <div class="modal fade" id="addCompanyModal" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-                    <h4 class="modal-title" id="edit-company">Save Company</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="companyForm">
-
-                        <div class="row mt-3">
-                            <div class="col-md-4">
-                                <label for="poc_first_name" class="small">Owner First Name</label>
-                                <input type="text" id="poc_first_name" class="form-control">
-                                <span class="text-danger small" id="err"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="poc_last_name" class="small">Owner Last Name</label>
-                                <input type="text" class="form-control" id="poc_last_name">
-                                <span class="text-danger small" id="err1"></span>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="name" class="small">Company Name</label>
-                                <input type="text" id="name" class="form-control">
-                                <span class="text-danger small" id="err2"></span>
-                            </div>
-                        </div>
-
-                        <div class="row mt-1">
-                            <div class="col-md-6">
-                                <label for="email" class="small">Company Email</label>
-                                <input type="text" class="form-control" id="cemail">
-                                <span class="text-danger small" id="err3"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="phone" class="small">Phone Number</label>
-                                <input type="text" class="form-control" id="phone">
-                                <span class="text-danger small" id="err4"></span>
-                            </div>
-                        </div>
-
-                        <!-- <div class="row mt-3">
-                        
-                        <div class="col-md-6">
-                            <label for="country" class="small">Country</label>
-                            <input type="text" id="country" class="form-control">
-                            <span class="text-danger small" id="err5"></span>
-                        </div> 
-                    </div> -->
-
-                        <!-- <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label for="state" class="small">State</label>
-                            <input type="text" id="state" class="form-control">
-                            <span class="text-danger small" id="err6"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="city" class="small">City</label>
-                            <input type="text" class="form-control" id="city">
-                            <span class="text-danger small" id="err7"></span>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="zip" class="small">Zip Code</label>
-                            <input type="number" class="form-control" id="zip">
-                            <span class="text-danger small" id="err8"></span>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                       <div class="col-md-12">
-                            <label for="address" class="small">Addres</label>
-                            <textarea class="form-control" id="address" cols="30" rows="5"></textarea>
-                            <span class="text-danger small" id="err9"></span>
-                       </div>
-                    </div> -->
-
-                        <!-- <button type="button" style="float:right;" class="btn btn-danger mt-2" data-dismiss="modal">Close</button> -->
-                        <button type="submit" style="float:right;" class="btn btn-success mt-2 mr-2">Save</button>
-
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <!--  Modal content ticket start -->
-    <div class="modal fade" id="ticketModal" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-                    <h4 class="modal-title" id="myLargeModalLabel" style="color:#009efb;">Add Ticket</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" id="save_tickets" action="{{asset('save-tickets')}}" method="post">
-                        <div class="row">
-                            <div class="col-sm-12 col-xs-12">
-                                <fieldset>
-                                    <div class="form-group">
-                                        <div class="row mb-3">
-                                            <div class="col-sm-12">
-                                                <label class="control-label col-sm-12">Subject<span
-                                                        style="color:red !important;">*</span></label><span
-                                                    id="select-subject"
-                                                    style="display: none; color: red !important;">Subject cannot be
-                                                    Empty </span>
-                                                <input class="form-control" type="text" id="subject" name="subject">
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-sm-4">
-                                                <label class="control-label col-sm-12">Select Department<span
-                                                        style="color:red !important;">*</span></label><span
-                                                    id="select-department"
-                                                    style="display :none; color:red !important;;">Please Select
-                                                    Department</span>
-                                                <select class="select2 form-control custom-select" type="search"
-                                                    id="dept_id" name="dept_id" style="width: 100%; height:36px;">
-                                                    <option value="">Select </option>
-                                                    @foreach($departments as $department)
-                                                    <option value="{{$department->id}}">{{$department->name}}</option>
-                                                    @endforeach
-
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <label class="control-label col-sm-12">Select Priority<span
-                                                        style="color:red !important;">*</span></label><span
-                                                    id="select-priority"
-                                                    style="display :none; color:red !important;">Please Select
-                                                    Priority</span>
-                                                <select class="select2 form-control " id="priority" name="priority"
-                                                    style="width: 100%; height:36px;">
-                                                    <option value="">Select </option>
-                                                    @foreach($priorities as $priority)
-                                                    <option value="{{$priority->id}}">{{$priority->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <label class="control-label col-sm-12">Select Type
-                                                    <span style="color:red !important;">*</span></label><span
-                                                    id="select-type" style="display :none; color:red !important;">Please
-                                                    Select Type</span>
-                                                <select class="select2 form-control" id="type" name="type"
-                                                    style="width: 100%; height:36px;">
-                                                    <option value="">Select</option>
-                                                    @foreach($types as $type)
-                                                        <option value="{{$type->id}}">{{$type->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="row mb-3">
-                                            <div class="col-sm-12">
-                                                <label class="control-label col-sm-12">Problem Details<span
-                                                        style="color:red !important;">*</span></label><span
-                                                    id="pro-details" style="display :none; color:red !important;">Please
-                                                    provide details</span>
-                                                <textarea class="form-control" rows="3" id="ticket_detail"
-                                                    name="ticket_detail"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <div class="text-right">
-                                    <button type="submit" class="btn waves-effect waves-light btn-success"
-                                        id="btnSaveTicket">
-                                        <div class="spinner-border text-light" role="status"
-                                            style="height: 20px; width:20px; margin-right: 8px; display: none;">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>Save
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal content ticket end -->
 </div>
 
-<!-- Create Template Title modal content -->
-<div id="fields-modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-info p-2">
-                <span>
-                    <h4 style="color:#fff !important;" id="headinglabel"> Select Setting </h4>
-                </span>
-            </div>
-            <div class="modal-body">
-                <form id="fields-form" class="pl-3 pr-3">
-                    <div class="form-group">
-                        <label for="select">Label</label>
-                        <input class="form-control" type="text" id="lbl" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Placeholder</label>
-                        <input class="form-control" type="text" id="ph">
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input class="form-control" type="text" id="desc">
-                    </div>
-                    <div id="dyn-data"></div>
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="is_required">
-                            <label class="custom-control-label" for="is_required">Set Required </label>
-                        </div>
-                    </div>
-                    <div class="form-group text-center">
-                        <button class="btn btn-rounded btn-primary" type="submit">Save</button>
-                        <button class="btn btn-rounded btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </form>
-
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<!-- Modal -->
-<div class="modal fade" id="editPicModal" tabindex="-1" aria-labelledby="editPicModalLabel" data-backdrop="static" aria-hidden="true" >
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editPicModalLabel">Customer Picture</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form class="mt-4" id="upload_customer_img">
-                <div class="modal-body">
-                    <div class="text-center" id="prof-img ">
-                        @if(is_file(public_path('../files/user_photos/Customers/'.$customer->avatar_url)))
-                        <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle"
-                            width="100" height="100" id="profile-user-img" />
-                        @else
-                        <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle" width="100" height="100"
-                            id="profile-user-img" />
-                        @endif
-                    </div>
-                
-                    <div class="input-group">
-                        <div class="custom-file  w-100">
-                            <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}">
-                            <input type="file" name="profile_img" class="form-control" id="customFilePP" accept="image/*">
-                            <!-- <label class="custom-file-label" for="customFilePP">Choose file</label> -->
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <div class="text-right">
-                        <button type="submit" class="btn btn-primary waves-effect waves-float waves-light">Save changes</button>
-                    </div>
-                </div>
-                   
-
-            </form>
-           
-
-        </div>
-    </div>
-</div>
-
-<!--Domain Modal -->
-<div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="domainModalLabel">More Information</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-         <div class="row">
-            <div class="col-md-3">
-                <p>This is Line</p>
-                <p>This is Line</p>
-                <p>This is Line</p>
-                <p>This is Line</p>
-            </div>
-            <div class="col-md-3">
-                <p>This is Line</p>
-                <p>This is Line</p>
-                <p>This is Line</p>
-                <p>This is Line</p>
-            </div>
-            <div class="col-md-3">
-                <p>This is Line</p>
-                <p>This is Line</p>
-                <p>This is Line</p>
-                <p>This is Line</p>
-            </div>
-            <div class="col-md-3">
-                <button class="btn btn-success"> Add New Time </button>
-            </div>
-
-            
-            <div class="col-md-12">
-                <hr>
-                <button type="button" class="btn btn-warning" >Update Name Servers</button>
-                <button type="button" class="btn btn-danger">Update DNS Zone Records</button>
-                <button type="button" class="btn btn-info" >Set Glue Records</button>
-            </div>
-            <div class="col-md-12 mt-3">
-                <div class="card">
-                    <div class="card-header">
-                        Header
-                    </div>
-                    <div class="card-body" style="max-height:200px;scroll-y:auto;">
-                        Thinking
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 mt-3">
-                <div class="card">
-                    <div class="card-header">
-                        Header
-                    </div>
-                    <div class="card-body" style="max-height:200px;scroll-y:auto;">
-                        Thinking
-                    </div>
-                </div>
-            </div>
-         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Payment Modal -->
-<div class="modal fade" id="payNow" tabindex="-1" aria-labelledby="payNowLabel" data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="payNowLabel">Payment Method</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center" style="padding:60px;">
-                <h2>What Payment Method you want to use?</h2>
-                <div class="payBtns ">
-
-                    <button class="btn btn-success"><i class="fab fa-cc-visa"></i> Credit Card</button>
-                    <a class="btn bg-pPal btn-info" href="{{url('paypal/ec-checkout')}}" id="paypalHref"> <i
-                            class="fab fa-paypal"></i> PayPal</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<!-- update asset modal -->
-<div id="update_asset_modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-info p-2">
-                <span>
-                    <h4 style="color:#fff !important;" id="headinglabel"> Update - <span id="modal-title"></span>  </h4>
-                </span>
-            </div>
-            <div class="modal-body">
-                <form id="update_assets_form" enctype="multipart/form-data" onsubmit="return false">
-                    <div class="form-group">
-                        <label for="select">Asset Title</label> <span class="text-danger">*</span>
-                        <input class="form-control" type="text" id="up_asset_title" required>
-                        <input class="form-control" type="hidden" id="asset_title_id" required>
-                        
-                    </div>
-                    <div class="input_fields"></div>
-                    <div class="address_fields"></div>
-                    <div class="form-group text-right mt-3">
-                        <button class="btn btn-rounded btn-success" onclick="updateAssets()" id="sve" type="submit">Save</button>
-                        <button class="btn btn-rounded btn-danger" type="button" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </form>
-
-                <div class="loader_container">
-                    <div class="loader"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Notes Modal -->
-<div class="modal fade" id="notes_manager_modal" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="notesLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header d-flex align-items-center">
-                <h4 class="modal-title" id="notesLargeModalLabel">Notes</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post">
-                    <input type="text" id="note-id" style="display: none;">
-                    <div class="row">
-                        <div class="col-12 d-flex py-2">
-                            <label for="">Notes</label>
-                            <div class="ml-4">
-                                <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;" onclick="selectColor('rgb(255, 230, 177)')"></span>
-                                <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;" onclick="selectColor('rgb(218, 125, 179)')"></span>
-                                <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;" onclick="selectColor('rgb(195, 148, 255)')"></span>
-                                <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;" onclick="selectColor('rgb(151, 235, 172)')"></span>
-                                <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;" onclick="selectColor('rgb(229, 143, 149)')"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-12 py-2">
-                            <div class="form-group">
-                                <textarea name="note" id="note" class="form-control" rows="10" required style="background-color: rgb(255, 230, 177)"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="col-12 text-right pt-3">
-                            <button type="submit" class="btn btn-primary mr-2">Save</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal Notes Modal -->
 @endsection
 @section('scripts')
-<!-- jQuery ui files-->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-@include('js_files.help_desk.asset_manager.templateJs')
-@include('js_files.help_desk.asset_manager.actionsJs')
-@include('js_files.help_desk.asset_manager.assetJs')
-@include('js_files.statesJs')
-@include('js_files.customer_lookup.custProfileJs')
+<script>
 
-{{-- Linked assets JS --}}
+    let ticketsList = null;
+    let date_format = $('#system_date_format').val();
 
-<!-- <script src="{{asset('public/js/customer_manager/customer_lookup/orders.js').'?ver='.rand()}}"></script> -->
+    let move_to_trash_route = "{{asset('/move_to_trash_tkt')}}";
+    let del_ticket_route = "{{asset('/del_tkt')}}";
+    let rec_ticket_route = "{{asset('/recycle_tickets')}}";
+    let flag_ticket_route = "{{asset('/flag_ticket')}}";
+    let merge_tickets_route = "{{asset('/merge_tickets')}}";
+    let get_ticket_latest_log = "{{asset('/get_ticket_log')}}";
+    let ticket_notify_route = "{{asset('/ticket_notification')}}";
+    let ticket_details_route = "{{asset('/ticket-details')}}";
+    let get_department_status = "{{asset('/get_department_status')}}"
+    let get_tickets_route = "{{asset('/get-tickets')}}";
+    let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
 
-<style>
-    .flagged-tr {
-        background-color: #FFE4C4 !important;
-    }
-
-    blockquote {
-        margin: unset !important;
-    }
-
-    .sl-item {
-        margin: unset !important;
-    }
-
-    .profile-pic-div label {
-        background: black;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .profile-pic-div label:hover img {
-        opacity: 0.5;
-    }
-
-    .profile-pic-div label:hover span {
-        display: inline-block;
-    }
-
-    .profile-pic-div label span {
-        color: white;
-        display: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        margin-top: 35px;
-    }
-
-    .soc-ico {
-        font-size: 32px;
-    }
-
-    .soc-card {
-        justify-content: space-between;
-        display: flex;
-    }
-
-    .select2-selection,
-    .select2-container--default,
-    .select2-selection--single {
-        border-color: #848484 !important;
-    }
-</style>
+</script>
+    @include('customer.Js.customer_tktJs')
 @endsection

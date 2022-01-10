@@ -1,11 +1,65 @@
-
-
-<!-- <script src="{{asset('public/js/help_desk/asset_manager/template.js').'?ver='.rand()}}"></script>
-<script src="{{asset('public/js/help_desk/asset_manager/actions.js').'?ver='.rand()}}"></script>
-<script src="{{asset('public/js/help_desk/asset_manager/asset.js').'?ver='.rand()}}"></script> -->
-<!-- <script src="{{asset('public/js/customer_manager/customer_lookup/customerCard.js').'?ver='.rand()}}"></script> -->
 <script type="text/javascript">
+
     $(document).ready(function(){
+    
+        let autocomplete;
+        let autocomplete1;
+        let address1Field;
+        let address2Field;
+        let address11Field;
+        let address21Field;
+        let postal1Field;
+
+        let tickets_table_list = '';
+        let ticketsList = [];
+
+        var customer_subscription_table = '';
+        var subscriptionsList = {!!json_encode($subscriptions) !!};
+
+        let customer = {!!json_encode($customer) !!};
+        let ticket_format = {!!json_encode($ticket_format) !!};
+        let statuses_list = {!!json_encode($statuses) !!};
+
+        let open_status_id = statuses_list[statuses_list.map(function(itm) {
+            return itm.name
+        }).indexOf('Open')].id;
+        let closed_status_id = statuses_list[statuses_list.map(function(itm) {
+            return itm.name
+        }).indexOf('Closed')].id;
+
+
+        var orders_table_list = '';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+
+        // asset templates data
+        var get_assets_route = "{{asset('/get-assets')}}";
+        var del_asset_route = "{{asset('/delete-asset')}}";
+        var save_asset_records_route = "{{asset('/save-asset-records')}}";
+        var templates_fetch_route = "{{asset('/get-asset-templates')}}";
+        var template_submit_route = "{{asset('/save-asset-template')}}";
+        var templates = null;
+        var asset_customer_uid = customer.id;
+        var asset_company_id = '';
+
+        var general_info_route = "{{asset('/general-info')}}";
+        var asset_company_id = '';
+        var asset_project_id = '';
+        var asset_ticket_id = '';
+        var invoice_url = "{{url('create_pdf_invoice')}}";
+
+        var show_asset = "{{asset('/show-single-assets')}}";
+        var update_asset = "{{asset('/update-assets')}}";
+        let timeouts_list = [];
+        let loggedInUser_id = {!! json_encode(\Auth::user()->id) !!};
+        let gl_color_notes = '';
+        let gl_sel_note_index = null;
+        let notes = [];
+        let tkts_ids = [];
+        var googleObject = {!! json_encode($google) !!};
     //******************************************//
         try {
             if(countries_list.length) {
@@ -15,159 +69,260 @@
         } catch (err) {
             console.log(err);
         }
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        CollectJS.configure({
-            "paymentSelector" : "#payButton",
-            "variant" : "lightbox",
-            "styleSniffer" : "false",
-            "googleFont": "Montserrat:400",
-            "customCss" : {
-                "color": "#0000ff",
-                "background-color": "#d0d0ff"
-            },
-            "invalidCss": {
-                "color": "white",
-                "background-color": "red"
-            },
-            "validCss": {
-                "color": "black",
-                "background-color": "#d0ffd0"
-            },
-            "placeholderCss": {
-                "color": "green",
-                "background-color": "#808080"
-            },
-            "focusCss": {
-                "color": "yellow",
-                "background-color": "#202020"
-            },
-            "fields": {
-                "ccnumber": {
-                    "selector": "#ccnumber",
-                    "title": "Card Number",
-                    "placeholder": "0000 0000 0000 0000"
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            CollectJS.configure({
+                "paymentSelector" : "#payButton",
+                "variant" : "lightbox",
+                "styleSniffer" : "false",
+                "googleFont": "Montserrat:400",
+                "customCss" : {
+                    "color": "#0000ff",
+                    "background-color": "#d0d0ff"
                 },
-                "ccexp": {
-                    "selector": "#ccexp",
-                    "title": "Card Expiration",
-                    "placeholder": "00 / 00"
+                "invalidCss": {
+                    "color": "white",
+                    "background-color": "red"
                 },
-                "cvv": {
-                    "display": "show",
-                    "selector": "#cvv",
-                    "title": "CVV Code",
-                    "placeholder": "***"
+                "validCss": {
+                    "color": "black",
+                    "background-color": "#d0ffd0"
                 },
-                
-                
-                
-            },
-            'validationCallback' : function(field, status, message) {
-                if (status) {
-                    var message = field + " is now OK: " + message;
-                } else {
-                    var message = field + " is now Invalid: " + message;
+                "placeholderCss": {
+                    "color": "green",
+                    "background-color": "#808080"
+                },
+                "focusCss": {
+                    "color": "yellow",
+                    "background-color": "#202020"
+                },
+                "fields": {
+                    "ccnumber": {
+                        "selector": "#ccnumber",
+                        "title": "Card Number",
+                        "placeholder": "0000 0000 0000 0000"
+                    },
+                    "ccexp": {
+                        "selector": "#ccexp",
+                        "title": "Card Expiration",
+                        "placeholder": "00 / 00"
+                    },
+                    "cvv": {
+                        "display": "show",
+                        "selector": "#cvv",
+                        "title": "CVV Code",
+                        "placeholder": "***"
+                    },
+                    
+                    
+                    
+                },
+                'validationCallback' : function(field, status, message) {
+                    if (status) {
+                        var message = field + " is now OK: " + message;
+                    } else {
+                        var message = field + " is now Invalid: " + message;
+                    }
+                    console.log(message);
+                },
+                "timeoutDuration" : 2000,
+                "timeoutCallback" : function () {
+                    console.log("The tokenization didn't respond in the expected timeframe.  This could be due to an invalid or incomplete field or poor connectivity");
+                },
+                "fieldsAvailableCallback" : function () {
+                    console.log("Collect.js loaded the fields onto the form");
+                },
+                'callback' : function(response) {
+                    console.log(response);
+                    var input = document.createElement("input");
+                    $('#card_type').val(response.card.type)
+                    $('#cardlastDigits').val(response.card.number)
+                    $('#exp').val(response.card.exp)
+                    $('#payment_token').val(response.token).trigger('change')
+                    
+                    // CardSubmit();
+                    
                 }
-                console.log(message);
-            },
-            "timeoutDuration" : 2000,
-            "timeoutCallback" : function () {
-                console.log("The tokenization didn't respond in the expected timeframe.  This could be due to an invalid or incomplete field or poor connectivity");
-            },
-            "fieldsAvailableCallback" : function () {
-                console.log("Collect.js loaded the fields onto the form");
-            },
-            'callback' : function(response) {
-                console.log(response);
-                var input = document.createElement("input");
-                $('#card_type').val(response.card.type)
-                $('#cardlastDigits').val(response.card.number)
-                $('#exp').val(response.card.exp)
-                $('#payment_token').val(response.token).trigger('change')
-                
-                // CardSubmit();
-                
-            }
+            });
         });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-        CollectJS.configure({
-            "paymentSelector" : "#payButton",
-            "variant" : "lightbox",
-            "styleSniffer" : "false",
-            "googleFont": "Montserrat:400",
-            "customCss" : {
-                "color": "#0000ff",
-                "background-color": "#d0d0ff"
-            },
-            "invalidCss": {
-                "color": "white",
-                "background-color": "red"
-            },
-            "validCss": {
-                "color": "black",
-                "background-color": "#d0ffd0"
-            },
-            "placeholderCss": {
-                "color": "green",
-                "background-color": "#808080"
-            },
-            "focusCss": {
-                "color": "yellow",
-                "background-color": "#202020"
-            },
-            "fields": {
-                "ccnumber": {
-                    "selector": "#ccnumber",
-                    "title": "Card Number",
-                    "placeholder": "0000 0000 0000 0000"
+        document.addEventListener('DOMContentLoaded', function () {
+            CollectJS.configure({
+                "paymentSelector" : "#payButton",
+                "variant" : "lightbox",
+                "styleSniffer" : "false",
+                "googleFont": "Montserrat:400",
+                "customCss" : {
+                    "color": "#0000ff",
+                    "background-color": "#d0d0ff"
                 },
-                "ccexp": {
-                    "selector": "#ccexp",
-                    "title": "Card Expiration",
-                    "placeholder": "00 / 00"
+                "invalidCss": {
+                    "color": "white",
+                    "background-color": "red"
                 },
-                "cvv": {
-                    "display": "show",
-                    "selector": "#cvv",
-                    "title": "CVV Code",
-                    "placeholder": "***"
-                }, 
-            },
-            'validationCallback' : function(field, status, message) {
-                if (status) {
-                    var message = field + " is now OK: " + message;
-                } else {
-                    var message = field + " is now Invalid: " + message;
+                "validCss": {
+                    "color": "black",
+                    "background-color": "#d0ffd0"
+                },
+                "placeholderCss": {
+                    "color": "green",
+                    "background-color": "#808080"
+                },
+                "focusCss": {
+                    "color": "yellow",
+                    "background-color": "#202020"
+                },
+                "fields": {
+                    "ccnumber": {
+                        "selector": "#ccnumber",
+                        "title": "Card Number",
+                        "placeholder": "0000 0000 0000 0000"
+                    },
+                    "ccexp": {
+                        "selector": "#ccexp",
+                        "title": "Card Expiration",
+                        "placeholder": "00 / 00"
+                    },
+                    "cvv": {
+                        "display": "show",
+                        "selector": "#cvv",
+                        "title": "CVV Code",
+                        "placeholder": "***"
+                    }, 
+                },
+                'validationCallback' : function(field, status, message) {
+                    if (status) {
+                        var message = field + " is now OK: " + message;
+                    } else {
+                        var message = field + " is now Invalid: " + message;
+                    }
+                    console.log(message);
+                },
+                "timeoutDuration" : 2000,
+                "timeoutCallback" : function () {
+                    console.log("The tokenization didn't respond in the expected timeframe.  This could be due to an invalid or incomplete field or poor connectivity");
+                },
+                "fieldsAvailableCallback" : function () {
+                    console.log("Collect.js loaded the fields onto the form");
+                },
+                'callback' : function(response) {
+                    console.log(response);
+                    var input = document.createElement("input");
+                    $('#card_type').val(response.card.type)
+                    $('#cardlastDigits').val(response.card.number)
+                    $('#exp').val(response.card.exp)
+                    $('#payment_token').val(response.token).trigger('change')
                 }
-                console.log(message);
-            },
-            "timeoutDuration" : 2000,
-            "timeoutCallback" : function () {
-                console.log("The tokenization didn't respond in the expected timeframe.  This could be due to an invalid or incomplete field or poor connectivity");
-            },
-            "fieldsAvailableCallback" : function () {
-                console.log("Collect.js loaded the fields onto the form");
-            },
-            'callback' : function(response) {
-                console.log(response);
-                var input = document.createElement("input");
-                $('#card_type').val(response.card.type)
-                $('#cardlastDigits').val(response.card.number)
-                $('#exp').val(response.card.exp)
-                $('#payment_token').val(response.token).trigger('change')
-            }
+            });
         });
-    });
 
-    let autocomplete;
-    let autocomplete1;
-    let address1Field;
-    let address2Field;
-    let address11Field;
-    let address21Field;
-    let postal1Field;
+
+        if(!$.isEmptyObject(googleObject)){
+
+            if( googleObject.hasOwnProperty('api_key')){
+
+                var api_key = googleObject.api_key;
+                $("#google_api_key").val(api_key);
+                console.log(api_key);
+                
+                if(api_key!=''){
+
+                    var script ="https://maps.googleapis.com/maps/api/js?key="+api_key+"&libraries=places&sensor=false&callback=initMapReplace";
+                    var s = document.createElement("script");
+                    s.type = "text/javascript";
+                    s.src = script;
+                    $("head").append(s);
+
+                }
+                const allScripts = document.getElementsByTagName( 'script' );
+                [].filter.call(
+                allScripts, 
+                ( scpt ) => scpt.src.indexOf( 'key='+api_key ) >0
+                )[ 0 ].remove();
+                        // window.google = {};
+            }
+        }
+
+        get_cust_card();
+        var url = window.location.href;
+        if (window.location.href.indexOf("#Success") > -1) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: "Order paid SuccessFully! ",
+                showConfirmButton: false,
+                timer: 2500
+            });
+            window.location = url.split("#")[0];
+        }
+
+        if (window.location.href.indexOf("#Error") > -1) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: "Order payment Failed! ",
+                showConfirmButton: false,
+                timer: 2500
+            })
+            window.location = url.split("#")[0];
+        }
+
+
+        $('.form-group small').addClass('d-none');
+
+        values();
+        orders_table_list = $('#customer_order_table').DataTable();
+        domain_table_list = $('#domain_order_table').DataTable();
+
+        customer_subscription_table = $('#customer_subscription').DataTable();
+
+        tickets_table_list = $('#ticket_table').DataTable({
+            processing: true,
+            // scrollX: true,
+            // scrollCollapse: true,
+            fixedColumns: true,
+            pageLength: 10,
+            autoWidth: false,
+            columnDefs: [{
+                    className: "",
+                    targets: "_all"
+                },
+                {
+                    orderable: false,
+                    searchable: false,
+                    'className': 'dt-body-center',
+                    targets: 0
+                },
+                {
+                    targets: [1, 2, 3, 4, 5, 6, 7]
+                },
+                {
+                    orderable: false,
+                    targets: 0
+                },
+                {
+                    orderable: false,
+                    targets: 1
+                }
+            ],
+            // createdRow: function(row, data, dataIndex) {
+            //     if ($(data[1]).attr('class').match('flagged')) {
+            //         $(row).addClass('flagged-tr');
+            //     }
+            // }
+        });
+
+
+
+        get_ticket_table_list();
+
+        getCustomerOrders();
+        $( "#customer_order_table_filter").find('input[type="search"]').attr("placeholder","Order Id or Customer Name");
+        var password = $(".user-password-div input[name='password']").val();
+        var confirm_password = $(".user-confirm-password-div input[name='confirm_password']").val();
+        var password = $(this).val();
+
+        
+    });
 
     function initMapReplace(){
     
@@ -322,311 +477,152 @@
         
     }
     
-    $(document).ready(function() {
-        var googleObject = {!! json_encode($google) !!};
-        console.log(googleObject);
-        if(!$.isEmptyObject(googleObject)){
-
-            if( googleObject.hasOwnProperty('api_key')){
-
-                var api_key = googleObject.api_key;
-                $("#google_api_key").val(api_key);
-                console.log(api_key);
-                
-                if(api_key!=''){
-
-                    var script ="https://maps.googleapis.com/maps/api/js?key="+api_key+"&libraries=places&sensor=false&callback=initMapReplace";
-                    var s = document.createElement("script");
-                    s.type = "text/javascript";
-                    s.src = script;
-                    $("head").append(s);
-
-                }
-                const allScripts = document.getElementsByTagName( 'script' );
-                [].filter.call(
-                allScripts, 
-                ( scpt ) => scpt.src.indexOf( 'key='+api_key ) >0
-                )[ 0 ].remove();
-                        // window.google = {};
-            }
+    $("#twt").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Twitter Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
         }
-        
-        get_cust_card();
-        var url = window.location.href;
-        if (window.location.href.indexOf("#Success") > -1) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: "Order paid SuccessFully! ",
-                showConfirmButton: false,
-                timer: 2500
-            });
-            window.location = url.split("#")[0];
-        }
-        if (window.location.href.indexOf("#Error") > -1) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: "Order payment Failed! ",
-                showConfirmButton: false,
-                timer: 2500
-            })
-            window.location = url.split("#")[0];
-        }
+    });
 
+    $("#fb_icon").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Facebook Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $("#pintrst").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Pinterest Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $("#inst").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Instagram Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+    $("#lkdn").click(function(e) {
+        e.preventDefault();
+        var value = $(this).attr('href');
+        if (value == '') {
+            $("#social-error").html("Linkedin Link is Missing");
+            setTimeout(() => {
+                $("#social-error").html("");
+            }, 5000);
+        } else {
+            window.open(value, '_blank');
+        }
+    });
+
+
+    $(".user-password-div").on('click', '.show-password-btn', function() {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $(".user-password-div input[name='password']");
+        if (input.attr("type") === "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
     
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#ppNew').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readURL1(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#profile-user-img').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#upload_customer_img").submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            url: "{{url('upload_customer_img')}}",
+            type: 'POST',
+            data: new FormData(this),
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                if (data.status == 200 && data.success == true) {
+                    toastr.success(data.message, {
+                        timeOut: 5000
+                    });
+                    $("#editPicModal").modal('hide');
+                    var ter = $(".custom-file-label").text();
+
+                    let url = '{{asset("files/user_photos/Customers")}}';
+                    $('#profile-user-img').attr('src', url + '/' + ter);
+                } else {
+                    toastr.error(data.message, {
+                        timeOut: 5000
+                    });
+                }
+                console.log(data, "data");
+            },
+            error: function(e) {
+                console.log(e)
+            }
+
+        });
     });
 
-    $(document).ready(function() {
-        
-
-        $("#twt").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Twitter Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#fb_icon").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Facebook Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#pintrst").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Pinterest Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#inst").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Instagram Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-        $("#lkdn").click(function(e) {
-            e.preventDefault();
-            var value = $(this).attr('href');
-            if (value == '') {
-                $("#social-error").html("Linkedin Link is Missing");
-                setTimeout(() => {
-                    $("#social-error").html("");
-                }, 5000);
-            } else {
-                window.open(value, '_blank');
-            }
-        });
-
-
-        $(".user-password-div").on('click', '.show-password-btn', function() {
-            $(this).toggleClass("fa-eye fa-eye-slash");
-            var input = $(".user-password-div input[name='password']");
-            if (input.attr("type") === "password") {
-                input.attr("type", "text");
-            } else {
-                input.attr("type", "password");
-            }
-        });
-        
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                    $('#ppNew').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function readURL1(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                    $('#profile-user-img').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#upload_customer_img").submit(function(e) {
-            e.preventDefault();
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                url: "{{url('upload_customer_img')}}",
-                type: 'POST',
-                data: new FormData(this),
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    if (data.status == 200 && data.success == true) {
-                        toastr.success(data.message, {
-                            timeOut: 5000
-                        });
-                        $("#editPicModal").modal('hide');
-                        var ter = $(".custom-file-label").text();
-
-                        let url = '{{asset("files/user_photos/Customers")}}';
-                        $('#profile-user-img').attr('src', url + '/' + ter);
-                    } else {
-                        toastr.error(data.message, {
-                            timeOut: 5000
-                        });
-                    }
-                    console.log(data, "data");
-                },
-                error: function(e) {
-                    console.log(e)
-                }
-
-            });
-        });
-
-        $("#customFilePP").change(function() {
-            // alert("Bingo");
-            var ter = $("#customFilePP").val();
-            // alert(ter);
-            var terun = ter.replace(/^.*\\/, "");
-            $(".custom-file-label").text(terun);
-            readURL(this);
-        });
-
-    });
-</script>
-<script type="text/javascript">
-    let tickets_table_list = '';
-    let ticketsList = [];
-
-    var customer_subscription_table = '';
-    var subscriptionsList = {!!json_encode($subscriptions) !!};
-
-
-    let customer = {!!json_encode($customer) !!};
-    let ticket_format = {!!json_encode($ticket_format) !!};
-    let statuses_list = {!!json_encode($statuses) !!};
-
-    let open_status_id = statuses_list[statuses_list.map(function(itm) {
-        return itm.name
-    }).indexOf('Open')].id;
-    let closed_status_id = statuses_list[statuses_list.map(function(itm) {
-        return itm.name
-    }).indexOf('Closed')].id;
-
-
-    var orders_table_list = '';
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-        }
-    });
-
-    // asset templates data
-    var get_assets_route = "{{asset('/get-assets')}}";
-    var del_asset_route = "{{asset('/delete-asset')}}";
-    var save_asset_records_route = "{{asset('/save-asset-records')}}";
-    var templates_fetch_route = "{{asset('/get-asset-templates')}}";
-    var template_submit_route = "{{asset('/save-asset-template')}}";
-    var templates = null;
-    var asset_customer_uid = customer.id;
-    var asset_company_id = '';
-
-    var general_info_route = "{{asset('/general-info')}}";
-    var asset_company_id = '';
-    var asset_project_id = '';
-    var asset_ticket_id = '';
-    var invoice_url = "{{url('create_pdf_invoice')}}";
-
-    var show_asset = "{{asset('/show-single-assets')}}";
-    var update_asset = "{{asset('/update-assets')}}";
-    let timeouts_list = [];
-    let loggedInUser_id = {!! json_encode(\Auth::user()->id) !!};
-    let gl_color_notes = '';
-    let gl_sel_note_index = null;
-    let notes = [];
-    let tkts_ids = [];
-</script>
-
-<script>
-    $('.form-group small').addClass('d-none');
-
-    $(document).ready(function() {
-    values();
-    orders_table_list = $('#customer_order_table').DataTable();
-    domain_table_list = $('#domain_order_table').DataTable();
-
-    customer_subscription_table = $('#customer_subscription').DataTable();
-
-    tickets_table_list = $('#ticket_table').DataTable({
-        processing: true,
-        // scrollX: true,
-        // scrollCollapse: true,
-        fixedColumns: true,
-        pageLength: 10,
-        autoWidth: false,
-        columnDefs: [{
-                className: "",
-                targets: "_all"
-            },
-            {
-                orderable: false,
-                searchable: false,
-                'className': 'dt-body-center',
-                targets: 0
-            },
-            {
-                targets: [1, 2, 3, 4, 5, 6, 7]
-            },
-            {
-                orderable: false,
-                targets: 0
-            },
-            {
-                orderable: false,
-                targets: 1
-            }
-        ],
-        // createdRow: function(row, data, dataIndex) {
-        //     if ($(data[1]).attr('class').match('flagged')) {
-        //         $(row).addClass('flagged-tr');
-        //     }
-        // }
+    $("#customFilePP").change(function() {
+        // alert("Bingo");
+        var ter = $("#customFilePP").val();
+        // alert(ter);
+        var terun = ter.replace(/^.*\\/, "");
+        $(".custom-file-label").text(terun);
+        readURL(this);
     });
 
     $('a.toggle-vis').on('click', function(e) {
@@ -659,14 +655,6 @@
         }
     });
 
-    get_ticket_table_list();
-
-    getCustomerOrders();
-     $( "#customer_order_table_filter").find('input[type="search"]').attr("placeholder","Order Id or Customer Name");
-    var password = $(".user-password-div input[name='password']").val();
-    var confirm_password = $(".user-confirm-password-div input[name='confirm_password']").val();
-    var password = $(this).val();
-
     $(".user-password-div").on('keyup', "input[name='password']", function() {
         var score = 0;
         password = $(".user-password-div input[name='password']").val();
@@ -688,11 +676,6 @@
             $(".user-confirm-password-div .check-match").addClass("fa-times red");
         }
     });
-
-    var password = $(".user-password-div input[name='password']").val();
-    var confirm_password = $(".user-confirm-password-div input[name='confirm_password']").val();
-
-    var password = $(this).val();
 
     $(".user-password-div").on('keyup', "input[name='password']", function() {
         var score = 0;
@@ -770,34 +753,34 @@
 
         let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
 
-        if (cpwd && cpwd != update_password) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'Passwords do not match!',
-                showConfirmButton: false,
-                timer: 2500
-            });
-            return false;
-        }
+        // if (cpwd && cpwd != update_password) {
+        //     Swal.fire({
+        //         position: 'top-end',
+        //         icon: 'error',
+        //         title: 'Passwords do not match!',
+        //         showConfirmButton: false,
+        //         timer: 2500
+        //     });
+        //     return false;
+        // }
 
-        if (!update_password) {
-            update_password = customer.password;
-        }
+        // if (!update_password) {
+        //     update_password = customer.password;
+        // }
 
-        if (customer.password != update_password) {
-            // let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
-            if (cpwd != update_password) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Passwords do not match!',
-                    showConfirmButton: false,
-                    timer: 2500
-                });
-                return false;
-            }
-        }
+        // if (customer.password != update_password) {
+        //     // let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
+        //     if (cpwd != update_password) {
+        //         Swal.fire({
+        //             position: 'top-end',
+        //             icon: 'error',
+        //             title: 'Passwords do not match!',
+        //             showConfirmButton: false,
+        //             timer: 2500
+        //         });
+        //         return false;
+        //     }
+        // }
 
         if ($('#is_bill_add').prop("checked") == true) {
 
@@ -984,9 +967,11 @@
             }
         });
     });
-   
+
     $("#companyForm").submit(function(event) {
         event.preventDefault();
+        
+        return false;
         var poc_first_name = $('#poc_first_name').val();
         var poc_last_name = $('#poc_last_name').val();
         var name = $('#name').val();
@@ -1074,65 +1059,64 @@
     });
 
     $("#payment_token").change(function(event) {
-      
-
-      var fname = $('#fname').val();
-      var lname = $('#lname').val();
-      var address1 = $('#address1').val();
-      var city = $('#city').val();
-      var state = $('#state').val();
-      var zip = $('#zip').val();
-      var card_type = $('#card_type').val();
-      var  exp= $('#exp').val()
-    var email= $('#cust_email1').val()
-      var formData = {
-          fname: fname,
-          lname: lname,
-          address1: address1,
-          city: city,
-          state: state,
-          zip: zip,
-          card_type: card_type,
-          exp: exp,
-          email:email,
-          payment_token: $(this).val(),
-          cardlastDigits:$('#cardlastDigits').val(),
-          customer_id:$('#customer_id').val()
-      }
-      $.ajax({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-          },
-          type: "POST",
-          url: "{{url('save-cust-card')}}",
-          data: formData,
-          dataType: 'json',
-          beforeSend: function(data) {
-              $('.loader_container').show();
-          },
-          success: function(data) {
-            Swal.fire({
-                    position: 'top-end',
-                    icon: data.success ? 'success' : 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: 2500
-                });
-                get_cust_card()
-            console.log(data)
-          
-          },
-          complete: function(data) {
-              $('.loader_container').hide();
-          },
-          error: function(e) {
-              console.log(e)
-          }
-      });
+        var fname = $('#fname').val();
+        var lname = $('#lname').val();
+        var address1 = $('#address1').val();
+        var city = $('#city').val();
+        var state = $('#state').val();
+        var zip = $('#zip').val();
+        var card_type = $('#card_type').val();
+        var  exp= $('#exp').val()
+        var email= $('#cust_email1').val()
+        var formData = {
+            fname: fname,
+            lname: lname,
+            address1: address1,
+            city: city,
+            state: state,
+            zip: zip,
+            card_type: card_type,
+            exp: exp,
+            email:email,
+            payment_token: $(this).val(),
+            cardlastDigits:$('#cardlastDigits').val(),
+            customer_id:$('#customer_id').val()
+        }
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            type: "POST",
+            url: "{{url('save-cust-card')}}",
+            data: formData,
+            dataType: 'json',
+            beforeSend: function(data) {
+                $('.loader_container').show();
+            },
+            success: function(data) {
+                Swal.fire({
+                        position: 'top-end',
+                        icon: data.success ? 'success' : 'error',
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 2500
+                    });
+                    get_cust_card()
+                console.log(data)
+            
+            },
+            complete: function(data) {
+                $('.loader_container').hide();
+            },
+            error: function(e) {
+                console.log(e)
+            }
+        });
     });
 
     $("#save_tickets").submit(function(event) {
         event.preventDefault();
+
         var formData = new FormData($(this)[0]);
         var action = $(this).attr('action');
         var method = $(this).attr('method');
@@ -1211,7 +1195,6 @@
             });
         }, 1000);
 
-    });
     });
 
 

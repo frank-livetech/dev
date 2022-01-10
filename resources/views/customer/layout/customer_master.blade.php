@@ -86,8 +86,8 @@
 
 
     <!-- BEGIN: Material Design CDNS -->
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <!-- <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script> -->
     <!-- END: Material Design CDNS-->
 
     @stack('css')
@@ -238,7 +238,7 @@
         const swal_message_time = 5000;
     </script>
     <!-- BEGIN: Page Vendor JS-->
-    <script src="../../../app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js"></script>
+    <!-- <script src="../../../app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js"></script> -->
 
     <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
