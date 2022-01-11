@@ -1015,9 +1015,8 @@ class HelpdeskController extends Controller
         $home = new HomeController();
         $tickets = $home->getCustomerTickets($ticket_customer->id);
 
-        
-        
-        $total_tickets_count = $tickets->count();
+        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+
         $open_tickets_count = 0;
         $closed_tickets_count = 0;
         foreach ($tickets as $key => $value) {
