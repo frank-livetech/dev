@@ -66,7 +66,8 @@ class HomeController extends Controller
         $project = Project::count();
         $notifications = Notification::read();
         $open_status = TicketStatus::where('name','Open')->first();
-
+        $closed_status = TicketStatus::where('name','Closed')->first();
+        $closed_status_id = $closed_status->id;
         // $helpdesk = new HelpdeskController();
         // echo "<pre>";
         // $tickets = json_decode(json_encode($helpdesk->getTickets()), true);
