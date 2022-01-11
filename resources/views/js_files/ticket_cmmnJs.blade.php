@@ -82,7 +82,7 @@ function get_ticket_table_list() {
             if(page_name == 'tickets') ShowCalendarModel();
             if(data.hasOwnProperty('total_tickets_count')) $('#total_tickets_count').html(data.total_tickets_count);
             if(data.hasOwnProperty('my_tickets_count')) $('#my_tickets_count').html(data.my_tickets_count);
-            if(data.hasOwnProperty('open_tickets_count')) $('#open_tickets_count').html(data.open_tickets_count);
+            if(data.hasOwnProperty('flagged_tickets_count')) $('#flagged_tickets_count').html(data.flagged_tickets_count);
             if(data.hasOwnProperty('unassigned_tickets_count')) $('#unassigned_tickets_count').html(data.unassigned_tickets_count);
             if(data.hasOwnProperty('late_tickets_count')) $('#closed_tickets_count').html(data.late_tickets_count);
             // if(data.hasOwnProperty('closed_tickets_count')) $('#closed_tickets_count').html(data.closed_tickets_count);
@@ -90,6 +90,45 @@ function get_ticket_table_list() {
         }
     });
 }
+
+function getCounterTickets(key){
+    
+    let dept_id = $('#dept').val();
+    if(dept_id != '' && key == 'total'){
+        let ret = $.ajax({
+            type: "get",
+            url: get_filteredtkt_route + '/' + dept_id,
+            async: false,
+            data: "",
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                console.log(data, "data tickets");
+            
+                redrawTicketsTable(data.tickets);
+            }
+        });
+    }else{
+
+        let ret = $.ajax({
+            type: "get",
+            url: get_tickets_route + '/' + key,
+            async: false,
+            data: "",
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                console.log(data, "data tickets");
+            
+                redrawTicketsTable(data.tickets);
+            }
+        });
+
+    }
+   
+
+}
+
 function listTickets(f_key = '') {
     if(f_key) {
         $("#date1").val("");

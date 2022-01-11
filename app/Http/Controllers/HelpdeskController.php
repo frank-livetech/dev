@@ -437,20 +437,11 @@ class HelpdeskController extends Controller
     }
     public function getFilteredTickets($dept = '' , $sts = ''){
 
-        // $cid = '';
-        // $sid = '';
-        // if(!empty($id)) {
-        //     if($statusOrUser == 'customer') $cid = $id;
-        //     else if($statusOrUser == 'staff') $sid = $id;
-        // }
-
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
         $cnd = '!=';
         $is_del = 0;
-        // if($statusOrUser == 'closed') $cnd = '=';
-        // if($statusOrUser == 'trash') $is_del = 1;
 
         if(\Auth::user()->user_type == 1) {
             $tickets = DB::Table('tickets')
@@ -461,23 +452,14 @@ class HelpdeskController extends Controller
             ->join('departments','departments.id','=','tickets.dept_id')
             ->join('customers','customers.id','=','tickets.customer_id')
             ->leftjoin('users','users.id','=','tickets.created_by')
-            ->where('tickets.status',$sts)
-            ->where('tickets.dept_id',$dept)
-            // ->when($statusOrUser == 'customer', function($q) use($id) {
-            //     return $q->where('tickets.customer_id', $id);
-            // })
-            // ->when($statusOrUser == 'staff', function($q) use($id) {
-            //     return $q->where('tickets.assigned_to', $id);
-            // })
-            // ->when($statusOrUser == 'closed', function($q) use($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
-            // })
-            // ->when($statusOrUser == 'trash', function($q) {
-            //     return $q->where('tickets.trashed', 1);
-            // })
-            // ->when(empty($statusOrUser), function($q) use($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
-            // })
+         
+            ->when($sts != '', function($q) use($sts) {
+                return $q->where('tickets.status', $sts);
+            })
+            ->when($dept != '', function($q) use($dept) {
+                return $q->where('tickets.dept_id', $dept);
+            })
+          
             ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
         
         } else {
@@ -492,41 +474,35 @@ class HelpdeskController extends Controller
             ->join('departments','departments.id','=','tickets.dept_id')
             ->join('customers','customers.id','=','tickets.customer_id')
             ->leftjoin('users','users.id','=','tickets.created_by')
-            // ->when($statusOrUser == 'customer', function($q) use ($id) {
-            //     return $q->where('tickets.customer_id', $id);
-            // })
-            // ->when($statusOrUser == 'closed', function($q) use ($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
-            // })
-            // ->when($statusOrUser == 'trash', function($q) {
-            //     return $q->where('tickets.trashed', 1);
-            // })
-            // ->when(empty($statusOrUser), function($q) use ($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
-            // })
+          
             ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
                 return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
             })
-            ->where('tickets.status',$sts)
-            ->where('tickets.dept_id',$dept)
+            ->when($sts != '', function($q) use($sts) {
+                return $q->where('tickets.status', $sts);
+            })
+            ->when($dept != '', function($q) use($dept) {
+                return $q->where('tickets.dept_id', $dept);
+            })
             ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
         }
 
-        $total_tickets_count = $tickets->count();
-        $my_tickets_count = 0;
-        $open_tickets_count = 0;
-        $unassigned_tickets_count = 0;
-        $late_tickets_count = 0;
+        $total_tickets_count = Tickets::where('is_deleted', 0)->count();
+        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->count();
+        // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->count();
+        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->count();
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
-        
+        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->count();
+
         foreach($tickets as $value) {
             $value->tech_name = 'Unassigned';
             if(!empty($value->assigned_to)) {
                 $u = User::where('id', $value->assigned_to)->first();
                 if(!empty($u)) $value->tech_name = $u->name;
             }
-            else $unassigned_tickets_count++;
+            // else $unassigned_tickets_count++;
 
             $rep = TicketReply::where('ticket_id', $value->id)->orderBy('created_at', 'desc')->first();
             $repCount = TicketReply::where('ticket_id', $value->id)->count();
@@ -543,55 +519,60 @@ class HelpdeskController extends Controller
                 $value->replies = $repCount;
             }
 
-            if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
-            if($value->status == $open_status->id) $open_tickets_count++;
+            // if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
+            // if($value->status == $open_status->id) $open_tickets_count++;
 
             $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
+            if($value->is_overdue == 0){
             
-            $dd = $this->getSlaDeadlineFrom($value->id);
-            $value->sla_rep_deadline_from = $dd[0];
-            $value->sla_res_deadline_from = $dd[1];
+                $dd = $this->getSlaDeadlineFrom($value->id);
+                $value->sla_rep_deadline_from = $dd[0];
+                $value->sla_res_deadline_from = $dd[1];
 
-            $lcnt = false;
-            if($value->sla_plan['title'] != self::NOSLAPLAN) {
-                if($value->reply_deadline != 'cleared') {
-                    $nowDate = Carbon::now();
-                    if(!empty($value->reply_deadline)) {
-                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
-                        if($timediff < 0) $lcnt = true;
-                    } else {
-                        $rep = Carbon::parse($value->sla_rep_deadline_from);
-                        $dt = explode('.', $value->sla_plan['reply_deadline']);
-                        $rep->addHours($dt[0]);
-                        if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
-                        $timediff = $nowDate->diffInSeconds($rep, false);
-                        if($timediff < 0) $lcnt = true;
-                    }
-                }
-                if($value->resolution_deadline != 'cleared') {
-                    if(!$lcnt) {
+                $lcnt = false;
+                if($value->sla_plan['title'] != self::NOSLAPLAN) {
+                    if($value->reply_deadline != 'cleared') {
                         $nowDate = Carbon::now();
-                        if(!empty($value->resolution_deadline)) {
-                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                        if(!empty($value->reply_deadline)) {
+                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
                             if($timediff < 0) $lcnt = true;
                         } else {
-                            $rep = Carbon::parse($value->sla_res_deadline_from);
-                            $dt = explode('.', $value->sla_plan['due_deadline']);
+                            $rep = Carbon::parse($value->sla_rep_deadline_from);
+                            $dt = explode('.', $value->sla_plan['reply_deadline']);
                             $rep->addHours($dt[0]);
                             if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
                             $timediff = $nowDate->diffInSeconds($rep, false);
                             if($timediff < 0) $lcnt = true;
                         }
                     }
-                }   
-            }
-            
-            $value->is_overdue = 0;
-            if($lcnt) {
-                $late_tickets_count++;
-                $value->is_overdue = 1;
+                    if($value->resolution_deadline != 'cleared') {
+                        if(!$lcnt) {
+                            $nowDate = Carbon::now();
+                            if(!empty($value->resolution_deadline)) {
+                                $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                                if($timediff < 0) $lcnt = true;
+                            } else {
+                                $rep = Carbon::parse($value->sla_res_deadline_from);
+                                $dt = explode('.', $value->sla_plan['due_deadline']);
+                                $rep->addHours($dt[0]);
+                                if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
+                                $timediff = $nowDate->diffInSeconds($rep, false);
+                                if($timediff < 0) $lcnt = true;
+                            }
+                        }
+                    }   
+                }
+                
+                $value->is_overdue = 0;
+                if($lcnt) {
+                    $late_tickets_count++;
+                    $value->is_overdue = 1;
+                    $tkt = Tickets::where('id',$value->id)->first();
+                    $tkt->is_overdue = 1;
+                    $tkt->save();
+                }
             }
         }
         
@@ -601,7 +582,7 @@ class HelpdeskController extends Controller
         $response['tickets']= $tickets;
         $response['total_tickets_count']= $total_tickets_count;
         $response['my_tickets_count']= $my_tickets_count;
-        $response['open_tickets_count']= $open_tickets_count;
+        $response['flagged_tickets_count']= $flagged_tickets_count;
         $response['unassigned_tickets_count']= $unassigned_tickets_count;
         $response['late_tickets_count']= $late_tickets_count;
         $response['closed_tickets_count']= $closed_tickets_count;
@@ -639,8 +620,17 @@ class HelpdeskController extends Controller
             ->when($statusOrUser == 'customer', function($q) use($id) {
                 return $q->where('tickets.customer_id', $id);
             })
-            ->when($statusOrUser == 'staff', function($q) use($id) {
-                return $q->where('tickets.assigned_to', $id);
+            ->when($statusOrUser == 'self', function($q) use($id) {
+                return $q->where('tickets.assigned_to', \Auth::user()->id);
+            })
+            ->when($statusOrUser == 'self', function($q) use($id) {
+                return $q->where('tickets.assigned_to', \Auth::user()->id);
+            })
+            ->when($statusOrUser == 'unassigned', function($q) use($id) {
+                return $q->whereNull('tickets.assigned_to');
+            })
+            ->when($statusOrUser == 'flagged', function($q) use($id) {
+                return $q->where('tickets.is_flagged',1);
             })
             ->when($statusOrUser == 'closed', function($q) use($closed_status_id) {
                 return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
@@ -683,13 +673,14 @@ class HelpdeskController extends Controller
             ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.id', 'desc')->get();
         }
 
-        $total_tickets_count = $tickets->count();
-        $my_tickets_count = 0;
-        $open_tickets_count = 0;
-        $unassigned_tickets_count = 0;
-        $late_tickets_count = 0;
+        $total_tickets_count = Tickets::where('is_deleted', 0)->count();
+        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->count();
+        // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->count();
+        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->count();
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
+        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->count();
         
         foreach($tickets as $value) {
             $value->tech_name = 'Unassigned';
@@ -697,7 +688,7 @@ class HelpdeskController extends Controller
                 $u = User::where('id', $value->assigned_to)->first();
                 if(!empty($u)) $value->tech_name = $u->name;
             }
-            else $unassigned_tickets_count++;
+            // else $unassigned_tickets_count++;
 
             $rep = TicketReply::where('ticket_id', $value->id)->orderBy('created_at', 'desc')->first();
             $repCount = TicketReply::where('ticket_id', $value->id)->count();
@@ -714,77 +705,83 @@ class HelpdeskController extends Controller
                 $value->replies = $repCount;
             }
 
-            if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
-            if($value->status == $open_status->id) $open_tickets_count++;
+            // if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
+            // if($value->status == $open_status->id) $open_tickets_count++;
 
             $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
-            
-            $dd = $this->getSlaDeadlineFrom($value->id);
-            $value->sla_rep_deadline_from = $dd[0];
-            $value->sla_res_deadline_from = $dd[1];
-
-            $lcnt = false;
-            if($value->sla_plan['title'] != self::NOSLAPLAN) {
-                if($value->reply_deadline != 'cleared') {
-                    $nowDate = Carbon::now();
-                    if(!empty($value->reply_deadline)) {
-                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
-                        if($timediff < 0) $lcnt = true;
-                    } else {
-
-                        $rep = Carbon::parse($value->sla_rep_deadline_from);
-                        $dt = explode('.', $value->sla_plan['reply_deadline']);
-                        $rep->addHours($dt[0]);
-
-                        // if(array_key_exists(1, $dt)) {
-                        //     $rep->addMinutes($dt[1]);
-                        // }
-
-                        if(strtotime($rep) < strtotime($nowDate)) {
-                            $lcnt = true;
-                        }
-
-                        // $timediff = $nowDate->diffInSeconds($rep, false);
-                        
-                        // if($timediff < 0){
-                        //     $lcnt = true;
-                        // }
-                        
-                    }
-                }
+            if($value->is_overdue == 0){
+                $dd = $this->getSlaDeadlineFrom($value->id);
+                $value->sla_rep_deadline_from = $dd[0];
+                $value->sla_res_deadline_from = $dd[1];
     
-                if(!$lcnt) {
-                    if($value->resolution_deadline != 'cleared') {
+                $lcnt = false;
+    
+                if($value->sla_plan['title'] != self::NOSLAPLAN) {
+                    if($value->reply_deadline != 'cleared') {
                         $nowDate = Carbon::now();
-                        if(!empty($value->resolution_deadline)) {
-                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                        if(!empty($value->reply_deadline)) {
+                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
                             if($timediff < 0) $lcnt = true;
                         } else {
-                            $rep = Carbon::parse($value->sla_res_deadline_from);
-                            $dt = explode('.', $value->sla_plan['due_deadline']);
+    
+                            $rep = Carbon::parse($value->sla_rep_deadline_from);
+                            $dt = explode('.', $value->sla_plan['reply_deadline']);
                             $rep->addHours($dt[0]);
+    
                             // if(array_key_exists(1, $dt)) {
                             //     $rep->addMinutes($dt[1]);
                             // }
-
+    
                             if(strtotime($rep) < strtotime($nowDate)) {
                                 $lcnt = true;
                             }
-
+    
                             // $timediff = $nowDate->diffInSeconds($rep, false);
-                            // if($timediff < 0) $lcnt = true;
+                            
+                            // if($timediff < 0){
+                            //     $lcnt = true;
+                            // }
+                            
+                        }
+                    }
+        
+                    if(!$lcnt) {
+                        if($value->resolution_deadline != 'cleared') {
+                            $nowDate = Carbon::now();
+                            if(!empty($value->resolution_deadline)) {
+                                $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                                if($timediff < 0) $lcnt = true;
+                            } else {
+                                $rep = Carbon::parse($value->sla_res_deadline_from);
+                                $dt = explode('.', $value->sla_plan['due_deadline']);
+                                $rep->addHours($dt[0]);
+                                // if(array_key_exists(1, $dt)) {
+                                //     $rep->addMinutes($dt[1]);
+                                // }
+    
+                                if(strtotime($rep) < strtotime($nowDate)) {
+                                    $lcnt = true;
+                                }
+    
+                                // $timediff = $nowDate->diffInSeconds($rep, false);
+                                // if($timediff < 0) $lcnt = true;
+                            }
                         }
                     }
                 }
+                
+                // $value->is_overdue = 0;
+                if($lcnt) {
+                    $late_tickets_count++;
+                    $value->is_overdue = 1;
+                    $tkt = Tickets::where('id',$value->id)->first();
+                    $tkt->is_overdue = 1;
+                    $tkt->save();
+                }
             }
             
-            $value->is_overdue = 0;
-            if($lcnt) {
-                $late_tickets_count++;
-                $value->is_overdue = 1;
-            }
         }
         
         $response['message'] = 'Success';
@@ -793,7 +790,7 @@ class HelpdeskController extends Controller
         $response['tickets']= $tickets;
         $response['total_tickets_count']= $total_tickets_count;
         $response['my_tickets_count']= $my_tickets_count;
-        $response['open_tickets_count']= $open_tickets_count;
+        // $response['overdue_tickets_count']= $overdue_tickets_count;
         $response['unassigned_tickets_count']= $unassigned_tickets_count;
         $response['late_tickets_count']= $late_tickets_count;
         $response['closed_tickets_count']= $closed_tickets_count;

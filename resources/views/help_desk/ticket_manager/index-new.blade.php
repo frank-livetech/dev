@@ -129,7 +129,7 @@
                                     <input hidden id="sts" value="{{$sts}}">
                                     <div class="flex-row">
                                         <div class="my-auto" style="text-align: center">
-                                            <a href="javascript:listTickets('total')">
+                                            <a href="javascript:getCounterTickets('total')">
                                             <h2 class="fw-bolder mb-0" id="total_tickets_count"></h2>
                                             <h5 class="card-text font-small-10 mb-0 mt-1 text-info">All Tickets</h5>
                                             </a>
@@ -144,7 +144,7 @@
                                 <div class="card-body">
                                     <div class="flex-row">
                                         <div class="my-auto" style="text-align: center">
-                                            <a href="javascript:listTickets('self')">
+                                            <a href="javascript:getCounterTickets('self')">
                                             <h2 class="fw-bolder mb-0" id="my_tickets_count"></h2>
                                             <h5 class="card-text font-small-10 mb-0 mt-1 text-success">My Tickets</h5>
                                             </a>
@@ -159,7 +159,7 @@
                                 <div class="card-body">
                                     <div class="flex-row">
                                         <div class="my-auto" style="text-align: center">
-                                            <a href="javascript:listTickets('unassigned')">
+                                            <a href="javascript:getCounterTickets('unassigned')">
                                             <h2 class="fw-bolder mb-0" id="unassigned_tickets_count"></h2>
                                             <h5 class="card-text font-small-10 mb-0 mt-1 text-primary">Unassigned</h5>
                                             </a>
@@ -174,9 +174,24 @@
                                 <div class="card-body">
                                     <div class="flex-row">
                                         <div class="my-auto" style="text-align: center">
-                                            <a href="javascript:listTickets('overdue')">
+                                            <a href="javascript:getCounterTickets('overdue')">
                                             <h2 class="fw-bolder mb-0" id="closed_tickets_count"></h2>
                                             <h5 class="card-text font-small-10 mb-0 mt-1 text-danger">Overdue</h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-2 col-lg-2">
+                            <div class="card border-danger">
+                                <div class="card-body">
+                                    <div class="flex-row">
+                                        <div class="my-auto" style="text-align: center">
+                                            <a href="javascript:getCounterTickets('flagged')">
+                                            <h2 class="fw-bolder mb-0" id="flagged_tickets_count"></h2>
+                                            <h5 class="card-text font-small-10 mb-0 mt-1 text-danger">Flagged</h5>
                                             </a>
                                         </div>
                                     </div>
@@ -550,6 +565,8 @@
 
     let url_type = {!! json_encode($url_type) !!};
     let get_tickets_route = "{{asset('/get-tickets')}}";
+    let get_counter_tickets = "{{asset('/get-counter-tickets')}}";
+    
     let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
 
 </script>
