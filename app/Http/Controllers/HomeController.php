@@ -67,27 +67,28 @@ class HomeController extends Controller
         $notifications = Notification::read();
         $open_status = TicketStatus::where('name','Open')->first();
 
-        $helpdesk = new HelpdeskController();
+        // $helpdesk = new HelpdeskController();
         // echo "<pre>";
-        $tickets = json_decode(json_encode($helpdesk->getTickets()), true);
+        // $tickets = json_decode(json_encode($helpdesk->getTickets()), true);
 
 
 
         // print_r($tickets['original']['open_tickets_count']);exit;
         
-        // $open_tickets_count = Tickets::where('status', $open_status->id)->where('is_deleted', 0)->count();
-        // $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->count();
-        // $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->count();
-        $total_tickets_count = $tickets['original']['total_tickets_count'];
-        $open_tickets_count = $tickets['original']['open_tickets_count'];
-        $unassigned_tickets_count = $tickets['original']['unassigned_tickets_count'];
-        $my_tickets_count = $tickets['original']['my_tickets_count'];
+        $open_tickets_count = Tickets::where('status', $open_status->id)->where('is_deleted', 0)->count();
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->count();
+        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->count();
+        $total_tickets_count = Tickets::where('is_deleted', 0)->count();
+        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->count();
+        // $open_tickets_count = $tickets['original']['open_tickets_count'];
+        // $unassigned_tickets_count = $tickets['original']['unassigned_tickets_count'];
+        // $my_tickets_count = $tickets['original']['my_tickets_count'];
 
-        if( array_key_exists('late_tickets_count', $tickets['original'])) {
-            $late_tickets_count = $tickets['original']['late_tickets_count'];
-        }else{
-            $late_tickets_count = 0;
-        }
+        // if( array_key_exists('late_tickets_count', $tickets['original'])) {
+        //     $late_tickets_count = $tickets['original']['late_tickets_count'];
+        // }else{
+        //     $late_tickets_count = 0;
+        // }
 
 
         $clockin = StaffAttendance::where('user_id',\Auth::user()->id)->where('clock_out',NULL)->first();
