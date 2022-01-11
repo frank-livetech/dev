@@ -261,7 +261,7 @@
                                                         <th class='pr-due'>Resolution Due</th>
                                                         <th class='pr-tech custom-cst'>Assigned Tech</th>
                                                         <th class='custom-cst'>Department</th>
-                                                        <th class='pr-tech custom-cst'>Creation Date</th>
+                                                        <!-- <th class='pr-tech custom-cst'>Creation Date</th> -->
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>

@@ -488,13 +488,13 @@ class HelpdeskController extends Controller
         }
 
         $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->count();
+        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
-        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->count();
-        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->count();
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
-        $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
-        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->count();
+        $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
 
         foreach($tickets as $value) {
             $value->tech_name = 'Unassigned';
@@ -676,13 +676,13 @@ class HelpdeskController extends Controller
         }
 
         $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->count();
+        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
-        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->count();
-        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->count();
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
-        $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
-        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->count();
+        $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->count();
+        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         
         foreach($tickets as $value) {
             $value->tech_name = 'Unassigned';

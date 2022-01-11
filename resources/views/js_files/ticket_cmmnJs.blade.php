@@ -338,8 +338,10 @@ function redrawTicketsTable(ticket_arr) {
             <td class='text-center'>${res_due}</td>
             <td>${val['tech_name']}</td>
             <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
-            <td>${ jsTimeZone(val['created_at']) }</td>
+            
         </tr>`;
+// date col commented out
+        // <td>${ jsTimeZone(val['created_at']) }</td>
         
         tickets_table_list.row.add($(row)).draw();
     });
