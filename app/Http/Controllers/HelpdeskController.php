@@ -1024,10 +1024,10 @@ class HelpdeskController extends Controller
 
         $open_tickets_count = 0;
         $closed_tickets_count = 0;
-        foreach ($tickets as $key => $value) {
-            if($value->status == $open_status->id) $open_tickets_count++;
-            if($value->status == $closed_status->id) $closed_tickets_count++;
-        }
+        // foreach ($tickets as $key => $value) {
+        //     if($value->status == $open_status->id) $open_tickets_count++;
+        //     if($value->status == $closed_status->id) $closed_tickets_count++;
+        // }
         
         $bbcode = new BBCode();
 
