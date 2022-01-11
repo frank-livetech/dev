@@ -350,7 +350,7 @@
                             }).then((result) => {
                                 if (result.value) {
                                     tinyMCE.activeEditor.setContent('');
-                                    tinyMCE.activeEditor.setContent(res[0].temp_html ? res[0].temp_html + content : '');
+                                    tinyMCE.activeEditor.setContent(res[0].temp_html ? res[0].temp_html : '');
                                 }
                             });
                         }

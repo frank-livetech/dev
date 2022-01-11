@@ -183,7 +183,7 @@ $('#res-template').change(function() {
             confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.value) {
-                tinymce.activeEditor.setContent(res.temp_html ? res.temp_html + content : '');
+                tinymce.activeEditor.setContent(res.temp_html ? res.temp_html : '');
             }
         });
     }
