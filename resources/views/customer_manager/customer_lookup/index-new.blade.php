@@ -229,10 +229,10 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 form-group">
+                                    <!-- <div class="col-md-6 form-group">
                                         <label for="email" class="small">Email <span class="text-danger">*</span></label>
                                         <input type="email" class="form-control" name="company_email" id="cmp_email">
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-6 form-group">
                                         <label for="phone" class="small">Phone</label>
                                         <input type="tel" class="form-control" id="cmp_phone">

@@ -733,6 +733,10 @@
                 url: "{{url('update_company_profile')}}",
                 data: form_data,
                 dataType:'json',
+                beforeSend:function() {
+                    $("#comp_pro_btn").show();
+                    $("#comp_update_Btn").hide();
+                },
                 success: function (data) {
                     console.log(data);
                     // values();
@@ -771,15 +775,17 @@
                     $("#web").attr('href', $("#update_website").val());
 
                 },
+                complete:function() {
+                    $("#comp_pro_btn").hide();
+                    $("#comp_update_Btn").show();
+                },  
                 error: function (e) {
                     console.log(e);
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: e.responseJSON.errors.email[0],
-                        showConfirmButton: false,
-                        timer: 2500
-                    })
+                    $("#comp_pro_btn").hide();
+                    $("#comp_update_Btn").show();
+                    if(e.responseJSON.errors.email) {
+                        toastr.error(e.responseJSON.errors.email[0], { timeOut: 5000 });
+                    }
                 }
             });
         }

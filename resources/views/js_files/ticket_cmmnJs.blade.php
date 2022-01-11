@@ -74,7 +74,7 @@ function get_ticket_table_list() {
         dataType: 'json',
         cache: false,
         success: function(data) {
-            // console.log(data, "data");
+            console.log(data, "data 123123123");
             date_formate = data.date_format;
             // console.log(data.tickets);
             ticketsList = data.tickets;

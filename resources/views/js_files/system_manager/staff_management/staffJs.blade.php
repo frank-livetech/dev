@@ -529,7 +529,7 @@ function get_all_staff_members() {
                             "render": function(data, type, full, meta) {
                                 return `
                                 <button type="button" role="button" class="btn btn-circle btn-danger text-white" title="Delete User" 
-                                    onclick="deleteUsers(`+full.id+`)"><i class="fa fa-trash pt-1"  aria-hidden="true"></i></button>
+                                    onclick="deleteUsers(`+full.id+`)"><i class="fa fa-trash"  aria-hidden="true"></i></button>
                                 `;
                             }
                         },

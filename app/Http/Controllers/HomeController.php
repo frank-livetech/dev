@@ -111,7 +111,6 @@ class HomeController extends Controller
         }])->get();
 
         $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
-
         // return view('dashboard',compact('staff_inactive_count','staff_active_count','staff_count','staff_att_data','clockin','notifications','customers','project','total_tickets_count','open_tickets_count', 'unassigned_tickets_count', 'my_tickets_count', 'late_tickets_count','orders','users','ticket_follow_ups','live'));
         return view('dashboard-new',compact('staff_inactive_count','staff_active_count','staff_count','staff_att_data','clockin','notifications','customers','project','total_tickets_count','open_tickets_count', 'unassigned_tickets_count', 'my_tickets_count', 'late_tickets_count','orders','users','ticket_follow_ups','live'));
     

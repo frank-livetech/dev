@@ -67,11 +67,8 @@ class HomeController
 
 
     public function profile($name,$type = null) {
-
         $user = User::where('id', \Auth::user()->id)->first();
         $customer_id = Customer::where('email',$user->email)->first();
-        // return $customer_id->id;
-        
         $customer = Customer::with('company')->where('id',$customer_id->id)->first();
         if(!empty($customer)) {
             $credential = User::where('email', $customer->email)->first();
@@ -229,7 +226,15 @@ class HomeController
         return view('customer.customer_tkt.customer_tkt',compact('departments','priorities','users','types','customers', 'responseTemplates', 'page_control'));
     }
 
-    public function getCustomerTickets($customer_id) {
+    public function getCustomerTickets() {
+        $customer =  Customer::where('email' , auth()->user()->email)->first();
+
+        $open_status = TicketStatus::where('name','Open')->first();
+
+        $open_tickets_count = 0;
+        $late_tickets_count = 0;
+        $my_tickets_count = 0;
+        $unassigned_tickets_count = 0;
         $tickets = DB::Table('tickets')
         ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'))
         ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -237,12 +242,118 @@ class HomeController
         ->join('ticket_types','ticket_types.id','=','tickets.type')
         ->join('departments','departments.id','=','tickets.dept_id')
         ->join('customers','customers.id','=','tickets.customer_id')
-        ->where('tickets.customer_id', $customer_id)
+        ->where('tickets.customer_id', $customer->id)
         ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->get();
-        
 
-        return $tickets;
+
+        foreach($tickets as $value) {
+
+            $value->tech_name = 'Unassigned';
+            if(!empty($value->assigned_to)) {
+                $u = User::where('id', $value->assigned_to)->first();
+                if(!empty($u)) $value->tech_name = $u->name;
+            }
+            else $unassigned_tickets_count++;
+
+            $rep = TicketReply::where('ticket_id', $value->id)->orderBy('created_at', 'desc')->first();
+            $repCount = TicketReply::where('ticket_id', $value->id)->count();
+            $value->lastReplier = '';
+            $value->replies = '';
+            if(!empty($rep)) {
+                if($rep['user_id']) {
+                    $user = User::where('id', $rep['user_id'])->first();
+                    if(!empty($user)) $value->lastReplier = $user->name;
+                } else if($rep['customer_id']) {
+                    $user = Customer::where('id', $rep['customer_id'])->first();
+                    if(!empty($user)) $value->lastReplier = $user->first_name.' '.$user->last_name;
+                }
+                $value->replies = $repCount;
+            }
+
+            if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
+            if($value->status == $open_status->id) $open_tickets_count++;
+
+            $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
+
+            $value->sla_plan = $this->getTicketSlaPlan($value->id);
+            
+            $dd = $this->getSlaDeadlineFrom($value->id);
+            $value->sla_rep_deadline_from = $dd[0];
+            $value->sla_res_deadline_from = $dd[1];
+
+            $lcnt = false;
+            if($value->sla_plan['title'] != self::NOSLAPLAN) {
+                if($value->reply_deadline != 'cleared') {
+                    $nowDate = Carbon::now();
+                    if(!empty($value->reply_deadline)) {
+                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
+                        if($timediff < 0) $lcnt = true;
+                    } else {
+
+                        $rep = Carbon::parse($value->sla_rep_deadline_from);
+                        $dt = explode('.', $value->sla_plan['reply_deadline']);
+                        $rep->addHours($dt[0]);
+
+                        // if(array_key_exists(1, $dt)) {
+                        //     $rep->addMinutes($dt[1]);
+                        // }
+
+                        if(strtotime($rep) < strtotime($nowDate)) {
+                            $lcnt = true;
+                        }
+
+                        // $timediff = $nowDate->diffInSeconds($rep, false);
+                        
+                        // if($timediff < 0){
+                        //     $lcnt = true;
+                        // }
+                        
+                    }
+                }
+    
+                if(!$lcnt) {
+                    if($value->resolution_deadline != 'cleared') {
+                        $nowDate = Carbon::now();
+                        if(!empty($value->resolution_deadline)) {
+                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                            if($timediff < 0) $lcnt = true;
+                        } else {
+                            $rep = Carbon::parse($value->sla_res_deadline_from);
+                            $dt = explode('.', $value->sla_plan['due_deadline']);
+                            $rep->addHours($dt[0]);
+                            // if(array_key_exists(1, $dt)) {
+                            //     $rep->addMinutes($dt[1]);
+                            // }
+
+                            if(strtotime($rep) < strtotime($nowDate)) {
+                                $lcnt = true;
+                            }
+
+                            // $timediff = $nowDate->diffInSeconds($rep, false);
+                            // if($timediff < 0) $lcnt = true;
+                        }
+                    }
+                }
+            }
+            
+            $value->is_overdue = 0;
+            if($lcnt) {
+                $late_tickets_count++;
+                $value->is_overdue = 1;
+            }
+        }
+        
+        $response['message'] = 'Success';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        $response['tickets']= $tickets;
+        $response['total_tickets_count']= count($tickets);
+        $response['open_tickets_count']= $open_tickets_count;
+        $response['late_tickets_count']= $late_tickets_count;
+        return response()->json($response);
     }
+
+    
 
     
     public function get_tkt_details($id) {
@@ -423,4 +534,151 @@ class HomeController
             throw new Exception($e->getMessage());
         }
     }
+
+
+    // save company
+    public function saveCompany (Request $request) {
+        $check_company = Company::where('email',$request->email)->first();
+
+        if($check_company) {
+
+            return response()->json([
+                "message" =>  'Email Already Taken try another one!',
+                "status_code" => 500,
+                "success" => false,
+            ]);
+
+        }else{
+
+            $data = array(
+                "poc_first_name" => $request->poc_first_name ,
+                "poc_last_name" => $request->poc_last_name ,
+                "name" => $request->name ,
+                "email" => $request->email ,
+                "phone" => $request->phone ,
+            );
+
+            $company = Company::create($data);
+
+            $response['message'] = 'Company Added Successfully!';
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['result'] = $company->id;
+            return response()->json($response);
+        }
+    }
+
+    // update customer
+    public function update_customer_profile(Request $request) {
+
+        // return dd($request->all());
+
+        $data = array(
+            "email" => $request->email,
+            "phone" => $request->phone,
+
+            "address" => $request->address,
+            "apt_address" => $request->apt_address,
+            "company_id" => $request->company_id,
+            "cust_type" => $request->cust_type,
+            "country" => $request->country,
+
+            "cust_state" => $request->state,
+            "cust_city" => $request->city,
+            "cust_zip" => $request->zip,
+            "fb" => $request->fb,
+            "twitter" => $request->twitter,
+
+            "insta" => $request->insta,
+            "pinterest" => $request->pinterest,
+            "linkedin" => $request->linkedin,
+            "bill_st_add" => $request->bill_st_add,
+            "bill_apt_add" => $request->bill_apt_add,
+
+            "bill_add_country" => $request->bill_add_country,
+            "bill_add_state" => $request->bill_add_state,
+            "bill_add_city" => $request->bill_add_city,
+            "bill_add_zip" => $request->bill_add_zip,
+            "is_bill_add" => $request->is_bill_add,
+
+        );
+
+        $customer = Customer::find($request->customer_id);
+        $old_email = $customer->email;
+
+        if($old_email != $request->email) {
+            $request->validate([
+                "email" => "required|email|unique:customers",
+            ]);
+        }
+
+        if($request->has('first_name')) {
+            if(empty(trim($customer->first_name))) {
+                response()->json([
+                    'message' => 'Please enter valid first name!',
+                    'status_code' => 500,
+                    'success' => false
+                ]);
+            }
+            $data['first_name'] = $request->first_name;
+        }
+        if($request->has('last_name')) {
+            if(empty(trim($customer->first_name))) {
+                response()->json([
+                    'message' => 'Please enter valid last name!',
+                    'status_code' => 500,
+                    'success' => false
+                ]);
+            }
+            $data['last_name'] = $request->last_name;
+        };
+
+        if($request->customer_login) {
+            $data['has_account'] = $request->customer_login;
+        }
+        $customer = Customer::where('id', $request->customer_id)->update($data);
+        if($customer) {
+            $is_user = User::where("email", $old_email)->first();
+
+            $pwd = Str::random(15);
+            if($request->has('password')) {
+                if(!empty($request->password)) {
+                    $pwd = $request->password;
+                }
+            }
+
+            if($is_user) {
+                $data = ["email" => $request->email];
+
+                if($request->has('password')) {
+                    if(!empty($request->password) && $request->password != Crypt::decryptString($is_user->alt_pwd)) {
+                        $data["password"] = Hash::make($request->password);
+                        $data["alt_pwd"] = Crypt::encryptString($request->password);
+                    }
+                }
+                DB::table("users")->where("email", $old_email)->update($data);
+            } else {
+                if($request->has('customer_login')) {
+                    if($request->customer_login == 1) {
+                        DB::table("users")->insert([
+                            "name" => $request->first_name . " " . $request->last_name,
+                            "email" => $request->email,
+                            "password" => Hash::make($pwd),
+                            "alt_pwd" => Crypt::encryptString($pwd),
+                            "user_type" => 5,
+                            "status" => 1
+                        ]);
+                        
+                    }
+                }
+            }
+        }
+            
+        return response()->json([
+            'status_code' => 200, 
+            'success' => true, 
+            'message' => 'Customer updated successfully!',
+        ]);
+    }
+
 }

@@ -567,10 +567,22 @@ class AuthController extends Controller
                         Session::put('is_live', 0);
                     }
 
+                    $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
+                    if($system_format) {
+                        Session::put('system_date', $system_format->sys_value);
+                    }else{
+                        Session::put('system_date', 'YYYY-MM-DD');
+                    }
+
+                    $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+                    if($timezone) {
+                        Session::put('timezone', $timezone->sys_value);
+                    }else{
+                        Session::put('timezone', 'America/New_York');
+                    }
+
                     if (\Auth::user()->user_type == 5) {
-
                         return redirect()->intended('myprofile/' . $user->account_id);
-
                     }
                     
                 } else {
