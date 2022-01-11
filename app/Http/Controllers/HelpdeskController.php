@@ -487,7 +487,7 @@ class HelpdeskController extends Controller
             ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
         }
 
-        $total_tickets_count = Tickets::where('is_deleted', 0)->count();
+        $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->count();
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->count();
         // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
         $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->count();
