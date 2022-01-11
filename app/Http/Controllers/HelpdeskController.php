@@ -639,6 +639,10 @@ class HelpdeskController extends Controller
             ->when(empty($statusOrUser), function($q) use($closed_status_id) {
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
             })
+            ->when($statusOrUser == 'total', function($q) use($closed_status_id) {
+                
+                return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
+            })
             ->where('tickets.is_deleted', 0)->orderBy('tickets.id', 'desc')->get();
         
         } else {
