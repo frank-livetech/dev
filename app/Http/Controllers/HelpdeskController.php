@@ -1013,9 +1013,14 @@ class HelpdeskController extends Controller
         $closed_status = TicketStatus::where('name','Closed')->first();
 
         $home = new HomeController();
-        $tickets = $home->getCustomerTickets($ticket_customer->id);
+        // if($ticket_customer){
+        //     $tickets = $home->getCustomerTickets($ticket_customer->id);
+        // }else{
+        // }
 
-        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+
+
+        $total_tickets_count = 0;
 
         $open_tickets_count = 0;
         $closed_tickets_count = 0;
