@@ -623,9 +623,7 @@ class HelpdeskController extends Controller
             ->when($statusOrUser == 'self', function($q) use($id) {
                 return $q->where('tickets.assigned_to', \Auth::user()->id);
             })
-            ->when($statusOrUser == 'self', function($q) use($id) {
-                return $q->where('tickets.assigned_to', \Auth::user()->id);
-            })
+         
             ->when($statusOrUser == 'unassigned', function($q) use($id) {
                 return $q->whereNull('tickets.assigned_to');
             })
@@ -641,7 +639,7 @@ class HelpdeskController extends Controller
             ->when(empty($statusOrUser), function($q) use($closed_status_id) {
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
             })
-            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.id', 'desc')->get();
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.id', 'desc')->get();
         
         } else {
             $aid = \Auth::user()->id;
@@ -790,6 +788,7 @@ class HelpdeskController extends Controller
         $response['tickets']= $tickets;
         $response['total_tickets_count']= $total_tickets_count;
         $response['my_tickets_count']= $my_tickets_count;
+        $response['flagged_tickets_count']= $flagged_tickets_count;
         // $response['overdue_tickets_count']= $overdue_tickets_count;
         $response['unassigned_tickets_count']= $unassigned_tickets_count;
         $response['late_tickets_count']= $late_tickets_count;
