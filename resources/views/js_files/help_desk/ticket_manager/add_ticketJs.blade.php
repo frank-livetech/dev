@@ -89,10 +89,10 @@
                 event.preventDefault();
 
                 var ticket_detail = $('#ticket_detail').val();                
-                if( ticket_detail.includes('&nbsp;') ) {
-                    toastr.error('Please Remove spaces from problem details', { timeOut: 5000 });
-                    return false;
-                }
+                // if( ticket_detail.includes('&nbsp;') ) {
+                //     toastr.error('Please Remove spaces from problem details', { timeOut: 5000 });
+                //     return false;
+                // }
 
                 let fileSizeErr = false;
                 $('.ticket_attaches').each(function(index) {
