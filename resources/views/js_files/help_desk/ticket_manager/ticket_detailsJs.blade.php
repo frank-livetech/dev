@@ -56,6 +56,8 @@
 
     var set_sla_plan_route = "{{asset('/set-sla-plan')}}";
 
+    console.log(ticket);
+    
     $( document ).ready(function() {
        
 

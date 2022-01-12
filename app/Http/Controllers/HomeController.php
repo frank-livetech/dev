@@ -79,7 +79,7 @@ class HomeController extends Controller
         $open_tickets_count = Tickets::where('status', $open_status->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $total_tickets_count = Tickets::where('is_deleted', 0)->count()->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
+        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         // $open_tickets_count = $tickets['original']['open_tickets_count'];
         // $unassigned_tickets_count = $tickets['original']['unassigned_tickets_count'];
