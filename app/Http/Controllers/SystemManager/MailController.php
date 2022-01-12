@@ -935,6 +935,11 @@ class MailController extends Controller
                 if(!empty($user)) $action_by = \Auth::user()->name;
                 $template = str_replace('{Ticket-Action}', $action_name.' by '.$action_by, $template);
             }
+
+            if(str_contains($template, '{Ticket-Updated-By}')){
+                if(!empty($user)) $action_by = \Auth::user()->name;
+                $template = str_replace('{Ticket-Updated-By}', $action_name.' by '.$action_by, $template);
+            }
         }
         
         if(str_contains($template, '{Ticket-Content}')) {
