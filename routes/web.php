@@ -96,6 +96,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/update_feature','FeatureController@update_feature');
     //Setting Routess
     Route::get('/settings','SettingsController@settings')->name('settings.index');
+    Route::get('/settings-new','SettingsController@settingsNew')->name('settings.index-new');
     //Response Category Crud
 
     Route::post('/add_cat','SettingsController@addResponseCategory');

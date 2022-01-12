@@ -252,7 +252,7 @@
                                                                         </div>
                                                                         <div class="col-md-4 ">
                                                                             <div class="row float-end">
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                     @if(sizeOf($sla_setting) > 0)
                                                                                         @if($sla_setting['reply_due_deadline'] == 1)
                                                                                             <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault12" checked>
@@ -267,7 +267,7 @@
                                                                                     @endif
                                                                                     
                                                                                 </div>
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     @if($sla_setting['reply_due_deadline'] == 0)
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault22" value="0" checked>
@@ -293,7 +293,7 @@
                                                                         </div>
                                                                         <div class="col-md-4 ">
                                                                             <div class="row float-end">
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     @if($sla_setting['default_reply_and_resolution_deadline'] == 1)
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault13" checked>
@@ -307,7 +307,7 @@
                                                                                     <label class="form-check-label" for="flexRadioDefault13"> Yes </label>
                                                                                 @endif
                                                                                 </div>
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     @if($sla_setting['default_reply_and_resolution_deadline'] == 0)
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault23" value="0" checked>
@@ -333,7 +333,7 @@
                                                                         <div class="col-md-4 ">
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
-                                                                                <div class="col-md-6 form-group ml-3">
+                                                                                <div class="col-md-6 form-group mx-2">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     <input class="form-control" value="{{$sla_setting['default_reply_time_deadline']}}" name="default_reply_time_deadline" type="number" placeholder="24" name="" id="default_reply_time_deadline" placeholder="">
                                                                                 @else
@@ -352,7 +352,7 @@
                                                                         <div class="col-md-4 ">
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
-                                                                                <div class="col-md-6 form-group ml-3">
+                                                                                <div class="col-md-6 form-group mx-2">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     <input class="form-control" value="{{$sla_setting['default_resolution_deadline']}}" name="default_resolution_deadline" type="number" placeholder="72" name="" id="default_resolution_deadline">
                                                                                 @else
@@ -414,18 +414,18 @@
                                                                             <div class="row float-end">
                                                                             @if(sizeOf($sla_setting) > 0)
                                                                                 @if($sla_setting['reply_due_deadline_when_adding_ticket_note'] == 1)
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault14" checked>
                                                                                     <label class="form-check-label" for="flexRadioDefault14"> Yes </label>
                                                                                 </div>
                                                                                 @else
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault14" checked>
                                                                                     <label class="form-check-label" for="flexRadioDefault14"> Yes </label>
                                                                                 </div>
                                                                                 @endif
                                                                             @else
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault14" checked>
                                                                                     <label class="form-check-label" for="flexRadioDefault14"> Yes </label>
                                                                                 </div>
@@ -433,18 +433,18 @@
 
                                                                             @if(sizeOf($sla_setting) > 0)
                                                                                 @if($sla_setting['reply_due_deadline_when_adding_ticket_note'] == 0)
-                                                                                    <div class="form-check ml-3">
+                                                                                    <div class="form-check mx-2">
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault24" checked>
                                                                                         <label class="form-check-label" for="flexRadioDefault24"> No </label>
                                                                                     </div>
                                                                                 @else
-                                                                                    <div class="form-check ml-3">
+                                                                                    <div class="form-check mx-2">
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault24">
                                                                                         <label class="form-check-label" for="flexRadioDefault24"> No </label>
                                                                                     </div>
                                                                                 @endif
                                                                             @else
-                                                                                <div class="form-check ml-3">
+                                                                                <div class="form-check mx-2">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault24">
                                                                                     <label class="form-check-label" for="flexRadioDefault24"> No </label>
                                                                                 </div>
@@ -492,7 +492,7 @@
                                                     </div>
                                                     <div class="widget-body">
                                                         <div class="widget-main">
-                                                            <div class="row">
+                                                            <!-- <div class="row">
                                                                 <div class="col-md-12" style="text-align:right;">
                                                                     <select class="mb-2form-select" name="department_column" id="department_column" placeholder="Show/Hide" multiple="multiple" selected="selected" style="text-align:left;">
                                                                         <option value="0">Sr #</option>
@@ -500,7 +500,7 @@
                                                                         <option value="2">Actions</option>
                                                                     </select>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <table id="ticket-departments-list" class="display table-striped table-bordered ticket-departments-list" style="width:100%">
@@ -553,7 +553,7 @@
                                                     <div class="widget-body">
                                                     
                                                         <div class="widget-main">
-                                                            <div class="row">
+                                                            <!-- <div class="row">
                                                                 <div class="col-md-12" style="text-align:right;">
                                                                     <select class="mb-2form-select" name="status_column" id="status_column" placeholder="Show/Hide" multiple="multiple" selected="selected" style="text-align:left;">
                                                                         <option value="0">Sr #</option>
@@ -561,7 +561,7 @@
                                                                         <option value="2">Action</option>
                                                                     </select>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <table id="ticket-status-list"
@@ -619,13 +619,13 @@
                                                     </div>
                                                     <div class="widget-body">
                                                         <div class="widget-main">
-                                                            <div class="col-md-12" style="text-align:right;">
+                                                            <!-- <div class="col-md-12" style="text-align:right;">
                                                                 <select class="mb-2form-select" name="type_column" id="type_column" placeholder="Show/Hide" multiple="multiple" selected="selected" style="text-align:left;">
                                                                     <option value="0">Sr #</option>
                                                                     <option value="1">Name</option>
                                                                     <option value="2">Action</option>
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
 
                                                             <div class="row">
                                                                 <div class="col-sm-12">
@@ -682,14 +682,14 @@
                                                     </div>
                                                     <div class="widget-body">
                                                         <div class="widget-main">
-                                                            <div class="col-md-12" style="text-align:right;">
+                                                            <!-- <div class="col-md-12" style="text-align:right;">
                                                                 <select class="mb-2form-select" name="priority_column" id="priority_column" placeholder="Show/Hide" multiple="multiple" selected="selected" style="text-align:left;">
                                                                     <option value="0">Sr #</option>
                                                                     <option value="1">Name</option>
                                                                     <option value="2">Color</option>
                                                                     <option value="3">Action</option>
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <table id="ticket-priority-list"
@@ -864,11 +864,11 @@
                                                                 </div>
 
                                                                 <div class="row ">
-                                                                    <div class="form-check ml-3">
+                                                                    <div class="form-check mx-2">
                                                                         <input class="form-check-input" type="radio" name="view_access" id="onlyMe">
                                                                         <label class="form-check-label" for="onlyMe"> Show only to Me </label>
                                                                     </div>
-                                                                    <div class="form-check ml-3">
+                                                                    <div class="form-check mx-2">
                                                                         <input class="form-check-input" type="radio" name="view_access" id="allStaff" >
                                                                         <label class="form-check-label" for="allStaff"> Show to all Staff </label>
                                                                     </div>
@@ -1347,11 +1347,11 @@
                                             <div class="col-md-2">
                                                 <div class="form-group">
                                                     <div class="row " style="padding-top:28px;">
-                                                        <div class="form-check ml-3">
+                                                        <div class="form-check mx-2">
                                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked="">
                                                             <label class="form-check-label" for="flexRadioDefault1"> Yes </label>
                                                         </div>
-                                                        <div class="form-check ml-3">
+                                                        <div class="form-check mx-2">
                                                             <input class="form-check-input " type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                                                             <label class="form-check-label" for="flexRadioDefault2"> No </label>
                                                         </div>
@@ -1365,11 +1365,11 @@
                                             <div class="col-md-2">
                                                 <div class="form-group ">
                                                     <div class="row " style="padding-top:28px;">
-                                                        <div class="form-check ml-3">
+                                                        <div class="form-check mx-2">
                                                             <input class="form-check-input" type="radio" name="flexRadio" id="flexRadio1" checked="">
                                                             <label class="form-check-label" for="flexRadio1"> Yes </label>
                                                         </div>
-                                                        <div class="form-check ml-3">
+                                                        <div class="form-check mx-2">
                                                             <input class="form-check-input" type="radio" name="flexRadio" id="flexRadio2">
                                                             <label class="form-check-label" for="flexRadio2"> No </label>
                                                         </div>
@@ -1491,9 +1491,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <button type="submit" id="saveBtn" onclick="saveSystemDateAndTime()" class="btn btn-success">Save</button>
-                                <button style="display:none" id="processing" class="btn btn-success" type="button" disabled><i class="fas fa-circle-notch fa-spin"></i> Processing</button>
+                                <div class="row">
+                                    <div class="col-md-12 text-end mt-2">
+                                        <button type="submit" id="saveBtn" onclick="saveSystemDateAndTime()" class="btn btn-success">Save</button>
+                                        <button style="display:none" id="processing" class="btn btn-success" type="button" disabled><i class="fas fa-circle-notch fa-spin"></i> Processing</button>
+                                    </div>
+                                </div>
                             </form>
 
 
@@ -1535,10 +1538,10 @@
                                                 <div class="form-group">
                                                     <label for="site_title">Site Name</label>
                                                     @if($brand_settings != null )
-                                                        <input class="form-control" type="text" name="site_title" id="site_title"
+                                                        <input class="form-control mb-1" type="text" name="site_title" id="site_title"
                                                         placeholder="" value="{{$brand_settings->site_title}}">
                                                     @else
-                                                        <input class="form-control" type="text" name="site_title" id="site_title"
+                                                        <input class="form-control mb-1" type="text" name="site_title" id="site_title"
                                                         placeholder="">
                                                     @endif
                                                 </div>
@@ -1547,10 +1550,10 @@
                                                 <div class="form-group">
                                                     <label for="site_logo">Logo Title</label>
                                                     @if($brand_settings != null )
-                                                    <input class="form-control" type="text" name="site_logo_title" id="site_logo_title"
+                                                    <input class="form-control mb-1" type="text" name="site_logo_title" id="site_logo_title"
                                                         placeholder="" value="{{$brand_settings->site_logo_title}}">
                                                     @else 
-                                                    <input class="form-control" type="text" name="site_logo_title" id="site_logo_title"
+                                                    <input class="form-control mb-1" type="text" name="site_logo_title" id="site_logo_title"
                                                         placeholder="">
                                                     @endif
 
@@ -1560,9 +1563,9 @@
                                                 <div class="form-group">
                                                     <label for="site_logo">Site Version</label>
                                                     @if($brand_settings != null )
-                                                        <input class="form-control" type="text" name="site_version" id="site_version" placeholder="" value="{{$brand_settings->site_version}}" readonly>
+                                                        <input class="form-control mb-1" type="text" name="site_version" id="site_version" placeholder="" value="{{$brand_settings->site_version}}" readonly>
                                                     @else
-                                                        <input class="form-control" type="text" name="site_version" id="site_version" placeholder="">
+                                                        <input class="form-control mb-1" type="text" name="site_version" id="site_version" placeholder="">
                                                     @endif
 
                                                 </div>
@@ -1571,9 +1574,9 @@
                                                 <div class="form-group">
                                                     <label for="site_domain">Domain for Fake Email Generator</label>
                                                     @if($brand_settings != null )
-                                                        <input class="form-control" type="text" name="site_domain" id="site_domain" placeholder="domain.com" value="{{$brand_settings->site_domain}}">
+                                                        <input class="form-control mb-1" type="text" name="site_domain" id="site_domain" placeholder="domain.com" value="{{$brand_settings->site_domain}}">
                                                     @else
-                                                        <input class="form-control" type="text" name="site_domain" id="site_domain" placeholder="domain.com">
+                                                        <input class="form-control mb-1" type="text" name="site_domain" id="site_domain" placeholder="domain.com">
                                                     @endif
                                                 </div>
                                             </div>
@@ -1586,12 +1589,12 @@
                                                     <div class="input-group mb-3">
 
                                                         <div class="custom-file">
-                                                            <input type="file" class="form-control-file" id="site_logo"
+                                                            <input type="file" class="form-control mb-1" id="site_logo"
                                                                 name="site_logo">
                                                                 <div class="d-flex" style="top: 37px; position: absolute;">
-                                                                    <small id="name13" class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
+                                                                    <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
-                                                            <label class="custom-file-label" for="site_logo">Choose file</label>
+                                                            <!-- <label class="custom-file-label" for="site_logo">Choose file</label> -->
                                                         </div>
                                                         
                                                     </div>
@@ -1603,12 +1606,12 @@
                                                     <label for="departmrnt">Favicon</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
-                                                            <input type="file" class="form-control-file" id="site_favicon"
+                                                            <input type="file" class="form-control mb-1" id="site_favicon"
                                                                 name="site_favicon">
                                                                 <div class="d-flex" style="top: 37px; position: absolute;">
-                                                                    <small id="name13" class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
+                                                                    <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
-                                                            <label class="custom-file-label" for="site_favicon">Choose file</label>
+                                                            <!-- <label class="custom-file-label" for="site_favicon">Choose file</label> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1652,12 +1655,12 @@
                                                     <label for="departmrnt">Login Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
-                                                            <input type="file" class="form-control" id="login_logo"
+                                                            <input type="file" class="form-control mb-1" id="login_logo"
                                                                 name="login_logo">
                                                                 <div class="d-flex" style="top: 37px; position: absolute;">
-                                                                    <small id="name13" class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
+                                                                    <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
-                                                            <label class="custom-file-label" for="login_logo">Choose file</label>
+                                                            <!-- <label class="custom-file-label" for="login_logo">Choose file</label> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1667,12 +1670,12 @@
                                                     <label for="departmrnt">Customer Default Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
-                                                            <input type="file" class="form-control" id="customer_logo"
+                                                            <input type="file" class="form-control mb-1" id="customer_logo"
                                                                 name="customer_logo">
                                                                 <div class="d-flex" style="top: 37px; position: absolute;">
-                                                                    <small id="name13" class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
+                                                                    <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
-                                                            <label class="custom-file-label" for="customer_logo">Choose file</label>
+                                                            <!-- <label class="custom-file-label" for="customer_logo">Choose file</label> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1720,12 +1723,12 @@
                                                     <label for="departmrnt">Company Default Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
-                                                            <input type="file" class="form-control" id="company_logo"
+                                                            <input type="file" class="form-control mb-1" id="company_logo"
                                                                 name="company_logo">
                                                                 <div class="d-flex" style="top: 37px; position: absolute;">
-                                                                    <small id="name13" class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
+                                                                    <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
-                                                            <label class="custom-file-label" for="company_logo">Choose file</label>
+                                                            <!-- <label class="custom-file-label" for="company_logo">Choose file</label> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1735,12 +1738,12 @@
                                                     <label for="departmrnt">Staff Default Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
-                                                            <input type="file" class="form-control" id="user_logo"
+                                                            <input type="file" class="form-control mb-1" id="user_logo"
                                                                 name="user_logo">
                                                                 <div class="d-flex" style="top: 37px; position: absolute;">
-                                                                    <small id="name13" class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
+                                                                    <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
-                                                            <label class="custom-file-label" for="user_logo">Choose file</label>
+                                                            <!-- <label class="custom-file-label" for="user_logo">Choose file</label> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1789,10 +1792,10 @@
                                                 <div class="form-group">
                                                     <label for="site_footer">Footer Copyright</label>
                                                     @if($brand_settings != null)
-                                                    <textarea class="form-control" rows="3" id="site_footer"
+                                                    <textarea class="form-control mb-1" rows="3" id="site_footer"
                                                         name="site_footer">{{$brand_settings->site_footer}}</textarea>
                                                     @else
-                                                    <textarea class="form-control" rows="3" id="site_footer"
+                                                    <textarea class="form-control mb-1" rows="3" id="site_footer"
                                                         name="site_footer"></textarea>
                                                     @endif
                                                 </div>
@@ -1812,8 +1815,10 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <input type="hidden" value="Light" name="mode">
-                                                    <label for="main_sys_back" class="col-sm-5">Main System Background</label>
-                                                    <input type="text" name="main_sys_back" id="main_sys_back" class="form-control demo" value="#f2f7f8">
+                                                    <label for="main_sys_back" class="col-sm-12">Main System Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="main_sys_back" id="main_sys_back" class="form-control demo mb-1" value="#f2f7f8">                                                        
+                                                    </div>
                                                     <!-- <select name="main_sys_back" id="main_sys_back" class="form-control col-sm-6 bg-info" style="color:white;">
                                                         <option > Select </option>
                                                         <option value="bg-danger" class="bg-danger"> Danger </option>
@@ -1828,8 +1833,10 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Header Background</label>
-                                                    <input type="text" name="head_back" id="head_back" class="form-control demo" value="#009efb">
+                                                    <label for="" class="col-sm-12">Header Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="head_back" id="head_back" class="form-control demo mb-1" value="#009efb">                                                        
+                                                    </div>
 
                                                 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
@@ -1837,55 +1844,70 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Card Background</label>
-                                                    <input type="text" name="card_back" id="card_back" class="form-control demo" value="#fff">
+                                                    <label for="" class="col-sm-12">Card Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="card_back" id="card_back" class="form-control demo mb-1" value="#fff">                                                        
+                                                    </div>
                                                 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Table Header Background</label>
-                                                    <input type="text" name="table_head_back" id="table_head_back" class="form-control demo" value="#009efb">
+                                                    <label for="" class="col-sm-12">Table Header Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="table_head_back" id="table_head_back" class="form-control demo mb-1" value="#009efb">                                                        
+                                                    </div>
                                                 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Table Rows</label>
-                                                    <input type="text" name="table_row" id="table_row" class="form-control demo" value="#fff">
+                                                    <label for="" class="col-sm-12">Table Rows</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="table_row" id="table_row" class="form-control demo mb-1" value="#fff">                                                        
+                                                    </div>
                                                 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Main Font Color</label>
-                                                    <input type="text" name="main_font" id="main_font" class="form-control demo" value="#54667a">
+                                                    <label for="" class="col-sm-12">Main Font Color</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="main_font" id="main_font" class="form-control demo mb-1" value="#54667a">                                                        
+                                                    </div>
                                                 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Bread Crumb Background</label>
-                                                    <input type="text" name="bread_crum_back" id="bread_crum_back" class="form-control demo" value="transparent">
+                                                    <label for="" class="col-sm-12">Bread Crumb Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="bread_crum_back" id="bread_crum_back" class="form-control demo mb-1" value="transparent">                                                        
+                                                    </div>
                                                     
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Border Thickness</label>
-                                                    <input type="number" class="form-control col-sm-4" id="border_thick" name="border_thick" value="2">
+                                                    <label for="" class="col-sm-12">Border Thickness</label>
+                                                    <div class="col-md-12">
+                                                        <input type="number" class="form-control mb-1 " id="border_thick" name="border_thick" value="2">
+
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Card Shadow</label>
-                                                    <input type="number" class="form-control col-sm-4" id="card_shadow" name="card_shadow" value="0">
-                                            </div>
+                                                    <label for="" class="col-sm-12">Card Shadow</label>
+                                                    <div class="col-md-12">
+                                                        <input type="number" class="form-control mb-1 " id="card_shadow" name="card_shadow" value="0">
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-12 text-end">
                                                 <button class="btn btn-success" type="submit"> 
@@ -1904,68 +1926,86 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <input type="hidden" value="dark" name="mode">
-                                                    <label for="" class="col-sm-5">Main System Background</label>
-                                                    <input type="text" name="drk_main_sys_back" id="drk_main_sys_back" class="form-control demo" value="#323743 ">
+                                                    <label for="" class="col-sm-12">Main System Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="drk_main_sys_back" id="drk_main_sys_back" class="form-control demo mb-1" value="#323743 ">                                                        
+                                                    </div>
 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Header Background</label>
-                                                    <input type="text" name="drk_header_back" id="drk_header_back" class="form-control demo" value="#323743">
+                                                    <label for="" class="col-sm-12">Header Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="drk_header_back" id="drk_header_back" class="form-control demo mb-1" value="#323743">                                                        
+                                                    </div>
 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Card Background</label>
-                                                    <input type="text" name="drk_card_back" id="drk_card_back" class="form-control demo" value="#252629">
+                                                    <label for="" class="col-sm-12">Card Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="drk_card_back" id="drk_card_back" class="form-control demo mb-1" value="#252629">                                                        
+                                                    </div>
 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Table Header Background</label>
-                                                    <input type="text" name="drk_table_header" id="drk_table_header" class="form-control demo" value="#1E3E53">
+                                                    <label for="" class="col-sm-12">Table Header Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="drk_table_header" id="drk_table_header" class="form-control demo mb-1" value="#1E3E53">                                                        
+                                                    </div>
 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Table Rows</label>
-                                                    <input type="text" name="drk_table_row" id="drk_table_row" class="form-control demo" value="#ffff">
+                                                    <label for="" class="col-sm-12">Table Rows</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="drk_table_row" id="drk_table_row" class="form-control demo mb-1" value="#ffff">                                                        
+                                                    </div>
 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Main Font Color</label>
-                                                    <input type="text" name="drk_main_font" id="drk_main_font" class="form-control demo" value="#d2dae0 ">
+                                                    <label for="" class="col-sm-12">Main Font Color</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="drk_main_font" id="drk_main_font" class="form-control demo mb-1" value="#d2dae0 ">                                                        
+                                                    </div>
 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Border Thickness</label>
-                                                    <input type="number" class="form-control col-sm-4" id="drk_border_thick" name="drk_border_thick" value="2">
+                                                    <label for="" class="col-sm-12">Border Thickness</label>
+                                                    <div class="col-md-12">
+                                                        <input type="number" class="form-control" id="drk_border_thick" name="drk_border_thick" value="2">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Card Shadow</label>
-                                                    <input type="number" class="form-control col-sm-4" id="drk_card_shadow" name="drk_card_shadow" value="0">
+                                                    <label for="" class="col-sm-12">Card Shadow</label>
+                                                    <div class="col-md-12">
+                                                        <input type="number" class="form-control" id="drk_card_shadow" name="drk_card_shadow" value="0">                                                        
+                                                    </div>
                                             </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group row">
-                                                    <label for="" class="col-sm-5">Bread Crumb Background</label>
-                                                    <input type="text" name="drk_bread_crum" id="drk_bread_crum" class="form-control demo" value="transparent">
+                                                    <label for="" class="col-sm-12">Bread Crumb Background</label>
+                                                    <div class="col-md-12">
+                                                    <input type="text" name="drk_bread_crum" id="drk_bread_crum" class="form-control demo mb-1" value="transparent">                                                        
+                                                    </div>
 
                                                     <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                 </div>
@@ -1986,85 +2026,105 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
                                                         <input type="hidden" value="button" name="mode">
-                                                        <label for="" class="col-sm-5">Add Button Background</label>
-                                                        <input type="text" name="add_btn_back" id="add_btn_back" class="form-control demo" value="#39c449">
+                                                        <label for="" class="col-sm-12">Add Button Background</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="add_btn_back" id="add_btn_back" class="form-control demo" value="#39c449">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Font Color</label>
-                                                        <input type="text" name="add_font_color" id="add_font_color" class="form-control demo" value="#fff">
+                                                        <label for="" class="col-sm-12">Font Color</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="add_font_color" id="add_font_color" class="form-control demo" value="#fff">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Delete Button Background</label>
-                                                        <input type="text" name="dlt_btn_back" id="dlt_btn_back" class="form-control demo" value="#f62d51">
+                                                        <label for="" class="col-sm-12">Delete Button Background</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="dlt_btn_back" id="dlt_btn_back" class="form-control demo" value="#f62d51">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Font Color</label>
-                                                        <input type="text" name="dlt_font_clr" id="dlt_font_clr" class="form-control demo" value="#fff">
+                                                        <label for="" class="col-sm-12">Font Color</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="dlt_font_clr" id="dlt_font_clr" class="form-control demo" value="#fff">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">New Button Background</label>
-                                                        <input type="text" name="new_btn_back" id="new_btn_back" class="form-control demo" value="#39c449">
+                                                        <label for="" class="col-sm-12">New Button Background</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="new_btn_back" id="new_btn_back" class="form-control demo" value="#39c449">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Font Color</label>
-                                                        <input type="text" name="new_font_clr" id="new_font_clr" class="form-control demo" value="#fff">
+                                                        <label for="" class="col-sm-12">Font Color</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="new_font_clr" id="new_font_clr" class="form-control demo" value="#fff">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Register Button Background</label>
-                                                        <input type="text" name="reg_btn_back" id="reg_btn_back" class="form-control demo" value="#39c449">
+                                                        <label for="" class="col-sm-12">Register Button Background</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="reg_btn_back" id="reg_btn_back" class="form-control demo" value="#39c449">                                                            
+                                                        </div>
 
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Font Color</label>
-                                                        <input type="text" name="reg_font_clr" id="reg_font_clr" class="form-control demo" value="#fff">
+                                                        <label for="" class="col-sm-12">Font Color</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="reg_font_clr" id="reg_font_clr" class="form-control demo" value="#fff">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Login Button Background</label>
-                                                        <input type="text" name="login_btn_btn" id="login_btn_btn" class="form-control demo" value="#7460ee">
+                                                        <label for="" class="col-sm-12">Login Button Background</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="login_btn_btn" id="login_btn_btn" class="form-control demo" value="#7460ee">                                                            
+                                                        </div>
 
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label for="" class="col-sm-5">Font Color</label>
-                                                        <input type="text" name="login_font_clr" id="login_font_clr" class="form-control demo" value="#fff">
+                                                        <label for="" class="col-sm-12">Font Color</label>
+                                                        <div class="col-md-12">
+                                                        <input type="text" name="login_font_clr" id="login_font_clr" class="form-control demo" value="#fff">                                                            
+                                                        </div>
                                                     
                                                         <!-- <label class="col-sm-3 pt-2">#fffff</label> -->
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 text-end">
+                                                <div class="col-md-12 text-end mt-2">
                                                     <button class="btn btn-success" type="submit"> 
                                                         Save
                                                     </button>
@@ -2384,17 +2444,18 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <div class="row">
-                                                                <div class="form-check ml-3">
+                                                                <div class="form-check mx-2">
                                                                 
                                                                     <input class="form-check-input" type="radio" name="recapNoti" id="recapNoti1" checked="">
                                                                 
                                                                     <label class="form-check-label" for="recapNoti1"> Yes </label>
                                                                 </div>
-                                                                <div class="form-check ml-3">
+                                                                <div class="form-check mx-2">
                                                                     @if($sys_setting != null && $sys_setting[0] != null)
                                                                         <input class="form-check-input " type="radio" name="recapNoti" id="recapNoti2" {{$sys_setting[0]['sys_value'] == 'no' ? 'checked' : ' '}}>
-                                                                    @endif
-                                                                    <label class="form-check-label" for="recapNoti2"> No </label>
+                                                                        <label class="form-check-label" for="recapNoti2"> No </label>
+                                                                        @endif
+                                                                   
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2413,7 +2474,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <input type="text" id="tag_emails" value="{{$sys_setting[1]['sys_value']}}" class="form-control" placeholder="Email"  data-role="tagsinput">
-                                                                    <small class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Press Enter for next email</small>
+                                                                    <small class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Press Enter for next email</small>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2454,7 +2515,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <input type="text" id="tag_emails" class="form-control" placeholder="Email"  data-role="tagsinput">
-                                                                    <small class="badge badge-default badge-danger form-text text-white">Note</small><small style="padding-left: 6px;padding-top: 3px;">Press Enter for next email</small>
+                                                                    <small class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Press Enter for next email</small>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2484,8 +2545,11 @@
                                                     </div>
                                                 @endif
                                             @endif
-
-                                            <button class="btn btn-success btn-sm rounded ml-2"> <i class="fas fa-check-circle"></i> Save</button>
+                                            <div class="row">
+                                                <div class="col-md-12-text-end mt-1">
+                                                    <button class="btn btn-success btn-sm rounded ml-2"> <i class="fas fa-check-circle"></i> Save</button>
+                                                </div>
+                                            </div>
 
                                         </form>
 
@@ -2580,7 +2644,7 @@
 
                             <div class="row">
                                 <form class="col-12" id="save_payroll_settings" action="{{asset('save_payroll_settings')}}" method="post">
-                                    <div class="row">
+                                    <div class="row mb-1">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="security">General Note For Staff :</label>
@@ -2592,7 +2656,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mb-1">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="security">Note For Selected Staff :</label>
@@ -2604,7 +2668,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mb-1">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="security">Selected Staff Members :</label>
@@ -2621,7 +2685,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row mt-2" >
                                         <div class="col-12 text-end">
                                             <button class="btn btn-primary" type="submit" onsubmit="return false;">Save</button>
                                         </div>
@@ -2638,36 +2702,36 @@
     <div id="save-department" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-info p-3">
-                    <h2 id="dept" style="color:#fff; margin-bottom:0;">Add Department</h2>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dept" >Add Department</h5>
                  
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="widget-box widget-color-dark user-form" id="save_department" action="{{asset('save-department')}}" method="post">
                         <div class="form-group">
-                            <label for="departmrnt" class="d-flex mb-2 align-items-center">
+                            <label for="departmrnt" class="d-flex mb-1 align-items-center">
                                 <span>Department Name</span>
-                                <div class="ml-auto">
+                                <div class="mx-1">
                                     <input type="checkbox" checked data-on-color="warning" data-off-color="danger" data-on-text="Enabled" data-off-text="Disabled" id="dept_is_enabled">
                                 </div>
                             </label>
-                            <input class="form-control" type="text" name="name" id="dep_name" placeholder="" required>
+                            <input class="form-control mb-1 type="text" name="name" id="dep_name" placeholder="" required>
                             <input class="form-control" type="text" name="dep_id" id="dep_id" hidden>
                         </div>
                         <div class="form-group">
-                            <label for="departmrnt" class="d-flex mb-2 align-items-center">
+                            <label for="departmrnt" class="d-flex mb-1 align-items-center">
                                 <span>Department Slug</span>
                             </label>
-                            <input class="form-control" type="text" name="dept_slug" id="dept_slug" placeholder="" required>
+                            <input class="form-control mb-1" type="text" name="dept_slug" id="dept_slug" placeholder="" required>
                         </div>
-                        <label for="departmrnt" class="d-flex mb-2 align-items-center">
+                        <label for="departmrnt" class="d-flex mb-1 align-items-center">
                             <span>Show Counter</span>
-                            <div class="ml-auto">
+                            <div class="mx-1">
                                 <input type="checkbox" name="dept_counter" id="dept_counter">
                             </div>
                         </label>
-                        <div class="form-group text-center">
+                        <div class="form-group text-end mt-2">
                             <button type="Submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -2680,8 +2744,8 @@
     <div id="save-status" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-info p-3">
-                    <h2 id="stat" style="color:#fff;"></h2>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="stat" ></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2722,7 +2786,7 @@
                             </div>
                         </label>
 
-                        <div class="form-group text-center">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-primary">Save</button>
                         </div>
                     </form>
@@ -2735,8 +2799,8 @@
     <div id="save-type" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-info p-3">
-                    <h2 id="typeh2" style="color:#fff;">Add Type</h2>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="typeh2" >Add Type</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2757,7 +2821,7 @@
 
 
                         </div>
-                        <div class="form-group text-center">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -2770,8 +2834,8 @@
     <div id="save-priority" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-info p-3">
-                    <h2 id="prior" style="color:#fff;">Add Priority</h2>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="prior" >Add Priority</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2796,7 +2860,7 @@
                             <input class="form-control" type="color" name="priority_color" id="priority_color" placeholder="Priority Color">
                         </div>
 
-                        <div class="form-group text-center">
+                        <div class="form-group text-end mt-2">
                             <button class="btn btn-rounded btn-success" type="submit">Save</button>
                         </div>
                     </form>
@@ -2809,8 +2873,8 @@
     <div id="save-mail" class="modal fade" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-info p-3">
-                    <h2 style="color:#fff;" id="modalheader">Add New Mail</h2>
+                <div class="modal-header">
+                    <h5 class="modal-title"  id="modalheader">Add New Mail</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2945,7 +3009,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="form-group text-end">
+                    <div class="form-group text-end mt-2">
                         <button class="btn btn-rounded btn-primary" onclick="verify_connection(this, 'add')" style="float:left !important;">Verify Connection</button>
                         <button class="btn btn-rounded btn-success" onclick="save_pop3_mail()">Save</button>
                         <button class="btn btn-rounded btn-primary" onclick="verify_save_pop3_mail()">Verify & Save</button>
@@ -2960,8 +3024,8 @@
     <div id="edit_email_modal" class="modal fade" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-info p-3">                    
-                    <h2 style="color:#fff;" id="modalheader">Edit Mail</h2>
+                <div class="modal-header">                    
+                    <h5 class="modal-title" id="modalheader">Edit Mail</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -3096,7 +3160,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="form-group text-end">
+                    <div class="form-group text-end mt-2">
                         <button class="btn btn-rounded btn-primary" onclick="verify_connection(this, 'edit')" style="float:left !important;">Verify Connection</button>
                         <button class="btn btn-rounded btn-success" onclick="updateEmailQueue()">Save</button>
                         <button class="btn btn-rounded btn-primary">Verify & Save</button>
@@ -3114,8 +3178,8 @@
     <div id="save-customer-type" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                    <div class="modal-header bg-info p-3">                    
-                        <h2 id="customer_typeh2" style="color:#fff;">Add Type</h2>
+                    <div class="modal-header">                    
+                        <h5 class="modal-title" id="customer_typeh2"  >Add Type</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -3127,7 +3191,7 @@
                             <input class="form-control" type="text" name="name" id="customer_type_name" placeholder="">
                             <input class="form-control" type="text" name="customer_type_id" id="customer_type_id" hidden>
                         </div>
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -3140,8 +3204,8 @@
     <div id="save-dispatch-status" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                    <div class="modal-header bg-info p-3">                    
-                        <h2 id="dispatch_statush2" style="color:#fff;">Add Status</h2>
+                    <div class="modal-header">                    
+                        <h5 class="modal-title" id="dispatch_statush2" >Add Status</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -3153,7 +3217,7 @@
                             <input class="form-control" type="text" name="name" id="dispatch_status_name" placeholder="">
                             <input class="form-control" type="text" name="dispatch_status_id" id="dispatch_status_id" hidden>
                         </div>
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -3166,8 +3230,8 @@
     <div id="save-project-type" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                    <div class="modal-header bg-info p-3">                    
-                        <h2 id="project_typeh2" style="color:#fff;">Add Project Task Type</h2>
+                    <div class="modal-header">                    
+                        <h5 class="modal-title" id="project_typeh2" >Add Project Task Type</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -3179,7 +3243,7 @@
                             <input class="form-control" type="text" name="name" id="project_type_name" placeholder="">
                             <input class="form-control" type="text" name="project_type_id" id="project_type_id" hidden>
                         </div>
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -3192,8 +3256,8 @@
     <div id="save-SLA-plan" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                    <div class="modal-header bg-info p-3">
-                        <h2 id="project_typeh2" style="color:#fff; margin-bottom:0;">Add SLA Plan</h2>
+                    <div class="modal-header ">
+                        <h5 class="modal-title" id="project_typeh2" >Add SLA Plan</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -3236,7 +3300,7 @@
                             <small class="text-danger" id="war_check">Previous default plan if any will be set to normal and this one set to default plan.</small>
 
                         </div> -->
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -3251,8 +3315,8 @@
     <div id="save-category-modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                    <div class="modal-header bg-info p-3">
-                        <h2 id="project_typeh2" style="color:#fff; margin-bottom:0;">Add Category Plan</h2>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="project_typeh2" >Add Category Plan</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -3261,7 +3325,7 @@
                             <label for="departmrnt">New Category Name</label>
                             <input class="form-control" type="text" name="name" placeholder="" required>
                         </div>
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn  btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -3275,8 +3339,8 @@
     <div id="edit-category-modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                    <div class="modal-header bg-info p-3">
-                        <h2 id="project_typeh2" style="color:#fff; margin-bottom:0;">Update Category Name</h2>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="project_typeh2" >Update Category Name</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -3287,7 +3351,7 @@
                             <label for="departmrnt">New Category Name</label>
                             <input class="form-control" type="text" id="cat_name2" name="name" placeholder="" required>
                         </div>
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn  btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -3301,8 +3365,8 @@
     <div id="edit-SLA-plan" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                    <div class="modal-header bg-info p-3">
-                        <h2 id="project_typeh2" style="color:#fff; margin-bottom:0;">Add SLA Plan</h2>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="project_typeh2" >Add SLA Plan</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -3344,7 +3408,7 @@
                             </div>
                             <small class="text-danger" id="war_check_edit">Previous default plan if any will be set to normal and this one set to default plan.</small>
                         </div> -->
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -3358,8 +3422,8 @@
     <div id="Add-IP" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-info p-3">
-                    <h2 id="typeh2" style="color:#fff;">Add IP Address</h2>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="typeh2">Add IP Address</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -3369,7 +3433,7 @@
                             <label for="">Ip Address Here</label>
                             <input type="ipv4" id="ipv4" class="form-control" name="" placeholder="" required="">
                         </div>
-                        <div class="form-group text-end">
+                        <div class="form-group text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -3385,10 +3449,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center">
-                    <h5 class="modal-title">Add Feature</h5>
-                    <button type="button" class="close ml-auto" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" class="modal-title">Add Feature</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="add-contact-box">
@@ -3396,54 +3458,54 @@
                             <form id="addFeatureForm">
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="form-check ml-3">
+                                        <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
                                             <label class="form-check-label" for="flexRadioDefault1"> Menu </label>
                                         </div>
-                                        <div class="form-check ml-3">
+                                        <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                                             <label class="form-check-label" for="flexRadioDefault2"> Toggle Menu </label>
                                         </div>
-                                        <div class="form-check ml-3">
+                                        <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                                             <label class="form-check-label" for="flexRadioDefault3">widget/button</label>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group" id="menu-title">
-                                    <input type="text" id="menu_title" class="form-control form-control-sm" placeholder="Menu Title">
+                                <div class="form-group  mt-1" id="menu-title">
+                                    <input type="text" id="menu_title" class="form-control " placeholder="Menu Title">
                                     <span id="title_error" class="text-danger small"></span>
                                 </div>
 
-                                <div class="row">
+                                <div class="row mt-1">
                                     <div class="col-md-6">
                                         <div class="form-group" id="route-title">
-                                            <input type="text" id="route" class="form-control form-control-sm" placeholder="Route">
+                                            <input type="text" id="route" class="form-control " placeholder="Route">
                                             <span id="route_error" class="text-danger small"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="number" id="sequence" class="form-control form-control-sm" placeholder="Sequence">
+                                            <input type="number" id="sequence" class="form-control " placeholder="Sequence">
                                             <span id="sequence_error" class="text-danger small"></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <input type="text" id="icon" class="form-control form-control-sm" placeholder="Menu Icon">
+                                <div class="form-group mt-1">
+                                    <input type="text" id="icon" class="form-control " placeholder="Menu Icon">
                                     <span id="icon_error" class="text-danger small"></span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mt-1">
                                     <label for="" class="small">Parent Menu</label>
-                                    <select name="parent_id" class="form-control form-control-sm" id="parent_id">
+                                    <select name="parent_id" class="form-control " id="parent_id">
                                     </select>
                                     <span id="parent_error" class="text-danger small"></span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mt-1">
                                     <label for="" class="small">Role</label>
                                     <select name="role" class="form-control select2" style="width:100%; height:44px" id="role" multiple="multiple">
                                         @foreach($roles as $role)
@@ -3453,12 +3515,12 @@
                                     <span id="parent_error" class="text-danger small"></span>
                                 </div>
                                 
-                                <div class="form-check">
+                                <div class="form-check mt-1">
                                     <input class="form-check-input" type="checkbox"  name="is_active" id="is_active">
                                     <label class="form-check-label" for="is_active"> is Active </label>
                                 </div>
 
-                                <div class="form-group mt-3 text-end">
+                                <div class="form-group mt-2 text-end">
                                     <button type="submit" class="btn btn-success">Save</button>
                                     <!-- <button class="btn btn-danger" data-bs-dismiss="modal"> Discard</button> -->
                                 </div>
@@ -3476,7 +3538,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center">
-                    <h5 class="modal-title">Update Feature</h5>
+                    <h5 class="modal-title" class="modal-title">Update Feature</h5>
                     <button type="button" class="close ml-auto" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -3491,15 +3553,15 @@
                                 <input type="hidden" id="f_id">
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="form-check ml-3">
+                                        <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" checked>
                                             <label class="form-check-label" for="flexRadioDefault4"> Menu </label>
                                         </div>
-                                        <div class="form-check ml-3">
+                                        <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5">
                                             <label class="form-check-label" for="flexRadioDefault5"> Toggle Menu </label>
                                         </div>
-                                        <div class="form-check ml-3">
+                                        <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault6">
                                             <label class="form-check-label" for="flexRadioDefault6">widget/button</label>
                                         </div>

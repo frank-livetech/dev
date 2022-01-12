@@ -106,6 +106,73 @@ class SettingsController extends Controller
         // return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
         return view('system_manager.settings.index', get_defined_vars());
     }
+    public function settingsNew(){
+
+        $brand_settings = BrandSettings::first();
+        $departments = Departments::all();
+        $ticket_settings = TicketSettings::first(); 
+
+        if($brand_settings) {
+            Session::put('site_title', $brand_settings->site_title);
+            Session::put('site_logo', $brand_settings->site_logo);
+            Session::put('site_favicon', $brand_settings->site_favicon);
+            Session::put('site_logo_title', $brand_settings->site_logo_title);
+            Session::put('site_footer', $brand_settings->site_footer);
+            Session::put('site_version', $brand_settings->site_version);
+        }
+        $roles = Role::all();
+        $featureLists = Feature::where('parent_id',0)->get();
+        $featureListsSub = Feature::where('parent_id', '!=',0)->get();
+        $sys_setting = SystemSetting::whereIn('sys_key',['emails','email_recap_notifications','check_off_emails'])->get()->toArray();
+
+        $keys = array(  
+            "reply_due_deadline" ,
+            "reply_due_deadline_when_adding_ticket_note",
+            "default_reply_and_resolution_deadline" ,
+            "default_reply_time_deadline" ,
+            "default_resolution_deadline",
+            "overdue_ticket_background_color",
+            "overdue_ticket_text_color",
+        );
+
+        $sla_setting = array();
+
+        $ticket_sla = TicketSettings::whereIn('tkt_key',$keys)->get();
+
+        if(sizeOf($ticket_sla) > 0) {
+            foreach($ticket_sla as $sla) {
+                $sla_setting[$sla->tkt_key] = $sla->tkt_value;
+            }   
+        }
+
+        $staff_list = User::where('user_type', '!=', 5)->get();
+        $general_staff_note = SystemSetting::where('sys_key', 'general_staff_note')->first();
+        if(!empty($general_staff_note)) $general_staff_note = $general_staff_note->sys_value;
+        $note_for_selected_staff = SystemSetting::where('sys_key', 'note_for_selected_staff')->select('sys_value')->first();
+        if(!empty($note_for_selected_staff)) $note_for_selected_staff = $note_for_selected_staff->sys_value;
+        $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
+        if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
+        else $selected_staff_members = array();
+
+
+
+        $time_zone = SystemSetting::where('sys_key','sys_timezone')->where('created_by', auth()->id())->first();
+        if($time_zone) {
+            $timeZone = $time_zone->sys_value;
+        }else{
+            $timeZone = 'America/New_York';
+        }
+
+        $dateformat = SystemSetting::where('sys_key','sys_dt_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
+        $timeformat = SystemSetting::where('sys_key','sys_tm_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
+        
+        $datetime = [
+            "date" =>  ($dateformat != null ? $dateformat->sys_value : 'MM/DD/YYYY'),
+            "time" =>  ($timeformat != null ? $timeformat->sys_value : 'hh:mm:ss'),
+        ];
+        // return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
+        return view('system_manager.settings.index-new', get_defined_vars());
+    }
     
     public function staff_manager(){
         return view('system_manager.staff_manager.index');
