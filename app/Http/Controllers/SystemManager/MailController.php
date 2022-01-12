@@ -913,7 +913,7 @@ class MailController extends Controller
         return $subject;
     }
 
-    public function template_parser($data_list, $template, $reply_content='', $action_name='') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '') {
         if(empty($template)) {
             return '';
         }
@@ -930,16 +930,20 @@ class MailController extends Controller
             }
         }
         if(!empty($action_name)) {
+            $user = \Auth::user();
             if(str_contains($template, '{Ticket-Action}')) {
                 $action_by = 'Cron';
                 if(!empty($user)) $action_by = \Auth::user()->name;
                 $template = str_replace('{Ticket-Action}', $action_name.' by '.$action_by, $template);
             }
-
-            if(str_contains($template, '{Ticket-Updated-By}')){
-                if(!empty($user)) $action_by = \Auth::user()->name;
-                $template = str_replace('{Ticket-Updated-By}', $action_name.' by '.$action_by, $template);
+            if($template_code == 'ticket_update'){
+                if(str_contains($template, '{Ticket-Updated-By}')){
+                    if(!empty($user)) $action_by = \Auth::user()->name;
+                    $t_id = $ticket['coustom_id'];
+                    $template = str_replace('{Ticket-Updated-By}', $action_by .' Updated #'. $t_id, $template);
+                }
             }
+            
         }
         
         if(str_contains($template, '{Ticket-Content}')) {

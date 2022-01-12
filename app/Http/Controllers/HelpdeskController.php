@@ -2365,8 +2365,8 @@ class HelpdeskController extends Controller
             $message = $mail_template->template_html;
             $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
             
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name);
-            $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code);
+            $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code);
             
             if(empty($mail_from)) $mail_from = $mail_frm_param;
 
