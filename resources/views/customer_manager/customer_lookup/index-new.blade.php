@@ -15,6 +15,7 @@
     table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before{
         display: none !important
     }
+    
     </style>
 @section('body')
 <div class="app-content content">

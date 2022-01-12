@@ -7,6 +7,13 @@
 .slogan:after {
     opacity: 0;
 }
-
+table.dataTable td,table.dataTable th {
+    padding: 3px 10px;
+    width: 1px;
+    white-space: nowrap;
+}
+table.dataTable>thead>tr>th:not(.sorting_disabled), table.dataTable>thead>tr>td:not(.sorting_disabled) {
+    padding-right: 30px !important;
+}
 
 /*Custom Sidebar Changes*/
