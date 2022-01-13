@@ -406,35 +406,23 @@ $("#update_user").submit(function (event) {
     let user_id = $("#user_id").val()
 
     var update_password = $('#update_password').val();
-    let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
+    let cpwd = $("#confirm_password").val();
 
-    if(cpwd && cpwd != update_password) {
-        Swal.fire({
-            position: 'top-end',
-            icon: 'error',
-            title: 'Passwords do not match!',
-            showConfirmButton: false,
-            timer: 2500
-        });
+    if(update_password != cpwd) {
+        toastr.error( 'Passwords do not match!' , { timeOut: 5000 });
         return false;
     }
 
-    if(!update_password) {
-        update_password = user_profile.alt_pwd;
-    }
+    // if(!update_password) {
+    //     update_password = user_profile.alt_pwd;
+    // }
 
-    if(user_profile.alt_pwd != update_password) {
-        if(cpwd != update_password) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'Passwords do not match!',
-                showConfirmButton: false,
-                timer: 2500
-            });
-            return false;
-        }
-    }
+    // if(user_profile.alt_pwd != update_password) {
+    //     if(cpwd != update_password) {
+    //         toastr.error( 'Passwords do not match!' , { timeOut: 5000 });
+    //         return false;
+    //     }
+    // }
 
     var fb = $("#update_fb").val();
     var pin = $("#update_pinterest").val();
@@ -517,13 +505,7 @@ $("#update_user").submit(function (event) {
         success: function (data) {
             console.log(data);
             values();
-            Swal.fire({
-                position: 'top-end',
-                icon: data.success ? 'success' : 'error',
-                title: data.message,
-                showConfirmButton: false,
-                timer: 2500
-            });
+            toastr.success( data.message , { timeOut: 5000 });
 
             $("#staff_address").text($("#address").val());
             $("#staff_apt_address").text(", " +$("#apt_address").val());
@@ -562,13 +544,7 @@ $("#update_user").submit(function (event) {
             $("#usr_lnk_loader").hide();
 
             if (e.responseJSON.errors.password != null) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: e.responseJSON.errors.password[0],
-                    showConfirmButton: false,
-                    timer: 2500
-                });
+                toastr.error( e.responseJSON.errors.password[0], { timeOut: 5000 });
             }
         }
     });

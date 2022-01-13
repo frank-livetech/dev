@@ -468,7 +468,7 @@
                                 ticket_customer = data.data;
                                 temp_sel_customer = ticket_customer.id;
 
-                                $("#tkt_cust_id").val(cid);
+                                // $("#tkt_cust_id").val(cid);
                                 $('#cst-name').text(ticket_customer.first_name+' '+ticket_customer.last_name);
                                 $('#cst-email').text(ticket_customer.email);
                                 $('#cst-direct-line').text(ticket_customer.phone);
