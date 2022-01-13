@@ -939,7 +939,7 @@ class MailController extends Controller
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == 1){
-                            $actions += 'Department: '.$ticket->department_name.'(was: '.$old_params[$dd]["data"].')\n';
+                            $actions += 'Department: '.$ticket['department_name'].'(was: '.$old_params[$dd]["data"].')\n';
                         }
                         // elseif($dd_values[$dd]['id'] == 2){
                         //     $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
