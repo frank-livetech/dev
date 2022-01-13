@@ -938,21 +938,21 @@ class MailController extends Controller
                     $actions = '';
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
-                        if($old_params[$dd]['id'] == 1){
-                            $actions += 'Department: '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')\n';
+                        if($old_params[$dd]['id'] == '1'){
+                            $actions .= 'Department: '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')\n';
                         }
-                        elseif($old_params[$dd]['id'] == 2){
-                            $actions += 'Staff: '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')\n';
+                        elseif($old_params[$dd]['id'] == '2'){
+                            $actions .= 'Staff: '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')\n';
 
-                        }elseif($old_params[$dd]['id'] == 3){
-                            $actions += 'Type: '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')\n';
+                        }elseif($old_params[$dd]['id'] == '3'){
+                            $actions .= 'Type: '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')\n';
 
-                        }elseif($old_params[$dd]['id'] == 4){
-                            $actions += 'Status: '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')\n';
+                        }elseif($old_params[$dd]['id'] == '4'){
+                            $actions .= 'Status: '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')\n';
 
                             
-                        }elseif($old_params[$dd]['id'] == 5){
-                            $actions += 'Priority: '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')\n';
+                        }elseif($old_params[$dd]['id'] == '5'){
+                            $actions .= 'Priority: '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')\n';
                           
                         }
 
