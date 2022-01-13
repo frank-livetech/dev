@@ -160,7 +160,7 @@ class HelpdeskController extends Controller
         return view('help_desk.ticket_manager.index-new',compact('dept','sts','loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs'));
     }
 
-    public function addTicketPage() {
+    public function addTicketPage($id =null) {
 
         $departments = Departments::all();
         $priorities = TicketPriority::all();
@@ -170,7 +170,6 @@ class HelpdeskController extends Controller
 
         $responseTemplates = ResponseTemplate::get();
 
-        $id = \Auth::user()->id;
         // for customers login and add ticket
         $is_customer = User::findOrFail(\Auth::user()->id);
         if($is_customer->user_type == 5) {
@@ -184,7 +183,7 @@ class HelpdeskController extends Controller
 
         $page_control = 'super';
 
-        return view('help_desk.ticket_manager.add_ticket_new',compact('departments','priorities','users','types','customers','id', 'responseTemplates', 'page_control'));
+        return view('help_desk.ticket_manager.add_ticket_new', get_defined_vars());
     }
 
     public function update_ticket(Request $request) {
@@ -1023,7 +1022,6 @@ class HelpdeskController extends Controller
         if(empty($ticket)) {
             return view('help_desk.ticket_manager.ticket_404');
         }
-
         $allusers = User::where('user_type','!=',4)->where('user_type','!=',5)->where('is_deleted',0)->get();
         
         $id = $ticket->id;
@@ -1057,13 +1055,6 @@ class HelpdeskController extends Controller
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
 
-        // $home = new HomeController();
-        // if($ticket_customer){
-        //     $tickets = $home->getCustomerTickets($ticket_customer->id);
-        // }else{
-        // }
-
-
 
         $total_tickets_count = 0;
         $open_tickets_count = 0;
@@ -1075,11 +1066,7 @@ class HelpdeskController extends Controller
             $closed_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status',$closed_status->id)->where('trashed',0)->where('is_deleted',0)->count();
 
         }
-
-        // foreach ($tickets as $key => $value) {
-        //     if($value->status == $open_status->id) $open_tickets_count++;
-        //     if($value->status == $closed_status->id) $closed_tickets_count++;
-        // }
+        
         
         $bbcode = new BBCode();
 
@@ -1131,10 +1118,8 @@ class HelpdeskController extends Controller
 
         if(Auth::user()->user_type == 5) {
             return view('help_desk.ticket_manager.cust_ticket_details', get_defined_vars());
-            // return view('help_desk.ticket_manager.cust_ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }else{
             return view('help_desk.ticket_manager.ticket_details_new',get_defined_vars());
-            // return view('help_desk.ticket_manager.ticket_details',compact('ticket_customer','ticket_overdue_bg_color','active_user','details','departments','vendors','types','statuses','priorities','users','projects','companies','total_tickets_count','open_tickets_count','closed_tickets_count','allusers', 'sla_plans', 'ticket_slaPlan','ticket_overdue_txt_color','date_format'));
         }
     }
 

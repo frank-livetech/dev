@@ -127,7 +127,7 @@
                         <div class="card-body">
                             <form action="javascript:void(0);" class="form">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-12 mb-2">
                                         <div class="mb-2">
                                             <form class="d-flex w-100 pb-3 position-relative" action="search-ticket-result" method="post" id="search-ticket" autocomplete="off">
                                                 <input type="text" class="form-control"  id="tsearch" name="id" placeholder="Search Example - ABC-123-4321">
@@ -135,10 +135,11 @@
                                             </form>
                                             
                                         </div>
+                                        <div id="show_ticket_results"></div>
                                     </div>
                                     <div class="d-grid col-4">
                                         <a href="{{asset('/add-ticket')}}">
-                                        <div class="card card_shadow card_back border-dark card-hover">
+                                        <div class="card card_shadow bg-success card_back border-dark card-hover">
                                             <div class="card-header">
                                                 <div class="text-center">
                                                     <h2 class="fw-bolder mb-0"><span class="fas fa-plus"></span></h2>
@@ -256,6 +257,7 @@
                                             </form>
                                             
                                         </div>
+                                        <div id="search_customer_result"></div>
                                     </div>
                                     
                                 </div>

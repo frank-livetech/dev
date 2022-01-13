@@ -2364,9 +2364,18 @@ function get_ticket_notes() {
                         type = '<i class="far fa-building"></i>';
                     }
 
+                    var user_img = ``;
+
+                    if(notes[i].profile_pic != null) {
+                        user_img += `<img src="{{asset('files/user_photos/${notes[i].profile_pic}')}}" 
+                        width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
+                    }else{
+                        user_img += `<img src="{{asset('default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    }
+
                     let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                         <div class="pr-2">
-                            <img src="${profile_img_path}" alt="User" width="40">
+                            ${user_img}
                         </div>
                         <div class="w-100">
                             <div class="col-12 p-0">
