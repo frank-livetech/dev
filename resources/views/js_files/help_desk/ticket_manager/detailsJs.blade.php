@@ -1491,13 +1491,13 @@ function updateTicket(){
                     }else if(updates_Arr[i]['id'] == 4){
 
                         ticket.status = updates_Arr[i]['new_data'];
-                        $("#dropD").css('background-color' ,color + ' !important');
+                        // $("#dropD").css('background-color' ,color + ' !important');
                         $('#follow_up_status').val(ticket.status).trigger("change");
 
                     }else if(updates_Arr[i]['id'] == 5){
 
                         ticket.priority = updates_Arr[i]['new_data'];
-                        $("#prio-label").css('background-color' ,color + ' !important');
+                        // $("#prio-label").css('background-color' ,color + ' !important');
                         $('#follow_up_priority').val(ticket.priority).trigger("change");
 
                     }
