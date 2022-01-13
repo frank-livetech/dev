@@ -1,6 +1,12 @@
 @extends('layouts.master-layout-new')
 @section('Dashboard','active')
 @section('body')
+<style>
+    table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
+        opacity:0;
+    }
+</style>
 @php
     $file_path = $live->sys_value == 1 ? 'public/' : '/';
 @endphp
@@ -256,6 +262,59 @@
                             </form>
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Flagged  <span class="float-end"><i class="fas fa-flag" style="color:#fd7e14;"></i></span></h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table id="flagged" class="table table-hover no-wrap ">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="text-center" style="padding-left:20px;">
+                                                            <input type="checkbox" name="select_all[]" id="select-all">
+                                                        </div>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>Status</th>
+                                                    <th>Subject</th>
+                                                    <th >Ticket ID</th>
+                                                    <th >Priority</th>
+                                                    <th >Customer</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="text-center">
+                                                            <input type="checkbox" name="select_all[]" id="select-all">
+                                                        </div>
+                                                    </td>
+                                                    <td class=" overflow-wrap">
+                                                        <div class="text-center ">
+                                                            <span class="fas fa-flag" title="Flag" style="cursor:pointer;" onclick="flagTicket(this, 3);"></span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="text-center text-white badge" style="background-color: #da650b;">On Hold </div>
+                                                    </td>
+                                                    <td >Subject</td>
+                                                    <td >Ticket ID</td>
+                                                    <td >Priority</td>
+                                                    <td >Customer</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Staff Manager</h4> 
