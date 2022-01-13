@@ -939,25 +939,26 @@ class MailController extends Controller
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == 1){
-                            $actions += 'Department: '.$ticket['department_name'].'(was: '.$old_params[$dd]["data"].')\n';
+                            $actions += 'Department: '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')\n';
                         }
-                        // elseif($dd_values[$dd]['id'] == 2){
-                        //     $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
-                        // }elseif($dd_values[$dd]['id'] == 3){
-                        //     $data['type'] = $dd_values[$dd]['new_data'] ;
-                        // }elseif($dd_values[$dd]['id'] == 4){
-                        //     $data['status'] = $dd_values[$dd]['new_data'] ;
-                        //     $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
-                        //     if($os && $os->name == 'Closed'){
-                        //         $data['reply_deadline'] = 'cleared';
-                        //         $data['resolution_deadline'] = 'cleared';
-                        //     }
-                        // }elseif($dd_values[$dd]['id'] == 5){
-                        //     $data['priority'] = $dd_values[$dd]['new_data'] ;
-                        // }
+                        elseif($old_params[$dd]['id'] == 2){
+                            $actions += 'Staff: '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')\n';
+
+                        }elseif($old_params[$dd]['id'] == 3){
+                            $actions += 'Type: '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')\n';
+
+                        }elseif($old_params[$dd]['id'] == 4){
+                            $actions += 'Status: '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')\n';
+
+                            
+                        }elseif($old_params[$dd]['id'] == 5){
+                            $actions += 'Priority: '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')\n';
+                          
+                        }
 
                     }
                 }
+                $actions = nl2br($actions);
                 $template = str_replace('{Ticket-Action}', $actions, $template);
             }
             if($template_code == 'ticket_update'){
