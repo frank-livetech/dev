@@ -1503,7 +1503,7 @@ function updateTicket(){
                     }
 
                 }
-
+                updates_Arr = '';
                 updateTicketDate();
                 // // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Ticket Updated','', updates_Arr);
