@@ -298,6 +298,25 @@ class HomeController
             return view('help_desk.ticket_manager.ticket_404');
         }
 
+        // $bbcode = new BBCode();
+
+        // if(!empty($details->ticket_detail))
+        //     $details->ticket_detail = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($details->ticket_detail));
+        
+        // foreach ($details->ticketReplies as $key => $rep) {
+        //     $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
+
+        //     if( empty($rep['user_id']) ){
+        //         $user = Customer::where('id', $rep['customer_id'])->first();
+        //         $rep['name'] = $user['first_name'] . ' ' . $user['last_name'];
+        //         $rep['user_type'] = 5;
+        //     }else{
+        //         $user = User::where('id', $rep['user_id'])->first();
+        //         $rep['name'] = $user['name'];
+        //         $rep['user_type'] = $user['user_type'];
+        //     }
+        // }
+
         $department = Departments::where('id' , $ticket->dept_id)->first();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff', 0)->get();
         $type = TicketType::where('id' , $ticket->type)->first();

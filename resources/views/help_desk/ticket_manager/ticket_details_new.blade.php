@@ -580,9 +580,14 @@
                     <div class="card">
                         <div class="card-body" >
                             <h4 class="card-title mb-0">Ticket Replies
+                                   
                                 <a href="#v-pills-tab" class="btn btn-success float-right" onclick="composeReply()">
                                     Compose 
                                 </a>
+                               
+                                <a id="update_ticket" style="display:none" class="btn btn-success float-right" onclick="updateTicket()">
+                                    Update 
+                                </a>    
                             </h4>
                             <div class="mt-4 d-none" id="compose-reply">
                                 <div class="row">

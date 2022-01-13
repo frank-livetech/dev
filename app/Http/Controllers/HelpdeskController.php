@@ -235,25 +235,70 @@ class HelpdeskController extends Controller
                 unset($data['id']);
                 unset($data['attachments']);
 
-               
-                if($request->has('status')){
-                    $os = TicketStatus::where('id',$request->status)->first();
-                    if($os && $os->name == 'Closed'){
-                        $data['reply_deadline'] = 'cleared';
-                        $data['resolution_deadline'] = 'cleared';
+                if($request->has('dd_Arr')){
+                    $dd_values = $request->dd_Arr;
+                    for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
+
+                        if($dd_values[$dd]['id'] == 1){
+                            $data['dept_id'] = $dd_values[$dd]['new_data'] ;
+                        }elseif($dd_values[$dd]['id'] == 2){
+                            $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
+                        }elseif($dd_values[$dd]['id'] == 3){
+                            $data['type'] = $dd_values[$dd]['new_data'] ;
+                        }elseif($dd_values[$dd]['id'] == 4){
+                            $data['status'] = $dd_values[$dd]['new_data'] ;
+                            $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
+                            if($os && $os->name == 'Closed'){
+                                $data['reply_deadline'] = 'cleared';
+                                $data['resolution_deadline'] = 'cleared';
+                            }
+                        }elseif($dd_values[$dd]['id'] == 5){
+                            $data['priority'] = $dd_values[$dd]['new_data'] ;
+                        }
+
                     }
+
                 }
 
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
                 $ticket->update($data);
 
-                // save activity logs
-                $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+                if($request->has('dd_Arr')){
 
-                $log = new ActivitylogController();
-                $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+                    $dd_values = $request->dd_Arr;
+                    for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
+
+                        if($dd_values[$dd]['id'] == 1){
+                            $data['action_performed'] = 'Department Updated';
+                        }elseif($dd_values[$dd]['id'] == 2){
+                            $data['action_performed'] = 'Tech Lead Updated';
+                        }elseif($dd_values[$dd]['id'] == 3){
+                            $data['action_performed'] = 'Type Updated';
+                        }elseif($dd_values[$dd]['id'] == 4){
+                            $data['action_performed'] = 'Status Updated';
+                        }elseif($dd_values[$dd]['id'] == 5){
+                            $data['action_performed'] = 'Priority Updated';
+                        }
+
+                        // save activity logs
+                        $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+                        $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+
+                        $log = new ActivitylogController();
+                        $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+
+                    }
+
+                }else{
+                    // save activity logs
+                    $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+                    $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+
+                    $log = new ActivitylogController();
+                    $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+                }
+                
 
                 $response['message'] = 'Ticket Updated Successfully!';
                 $response['status_code'] = 200;
@@ -2218,8 +2263,9 @@ class HelpdeskController extends Controller
                 if(!empty($ticket)) {
                     $data_id = '';
                     if($request->has('data_id')) $data_id = $request->data_id;
+                    if($request->has('oldval')) $oldval = $request->oldval;
     
-                    $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id);
+                    $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,'',$oldval);
                 } else {
                     $response['message'] = 'Ticket is either deleted or not exists!';
                 }
@@ -2239,7 +2285,7 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
-    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='') {
+    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '') {
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -2365,8 +2411,8 @@ class HelpdeskController extends Controller
             $message = $mail_template->template_html;
             $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
             
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket);
-            $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+            $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
             
             if(empty($mail_from)) $mail_from = $mail_frm_param;
 
