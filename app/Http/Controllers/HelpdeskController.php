@@ -1071,7 +1071,7 @@ class HelpdeskController extends Controller
 
         if($ticket->customer_id != null){
             $total_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('trashed',0)->where('is_deleted',0)->count();
-            $open_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status',$open_status->id)->where('trashed',0)->where('is_deleted',0)->count();
+            $open_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status','!=',$closed_status->id)->where('trashed',0)->where('is_deleted',0)->count();
             $closed_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status',$closed_status->id)->where('trashed',0)->where('is_deleted',0)->count();
 
         }
