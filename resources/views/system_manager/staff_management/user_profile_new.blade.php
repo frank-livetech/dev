@@ -474,7 +474,7 @@
     
                                         </div>
                                         <div class="col-md-6 form-group">
-                                            <label>Phone No</label>
+                                            <label>Phone No </label>
                                             <input type="phone" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control">
                                             <span class="text-danger small" id="phone_error"></span>
                                         </div>
@@ -483,21 +483,16 @@
                                         <div class="col-md-6 form-group">
                                             <label>Password</label> <span class="text-danger">*</span>
                                             <div class=" input-group form-password-toggle input-group-merge">
-                                                
-                                                    <input type="password" name="password" id="update_password" class="form-control" value="{{$profile->alt_pwd}}">
-                                                    <div class="input-group-text cursor-pointer">
-                                                        <i data-feather="eye"></i>
-                                                    </div>
-                                                
+                                                <input type="password" name="password" id="update_password" class="form-control" value="{{$profile->alt_pwd}}">
+                                                <div class="input-group-text cursor-pointer">
+                                                    <i data-feather="eye"></i>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label>Confirm Password</label>
-    
                                             <div class="input-group form-password-toggle input-group-merge">
-                                                <!-- <span class="block input-icon input-icon-right"><i class="ace-icon fa fa-check green check-match"></i>
-                                                            </span> -->
-                                                <input class="form-control " type="password" name="confirm_password" value="{{$profile->alt_pwd}}">
+                                                <input class="form-control " type="password" id="confirm_password" name="confirm_password" value="{{$profile->alt_pwd}}">
                                                 <div class="input-group-text cursor-pointer">
                                                     <i data-feather="eye"></i>
                                                 </div>

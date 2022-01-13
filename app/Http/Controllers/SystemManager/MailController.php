@@ -913,7 +913,7 @@ class MailController extends Controller
         return $subject;
     }
 
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '') {
         if(empty($template)) {
             return '';
         }
@@ -934,7 +934,31 @@ class MailController extends Controller
             if(str_contains($template, '{Ticket-Action}')) {
                 $action_by = 'Cron';
                 if(!empty($user)) $action_by = \Auth::user()->name;
-                $template = str_replace('{Ticket-Action}', $action_name.' by '.$action_by, $template);
+                if($action_name == 'Ticket Updated'){
+                    $actions = '';
+                    for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
+
+                        if($old_params[$dd]['id'] == '1'){
+                            $actions .= '<p>Department: '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                        }
+                        elseif($old_params[$dd]['id'] == '2'){
+                            $actions .= '<p>Staff: '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+
+                        }elseif($old_params[$dd]['id'] == '3'){
+                            $actions .= '<p>Type: '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+
+                        }elseif($old_params[$dd]['id'] == '4'){
+                            $actions .= '<p>Status: '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+
+                            
+                        }elseif($old_params[$dd]['id'] == '5'){
+                            $actions .= '<p>Priority: '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                          
+                        }
+
+                    }
+                }
+                $template = str_replace('{Ticket-Action}', $actions, $template);
             }
             if($template_code == 'ticket_update'){
                 if(str_contains($template, '{Ticket-Updated-By}')){
