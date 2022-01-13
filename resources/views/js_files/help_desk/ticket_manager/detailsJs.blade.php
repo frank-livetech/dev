@@ -1315,7 +1315,7 @@ $('#dept_id').change(function() {
                 $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
                 updateTicketDate();
                 // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Deptartment updated');
+                ticket_notify('ticket_update', 'Deptartment updated','',ticket.department_name);
 
                 // refresh logs
                 getLatestLogs();
@@ -2567,12 +2567,12 @@ function getLatestLogs() {
     });
 }
 
-function ticket_notify(template, action_name, data_id = '') {
+function ticket_notify(template, action_name, data_id = '',oldval) {
     if (asset_ticket_id && template) {
         $.ajax({
             type: 'POST',
             url: ticket_notify_route,
-            data: { id: asset_ticket_id, template: template, action: action_name, data_id: data_id },
+            data: { id: asset_ticket_id, template: template, action: action_name, data_id: data_id ,oldval: oldval},
             success: function(data) {
                 if (!data.success) {
 
