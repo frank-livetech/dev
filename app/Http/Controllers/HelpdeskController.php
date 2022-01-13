@@ -1057,7 +1057,7 @@ class HelpdeskController extends Controller
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
 
-        $home = new HomeController();
+        // $home = new HomeController();
         // if($ticket_customer){
         //     $tickets = $home->getCustomerTickets($ticket_customer->id);
         // }else{
@@ -1066,9 +1066,16 @@ class HelpdeskController extends Controller
 
 
         $total_tickets_count = 0;
-
         $open_tickets_count = 0;
         $closed_tickets_count = 0;
+
+        if($ticket->customer_id != null){
+            $total_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('trashed',0)->where('is_deleted',0)->count();
+            $open_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status',$open_status->id)->where('trashed',0)->where('is_deleted',0)->count();
+            $closed_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status',$closed_status->id)->where('trashed',0)->where('is_deleted',0)->count();
+
+        }
+
         // foreach ($tickets as $key => $value) {
         //     if($value->status == $open_status->id) $open_tickets_count++;
         //     if($value->status == $closed_status->id) $closed_tickets_count++;
