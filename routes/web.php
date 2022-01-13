@@ -96,6 +96,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/update_feature','FeatureController@update_feature');
     //Setting Routess
     Route::get('/settings','SettingsController@settings')->name('settings.index');
+    Route::get('/settings-new','SettingsController@settingsNew')->name('settings.index-new');
     //Response Category Crud
 
     Route::post('/add_cat','SettingsController@addResponseCategory');
@@ -365,14 +366,15 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
     Route::get('/add-tkt','HomeController@addTicketPage');
-    Route::get('/view-tkt','HomeController@viewTicketPage');
+    Route::get('/view-tkt','HomeController@viewTicketPage')->name('customer.tickets');
     Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details')->name('customer.tkt_dtl');
 
     Route::post('save_company','HomeController@saveCompany')->name('customer.saveCompany');
     Route::post('update_customer','HomeController@update_customer_profile')->name('customer.updateCustomer');
     Route::get('/customer-tickets','HomeController@getCustomerTickets')->name('customer.getCustomerTickets');
 
-    // Route::get('/add-ticket','HomeController@addTicketPage');
+    // save ticket
+    Route::get('/save-tkt','HomeController@saveTicket')->name('customer.saveTicket');
 
 });
 

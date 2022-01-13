@@ -500,6 +500,7 @@ class AuthController extends Controller
         return $assigned_depts;
     }
 
+    // customer login
     public function userPostLogin(Request $request) {
 
         $request->validate([
@@ -594,19 +595,16 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {
-        $route = '/';
-        if(Auth::user()->user_type == 5) {
-            $route = '/user-login';
-        }
+    public function logout(Request $request) {
+
+        $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
         
         Session::flush();
         if( Auth::check()){
             Auth::logout();
         }
         
-        return Redirect($route);
+        return redirect()->route($route);
     }
 
     public function userLogin() {
