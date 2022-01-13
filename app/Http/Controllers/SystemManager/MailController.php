@@ -935,11 +935,11 @@ class MailController extends Controller
                 $action_by = 'Cron';
                 if(!empty($user)) $action_by = \Auth::user()->name;
                 if($action_name == 'Ticket Updated'){
-                    $actions = ``;
+                    $actions = '';
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($dd_values[$dd]['id'] == 1){
-                            $actions += `Department: `.$ticket->department_name.`(was: `.$dd_values[$dd]['data'].`)\n`;
+                            $actions += 'Department: '.$ticket->department_name.'(was: '.$dd_values[$dd]["data"].')\n';
                         }
                         // elseif($dd_values[$dd]['id'] == 2){
                         //     $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
