@@ -1015,23 +1015,35 @@ function listReplies() {
             var end = moment(reply.created_at); // another date
             var duration = moment.duration(now.diff(end));
             var days = duration.asHours();
-            var replier_img = ``;
+            var customer_img = ``;
+            var user_img = ``;
 
-            if(reply.reply_user != null && reply.reply_user != "") {
-                if(reply.reply_user.profile_pic != null) {
-                    replier_img += `<img src="{{asset('files/user_photos/${reply.reply_user.profile_pic}')}}" width="40px" height="40px" class="img-fluid" />`;
+            if(reply.customer_replies != null) {
+                if(reply.customer_replies.avatar_url != null) {
+                    customer_img += `<img src="{{asset('files/user_photos/Customers/${reply.customer_replies.avatar_url}')}}" 
+                    width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
                 }else{
-                    replier_img += `<img src="{{asset('files/user_photos/user-photo.jpg')}}" width="40px" height="40px" class="img-fluid" />`;
+                    customer_img += `<img src="{{asset('default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }                
             }else{
-                replier_img += `<img src="{{asset('files/user_photos/user-photo.jpg')}}" width="40px" height="40px" class="img-fluid" />`;
+                customer_img += `<img src="{{asset('default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+            }
+
+            if(reply.reply_user != null) {
+                if(reply.reply_user.profile_pic != null) {
+                    user_img += `<img src="{{asset('files/user_photos/${reply.reply_user.profile_pic}')}}" style="border-radius: 50%;" width="40px" height="40px" class="img-fluid" />`;
+                }else{
+                    user_img += `<img src="{{asset('default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                }                
+            }else{
+                user_img += `<img src="{{asset('default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
 
 
             
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
-                    <span class="mr-3">${replier_img}</span>
+                    <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
                     <div class="media-body">
                         <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;float:right;position:relative;left:333px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;float:right;position:relative;left:328px;" ></span>&nbsp;</h5> 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 

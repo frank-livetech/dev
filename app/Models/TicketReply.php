@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Customer;
 
 class TicketReply extends Model
 {
@@ -23,6 +24,6 @@ class TicketReply extends Model
     }
 
     public function customerReplies(){
-        return $this->hasOne(\App\Customer::class,'id','customer_id');
+        return $this->hasOne(Customer::class,'id','customer_id');
     }
 }

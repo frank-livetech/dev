@@ -1034,7 +1034,7 @@ class HelpdeskController extends Controller
         $current_status = TicketStatus::where('id' , $details->status)->first();
         $current_priority= TicketPriority::where('id' , $details->priority)->first();
 
-        $details['ticketReplies'] = TicketReply::where('ticket_id', $details->id)->with('replyUser')->orderBy('created_at', 'DESC')->get();
+        $details['ticketReplies'] = TicketReply::where('ticket_id', $details->id)->with(['replyUser','customerReplies'])->orderBy('created_at', 'DESC')->get();
 
         $departments = Departments::all();
         // $ticket = Tickets::all();
