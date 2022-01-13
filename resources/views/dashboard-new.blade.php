@@ -142,7 +142,7 @@
                                             <div class="card-header">
                                                 <div class="text-center">
                                                     <h2 class="fw-bolder mb-0"><span class="fas fa-plus"></span></h2>
-                                                    <h5 class="card-text">Add Ticket</h5>
+                                                    <h5 class="card-text">Create Ticket</h5>
                                                 </div>
                                                 
                                             </div>
@@ -155,7 +155,7 @@
                                             <div class="card-header">
                                                 <div class="">
                                                     <h2 class="fw-bolder mb-0">{{$total_tickets_count}}</h2>
-                                                    <h5 class="card-text text-info">All Ticket</h5>
+                                                    <h5 class="card-text text-info">All Tickets</h5>
                                                 </div>
                                                 
                                             </div>
@@ -168,7 +168,7 @@
                                             <div class="card-header">
                                                 <div class="">
                                                     <h2 class="fw-bolder mb-0">{{$my_tickets_count}}</h2>
-                                                    <h5 class="card-text text-success">My Ticket</h5>
+                                                    <h5 class="card-text text-success">My Tickets</h5>
                                                 </div>
                                                 
                                             </div>
