@@ -913,7 +913,7 @@ class MailController extends Controller
         return $subject;
     }
 
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '') {
         if(empty($template)) {
             return '';
         }
@@ -934,7 +934,31 @@ class MailController extends Controller
             if(str_contains($template, '{Ticket-Action}')) {
                 $action_by = 'Cron';
                 if(!empty($user)) $action_by = \Auth::user()->name;
-                $template = str_replace('{Ticket-Action}', $action_name.' by '.$action_by, $template);
+                if($action_name == 'Ticket Updated'){
+                    $actions = ``;
+                    for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
+
+                        if($dd_values[$dd]['id'] == 1){
+                            $actions += `Department: `.$ticket->department_name.`(was: `.$dd_values[$dd]['data'].`)\n`;
+                        }
+                        // elseif($dd_values[$dd]['id'] == 2){
+                        //     $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
+                        // }elseif($dd_values[$dd]['id'] == 3){
+                        //     $data['type'] = $dd_values[$dd]['new_data'] ;
+                        // }elseif($dd_values[$dd]['id'] == 4){
+                        //     $data['status'] = $dd_values[$dd]['new_data'] ;
+                        //     $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
+                        //     if($os && $os->name == 'Closed'){
+                        //         $data['reply_deadline'] = 'cleared';
+                        //         $data['resolution_deadline'] = 'cleared';
+                        //     }
+                        // }elseif($dd_values[$dd]['id'] == 5){
+                        //     $data['priority'] = $dd_values[$dd]['new_data'] ;
+                        // }
+
+                    }
+                }
+                $template = str_replace('{Ticket-Action}', $actions, $template);
             }
             if($template_code == 'ticket_update'){
                 if(str_contains($template, '{Ticket-Updated-By}')){

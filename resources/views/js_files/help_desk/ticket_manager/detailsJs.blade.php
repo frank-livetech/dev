@@ -11,7 +11,8 @@ let edit_reply_mode = false;
 let attachments_src = [];
 let ticket_attachments_count = 1;
 let date_format = {!! json_encode($date_format) !!};
-
+let update_flag = 0;
+let updates_Arr = [];
 var ticket_attach_path = `{{asset('public/files')}}`;
 var ticket_attach_path_search = 'public/files';
 var time_zone = $("#usrtimeZone").val();
@@ -1297,110 +1298,93 @@ $('#dept_id').change(function() {
     var dept_id = $(this).val();
 
     // no dept change to do update
-    if (dept_id == ticket.dept_id) return false;
-
-    $.ajax({
-        type: "post",
-        url: update_ticket_route,
-        data: {
-            dept_id: dept_id,
-            id: ticket.id,
-            action_performed: 'Department'
-        },
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-            if (data.success == true) {
-                ticket.dept_id = dept_id;
-                $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
-                updateTicketDate();
-                // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Deptartment updated');
-
-                // refresh logs
-                getLatestLogs();
-                toastr.success( 'Departments Updated Successfully!' , { timeOut: 5000 });
-            } else {
-                $('#dept_id').val(ticket.dept_id).trigger('change');
-
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
+    if (dept_id == ticket.dept_id){
+        updates_Arr = $.grep(updates_Arr, function(e){ 
+            return e.id != 1; 
+        });
+        if(update_flag > 0){
+            update_flag--;
+            if(update_flag == 0){
+                $("#update_ticket").css("display", "none");
             }
         }
-    });
+        return false;
+    }
+    update_flag++;
+    var obj = {};
+    obj = {
+        id:1,
+        data: ticket.department_name, // Saving old value to show in email notification
+        new_data:dept_id,
+        new_text:$("#dept_id option:selected").text()
+    }
+    updates_Arr.push(obj);
+    console.log(updates_Arr);
+    $("#update_ticket").css("display", "block");
+
 });
 
 $('#assigned_to').change(function() {
     var assigned_to = $(this).val() ? $(this).val() : null;
 
     // no change to do update
-    if (assigned_to == ticket.assigned_to) return false;
-
-    $.ajax({
-        type: "post",
-        url: update_ticket_route,
-        data: {
-            assigned_to: assigned_to,
-            id: ticket.id,
-            action_performed: 'Ticket Assign Tech'
-        },
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-            if (data.success == true) {
-                ticket.assigned_to = assigned_to;
-                $('#follow_up_assigned_to').val(ticket.assigned_to).trigger("change");
-                updateTicketDate();
-
-                // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Assignment updated');
-
-                // refresh logs
-                getLatestLogs();
-
-                toastr.success( 'Tech Lead Updated Successfully!' , { timeOut: 5000 });
+    if (assigned_to == ticket.assigned_to){
+        updates_Arr = $.grep(updates_Arr, function(e){ 
+            return e.id != 2; 
+        });
+        if(update_flag > 0){
+            update_flag--;
+            if(update_flag == 0){
+                $("#update_ticket").css("display", "none");
             }
         }
-    });
+        return false;
+    }
+
+    update_flag++;
+    var obj = {};
+    obj = {
+        id:2,
+        data: ticket.assignee_name, // Saving old value to show in email notification
+        new_data:assigned_to,
+        new_text:$("#assigned_to option:selected").text()
+    }
+    updates_Arr.push(obj);
+    console.log(updates_Arr);
+    $("#update_ticket").css("display", "block");
+   
 });
 
 $('#type').change(function() {
     var type = $(this).val();
 
     // no change to do update
-    if (type == ticket.type) return false;
-
-    $.ajax({
-        type: "post",
-        url: update_ticket_route,
-        data: {
-            type: type,
-            id: ticket.id,
-            action_performed: 'Ticket Type'
-        },
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-            if (data.success == true) {
-                ticket.type = type;
-                $('#follow_up_type').val(ticket.type).trigger("change");
-                updateTicketDate();
-                
-                // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Type updated');
-
-                // refresh logs
-                getLatestLogs();
-
-                toastr.success( 'Type Updated Successfully!' , { timeOut: 5000 });
+    if (type == ticket.type){
+        updates_Arr = $.grep(updates_Arr, function(e){ 
+            return e.id != 3; 
+        });
+        if(update_flag > 0){
+            update_flag--;
+            if(update_flag == 0){
+                $("#update_ticket").css("display", "none");
             }
         }
-    });
+        return false;
+    }
+
+    update_flag++;
+    var obj = {};
+    obj = {
+        id:3,
+        data: ticket.type_name, // Saving old value to show in email notification
+        new_data:type,
+        new_text:$("#type option:selected").text()
+
+    }
+    updates_Arr.push(obj);
+    console.log(updates_Arr);
+    $("#update_ticket").css("display", "block");
+    
 });
 
 $('#status').change(function() {
@@ -1408,71 +1392,131 @@ $('#status').change(function() {
 
     var color = $('#status option:selected').data('color');
     // no change to do update
-    if (status == ticket.status) return false;
-
-    $.ajax({
-        type: "post",
-        url: update_ticket_route,
-        data: {
-            status: status,
-            id: ticket.id,
-            action_performed: 'Ticket Status'
-        },
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-            if (data.success == true) {
-                ticket.status = status;
-                $("#dropD").css('background-color' ,color + ' !important');
-                $('#follow_up_status').val(ticket.status).trigger("change");
-                updateTicketDate();
-                
-                // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Status updated');
-
-                // refresh logs
-                getLatestLogs();
-
-                toastr.success( 'Status Updated Successfully!' , { timeOut: 5000 });
+    if (status == ticket.status)
+    {
+        updates_Arr = $.grep(updates_Arr, function(e){ 
+            return e.id != 4; 
+        });
+        if(update_flag > 0){
+            update_flag--;
+            if(update_flag == 0){
+                $("#update_ticket").css("display", "none");
             }
         }
-    });
+        return false;
+    }
+
+    update_flag++;
+    var obj = {};
+    obj = {
+        id:4,
+        data: ticket.status_name, // Saving old value to show in email notification
+        new_data:status,
+        new_text:$("#status option:selected").text()
+
+    }
+    updates_Arr.push(obj);
+    console.log(updates_Arr);
+    $("#update_ticket").css("display", "block");
+
 });
 
 $('#priority').change(function() {
     var priority = $(this).val();
     var color = $('#priority option:selected').data('color');
     // no change to do update
-    if (priority == ticket.priority) return false;
+    if (priority == ticket.priority){
+        updates_Arr = $.grep(updates_Arr, function(e){ 
+            return e.id != 5; 
+        });
+        if(update_flag > 0){
+            update_flag--;
+            if(update_flag == 0){
+                $("#update_ticket").css("display", "none");
+            }
+        }
+        return false;
+    }
+
+    update_flag++;
+    var obj = {};
+    obj = {
+        id:5,
+        data: ticket.priority_name, // Saving old value to show in email notification
+        new_data:priority,
+        new_text:$("#priority option:selected").text()
+
+    }
+    updates_Arr.push(obj);
+    console.log(updates_Arr);
+    
+});
+
+function updateTicket(){
+
+    if(updates_Arr.length == 0){
+        toastr.warning( 'There is nothing to update.' , { timeOut: 5000 });
+        return false;
+    }
 
     $.ajax({
         type: "post",
         url: update_ticket_route,
         data: {
-            priority: priority,
+
+            // priority: priority,
             id: ticket.id,
-            action_performed: 'Ticket Priority'
+            dd_Arr:updates_Arr
+            // action_performed: 'Ticket Priority'
         },
         dataType: 'json',
         cache: false,
         success: function(data) {
+            console.log(data)
             if (data.success == true) {
-                ticket.priority = priority;
-                $("#prio-label").css('background-color' ,color + ' !important');
-                $('#follow_up_priority').val(ticket.priority).trigger("change");
-                updateTicketDate();
-                
-                // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Priority updated');
 
-                // refresh logs
+                for(var i = 0 ; i < updates_Arr.length ; i++){
+
+                    if(updates_Arr[i]['id'] == 1){
+                        ticket.dept_id = updates_Arr[i]['new_data'];
+                        $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
+                    }else if(updates_Arr[i]['id'] == 2){
+                        ticket.assigned_to = updates_Arr[i]['new_data'];
+                        $('#follow_up_assigned_to').val(ticket.assigned_to).trigger("change");
+                    }else if(updates_Arr[i]['id'] == 3){
+
+                        ticket.type = updates_Arr[i]['new_data'];
+                        $('#follow_up_type').val(ticket.type).trigger("change");
+
+                    }else if(updates_Arr[i]['id'] == 4){
+
+                        ticket.status = updates_Arr[i]['new_data'];
+                        $("#dropD").css('background-color' ,color + ' !important');
+                        $('#follow_up_status').val(ticket.status).trigger("change");
+
+                    }else if(updates_Arr[i]['id'] == 5){
+
+                        ticket.priority = updates_Arr[i]['new_data'];
+                        $("#prio-label").css('background-color' ,color + ' !important');
+                        $('#follow_up_priority').val(ticket.priority).trigger("change");
+
+                    }
+
+                }
+
+                updateTicketDate();
+                // // send mail notification regarding ticket action
+                ticket_notify('ticket_update', 'Ticket Updated','', updates_Arr);
+
+                // // refresh logs
                 getLatestLogs();
 
-                toastr.success( 'Priority Updated Successfully!' , { timeOut: 5000 });
+                toastr.success( 'Ticket Updated Successfully!' , { timeOut: 5000 });
             }
         }
     });
-});
+
+}
 
 function getTicketFollowUp() {
     $.ajax({
@@ -2567,12 +2611,12 @@ function getLatestLogs() {
     });
 }
 
-function ticket_notify(template, action_name, data_id = '') {
+function ticket_notify(template, action_name, data_id = '',oldval) {
     if (asset_ticket_id && template) {
         $.ajax({
             type: 'POST',
             url: ticket_notify_route,
-            data: { id: asset_ticket_id, template: template, action: action_name, data_id: data_id },
+            data: { id: asset_ticket_id, template: template, action: action_name, data_id: data_id ,oldval: oldval},
             success: function(data) {
                 if (!data.success) {
 
