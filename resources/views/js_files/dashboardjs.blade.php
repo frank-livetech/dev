@@ -17,7 +17,7 @@
     };
     // console.clear();
     $(document).ready(function() {
-
+        $("#flagged").DataTable();
         tickets_logs_list = $('#ticket-logs-list').DataTable({
             ordering: false
         });
