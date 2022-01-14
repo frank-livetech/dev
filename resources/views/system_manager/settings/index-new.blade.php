@@ -3629,9 +3629,6 @@
 </div>
 @endsection
 @section('scripts')
- @include('js_files.system_manager.settings.indexJs')
-    @include('js_files.system_manager.settings.settingsJs')
-    @include('js_files.system_manager.feature_list.feature_listJs')
 
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
     <!-- <script src="{{asset('assets/libs/nestable/jquery.nestable.js')}}"></script> -->
@@ -3641,6 +3638,13 @@
     <script src="{{asset( $path . 'js/jquery_asColorPicker.min.js')}}"></script>
     <script src="{{asset( $path . 'js/jquery_minicolors.min.js')}}"></script>
     <script src="{{asset( $path . 'js/tinymce.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.3/bootstrapSwitch.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.js"></script>
+
+    @include('js_files.system_manager.settings.indexJs')
+    @include('js_files.system_manager.settings.settingsJs')
+    @include('js_files.system_manager.feature_list.feature_listJs')
+
     
         <!-- This Page JS -->
     <!-- <script src="{{asset('assets/libs/jquery-asColor/dist/jquery-asColor.min.js')}}"></script> -->

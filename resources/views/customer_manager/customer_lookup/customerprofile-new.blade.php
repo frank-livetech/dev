@@ -319,7 +319,7 @@
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" id="notes-profile-tab" data-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes</a>
+                            <a class="nav-link" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes</a>
                         </li>
     
                         <li class="nav-item">
