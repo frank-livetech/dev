@@ -314,9 +314,9 @@
                             <a class="nav-link" id="notifications-profile-tab" data-toggle="pill" href="#notification"
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
                         </li> -->
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" id="notes-profile-tab" data-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes</a>
-                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes</a>
+                        </li>
     
                         <li class="nav-item">
                             <a class="nav-link" id="domain-profile-tab" data-bs-toggle="pill" href="#ticket_domain" role="tab" aria-controls="pills-profile" aria-selected="false">Domain</a>
@@ -1505,12 +1505,12 @@
                             </div>
                         </div>
     
-                        <!-- <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
+                        <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
                             <hr>
                             <div class="card-body">
                                 No Data Found.
                             </div>
-                        </div> -->
+                        </div>
     
                         <div class="tab-pane fade" id="ticket_domain" role="tabpanel" aria-labelledby="domain-profile-tab">
                             <hr>
