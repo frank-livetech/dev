@@ -431,10 +431,24 @@ class MailController extends Controller
                                
                                
                             }else{
-                                 if(!empty($customer)) {
+                                $customer_id = '';
+                                $is_staff_tkt = 0;
+
+                                if(empty($customer)) {
+                                    $staff = User::where('email', trim($emailFrom))->first();
+                                    if(empty($staff)) {
+                                        // reply is not from our system user
+                                        continue;
+                                    }
+                                    $customer_id = $staff->id;
+                                    $is_staff_tkt = 1;
+                                }else{
+                                    $customer_id = $customer->id;
+                                }
+                                //  if(!empty($customer)) {
                                     // $ticket = Tickets::where('customer_id', $customer->id)->where('subject', trim($mail[0]["parsed"]['Subject']))->first();
-                                    $ticket = Tickets::where('customer_id', $customer->id)->where('coustom_id', $mail[0]["parsed"]['Subject'])->first();
-            
+                                    $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $mail[0]["parsed"]['Subject'])->first();
+                                    
                                     if(empty($ticket)) {
                                         $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
                                         
@@ -443,9 +457,10 @@ class MailController extends Controller
                                             'dept_id' => $eq_value->mail_dept_id,
                                             'priority' => $eq_value->mail_priority_id,
                                             'subject' => trim($mail[0]["parsed"]['Subject']),
-                                            'customer_id' => $customer->id,
+                                            'customer_id' => $customer_id,
                                             'status' => $eq_value->mail_status_id,
                                             'type' => $eq_value->mail_type_id,
+                                            'is_staff_tkt' => $is_staff_tkt
                                         ]);
                                         
                                         // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
@@ -487,7 +502,7 @@ class MailController extends Controller
                                             echo $e->getMessage();
                                         }
                                     }
-                                }
+                                // }
                             }
                              
                         }

@@ -479,7 +479,7 @@ Route::get('/ticket-manager/{dept?}/{sts?}','HelpdeskController@ticket_manager')
 
 
 // Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage');
-Route::get('/add-ticket','HelpdeskController@addTicketPage');
+Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage');
 
 Route::get('/ticket-details','HelpdeskController@ticket_details');
 Route::Post('/save-tickets','HelpdeskController@save_tickets');
