@@ -11,7 +11,7 @@ class Tickets extends Model
     protected $table = 'tickets';
     protected $appends = ['department_name', 'priority_name', 'status_name', 'type_name', 'creator_name','assignee_name'];
     protected $fillable = [
-        'dept_id','priority','assigned_to','subject','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments'
+        'dept_id','priority','assigned_to','subject','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments'
     ];
     
     public function ticketReplies() {
