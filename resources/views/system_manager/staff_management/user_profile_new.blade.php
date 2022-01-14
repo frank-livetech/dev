@@ -79,12 +79,15 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="mt-4 text-center">
-                            @if(is_file(public_path('../files/user_photos/'.$profile->profile_pic)))
-                                <img src="{{ asset('files/user_photos/'.$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            @if($profile->profile_pic != null)
+                                @if(is_file(public_path('files/user_photos/'.$profile->profile_pic)))
+                                    <img src="{{ asset('files/user_photos/'.$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                @else
+                                    <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                @endif
                             @else
-                                <img src="{{ asset('files/user_photos/user-photo.jpg')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                             @endif
-    
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal"><i class="fa fa-pencil-alt picEdit"></i></a>
                             <h4 class="card-title mt-2" id="staff_name">{{$profile->name}}</h4>
                             <span class="badge bg-info badge-pill text-white" id="job_title_bg">{{$profile->job_title}}</span>
@@ -1190,11 +1193,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
-                        <!-- <img src="../files/user_photos/{{$profile->profile_pic}}" class="rounded-circle" width="100" height="100" id="ppNew" /> -->
-                        @if(is_file(public_path('../files/user_photos/'.$profile->profile_pic)))
-                        <img src="{{ asset('files/user_photos/'.$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                        @if($profile->profile_pic != null)
+                            @if(is_file(public_path('files/user_photos/'.$profile->profile_pic)))
+                                <img src="{{ asset('files/user_photos/'.$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            @else
+                                <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            @endif
                         @else
-                        <img src="{{ asset('files/user_photos/user-photo.jpg')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                         @endif
                     </div>
                     <form class="mt-4" id="upload_user_img">

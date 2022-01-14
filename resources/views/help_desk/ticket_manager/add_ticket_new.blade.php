@@ -137,7 +137,7 @@
                                                                         @if ($key == 0)
                                                                             <option value="{{$customer->id}}" >{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}}</option>
                                                                         @else
-                                                                            <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}} </option>
+                                                                            <option value="{{$customer->id}}" {{$id == $customer->id ? 'selected' : ''}}>{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}} </option>
                                                                         @endif
                                                                     @endforeach
                                                                 @endif

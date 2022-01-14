@@ -297,7 +297,9 @@
                                     <hr>
                                     <div class="row ">
                                         <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
-                                            <h3 class="font-weight-bold" style="text-align:center"> <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
+                                            <h3 class="font-weight-bold" 
+                                            style="text-align:center"> 
+                                            <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
                                             <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
                                         </div>
                                         <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
@@ -517,7 +519,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
-                                    <label class="control-label col-sm-12 end_padding text-white "><strong>Tech Lead</strong></label>
+                                    <label class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
                                     <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5">Selected</h5>
                                     <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
                                         <option value="">Unassigned</option>
@@ -585,7 +587,7 @@
                                     Compose 
                                 </a>
                                
-                                <a id="update_ticket" style="display:none" class="btn btn-success float-right" onclick="updateTicket()">
+                                <a id="update_ticket" style="display:none" class="btn btn-success float-right mx-2" onclick="updateTicket()">
                                     Update 
                                 </a>    
                             </h4>
