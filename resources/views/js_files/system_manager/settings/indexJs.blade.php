@@ -34,7 +34,7 @@
 </script>
     <script>
         // $('.dd-handle-right').draggable();
-        $('.sortableMenu tbody').sortable();
+        // $('.sortableMenu tbody').sortable();
        $('.rightForm').hide();
        $('.menuBox').hide();
        $('.clickMe').click(function(){
