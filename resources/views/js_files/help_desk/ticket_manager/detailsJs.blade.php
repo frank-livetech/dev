@@ -37,6 +37,7 @@ $(document).ready(function() {
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons",
         // file_picker_types: 'file image media',
         // media_live_embeds: true,
+        paste_data_images: true,
         file_picker_callback: function(cb, value, meta) {
             var input = document.createElement('input');
             input.setAttribute('type', 'file');
@@ -1033,10 +1034,10 @@ function listReplies() {
                 if(reply.reply_user.profile_pic != null) {
                     user_img += `<img src="{{asset('files/user_photos/${reply.reply_user.profile_pic}')}}" style="border-radius: 50%;" width="40px" height="40px" class="img-fluid" />`;
                 }else{
-                    user_img += `<img src="{{asset('default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    user_img += `<img src="{{asset('public/default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }                
             }else{
-                user_img += `<img src="{{asset('default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                user_img += `<img src="{{asset('public/default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
 
 
@@ -2370,7 +2371,7 @@ function get_ticket_notes() {
                         user_img += `<img src="{{asset('files/user_photos/${notes[i].profile_pic}')}}" 
                         width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
                     }else{
-                        user_img += `<img src="{{asset('default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                        user_img += `<img src="{{asset('public/default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
 
                     let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
