@@ -125,10 +125,10 @@
                                 @if(is_file(public_path('files/user_photos/Customers/'.$customer->avatar_url)))
                                     <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                 @else
-                                    <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                    <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                 @endif
                             @else
-                                <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                             @endif
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a>
     

@@ -349,11 +349,13 @@ class MailController extends Controller
                                     $sbj = str_replace('Re: ', '', $mail[0]["parsed"]['Subject']);
                                     $cid = (!empty($customer)) ? $customer->id : '';
                                     $sid = '';
+                                    
                                     // echo $ticketID;exit;
                                     if(empty($customer)) {
                                         $staff = User::where('email', trim($emailFrom))->first();
                                         if(empty($staff)) {
                                             // reply is not from our system user
+                                            
                                             continue;
                                         }
                                         $sid = $staff->id;
@@ -431,20 +433,23 @@ class MailController extends Controller
                                
                                
                             }else{
-                                $customer_id = '';
-                                $is_staff_tkt = 0;
-
-                                if(empty($customer)) {
-                                    $staff = User::where('email', trim($emailFrom))->first();
-                                    if(empty($staff)) {
-                                        // reply is not from our system user
-                                        continue;
+                                
+                                    $customer_id = '';
+                                    $is_staff_tkt = 0;
+   
+                                    if(empty($customer)) {
+                                        
+                                        $staff = User::where('email', trim($emailFrom))->first();
+                                        if(empty($staff)) {
+                                            // reply is not from our system user
+                                            imap_delete($imap, $message);
+                                            continue;
+                                        }
+                                        $customer_id = $staff->id;
+                                        $is_staff_tkt = 1;
+                                    }else{
+                                        $customer_id = $customer->id;
                                     }
-                                    $customer_id = $staff->id;
-                                    $is_staff_tkt = 1;
-                                }else{
-                                    $customer_id = $customer->id;
-                                }
                                 //  if(!empty($customer)) {
                                     // $ticket = Tickets::where('customer_id', $customer->id)->where('subject', trim($mail[0]["parsed"]['Subject']))->first();
                                     $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $mail[0]["parsed"]['Subject'])->first();
