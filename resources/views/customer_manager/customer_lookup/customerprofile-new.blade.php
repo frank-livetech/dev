@@ -125,10 +125,10 @@
                                 @if(is_file(public_path('files/user_photos/Customers/'.$customer->avatar_url)))
                                     <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                 @else
-                                    <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                    <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                 @endif
                             @else
-                                <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                             @endif
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a>
     
@@ -318,9 +318,9 @@
                             <a class="nav-link" id="notifications-profile-tab" data-toggle="pill" href="#notification"
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
                         </li> -->
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" id="notes-profile-tab" data-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes</a>
-                        </li> -->
+                        </li>
     
                         <li class="nav-item">
                             <a class="nav-link" id="domain-profile-tab" data-bs-toggle="pill" href="#ticket_domain" role="tab" aria-controls="pills-profile" aria-selected="false">Domain</a>
@@ -1509,12 +1509,12 @@
                             </div>
                         </div>
     
-                        <!-- <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
+                        <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
                             <hr>
                             <div class="card-body">
                                 No Data Found.
                             </div>
-                        </div> -->
+                        </div>
     
                         <div class="tab-pane fade" id="ticket_domain" role="tabpanel" aria-labelledby="domain-profile-tab">
                             <hr>
