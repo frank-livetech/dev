@@ -49,6 +49,7 @@ use Genert\BBCode\BBCode;
 use App\Models\SlaPlan;
 use App\Models\SlaPlanAssoc;
 use App\Http\Controllers\ActivitylogController;
+use App\Http\Controllers\GeneralController;
 use App\Models\Activitylog;
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
@@ -158,10 +159,58 @@ class HomeController
     }
 
     function saveTicket(Request $request) {
-        return dd($request->all());
+
+        $customer = Customer::where('email' , auth()->user()->email)->first();
+        
+
+        $data = array(
+            "subject" => $request->subject , 
+            "priority" => $request->priority , 
+            "dept_id" => $request->dept_id,
+            "ticket_detail" => $request->ticket_detail,
+            "customer_id" => $customer->id,
+        );
+
+        $type = TicketType::where('name' ,'Issue')->first();
+
+        if($type) {
+            $data['type'] = $type->id;
+        }else{
+            $data['type'] = NULL;
+        }
+
+        $tkt_status= TicketStatus::where('slug','open')->first();
+
+        if($tkt_status) {
+            $data['status'] = $tkt_status->id;
+        }else{
+            $data['status'] = NULL;
+        }
+
+        $gen = new GeneralController();
+        $data['coustom_id'] = $gen->randomStringFormat(self::CUSTOMID_FORMAT);
+
+        $lt = Tickets::orderBy('created_at', 'desc')->first();
+
+        if(!empty($lt)) {
+            $data['seq_custom_id'] = 'T-'.strval($lt->id + 1);
+        }else{
+            $total_tkts = Tickets::count();
+            $data['seq_custom_id'] = 'T-'.strval($total_tkts+1);
+        }
+
+        Tickets::create($data);
+
+        return response()->json([
+            "status_code" => 200 , 
+            "success" => true , 
+            "message" => "Ticket Created Successfully!",
+        ]);
+
     }
 
     public function getCustomerTickets() {
+        
         $customer =  Customer::where('email' , auth()->user()->email)->first();
 
         $open_status = TicketStatus::where('name','Open')->first();
@@ -290,32 +339,10 @@ class HomeController
 
     public function get_tkt_details($id) {
         if(strpos($id, 'T-') === 0) {
-            $ticket = Tickets::where('seq_custom_id', $id)->where('is_deleted', 0)->first();
+            $ticket = Tickets::where('seq_custom_id', $id)->where('is_deleted', 0)->with('ticketReplies')->withCount('ticketReplies')->first();
         } else {
-            $ticket = Tickets::where('coustom_id', $id)->where('is_deleted', 0)->first();
+            $ticket = Tickets::where('coustom_id', $id)->where('is_deleted', 0)->with('ticketReplies')->withCount('ticketReplies')->first();
         }
-        if(empty($ticket)) {
-            return view('help_desk.ticket_manager.ticket_404');
-        }
-
-        // $bbcode = new BBCode();
-
-        // if(!empty($details->ticket_detail))
-        //     $details->ticket_detail = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($details->ticket_detail));
-        
-        // foreach ($details->ticketReplies as $key => $rep) {
-        //     $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
-
-        //     if( empty($rep['user_id']) ){
-        //         $user = Customer::where('id', $rep['customer_id'])->first();
-        //         $rep['name'] = $user['first_name'] . ' ' . $user['last_name'];
-        //         $rep['user_type'] = 5;
-        //     }else{
-        //         $user = User::where('id', $rep['user_id'])->first();
-        //         $rep['name'] = $user['name'];
-        //         $rep['user_type'] = $user['user_type'];
-        //     }
-        // }
 
         $department = Departments::where('id' , $ticket->dept_id)->first();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff', 0)->get();
@@ -323,10 +350,11 @@ class HomeController
         $statuses = TicketStatus::orderBy('seq_no', 'desc')->get();
         $priorities = TicketPriority::all();
 
-
         $current_status = TicketStatus::where('id' , $ticket->status)->first();
         $current_priority= TicketPriority::where('id' , $ticket->priority)->first();
+        $a = $ticket->toArray();
 
+        // dd($a);
         return view('customer.customer_tkt.cust_tkt_details',get_defined_vars());
      
     }

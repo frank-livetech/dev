@@ -72,7 +72,6 @@ $(document).ready(function() {
         listReplies();
     });
 
-
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );
 
