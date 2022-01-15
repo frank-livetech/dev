@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
+    @if(\Auth::user()->theme == "dark")
+        <html class="loaded light-layout dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
+    @else
+        <html class="loaded light-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
+    @endif
 <!-- BEGIN: Head-->
 
 <head>
@@ -99,19 +103,30 @@
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
-
+    <input type="hidden" value="{{\Auth::user()->profile_pic}}" id="curr_user_image">
     <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
-        <div class="navbar-container d-flex content">
+    @if(\Auth::user()->theme == "dark")
+        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-xxl">
+    @else
+        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
+    @endif
+    <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
                 <ul class="nav navbar-nav d-xl-none">
                     <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
-                
-                <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i></a></li>
-               
+                @if(\Auth::user()->theme == "dark")
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a>
+                    </li>
+                @else
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i>
+                    </a></li>
+                @endif
+            
                 <li class="nav-item dropdown dropdown-notification me-25">
                     <a class="nav-link" href="#" data-bs-toggle="dropdown">
                         <i class="ficon" data-feather="bell"></i>
@@ -130,7 +145,7 @@
                                 <div class="badge rounded-pill badge-light-primary"><a href="{{url('all-notifications')}}" class="small p-2">view all</a></div>
                             </div>
                         </li>
-                        <li class="scrollable-container media-list message-center notifications">
+                        <li class="scrollable-container media-list ps notifications">
                             
                         </li>
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()">Read all notifications</a></li>
@@ -242,6 +257,7 @@
     <script>
         $(document).ready(function() {
             getAllCounts();
+            getNotifications();
             $(this).find(".slogan_i_minus").hide();
             if (feather) {
                 feather.replace({
@@ -253,8 +269,9 @@
         // $(window).on('load', function() {
             
         // });
-
+        var user_photo_url = "{{asset('files/user_photos')}}";
         var url = "{{asset('/get_all_counts')}}";
+        var get_notifications = "{{url('getNotifications')}}";
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({
                 type: 'POST',
@@ -332,6 +349,127 @@
               
             }
         });
+        $(".nav-link-style").click(function(){
+            var ter = $(this).find(".feather").attr("class");
+
+
+            if(ter == "feather feather-sun ficon"){
+                $.ajax({
+                    url: "{{asset('change_theme_mode')}}",
+                    type: "POST",
+                    data: {
+                        theme: 'dark'
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function(data) {
+
+                    },
+                    failure: function(errMsg) {
+
+                        console.log(errMsg);
+                    }
+                });
+            }
+            else{
+                $.ajax({
+                    url: "{{asset('change_theme_mode')}}",
+                    type: "POST",
+                    data: {
+                        theme: 'light'
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function(data) {},
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                    }
+                });
+
+            }
+        })
+        function getNotifications(){
+        $.ajax({
+            url: get_notifications,
+            type: "get",
+            dataType: 'json',
+            cache: false,
+            async:false,
+            success: function(data) {
+                console.log(data , "notification");
+                var noti_div = ``;
+                var sender = data.data;
+
+                var curr_user_image = $("#curr_user_image").val();
+                var user_image = ``;
+                var default_icon = ``;
+
+                if(data){
+                    notifications = data.data;
+
+                    $("#noti_count").text(notifications.length);
+
+                    if(notifications.length > 0){
+                        for(var i = 0 ; i < notifications.length ; i++){
+
+                            if(notifications[i].sender != null) {
+                                
+                                if(notifications[i].sender.profile_pic != null ) {
+                                    user_image = `<img src="`+user_photo_url + '/' + notifications[i].sender.profile_pic  +`" alt="avatar" width="32" height="32">`;
+                                }else{
+                                    user_image = `<img src="`+user_photo_url + '/' + 'user-photo.jpg' +`" alt="avatar" width="32" height="32">`;
+                                }
+                            }
+                            else{
+                                user_image = `<img src="`+user_photo_url + '/' + 'user-photo.jpg' +`" alt="avatar" width="32" height="32">`;
+                            }
+
+                            var date = new Date(notifications[i].created_at);
+                            
+                            default_icon = `<span class="btn `+notifications[i].btn_class+` rounded-circle btn-circle"">
+                                            <i class="`+notifications[i].noti_icon+`"></i></span>`;
+
+                            var title = notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification';
+                            var desc = notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc';
+
+                            var icon = 'fa fa-link';
+                            noti_div += ` <a class="d-flex"href="#" onclick="markRead(`+notifications[i].id+`)" style="cursor: pointer;">
+                                            <div class="list-item d-flex align-items-start">
+                                                <div class="me-1">
+                                                    <div class="avatar">
+                                                        `+ (notifications[i].noti_type == "attendance" ? user_image : default_icon) +`
+                                                    </div>
+                                                </div>
+                                                <div class="list-item-body flex-grow-1">
+                                                    <p class="media-heading">\
+                                                    <span class="fw-bolder">`+title+`</span> <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
+                                                    <small class="notification-text"> `+desc+`</small>
+                                                </div>
+                                            </div>
+                                        </a>`;
+                                       
+                        }
+                        $('.notifications').append(noti_div)
+
+                    }
+                    else{
+                        alert("relse");
+                        // noti_div = `<li>
+                        //                 <span class="font-12 text-nowrap d-block text-muted text-truncate" style="text-align:center">No Unread Notifications.</span> 
+                        //             </li>`;
+                        // $('.notif_div_ul').append(noti_div)
+                        
+                    }
+                }
+                
+
+            },
+            failure: function(errMsg) {
+
+                console.log(errMsg);
+            }
+        });
+    }
     </script>
     @yield('scripts')
 </body>

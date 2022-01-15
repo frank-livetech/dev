@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form class="needs-validation was-validated" novalidate="" method="POST" action="" id="save_tickets">
+                        <form class="needs-validation was-validated" novalidate="" method="POST" action="{{route('customer.saveTicket')}}" id="save_tickets">
                             <div class="form-group">
                                 <div class="row g-1">
                                     <div class="col-md-8 col-12 position-relative">
@@ -23,9 +23,9 @@
                                         <label class="form-label" for="dept_id">Select Department<span class="text-danger">*</span></label>
                                         <select class="select2 form-select" style="width:100%" name="dept_id" id="dept_id">
                                             @if($departments != null && $departments != "")
-                                                @foreach($departments as $key => $department)
-                                                    <option value="{{$department->id}}">{{$department->name}}</option>
-                                                @endforeach
+                                            @foreach($departments as $key => $department)
+                                            <option value="{{$department->id}}">{{$department->name}}</option>
+                                            @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -35,9 +35,9 @@
                                         <label class="form-label">Select Priority<span class="text-danger">*</span></label>
                                         <select class="select2 form-control dropdown" style="width:100%" id="priority" name="priority" required>
                                             @if($priorities != null && $priorities != "")
-                                                @foreach($priorities as $key=> $priority)
-                                                    <option value="{{$priority->id}}" {{$priority->name == 'Medium' ? 'selected' : ''}}>{{$priority->name}}</option>
-                                                @endforeach
+                                            @foreach($priorities as $key=> $priority)
+                                            <option value="{{$priority->id}}" {{$priority->name == 'Medium' ? 'selected' : ''}}>{{$priority->name}}</option>
+                                            @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -47,7 +47,7 @@
                                 <div class="row mt-2">
                                     <div class="col-md-12 ">
                                         <label class="control-label">Problem Details<span class="text-danger">*</span></label>
-                                        <textarea class="form-control" rows="3" id="ticket_detail" name="ticket_detail"></textarea>
+                                        <textarea class="form-control" rows="3" id="ticket_detail"></textarea>
                                         <span class="text-danger small" id="ticket_detail_error"></span>
                                     </div>
                                     <div id="ticket_attachments"></div>

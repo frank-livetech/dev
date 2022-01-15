@@ -16,4 +16,9 @@ table.dataTable>thead>tr>th:not(.sorting_disabled), table.dataTable>thead>tr>td:
     padding-right: 30px !important;
 }
 
+
+.bor-top{
+    border-top: 1px solid #c1c1c1;
+    padding-top:10px;
+}
 /*Custom Sidebar Changes*/

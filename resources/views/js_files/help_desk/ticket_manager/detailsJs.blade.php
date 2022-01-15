@@ -72,7 +72,6 @@ $(document).ready(function() {
         listReplies();
     });
 
-
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );
 
@@ -1046,9 +1045,9 @@ function listReplies() {
                 <li class="media" id="reply__${index}">
                     <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
                     <div class="media-body">
-                        <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;float:right;position:relative;left:333px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;float:right;position:relative;left:328px;" ></span>&nbsp;</h5> 
+                        <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;position:absolute;right:45px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
-                        <div class="" id="reply-html-` + reply.id + `">
+                        <div class="my-1 bor-top" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
                         </div>
                         <div class="row mt-1">
