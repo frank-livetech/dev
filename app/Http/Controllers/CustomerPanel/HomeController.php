@@ -136,6 +136,37 @@ class HomeController
         // return view('customer_manager.customer_lookup.custProfile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
         return view('customer.customer_profile.customer_profile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
     }
+    public function change_theme_mode(Request $request){
+    
+        $data = $request->all();
+      
+        try{
+            $user = \Auth::user();
+            if($data['theme'] == 'light'){
+                
+                $user->theme = 'light';
+                $user->save();
+                
+            }else{
+                
+                $user->theme = 'dark';
+                $user->save();
+                
+            }
+            $response['message'] = 'Theme Changed Successfully!';
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            return response()->json($response);
+            
+        }catch(Exception $e){
+            
+            $response['message'] = 'Something Went wrong!';
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+                
+        }
+    }
 
 
     public function viewTicketPage() {
