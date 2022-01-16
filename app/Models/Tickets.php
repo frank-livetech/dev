@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\TicketReply;
 use App\Models\Activitylog;
-use App\Models\User;
+use App\User;
 use App\Models\Customer;
 
 use DB;
