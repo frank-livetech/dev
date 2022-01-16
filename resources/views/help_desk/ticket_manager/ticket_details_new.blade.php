@@ -274,24 +274,52 @@
                                         @php
                                             $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                         @endphp
-                                        @if($ticket_customer->avatar_url != NULL)
-                                            @if(file_exists( public_path().'/'. $ticket_customer->avatar_url ))
-                                                <img src="../files/user_photos/cust_profile_img/{{$ticket_customer->avatar_url}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
-                                            @else
-                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                        @if($details->is_staff_tkt == 0)
+                                            @if($ticket_customer->avatar_url != NULL)
+                                                @if(file_exists( public_path().'/'. $ticket_customer->avatar_url ))
+                                                    <img src=" {{ asset('files/user_photos/cust_profile_img/'.$ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                                @else
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                @endif
+                                            @else($ticket_customer->avatar_url == NULL)
+                                            <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
-                                        @else($ticket_customer->avatar_url == NULL)
-                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                        @else
+                                            @if($ticket_customer->avatar_url != NULL)
+                                                @if(file_exists( public_path().'/'. $ticket_customer->profile_pic ))
+                                                    <img src="{{ asset('/files/user_photos/'.$ticket_customer->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                                @else
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                @endif
+                                            @else($ticket_customer->avatar_url == NULL)
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            @endif
                                         @endif
                                         <br><br>
-                                        
                                     </div>
+                                    @php
+
+                                        $name = '';
+                                        $phone = '';
+                                        $email = '';
+
+                                        if($details->is_staff_tkt == 0){
+                                            $name = $ticket_customer->first_name .' '. $ticket_customer->last_name;
+                                            $phone = $ticket_customer->phone;
+                                            $email = $ticket_customer->email;
+                                        }else{
+                                            $name = $ticket_customer->name;
+                                            $phone = $ticket_customer->phone_number;
+                                            $email = $ticket_customer->email;
+                                        }
+
+                                    @endphp
                                     <div class="col-lg-9 col-md-8 innerBox" id="style-5" style="">
-                                        <p style="margin-bottom: 0.2rem; !important">Name : <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $ticket_customer->first_name }} {{ $ticket_customer->last_name }} </a></p>
+                                        <p style="margin-bottom: 0.2rem; !important">Name : <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }} </a></p>
                                         <p style="margin-bottom: 0.2rem; !important" id="cst-company"></p>
-                                        <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $ticket_customer->phone }}" id="cst-direct-line">{{ $ticket_customer->phone }}</a> </p>
+                                        <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
                                         <p style="margin-bottom: 0.2rem; !important" id="cst-company-name"></p>
-                                        <p style="margin-bottom: 0.2rem; !important">Email : <a href="mailto:{{ $ticket_customer->email }}" id="cst-email">{{ $ticket_customer->email }}</a>  </p>
+                                        <p style="margin-bottom: 0.2rem; !important">Email : <a href="mailto:{{ $email }}" id="cst-email">{{ $email }}</a>  </p>
                                         <p style="margin-bottom: 0.2rem; !important">Client Since : <span id="cust-creation-date"></span></p>
                                     </div>
                                     <hr>
