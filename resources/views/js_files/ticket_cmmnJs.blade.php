@@ -305,10 +305,14 @@ function redrawTicketsTable(ticket_arr) {
 
         var short_replier = '';
 
-        if (replier && replier.length > 15) {
-            short_replier = replier.substring(0, 15) + " ...";
+        if (replier != null ) {
+            if(replier.length > 15){
+                short_replier = replier.substring(0, 15) + " ...";
+            }else{
+                short_replier = replier;
+            }
         } else {
-            short_replier = replier;
+            short_replier = '---';
         }
 
         // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
@@ -331,7 +335,7 @@ function redrawTicketsTable(ticket_arr) {
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
             <td class='text-center'>${prior}</td>
             <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
-            <td>${(short_replier.length > 15 ? short_replier.substring(0,15) + '...' : short_replier)}</td>
+            <td>${short_replier}</td>
             <td class='text-center'>${replies}</td>
             <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
             <td class='text-center'>${rep_due}</td>
