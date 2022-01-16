@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\TicketReply;
 use DB;
 
 class Tickets extends Model
 {
     protected $table = 'tickets';
-    protected $appends = ['department_name', 'priority_name', 'status_name', 'type_name', 'creator_name','assignee_name'];
+    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity'];
     protected $fillable = [
         'dept_id','priority','assigned_to','subject','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments'
     ];
@@ -22,19 +23,55 @@ class Tickets extends Model
         return $this->hasOne(Customer::class,'id','customer_id');
     }
 
+    public function getRepliesAttribute() {
+
+        $id = $this->id;
+        $repCount = TicketReply::where('ticket_id', $id)->count();
+        return $repCount;
+    }
+
+    public function getLastActivityAttribute() {
+
+        $id = $this->id;
+        $lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $id)->orderBy('created_at', 'desc')->value('created_at');
+        return $lastActivity;
+    }
+    public function getStatusColorAttribute() {
+
+        $id = $this->status;
+        if(!empty($id)) {
+            $data = DB::table('ticket_statuses')->where('id', $id)->first();
+            if(!empty($data)) return $data->color;
+        }
+        return null;
+    }
+    public function getLastReplierAttribute() {
+
+        $id = $this->id;
+        $rep = TicketReply::where('ticket_id', $id)->orderBy('created_at', 'desc')->first();
+      
+        if(!empty($rep)) {
+            if($rep['user_id']) {
+                $user = User::where('id', $rep['user_id'])->first();
+                if(!empty($user)) return $user->name;
+            } else if($rep['customer_id']) {
+                $user = Customer::where('id', $rep['customer_id'])->first();
+                if(!empty($user)) return  $user->first_name.' '.$user->last_name;
+            }
+            
+        }
+    }
+    public function getPriorityColorAttribute() {
+
+        $id = $this->priority;
+        if(!empty($id)) {
+            $data = DB::table('ticket_priorities')->where('id', $id)->first();
+            if(!empty($data)) return $data->priority_color;
+        }
+        return null;
+    }
+
     public function getDepartmentNameAttribute() {
-        // $depts = DB::table('departments')->get();
-        // $did = $this->dept_id;
-
-        // if(empty($did) || empty($depts)) {
-        //     return null;
-        // }
-
-        // foreach ($depts as $key => $value) {
-        //     if($value->id == $did) {
-        //         return $value->name;
-        //     }
-        // }
 
         $id = $this->dept_id;
         if(!empty($id)) {
@@ -44,19 +81,25 @@ class Tickets extends Model
         return null;
     }
 
+    public function getCustomerNameAttribute() {
+
+        $id = $this->customer_id;
+        $is_stf_tkt = $this->is_staff_tkt;
+
+        if(!empty($id)) {
+            if($is_stf_tkt == 0){
+                $data = DB::table('customers')->where('id', $id)->first();
+                if(!empty($data)) return $data->first_name .' '. $data->last_name;
+            }else{
+                $data = DB::table('users')->where('id', $id)->first();
+                if(!empty($data)) return $data->name;
+            }
+            
+        }
+        return null;
+    }
+
     public function getAssigneeNameAttribute() {
-        // $pr_list = DB::table('ticket_priorities')->get();
-        // $pr = $this->priority;
-
-        // if(empty($pr) || empty($pr_list)) {
-        //     return null;
-        // }
-
-        // foreach ($pr_list as $key => $value) {
-        //     if($value->id == $pr) {
-        //         return $value->name;
-        //     }
-        // }
 
         $id = $this->assigned_to;
         if(!empty($id)) {
@@ -70,18 +113,6 @@ class Tickets extends Model
     }
 
     public function getPriorityNameAttribute() {
-        // $pr_list = DB::table('ticket_priorities')->get();
-        // $pr = $this->priority;
-
-        // if(empty($pr) || empty($pr_list)) {
-        //     return null;
-        // }
-
-        // foreach ($pr_list as $key => $value) {
-        //     if($value->id == $pr) {
-        //         return $value->name;
-        //     }
-        // }
 
         $id = $this->priority;
         if(!empty($id)) {
@@ -92,18 +123,6 @@ class Tickets extends Model
     }
 
     public function getStatusNameAttribute() {
-        // $st_list = DB::table('ticket_statuses')->get();
-        // $st = $this->status;
-
-        // if(empty($st) || empty($st_list)) {
-        //     return null;
-        // }
-
-        // foreach ($st_list as $key => $value) {
-        //     if($value->id == $st) {
-        //         return $value->name;
-        //     }
-        // }
 
         $id = $this->status;
         if(!empty($id)) {
@@ -114,18 +133,6 @@ class Tickets extends Model
     }
 
     public function getTypeNameAttribute() {
-        // $types = DB::table('ticket_types')->get();
-        // $tid = $this->type;
-
-        // if(empty($tid) || empty($types)) {
-        //     return null;
-        // }
-
-        // foreach ($types as $key => $value) {
-        //     if($value->id == $tid) {
-        //         return $value->name;
-        //     }
-        // }
 
         $id = $this->type;
         if(!empty($id)) {

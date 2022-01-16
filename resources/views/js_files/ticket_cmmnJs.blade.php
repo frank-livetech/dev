@@ -76,7 +76,7 @@ function get_ticket_table_list() {
         success: function(data) {
             console.log(data, "data 123123123");
             date_formate = data.date_format;
-            // console.log(data.tickets);
+            console.log(data.tickets);
             ticketsList = data.tickets;
             listTickets(url_type);
             if(page_name == 'tickets') ShowCalendarModel();
@@ -336,7 +336,7 @@ function redrawTicketsTable(ticket_arr) {
             <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
             <td class='text-center'>${rep_due}</td>
             <td class='text-center'>${res_due}</td>
-            <td>${val['tech_name']}</td>
+            <td>${val['assignee_name']}</td>
             <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
             
         </tr>`;
