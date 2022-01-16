@@ -10,7 +10,7 @@ use DB;
 class Tickets extends Model
 {
     protected $table = 'tickets';
-    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies'];
+    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity'];
     protected $fillable = [
         'dept_id','priority','assigned_to','subject','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments'
     ];
@@ -28,6 +28,13 @@ class Tickets extends Model
         $id = $this->id;
         $repCount = TicketReply::where('ticket_id', $id)->count();
         return $repCount;
+    }
+
+    public function getLastActivityAttribute() {
+
+        $id = $this->id;
+        $lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $id)->orderBy('created_at', 'desc')->value('created_at');
+        return $lastActivity;
     }
     public function getStatusColorAttribute() {
 
