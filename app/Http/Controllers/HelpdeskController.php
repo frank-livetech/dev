@@ -1083,7 +1083,11 @@ class HelpdeskController extends Controller
 
         $departments = Departments::all();
         // $ticket = Tickets::all();
-        $ticket_customer = Customer::firstWhere('id',$details->customer_id);
+        if($details->is_staff_tkt == 1){
+            $ticket_customer = User::firstWhere('id',$details->customer_id);
+        }else{
+            $ticket_customer = Customer::firstWhere('id',$details->customer_id);
+        }
         $all_customers = Customer::with('company')->get();
         $all_companies = Company::all();
         $responseTemplates = ResponseTemplate::get();
@@ -1111,7 +1115,6 @@ class HelpdeskController extends Controller
             $total_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('trashed',0)->where('is_deleted',0)->count();
             $open_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status','!=',$closed_status->id)->where('trashed',0)->where('is_deleted',0)->count();
             $closed_tickets_count = Tickets::where('customer_id',$ticket->customer_id)->where('status',$closed_status->id)->where('trashed',0)->where('is_deleted',0)->count();
-
         }
         
         
