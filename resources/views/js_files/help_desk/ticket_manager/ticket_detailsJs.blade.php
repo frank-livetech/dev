@@ -272,7 +272,7 @@
 
     function openProModal() {
         
-        $("#up_tkt_cust_title").text("Update Ticket Customer");
+        $("#up_tkt_cust_title").text("Update Ticket Properties");
         $('#csearch').val('');
         $('#ct-search').val('');
 
@@ -293,7 +293,7 @@
 
     function newCustomer(mode) {
         if(mode == 'cancel') {
-            $("#up_tkt_cust_title").text("Update Ticket Customer");
+            $("#up_tkt_cust_title").text("Update Ticket Properties");
             $('#new-cust-cont').hide();
             $('.newcustbtn').hide();
             $('#normal-cut-selc').show();
