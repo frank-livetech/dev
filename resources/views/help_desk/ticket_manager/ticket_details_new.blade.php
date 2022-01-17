@@ -284,7 +284,7 @@
                                             @else($ticket_customer->avatar_url == NULL)
                                             <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
-                                            <span class="badge badge-secondary">User</span>
+                                            <span class="badge badge-secondary type_bdge">User</span>
                                         
                                         @else
                                             @if($ticket_customer->profile_pic != NULL)
@@ -296,7 +296,7 @@
                                             @else($ticket_customer->profile_pic == NULL)
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
-                                            <span class="badge badge-secondary">Staff</span>
+                                            <span class="badge badge-secondary type_bdge">Staff</span>
                                         
                                         @endif
                                         <br><br>
