@@ -131,13 +131,13 @@
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
-                            <span class="user-name fw-bolder">{{ Auth::user()->name }}</span>
+                            <span class="user-name fw-bolder">{{ Auth::user()->name }} {{auth()->user()->avatar_url}}</span>
                             {{-- <span class="user-status">{{ Auth::user()->email }}</span> --}}
                         </div>
                         <span class="avatar">
                             @if(Auth::user()->profile_pic != null)
-                                @if(file_exists( public_path(). $file_path . '/files/user_photos/'. \Auth::user()->profile_pic))
-                                    <img src="{{ asset( $file_path . 'files/user_photos/'.\Auth::user()->profile_pic)}}"
+                                @if(file_exists( public_path(). $file_path . 'files/user_photos/Customers/'. auth()->user()->profile_pic))
+                                    <img src="{{ asset( $file_path . 'files/user_photos/Customers')}}/{{auth()->user()->profile_pic}}"
                                         alt="'s Photo" class="rounded-circle" width="50px">
                                 @else
                                     <img src="{{asset(  $file_path . 'default_imgs/logo.png')}}" width="50px" alt="'s Photo" class="rounded-circle">
@@ -145,6 +145,7 @@
                             @else
                                 <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo"  width="50px" class="rounded-circle">
                             @endif
+                            
                             <span class="avatar-status-online"></span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
