@@ -304,7 +304,7 @@ function redrawTicketsTable(ticket_arr) {
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
         var short_replier = '';
-        var assignee = 'Unassigned';
+        var assignee = '-- Unassigned --';
 
         if(val['assignee_name'] != null){
             assignee = val['assignee_name'];
