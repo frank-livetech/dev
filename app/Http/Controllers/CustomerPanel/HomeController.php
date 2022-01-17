@@ -25,6 +25,7 @@ use App\Models\Shipping;
 use App\Models\Orders;
 use App\Models\Integrations;
 use App\Models\ResponseTemplate;
+use Illuminate\Support\Facades\File;
 use App\User;
 use App\Models\TicketReply;
 use Illuminate\Support\Facades\DB;
@@ -62,9 +63,6 @@ class HomeController
      const DEFAULTSLA_TITLE = 'Default SLA';
      const NOSLAPLAN = 'No SLA Assigned';
      const CUSTOMID_FORMAT = 'XXX-999-9999';
-
-
-
 
 
     public function profile($name,$type = null) {
@@ -136,6 +134,7 @@ class HomeController
         // return view('customer_manager.customer_lookup.custProfile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
         return view('customer.customer_profile.customer_profile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
     }
+
     public function change_theme_mode(Request $request){
     
         $data = $request->all();
@@ -168,12 +167,11 @@ class HomeController
         }
     }
 
-
     public function viewTicketPage() {
         return view('customer.customer_tkt.cust_ticket_view');
     }
 
-
+    // add ticket page
     public function addTicketPage(){
 
         $departments = Departments::all();
@@ -189,11 +187,11 @@ class HomeController
         return view('customer.customer_tkt.customer_tkt',compact('departments','priorities','users','types','customers', 'responseTemplates', 'page_control'));
     }
 
+    // save ticket
     function saveTicket(Request $request) {
 
         $customer = Customer::where('email' , auth()->user()->email)->first();
         
-
         $data = array(
             "subject" => $request->subject , 
             "priority" => $request->priority , 
@@ -230,15 +228,110 @@ class HomeController
             $data['seq_custom_id'] = 'T-'.strval($total_tkts+1);
         }
 
-        Tickets::create($data);
+        $tkt = Tickets::create($data);
 
         return response()->json([
             "status_code" => 200 , 
             "success" => true , 
+            "id" =>  $tkt->id,
             "message" => "Ticket Created Successfully!",
         ]);
 
     }
+
+    // save ticket attachments
+    public function saveTicketAttachments (Request $request) {
+        try {
+            $ticket = Tickets::findOrFail($request->ticket_id);
+
+            if($ticket) {
+
+                $target_dir = public_path().'/storage'.'/'.$request->module.'/'.$request->ticket_id;
+
+                if (!File::isDirectory($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
+
+                $file = $request->file('attachment');
+
+                //Move Uploaded File
+                if($file->move($target_dir, $request->fileName.'.'.$file->getClientOriginalExtension())) {
+                    if($request->module == 'tickets') {
+                        if(!empty($ticket->attachments)) $ticket->attachments .= ','.$request->fileName.'.'.$file->getClientOriginalExtension();
+                        else $ticket->attachments = $request->fileName.'.'.$file->getClientOriginalExtension();
+        
+                        // $response['tkt_updated_at'] = $ticket->attachments;
+                        // $response['attachments'] = $ticket->attachments;
+
+                        $ticket->updated_at = Carbon::now();
+                        $ticket->save();
+                    } else {
+                        $response['attachments'] = $request->fileName.'.'.$file->getClientOriginalExtension();
+                    }
+                } else {
+                    $response['message'] = 'Failed to move file';
+                    $response['status_code'] = 500;
+                    $response['success'] = false;
+                    return response()->json($response);
+                }
+
+            }
+
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['message'] = 'Attachment Uploaded Successfully!';
+            return response()->json($response);
+        } catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
+    // save ticket replies
+    public function saveTicketReply(Request $request) {
+        // return dd($request->all());
+        $customer = Customer::where('email' , auth()->user()->email)->first();
+        $ticket = Tickets::where('id' , $request->ticket_id)->first();
+
+        if($ticket) {
+
+            if($ticket->trashed === 1) {
+                return response()->json([
+                    "message" => 'Please restore this ticket first!',
+                    "status_code" => 500,
+                    "success" => false,
+                ]);
+            }else{
+
+                $data = array(
+                    "ticket_id" => $request->ticket_id,
+                    "customer_id" => $customer->id ,
+                    "cc" => $request->cc,
+                    "reply" => $request->reply,
+                    "attachments" => $request->attachments,
+                    "is_published" => 1,
+                );
+
+                TicketReply::create($data); 
+
+                return response()->json([
+                    "message" => 'Ticket Reply Added Successfully',
+                    "status_code" => 200,
+                    "success" => true,
+                ]);
+            }
+
+
+        }else{
+            return response()->json([
+                "message" => 'Something went wrong!',
+                "status_code" => 500,
+                "success" => false,
+            ]);
+        }
+    }   
 
     public function getCustomerTickets() {
         
@@ -370,9 +463,9 @@ class HomeController
 
     public function get_tkt_details($id) {
         if(strpos($id, 'T-') === 0) {
-            $ticket = Tickets::where('seq_custom_id', $id)->where('is_deleted', 0)->with('ticketReplies')->withCount('ticketReplies')->first();
+            $ticket = Tickets::where('seq_custom_id', $id)->where('is_deleted', 0)->with(['ticketReplies','ticket_customer'])->withCount('ticketReplies')->first();
         } else {
-            $ticket = Tickets::where('coustom_id', $id)->where('is_deleted', 0)->with('ticketReplies')->withCount('ticketReplies')->first();
+            $ticket = Tickets::where('coustom_id', $id)->where('is_deleted', 0)->with(['ticketReplies','ticket_customer'])->withCount('ticketReplies')->first();
         }
 
         $department = Departments::where('id' , $ticket->dept_id)->first();
@@ -384,8 +477,6 @@ class HomeController
         $current_status = TicketStatus::where('id' , $ticket->status)->first();
         $current_priority= TicketPriority::where('id' , $ticket->priority)->first();
         $a = $ticket->toArray();
-
-        // dd($a);
         return view('customer.customer_tkt.cust_tkt_details',get_defined_vars());
      
     }
@@ -610,5 +701,42 @@ class HomeController
             'message' => 'Customer updated successfully!',
         ]);
     }
+
+    // update customer profile pic
+    public function saveProfileImage(Request $request) {
+        if($request->profile_img != null) {
+            if($request->hasFile('profile_img')){
+
+                $customer = Customer::where('email', auth()->user()->email)->first();
+                
+                if($customer) {
+                    $filename = time() . '.' . $request->profile_img->getClientOriginalExtension();                
+                    $request->profile_img->storeAs('customer', $filename ,'public'); 
+                                        
+                    $customer->avatar_url = $filename;
+                    $customer->save();
+
+                    User::where('id' , auth()->id())->update([
+                        "profile_pic" => $filename,
+                    ]);
+
+                    return response()->json([
+                        "status" => 200 ,
+                        "success" => true ,
+                        "filename" => $filename ,
+                        "message" => "Profile Image Successfully uploaded",
+                    ]);
+
+                }else{
+                    return response()->json([
+                        "status" => 500 ,
+                        "success" => false ,
+                        "Something went wrong"
+                    ]);
+                }
+            }
+        }
+    }
+
 
 }

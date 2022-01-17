@@ -224,6 +224,7 @@
                 }
 
                 console.log(form_Data , "form");
+                return false;
                 $.ajax({
                     type: "POST",
                     url: "{{url('save-tickets')}}",

@@ -53,7 +53,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
     <!-- END: Vendor CSS-->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/tagsinput.css')}}">
     <!-- BEGIN: Theme CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/bootstrap-extended.css')}}">
@@ -154,16 +154,15 @@
                         </div>
                         <span class="avatar">
                             @if(Auth::user()->profile_pic != null)
-                                @if(file_exists( public_path(). $file_path . 'files/user_photos/Customers/'. auth()->user()->profile_pic))
-                                    <img src="{{ asset( $file_path . 'files/user_photos/Customers')}}/{{auth()->user()->profile_pic}}"
-                                        alt="'s Photo" class="rounded-circle" width="50px">
+                                @if(file_exists( public_path('storage/customer/'. auth()->user()->profile_pic)))
+                                    <img src="{{ asset( $file_path . 'storage/customer')}}/{{auth()->user()->profile_pic}}"
+                                        alt="'s Photo" id="usr_pic" class="rounded-circle" width="50px">
                                 @else
-                                    <img src="{{asset(  $file_path . 'default_imgs/logo.png')}}" width="50px" alt="'s Photo" class="rounded-circle">
+                                    <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="usr_pic" width="50px" alt="'s Photo" class="rounded-circle">
                                 @endif
                             @else
-                                <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo"  width="50px" class="rounded-circle">
+                                <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="usr_pic" alt="'s Photo"  width="50px" class="rounded-circle">
                             @endif
-                            
                             <span class="avatar-status-online"></span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
@@ -279,6 +278,7 @@
 
     <script src="{{asset($file_path . 'app-assets/js/core/app-menu.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/core/app.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/js/scripts/tagsinput.js')}}"></script>
     <!-- END: Theme JS-->
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-chat.js')}}"></script>
 

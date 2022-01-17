@@ -2,6 +2,7 @@
     
     var system_date_format = $("#system_date_format").val();
     var timezone = $("#timezone").val();
+    let ticket_attachments_count = 1;
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
@@ -18,6 +19,18 @@
 
     $("#save_tickets").submit(function(e) {
         e.preventDefault();
+
+        let fileSizeErr = false;
+
+        $('.ticket_attaches').each(function(index) {
+            console.log(this.files);
+            if(this.files.length && (this.files[0].size / (1024*1024)).toFixed(2) > 2) fileSizeErr = this.files[0].name;
+        });
+
+        if(fileSizeErr !== false) {
+            toastr.error( fileSizeErr+" exceeds 2MB!", { timeOut: 5000 });
+            return false;
+        }
 
         var action = $(this).attr('action');
         var method = $(this).attr('method');
@@ -169,6 +182,20 @@
                 success:function(response){
                     if(response.status_code == 200 && response.success == true) {
                         toastr.success(response.message, { timeOut: 5000 });
+
+                        $('.ticket_attaches').each(function(index) {
+                            console.log(this.files);
+                            if(this.files.length) {
+                                let fileData = new FormData();
+                                fileData.append('ticket_id', response.id);
+                                fileData.append('fileName', 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index);
+                                fileData.append('attachment', this.files[0]);
+                                fileData.append('module', 'tickets');
+
+                                customer.uploadTicketAttachments(fileData);
+                            }
+
+                        });
                         window.location.href = "{{route('customer.tickets')}}";
                     }else{
                         toastr.error( 'Something went wrong' , { timeOut: 5000 });
@@ -182,6 +209,28 @@
                     $("#btnSaveTicket").show();
                     $("#publishing").hide();
                     toastr.error( 'Something went wrong' , { timeOut: 5000 });
+                }
+            });
+        },
+
+        uploadTicketAttachments : (form_data) => {
+            $.ajax({
+                type: "POST",
+                url: "{{route('customer.saveTicketAttachments')}}",
+                data: form_data,
+                async: false,
+                processData: false,
+                contentType: false,
+                success: function(res) {
+                    if(res.success) {
+                        toastr.success( res.message , { timeOut: 5000 });
+                    }else{
+                        toastr.error( res.message , { timeOut: 5000 });
+                    }
+                },
+                error: function(data) {
+                    toastr.error( 'Something went wrong' , { timeOut: 5000 });
+                    console.log(data);
                 }
             });
         },
@@ -232,6 +281,20 @@
                     input.click();
                 },
             })
+        },
+
+        addAttachment :() => {
+            $('#ticket_attachments').append(`<div class="input-group mt-3">
+                <div class="custom-file text-left">
+                    <input type="file" class="form-control ticket_attaches" id="ticket_attachment_${ticket_attachments_count}">
+                    
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-dark" type="button" title="Remove" onclick="console.log(this.parentElement.parentElement.remove())"><span class="fa fa-times"></span></button>
+                </div>
+            </div>`);
+
+            ticket_attachments_count++;
         },
 
     }

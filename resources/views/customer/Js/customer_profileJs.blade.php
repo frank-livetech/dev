@@ -90,6 +90,15 @@
         
     });
 
+
+    // upload images
+    $("#upload_customer_img").submit(function(e) {
+        e.preventDefault();
+
+        var form_data = new FormData(this);
+        customerClass.uploadProfileImage(form_data);
+    });
+
     const customerClass = {
 
         updateCustomerProfile : () => {
@@ -361,6 +370,36 @@
             }
         },
 
-        
+        uploadProfileImage : (form_data) => {
+            $.ajax({
+                url: "{{route('customer.saveProfileImage')}}",
+                type: 'POST',
+                data: form_data,
+                dataType: 'JSON',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    if (data.status == 200 && data.success == true) {
+                        toastr.success(data.message, {
+                            timeOut: 5000
+                        });
+                        let url = '{{asset("storage/customer")}}/' + data.filename ;
+
+                        $('#profile-user-img').attr('src', url);
+                        $('#modal_profile_user_img').attr('src', url);
+                        $('#usr_pic').attr('src', url);
+
+                    } else {
+                        toastr.error(data.message, { timeOut: 5000 });
+                    }
+                },
+                error: function(e) {
+                    console.log(e)
+                }
+
+            });
+        },
+
     }
 </script>

@@ -291,8 +291,8 @@ blockquote {
                 <div class="card-body">
                     <center class="mt-4">
                         @if($customer->avatar_url != null)
-                            @if(is_file(public_path('files/user_photos/Customers/'.$customer->avatar_url)))
-                            <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle"
+                            @if(is_file(public_path('storage/customer/'.$customer->avatar_url)))
+                            <img src="{{ asset('storage/customer/'.$customer->avatar_url)}}" class="rounded-circle"
                                 width="100" height="100" id="profile-user-img" />
                             @else
                             <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
@@ -2313,16 +2313,16 @@ blockquote {
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
                         @if($customer->avatar_url != null)
-                            @if(is_file(public_path('files/user_photos/Customers/'.$customer->avatar_url)))
-                            <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle"
-                                width="100" height="100" id="profile-user-img" />
+                            @if(is_file(public_path('storage/customer/'.$customer->avatar_url)))
+                            <img src="{{ asset('storage/customer/'.$customer->avatar_url)}}" class="rounded-circle"
+                                width="100" height="100" id="modal_profile_user_img" />
                             @else
                             <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                                id="profile-user-img" />
+                                id="modal_profile_user_img" />
                             @endif
                         @else
                         <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                            id="profile-user-img" />
+                            id="modal_profile_user_img" />
                         @endif
                     </div>
                 
@@ -2330,7 +2330,6 @@ blockquote {
                         <div class="custom-file  w-100">
                             <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}">
                             <input type="file" name="profile_img" class="form-control" id="customFilePP" accept="image/*">
-                            <!-- <label class="custom-file-label" for="customFilePP">Choose file</label> -->
                         </div>
                     </div>
 
