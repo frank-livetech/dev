@@ -1879,6 +1879,8 @@ class HelpdeskController extends Controller
             $ticket = Tickets::find($data["ticket_id"]);
             
             $ticket->customer_id = $customer->id;
+            $ticket->is_staff_tkt = 0;
+
             $ticket->save();
 
             $response['message'] = 'Ticket Customer Changed Successfully';
