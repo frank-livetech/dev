@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
+   
+@if(\Auth::user()->theme == "dark")
+        <html class="loaded light-layout dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
+    @else
+        <html class="loaded light-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
+    @endif
+    
 <!-- BEGIN: Head-->
 
 <head>
@@ -103,12 +109,24 @@
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
                 <ul class="nav navbar-nav d-xl-none">
-                    <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-toggle" href="#">
+                            <i class="ficon" data-feather="menu"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
                 
-                <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i></a></li>
+                <li class="nav-item d-none d-lg-block">
+                    <a class="nav-link nav-link-style">
+                    @if(\Auth::user()->theme == "dark")
+                        <i class="ficon" data-feather="sun"></i>
+                        @else
+                        <i class="ficon" data-feather="moon"></i>
+                        @endif
+                    </a>
+                </li>
                
                 <li class="nav-item dropdown dropdown-notification me-25">
                     <a class="nav-link" href="#" data-bs-toggle="dropdown">
@@ -284,6 +302,45 @@
                     width: 14,
                     height: 14
                 });
+            }
+        })
+        $(".nav-link-style").click(function(){
+            var ter = $(this).find(".feather").attr("class");
+
+
+            if(ter == "feather feather-sun ficon"){
+                $.ajax({
+                    url: "{{asset('change_theme_mode')}}",
+                    type: "POST",
+                    data: {
+                        theme: 'dark'
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function(data) {
+
+                    },
+                    failure: function(errMsg) {
+
+                        console.log(errMsg);
+                    }
+                });
+            }
+            else{
+                $.ajax({
+                    url: "{{asset('change_theme_mode')}}",
+                    type: "POST",
+                    data: {
+                        theme: 'light'
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function(data) {},
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                    }
+                });
+
             }
         })
     </script>

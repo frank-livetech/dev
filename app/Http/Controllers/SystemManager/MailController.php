@@ -436,7 +436,8 @@ class MailController extends Controller
                                 
                                     $customer_id = '';
                                     $is_staff_tkt = 0;
-   
+                                    $name = '';
+                                    $email = '';
                                     if(empty($customer)) {
                                         
                                         $staff = User::where('email', trim($emailFrom))->first();
@@ -446,8 +447,12 @@ class MailController extends Controller
                                             continue;
                                         }
                                         $customer_id = $staff->id;
+                                        $name = $staff->name;
+                                        $email = $staff->email;
                                         $is_staff_tkt = 1;
                                     }else{
+                                        $name = $customer->first_name.' '.$customer->last_name;
+                                        $email = $customer->email;
                                         $customer_id = $customer->id;
                                     }
                                 //  if(!empty($customer)) {
@@ -490,7 +495,8 @@ class MailController extends Controller
                                         $ticket->save();
 
                                         $repliesSaved = true;
-                                        echo 'Created Ticket By "'.$customer->first_name.' '.$customer->last_name.' ('.$customer->email.')" with SUBJECT "'.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
+                                        
+                                        echo 'Created Ticket By "'.$name.' ('.$email.')" with SUBJECT "'.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
 
                                         self::$mailserver_hostname = $eq_value->mailserver_hostname;
                                         self::$mailserver_username = $eq_value->mailserver_username;

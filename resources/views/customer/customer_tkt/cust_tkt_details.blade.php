@@ -107,7 +107,7 @@
 
         render_tkt_replies: (ticket) => {
             var js_path = $("#js_path").val();
-            js_path = (js_path == 1 ? 'public' : '');
+            js_path = (js_path == 1 ? 'public/' : '');
 
             if (ticket.ticket_replies_count != 0) {
 

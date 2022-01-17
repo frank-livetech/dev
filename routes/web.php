@@ -368,7 +368,7 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
     Route::get('/add-tkt','HomeController@addTicketPage');
     Route::get('/view-tkt','HomeController@viewTicketPage')->name('customer.tickets');
     Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details')->name('customer.tkt_dtl');
-
+    Route::post('change_theme_mode','HomeController@change_theme_mode');
     Route::post('save_company','HomeController@saveCompany')->name('customer.saveCompany');
     Route::post('update_customer','HomeController@update_customer_profile')->name('customer.updateCustomer');
     Route::get('/customer-tickets','HomeController@getCustomerTickets')->name('customer.getCustomerTickets');

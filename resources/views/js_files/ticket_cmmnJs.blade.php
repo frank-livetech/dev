@@ -76,7 +76,7 @@ function get_ticket_table_list() {
         success: function(data) {
             console.log(data, "data 123123123");
             date_formate = data.date_format;
-            // console.log(data.tickets);
+            console.log(data.tickets);
             ticketsList = data.tickets;
             listTickets(url_type);
             if(page_name == 'tickets') ShowCalendarModel();
@@ -304,11 +304,19 @@ function redrawTicketsTable(ticket_arr) {
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
         var short_replier = '';
+        var assignee = '-- Unassigned --';
 
-        if (replier && replier.length > 15) {
-            short_replier = replier.substring(0, 15) + " ...";
+        if(val['assignee_name'] != null){
+            assignee = val['assignee_name'];
+        }
+        if (replier != null ) {
+            if(replier.length > 15){
+                short_replier = replier.substring(0, 15) + " ...";
+            }else{
+                short_replier = replier;
+            }
         } else {
-            short_replier = replier;
+            short_replier = '---';
         }
 
         // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
@@ -331,12 +339,12 @@ function redrawTicketsTable(ticket_arr) {
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
             <td class='text-center'>${prior}</td>
             <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
-            <td>${(short_replier.length > 15 ? short_replier.substring(0,15) + '...' : short_replier)}</td>
+            <td>${short_replier}</td>
             <td class='text-center'>${replies}</td>
             <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
             <td class='text-center'>${rep_due}</td>
             <td class='text-center'>${res_due}</td>
-            <td>${val['tech_name']}</td>
+            <td>${assignee}</td>
             <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
             
         </tr>`;

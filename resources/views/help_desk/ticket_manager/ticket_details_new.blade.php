@@ -274,24 +274,57 @@
                                         @php
                                             $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                         @endphp
-                                        @if($ticket_customer->avatar_url != NULL)
-                                            @if(file_exists( public_path().'/'. $ticket_customer->avatar_url ))
-                                                <img src="../files/user_photos/cust_profile_img/{{$ticket_customer->avatar_url}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
-                                            @else
-                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                        @if($details->is_staff_tkt == 0)
+                                            @if($ticket_customer->avatar_url != NULL)
+                                                @if(file_exists( public_path().'/'. $ticket_customer->avatar_url ))
+                                                    <img src=" {{ asset('files/user_photos/cust_profile_img/'.$ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                                @else
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                @endif
+                                            @else($ticket_customer->avatar_url == NULL)
+                                            <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
-                                        @else($ticket_customer->avatar_url == NULL)
-                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            <span class="badge badge-secondary type_bdge">User</span>
+                                        
+                                        @else
+                                            @if($ticket_customer->profile_pic != NULL)
+                                                @if(file_exists( public_path().'/'. $ticket_customer->profile_pic ))
+                                                    <img src="{{ asset('/files/user_photos/'.$ticket_customer->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                                @else
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                @endif
+                                            @else($ticket_customer->profile_pic == NULL)
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            @endif
+                                            <span class="badge badge-secondary type_bdge">Staff</span>
+                                        
                                         @endif
                                         <br><br>
                                         
                                     </div>
+                                    @php
+
+                                        $name = '';
+                                        $phone = '';
+                                        $email = '';
+
+                                        if($details->is_staff_tkt == 0){
+                                            $name = $ticket_customer->first_name .' '. $ticket_customer->last_name;
+                                            $phone = $ticket_customer->phone;
+                                            $email = $ticket_customer->email;
+                                        }else{
+                                            $name = $ticket_customer->name;
+                                            $phone = $ticket_customer->phone_number;
+                                            $email = $ticket_customer->email;
+                                        }
+
+                                    @endphp
                                     <div class="col-lg-9 col-md-8 innerBox" id="style-5" style="">
-                                        <p style="margin-bottom: 0.2rem; !important">Name : <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $ticket_customer->first_name }} {{ $ticket_customer->last_name }} </a></p>
+                                        <p style="margin-bottom: 0.2rem; !important">Name : <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }} </a></p>
                                         <p style="margin-bottom: 0.2rem; !important" id="cst-company"></p>
-                                        <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $ticket_customer->phone }}" id="cst-direct-line">{{ $ticket_customer->phone }}</a> </p>
+                                        <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
                                         <p style="margin-bottom: 0.2rem; !important" id="cst-company-name"></p>
-                                        <p style="margin-bottom: 0.2rem; !important">Email : <a href="mailto:{{ $ticket_customer->email }}" id="cst-email">{{ $ticket_customer->email }}</a>  </p>
+                                        <p style="margin-bottom: 0.2rem; !important">Email : <a href="mailto:{{ $email }}" id="cst-email">{{ $email }}</a>  </p>
                                         <p style="margin-bottom: 0.2rem; !important">Client Since : <span id="cust-creation-date"></span></p>
                                     </div>
                                     <hr>
@@ -1054,7 +1087,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
-                <h4 class="modal-title" id="up_tkt_cust_title" style="color:#009efb;">Update Ticket Customer</h4>
+                <h4 class="modal-title" id="up_tkt_cust_title" style="color:#009efb;">Update Ticket Properties</h4>
                 <button class="btn-close ml-auto" onclick="closeModal()"></button>
             </div>
             <div class="modal-body">
@@ -1067,6 +1100,7 @@
                             <div class="col-md-12">
                                 <label class="form-label" for="select2-basic">Select Customer</label>
                                 <select class="select2 form-select" id="tkt_all_customers" onchange="ticketCustomer.select_customer(this.value)">
+                                    <option value ="">Select Cusotmer</option>
                                     @foreach($all_customers as $customer)
                                         @php
                                             $company_name = $customer->company == null ? 'Company not provided' : ($customer->company->name != null ? $customer->company->name : 'Company not provided');
@@ -1079,6 +1113,13 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @if($details->is_staff_tkt == 1)
+                                    <div id="staff_as_customer">
+                                        <a href="#">
+                                            <div style="font-size:14px" class="bg-light text-left font-weight-bold text-dark mt-2 p-2 border shadow-sm rounded">{{$name}} <span class="badge badge-secondary">Staff</span> (ID : {{$ticket_customer->id}}) | company not provided | {{$email}} | {{$phone}} </div>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="row mt-2">
