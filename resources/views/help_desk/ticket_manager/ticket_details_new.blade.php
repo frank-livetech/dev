@@ -284,18 +284,23 @@
                                             @else($ticket_customer->avatar_url == NULL)
                                             <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
+                                            <span class="badge badge-secondary">User</span>
+                                        
                                         @else
-                                            @if($ticket_customer->avatar_url != NULL)
+                                            @if($ticket_customer->profile_pic != NULL)
                                                 @if(file_exists( public_path().'/'. $ticket_customer->profile_pic ))
                                                     <img src="{{ asset('/files/user_photos/'.$ticket_customer->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                 @endif
-                                            @else($ticket_customer->avatar_url == NULL)
+                                            @else($ticket_customer->profile_pic == NULL)
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
+                                            <span class="badge badge-secondary">Staff</span>
+                                        
                                         @endif
                                         <br><br>
+                                        
                                     </div>
                                     @php
 
@@ -1082,7 +1087,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header d-flex align-items-center">
-                <h4 class="modal-title" id="up_tkt_cust_title" style="color:#009efb;">Update Ticket Customer</h4>
+                <h4 class="modal-title" id="up_tkt_cust_title" style="color:#009efb;">Update Ticket Properties</h4>
                 <button class="btn-close ml-auto" onclick="closeModal()"></button>
             </div>
             <div class="modal-body">
@@ -1095,6 +1100,7 @@
                             <div class="col-md-12">
                                 <label class="form-label" for="select2-basic">Select Customer</label>
                                 <select class="select2 form-select" id="tkt_all_customers" onchange="ticketCustomer.select_customer(this.value)">
+                                    <option value ="">Select Cusotmer</option>
                                     @foreach($all_customers as $customer)
                                         @php
                                             $company_name = $customer->company == null ? 'Company not provided' : ($customer->company->name != null ? $customer->company->name : 'Company not provided');
@@ -1107,6 +1113,13 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @if($details->is_staff_tkt == 1)
+                                    <div id="search_customer_result">
+                                        <a href="#">
+                                            <div style="font-size:14px" class="bg-light text-left font-weight-bold text-dark mt-2 p-2 border shadow-sm rounded">{{$name}} (ID : {{$ticket_customer->id}}) | company not provided | {{$email}} | {{$phone}} </div>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="row mt-2">
