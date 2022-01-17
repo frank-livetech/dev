@@ -1114,9 +1114,9 @@
                                     @endforeach
                                 </select>
                                 @if($details->is_staff_tkt == 1)
-                                    <div id="search_customer_result">
+                                    <div id="staff_as_customer">
                                         <a href="#">
-                                            <div style="font-size:14px" class="bg-light text-left font-weight-bold text-dark mt-2 p-2 border shadow-sm rounded">{{$name}} (ID : {{$ticket_customer->id}}) | company not provided | {{$email}} | {{$phone}} </div>
+                                            <div style="font-size:14px" class="bg-light text-left font-weight-bold text-dark mt-2 p-2 border shadow-sm rounded">{{$name}} <span class="badge badge-secondary">Staff</span> (ID : {{$ticket_customer->id}}) | company not provided | {{$email}} | {{$phone}} </div>
                                         </a>
                                     </div>
                                 @endif
