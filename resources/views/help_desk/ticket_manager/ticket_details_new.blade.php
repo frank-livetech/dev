@@ -231,7 +231,7 @@
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
-    <div class="content-wrapper container-xxl p-0">
+    <div class="content-wrapper container-fluid p-0">
         <input type="hidden" id="current_url" value="{{url()->current()}}">
         <div class="content-header row">
             <div class="content-header-left col-md-7 col-12 mb-2">
