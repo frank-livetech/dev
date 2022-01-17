@@ -290,12 +290,17 @@ blockquote {
             <div class="card">
                 <div class="card-body">
                     <center class="mt-4">
-                        @if(is_file(public_path('../files/user_photos/Customers/'.$customer->avatar_url)))
-                        <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}"
-                            class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                        @if($customer->avatar_url != null)
+                            @if(is_file(public_path('storage/customer/'.$customer->avatar_url)))
+                            <img src="{{ asset('storage/customer/'.$customer->avatar_url)}}" class="rounded-circle"
+                                width="100" height="100" id="profile-user-img" />
+                            @else
+                            <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                id="profile-user-img" />
+                            @endif
                         @else
-                        <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle" width="100"
-                            height="100" id="profile-user-img" />
+                        <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            id="profile-user-img" />
                         @endif
                         <a type="button" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal"><i
                                 class="fa fa-pencil-alt picEdit"></i></a>
@@ -2296,7 +2301,7 @@ blockquote {
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- Modal -->
+<!-- customer profile image Modal -->
 <div class="modal fade" id="editPicModal" tabindex="-1" aria-labelledby="editPicModalLabel" data-backdrop="static" aria-hidden="true" >
     <div class="modal-dialog">
         <div class="modal-content">
@@ -2304,23 +2309,27 @@ blockquote {
                 <h5 class="modal-title" id="editPicModalLabel">Customer Picture</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="mt-4" id="upload_customer_img">
+            <form class="mt-0" id="upload_customer_img">
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
-                        @if(is_file(public_path('../files/user_photos/Customers/'.$customer->avatar_url)))
-                        <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle"
-                            width="100" height="100" id="profile-user-img" />
+                        @if($customer->avatar_url != null)
+                            @if(is_file(public_path('storage/customer/'.$customer->avatar_url)))
+                            <img src="{{ asset('storage/customer/'.$customer->avatar_url)}}" class="rounded-circle"
+                                width="100" height="100" id="modal_profile_user_img" />
+                            @else
+                            <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                id="modal_profile_user_img" />
+                            @endif
                         @else
-                        <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle" width="100" height="100"
-                            id="profile-user-img" />
+                        <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            id="modal_profile_user_img" />
                         @endif
                     </div>
                 
-                    <div class="input-group">
+                    <div class="input-group mt-1">
                         <div class="custom-file  w-100">
                             <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}">
                             <input type="file" name="profile_img" class="form-control" id="customFilePP" accept="image/*">
-                            <!-- <label class="custom-file-label" for="customFilePP">Choose file</label> -->
                         </div>
                     </div>
 

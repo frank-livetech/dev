@@ -1427,7 +1427,7 @@
             .end();
     });
 
-    $(".meta_tags").tagsinput('items')
+    $(".meta_tags").tagsinput('items');
     
 </script>
 

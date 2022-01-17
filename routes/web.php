@@ -365,6 +365,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], function () {
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
+    Route::post('/save_profile_img','HomeController@saveProfileImage')->name('customer.saveProfileImage');
     Route::get('/add-tkt','HomeController@addTicketPage');
     Route::get('/view-tkt','HomeController@viewTicketPage')->name('customer.tickets');
     Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details')->name('customer.tkt_dtl');
@@ -375,6 +376,8 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
 
     // save ticket
     Route::post('/save-tkt','HomeController@saveTicket')->name('customer.saveTicket');
+    Route::post('/save_tkt_attachments','HomeController@saveTicketAttachments')->name('customer.saveTicketAttachments');
+    Route::post('/save_tkt_reply','HomeController@saveTicketReply')->name('customer.saveTicketReply');
 
 });
 
