@@ -304,7 +304,11 @@ function redrawTicketsTable(ticket_arr) {
         if(!replier && val['creator_name']) replier = val['creator_name'];
 
         var short_replier = '';
+        var assignee = 'Unassigned';
 
+        if(val['assignee_name'] != null){
+            assignee = val['assignee_name'];
+        }
         if (replier != null ) {
             if(replier.length > 15){
                 short_replier = replier.substring(0, 15) + " ...";
@@ -340,7 +344,7 @@ function redrawTicketsTable(ticket_arr) {
             <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
             <td class='text-center'>${rep_due}</td>
             <td class='text-center'>${res_due}</td>
-            <td>${val['assignee_name']}</td>
+            <td>${assignee}</td>
             <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
             
         </tr>`;
