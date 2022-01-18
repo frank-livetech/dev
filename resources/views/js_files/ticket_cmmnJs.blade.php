@@ -300,7 +300,12 @@ function redrawTicketsTable(ticket_arr) {
         if(val['replies'] > 0){
             replies = val['replies'];
         }
-        let replier = val['lastReplier'] ;
+        let replier = '---'
+        val['lastReplier'] ;
+        
+        if(val['lastReplier'] != null){
+            replier = val['lastReplier'];
+        }
         // if(!replier && val['creator_name']) replier = val['creator_name'];
 
         var short_replier = '';
