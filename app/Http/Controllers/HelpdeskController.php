@@ -2359,6 +2359,12 @@ class HelpdeskController extends Controller
                 } else if($template_code == 'ticket_reply') {
                     $action_name == 'ticket_reply';
                 }
+            }elseif($action_name == 'Customer Ticket Create'){
+
+                $user = DB::table('users')->where('id', \Auth::user()->id)->first();
+                $notification_message = 'Ticket Created By Customer ' . $user->name;
+                $notification_title = 'New Ticket Created';
+
             } else {
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
                 $notification_message = 'Ticket Created By' . $user->name;

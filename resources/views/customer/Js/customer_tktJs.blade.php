@@ -193,6 +193,7 @@
                                 fileData.append('module', 'tickets');
 
                                 customer.uploadTicketAttachments(fileData);
+                                customer.ticket_notify(response.id, 'ticket_create')
                             }
 
                         });
@@ -209,6 +210,22 @@
                     $("#btnSaveTicket").show();
                     $("#publishing").hide();
                     toastr.error( 'Something went wrong' , { timeOut: 5000 });
+                }
+            });
+        },
+
+        ticket_notify : (id, template) => {
+            $.ajax({
+                type: 'POST',
+                url: "{{url('ticket_notification')}}",
+                data: { id: id, template: template, action: 'Customer Ticket Create' },
+                success: function(data) {
+                    if (!data.success) {
+                        console.log(data.message);
+                    }
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
                 }
             });
         },
