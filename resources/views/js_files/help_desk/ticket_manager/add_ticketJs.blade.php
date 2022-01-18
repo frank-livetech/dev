@@ -223,8 +223,8 @@
                     form_Data['customer_id'] = for_customer_profile_id;
                 }
 
-                console.log(form_Data , "form");
-                return false;
+                // console.log(form_Data , "form");
+              
                 $.ajax({
                     type: "POST",
                     url: "{{url('save-tickets')}}",
