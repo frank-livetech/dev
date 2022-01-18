@@ -216,19 +216,29 @@ class HomeController
             $data['status'] = NULL;
         }
 
-        $gen = new GeneralController();
-        $data['coustom_id'] = $gen->randomStringFormat(self::CUSTOMID_FORMAT);
-
-        $lt = Tickets::orderBy('created_at', 'desc')->first();
-
-        if(!empty($lt)) {
-            $data['seq_custom_id'] = 'T-'.strval($lt->id + 1);
-        }else{
-            $total_tkts = Tickets::count();
-            $data['seq_custom_id'] = 'T-'.strval($total_tkts+1);
-        }
+        
 
         $tkt = Tickets::create($data);
+        
+        // ticket assoc with sla plan
+        $settings = $this->getTicketSettings(['default_reply_and_resolution_deadline']);
+        if(isset($settings['default_reply_and_resolution_deadline'])) {
+            if($settings['default_reply_and_resolution_deadline'] == 1) {
+                $sla_plan = SlaPlan::where('title', self::DEFAULTSLA_TITLE)->first();
+                if(empty($sla_plan)) {
+                    $sla_plan = SlaPlan::create([
+                        'title' => self::DEFAULTSLA_TITLE,
+                        'sla_status' => 1
+                    ]);
+                }
+                SlaPlanAssoc::create([
+                    'sla_plan_id' => $sla_plan->id,
+                    'ticket_id' => $tkt->id
+                ]);
+            }
+        }
+
+        $tkt->save();
 
         return response()->json([
             "status_code" => 200 , 
@@ -477,6 +487,7 @@ class HomeController
         $current_status = TicketStatus::where('id' , $ticket->status)->first();
         $current_priority= TicketPriority::where('id' , $ticket->priority)->first();
         $a = $ticket->toArray();
+
         return view('customer.customer_tkt.cust_tkt_details',get_defined_vars());
      
     }
