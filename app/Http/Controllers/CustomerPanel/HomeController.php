@@ -14,6 +14,7 @@ use App\Models\TicketSettings;
 use App\Models\Customer;
 use App\Models\Company;
 use App\CompanyActivityLog;
+use App\Http\Controllers\HelpdeskController;
 use App\Models\CustomerCC;
 use App\Models\Tickets;
 use App\Models\Subscriptions;
@@ -239,6 +240,13 @@ class HomeController
         }
 
         $tkt->save();
+
+        $helpDesk = new HelpdeskController();
+        try {
+            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
+        } catch(Throwable $e) {
+            echo $e->getMessage();
+        }
 
         return response()->json([
             "status_code" => 200 , 
