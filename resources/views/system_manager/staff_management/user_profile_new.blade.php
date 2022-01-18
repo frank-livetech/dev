@@ -38,6 +38,14 @@
                 padding: 14px;
                 border-radius: 5px
             }
+            .demo-inline-spacing1 {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between !important;
+                align-items: center;
+               padding: 7px;
+                border-radius: 5px
+            }
             .demo-inline-spacing > * {
                 margin-right: unset;
                 margin-top: unset;
@@ -767,20 +775,20 @@
                                     @foreach ($departments as $obj)
                                     <div id="accordion" class="custom-accordion">
                                         <div class="card mb-0 card_shadow">
-                                            <div class="card-header" id="headingOne">
+                                            <div class="" id="headingOne">
                                                 <div class="demo-inline-spacing">
                                                     <h5 class="m-0">
                                                         <a class="custom-accordion-title d-flex align-items-center pt-2 pb-2 {{($obj['assignment'] == 1) ? '' : 'collapsed'}}" data-bs-toggle="collapse" aria-expanded="{{($obj['assignment'] == 1) ? 'true' : 'false'}}" aria-controls="collapseOne">
                                                         {{$obj['name']}}<span class="ml-auto"></span>
                                                         </a>
                                                     </h5>
-                                                    <div>
+                                                    <div class="">
                                                         
-                                                            <div class="form-check form-check-success">
+                                                            <div class="form-check form-check-success form-check-inline">
                                                                 <input type="radio" onclick="openThisAccordin({{$obj['id']}})" id="customRadio1_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="form-check-input" {{($obj['assignment'] == 1) ? 'checked' : ''}}>
                                                                 <label class="form-check-label" for="customRadio1_{{$obj['id']}}">Yes</label>
                                                             </div>
-                                                            <div class="form-check form-check-danger">
+                                                            <div class="form-check form-check-danger form-check-inline">
                                                                 <input type="radio" onclick="closeThisAccordin({{$obj['id']}})" id="customRadio2_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="form-check-input">
                                                                 <label class="form-check-label" for="customRadio2_{{$obj['id']}}">No</label>
                                                             </div>
@@ -792,14 +800,14 @@
                                                 <div class="card-body">
                                                     @foreach ($obj['permissions'] as $j => $data)
                                                         @if (array_key_exists(0, $data) && array_key_exists(1, $data))
-                                                            <div class="demo-inline-spacing">
+                                                            <div class="demo-inline-spacing1">
                                                                 <div class="text-dark">{{$data[0]}} </div>
                                                                 <span>
-                                                                    <div class="form-check form-check-success">
+                                                                    <div class="form-check form-check-success form-check-inline">
                                                                         <input type="radio" onclick="saveNotificationPermission(1, {{$obj['id']}},'{{$j}}')" id="yes_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="form-check-input yes_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? 'checked': ''}}>
                                                                         <label class="form-check-label" for="yes_{{$j}}_{{$obj['id']}}">Yes</label>
                                                                     </div>
-                                                                    <div class="form-check form-check-danger">
+                                                                    <div class="form-check form-check-danger form-check-inline">
                                                                         <input type="radio" onclick="saveNotificationPermission(0, {{$obj['id']}},'{{$j}}')" id="no_{{$j}}_{{$obj['id']}}" name="perm_{{$j}}_{{$obj['id']}}" dep="{{$j}}" class="form-check-input no_sub_check_{{$obj['id']}}" {{($data[1] == 1) ? '': 'checked'}}>
                                                                         <label class="form-check-label" for="no_{{$j}}_{{$obj['id']}}">No</label>
                                                                     </div>
