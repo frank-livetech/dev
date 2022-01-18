@@ -4,7 +4,7 @@
 <div class="app-content content chat-application">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
-    <div class="content-area-wrapper container-xxl p-0">
+    <div class="content-area-wrapper container-fluid p-0">
         <div class="sidebar-left">
             <div class="sidebar">
                 <!-- Admin user profile area -->
@@ -286,7 +286,7 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
             </div>
         </div>
         <div class="content-right">
-            <div class="content-wrapper container-xxl p-0">
+            <div class="content-wrapper container-fluid p-0">
                 <div class="content-header row">
                 </div>
                 <div class="content-body">

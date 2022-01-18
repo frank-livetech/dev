@@ -105,7 +105,7 @@
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
 
     <!-- BEGIN: Header-->
-    <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
+    <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-fluid">
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
                 <ul class="nav navbar-nav d-xl-none">
@@ -190,7 +190,7 @@
     <div class="app-content content">
     <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
-            <div class="content-wrapper container-xxl p-0">
+            <div class="content-wrapper container-fluid p-0">
                 <div class="content-header row">
                     <div class="content-header-left col-md-12 col-12 mb-2">
                         <div class="row breadcrumbs-top">
