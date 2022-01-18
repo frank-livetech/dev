@@ -71,6 +71,6 @@
 <div style="display: none;" id="tinycontenteditor"></div>
 @endsection
 @section('scripts')
-<script src="{{asset('assets/libs/tinymce/tinymce.min.js')}}"></script>
+<script src="{{asset('public/assets/libs/tinymce/tinymce.min.js')}}"></script>
 @include('customer.Js.customer_tktJs')
 @endsection
