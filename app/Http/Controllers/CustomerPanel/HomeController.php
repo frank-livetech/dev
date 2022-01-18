@@ -243,7 +243,7 @@ class HomeController
 
         $helpDesk = new HelpdeskController();
         try {
-            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
+            $helpDesk->sendNotificationMail($tkt->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
         } catch(Throwable $e) {
             echo $e->getMessage();
         }
