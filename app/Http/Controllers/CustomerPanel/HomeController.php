@@ -217,10 +217,20 @@ class HomeController
             $data['status'] = NULL;
         }
 
+
         
 
         $tkt = Tickets::create($data);
         
+        $newG = new GeneralController();
+        $tkt->coustom_id = $newG->randomStringFormat(self::CUSTOMID_FORMAT);
+        $lt = Tickets::orderBy('created_at', 'desc')->first();
+        $tickets_count = Tickets::all()->count();
+        if(!empty($lt)) {
+            $tkt->seq_custom_id = 'T-'.strval($lt->id + 1);
+        }else{
+            $tkt->seq_custom_id = 'T-'.strval($tickets_count+1);
+        }
         // ticket assoc with sla plan
         $settings = $this->getTicketSettings(['default_reply_and_resolution_deadline']);
         if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -240,10 +250,11 @@ class HomeController
         }
 
         $tkt->save();
-
+        $ticket = Tickets::where('id',$tkt->id)->first();
         $helpDesk = new HelpdeskController();
+        
         try {
-            $helpDesk->sendNotificationMail($tkt->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
+            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
         } catch(Throwable $e) {
             echo $e->getMessage();
         }
