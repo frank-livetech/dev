@@ -106,9 +106,9 @@
     <input type="hidden" value="{{\Auth::user()->profile_pic}}" id="curr_user_image">
     <!-- BEGIN: Header-->
     @if(\Auth::user()->theme == "dark")
-        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-xxl">
+        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-fluid">
     @else
-        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl">
+        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-fluid">
     @endif
     <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">

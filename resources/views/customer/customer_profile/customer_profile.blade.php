@@ -295,11 +295,11 @@ blockquote {
                             <img src="{{ asset('storage/customer/'.$customer->avatar_url)}}" class="rounded-circle"
                                 width="100" height="100" id="profile-user-img" />
                             @else
-                            <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
                                 id="profile-user-img" />
                             @endif
                         @else
-                        <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                        <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
                             id="profile-user-img" />
                         @endif
                         <a type="button" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal"><i
