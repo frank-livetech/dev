@@ -25,6 +25,7 @@
 }
 </style>
 
+
 <div class="content-body">
 
     <input type="hidden" value="{{Session::get('is_live')}}" id="js_path">
