@@ -301,7 +301,7 @@ function redrawTicketsTable(ticket_arr) {
             replies = val['replies'];
         }
         let replier = val['lastReplier'] ;
-        if(!replier && val['creator_name']) replier = val['creator_name'];
+        // if(!replier && val['creator_name']) replier = val['creator_name'];
 
         var short_replier = '';
         var assignee = '-- Unassigned --';
