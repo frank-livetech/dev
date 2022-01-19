@@ -225,7 +225,14 @@ $(document).ready(function() {
     });
 
     getAllSLA();
-
+    get_departments_table_list();
+    get_status_table_list();
+    get_type_table_list();
+    get_customer_type_table_list();
+    get_dispatch_status_table_list();
+    get_project_type_table_list();
+    get_priority_table_list();
+    get_mails_table_list();
     $("#dept_is_enabled").bootstrapSwitch();
     //Response Template
 
@@ -1160,7 +1167,7 @@ function getAllSLA() {
                             return (
                                 ` <div class="d-flex justify-content-center">
                                     <button onclick="viewRecord(` + full.id + `, '` + full.title + `',` + full.reply_deadline + `,` + full.due_deadline + `,` + full.sla_status + `,` + full.is_default + `)" type="button" class="btn btn-success card_shadow btn-circle">
-                                    <i class="fas fa-pencil-alt"></i></button>
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
                                     <button  onclick="deleteRecord(` + full.id + `)" type="button" class="btn btn-danger ml-2 card_shadow btn-circle">
                                     <i class="fa fa-trash"></i></button>
                                 </div>`
@@ -1263,7 +1270,7 @@ function getAllresTemp() {
                             return (
                                 ` <div class="d-flex justify-content-center">
                                     <button onclick="viewCatRecord(` + full.id + `, '` + full.name + `')" type="button" class="btn btn-success card_shadow btn-circle">
-                                    <i class="fas fa-pencil-alt"></i></button>
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
                                     <button  onclick="deleteCatRecord(` + full.id + `)" type="button" class="btn btn-danger ml-2 card_shadow btn-circle">
                                     <i class="fa fa-trash"></i></button>
                                 </div>`
@@ -1442,7 +1449,7 @@ function saveSystemDateAndTime() {
 
 function get_departments_table_list() {
 
-    departments_table_list.clear().draw();
+    // departments_table_list.clear().draw();
     $.ajax({
         type: "get",
         url: get_deps_route,
@@ -1491,8 +1498,8 @@ function get_departments_table_list() {
                         "render": function(data, type, full, meta) {
                             return `
                                 <div class="d-flex justify-content-center">
-                                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="editDepartment(` + full.id + `,'` + full.name + `','`+full.dept_slug+`','`+full.dept_counter+`')"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>
-
+                                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="editDepartment(` + full.id + `,'` + full.name + `','`+full.dept_slug+`','`+full.dept_counter+`')"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
+                                    &nbsp;
                                     <button class="btn btn-circle btn-danger mr-2 ml-2" title="Delete Department"
                                     onclick = "deleteDepartment(` + full.id + `)"><i class="fa fa-trash " aria-hidden="true"></i></button>
                                 </div>`;
@@ -1553,8 +1560,8 @@ function get_status_table_list() {
                         "render": function(data, type, full, meta) {
                             return `<div class="d-flex justify-content-center">
                                 <button class="btn btn-circle btn-success mr-2" title="Edit Department" onclick="editStatus(` + full.id + `,'` + full.name + `','` + full.department_id + `','` + full.color + `' ,'` + full.slug + `' ,'` + full.seq_no + `' ,'` + full.status_counter + `')">
-                                    <i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>
-                                
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
+                                    &nbsp;
                                     <button class="btn btn-circle btn-danger" title = "Delete Status" onclick = "deleteStatus(` + full.id + `)">
                                     <i class="fa fa-trash " aria-hidden="true"></i></button>
                             </div>`;
@@ -1587,7 +1594,8 @@ function get_status_table_list() {
 }
 
 function get_type_table_list() {
-    type_table_list.clear().draw();
+    // type_table_list.clear().draw();
+  
     $.ajax({
         type: "get",
         url: get_types_route,
@@ -1595,25 +1603,52 @@ function get_type_table_list() {
         success: function(data) {
             g_types_arr = data.types;
             var types_arr = data.types;
-            $("#ticket-type-list tbody").html("");
-            var count = 1;
+            console.log(types_arr,"Ticket Types array");
+
+
+            $("#ticket-type-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#ticket-type-list").DataTable({
+                data: types_arr,
+                "pageLength": 10,
+                "bInfo": false,
+                "paging": true,
+                "searching": true,
+                columns: [{
+                        "data": null,
+                        "defaultContent": ""
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.name;
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editType(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteType(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                        }
+                    },
+                ],
+            });
+            
+            tbl.on("order.dt search.dt", function() {
+                tbl.column(0, {
+                        search: "applied",
+                        order: "applied"
+                    })
+                    .nodes()
+                    .each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+            }).draw();
+            
             $.each(types_arr, function(key, val) {
 
-                var json = JSON.stringify(data[key]);
-                type_table_list.row.add([
+            $('#mail_types_id').append('<option value="' + val.id + '">' + val.name + '</option>');
+            $('#mail_types_id').trigger('change');
 
-                    count,
-                    val['name'],
-                    `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editType(${val['id']},'${val['name']}');return false;"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteType(${val['id']});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`
-
-                ]).draw(false);
-                count++;
-
-                $('#mail_type_id').append('<option value="' + val.id + '">' + val.name + '</option>');
-                $('#mail_type_id').trigger('change');
-
-                $('#edit_mail_type_id').append('<option value="' + val.id + '">' + val.name + '</option>');
-                $('#edit_mail_type_id').trigger('change');
+            $('#edit_mail_types_id').append('<option value="' + val.id + '">' + val.name + '</option>');
+            $('#edit_mail_types_id').trigger('change');
             });
         }
     });
@@ -1622,27 +1657,55 @@ function get_type_table_list() {
 /*Customer Type List */
 
 function get_customer_type_table_list() {
-    customer_type_table_list.clear().draw();
+    // customer_type_table_list.clear().draw();
     $.ajax({
         type: "get",
         url: get_customer_types_route,
         data: "",
+
         success: function(data) {
             g_types_arr = data.types;
             var types_arr = data.types;
-            $("#customer-type-list tbody").html("");
-            var count = 1;
+            console.log(types_arr,"Customer Types array");
+
+
+            $("#customer-type-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#customer-type-list").DataTable({
+                data: types_arr,
+                "pageLength": 10,
+                "bInfo": false,
+                "paging": true,
+                "searching": true,
+                columns: [{
+                        "data": null,
+                        "defaultContent": ""
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.name;
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editCustomerType(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteCustomerType(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                        }
+                    },
+                ],
+            });
+            
+            tbl.on("order.dt search.dt", function() {
+                tbl.column(0, {
+                        search: "applied",
+                        order: "applied"
+                    })
+                    .nodes()
+                    .each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+            }).draw();
+            
             $.each(types_arr, function(key, val) {
-
-                var json = JSON.stringify(data[key]);
-                customer_type_table_list.row.add([
-
-                    count,
-                    val['name'],
-                    `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editCustomerType(${val['id']},'${val['name']}');return false;"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteCustomerType(${val['id']});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`
-
-                ]).draw(false);
-                count++;
 
                 $('#mail_type_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 $('#mail_type_id').trigger('change');
@@ -1658,28 +1721,57 @@ function get_customer_type_table_list() {
 /* Dispatch Status List */
 
 function get_dispatch_status_table_list() {
-    dispatch_status_table_list.clear().draw();
+    // dispatch_status_table_list.clear().draw();
     $.ajax({
         type: "get",
         url: get_dispatch_status_route,
         data: "",
+
+
+
         success: function(data) {
             g_types_arr = data.types;
             var types_arr = data.types;
-            $("#dispatch-status-list tbody").html("");
-            var count = 1;
+            console.log(types_arr,"dispatch Types array");
+
+
+            $("#dispatch-status-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#dispatch-status-list").DataTable({
+                data: types_arr,
+                "pageLength": 10,
+                "bInfo": false,
+                "paging": true,
+                "searching": true,
+                columns: [{
+                        "data": null,
+                        "defaultContent": ""
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.name;
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editDispatchStatus(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteDispatchStatus(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                        }
+                    },
+                ],
+            });
+            
+            tbl.on("order.dt search.dt", function() {
+                tbl.column(0, {
+                        search: "applied",
+                        order: "applied"
+                    })
+                    .nodes()
+                    .each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+            }).draw();
+            
             $.each(types_arr, function(key, val) {
-
-                var json = JSON.stringify(data[key]);
-                dispatch_status_table_list.row.add([
-
-                    count,
-                    val['name'],
-                    `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editDispatchStatus(${val['id']},'${val['name']}');return false;"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteDispatchStatus(${val['id']});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`
-
-
-                ]).draw(false);
-                count++;
 
                 $('#mail_type_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 $('#mail_type_id').trigger('change');
@@ -1694,27 +1786,56 @@ function get_dispatch_status_table_list() {
 /* Project Task Type List */
 
 function get_project_type_table_list() {
-    project_type_table_list.clear().draw();
+    // project_type_table_list.clear().draw();
+ 
     $.ajax({
         type: "get",
         url: get_project_type_route,
         data: "",
         success: function(data) {
+            console.log(data);
             g_types_arr = data.types;
             var types_arr = data.types;
-            $("#project-type-list tbody").html("");
-            var count = 1;
+            console.log(types_arr, "project type");
+
+
+            $("#project-type-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#project-type-list").DataTable({
+                data: types_arr,
+                "pageLength": 10,
+                "bInfo": false,
+                "paging": true,
+                "searching": true,
+                columns: [{
+                        "data": null,
+                        "defaultContent": ""
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.name;
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return `<button class="btn btn-circle btn-success" title="Edit Project Type" onclick="event.stopPropagation();editProjectType(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteProjectType(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                        }
+                    },
+                ],
+            });
+            
+            tbl.on("order.dt search.dt", function() {
+                tbl.column(0, {
+                        search: "applied",
+                        order: "applied"
+                    })
+                    .nodes()
+                    .each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+            }).draw();
+            
             $.each(types_arr, function(key, val) {
-
-                var json = JSON.stringify(data[key]);
-                project_type_table_list.row.add([
-
-                    count,
-                    val['name'],
-                    `<button class="btn btn-circle btn-success" title="Edit Project Type" onclick="event.stopPropagation();editProjectType(${val['id']},'${val['name']}');return false;"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteProjectType(${val['id']});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`
-
-                ]).draw(false);
-                count++;
 
                 $('#mail_type_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 $('#mail_type_id').trigger('change');
@@ -1729,7 +1850,8 @@ function get_project_type_table_list() {
 
 /*Customer Type List */
 function get_priority_table_list() {
-    priority_table_list.clear().draw();
+    // priority_table_list.clear().draw();
+   
     $.ajax({
         type: "get",
         url: get_priorities_route,
@@ -1738,30 +1860,61 @@ function get_priority_table_list() {
             console.log(data);
             g_priority_arr = data.priorities;
             var priorities_arr = data.priorities;
-            $("#ticket-priority-list tbody").html("");
-            var count = 1;
-            $.each(priorities_arr, function(key, val) {
+            console.log(priorities_arr, "ticket priority");
 
-                var json = JSON.stringify(data[key]);
-                let color = '';
-                if (val['priority_color']) {
-                    color = '<div class="text-center"><span class="fa fa-square" style="color: ' + val['priority_color'] + '"></span></div>';
-                } else {
-                    color = '<div class="text-center"><span class="fa fa-square" style="color:#111"></span></div>';
-                }
-                priority_table_list.row.add([
 
-                    count,
-                    val['name'],
-                    color,
-                    `<div class="text-center">
-                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editPriority(${val['id']},\'${val['name']}\', \'${val['priority_color']}\');return false;"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>&nbsp;
+            $("#ticket-priority-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#ticket-priority-list").DataTable({
+                data: priorities_arr,
+                "pageLength": 10,
+                "bInfo": false,
+                "paging": true,
+                "searching": true,
+                columns: [{
+                        "data": null,
+                        "defaultContent": ""
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.name;
+                        }
+                    },
+                    {
+                        "render": function(data,type, full, meta){
+                            let color = '';
+                            if (full.priority_color) {
+                                color = '<div class="text-center"><span class="fa fa-square" style="color: ' + full.priority_color + '"></span></div>';
+                            } else {
+                                color = '<div class="text-center"><span class="fa fa-square" style="color:#111"></span></div>';
+                            }
+                            return color;
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return `<div class="text-center">
+                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editPriority(${full.id},\'${full.name}\', \'${full.priority_color}\');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;
                     <button class="btn btn-circle btn-danger"
                     title = "Delete Priority"
-                    onclick = "event.stopPropagation();deletePriority(${val['id']});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button></div>`
-
-                ]).draw(false);
-                count++;
+                    onclick = "event.stopPropagation();deletePriority(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button></div>`;
+                        }
+                    },
+                ],
+            });
+            
+            tbl.on("order.dt search.dt", function() {
+                tbl.column(0, {
+                        search: "applied",
+                        order: "applied"
+                    })
+                    .nodes()
+                    .each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+            }).draw();
+            
+            $.each(priorities_arr, function(key, val) {
 
                 $('#mail_priority_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 $('#mail_priority_id').trigger('change');
@@ -1770,6 +1923,8 @@ function get_priority_table_list() {
                 $('#edit_mail_priority_id').trigger('change');
             });
         }
+
+
     });
 }
 
@@ -2385,7 +2540,7 @@ function showPop3Model(type, edit = false, id = '') {
 }
 
 function get_mails_table_list() {
-    mail_table_list.clear().draw();
+    // mail_table_list.clear().draw();
     $.ajax({
         type: "get",
         url: mails_route,
@@ -2443,7 +2598,7 @@ function get_mails_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             return `<div class="d-flex justify-content-center">
-                                    <button onclick="getEmailByID(` + full.id + `)" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></button>
+                                    <button onclick="getEmailByID(` + full.id + `)" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></button>&nbsp;
                                     <button onclick="deleteMail(` + full.id + `)" class="btn btn-danger ml-2"><i class="fas fa-trash"></i></button>
                                 </div>`;
                         }
@@ -3726,4 +3881,3 @@ var radioswitch = function() {
     }
 }()
 </script>
-
