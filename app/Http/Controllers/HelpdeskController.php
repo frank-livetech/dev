@@ -2307,6 +2307,7 @@ class HelpdeskController extends Controller
                 $ticket = Tickets::where('id', $request->id)->where('trashed', 0)->where('is_deleted', 0)->first();
                 if(!empty($ticket)) {
                     $data_id = '';
+                    $oldval = '';
                     if($request->has('data_id')) $data_id = $request->data_id;
                     if($request->has('oldval')) $oldval = $request->oldval;
     
@@ -2366,7 +2367,7 @@ class HelpdeskController extends Controller
                 $notification_message = 'Ticket Created By Customer ' . $user->name;
                 $notification_title = 'New Ticket Created';
 
-            } else {
+            } else if($action_name == 'Ticket Create') {
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
                 $notification_message = 'Ticket Created By' . $user->name;
                 $notification_title = 'New Ticket Created';
@@ -2385,7 +2386,7 @@ class HelpdeskController extends Controller
                 $customer_send = true;
                 $cust_template_code = 'auto_res_ticket_reply';
 
-                if(!empty($user)) $mail_from = $user->email;
+                // if(!empty($user)) $mail_from = $user->email;
                 $attachs = $data_id;
                 $pathTo = 'replies/'.$ticket['id'];
 
