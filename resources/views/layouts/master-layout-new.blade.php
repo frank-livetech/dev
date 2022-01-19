@@ -115,6 +115,9 @@
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
+                    <li class="nav-item mr-3">
+                        <button class="btn btn-primary"> Run Parser </button>
+                    </li>
                 @if(\Auth::user()->theme == "dark")
                     <li class="nav-item d-none d-lg-block">
                         <a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a>
