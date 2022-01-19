@@ -504,7 +504,7 @@ class HelpdeskController extends Controller
                 return $q->where('tickets.dept_id', $dept);
             })
           
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.created_at', 'desc')->get();
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->get();
         
         } else {
             $aid = \Auth::user()->id;
@@ -528,7 +528,7 @@ class HelpdeskController extends Controller
             ->when($dept != '', function($q) use($dept) {
                 return $q->where('tickets.dept_id', $dept);
             })
-            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.created_at', 'desc')->get();
+            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.updated_at', 'desc')->get();
         }
 
         $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
@@ -678,7 +678,7 @@ class HelpdeskController extends Controller
                 
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
             })
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.id', 'desc')
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
             ->get();
             // return $tickets;
             // $tickets = DB::Table('tickets')
@@ -737,7 +737,7 @@ class HelpdeskController extends Controller
             ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
                 return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
             })
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.id', 'desc')
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
             ->get();
 
             // $tickets = DB::Table('tickets')
