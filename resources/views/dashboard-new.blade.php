@@ -324,7 +324,7 @@
                             
                         </div>
                         <div class="card-body">
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-8">
                                     <div class="demo-inline-spacing">
                                         <div class="avatar">
@@ -346,8 +346,39 @@
                                     </div>
                                 </div>
                                 
+                            </div> --}}
+                            <div class="row p-2">
+                                @foreach($users as $user)
+                                <div class="col-md-2 mb-1">
+                                    
+                                    @if($user->profile_pic != "" && $user->profile_pic != null)
+                                        @if(file_exists( public_path(). $file_path . '/files/user_photo/'. $user->profile_pic ))
+                                            <span class="avatar">
+                                                <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip" data-placement="top" title="{{$user->name}}">
+                                                    <img  src="{{asset( $file_path . 'files/user_phot')}}/{{$user->profile_pic}}"
+                                                        alt="'s Photo" class="rounded-circle" width="65" height="72">
+                                                </a>
+                                            <span class="avatar-status-online"></span></span>
+                                        @else
+                                            
+                                            <span class="avatar">
+                                                <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip" data-placement="top" title="{{$user->name}}">
+                                                    <img src="{{asset($file_path . 'default_imgs/customer.png')}}" alt="'s Photo" class="rounded-circle avatar" width="50px" height="50">
+                                                </a>
+                                            <span class="avatar-status-online"></span></span>
+                                        @endif
+                                    @else
+                                    <span class="avatar">
+                                        <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip" data-placement="top" title="{{$user->name}}">
+                                            <img src="{{asset($file_path . 'default_imgs/customer.png')}}" alt="'s Photo" class="rounded-circle avatar" width="50px" height="50">
+                                        </a>
+                                    <span class="avatar-status-online"></span></span>
+                                    @endif
+                                    
+                                </div>
+                                
+                                @endforeach
                             </div>
-
                                 <div class="card">
                                     
                                     <div class="card-body">
