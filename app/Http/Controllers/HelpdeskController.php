@@ -190,6 +190,7 @@ class HelpdeskController extends Controller
         
         $data = $request->all();
         $response = array();
+        return dd($request->all());
         try {
             $ticket = Tickets::where('id',$data['id'])->first();
 

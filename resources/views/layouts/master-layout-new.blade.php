@@ -14,9 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="_token" content="{{csrf_token()}}" />
-    
-    <title>{{Session::get('site_title')}}</title>
-
+    <title>@yield('title')</title>
     @php
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
         $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
@@ -155,7 +153,11 @@
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
                             <span class="user-name fw-bolder">{{ Auth::user()->name }}</span>
-                            {{-- <span class="user-status">{{ Auth::user()->email }}</span> --}}
+                            @if(\Auth::user()->user_type == "1")
+                            <span class="user-status">Administrator</span>
+                            @else
+                            <span class="user-status"></span>
+                            @endif
                         </div>
                         <span class="avatar">
                             @if(Auth::user()->profile_pic != null)

@@ -1,5 +1,6 @@
 @extends('layouts.master-layout-new')
 @section('Customer Manager','open')
+@section('title', 'Company Lookup')
 @section('Company Lookup','active')
 @push('css')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

@@ -343,10 +343,14 @@ class HomeController
                     "is_published" => 1,
                 );
 
-                TicketReply::create($data); 
+                if($request->has('id')) {
+                    TicketReply::where('id' , $request->id)->update($data);
+                }else{
+                    TicketReply::create($data); 
+                }
 
                 return response()->json([
-                    "message" => 'Ticket Reply Added Successfully',
+                    "message" => ($request->has('id') ? 'Ticket Reply Added Successfully' : 'Reply Updated Successfully'),
                     "status_code" => 200,
                     "success" => true,
                 ]);
@@ -361,6 +365,60 @@ class HomeController
             ]);
         }
     }   
+
+    // update ticket 
+    public function cstUpdateTicket(Request $request) {
+        
+        $data = array();
+        if($request->s_id != null) {
+            $data['status'] = $request->s_id;
+            $tkt_status = TicketStatus::where('id',$request->s_id)->first();
+            if($tkt_status && $tkt_status->name == 'Closed'){
+                $data['reply_deadline'] = 'cleared';
+                $data['resolution_deadline'] = 'cleared';
+            }
+        }
+
+        if($request->p_id != null) {
+            $data['priority'] = $request->p_id;
+        }
+
+        $data['updated_at'] = Carbon::now();
+        $data['updated_by'] = auth()->id();
+
+        Tickets::where('id', $request->tkt_id)->update($data);
+
+        return response()->json([
+            "message" => 'Ticket Updated Successfully',
+            "status_code" => 200,
+            "tkt_updated_at" => Carbon::now(),
+            "success" => true,
+        ]);
+
+    }
+
+    // get ticket replies
+    public function getTktReplies(Request $request) {
+        
+        try {
+            
+            $ticket_replies = TicketReply::where('ticket_id' , $request->id)->with('replyUser')->get();
+
+            return response()->Json([
+                "status_code" => 200 , 
+                "success" => true , 
+                "ticket_replies" => $ticket_replies,
+            ]);
+
+        } catch(Exception $e) {
+            return response()->Json([
+                "status_code" => 400 , 
+                "success" => false , 
+                "message" => $e->getMessage(),
+            ]);
+            
+        }
+    }
 
     public function getCustomerTickets() {
         
