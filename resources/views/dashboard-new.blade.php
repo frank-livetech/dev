@@ -1,5 +1,6 @@
 @extends('layouts.master-layout-new')
 @section('Dashboard','active')
+@section('title', 'Dashboard')
 @section('body')
 <style>
     table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before,
@@ -273,11 +274,11 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table id="flagged" class="table table-hover no-wrap ">
+                                        <table class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>
-                                                        <div class="text-center" style="padding-left:20px;">
+                                                        <div class="text-center" >
                                                             <input type="checkbox" name="select_all[]" id="select-all">
                                                         </div>
                                                     </th>
@@ -371,7 +372,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="card-datatable">
-                                            <div class="table-responsive">
+                                            {{-- <div class="table-responsive">
                                                 <table class="table table-hover no-wrap" id="staff_table">
                                                     <thead class="table_head_back">
                                                         <tr>
@@ -389,6 +390,44 @@
                 
                                                     </tbody>
                                                 </table>
+                                            </div> --}}
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center border-0">#</th>
+                                                            <th>Name</th>
+                                                            <th>Status</th>
+                                                            <th class="border-0">DATE</th>
+                                                            <th class="border-0">Clock In</th>
+                                                            <th class="border-0">Clock Out</th>
+                                                            <th class="border-0">Worked Hours</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            {{-- <td>
+                                                                <div class="text-center">
+                                                                    <input type="checkbox" name="select_all[]" id="select-all">
+                                                                </div>
+                                                            </td> --}}
+                                                            {{-- <td class=" overflow-wrap">
+                                                                <div class="text-center ">
+                                                                    <span class="fas fa-flag" title="Flag" style="cursor:pointer;" onclick="flagTicket(this, 3);"></span>
+                                                                </div>
+                                                            </td> --}}
+                                                            <td>1
+                                                            </td>
+                                                            <td >Name</td>
+                                                            <td >Status</td>
+                                                            <td >DATE</td>
+                                                            <td >Clock In</td>
+                                                            <td >Clock Out</td>
+                                                            <td >Worked Hours</td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -401,9 +440,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header bg-info text-white font-weight-bold" style="font-size: 20px"><strong>Follow-Up Details</strong></div>
+                    <div class="card-header font-weight-bold" style="font-size: 20px;"><strong>Follow-Up Details</strong></div>
                     <div class="card-body mt-1">
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="startDate">Start Date</label>
@@ -434,6 +473,43 @@
                                 </thead>
                                 <tbody>
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="row">
+                    <div class="card-datatable">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                <label class="custom-control-label" for="customCheck1"></label>
+                                            </div>
+                                        </th>
+                                        <th> Sr# </th>
+                                        <th> Name </th>
+                                        <th> Ticket ID </th>
+                                        <th> Follow-Up </th>
+                                        <th> Assigned tech </th>
+                                        <th> Preferred Contact </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td>1
+                                        </td>
+                                        <td >Name</td>
+                                        <td >Ticket ID</td>
+                                        <td >Follow-Up</td>
+                                        <td >Assigned tech</td>
+                                        <td >Preferred Contact</td>
+
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

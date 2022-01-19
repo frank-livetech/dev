@@ -14,9 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="_token" content="{{csrf_token()}}" />
-    
-    <title>{{Session::get('site_title')}}</title>
-
+    <title>@yield('title')</title>
     @php
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
         $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
