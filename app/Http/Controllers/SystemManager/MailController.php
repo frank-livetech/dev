@@ -535,12 +535,16 @@ class MailController extends Controller
                 return response()->json($response);
 
             }else{
-                $response['message'] = "Success";
+                $response['message'] = "Parser run successfully!";
                 $response['status_code'] = 200;
                 $response['success'] = true;
                 return response()->json($response);
             }
         } catch(Throwable $e) {
+            $response['message'] = $e;
+                $response['status_code'] = 500;
+                $response['success'] = true;
+                return response()->json($response);
             echo $e->getMessage();
         }
     }
