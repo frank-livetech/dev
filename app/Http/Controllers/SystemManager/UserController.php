@@ -21,6 +21,7 @@ use App\Models\SystemSetting;
 use App\Models\SystemManager\StaffSchedule;
 use App\Http\Controllers\SystemManager\MailController;
 use App\Models\Tags;
+use App\Models\Tickets;
 use App\Models\StaffProfile;
 use Spatie\Permission\Models\Role;
 use App\Models\Usercertification;
@@ -558,16 +559,21 @@ class UserController extends Controller
         if(!empty($profile->alt_pwd)) {
             $profile->alt_pwd = Crypt::decryptString($profile->alt_pwd);
         }
+
+        $tickets = Tickets::select("*")
+            ->where('assigned_to',$id)
+            ->where('is_deleted', 0)->orderBy('updated_at', 'desc')
+            ->get();
         
-        $tickets = DB::Table('tickets')
-        ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
-        ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
-        ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
-        ->join('ticket_types','ticket_types.id','=','tickets.type')
-        ->join('departments','departments.id','=','tickets.dept_id')
-        ->join('users','users.id','=','tickets.assigned_to')
-        ->where('tickets.assigned_to',$id)
-        ->get();
+        // $tickets = DB::Table('tickets')
+        // ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
+        // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
+        // ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
+        // ->join('ticket_types','ticket_types.id','=','tickets.type')
+        // ->join('departments','departments.id','=','tickets.dept_id')
+        // ->join('users','users.id','=','tickets.assigned_to')
+        // ->where('tickets.assigned_to',$id)
+        // ->get();
 
         $certificates = DB::table("user_certification")->where("user_id","=",$id)->get();
         $docs = DB::table("user_docs")->where("user_id","=",$id)->get();

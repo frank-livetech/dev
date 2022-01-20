@@ -404,9 +404,9 @@
                         <div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="pills-tickets-tab">
                             <div class="card-body">
                                 <div class="text-right mb-3">
-                                    <button type="button" class="btn btn-info ml-auto mb-auto f-btn" onclick="ShowTicketModel()">
+                                    <a  class="btn btn-info ml-auto mb-auto f-btn" href="{{asset('/add-ticket')}}">
                                         <i class="fas fa-plus"></i>&nbsp;Add ticket
-                                    </button>
+                                    </a>
                                 </div>
                                 <div class="table-responsive">
                                     <!-- <div class="row">
@@ -439,19 +439,18 @@
                                                     </div>
                                                 </th>
                                                 <th></th>
-                                                <th>Status</th>
-                                                <th>Subject</th>
-                                                <th>Ticket ID</th>
-                                                <th>Priority</th>
-                                                <th>Customer</th>
-                                                <th>Last Replier</th>
-                                                <th>Replies</th>
-                                                <th>Last Activity</th>
-                                                <th>Reply Due</th>
-                                                <th>Resolution Due</th>
-                                                <th>Assigned Tech</th>
-                                                <th>Department</th>
-                                                <th>Creation Date</th>
+                                                        <th>Status</th>
+                                                        <th class='custom'>Subject</th>
+                                                        <th class='pr-ticket'>Ticket ID</th>
+                                                        <th >Priority</th>
+                                                        <th class='custom-cst'>Customer</th>
+                                                        <th class='pr-replies custom-cst'>Last Replier</th>
+                                                        <th>Replies</th>
+                                                        <th class='pr-activity '>Last Activity</th>
+                                                        <th class='pr-ticket'>Reply Due</th>
+                                                        <th class='pr-due'>Resolution Due</th>
+                                                        <th class='pr-tech custom-cst'>Assigned Tech</th>
+                                                        <th class='custom-cst'>Department</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
