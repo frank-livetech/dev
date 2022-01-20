@@ -277,6 +277,8 @@
         var user_photo_url = "{{asset('files/user_photos')}}";
         var url = "{{asset('/get_all_counts')}}";
         var get_notifications = "{{url('getNotifications')}}";
+        var parser_url = "{{url('save-inbox-replies')}}";
+
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({
                 type: 'POST',
@@ -336,6 +338,23 @@
                 }
             });
             
+        }
+
+        function run_parser(){
+            $.ajax({
+                url: parser_url,
+                type: "get",
+                dataType: 'json',
+                cache: false,
+                async:false,
+                success: function(data) {
+                    console.log(data+' parser')
+
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            });
         }
         
         $('.sidebar-link').click(function(){
