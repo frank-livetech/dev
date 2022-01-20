@@ -527,7 +527,18 @@ class MailController extends Controller
             }
             
             if(empty($repliesSaved)) {
-                echo "\nNo new mails found.";
+                // echo "\nNo new mails found.";
+
+                $response['message'] = "No new mails found.";
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                return response()->json($response);
+
+            }else{
+                $response['message'] = "Success";
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                return response()->json($response);
             }
         } catch(Throwable $e) {
             echo $e->getMessage();
