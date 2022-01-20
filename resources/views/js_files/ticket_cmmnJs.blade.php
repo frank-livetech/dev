@@ -70,6 +70,10 @@ function selectSingle(id) {
     (chck == true ? $('.show_tkt_btns').show() : $('.show_tkt_btns').hide());
 }
 
+$("#ShowGeneralSettings").click(function(){ 
+    $("#general-opt").toggle();
+});
+
 function get_ticket_table_list() {
     $('#select-all').prop('checked', false);
     tickets_table_list.clear().draw();
