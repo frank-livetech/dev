@@ -349,6 +349,11 @@
                 async:false,
                 success: function(data) {
                     console.log(data+' parser')
+                    if(data.status_code == 200){
+                        toastr.success(data.message, { timeOut: 5000 });
+                    }else{
+                        toastr.error(data.message, { timeOut: 5000 });
+                    }
 
                 },
                 failure: function(errMsg) {
