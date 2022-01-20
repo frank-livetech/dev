@@ -224,12 +224,21 @@
                                     <div class="col-md-2"></div>
                                     <div class="col-md-10" id="action_btns">
                                         <span style="float: right">
+
                                         <button type="button" class="btn btn-primary" style="display: none;" id="btnBack" onclick="get_ticket_table_list();"><i class="fas fa-chevron-left"></i>&nbsp;Back</button>
-                                        <button type="button" class="btn btn-danger waves-effect waves-float waves-light" id="btnMovetotrash" onclick="moveToTrash()" ><i class="fas fa-trash-alt" aria-hidden="true"></i>&nbsp; Move To Trash</button>
-                                        <button type="button" class="btn btn-warning waves-effect waves-float waves-light" id="btnSpam" onclick="moveToTrash()"><i class="far fa-question-circle" aria-hidden="true"></i>&nbsp; Spam</button>
-                                        <button type="button" class="btn btn-info waves-effect waves-float waves-light" id="btnMerge" onclick="merge_tickets()"><i class="fas fa-random" aria-hidden="true"></i>&nbsp; Merge</button>
+
+                                        <span class="show_tkt_btns" style="display:none">
+                                            <button type="button" class="btn btn-danger waves-effect waves-float waves-light" id="btnMovetotrash" onclick="moveToTrash()" ><i class="fas fa-trash-alt" aria-hidden="true"></i>&nbsp; Move To Trash</button>
+
+                                            <button type="button" class="btn btn-warning waves-effect waves-float waves-light" id="btnSpam" onclick="moveToTrash()"><i class="far fa-question-circle" aria-hidden="true"></i>&nbsp; Spam</button>
+
+                                            <button type="button" class="btn btn-info waves-effect waves-float waves-light" id="btnMerge" onclick="merge_tickets()"><i class="fas fa-random" aria-hidden="true"></i>&nbsp; Merge</button>
+                                        </span>
+
                                         <button type="button" class="btn btn-danger" id="btnDelete" style="display: none;"><i class="fas fa-trash-alt"></i>&nbsp;Delete Permanently</button>
+
                                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" id="show-clndr" data-toggle="modal" data-target="#calendarModal"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp; Calender</button>
+
                                         <a href="{{url('add-ticket')}}" type="button" class="btn btn-success waves-effect waves-float waves-light">
                                             <i class="fa fa-plus"></i>&nbsp;Add ticket
                                         </a>
@@ -237,7 +246,7 @@
                                     </span>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="table-responsive" style="overflow: hidden;">
                                             <table id="ticket-table-list" class="table table-bordered table-hover display mb-0 ticket-table-list">

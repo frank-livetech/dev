@@ -190,7 +190,6 @@ class HomeController
 
     // save ticket
     function saveTicket(Request $request) {
-
         $customer = Customer::where('email' , auth()->user()->email)->first();
         
         $data = array(
@@ -216,9 +215,6 @@ class HomeController
         }else{
             $data['status'] = NULL;
         }
-
-
-        
 
         $tkt = Tickets::create($data);
         
@@ -275,7 +271,8 @@ class HomeController
 
             if($ticket) {
 
-                $target_dir = public_path().'/storage'.'/'.$request->module.'/'.$request->ticket_id;
+                $file_path = \Session::get('is_live') == 1 ? 'public/' : '';
+                $target_dir = $file_path . 'storage'.'/'.$request->module.'/'.$request->ticket_id;
 
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
@@ -564,6 +561,8 @@ class HomeController
         $current_status = TicketStatus::where('id' , $ticket->status)->first();
         $current_priority= TicketPriority::where('id' , $ticket->priority)->first();
         $a = $ticket->toArray();
+
+        // dd($ticket);
 
         return view('customer.customer_tkt.cust_tkt_details',get_defined_vars());
      

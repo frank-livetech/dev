@@ -1,5 +1,10 @@
 @extends('customer.layout.customer_master')
 @section('body')
+
+@php
+    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+@endphp
+
 <input type="hidden" id="for_customer_profile_id" value="{{auth()->id()}}">
 <input type="hidden" id="previous_url" value="{{url()->previous()}}">
 <input type="hidden" id="for_customer_role" value="{{auth()->user()->user_type}}">
@@ -71,6 +76,6 @@
 <div style="display: none;" id="tinycontenteditor"></div>
 @endsection
 @section('scripts')
-<script src="{{asset('public/assets/libs/tinymce/tinymce.min.js')}}"></script>
-@include('customer.Js.customer_tktJs')
+    <script src="{{asset($file_path . 'assets/libs/tinymce/tinymce.min.js')}}"></script>
+    @include('customer.Js.customer_tktJs')
 @endsection

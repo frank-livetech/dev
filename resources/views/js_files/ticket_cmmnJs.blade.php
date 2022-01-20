@@ -48,11 +48,26 @@ function initializeTicketTable(p_name='') {
 
     $('#select-all').change(function() {
         let chck = $(this).prop('checked');
+
+        // show hide tkt buttons
+        (chck == true ? $('.show_tkt_btns').show() : $('.show_tkt_btns').hide());
+        // 
+
         $('#ticket-table-list tbody input[type="checkbox"]').each(function() {
             if(chck) $(this).prop('checked', true);
             else $(this).prop('checked', false);
         });
     });
+}
+
+// tkt single check box click
+$('.select_single').change(function() {
+    
+});
+
+function selectSingle(id) {
+    let chck = $("#select_single_"+id).prop('checked');
+    (chck == true ? $('.show_tkt_btns').show() : $('.show_tkt_btns').hide());
 }
 
 function get_ticket_table_list() {
@@ -227,10 +242,6 @@ function redrawTicketsTable(ticket_arr) {
             short_dep_name = dep_name;
         }
 
-
-       
-
-
         let restore_flag_btn = '';
         if (in_recycle_mode) {
             restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-trash-restore text-primary" title="Restore" style="cursor:pointer;" onclick="restoreTicket(' + val['id'] + ');"></span></div>';
@@ -337,7 +348,7 @@ function redrawTicketsTable(ticket_arr) {
             la_color = `#8BB467`;
         }
         let row = `<tr>
-            <td><div class="text-center"><input type="checkbox" name="select_all" value="${val['id']}"></div></td>
+            <td><div class="text-center"><input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
             <td class='text-center'>${status}</td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
