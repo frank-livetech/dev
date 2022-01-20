@@ -64,8 +64,6 @@
                                 var attachments =  item.attachments;
                                 attachments = attachments.split(',');
 
-                                console.log(attachments , "attachments");
-
                                 if(attachments.length != 0) {
 
                                     for(var i = 0 ; i < attachments.length; i++) {
@@ -122,7 +120,7 @@
             let item = tkt_replies_arr.find(item => item.id === rid);
 
             if(item != null || item != "" || item != "[]" || item != undefined) {
-                console.log(item);
+                
                 $("#rid").val(rid);
                 tinymce.activeEditor.setContent(item.reply);
                 $('.replydiv').show();

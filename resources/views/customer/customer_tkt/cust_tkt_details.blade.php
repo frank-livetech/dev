@@ -29,7 +29,6 @@
 }
 </style>
 
-
 <div class="content-body">
 
     <input type="hidden" value="{{Session::get('is_live')}}" id="js_path">
@@ -42,19 +41,31 @@
 
     <h1>View Ticket : {{$ticket->coustom_id}}</h1>
 
-    <div class="card mt-2">
-        <div class="card-body">
-            <div class="text-muted">Subject</div>
-            <h3>{{$ticket->subject}}</h3>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mt-2">
+                <div class="card-body">
+                    <div class="text-muted">Subject</div>
+                    <h3>{{$ticket->subject}}</h3>
 
-            Created : <span id="tkt_created_at"> </span>
-            Updated : <span id="tkt_updated_at"> </span>
+                    Created : <span id="tkt_created_at"> </span>
+                    Updated : <span id="tkt_updated_at"> </span>
 
-            <hr>
+                    <hr>
 
-            <div class="text-muted">Description</div>
-            {!! $ticket->ticket_detail !!}
+                    <div class="text-muted">Description</div>
+                    {!! $ticket->ticket_detail !!}
 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mt-2">
+                <div class="card-body">
+                    <div class="text-muted">Attachments</div>
+                    <span class="show_attachments"></span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -198,7 +209,55 @@
         });
 
         let ticket = {!!json_encode($ticket) !!};
-        
+        console.log(ticket , "ticket");
+
+        // show attachments
+        if(ticket != null) {
+            if(ticket.attachments != null) {
+                let attachments = ticket.attachments;
+                attachments = attachments.split(',');
+                let files = ``;
+                let ext = ``;
+
+                for(var i =0; i < attachments.length; i++) {
+                    let extens = attachments[i].split('.');
+
+                    for(var k =0; k < extens.length; k++) {
+                        if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
+                            ext = `<img src="{{asset('app-assets/images/svg/image.svg')}}" width="25px" height="25px">`;
+                        }
+
+                        if(extens[1] == 'pdf') {
+                            ext = `<img src="{{asset('app-assets/images/svg/pdf.svg')}}" width="25px" height="25px">`;
+                        }
+
+                        if(extens[1] == 'txt') {
+                            ext = `<img src="{{asset('app-assets/images/svg/textfile.svg')}}" width="25px" height="25px">`;
+                        }
+
+                        if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
+                            ext = `<img src="{{asset('app-assets/images/svg/word.svg')}}" width="25px" height="25px">`;
+                        }
+
+                        if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
+                            ext = `<img src="{{asset('app-assets/images/svg/excel.svg')}}" width="25px" height="25px">`;
+                        }
+
+                        if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
+                            ext = `<img src="{{asset('app-assets/images/svg/ppt.svg')}}" width="25px" height="25px">`;
+                        }
+
+                    }
+                    files += `
+                        <div class="d-flex my-1">
+                            ${ext}  
+                            <a href="{{asset('storage/tickets')}}/${ticket.id}/${attachments[i]}"target="_blank">   ${attachments[i]}</a>
+                        </div>`
+                }
+                $('.show_attachments').html(files);
+            }
+
+        }
 
         $(".meta_tags").tagsinput('items');
 
