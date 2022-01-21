@@ -71,9 +71,6 @@
                                     }
                                 }
 
-                                
-
-
                                 row += `
                                     <li class="media" id="reply__${item.id}">
                                         <span class="mr-3"> ${item.reply_user == null ? customer_img : user_img} </span>
