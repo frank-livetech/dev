@@ -63,6 +63,24 @@
                 margin-right: unset;
                 margin-top: unset;
 }   
+.soc-card {
+        justify-content: space-between;
+        display: flex;
+    }
+
+    .soc-ico {
+        font-size: 24px;
+    }
+.picEdit{
+    cursor:pointer;
+    position: absolute;
+    top: 72px;
+    left: 139px;
+    border: 1px solid #fff;
+    padding: 4px;
+    border-radius: 100%;
+    background: #fbfbfb;
+}
     </style>
 @endpush
 @section('body')

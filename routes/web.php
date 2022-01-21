@@ -134,6 +134,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::get('/save-inbox-replies','MailController@save_inbox_replies');
     //Staff Management Routes
     Route::get('/staff-manager','UserController@index')->name('staff_manager.index');
+    Route::get('/staff-manager-new','UserController@new');
     Route::get('/leave-manager','UserController@leaveManagement')->name('leave_manager.index');
     // Route::get('/system_manager/features','FeatureController@index');
     Route::get('system_manager/access_manager','UserController@index')->name('system_access_manager.index');
@@ -147,6 +148,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/update-staff','UserController@updateStaff');
     //for profile view
     Route::get('/profile/{id}','UserController@profile');
+    Route::get('/profile-new/{id}','UserController@newProfile');
 
     Route::post('/dept_permission','UserController@departmentPermission');
 
