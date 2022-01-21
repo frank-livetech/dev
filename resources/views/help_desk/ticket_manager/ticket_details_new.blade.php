@@ -23,6 +23,17 @@
     .media-body{
         width:575px
     }
+    .btn-outline-bt{
+        border: 1px solid #e6e6e6;
+        text-decoration: none;
+        margin-left: 4px;
+        color: #666;
+        padding: 4px 13px 4px 13px;
+        transition: all 0.25s ease;
+        border-radius: 4px;
+        background-color: #f4f5f5;
+        vertical-align: top;
+    }
     .mr-3{
         margin-right: 1rem !important;
     }
@@ -261,11 +272,14 @@
                 <div class="col-md-5">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title mb-0">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="copyToClipBoard()"> 
+                            <h5 class="card-title mb-0">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a><a href="javascript:void(0)" onclick="copyToClipBoard()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
-                                <i data-feather='edit-3' onclick="openProModal();" style="float:right; cursor:pointer;" tooltip="Edit"></i>
+                                <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i>
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick=""><i data-feather='trash-2'></i> Trash</button>
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:130px;position: absolute" onclick=""><i data-feather='alert-triangle'></i> Spam</button>
+                            
                             </h5>
                             <div class="profile-pic mt-2">
                                 <div class="row">

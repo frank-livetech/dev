@@ -2,6 +2,19 @@
 @push('css')
 <link href="{{asset('assets/libs/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet" />
     <style>
+        .demo-inline-spacing3{
+            background-color: unset !important;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between !important;
+            align-items: center;
+            padding: 14px;
+            border-radius: 5px;
+        }
+        hr:not([size]) {
+            height: 1px;
+            margin: 15px;
+        }
             .f-btn{
                 float: right
             }
@@ -404,8 +417,12 @@
                         <div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="pills-tickets-tab">
                             <div class="card-body">
                                 <div class="text-right mb-3">
+                                    
                                     <button type="button" class="btn btn-info ml-auto mb-auto f-btn" onclick="ShowTicketModel()">
                                         <i class="fas fa-plus"></i>&nbsp;Add ticket
+                                    </button>
+                                    <button type="button" id="ShowGeneralSettings" class="btn btn-outline-dark waves-effect f-btn" style="margin-right: 5px" >
+                                        <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View
                                     </button>
                                 </div>
                                 <div class="table-responsive">
@@ -457,6 +474,78 @@
                                         <tbody></tbody>
                                     </table>
                                 </div>
+                                <div class="row" id="general-opt" style="display: none">
+                                    <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="card-title">
+                                            <h3>GENERAL OPTIONS</h3>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <h5>Tickets to display per page</h5>
+                                                    <small>Specify the number of tickets to display before breaking the view into multiple pages. Note: 
+                                                        This value cannot exceed the default maximum your administrator has set for staff views.
+                                                        Automatically refresh the ticket listing</small>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="number" id="" class="form-control" name="contact" placeholder="">
+                                                </div>
+                                                <hr>
+                                                <div class="col-md-8">
+                                                    <h5>Automatically refresh the ticket listing</h5>
+                                                    <small>When this view is loaded, the ticket listing can be automatically refreshed. Useful for 
+                                                        wallboard type uses.</small>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-select" id="selectDefault">
+                                                        <option selected="">Refresh evey 5 minutes</option>
+                                                        <option value="1">Refresh every 10 minutes</option>
+                                                        <option value="2">Refresh every 20 minutes</option>
+                                                        <option value="3">Refresh every 30 minutes</option>
+                                                    </select>
+                                                </div>
+                                                <hr>
+                                                <div class="col-md-8">
+                                                    <h5>Automatically set ticket owner to active staff user</h5>
+                                                    <small>When replying or forwarding a ticket, the ticket owner will be automatically 
+                                                        set to the active staff user if this view is in use.</small>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="demo-inline-spacing3">
+                                                            <div class="form-check form-check-success">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked />
+                                                                <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                                            </div>
+                                                            <div class="form-check form-check-danger">
+                                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                                                                <label class="form-check-label" for="inlineRadio2">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="col-md-8">
+                                                        <h5>Default ticket status when replying to a ticket</h5>
+                                                    <small>Specify which status a ticket will be automatically set to when a staff user 
+                                                        who is using this view replies to or forwards a ticket.</small>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <select class="form-select" id="selectDefault">
+                                                            <option selected="">-- Unspecified --</option>
+                                                            <option value="1">Refresh every 10 minutes</option>
+                                                            <option value="2">Refresh every 20 minutes</option>
+                                                            <option value="3">Refresh every 30 minutes</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12 mt-2">
+                                                        <button class="btn btn-success rounded float-right" id="gen-btn" type="submit"><strong><i data-feather='refresh-ccw'></i> Update</strong></button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                
                             </div>
                         </div>
     
