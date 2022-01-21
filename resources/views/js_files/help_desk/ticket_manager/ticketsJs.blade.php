@@ -543,4 +543,37 @@ function showDepartStatus(value) {
         }
     });
 }
+
+/*New card js from ticket details */
+
+$(document).ready(function(){
+    $("#dropD ").find(".select2").hide();
+        $("#dropD ").find("h5").show();
+    selectD();
+})
+$('.br-white').click(function(event){
+        event.stopPropagation();
+
+        $("#dropD ").find(".select2").toggle();
+        $("#dropD ").find("h5").toggle();
+        $(".chim ").find("a").toggleClass("pt-6");
+        $(".upBtn").toggleClass("mt-2");
+    });
+$(".select2").change(function () {
+        selectD();
+    })
+
+    function selectD(){ 
+        var Priority =  $("#prio-label").find(".select2 option:selected").text();
+        $("#prio-h5").text(Priority);    
+        var Dep =  $("#dep-label").find(".select2 option:selected").text();
+        $("#dep-h5").text(Dep);    
+        var Tech =  $("#tech-label").find(".select2 option:selected").text();
+        $("#tech-h5").text(Tech);    
+        var Status =  $("#status-label").find(".select2 option:selected").text();
+        $("#status-h5").text(Status);    
+        var Type =  $("#type-label").find(".select2 option:selected").text();
+        $("#type-h5").text(Type);    
+
+    }
 </script>

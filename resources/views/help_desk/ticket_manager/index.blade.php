@@ -176,7 +176,7 @@
                         </a>
                     </div>
                 </div>
-
+                    
                 <div class="row px-3 mt-3">
                     <div class="col-12 pb-3 text-right" id="action_btns">
                         <button type="button" class="btn btn-info ml-auto mr-2" id="show-clndr" data-toggle="modal" data-target="#calendarModal">
