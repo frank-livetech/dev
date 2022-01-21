@@ -247,6 +247,12 @@ class HomeController
 
         $tkt->save();
         $ticket = Tickets::where('id',$tkt->id)->first();
+
+        $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+        $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
+        $log = new ActivitylogController();
+        $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
+
         $helpDesk = new HelpdeskController();
         
         try {
