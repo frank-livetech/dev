@@ -62,15 +62,16 @@
 
                                 // attachments code -> mohsin
                                 var attachments =  item.attachments;
-                                attachments = attachments.split(',');
-
-                                if(attachments.length != 0) {
-
-                                    for(var i = 0 ; i < attachments.length; i++) {
-                                        attachments_name += `<a href=""> ${attachments[i]} </a> <br>`;
+                                if(attachments != null){
+                                    attachments = attachments.split(',');
+                                    if(attachments.length != 0) {
+                                        for(var i = 0 ; i < attachments.length; i++) {
+                                            attachments_name += `<a href=""> ${attachments[i]} </a> <br>`;
+                                        }
                                     }
-
                                 }
+
+                                
 
 
                                 row += `
