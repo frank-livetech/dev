@@ -1,4 +1,5 @@
 @extends('layouts.master-layout-new')
+
 <style>
     .float-right{
         float: right
@@ -276,7 +277,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab"
                                 aria-controls="pills-setting" aria-selected="false">User Details</a>
-                            <!-- <a class="nav-link active" id="pills-user-detail" data-toggle="pill" href="#user-detail"
+                            <!-- <a class="nav-link active" id="pills-user-detail" data-bs-toggle="pill" href="#user-detail"
                                 role="tab" aria-controls="pills-user-detail" aria-selected="true"></a> -->
                         </li>
     
@@ -291,7 +292,7 @@
                         </li>
     
                         <!-- <li class="nav-item">
-                            <a class="nav-link" id="subscription-profile-tab" data-toggle="pill" href="#subscription"
+                            <a class="nav-link" id="subscription-profile-tab" data-bs-toggle="pill" href="#subscription"
                                 role="tab" aria-controls="pills-profile" aria-selected="false">Subscriptions</a>
                         </li> -->
     
@@ -301,12 +302,12 @@
                         </li>
     
                         <!--<li class="nav-item">
-                            <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab"
+                            <a class="nav-link" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab"
                                 aria-controls="pills-setting" aria-selected="false">Setting</a>
                         </li>-->
     
                         <!-- <li class="nav-item">
-                            <a class="nav-link" id="pills-timeline-tab" data-toggle="pill" href="#current-month" role="tab"
+                            <a class="nav-link" id="pills-timeline-tab" data-bs-toggle="pill" href="#current-month" role="tab"
                                 aria-controls="pills-timeline" aria-selected="true">History</a>
                         </li> -->
     
@@ -315,7 +316,7 @@
                                 aria-controls="pills-profile" aria-selected="false">Payments</a>
                         </li>
                         <!-- <li class="nav-item">
-                            <a class="nav-link" id="notifications-profile-tab" data-toggle="pill" href="#notification"
+                            <a class="nav-link" id="notifications-profile-tab" data-bs-toggle="pill" href="#notification"
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
                         </li> -->
                         <li class="nav-item">
@@ -534,7 +535,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
     
-                                        <button type="button" class="btn btn-info mr-auto" data-toggle="modal"
+                                        <button type="button" class="btn btn-info mr-auto" data-bs-toggle="modal"
                                             data-target="#Add-new-card" style="float:right;"><i
                                                 class="mdi mdi-plus-circle"></i>&nbsp;Add New Card</button>
                                     </div>
@@ -604,12 +605,16 @@
                                                     </div>
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <select class="select2 form-control " id="state" name="state" style="width: 100%; height:36px;"></select>
+                                                            @if ($google_key == 1)
+                                                                <input type="text" class="form-control" placeholder="State" name="state" id="state" value="{{$customer->cust_state}}">
+                                                            @else
+                                                                <select class="select2 form-control" id="state" name="state" style="width: 100%; height:36px;"></select>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="Zip code" name="zip" id="zip" value="{{$customer->cust_state}}">
+                                                            <input type="text" class="form-control" placeholder="Zip code" name="zip" id="zip" value="{{$customer->cust_zip}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
@@ -618,11 +623,13 @@
                                                                 <input type="text" class="form-control" placeholder="Zip code" name="country" id="country" value="{{$customer->cust_zip}}">
                                                             @else
                                                                 <select class="form-control" name="country" id="country" onchange="listStates(this.value, 'state', 'cmp_state')">
-                                                                    @foreach ($countries as $cty)
-                                                                        @if (!empty($company->cmp_country) && $cty->name == $company->cmp_country)
-                                                                            <option value="{{$cty->name}}" selected>{{$cty->name}}</option>
+                                                                    <option value="">Select Country</option>
+                                                                   
+                                                                    @foreach ($countries as $item)
+                                                                        @if (!empty($customer->country))
+                                                                            <option value="{{$item->name}}" {{$customer->country == $item->name ? "selected" : ''}}>{{$item->name}}</option>    
                                                                         @else
-                                                                            <option value="{{$cty->name}}" {{$cty->short_name == 'US' ? 'selected' : ''}}>{{$cty->name}}</option>
+                                                                            <option value="{{$item->name}}" {{'US' == $item->short_name ? "selected" : ''}}>{{$item->name}}</option>
                                                                         @endif
                                                                     @endforeach
                                                                 </select>
@@ -891,8 +898,8 @@
                                         <input class="form-control" type="text" id="email" name="email" required>
                                     </div>
                                     <div class="col-md-4 col-lg-4 col-xlg-4" style="padding-top:25px">
-                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#assetModal" style="float:right;margin-bottom:5px;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset</button>
-                                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#assetCatModal" style="float:right;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset Category</button>
+                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-target="#assetModal" style="float:right;margin-bottom:5px;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset</button>
+                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-target="#assetCatModal" style="float:right;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset Category</button>
                                     </div>
                                 </div> --}}
                                 <div class="row">
@@ -1396,7 +1403,7 @@
                                     <div class="row mt-1">
                                         <div class="col-12 form-group">
                                             <label>Street Address</label>
-                                            <a type="button" data-toggle="modal" data-bs-target="#Address-Book"
+                                            <a type="button" data-bs-toggle="modal" data-bs-target="#Address-Book"
                                                 class="float-right" style="color:#009efb;">View Address Book</a>
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -1581,7 +1588,7 @@
                                                                     <label class="custom-control-label" for="customCheck1"></label>
                                                                 </div>
                                                             </td>
-                                                            <td> <a type="button" data-toggle="modal" data-bs-target="#domainModal"><i class="fas fa-angle-right"></i> <span style="font-size:20px;"> www.king.cin</span></a></td>
+                                                            <td> <a type="button" data-bs-toggle="modal" data-bs-target="#domainModal"><i class="fas fa-angle-right"></i> <span style="font-size:20px;"> www.king.cin</span></a></td>
                                                             <td>$78.22</td>
                                                             <td>Active</td>
                                                         </tr>
@@ -1624,14 +1631,14 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex align-items-center">
                         <h4 class="modal-title" id="myLargeModalLabel">ADDRESS BOOK</h4>
-                        <button type="button" class="close ml-auto" data-dismiss="modal" aria-hidden="true">×</button>
+                        <button type="button" class="btn-close ml-auto" data-bs-dismiss="modal" aria-hidden="true"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12" style="text-align:right;">
                                 <div class="col-md-12">
                                     <button id="add_new_add" class=" float-right btn btn-success"
-                                        onclick="New_Bill_Add()"><i class="mdi mdi-plus-circle"></i> Add New </button>
+                                        onclick="New_Bill_Add()"><i class="fa fa-plus-circle"></i> Add New </button>
                                 </div>
                             </div>
                             <div class="col-md-12 form-row" id="NewBillAdd" style="display:none;">
@@ -1648,26 +1655,28 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3 form-group">
+                                <div class="row mt-1">
+                                <div class="col-md-3 ">
                                     <label>City</label>
                                     <input type="text" class="form-control">
                                 </div>
-                                <div class="col-md-3 form-group">
+                                <div class="col-md-3 ">
                                     <label>Zip Code</label>
                                     <input type="text" class="form-control">
                                 </div>
     
-                                <div class="col-md-3 form-group">
+                                <div class="col-md-3">
                                     <label>State</label>
                                     <input type="text" class="form-control">
                                 </div>
-                                <div class="col-md-3 form-group">
+                                <div class="col-md-3">
                                         <label>Country</label>
                                         <input type="text" class="form-control">
                                 </div>
-                                <div class="col-md-12 float-right">
+                                <div class="col-md-12 float-right mt-2">
                                     <button type="submit" style="float:right;" class="btn btn-success ">Save</button>
                                 </div>
+                            </div>
                             </div>
                         </div>
                         <div class="table-responsive mt-3">

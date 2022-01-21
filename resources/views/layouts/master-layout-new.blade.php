@@ -115,9 +115,9 @@
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
-                    <li class="nav-item mr-3">
+                    {{-- <li class="nav-item mr-3">
                         <button class="btn btn-primary" onclick="run_parser()"> Run Parser </button>
-                    </li>
+                    </li> --}}
                 @if(\Auth::user()->theme == "dark")
                     <li class="nav-item d-none d-lg-block">
                         <a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a>
@@ -181,10 +181,12 @@
                             <a class="dropdown-item" href="{{url('company-profile')}}/{{Session::get('default_cmp_id')}}">
                                 <i i class="me-50" data-feather="credit-card"></i> Company Profile </a>
                         @endif
+                        <a class="dropdown-item" onclick="run_parser()"><i class="me-50" data-feather="refresh-ccw"></i> Run Parser</a>
                         
                         <a class="dropdown-item" type="button" href="{{ route('logout') }}">
                             <i class="me-50" data-feather="power"></i>  Logout
                         </a>
+
                     </div>
                 </li>
             </ul>
