@@ -584,22 +584,22 @@
                                                 <div class="row">
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="First Name" name="fname" id="fname" value="" autofocus>
+                                                            <input type="text" class="form-control" placeholder="First Name" name="fname" id="fname" value="{{$customer->first_name}}" autofocus>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="Last Name" name="lname" id="lname" value="">
+                                                            <input type="text" class="form-control" placeholder="Last Name" name="lname" id="lname" value="{{$customer->last_name}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="Street Address" name="address1" id="address1" value="">
+                                                            <input type="text" class="form-control" placeholder="Street Address" name="address1" id="address1" value="{{$customer->address}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="City" name="city" id="city" value="">
+                                                            <input type="text" class="form-control" placeholder="City" name="city" id="city" value="{{$customer->cust_city}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
@@ -609,13 +609,13 @@
                                                     </div>
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="Zip code" name="zip" id="zip" value="">
+                                                            <input type="text" class="form-control" placeholder="Zip code" name="zip" id="zip" value="{{$customer->cust_state}}">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
                                                             @if ($google_key == 1)
-                                                                <input type="text" class="form-control" placeholder="Zip code" name="country" id="country" value="">
+                                                                <input type="text" class="form-control" placeholder="Zip code" name="country" id="country" value="{{$customer->cust_zip}}">
                                                             @else
                                                                 <select class="form-control" name="country" id="country" onchange="listStates(this.value, 'state', 'cmp_state')">
                                                                     @foreach ($countries as $cty)
