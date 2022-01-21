@@ -10,6 +10,7 @@
     var user_profile = {!!json_encode($profile)!!};
     var customer = user_profile; // for states listing
     var ticket_format = {!!json_encode($ticket_format)!!};
+    let in_recycle_mode = false;
 
     var schedule_route = "{{asset('/add_staff_schedule')}}";
     var delete_schedule = "{{asset('/delete_staff_schedule')}}"
@@ -21,7 +22,8 @@
     let save_staff_color_route = "{{asset('/save-staff-color')}}";
 
     let ticketsList = [];
-    let get_tickets_route = "{{asset('/get-tickets')}}/staff/"+user_profile.id;
+    let get_tickets_route = "{{asset('/get-tickets')}}";
+    let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
     let ticket_details_route = "{{asset('/ticket-details')}}";
     let ticket_notify_route = "{{asset('/ticket_notification')}}";
     let flag_ticket_route = "{{asset('/flag_ticket')}}";
@@ -152,7 +154,7 @@
                         // window.google = {};
             }
         }
-        initializeTicketTable();
+        initializeTicketTable('staff_self');
 
         // get all leaves
         get_all_leaves();

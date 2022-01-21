@@ -44,7 +44,23 @@ function initializeTicketTable(p_name='') {
 
     $('#ticket-table-list').parent().css('overflow', 'auto');
 
-    get_ticket_table_list();
+    if(p_name == 'staff_self'){
+        let ret = $.ajax({
+            type: "get",
+            url: get_tickets_route + '/self' ,
+            async: false,
+            data: "",
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                console.log(data, "data tickets");
+            
+                redrawTicketsTable(data.tickets);
+            }
+        });
+    }else{
+        get_ticket_table_list();
+    }
 
     $('#select-all').change(function() {
         let chck = $(this).prop('checked');

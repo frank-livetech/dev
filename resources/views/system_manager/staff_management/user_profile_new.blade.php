@@ -456,19 +456,18 @@
                                                     </div>
                                                 </th>
                                                 <th></th>
-                                                <th>Status</th>
-                                                <th>Subject</th>
-                                                <th>Ticket ID</th>
-                                                <th>Priority</th>
-                                                <th>Customer</th>
-                                                <th>Last Replier</th>
-                                                <th>Replies</th>
-                                                <th>Last Activity</th>
-                                                <th>Reply Due</th>
-                                                <th>Resolution Due</th>
-                                                <th>Assigned Tech</th>
-                                                <th>Department</th>
-                                                <th>Creation Date</th>
+                                                        <th>Status</th>
+                                                        <th class='custom'>Subject</th>
+                                                        <th class='pr-ticket'>Ticket ID</th>
+                                                        <th >Priority</th>
+                                                        <th class='custom-cst'>Customer</th>
+                                                        <th class='pr-replies custom-cst'>Last Replier</th>
+                                                        <th>Replies</th>
+                                                        <th class='pr-activity '>Last Activity</th>
+                                                        <th class='pr-ticket'>Reply Due</th>
+                                                        <th class='pr-due'>Resolution Due</th>
+                                                        <th class='pr-tech custom-cst'>Assigned Tech</th>
+                                                        <th class='custom-cst'>Department</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
