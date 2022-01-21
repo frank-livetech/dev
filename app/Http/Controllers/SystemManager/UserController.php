@@ -616,7 +616,7 @@ class UserController extends Controller
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
     
-        return view('system_manager.staff_management.user_profile_new',compact('id','google','staff_state','profile','tickets','staff_att_data', 'certificates','docs', 'types', 'priorities', 'statuses', 'departments', 'users', 'customers', 'ticket_format', 'countries', 'tasks', 'google_api', 'date_format', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
+        return view('system_manager.staff_management.user_profile',compact('id','google','staff_state','profile','tickets','staff_att_data', 'certificates','docs', 'types', 'priorities', 'statuses', 'departments', 'users', 'customers', 'ticket_format', 'countries', 'tasks', 'google_api', 'date_format', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
     }
 
     private function listPermissions($uid) {
