@@ -1310,9 +1310,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
+                        @php
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                        @endphp
                         @if($profile->profile_pic != null)
-                            @if(is_file(public_path( $path .$profile->profile_pic)))
-                                <img src="{{ asset( $path .$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="modal_profile_user_img" />
+                            @if(is_file(public_path( $path . $profile->profile_pic)))
+                                <img src="{{ asset( $path . $profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="modal_profile_user_img" />
                             @else
                                 <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="modal_profile_user_img" />
                             @endif
