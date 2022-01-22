@@ -290,9 +290,12 @@ blockquote {
             <div class="card">
                 <div class="card-body">
                     <center class="mt-4">
+                        @php
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                        @endphp
                         @if($customer->avatar_url != null)
-                            @if(is_file(public_path('storage/customer/'.$customer->avatar_url)))
-                            <img src="{{ asset('storage/customer/'.$customer->avatar_url)}}" class="rounded-circle"
+                            @if(is_file(public_path( $path .$customer->avatar_url)))
+                            <img src="{{ asset( $path .$customer->avatar_url)}}" class="rounded-circle"
                                 width="100" height="100" id="profile-user-img" />
                             @else
                             <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
@@ -2312,9 +2315,12 @@ blockquote {
             <form class="mt-0" id="upload_customer_img">
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
+                        @php
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                        @endphp
                         @if($customer->avatar_url != null)
-                            @if(is_file(public_path('storage/customer/'.$customer->avatar_url)))
-                            <img src="{{ asset('storage/customer/'.$customer->avatar_url)}}" class="rounded-circle"
+                            @if(is_file(public_path( $path . $customer->avatar_url)))
+                            <img src="{{ asset( $path .$customer->avatar_url)}}" class="rounded-circle"
                                 width="100" height="100" id="modal_profile_user_img" />
                             @else
                             <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"

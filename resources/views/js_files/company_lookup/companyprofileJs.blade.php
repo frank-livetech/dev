@@ -593,8 +593,11 @@
                 if(data.status == 200 && data.success == true) {
                     toastr.success(data.message, { timeOut: 5000 });
                     $("#editPicModal").modal('hide');
-                    var ter = $(".custom-file-label").text();
-                    $('#profile-user-img').attr('src','../files/user_photos/Companies/'+ter);
+                    console.log(js_origin);
+                    let path = js_origin + data.img;
+                    console.log(path);
+                    $('#company_curr_img').attr('src', path );
+                    $('#company_modal_img').attr('src', path );
                 }else{
                     toastr.error(data.message, { timeOut: 5000 });
                 }

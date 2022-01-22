@@ -16,6 +16,7 @@ use App\Models\TicketStatus;
 use App\Models\TicketPriority;
 use App\Models\StaffLeaves;
 use App\Models\TicketType;
+use Illuminate\Support\Facades\File;
 use App\Models\TicketSettings;
 use App\Models\SystemSetting;
 use App\Models\SystemManager\StaffSchedule;
@@ -814,7 +815,13 @@ class UserController extends Controller
         $imageName = strtolower($imageName);
         $imageName = str_replace(" ","_",$imageName);
        
-        $image->move('storage/users', $imageName);
+        $target_dir = 'storage/users';
+
+        if (!File::isDirectory($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $image->move($target_dir, $imageName);
 
         $user = User::where("id", $request->staff_id)->first();
         $user->profile_pic = 'storage/users/'. $imageName;

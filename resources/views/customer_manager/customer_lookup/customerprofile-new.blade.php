@@ -122,14 +122,17 @@
                 <div class="card">
                     <div class="card-body">
                         <center class="mt-4">
+                            @php
+                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                            @endphp
                             @if($customer->avatar_url != null)
-                                @if(is_file(public_path('files/user_photos/Customers/'.$customer->avatar_url)))
-                                    <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                @if(is_file(public_path( $path . $customer->avatar_url)))
+                                    <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @else
-                                    <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                    <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @endif
                             @else
-                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a>
     
@@ -2132,12 +2135,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
-                        @if(is_file(public_path('../files/user_photos/Customers/'.$customer->avatar_url)))
-                        <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle"
-                            width="100" height="100" id="profile-user-img" />
+                        @php
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                        @endphp
+                        @if($customer->avatar_url != null)
+                            @if(is_file(public_path( $path . $customer->avatar_url)))
+                                <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
+                            @else
+                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
+                            @endif
                         @else
-                        <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle" width="100" height="100"
-                            id="profile-user-img" />
+                            <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
                         @endif
                     </div>
                     <form class="mt-4" id="upload_customer_img">
