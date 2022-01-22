@@ -388,19 +388,18 @@
                 success: function(data) {
 
                     if (data.status == 200 && data.success == true) {
-                        toastr.success(data.message, {
-                            timeOut: 5000
-                        });
+                        toastr.success(data.message, { timeOut: 5000 });
                         $("#editPicModal").modal('hide');
-                        var ter = $(".po").text();
-                        $('#profile-user-img').attr('src', '../files/user_photos/' + ter);
-                        // location.reload();
+                        
+                        let path = js_origin + data.img;
+
+                        $('#profile-user-img').attr('src', path);
+                        $('#login_usr_logo').attr('src', path);
+                        $('#modal_profile_user_img').attr('src', path);
+                
                     } else {
-                        toastr.error(data.message, {
-                            timeOut: 5000
-                        });
+                        toastr.error(data.message, { timeOut: 5000 });
                     }
-                    console.log(data, "data");
                 },
                 error: function(e) {
                     console.log(e)
