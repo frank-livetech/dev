@@ -1521,6 +1521,12 @@ class CustomerlookupController extends Controller
         $customer = Customer::where('id' , $request->customer_id)->first();
         $customer->avatar_url = 'storage/customers/'. $imageName;
         $customer->save();
+
+        $user = User::where('email', $customer->email)->first();
+        if($user) {
+            $user->profile_pic = 'storage/customers/'. $imageName;
+            $user->save();
+        }
         
         $response['message'] = 'Customer Profile Uploaded Successfully';
         $response['status'] = 200;
