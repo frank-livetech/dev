@@ -15,6 +15,7 @@ use App\Models\TicketSettings;
 use App\Models\Customer;
 use App\Models\Company;
 use App\CompanyActivityLog;
+use Illuminate\Support\Facades\File;
 use App\Models\CustomerCC;
 use App\Models\Tickets;
 use App\Models\Subscriptions;
@@ -1505,15 +1506,26 @@ class CustomerlookupController extends Controller
 
         $image = $request->file('profile_img');
         $imageName = $_FILES['profile_img']['name'];
+
+        $imageName = strtolower($imageName);
+        $imageName = str_replace(" ","_",$imageName);
+
+        $target_dir = 'storage/customers';
+
+        if (!File::isDirectory($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $image->move($target_dir, $imageName);
        
-        $image->move('files/user_photos/Customers', $imageName);
+        $customer = Customer::where('id' , $request->customer_id)->first();
+        $customer->avatar_url = 'storage/customers/'. $imageName;
+        $customer->save();
         
-        DB::Table("customers")->where("id","=",$request->customer_id)->update([
-            "avatar_url" => $imageName,
-        ]);
         $response['message'] = 'Customer Profile Uploaded Successfully';
         $response['status'] = 200;
         $response['success'] = true;
+        $response['img'] = $customer->avatar_url;
         return response()->json($response);
     }
 

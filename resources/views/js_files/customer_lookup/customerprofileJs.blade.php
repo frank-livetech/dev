@@ -1095,18 +1095,13 @@
             processData: false,
             success: function(data) {
                 if (data.status == 200 && data.success == true) {
-                    toastr.success(data.message, {
-                        timeOut: 5000
-                    });
+                    toastr.success(data.message, { timeOut: 5000 });
                     $("#editPicModal").modal('hide');
-                    var ter = $(".custom-file-label").text();
-
-                    let url = '{{asset("files/user_photos/Customers")}}';
-                    $('#profile-user-img').attr('src', url + '/' + ter);
+                    let path = js_origin + data.img;
+                    $('#customer_curr_img').attr('src', path);
+                    $('#customer_modal_img').attr('src', path);
                 } else {
-                    toastr.error(data.message, {
-                        timeOut: 5000
-                    });
+                    toastr.error(data.message, { timeOut: 5000});
                 }
                 console.log(data, "data");
             },

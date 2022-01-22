@@ -402,7 +402,11 @@ function get_all_customers() {
                     <td>${(data[i].company != null ? data[i].company.name : '-')}</td>
                     <td>${address}, ${apt_address}<br>${ct_name} ${st_name} ${zip}<br>${cn_name}</td>
                     <td>${moment(data[i].created_at).format({!! json_encode($date_format) !!})}</td>
-                    <td><button onclick="showdeleteModal(` + data[i].id + `)" class="btn btn-danger btn-sm rounded"><i class="fas fa-trash"></i> delete</button></td>
+                    <td>
+                        <button type="button" onclick="showdeleteModal(` + data[i].id + `)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </td>
                 </tr>`;
                 count++;
             }
