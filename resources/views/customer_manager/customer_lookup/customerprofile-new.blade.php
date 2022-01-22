@@ -2353,57 +2353,13 @@
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
 
 @include('js_files.customer_lookup.customerprofileJs')
-
-{{-- <style>
-    .flagged-tr {
-        background-color: #FFE4C4 !important;
-    }
-
-    blockquote {
-        margin: unset !important;
-    }
-
-    .sl-item {
-        margin: unset !important;
-    }
-
-    .profile-pic-div label {
-        background: black;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .profile-pic-div label:hover img {
-        opacity: 0.5;
-    }
-
-    .profile-pic-div label:hover span {
-        display: inline-block;
-    }
-
-    .profile-pic-div label span {
-        color: white;
-        display: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        margin-top: 35px;
-    }
-
-    .soc-ico {
-        font-size: 32px;
-    }
-
-    .soc-card {
-        justify-content: space-between;
-        display: flex;
-    }
-
-    .select2-selection,
-    .select2-container--default,
-    .select2-selection--single {
-        border-color: #848484 !important;
-    }
-</style> --}}
+<script>
+    console.log(window.location.host);     //returns host
+    console.log(window.location.hostname);    //returns hostname
+    console.log(window.location.pathname);         //return path
+    console.log(window.location.pathname.split('/'));         //return path
+    console.log(window.location.href);       //returns full current url
+    console.log(window.location.port);         //returns the port
+    console.log(window.location.protocol) 
+</script>
 @endsection
