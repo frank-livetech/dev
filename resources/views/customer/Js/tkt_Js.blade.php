@@ -51,7 +51,8 @@
                                 if (item.reply_user != null) {
                                     type = `staff`;
                                     if (item.reply_user.profile_pic != null) {
-                                        user_img += `<span class="avatar"><img src="{{asset('${js_path}storage/customer/${item.reply_user.profile_pic}')}}" 
+                                        let path = js_origin + item.reply_user.profile_pic;
+                                        user_img += `<span class="avatar"><img src="${path}" 
                                 width="40px" height="40px" class="round"/> </span>`;
                                     } else {
                                         user_img += `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;

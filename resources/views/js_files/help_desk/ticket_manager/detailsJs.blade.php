@@ -1018,25 +1018,29 @@ function listReplies() {
             var customer_img = ``;
             var user_img = ``;
 
+            var js_path = "{{Session::get('is_live')}}";
+            js_path = (js_path == 1 ? 'public/' : '');
+
             if(reply.customer_replies != null) {
                 if(reply.customer_replies.avatar_url != null) {
-                    customer_img += `<img src="{{asset('files/user_photos/Customers/${reply.customer_replies.avatar_url}')}}" 
-                    width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
+                    let path = js_origin + reply.customer_replies.avatar_url;
+                    customer_img += `<img src="${path}"  width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
                 }else{
-                    customer_img += `<img src="{{asset('default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }                
             }else{
-                customer_img += `<img src="{{asset('default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
 
             if(reply.reply_user != null) {
                 if(reply.reply_user.profile_pic != null) {
-                    user_img += `<img src="{{asset('files/user_photos/${reply.reply_user.profile_pic}')}}" style="border-radius: 50%;" width="40px" height="40px" class="img-fluid" />`;
+                    let path = js_origin + reply.reply_user.profile_pic;
+                    user_img += `<img src="${path}" style="border-radius: 50%;" width="40px" height="40px" class="img-fluid" />`;
                 }else{
-                    user_img += `<img src="{{asset('public/default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }                
             }else{
-                user_img += `<img src="{{asset('public/default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
 
 

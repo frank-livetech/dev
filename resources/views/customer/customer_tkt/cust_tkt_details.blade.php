@@ -276,10 +276,9 @@
 
         // customer image
         if(ticket.ticket_customer != null) {
-
             if(ticket.ticket_customer.avatar_url != null) {
-                customer_img = `<span class="avatar"><img src="{{asset('${js_path}storage/customer/${ticket.ticket_customer.avatar_url}')}}" 
-            width="40px" height="40px" class="round"/> </span>`;  
+                let path = js_origin + ticket.ticket_customer.avatar_url;
+                customer_img = `<span class="avatar"><img src="${path}"  width="40px" height="40px" class="round"/> </span>`;  
             }else{
                 customer_img = `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;
             }

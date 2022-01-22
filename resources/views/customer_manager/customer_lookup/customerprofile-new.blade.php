@@ -2353,13 +2353,4 @@
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
 
 @include('js_files.customer_lookup.customerprofileJs')
-<script>
-    console.log(window.location.host);     //returns host
-    console.log(window.location.hostname);    //returns hostname
-    console.log(window.location.pathname);         //return path
-    console.log(window.location.pathname.split('/'));         //return path
-    console.log(window.location.href);       //returns full current url
-    console.log(window.location.port);         //returns the port
-    console.log(window.location.protocol) 
-</script>
 @endsection
