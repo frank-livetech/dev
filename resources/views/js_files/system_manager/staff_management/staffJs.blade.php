@@ -463,9 +463,9 @@ function get_all_staff_members() {
                         },
                         {
                             "render": function(data, type, full, meta) {
-            
-                                let img = `<img src="{{asset('files/user_photos/`+full.profile_pic+`')}}" alt="user Photo"width="35" height="35" class="rounded-circle">`;
-                                let default_img = `<img src="{{asset('files/user_photos/user-photo.jpg')}}" alt="user Photo" width="35" height="35" class="rounded-circle">`;
+                                var path = js_origin + full.profile_pic;
+                                let img = `<img src="${path}" alt="user Photo"width="35" height="35" class="rounded-circle">`;
+                                let default_img = `<img src="${path}" alt="user Photo" width="35" height="35" class="rounded-circle">`;
                                 var data =  `
                                 <div class="d-flex align-items-center">
                                     `+ (full.profile_pic != null ? img : default_img) +`
