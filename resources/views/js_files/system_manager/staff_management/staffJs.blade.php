@@ -21,31 +21,31 @@
             ]
         });
 
-        $('#sm_select').multipleSelect({
-            width: 300,
-            onClick: function(view) {
-                var selectedItems = $('#sm_select').multipleSelect("getSelects");
-                for (var i = 0; i < 6; i++) {
-                    columns = users_table_list.column(i).visible(0);
-                }
-                for (var i = 0; i < selectedItems.length; i++) {
-                    var s = selectedItems[i];
-                    users_table_list.column(s).visible(1);
-                }
-                $('#contacts_table').css('width', '100%');
-            },
-            onCheckAll: function() {
-                for (var i = 0; i < 6; i++) {
-                    columns = users_table_list.column(i).visible(1);
-                }
-            },
-            onUncheckAll: function() {
-                for (var i = 0; i < 6; i++) {
-                    columns = users_table_list.column(i).visible(0);
-                }
-                $('#contacts_table').css('width', '100%');
-            }
-        });
+        // $('#sm_select').multipleSelect({
+        //     width: 300,
+        //     onClick: function(view) {
+        //         var selectedItems = $('#sm_select').multipleSelect("getSelects");
+        //         for (var i = 0; i < 6; i++) {
+        //             columns = users_table_list.column(i).visible(0);
+        //         }
+        //         for (var i = 0; i < selectedItems.length; i++) {
+        //             var s = selectedItems[i];
+        //             users_table_list.column(s).visible(1);
+        //         }
+        //         $('#contacts_table').css('width', '100%');
+        //     },
+        //     onCheckAll: function() {
+        //         for (var i = 0; i < 6; i++) {
+        //             columns = users_table_list.column(i).visible(1);
+        //         }
+        //     },
+        //     onUncheckAll: function() {
+        //         for (var i = 0; i < 6; i++) {
+        //             columns = users_table_list.column(i).visible(0);
+        //         }
+        //         $('#contacts_table').css('width', '100%');
+        //     }
+        // });
 
         $('a.toggle-vis').on('click', function(e) {
             e.preventDefault();
@@ -455,11 +455,6 @@ function get_all_staff_members() {
                             targets: 0
                         }
                     ],
-                    // ajax: { url: get_staff_route},
-                    // "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-                    //     $("td:first", nRow).html(iDisplayIndex +1);
-                    //     return nRow;
-                    // },
                     columns: [
                         {
                             "render": function (data, type, full, meta) {
@@ -528,8 +523,9 @@ function get_all_staff_members() {
                         {
                             "render": function(data, type, full, meta) {
                                 return `
-                                <button type="button" role="button" class="btn btn-circle btn-danger text-white" title="Delete User" 
-                                    onclick="deleteUsers(`+full.id+`)"><i class="fa fa-trash"  aria-hidden="true"></i></button>
+                                <button type="button" onclick="deleteUsers(`+full.id+`)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fa fa-trash"  aria-hidden="true"></i>
+                                </button>
                                 `;
                             }
                         },

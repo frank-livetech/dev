@@ -64,22 +64,9 @@
                                     <div class="row">
                                         <div class="col-12">
                                             
-                                            {{-- <div class="row">
-                                                <div class="col-md-12" style="text-align:right;">
-                                                    <select class="multiple-select mt-2 mb-2" name="sm_select" id="sm_select" placeholder="Show/Hide" multiple="multiple" selected="selected">
-                                                        <option value="0">Sr #</option>
-                                                        <option value="1">Full Name</option>
-                                                        <option value="2">Username</option>
-                                                        <option value="3">Phone</option>
-                                                        <option value="4">Tags Assigned</option>
-                                                        <option value="5">Action</option>
-                                                    </select>
-                                                </div>
-                                            </div> --}}
-    
                                             <div class="table-responsive">
                                                 <table id="user-table-list"
-                                                    class="table table-striped table-bordered table-hover w-100" style="width:100%">
+                                                    class="table table-striped table-bordered table-hover w-100">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
@@ -107,6 +94,7 @@
     
         </div>
     </div>
+
     <div class="modal fade" id="addNewUser" tabindex="-1" aria-labelledby="addNewUserTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -251,15 +239,13 @@
             </div>
         </div>
     </div>
-    {{-- Modal end --}}
+    
 </div>
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-{{-- <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script> --}}
-<!-- <script src="{{asset('public/js/system_manager/staff_management/staff.js').'?ver='.rand()}}"></script> -->
-@include('js_files.system_manager.staff_management.staffJs')
-@include('js_files.system_manager.staff_management.indexJs')
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <!-- <script src="{{asset('public/js/system_manager/staff_management/staff.js').'?ver='.rand()}}"></script> -->
+    @include('js_files.system_manager.staff_management.staffJs')
+    @include('js_files.system_manager.staff_management.indexJs')
 @endsection

@@ -164,14 +164,14 @@
                         </div>
                         <span class="avatar">
                             @if(Auth::user()->profile_pic != null)
-                                @if(file_exists( public_path(). $file_path . '/files/user_photos/'. \Auth::user()->profile_pic))
-                                    <img src="{{ asset( $file_path . 'files/user_photos/'.\Auth::user()->profile_pic)}}"
-                                        alt="'s Photo" class="rounded-circle" width="50px">
+                                @if(file_exists( public_path(). $file_path . auth()->user()->profile_pic))
+                                    <img src="{{ asset( $file_path . auth()->user()->profile_pic)}}"
+                                        alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
                                 @else
-                                    <img src="{{asset(  $file_path . 'default_imgs/logo.png')}}" width="50px" alt="'s Photo" class="rounded-circle">
+                                    <img src="{{asset(  $file_path . 'default_imgs/logo.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
                                 @endif
                             @else
-                                <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo"  width="50px" class="rounded-circle">
+                                <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" id="login_usr_logo" alt="'s Photo" height="50px"  width="50px" class="rounded-circle">
                             @endif
                             <span class="avatar-status-online"></span></span>
                     </a>
@@ -262,6 +262,8 @@
     <!-- END: Page JS-->
 
     <script>
+        const org_path = "{{Session::get('is_live')}}";
+        const js_origin  = window.location.origin + (org_path == 1 ? '/public/' : '/');
         $(document).ready(function() {
             getAllCounts();
             getNotifications();
@@ -380,6 +382,7 @@
               
             }
         });
+
         $(".nav-link-style").click(function(){
             var ter = $(this).find(".feather").attr("class");
 
@@ -419,88 +422,89 @@
 
             }
         })
+
         function getNotifications(){
-        $.ajax({
-            url: get_notifications,
-            type: "get",
-            dataType: 'json',
-            cache: false,
-            async:false,
-            success: function(data) {
-                console.log(data , "notification");
-                var noti_div = ``;
-                var sender = data.data;
+            $.ajax({
+                url: get_notifications,
+                type: "get",
+                dataType: 'json',
+                cache: false,
+                async:false,
+                success: function(data) {
+                    console.log(data , "notification");
+                    var noti_div = ``;
+                    var sender = data.data;
 
-                var curr_user_image = $("#curr_user_image").val();
-                var user_image = ``;
-                var default_icon = ``;
+                    var curr_user_image = $("#curr_user_image").val();
+                    var user_image = ``;
+                    var default_icon = ``;
 
-                if(data){
-                    notifications = data.data;
+                    if(data){
+                        notifications = data.data;
 
-                    $("#noti_count").text(notifications.length);
+                        $("#noti_count").text(notifications.length);
 
-                    if(notifications.length > 0){
-                        for(var i = 0 ; i < notifications.length ; i++){
+                        if(notifications.length > 0){
+                            for(var i = 0 ; i < notifications.length ; i++){
 
-                            if(notifications[i].sender != null) {
-                                
-                                if(notifications[i].sender.profile_pic != null ) {
-                                    user_image = `<img src="`+user_photo_url + '/' + notifications[i].sender.profile_pic  +`" alt="avatar" width="32" height="32">`;
-                                }else{
+                                if(notifications[i].sender != null) {
+                                    
+                                    if(notifications[i].sender.profile_pic != null ) {
+                                        user_image = `<img src="`+user_photo_url + '/' + notifications[i].sender.profile_pic  +`" alt="avatar" width="32" height="32">`;
+                                    }else{
+                                        user_image = `<img src="`+user_photo_url + '/' + 'user-photo.jpg' +`" alt="avatar" width="32" height="32">`;
+                                    }
+                                }
+                                else{
                                     user_image = `<img src="`+user_photo_url + '/' + 'user-photo.jpg' +`" alt="avatar" width="32" height="32">`;
                                 }
-                            }
-                            else{
-                                user_image = `<img src="`+user_photo_url + '/' + 'user-photo.jpg' +`" alt="avatar" width="32" height="32">`;
-                            }
 
-                            var date = new Date(notifications[i].created_at);
-                            
-                            default_icon = `<span class="btn `+notifications[i].btn_class+` rounded-circle btn-circle"">
-                                            <i class="`+notifications[i].noti_icon+`"></i></span>`;
+                                var date = new Date(notifications[i].created_at);
+                                
+                                default_icon = `<span class="btn `+notifications[i].btn_class+` rounded-circle btn-circle"">
+                                                <i class="`+notifications[i].noti_icon+`"></i></span>`;
 
-                            var title = notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification';
-                            var desc = notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc';
+                                var title = notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification';
+                                var desc = notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc';
 
-                            var icon = 'fa fa-link';
-                            noti_div += ` <a class="d-flex"href="#" onclick="markRead(`+notifications[i].id+`)" style="cursor: pointer;">
-                                            <div class="list-item d-flex align-items-start">
-                                                <div class="me-1">
-                                                    <div class="avatar">
-                                                        `+ (notifications[i].noti_type == "attendance" ? user_image : default_icon) +`
+                                var icon = 'fa fa-link';
+                                noti_div += ` <a class="d-flex"href="#" onclick="markRead(`+notifications[i].id+`)" style="cursor: pointer;">
+                                                <div class="list-item d-flex align-items-start">
+                                                    <div class="me-1">
+                                                        <div class="avatar">
+                                                            `+ (notifications[i].noti_type == "attendance" ? user_image : default_icon) +`
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-item-body flex-grow-1">
+                                                        <p class="media-heading">\
+                                                        <span class="fw-bolder">`+title+`</span> <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
+                                                        <small class="notification-text"> `+desc+`</small>
                                                     </div>
                                                 </div>
-                                                <div class="list-item-body flex-grow-1">
-                                                    <p class="media-heading">\
-                                                    <span class="fw-bolder">`+title+`</span> <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
-                                                    <small class="notification-text"> `+desc+`</small>
-                                                </div>
-                                            </div>
-                                        </a>`;
-                                       
+                                            </a>`;
+                                        
+                            }
+                            $('.notifications').append(noti_div)
+
                         }
-                        $('.notifications').append(noti_div)
+                        else{
+                            alert("relse");
+                            // noti_div = `<li>
+                            //                 <span class="font-12 text-nowrap d-block text-muted text-truncate" style="text-align:center">No Unread Notifications.</span> 
+                            //             </li>`;
+                            // $('.notif_div_ul').append(noti_div)
+                            
+                        }
+                    }
+                    
 
-                    }
-                    else{
-                        alert("relse");
-                        // noti_div = `<li>
-                        //                 <span class="font-12 text-nowrap d-block text-muted text-truncate" style="text-align:center">No Unread Notifications.</span> 
-                        //             </li>`;
-                        // $('.notif_div_ul').append(noti_div)
-                        
-                    }
+                },
+                failure: function(errMsg) {
+
+                    console.log(errMsg);
                 }
-                
-
-            },
-            failure: function(errMsg) {
-
-                console.log(errMsg);
-            }
-        });
-    }
+            });
+        }
     </script>
     @yield('scripts')
 </body>

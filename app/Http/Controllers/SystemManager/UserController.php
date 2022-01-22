@@ -71,8 +71,7 @@ class UserController extends Controller
         $tags = Tags::all();
         $roles = Role::all();
         // $roles = Role::where('id','!=','1')->get();
-
-        return view('system_manager.staff_management.index',compact('tags','roles'));
+        return view('system_manager.staff_management.index-new',compact('tags','roles'));
     }
     public function new(){
         $tags = Tags::all();
@@ -622,7 +621,7 @@ class UserController extends Controller
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
     
-        return view('system_manager.staff_management.user_profile',compact('id','google','staff_state','profile','tickets','staff_att_data', 'certificates','docs', 'types', 'priorities', 'statuses', 'departments', 'users', 'customers', 'ticket_format', 'countries', 'tasks', 'google_api', 'date_format', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
+        return view('system_manager.staff_management.user_profile_new', get_defined_vars());
     }
 
     public function newProfile($id) {
@@ -808,17 +807,23 @@ class UserController extends Controller
     }
 
     public function uploadUserImage(Request $request){
+        
         $image = $request->file('profile_img');
         $imageName = $_FILES['profile_img']['name'];
+
+        $imageName = strtolower($imageName);
+        $imageName = str_replace(" ","_",$imageName);
        
-        $image->move('files/user_photos', $imageName);
+        $image->move('storage/users', $imageName);
+
+        $user = User::where("id", $request->staff_id)->first();
+        $user->profile_pic = 'storage/users/'. $imageName;
+        $user->save();
         
-        DB::Table("users")->where("id","=",$request->staff_id)->update([
-            "profile_pic" => $imageName,
-        ]);
         $response['message'] = 'Staff Profile Uploaded Successfully';
         $response['status'] = 200;
         $response['success'] = true;
+        $response['img'] = $user->profile_pic;
         return response()->json($response);
     }
 
