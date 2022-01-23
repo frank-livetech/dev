@@ -59,8 +59,8 @@
                                     <div class="col-md-12 mt-3" id="">
                                         <button class="btn btn-outline-primary btn-sm" type="button" onclick="customer.addAttachment()"><span class="fa fa-plus"></span> Add Attachment</button>
                                         <div class="text-right" style="float: right">
-                                            <button type="submit" class="btn waves-effect waves-light btn-success" id="btnSaveTicket"> <i class="fas fa-check-circle"></i> Save</button>
-                                            <button type="button" style="display:none" disabled id="publishing" class="btn rounded btn-success"> <i class="fas fa-circle-notch fa-spin"></i> Saving... </button>
+                                            <button type="submit" class="btn waves-effect waves-light btn-success" id="btnSaveTicket"> <i class="fas fa-check-circle"></i> Create</button>
+                                            <button type="button" style="display:none" disabled id="publishing" class="btn rounded btn-success"> <i class="fas fa-circle-notch fa-spin"></i> Creating... </button>
                                         </div>
                                     </div>
                                 </div>

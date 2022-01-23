@@ -91,9 +91,9 @@
                                                     <button type="button" onclick="ticketDetail.updateTktReply(${item.id})" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
                                                         <i data-feather='edit'></i>
                                                     </button>
-                                                    <button type="button" onclick="" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
+                                                   <!-- <button type="button" onclick="" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
                                                         <i data-feather='trash'></i>
-                                                    </button>
+                                                    </button>-->
                                                 </div>
                                                 
                                             </div>

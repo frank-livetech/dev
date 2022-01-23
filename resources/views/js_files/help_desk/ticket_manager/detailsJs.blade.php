@@ -438,6 +438,7 @@ function setSlaPlan() {
 }
 
 function editRequest() {
+    toggleReq();
     $('#ticket_subject_heading').css('display', 'none');
     $('#ticket_details_p').css('display', 'none');
     $('#edit_request_btn').css('display', 'none');
@@ -1527,7 +1528,10 @@ function updateTicket(){
 
                 // // refresh logs
                 getLatestLogs();
-
+                $("#dropD ").find(".select2").hide();
+                    $("#dropD ").find("h5").show();
+                selectD();
+                $("#update_ticket").hide();
                 toastr.success( 'Ticket Updated Successfully!' , { timeOut: 5000 });
             }
         }
@@ -2860,5 +2864,14 @@ function resetTktSLA(value) {
     }else{
         $("#ticket-res-due").val("");
     }
+}
+
+function toggleReq(){
+    $(".frst").toggleClass("d-none");
+    $(".sec").toggleClass("d-none");
+    let ter = $('#ticket_details_p').html();
+    $('#ticket_details_p2').html(ter);
+
+    $("#ticket-timestamp2").text($("#ticket-timestamp").text());
 }
 </script>
