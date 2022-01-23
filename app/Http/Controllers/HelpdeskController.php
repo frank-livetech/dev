@@ -2477,7 +2477,7 @@ class HelpdeskController extends Controller
 
                 if(!empty($reply_content)) {
                     // this is a reply
-                    $subject = 'Re: '.$subject;
+                    // $subject = 'Re: '.$subject;
                 }
 
                 if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
@@ -2502,7 +2502,7 @@ class HelpdeskController extends Controller
 
                     if(!empty($reply_content)) {
                         // this is a reply
-                        $subject = 'Re: '.$subject;
+                        // $subject = 'Re: '.$subject;
                     }
                 }
                 
