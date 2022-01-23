@@ -15,7 +15,7 @@
                             <form id="saveRecord" onsubmit="return false">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group my-1 ">
                                             <label for="sys_dt_frmt">Date Format</label>
                                             <select name="sys_dt_frmt" id="sys_dt_frmt" class="form-control">
                                                 
@@ -23,7 +23,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group my-1 ">
                                             <label for="sys_time_frmt">Time Format</label>
                                             <select name="sys_time_frmt" id="sys_time_frmt" class="form-control"></select>
                                         </div>
@@ -32,7 +32,7 @@
 
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
+                                        <div class="form-group my-1 ">
                                             <label for="timezone">Default TimeZone</label> <br>
                                             <select name="timezone" id="timezone" class="select2 form-control select2-hidden-accessible" style="width:100%;">
                                                 @foreach(timezone_identifiers_list() as $timezone)

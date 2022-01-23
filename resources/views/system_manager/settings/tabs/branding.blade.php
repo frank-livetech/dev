@@ -27,7 +27,7 @@
                                         id="brand_settings">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="site_title">Site Name</label>
                                                     @if($brand_settings != null )
                                                         <input class="form-control mb-1" type="text" name="site_title" id="site_title"
@@ -39,7 +39,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="site_logo">Logo Title</label>
                                                     @if($brand_settings != null )
                                                     <input class="form-control mb-1" type="text" name="site_logo_title" id="site_logo_title"
@@ -52,7 +52,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="site_logo">Site Version</label>
                                                     @if($brand_settings != null )
                                                         <input class="form-control mb-1" type="text" name="site_version" id="site_version" placeholder="" value="{{$brand_settings->site_version}}" readonly>
@@ -63,7 +63,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="site_domain">Domain for Fake Email Generator</label>
                                                     @if($brand_settings != null )
                                                         <input class="form-control mb-1" type="text" name="site_domain" id="site_domain" placeholder="domain.com" value="{{$brand_settings->site_domain}}">
@@ -76,7 +76,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="departmrnt">Logo</label>
                                                     <div class="input-group mb-3">
 
@@ -94,7 +94,7 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="departmrnt">Favicon</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
@@ -143,7 +143,7 @@
 
                                         <div class="row mt-2">
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="departmrnt">Login Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
@@ -158,7 +158,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="departmrnt">Customer Default Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
@@ -211,7 +211,7 @@
                                         <!-- company & users -->
                                         <div class="row mt-2">
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="departmrnt">Company Default Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
@@ -226,7 +226,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="departmrnt">Staff Default Logo</label>
                                                     <div class="input-group mb-3">
                                                         <div class="custom-file">
@@ -281,7 +281,7 @@
 
                                         <div class="row mt-2">
                                             <div class="col-md-12">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <label for="site_footer">Footer Copyright</label>
                                                     @if($brand_settings != null)
                                                     <textarea class="form-control mb-1" rows="3" id="site_footer"
@@ -305,7 +305,7 @@
                                                 <hr>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <input type="hidden" value="Light" name="mode">
                                                     <label for="main_sys_back" class="col-sm-12">Main System Background</label>
                                                     <div class="col-md-12">
@@ -324,7 +324,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Header Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="head_back" id="head_back" class="form-control demo mb-1" value="#009efb">                                                        
@@ -335,7 +335,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Card Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="card_back" id="card_back" class="form-control demo mb-1" value="#fff">                                                        
@@ -345,7 +345,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Table Header Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="table_head_back" id="table_head_back" class="form-control demo mb-1" value="#009efb">                                                        
@@ -355,7 +355,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Table Rows</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="table_row" id="table_row" class="form-control demo mb-1" value="#fff">                                                        
@@ -365,7 +365,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Main Font Color</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="main_font" id="main_font" class="form-control demo mb-1" value="#54667a">                                                        
@@ -375,7 +375,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Bread Crumb Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="bread_crum_back" id="bread_crum_back" class="form-control demo mb-1" value="transparent">                                                        
@@ -385,7 +385,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Border Thickness</label>
                                                     <div class="col-md-12">
                                                         <input type="number" class="form-control mb-1 " id="border_thick" name="border_thick" value="2">
@@ -394,7 +394,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Card Shadow</label>
                                                     <div class="col-md-12">
                                                         <input type="number" class="form-control mb-1 " id="card_shadow" name="card_shadow" value="0">
@@ -416,7 +416,7 @@
                                                 <hr>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <input type="hidden" value="dark" name="mode">
                                                     <label for="" class="col-sm-12">Main System Background</label>
                                                     <div class="col-md-12">
@@ -427,7 +427,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Header Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="drk_header_back" id="drk_header_back" class="form-control demo mb-1" value="#323743">                                                        
@@ -437,7 +437,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Card Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="drk_card_back" id="drk_card_back" class="form-control demo mb-1" value="#252629">                                                        
@@ -447,7 +447,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Table Header Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="drk_table_header" id="drk_table_header" class="form-control demo mb-1" value="#1E3E53">                                                        
@@ -457,7 +457,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Table Rows</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="drk_table_row" id="drk_table_row" class="form-control demo mb-1" value="#ffff">                                                        
@@ -467,7 +467,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Main Font Color</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="drk_main_font" id="drk_main_font" class="form-control demo mb-1" value="#d2dae0 ">                                                        
@@ -477,7 +477,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Border Thickness</label>
                                                     <div class="col-md-12">
                                                         <input type="number" class="form-control" id="drk_border_thick" name="drk_border_thick" value="2">
@@ -485,7 +485,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Card Shadow</label>
                                                     <div class="col-md-12">
                                                         <input type="number" class="form-control" id="drk_card_shadow" name="drk_card_shadow" value="0">                                                        
@@ -493,7 +493,7 @@
                                             </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group row">
+                                                <div class="form-group my-1  row">
                                                     <label for="" class="col-sm-12">Bread Crumb Background</label>
                                                     <div class="col-md-12">
                                                     <input type="text" name="drk_bread_crum" id="drk_bread_crum" class="form-control demo mb-1" value="transparent">                                                        
@@ -516,7 +516,7 @@
                                                     <hr>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <input type="hidden" value="button" name="mode">
                                                         <label for="" class="col-sm-12">Add Button Background</label>
                                                         <div class="col-md-12">
@@ -527,7 +527,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Font Color</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="add_font_color" id="add_font_color" class="form-control demo" value="#fff">                                                            
@@ -537,7 +537,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Delete Button Background</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="dlt_btn_back" id="dlt_btn_back" class="form-control demo" value="#f62d51">                                                            
@@ -547,7 +547,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Font Color</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="dlt_font_clr" id="dlt_font_clr" class="form-control demo" value="#fff">                                                            
@@ -557,7 +557,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">New Button Background</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="new_btn_back" id="new_btn_back" class="form-control demo" value="#39c449">                                                            
@@ -567,7 +567,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Font Color</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="new_font_clr" id="new_font_clr" class="form-control demo" value="#fff">                                                            
@@ -577,7 +577,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Register Button Background</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="reg_btn_back" id="reg_btn_back" class="form-control demo" value="#39c449">                                                            
@@ -587,7 +587,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Font Color</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="reg_font_clr" id="reg_font_clr" class="form-control demo" value="#fff">                                                            
@@ -597,7 +597,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Login Button Background</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="login_btn_btn" id="login_btn_btn" class="form-control demo" value="#7460ee">                                                            
@@ -607,7 +607,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="form-group row">
+                                                    <div class="form-group my-1  row">
                                                         <label for="" class="col-sm-12">Font Color</label>
                                                         <div class="col-md-12">
                                                         <input type="text" name="login_font_clr" id="login_font_clr" class="form-control demo" value="#fff">                                                            

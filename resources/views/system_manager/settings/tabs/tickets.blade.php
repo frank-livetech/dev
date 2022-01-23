@@ -43,12 +43,12 @@
                                         action="{{asset('/ticket-format')}}" method="post">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <label for="security">Ticket ID Format :</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <select class="select2 form-control select2-hidden-accessible"
                                                         id="ticket_format" style="width:100%;height:30px;" required>
                                                         <option value="random">Random (#JRQ-369-3621,#BHJ-591-1832)</option>
@@ -153,8 +153,8 @@
                                                                             <hr>
                                                                         </div>
                                                                         <div class="col-md-4 ">
-                                                                            <div class="row float-end">
-                                                                                <div class="form-check mx-2">
+                                                                            <div class="row text-end demo-inline-spacing">    
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                     @if(sizeOf($sla_setting) > 0)
                                                                                         @if($sla_setting['reply_due_deadline'] == 1)
                                                                                             <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault12" checked>
@@ -169,7 +169,7 @@
                                                                                     @endif
                                                                                     
                                                                                 </div>
-                                                                                <div class="form-check mx-2">
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     @if($sla_setting['reply_due_deadline'] == 0)
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault22" value="0" checked>
@@ -235,7 +235,7 @@
                                                                         <div class="col-md-4 ">
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
-                                                                                <div class="col-md-6 form-group mx-2">
+                                                                                <div class="col-md-6 form-group my-1 mx-2">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     <input class="form-control" value="{{$sla_setting['default_reply_time_deadline']}}" name="default_reply_time_deadline" type="number" placeholder="24" name="" id="default_reply_time_deadline" placeholder="">
                                                                                 @else
@@ -254,7 +254,7 @@
                                                                         <div class="col-md-4 ">
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
-                                                                                <div class="col-md-6 form-group mx-2">
+                                                                                <div class="col-md-6 form-group my-1 mx-2">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     <input class="form-control" value="{{$sla_setting['default_resolution_deadline']}}" name="default_resolution_deadline" type="number" placeholder="72" name="" id="default_resolution_deadline">
                                                                                 @else
@@ -275,7 +275,7 @@
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
 
-                                                                                <div class="col-md-9 form-group " style="padding-right:9px;">
+                                                                                <div class="col-md-9 form-group my-1 " style="padding-right:9px;">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     <input class="form-control" value="{{$sla_setting['overdue_ticket_background_color']}}" name="overdue_ticket_background_color" type="color" id="overdue_ticket_background_color">
                                                                                 @else
@@ -295,7 +295,7 @@
                                                                         <div class="col-md-4 ">
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
-                                                                                <div class="col-md-9 form-group " style="padding-right:9px;">
+                                                                                <div class="col-md-9 form-group my-1 " style="padding-right:9px;">
                                                                                     @if(sizeOf($sla_setting) > 0)
                                                                                         <input class="form-control" value="{{$sla_setting['overdue_ticket_text_color']}}" name="overdue_ticket_text_color" type="color" id="overdue_ticket_text_color">
                                                                                     @else
@@ -747,18 +747,18 @@
                                                         </div>
                                                         <div class="col-sm-8">
                                                             <form id="save_temp_response" action="{{asset('/save-temp-response')}}" method="post">
-                                                                <div class="form-group">
+                                                                <div class="form-group my-1">
                                                                     <input type="hidden" id="res_id" name="res_id">
                                                                     <label for="departmrnt">Title</label>
                                                                     <input class="form-control res_title" type="text" name="title" id="title" placeholder="">
                                                                 </div>
-                                                                <div class="form-group">
+                                                                <div class="form-group my-1">
                                                                     <label for="departmrnt">Category Name</label>
                                                                     <select class="form-control" id="cat_id" name="cat_id"  >
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="form-group">
+                                                                <div class="form-group my-1">
                                                                     <label>Quote Details</label>
 
                                                                     <textarea class="form-control tinymce" id="mymce" rows="2"></textarea>
@@ -819,7 +819,7 @@
                         </div> 
                     </div> 
                     
-                    <!--Ticket Modals -->
+<!--Ticket Modals -->
 
 
 
@@ -834,7 +834,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="widget-box widget-color-dark user-form" id="save_department" action="{{asset('save-department')}}" method="post">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt" class="d-flex mb-1 align-items-center">
                                 <span>Department Name</span>
                                 <div class="mx-1">
@@ -844,7 +844,7 @@
                             <input class="form-control mb-1 type="text" name="name" id="dep_name" placeholder="" required>
                             <input class="form-control" type="text" name="dep_id" id="dep_id" hidden>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt" class="d-flex mb-1 align-items-center">
                                 <span>Department Slug</span>
                             </label>
@@ -856,7 +856,7 @@
                                 <input type="checkbox" name="dept_counter" id="dept_counter">
                             </div>
                         </label>
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button type="Submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -876,30 +876,30 @@
                 <div class="modal-body">
                     <form class="widget-box widget-color-dark user-form" id="save_status"
                         action="{{asset('save-status')}}" method="post">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Status Title</label>
                             <input class="form-control" type="text" name="name" id="status_name" placeholder="" required>
                             <input class="form-control" type="text" name="status_id" id="status_id" hidden>
                         </div>
 
-                        <div class="form-group selectpickertag">
+                        <div class="form-group my-1 selectpickertag">
                             <label>Select Department</label>
                             <select class="select2 form-control" id="department_id2"
                                 multiple="multiple" style="height: 36px;width: 100%;" required>
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Status Color</label>
                             <input class="form-control" type="color" name="status_color" id="status_color" placeholder="Priority Color">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="squence">Status Slug</label>
                             <input class="form-control" type="text" name="slug" id="slug" placeholder="" required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="squence">Status SeqNo#</label>
                             <input class="form-control" type="number" name="seq_no" id="seq_no" placeholder="" required>
                         </div>
@@ -911,7 +911,7 @@
                             </div>
                         </label>
 
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-primary">Save</button>
                         </div>
                     </form>
@@ -932,12 +932,12 @@
 
                     <form class="widget-box widget-color-dark user-form" id="save_ticket"
                         action="{{asset('save-type')}}" method="post">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Type Title</label>
                             <input class="form-control" type="text" name="name" id="type_name" placeholder="" required>
                             <input class="form-control" type="text" name="type_id" id="type_id" hidden>
                         </div>
-                        <div class="form-group selectpickertag">
+                        <div class="form-group my-1 selectpickertag">
                             <label class="control-label">Select Department</label>
 
                             <select class="select2 form-control" id="department_id1" name="department_id"
@@ -946,7 +946,7 @@
 
 
                         </div>
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>
@@ -966,13 +966,13 @@
                 <div class="modal-body">
                     <form class="widget-box widget-color-dark" id="save_priority" action="{{asset('save-priority')}}"
                         method="post">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Priority Title</label>
                             <input class="form-control" type="text" name="name" id="priority_name" placeholder="" required>
                             <input class="form-control" type="text" name="priority_id" id="priority_id" hidden>
                         </div>
 
-                        <div class="form-group selectpickertag">
+                        <div class="form-group my-1 selectpickertag">
                             <label class="">Select Department</label>
 
                             <select class="select2 form-control" id="department_id" name="department_id"
@@ -980,12 +980,12 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Priority Color</label>
                             <input class="form-control" type="color" name="priority_color" id="priority_color" placeholder="Priority Color">
                         </div>
 
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button class="btn btn-rounded btn-success" type="submit">Save</button>
                         </div>
                     </form>
@@ -1009,23 +1009,23 @@
                     </div>
                 <div class="modal-body">
                     <form method="POST" id="sla_form" action="{{url('add_sla')}}" enctype="multipart/form-data" onsubmit="return false;">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">SLA Plan Title</label>
                             <input class="form-control" type="text" name="title" placeholder="" required>
                             <small class="text-end"> For example, Support tickets standard SLA plan.</small>
                             <input class="form-control" type="text" name="" id="" hidden>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Reply Deadline</label>
                             <input class="form-control" type="number" name="reply_deadline" placeholder="" id="rep-deadline" required>
                             <small class="text-end"> The number of hours by which a ticket should be replied to (following a reply from an end user). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Resolution due Deadline</label>
                             <input class="form-control" type="number" name="due_deadline" placeholder="" id="due-deadline" required>
                             <small>The number of hours by which tickets which have been assigned this SLA plan should be resolved (set to a resolved type status). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <div class="row ml-2">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
@@ -1039,7 +1039,7 @@
                             <small>Whether or not this SLA plan is enabled.</small>
                         
                         </div>
-                        <!-- <div class="form-group">
+                        <!-- <div class="form-group my-1">
                             <div class="custom-control custom-checkbox ml-2">
                                 <input type="checkbox" id="custumCheck" name="custumCheck" class="custom-control-input">
                                 <label class="custom-control-label" for="custumCheck">Is Default ?</label>
@@ -1047,7 +1047,7 @@
                             <small class="text-danger" id="war_check">Previous default plan if any will be set to normal and this one set to default plan.</small>
 
                         </div> -->
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -1068,11 +1068,11 @@
                     </div>
                 <div class="modal-body">
                     <form method="POST" id="cat_form" action="{{url('add_cat')}}" enctype="multipart/form-data" onsubmit="return false;">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">New Category Name</label>
                             <input class="form-control" type="text" name="name" placeholder="" required>
                         </div>
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button type="submit" class="btn  btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -1092,13 +1092,13 @@
                     </div>
                 <div class="modal-body">
                     <form method="POST" id="edit_cat_form" action="{{url('update_cat_response')}}" enctype="multipart/form-data" onsubmit="return false;">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                         <input type="hidden" id="cat_id2" name="id">
 
                             <label for="departmrnt">New Category Name</label>
                             <input class="form-control" type="text" id="cat_name2" name="name" placeholder="" required>
                         </div>
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button type="submit" class="btn  btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -1118,24 +1118,24 @@
                     </div>
                 <div class="modal-body">
                     <form method="POST" id="edit_sla_form" action="{{url('update_sla')}}" enctype="multipart/form-data" onsubmit="return false;">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <input type="hidden" id="sla_id" name="id">
                             <label for="departmrnt">SLA Plan Title</label>
                             <input class="form-control" type="text" name="title" id="reply_title" placeholder="">
                             <small class="text-end"> For example, Support tickets standard SLA plan.</small>
                             <input class="form-control" type="text" name="" id="" hidden>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Reply Deadline</label>
                             <input class="form-control" min="1" max="12" type="number" name="reply_deadline" id="reply_deadline" placeholder="">
                             <small class="text-end"> The number of hours by which a ticket should be replied to (following a reply from an end user). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Resolution due Deadline</label>
                             <input class="form-control" min="1" max="12" type="number" name="due_deadline" id="due_deadline" placeholder="">
                             <small>The number of hours by which tickets which have been assigned this SLA plan should be resolved (set to a resolved type status). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <div class="row ml-2">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" id="edit_customRadio1" name="customRadio" class="custom-control-input">
@@ -1148,14 +1148,14 @@
                             </div>
                             <small>Whether or not this SLA plan is enabled.</small>
                         </div>
-                        <!-- <div class="form-group">
+                        <!-- <div class="form-group my-1">
                             <div class="custom-control custom-checkbox ml-2">
                                 <input type="checkbox" id="edit_custumCheck" name="edit_custumCheck" class="custom-control-input">
                                 <label class="custom-control-label" for="edit_custumCheck">Is Default ?</label>
                             </div>
                             <small class="text-danger" id="war_check_edit">Previous default plan if any will be set to normal and this one set to default plan.</small>
                         </div> -->
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1 text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>

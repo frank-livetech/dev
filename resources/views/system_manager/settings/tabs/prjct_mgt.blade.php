@@ -39,7 +39,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 p-3 pl-4 dailyRecap" >
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <textarea class="form-control" rows="3" id=""
                                                         name="" placeholder=" This is the true paragraph given by true person"></textarea>
                                                 </div>
@@ -53,7 +53,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 p-3 pl-4 weeklyRecap">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <textarea class="form-control" rows="3" id=""
                                                         name="" placeholder=" This is the true paragraph given by true person"></textarea>
                                                 </div>
@@ -67,7 +67,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 p-3 pl-4 monthlyRecap">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <textarea class="form-control" rows="3" id=""
                                                         name="" placeholder=" This is the true paragraph given by true person"></textarea>
                                                 </div>
@@ -144,7 +144,7 @@
                                                         <p>Allow Email Recap Notifications?</p>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="form-group">
+                                                        <div class="form-group my-1 ">
                                                             <div class="row">
                                                                 <div class="form-check mx-2">
                                                                 
@@ -174,7 +174,7 @@
                                                                 <p>Post the email you prefer all reports go to. Example systemreport@mycompanyname.com </p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="form-group my-1 ">
                                                                     <input type="text" id="tag_emails" value="{{$sys_setting[1]['sys_value']}}" class="form-control" placeholder="Email"  data-role="tagsinput">
                                                                     <small class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Press Enter for next email</small>
                                                                 </div>
@@ -215,7 +215,7 @@
                                                                 <p>Post the email you prefer all reports go to. Example systemreport@mycompanyname.com </p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
+                                                                <div class="form-group my-1 ">
                                                                     <input type="text" id="tag_emails" class="form-control" placeholder="Email"  data-role="tagsinput">
                                                                     <small class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Press Enter for next email</small>
                                                                 </div>
@@ -270,7 +270,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <div class="form-group">
+                                                        <div class="form-group my-1 ">
                                                             <input class="form-control" id="recap_emails" type="email"  data-role="tagsinput"  placeholder="Emails">
                                                         </div>
                                                     </div>
@@ -297,7 +297,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 p-3 pl-4 dailyRecap" >
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <textarea class="form-control" rows="3" id=""
                                                         name="" placeholder=" This is the true paragraph given by true person"></textarea>
                                                 </div>
@@ -311,7 +311,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 p-3 pl-4 weeklyRecap">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <textarea class="form-control" rows="3" id=""
                                                         name="" placeholder=" This is the true paragraph given by true person"></textarea>
                                                 </div>
@@ -325,7 +325,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 p-3 pl-4 monthlyRecap">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <textarea class="form-control" rows="3" id=""
                                                         name="" placeholder=" This is the true paragraph given by true person"></textarea>
                                                 </div>
@@ -352,12 +352,12 @@
 
                     <form class="widget-box widget-color-dark user-form" id="save_project_type"
                         action="{{asset('save-project-type')}}" method="post">
-                        <div class="form-group">
+                        <div class="form-group my-1 ">
                             <label for="departmrnt">Type Task Type</label>
                             <input class="form-control" type="text" name="name" id="project_type_name" placeholder="">
                             <input class="form-control" type="text" name="project_type_id" id="project_type_id" hidden>
                         </div>
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1  text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>

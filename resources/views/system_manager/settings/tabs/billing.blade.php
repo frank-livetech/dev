@@ -30,12 +30,12 @@
                                     <form class="widget-box widget-color-dark mt-2" id="save_order_format" action="{{asset('save_billing_orderid_format')}}" method="post">
                                         <div class="row mb-2">
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <label for="security">Order ID Format :</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <select class="select2 form-control select2-hidden-accessible" style="width:100%;height:30px;" name="bill_order_id_frmt" required>
                                                         <option value="random">Random ( #108934 )</option>
                                                         <option value="sequential">Sequential (1#,2#,3#,...,#99999)</option>
@@ -45,12 +45,12 @@
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <label for="security">Currency Format :</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <select class="select2 form-control select2-hidden-accessible" style="width:100%;height:30px;" name="currency_format" required>
                                                         <option value="<i class='fas fa-dollar-sign'></i>">Dollar</option>
                                                         <option value="<i class='fas fa-pound-sign'></i>">Pound</option>
@@ -61,12 +61,12 @@
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <label for="security">Invoice # Format :</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
+                                                <div class="form-group my-1">
                                                     <input type="text" class="form-control" name="order_invoice_format" required style="width:100%;height:30px;" value="X"/>
                                                 </div>
                                             </div>
