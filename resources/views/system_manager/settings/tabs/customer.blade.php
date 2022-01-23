@@ -141,7 +141,7 @@
 
                     <form class="widget-box widget-color-dark user-form" id="save_customer_ticket"
                         action="{{asset('save-customer-type')}}" method="post">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Type Title</label>
                             <input class="form-control" type="text" name="name" id="customer_type_name" placeholder="">
                             <input class="form-control" type="text" name="customer_type_id" id="customer_type_id" hidden>

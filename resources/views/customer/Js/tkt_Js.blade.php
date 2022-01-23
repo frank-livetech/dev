@@ -77,18 +77,28 @@
                                         <span class="mr-3"> ${item.reply_user == null ? customer_img : user_img} </span>
                                         <div class="media-body px-2 w-100">
 
-                                            <div class="d-flex justify-content-between">
-                                            <h5 class="mt-0">
-                                                <span class="text-primary"> ${item.customer_id == null ? name : customer_name} 
-                                                <span class="badge bg-info"> ${item.customer_id == null ? type : 'user'} </span> </span>
-                                            </h5> 
-                                            <button type="button" onclick="ticketDetail.updateTktReply(${item.id})" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
-                                                    <i data-feather='edit'></i>
-                                                </button>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h5 class="mt-0 mb-0">
+                                                        <span class="text-primary"> ${item.customer_id == null ? name : customer_name} 
+                                                        <span class="badge bg-info"> ${item.customer_id == null ? type : 'user'} </span> </span>
+                                                    </h5> 
+                                                    <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;"> posted on created at ${ ticketDetail.date_conversion(item.created_at)} </span> 
+
+                                                </div>
+                                                
+                                                <div class="col-md-6 text-end">
+                                                    <button type="button" onclick="ticketDetail.updateTktReply(${item.id})" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
+                                                        <i data-feather='edit'></i>
+                                                    </button>
+                                                   <!-- <button type="button" onclick="" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
+                                                        <i data-feather='trash'></i>
+                                                    </button>-->
+                                                </div>
+                                                
                                             </div>
 
-                                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;"> posted on created at ${ ticketDetail.date_conversion(item.created_at)} </span> 
-                                            <div class="row mt-1">
+                                            <div class="row mt-1 bor-top">
                                                 ${item.reply} <br>
                                                 <span class="mt-2">${item.attachments != null ? attachments_name : ''}</span>
                                             </div>

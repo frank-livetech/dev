@@ -73,19 +73,19 @@
         <div class="card-body p-0" id="status_html" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color : ' ')}}">
             <div class="row">
                 <div class="col-md-2 p-2" id="dep-label">
-                    <h3 class="text-white"><strong>Department</strong></h3>
+                    <label class="control-label col-sm-12 end_padding text-white"><strong>Department</strong></label>
                     <h5 class="text-white"> {{ $department->name != null ? $department->name : '-' }} </h5>
                 </div>
                 <div class="col-md-2 p-2" id="tech-label">
-                    <h3 class="text-white"><strong> Owner</strong></h3>
+                    <label class="control-label col-sm-12 end_padding text-white"><strong> Owner</strong></label>
                     <h5 class="text-white"> Owner Name </h5>
                 </div>
                 <div class="col-md-2 p-2" id="type-label">
-                    <h3 class="text-white"><strong> Type</strong></h3>
+                    <label class="control-label col-sm-12 end_padding text-white"><strong> Type</strong></label>
                     <h5 class="text-white"> {{ $type->name != null ? $type->name : '-' }} </h5>
                 </div>
                 <div class="col-md-2 p-2">
-                    <h3 class="text-white"><strong> Status</strong></h3>
+                    <label class="control-label col-sm-12 end_padding text-white"><strong> Status</strong></label>
                     <div id="status_field">
                         <select class="select2 form-control" onchange="ticketDetail.updateTktType('status', this.value)" id="status" name="status">
                             @foreach($statuses as $status)
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="col-md-2 p-2" id="priority_html" style="background-color:{{($current_priority == null) ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ')}}">
-                    <h3 class="text-white"><strong> Priority</strong></h3>
+                    <label class="control-label col-sm-12 end_padding text-white"><strong> Priority</strong></label>
                     <div id="priority_field">
                         <select class="select2 form-control "  onchange="ticketDetail.updateTktType('priority', this.value)" id="priority" name="priority" style="display:none">
                             @foreach($priorities as $priority)

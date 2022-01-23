@@ -438,6 +438,7 @@ function setSlaPlan() {
 }
 
 function editRequest() {
+    toggleReq();
     $('#ticket_subject_heading').css('display', 'none');
     $('#ticket_details_p').css('display', 'none');
     $('#edit_request_btn').css('display', 'none');
@@ -1049,7 +1050,8 @@ function listReplies() {
                 <li class="media" id="reply__${index}">
                     <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
                     <div class="media-body">
-                        <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;&nbsp; <span class="fa fa-edit" style="cursor: pointer;position:absolute;right:45px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
+                        <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
+                        &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
                         <div class="my-1 bor-top" id="reply-html-` + reply.id + `">
                             ` + reply.reply + `
@@ -1526,7 +1528,10 @@ function updateTicket(){
 
                 // // refresh logs
                 getLatestLogs();
-
+                $("#dropD ").find(".select2").hide();
+                    $("#dropD ").find("h5").show();
+                selectD();
+                $("#update_ticket").hide();
                 toastr.success( 'Ticket Updated Successfully!' , { timeOut: 5000 });
             }
         }
@@ -2859,5 +2864,14 @@ function resetTktSLA(value) {
     }else{
         $("#ticket-res-due").val("");
     }
+}
+
+function toggleReq(){
+    $(".frst").toggleClass("d-none");
+    $(".sec").toggleClass("d-none");
+    let ter = $('#ticket_details_p').html();
+    $('#ticket_details_p2').html(ter);
+
+    $("#ticket-timestamp2").text($("#ticket-timestamp").text());
 }
 </script>

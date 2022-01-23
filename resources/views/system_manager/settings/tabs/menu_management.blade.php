@@ -64,7 +64,7 @@
                     <div class="add-contact-box">
                         <div class="add-contact-content">
                             <form id="addFeatureForm">
-                                <div class="form-group">
+                                <div class="form-group my-1">
                                     <div class="row">
                                         <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
@@ -81,39 +81,39 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group  mt-1" id="menu-title">
+                                <div class="form-group my-1  mt-1" id="menu-title">
                                     <input type="text" id="menu_title" class="form-control " placeholder="Menu Title">
                                     <span id="title_error" class="text-danger small"></span>
                                 </div>
 
                                 <div class="row mt-1">
                                     <div class="col-md-6">
-                                        <div class="form-group" id="route-title">
+                                        <div class="form-group my-1" id="route-title">
                                             <input type="text" id="route" class="form-control " placeholder="Route">
                                             <span id="route_error" class="text-danger small"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group my-1">
                                             <input type="number" id="sequence" class="form-control " placeholder="Sequence">
                                             <span id="sequence_error" class="text-danger small"></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group mt-1">
+                                <div class="form-group my-1 mt-1">
                                     <input type="text" id="icon" class="form-control " placeholder="Menu Icon">
                                     <span id="icon_error" class="text-danger small"></span>
                                 </div>
 
-                                <div class="form-group mt-1">
+                                <div class="form-group my-1 mt-1">
                                     <label for="" class="small">Parent Menu</label>
                                     <select name="parent_id" class="form-control " id="parent_id">
                                     </select>
                                     <span id="parent_error" class="text-danger small"></span>
                                 </div>
 
-                                <div class="form-group mt-1">
+                                <div class="form-group my-1 mt-1">
                                     <label for="" class="small">Role</label>
                                     <select name="role" class="form-control select2" style="width:100%; height:44px" id="role" multiple="multiple">
                                         @foreach($roles as $role)
@@ -128,7 +128,7 @@
                                     <label class="form-check-label" for="is_active"> is Active </label>
                                 </div>
 
-                                <div class="form-group mt-2 text-end">
+                                <div class="form-group my-1 mt-2 text-end">
                                     <button type="submit" class="btn btn-success">Save</button>
                                     <!-- <button class="btn btn-danger" data-bs-dismiss="modal"> Discard</button> -->
                                 </div>
@@ -159,7 +159,7 @@
                         <div class="add-contact-content">
                             <form id="editFeatureForm">
                                 <input type="hidden" id="f_id">
-                                <div class="form-group">
+                                <div class="form-group my-1">
                                     <div class="row">
                                         <div class="form-check mx-2">
                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" checked>
@@ -176,38 +176,38 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group" id="menu-title">
+                                <div class="form-group my-1" id="menu-title">
                                     <input type="text" id="edit_title" class="form-control" placeholder="Menu Title">
                                     <span id="title_error" class="text-danger small"></span>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group" id="route-title">
+                                        <div class="form-group my-1" id="route-title">
                                             <input type="text" id="edit_route" class="form-control" placeholder="Route">
                                             <span id="route_error" class="text-danger small"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="form-group my-1">
                                             <input type="number" id="edit_sequence" class="form-control" placeholder="Sequence">
                                             <span id="sequence_error" class="text-danger small"></span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group my-1">
                                     <input type="text" id="edit_icon" class="form-control" placeholder="Menu Icon">
                                     <span id="icon_error" class="text-danger small"></span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group my-1">
                                     <label for="">Parent Menu</label>
                                     <select required name="edit_parent_id" class="form-control" id="edit_parent_id">
                                     </select>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group my-1">
                                     <label for="" class="small">Role</label>
                                     <select name="edit_role" class="form-control select2" style="width:100%; height:44px" id="edit_role" multiple="multiple">
                                         @foreach($roles as $role)
@@ -222,7 +222,7 @@
                                     <label class="form-check-label" for="edit_is_active"> is Active </label>
                                 </div>
 
-                                <div class="form-group mt-3 text-end">
+                                <div class="form-group my-1 mt-3 text-end">
                                     <button type="submit" class="btn btn-success">Save</button>
                                     <!-- <button class="btn btn-danger" data-bs-dismiss="modal"> Discard</button> -->
                                 </div>

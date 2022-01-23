@@ -369,11 +369,20 @@
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <div class="card" id="style-5" style="height:250px; overflow-y:auto; overflow-x:hidden">
-                        <div class="card-header ">
-                            <div class="align-items-center">
+                    <div class="card" id="style-5" style="height:290px; overflow-y:auto; overflow-x:hidden">
+                        <div class="card-header frst">
+                            <div class="align-items-center ">
                                 <div class="mail-items">
-                                    <h3 class="mb-0">Initial Request&nbsp;&nbsp;<span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span><span style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn"><a onclick="editRequest()"><i data-feather='edit-3'></i></a></span><span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn"><a onclick="cancelEditRequest()"><i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span><span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn"><a onclick="saveRequest()"><i data-feather='save'></i></a></span></h3>
+                                    <h3 class="mb-0">Initial Request&nbsp;&nbsp;
+                                        <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
+                                        <button class="btn btn-outline-bt btn-sm " type="button" style="position:absolute;right:58px;cursor:pointer;" onclick="toggleReq()"><i data-feather='eye'></i> View Details</button>
+                                        <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
+                                        <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span>
+                                        <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
+                                        <a onclick="cancelEditRequest()">
+                                        <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span>
+                                        <span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn">
+                                        <a onclick="saveRequest()"><i data-feather='save'></i></a></span></h3>
                                     <br>
                                     <h4 id="ticket_subject_heading">Subject : {{$details->subject}}</h4>
                                     <hr>
@@ -404,11 +413,59 @@
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
-                        <div class="card-body mail-message-wrapper">
+                        <div class="card-body mail-message-wrapper frst">
                             <div class="mail-message">
                                 <div class="row" id="ticket_details_p"></div>
+                            </div>
+                        </div>
+                        <div class="card-header email-detail-head sec d-none" >
+                            <div class="user-details d-flex justify-content-between align-items-center flex-wrap pb-1" style="border-bottom:1px solid #ebe9f1;">
+                                <div class="mail-items">
+                                    <h5 class="mb-0">Subject : {{$details->subject}}</h5>
+                                    <!-- <div class="email-info-dropup dropdown">
+                                        <span role="button" class="dropdown-toggle font-small-3 text-muted" id="card_top01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            carlos@gmail.com
+                                        </span>
+                                        <div class="dropdown-menu" aria-labelledby="card_top01">
+                                            <table class="table table-sm table-borderless">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-end">From:</td>
+                                                        <td>carlos@gmail.com</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-end">To:</td>
+                                                        <td>johndoe@ow.ly</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-end">Date:</td>
+                                                        <td>14:58, 29 Aug 2020</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div> -->
+                                </div>
+                                <div class="mail-meta-item d-flex align-items-center">
+                                    <small class="mail-date-time text-muted" id="ticket-timestamp2"></small>
+                                    <div class="dropdown ms-50">
+                                        <div role="button" class="dropdown-toggle hide-arrow" id="email_more" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i data-feather="more-vertical" class="font-medium-2"></i>
+                                        </div>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="email_more">
+                                            <div class="dropdown-item" onclick="editRequest()"><i data-feather="corner-up-left" class="me-50"></i>Edit</div>
+                                            <div class="dropdown-item" onclick="toggleReq()"><i data-feather="eye-off" class="me-50"></i>Close</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        <div class="card-body mail-message-wrapper pt-2 sec d-none">
+                            <div class="mail-message">
+                                <div class="row" id="ticket_details_p2"></div>
                             </div>
                         </div>
                         {{-- <div class="card-footer">

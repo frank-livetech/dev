@@ -62,7 +62,7 @@
                                                     <div class="col-md-9 col-6">
                                                         <p class="mute">Minimum Password length</p>
                                                     </div>
-                                                    <div class="col-md-3 col-6 form-group">
+                                                    <div class="col-md-3 col-6 form-group my-1 ">
                                                         <input class="form-control" type="number" placeholder="6" name="minLength" id="minLength">
                                                     </div>
                                                 </div>
@@ -94,7 +94,7 @@
                                                     <div class="col-md-9 col-6">
                                                         <p class="mute">Minimum number of digits</p>
                                                     </div>
-                                                    <div class="col-md-3 col-6 form-group">
+                                                    <div class="col-md-3 col-6 form-group my-1 ">
                                                         <input class="form-control" type="number" placeholder="6" name="minLength" id="minLength">
                                                     </div>
                                                 </div>
@@ -126,7 +126,7 @@
                                             <p class="mute"> This setting will prevent an attacker from capturing your staff user's session data and hijacking their helpdesk session.</p>
                                             </div>
                                             <div class="col-md-2">
-                                                <div class="form-group">
+                                                <div class="form-group my-1 ">
                                                     <div class="row " style="padding-top:28px;">
                                                         <div class="form-check mx-2">
                                                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked="">
@@ -144,7 +144,7 @@
                                             <p class="mute"> Staff will be prevented from trying to login to the helpdesk if they enter the wrong credentials too many time</p>
                                             </div>
                                             <div class="col-md-2">
-                                                <div class="form-group ">
+                                                <div class="form-group my-1  ">
                                                     <div class="row " style="padding-top:28px;">
                                                         <div class="form-check mx-2">
                                                             <input class="form-check-input" type="radio" name="flexRadio" id="flexRadio1" checked="">
@@ -240,11 +240,11 @@
                 <div class="modal-body">
                     <form class="widget-box widget-color-dark user-form" id=""
                         action="">
-                        <div class="form-group">
+                        <div class="form-group my-1 ">
                             <label for="">Ip Address Here</label>
                             <input type="ipv4" id="ipv4" class="form-control" name="" placeholder="" required="">
                         </div>
-                        <div class="form-group text-end mt-2">
+                        <div class="form-group my-1  text-end mt-2">
                             <button type="submit" class="btn btn-rounded btn-success">Save</button>
                         </div>
                     </form>

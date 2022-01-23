@@ -107,7 +107,7 @@
 
                     <form class="widget-box widget-color-dark user-form" id="save_dispatch_status"
                         action="{{asset('save-dispatch-status')}}" method="post">
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <label for="departmrnt">Type Status</label>
                             <input class="form-control" type="text" name="name" id="dispatch_status_name" placeholder="">
                             <input class="form-control" type="text" name="dispatch_status_id" id="dispatch_status_id" hidden>
