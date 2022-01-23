@@ -863,9 +863,9 @@ class MailController extends Controller
                     $mail->addCC($c);
                 }
             }
-            if($reply == 'ticket_reply') {
-                $mail->addReplyTo($recipient, $subject);
-            }
+            // if($reply == 'ticket_reply') {
+            //     $mail->addReplyTo($recipient, $subject);
+            // }
 
             //Attachments
             if(!empty($attachments) && !empty($path)) {
