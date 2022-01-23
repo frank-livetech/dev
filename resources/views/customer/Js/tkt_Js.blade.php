@@ -52,13 +52,13 @@
                                     type = `staff`;
                                     if (item.reply_user.profile_pic != null) {
                                         let path = js_origin + item.reply_user.profile_pic;
-                                        user_img += `<span class="avatar"><img src="${path}" 
+                                        user_img = `<span class="avatar"><img src="${path}" 
                                 width="40px" height="40px" class="round"/> </span>`;
                                     } else {
-                                        user_img += `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;
+                                        user_img = `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;
                                     }
                                 } else {
-                                    user_img += `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;
+                                    user_img = `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;
                                 }
 
                                 // attachments code -> mohsin
@@ -67,7 +67,7 @@
                                     attachments = attachments.split(',');
                                     if(attachments.length != 0) {
                                         for(var i = 0 ; i < attachments.length; i++) {
-                                            attachments_name += `<a href=""> ${attachments[i]} </a> <br>`;
+                                            attachments_name += `<a href="javascript:void(0)"> ${attachments[i]} </a> <br>`;
                                         }
                                     }
                                 }
