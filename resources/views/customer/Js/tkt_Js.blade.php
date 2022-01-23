@@ -435,6 +435,7 @@
                     }else{
                         toastr.error( data.message , { timeOut: 5000 });
                     }
+                    $("#update_btn").hide();
                 },
                 complete:function() {
                     $(ele).attr('disabled', false);

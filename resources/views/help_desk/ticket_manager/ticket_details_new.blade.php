@@ -369,13 +369,16 @@
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <div class="card" id="style-5" style="height:290px; overflow-y:auto; overflow-x:hidden">
+                    <div class="card" id="style-5" style="height:270px; overflow-y:auto; overflow-x:hidden">
                         <div class="card-header frst">
                             <div class="align-items-center ">
                                 <div class="mail-items">
                                     <h3 class="mb-0">Initial Request&nbsp;&nbsp;
                                         <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
-                                        <button class="btn btn-outline-bt btn-sm " type="button" style="position:absolute;right:58px;cursor:pointer;" onclick="toggleReq()"><i data-feather='eye'></i> View Details</button>
+                                        <a onClick="hung()" title="View Details" style="position:absolute;right:88px;cursor:pointer;">
+                                            <i data-feather='eye'></i>
+                                        </a>
+                                        <a class=" " style="position:absolute;right:50px;cursor:pointer;"  data-bs-toggle="modal" data-bs-target="#viewFullDetails" data-bs-toggle="tooltip" data-bs-placement="top" title="View Details" data-bs-original-title="View Details"><i data-feather='maximize'></i></a>
                                         <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
                                         <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span>
                                         <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
@@ -419,55 +422,7 @@
                                 <div class="row" id="ticket_details_p"></div>
                             </div>
                         </div>
-                        <div class="card-header email-detail-head sec d-none" >
-                            <div class="user-details d-flex justify-content-between align-items-center flex-wrap pb-1" style="border-bottom:1px solid #ebe9f1;">
-                                <div class="mail-items">
-                                    <h5 class="mb-0">Subject : {{$details->subject}}</h5>
-                                    <!-- <div class="email-info-dropup dropdown">
-                                        <span role="button" class="dropdown-toggle font-small-3 text-muted" id="card_top01" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            carlos@gmail.com
-                                        </span>
-                                        <div class="dropdown-menu" aria-labelledby="card_top01">
-                                            <table class="table table-sm table-borderless">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-end">From:</td>
-                                                        <td>carlos@gmail.com</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-end">To:</td>
-                                                        <td>johndoe@ow.ly</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-end">Date:</td>
-                                                        <td>14:58, 29 Aug 2020</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div> -->
-                                </div>
-                                <div class="mail-meta-item d-flex align-items-center">
-                                    <small class="mail-date-time text-muted" id="ticket-timestamp2"></small>
-                                    <div class="dropdown ms-50">
-                                        <div role="button" class="dropdown-toggle hide-arrow" id="email_more" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i data-feather="more-vertical" class="font-medium-2"></i>
-                                        </div>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="email_more">
-                                            <div class="dropdown-item" onclick="editRequest()"><i data-feather="corner-up-left" class="me-50"></i>Edit</div>
-                                            <div class="dropdown-item" onclick="toggleReq()"><i data-feather="eye-off" class="me-50"></i>Close</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
-                        <div class="card-body mail-message-wrapper pt-2 sec d-none">
-                            <div class="mail-message">
-                                <div class="row" id="ticket_details_p2"></div>
-                            </div>
-                        </div>
+                       
                         {{-- <div class="card-footer">
                             <div class="mail-attachments">
                                 <div class="d-flex align-items-center mb-1">
@@ -1458,6 +1413,48 @@
     </div>
 </div>
 <input type="hidden" id="sys_date_format" value="{{$date_format}}">
+
+<div class="modal fade" id="viewFullDetails" tabindex="-1" aria-labelledby="viewFullDetailsTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-capitalize" id="viewFullDetailsTitle">Subject : {{$details->subject}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <div class="alert alert-primary" role="alert">
+                <div class="alert-body" id="ticket-timestamp2">
+                     
+                </div>
+            </div>
+                <div class="row" id="ticket_details_p2"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-slide-in event-sidebar fade" id="viewFullDetails2">
+    <div class="modal-dialog sidebar-lg">
+        <div class="modal-content p-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header mb-1">
+                <h5 class="text-capitalize" style="opacity:0;" >Subject : {{$details->subject}}</h5>
+                
+            </div>
+            <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
+                <h5 class="text-capitalize" >Subject : {{$details->subject}}</h5>
+                <div class="alert alert-primary" role="alert">
+                    <div class="alert-body" id="ticket-timestamp3">
+                        
+                    </div>
+                </div>
+                <div class="row" id="ticket_details_p3"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -1498,6 +1495,14 @@
     });
 
     $(".meta_tags").tagsinput('items');
+
+function hung(){
+    alert("king");
+    $("#viewFullDetails2").modal("show");
+    $(this).find("col-md-3").addClass("col-md-6");
+    $(this).find("col-md-6").removeClass("col-md-3");
+}
+
     
 </script>
 
