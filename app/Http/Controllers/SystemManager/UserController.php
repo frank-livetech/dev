@@ -16,6 +16,7 @@ use App\Models\TicketStatus;
 use App\Models\TicketPriority;
 use App\Models\StaffLeaves;
 use App\Models\TicketType;
+use Illuminate\Support\Facades\File;
 use App\Models\TicketSettings;
 use App\Models\SystemSetting;
 use App\Models\SystemManager\StaffSchedule;
@@ -71,10 +72,15 @@ class UserController extends Controller
         $tags = Tags::all();
         $roles = Role::all();
         // $roles = Role::where('id','!=','1')->get();
+        return view('system_manager.staff_management.index-new',compact('tags','roles'));
+    }
+    public function new(){
+        $tags = Tags::all();
+        $roles = Role::all();
+        // $roles = Role::where('id','!=','1')->get();
 
         return view('system_manager.staff_management.index-new',compact('tags','roles'));
     }
-
     public function insertUsers(Request $request) {
         $data = $request->all();
         $response = array();
@@ -616,7 +622,72 @@ class UserController extends Controller
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
     
-        return view('system_manager.staff_management.user_profile',compact('id','google','staff_state','profile','tickets','staff_att_data', 'certificates','docs', 'types', 'priorities', 'statuses', 'departments', 'users', 'customers', 'ticket_format', 'countries', 'tasks', 'google_api', 'date_format', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
+        return view('system_manager.staff_management.user_profile_new', get_defined_vars());
+    }
+
+    public function newProfile($id) {
+        $profile = User::with('staffProfile')->where('id',$id)->first();
+        if(!empty($profile->alt_pwd)) {
+            $profile->alt_pwd = Crypt::decryptString($profile->alt_pwd);
+        }
+
+        $tickets = Tickets::select("*")
+            ->where('assigned_to',$id)
+            ->where('is_deleted', 0)->orderBy('updated_at', 'desc')
+            ->get();
+        
+        // $tickets = DB::Table('tickets')
+        // ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
+        // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
+        // ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
+        // ->join('ticket_types','ticket_types.id','=','tickets.type')
+        // ->join('departments','departments.id','=','tickets.dept_id')
+        // ->join('users','users.id','=','tickets.assigned_to')
+        // ->where('tickets.assigned_to',$id)
+        // ->get();
+
+        $certificates = DB::table("user_certification")->where("user_id","=",$id)->get();
+        $docs = DB::table("user_docs")->where("user_id","=",$id)->get();
+        $staff_att_data = StaffAttendance::with('user_clocked')->where('user_id',$id)->get();
+
+        $ticket_format = TicketSettings::where('tkt_key','ticket_format')->first();
+        $customers = Customer::all();
+        $users = User::all();
+        // $departments = Departments::all();
+        $statuses = TicketStatus::all();
+        $priorities = TicketPriority::all();
+        $types = TicketType::all();
+
+        $staff_state = DB::Table('states')->where('id',"=",$profile->state)->first();
+        $tasks =  Tasks::with('taskCreator')->with('taskProject')->where('assign_to',$id)->where('task_status','!=','success')->where('task_status','!=','Select')->where('is_deleted',0)->get();
+
+        foreach($tasks as $task) {
+            $task->assign_to = DB::Table("users")->where("id","=",$id)->first();
+        }
+
+        $google_api = 0;
+        $google = Integrations::where("slug","google-api")->where('status', 1)->first();
+        if(!empty($google)) {
+            $google_api  = $google->details != null && $google->details != '' ?  1 :  0 ;
+            $google = json_decode($google->details, true);
+        }
+
+        $countries = [];
+        if($google_api === 0) $countries = DB::Table('countries')->get();
+
+        $departments = $this->listPermissions($id);
+        
+        $date_format = Session('system_date');
+
+        $general_staff_note = SystemSetting::where('sys_key', 'general_staff_note')->first();
+        if(!empty($general_staff_note)) $general_staff_note = $general_staff_note->sys_value;
+        $note_for_selected_staff = SystemSetting::where('sys_key', 'note_for_selected_staff')->select('sys_value')->first();
+        if(!empty($note_for_selected_staff)) $note_for_selected_staff = $note_for_selected_staff->sys_value;
+        $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
+        if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
+        else $selected_staff_members = array();
+    
+        return view('system_manager.staff_management.user_profile_new',compact('id','google','staff_state','profile','tickets','staff_att_data', 'certificates','docs', 'types', 'priorities', 'statuses', 'departments', 'users', 'customers', 'ticket_format', 'countries', 'tasks', 'google_api', 'date_format', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
     }
 
     private function listPermissions($uid) {
@@ -737,17 +808,29 @@ class UserController extends Controller
     }
 
     public function uploadUserImage(Request $request){
+        
         $image = $request->file('profile_img');
         $imageName = $_FILES['profile_img']['name'];
+
+        $imageName = strtolower($imageName);
+        $imageName = str_replace(" ","_",$imageName);
        
-        $image->move('files/user_photos', $imageName);
+        $target_dir = 'storage/users';
+
+        if (!File::isDirectory($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $image->move($target_dir, $imageName);
+
+        $user = User::where("id", $request->staff_id)->first();
+        $user->profile_pic = 'storage/users/'. $imageName;
+        $user->save();
         
-        DB::Table("users")->where("id","=",$request->staff_id)->update([
-            "profile_pic" => $imageName,
-        ]);
         $response['message'] = 'Staff Profile Uploaded Successfully';
         $response['status'] = 200;
         $response['success'] = true;
+        $response['img'] = $user->profile_pic;
         return response()->json($response);
     }
 

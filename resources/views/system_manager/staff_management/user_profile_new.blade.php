@@ -63,6 +63,24 @@
                 margin-right: unset;
                 margin-top: unset;
 }   
+.soc-card {
+        justify-content: space-between;
+        display: flex;
+    }
+
+    .soc-ico {
+        font-size: 24px;
+    }
+.picEdit{
+    cursor:pointer;
+    position: absolute;
+    top: 72px;
+    left: 139px;
+    border: 1px solid #fff;
+    padding: 4px;
+    border-radius: 100%;
+    background: #fbfbfb;
+}
     </style>
 @endpush
 @section('body')
@@ -100,9 +118,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="mt-4 text-center">
+                            @php
+                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                            @endphp
                             @if($profile->profile_pic != null)
-                                @if(is_file(public_path('files/user_photos/'.$profile->profile_pic)))
-                                    <img src="{{ asset('files/user_photos/'.$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                @if(is_file(public_path( $path .$profile->profile_pic)))
+                                    <img src="{{ asset( $path .$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                 @else
                                     <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                 @endif
@@ -1289,14 +1310,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
+                        @php
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                        @endphp
                         @if($profile->profile_pic != null)
-                            @if(is_file(public_path('files/user_photos/'.$profile->profile_pic)))
-                                <img src="{{ asset('files/user_photos/'.$profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            @if(is_file(public_path( $path . $profile->profile_pic)))
+                                <img src="{{ asset( $path . $profile->profile_pic)}}" class="rounded-circle" width="100" height="100" id="modal_profile_user_img" />
                             @else
-                                <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="modal_profile_user_img" />
                             @endif
                         @else
-                            <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            <img src="{{asset('default_imgs/logo.png')}}" class="rounded-circle" width="100" height="100" id="modal_profile_user_img" />
                         @endif
                     </div>
                     <form class="mt-4" id="upload_user_img">
@@ -1446,7 +1470,9 @@
         if(url.includes('#staff-schedule')) {
             $("#my-schedule-tab").click();
         }
+        console.log(js_origin , "js_origin");
 </script>
+
 
 @include('js_files.ticket_cmmnJs')
 @include('js_files.system_manager.staff_management.user_profileJs')

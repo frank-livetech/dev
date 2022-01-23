@@ -122,14 +122,17 @@
                 <div class="card">
                     <div class="card-body">
                         <center class="mt-4">
+                            @php
+                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                            @endphp
                             @if($customer->avatar_url != null)
-                                @if(is_file(public_path('files/user_photos/Customers/'.$customer->avatar_url)))
-                                    <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                @if(is_file(public_path( $path . $customer->avatar_url)))
+                                    <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @else
-                                    <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                    <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @endif
                             @else
-                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a>
     
@@ -2132,12 +2135,17 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
-                        @if(is_file(public_path('../files/user_photos/Customers/'.$customer->avatar_url)))
-                        <img src="{{ asset('files/user_photos/Customers/'.$customer->avatar_url)}}" class="rounded-circle"
-                            width="100" height="100" id="profile-user-img" />
+                        @php
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                        @endphp
+                        @if($customer->avatar_url != null)
+                            @if(is_file(public_path( $path . $customer->avatar_url)))
+                                <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
+                            @else
+                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
+                            @endif
                         @else
-                        <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle" width="100" height="100"
-                            id="profile-user-img" />
+                            <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
                         @endif
                     </div>
                     <form class="mt-4" id="upload_customer_img">
@@ -2345,57 +2353,4 @@
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
 
 @include('js_files.customer_lookup.customerprofileJs')
-
-{{-- <style>
-    .flagged-tr {
-        background-color: #FFE4C4 !important;
-    }
-
-    blockquote {
-        margin: unset !important;
-    }
-
-    .sl-item {
-        margin: unset !important;
-    }
-
-    .profile-pic-div label {
-        background: black;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .profile-pic-div label:hover img {
-        opacity: 0.5;
-    }
-
-    .profile-pic-div label:hover span {
-        display: inline-block;
-    }
-
-    .profile-pic-div label span {
-        color: white;
-        display: none;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        margin-top: 35px;
-    }
-
-    .soc-ico {
-        font-size: 32px;
-    }
-
-    .soc-card {
-        justify-content: space-between;
-        display: flex;
-    }
-
-    .select2-selection,
-    .select2-container--default,
-    .select2-selection--single {
-        border-color: #848484 !important;
-    }
-</style> --}}
 @endsection

@@ -84,6 +84,78 @@
     .select2-container .select2-selection--single .select2-selection__rendered {
         padding-right: 60px !important;
     }
+
+
+
+
+    #dropD {
+    padding-left: 15px;
+}
+    .mt-0{
+        margin: unset
+    }
+    .badge-primary{
+        background-color:#4eafcb
+    }
+    .card-body.drop-dpt{
+        padding: 0 !important;
+    }
+    span.select2-container.select2-container--default.select2-container--open{
+        top: 3.9844px !important
+    }
+    .badge-secondary {
+    color: #fff;
+    background-color: #868e96;
+    }
+    .media-body{
+        width:575px
+    }
+    .btn-outline-bt{
+        border: 1px solid #e6e6e6;
+        text-decoration: none;
+        margin-left: 4px;
+        color: #666;
+        padding: 4px 13px 4px 13px;
+        transition: all 0.25s ease;
+        border-radius: 4px;
+        background-color: #f4f5f5;
+        vertical-align: top;
+    }
+    .mr-3{
+        margin-right: 1rem !important;
+    }
+    .media {
+    display: flex;
+    align-items: flex-start;
+}
+    .innerBox{
+        font-size: 15px;
+        height: 100px;
+        overflow-y: scroll;
+    }
+    #style-5::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+.text-white{
+    color:white;
+}
+#style-5::-webkit-scrollbar
+{
+	width: 3px;
+    height: 10px;
+	background-color: #F5F5F5;
+}
+
+#style-5::-webkit-scrollbar-thumb
+{
+	background-color: #0ae;
+	
+	background-image: -webkit-gradient(linear, 0 0, 0 100%,
+	                   color-stop(.5, rgba(255, 255, 255, .2)),
+					   color-stop(.5, transparent), to(transparent));
+}
     
 </style>
 @php
@@ -214,6 +286,76 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+                <div class="row show_tkt_btns" style="display:none;">
+                    <div class="col-md-12">
+                        <div class="card" >
+                            <div class="card-body drop-dpt " style="background-color:red;border-radius:9px;">
+                                <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
+                                    <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
+                                        <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
+                                        <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5"></h5>
+                                        <select class="select2 form-control  " id="dept_id" name="dept_id" style="width: 100%; height:36px;">
+                                            
+                                            @foreach($departments as $department)
+                                                <option  value="{{$department->id}}"  >{{$department->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
+                                        <label class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
+                                        <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5"></h5>
+                                        <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
+                                            <option value="">Unassigned</option>
+                                            @foreach($users as $user)
+                                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 br-white" id="type-label" style="border-right: 1px solid white;padding: 12px;">
+                                        <label class="control-label col-sm-12 end_padding text-white "><strong>Type</strong></label>
+                                        <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="type-h5"></h5>
+                                        <select class="select2 form-control " id="type" name="type" style="width: 100%; height:36px;">
+                                            @foreach($types as $type)
+                                                <option value="{{$type->id}}" >{{$type->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 br-white" id="status-label" style="border-right: 1px solid white;padding: 12px;">
+                                        <label class="control-label col-sm-12 end_padding text-white "><strong>Status</strong></label>
+                                        <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="status-h5"></h5>
+                                        <select class="select2 form-control " id="status" name="status" style="width: 100%; height:36px;">
+                                            
+                                            @foreach($statuses as $status)
+                                                <option value="{{$status->id}}" data-color="{{$status->color}}" >{{$status->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white;;padding: 12px;">
+                                        <label class="control-label col-sm-12 end_padding text-white " ><strong>Priority</strong></label>
+                                        <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="prio-h5"></h5>
+                                        <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
+                                            {{-- <option value="">Select Priority</option> --}}
+                                            @foreach($priorities as $priority)
+                                                <option value="{{$priority->id}}" data-color="{{$priority->priority_color}}" >{{$priority->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 chim text-center " style=";padding: 12px;">
+                                        <button class="btn btn-primary upBtn"> Update</button>
+                                        <!-- <span style="cursor:pointer;" onclick="flagTicket(this, 33);" aria-hidden="true"></span> -->
+                                    </div>
+            
+                                </div>
+                                <!-- <div clas="row" style="text-align:right">
+                                    <div class="col-lg-12">
+                                        <small>*All dropdown saved automatically on change</small>
+                                    </div>    
+                                </div>     -->
+            
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row mt-1">

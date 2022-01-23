@@ -12,6 +12,7 @@ use App\Models\Integrations;
 use App\Models\TicketSettings;
 use App\Models\Tags;
 use App\Models\Tickets;
+use Illuminate\Support\Facades\File;
 use App\Models\SlaPlan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
@@ -442,13 +443,25 @@ class CompanyController extends Controller
         $image = $request->file('profile_img');
         $imageName = $_FILES['profile_img']['name'];
        
-        $image->move('files/user_photos/Companies', $imageName);
-        DB::Table("companies")->where("id","=",$request->company_id)->update([
-            "com_logo" => $imageName,
-        ]);
+        $imageName = strtolower($imageName);
+        $imageName = str_replace(" ","_",$imageName);
+
+        $target_dir = 'storage/companies';
+
+        if (!File::isDirectory($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $image->move($target_dir, $imageName);
+
+        $company = Company::where('id' , $request->company_id)->first();
+        $company->com_logo = 'storage/companies/' . $imageName;
+        $company->save();
+
         $response['message'] = 'Company Profile Uploaded Successfully';
         $response['status'] = 200;
         $response['success'] = true;
+        $response['img'] = $company->com_logo;
         return response()->json($response);
     }
 

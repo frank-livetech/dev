@@ -25,17 +25,6 @@
     @endphp
 
     <!-- Favicon icon -->
-    
-        {{-- @if( Session::get('site_favicon') != null)
-            @if(file_exists( public_path(). $file_path . Session::get('site_favicon') ) )
-                <link rel="icon" type="image/png" sizes="16x16"
-            href="{{asset($file_path . Session::get('site_favicon') ) }}">
-            @else
-                <img src="{{asset(  $file_path . 'default_imgs/favicon.png')}}" width="50px" alt="'s Photo" class="rounded-circle">
-            @endif
-        @else
-            <img src="{{asset( $file_path . 'default_imgs/favicon.png')}}" alt="'s Photo"  width="50px" class="rounded-circle">
-        @endif --}}
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
@@ -146,6 +135,7 @@
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()">Read all notifications</a></li>
                     </ul>
                 </li>
+                
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
@@ -154,8 +144,8 @@
                         </div>
                         <span class="avatar">
                             @if(Auth::user()->profile_pic != null)
-                                @if(file_exists( public_path('storage/customer/'. auth()->user()->profile_pic)))
-                                    <img src="{{ asset( $file_path . 'storage/customer')}}/{{auth()->user()->profile_pic}}"
+                                @if(file_exists( public_path( $file_path . auth()->user()->profile_pic)))
+                                    <img src="{{ asset( $file_path . auth()->user()->profile_pic)}}"
                                         alt="'s Photo" id="usr_pic" class="rounded-circle" width="50px">
                                 @else
                                     <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="usr_pic" width="50px" alt="'s Photo" class="rounded-circle">
@@ -296,6 +286,8 @@
     <!-- END: Page JS-->
 
     <script>
+        const org_path = "{{Session::get('is_live')}}";
+        const js_origin  = window.location.origin + (org_path == 1 ? '/public/' : '/');
         $(window).on('load', function() {
             if (feather) {
                 feather.replace({

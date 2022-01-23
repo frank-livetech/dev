@@ -797,26 +797,39 @@ class HomeController
 
     // update customer profile pic
     public function saveProfileImage(Request $request) {
+        
         if($request->profile_img != null) {
             if($request->hasFile('profile_img')){
 
-                $customer = Customer::where('email', auth()->user()->email)->first();
+                $customer = Customer::where('email', auth()->user()->email)->first();               
                 
                 if($customer) {
-                    $filename = time() . '.' . $request->profile_img->getClientOriginalExtension();                
-                    $request->profile_img->storeAs('customer', $filename ,'public'); 
+
+                    $image = $request->file('profile_img');
+                    $imageName = $_FILES['profile_img']['name'];
+    
+                    $imageName = strtolower($imageName);
+                    $imageName = str_replace(" ","_",$imageName);
+                
+                    $target_dir = 'storage/customers';
+    
+                    if (!File::isDirectory($target_dir)) {
+                        mkdir($target_dir, 0777, true);
+                    }
+    
+                    $image->move($target_dir, $imageName);
                                         
-                    $customer->avatar_url = $filename;
+                    $customer->avatar_url = $target_dir . '/' . $imageName;
                     $customer->save();
 
                     User::where('id' , auth()->id())->update([
-                        "profile_pic" => $filename,
+                        "profile_pic" => $target_dir . '/' . $imageName,
                     ]);
 
                     return response()->json([
                         "status" => 200 ,
                         "success" => true ,
-                        "filename" => $filename ,
+                        "filename" => $customer->avatar_url ,
                         "message" => "Profile Image Successfully uploaded",
                     ]);
 

@@ -324,29 +324,6 @@
                             
                         </div>
                         <div class="card-body">
-                            {{-- <div class="row">
-                                <div class="col-8">
-                                    <div class="demo-inline-spacing">
-                                        <div class="avatar">
-                                            <img src="../../../app-assets/images/portrait/small/avatar-s-20.jpg" alt="avatar" width="32" height="32">
-                                            <span class="avatar-status-offline"></span>
-                                        </div>
-                                        <div class="avatar bg-info">
-                                            <span class="avatar-content">BV</span>
-                                            <span class="avatar-status-busy"></span>
-                                        </div>
-                                        <div class="avatar bg-light-primary">
-                                            <span class="avatar-content"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github avatar-icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></span>
-                                            <span class="avatar-status-away"></span>
-                                        </div>
-                                        <div class="avatar bg-light-success">
-                                            <span class="avatar-content">AB</span>
-                                            <span class="avatar-status-online"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div> --}}
                             <div class="row p-2">
                                 @foreach($users as $user)
                                 <div class="col-md-2 mb-1">
@@ -360,7 +337,6 @@
                                                 </a>
                                             <span class="avatar-status-online"></span></span>
                                         @else
-                                            
                                             <span class="avatar">
                                                 <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip" data-placement="top" title="{{$user->name}}">
                                                     <img src="{{asset($file_path . 'default_imgs/customer.png')}}" alt="'s Photo" class="rounded-circle avatar" width="50px" height="50">

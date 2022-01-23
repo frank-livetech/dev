@@ -384,11 +384,12 @@
                         toastr.success(data.message, {
                             timeOut: 5000
                         });
-                        let url = '{{asset("storage/customer")}}/' + data.filename ;
-
+                        let url = js_origin + data.filename;
                         $('#profile-user-img').attr('src', url);
                         $('#modal_profile_user_img').attr('src', url);
                         $('#usr_pic').attr('src', url);
+
+                        $("#editPicModal").modal('hide');
 
                     } else {
                         toastr.error(data.message, { timeOut: 5000 });
