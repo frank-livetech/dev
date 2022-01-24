@@ -308,8 +308,7 @@ blockquote {
                         <a type="button" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal"><i
                                 class="fa fa-pencil-alt picEdit"></i></a>
 
-                        <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} - {{$customer->last_name}}
-                        </h4>
+                        <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} - {{$customer->last_name}} </h4>
                     </center>
                 </div>
                 <div>

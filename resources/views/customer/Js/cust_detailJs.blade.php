@@ -1,9 +1,6 @@
 <script>
     $(document).ready(function() {
 
-        alert();
-      
-
     });
 
 
