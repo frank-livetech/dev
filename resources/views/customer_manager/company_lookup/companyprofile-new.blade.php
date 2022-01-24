@@ -106,18 +106,18 @@ blockquote {
                 <div class="card">
                     <div class="card-body">
                         <center class="mt-1"> 
-                        @php
-                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
-                        @endphp
-                        @if($company->com_logo != null)
-                            @if(is_file(public_path( $path . $company->com_logo)))
-                                <img src="{{ asset( $path . $company->com_logo)}}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
+                            @php
+                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                            @endphp
+                            @if($company->com_logo != null)
+                                @if(is_file( getced() .'/'. $company->com_logo ))
+                                    <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
+                                @else
+                                <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
+                                @endif
                             @else
-                            <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
+                                <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
                             @endif
-                        @else
-                            <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
-                        @endif
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left:50px;bottom:60px"><i class="fa fa-pencil-alt picEdit"></i></a>
                             <h4 class="card-title mt-2" id="comp_name">{{$company->name}}</h4>
                         </center> 
@@ -1582,13 +1582,13 @@ aria-hidden="true">
                     $path = Session::get('is_live') == 1 ? 'public/' : '/';
                 @endphp
                 @if($company->com_logo != null)
-                    @if(is_file(public_path( $path . $company->com_logo)))
-                        <img src="{{ asset( $path . $company->com_logo)}}" class="rounded-circle" width="100" height="100" id="company_modal_img" />
+                    @if(is_file( getced() .'/'. $company->com_logo ))
+                        <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
                     @else
-                    <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_modal_img" />
+                    <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
                     @endif
                 @else
-                <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_modal_img" />
+                    <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
                 @endif
             </div>
             <form class="mt-4" id="upload_company_img">

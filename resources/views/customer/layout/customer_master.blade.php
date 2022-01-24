@@ -143,15 +143,20 @@
                             {{-- <span class="user-status">{{ Auth::user()->email }}</span> --}}
                         </div>
                         <span class="avatar">
-                            @if(Auth::user()->profile_pic != null)
-                                @if(file_exists( public_path( $file_path . auth()->user()->profile_pic)))
-                                    <img src="{{ asset( $file_path . auth()->user()->profile_pic)}}"
-                                        alt="'s Photo" id="usr_pic" class="rounded-circle" width="50px">
+                            @php
+                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                            @endphp
+                            @if(auth()->user()->profile_pic != null)
+                                @if(is_file( getcwd() .'/'. auth()->user()->profile_pic ))
+                                <img src="{{ request()->root() .'/'. auth()->user()->profile_pic }}" class="rounded-circle"
+                                    width="50" height="50" id="profile-user-img" />
                                 @else
-                                    <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="usr_pic" width="50px" alt="'s Photo" class="rounded-circle">
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                    id="profile-user-img" />
                                 @endif
                             @else
-                                <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="usr_pic" alt="'s Photo"  width="50px" class="rounded-circle">
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                id="profile-user-img" />
                             @endif
                             <span class="avatar-status-online"></span></span>
                     </a>

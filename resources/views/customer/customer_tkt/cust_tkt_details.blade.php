@@ -277,7 +277,7 @@
         // customer image
         if(ticket.ticket_customer != null) {
             if(ticket.ticket_customer.avatar_url != null) {
-                let path = js_origin + ticket.ticket_customer.avatar_url;
+                let path = root +'/' + ticket.ticket_customer.avatar_url;
                 customer_img = `<span class="avatar"><img src="${path}"  width="40px" height="40px" class="round"/> </span>`;  
             }else{
                 customer_img = `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;

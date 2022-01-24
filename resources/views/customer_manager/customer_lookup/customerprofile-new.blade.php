@@ -129,10 +129,10 @@
                                 @if(is_file(public_path( $path . $customer->avatar_url)))
                                     <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @else
-                                    <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @endif
                             @else
-                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a>
     
@@ -2140,12 +2140,12 @@
                         @endphp
                         @if($customer->avatar_url != null)
                             @if(is_file(public_path( $path . $customer->avatar_url)))
-                                <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
+                                <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @else
-                                <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
                         @else
-                            <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_modal_img" />
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                         @endif
                     </div>
                     <form class="mt-4" id="upload_customer_img">

@@ -24,7 +24,6 @@ $.ajaxSetup({
 
 $(document).ready(function() {
    
-
     tinymce.init({
         selector: "textarea#mymce",
         // theme: "modern",
@@ -137,7 +136,7 @@ $(document).ready(function() {
         });
     }
 
-    $('#ticket_details_p').html(getTicketDetailsContent());
+    $('#ticket_details_p').html(ticket_attachemnt_view());
     $('#ticket_details_p2').html(getTicketDetailsContent());
     $('#ticket_details_p3').html(getTicketDetailsContent());
 
@@ -167,8 +166,52 @@ $(document).ready(function() {
         $('.note-visibilty').prop('disabled',true);
     });
 
-
 });
+
+function ticket_attachemnt_view() {
+    if(ticket_details != null || ticket_details != "") {
+        let files = ticket_details.attachments.split(',');
+        let file_row = ``;
+        let extension_img = ``;
+        for(let i =0; i < files.length; i++) {
+
+            let extens = files[i].split('.');
+
+            if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
+                extension_img = `<img src="{{asset('default_imgs/image.jpeg')}}" width="20px" height="20px">`;
+            }
+
+            if(extens[1] == 'pdf') {
+                extension_img = `<img src="{{asset('default_imgs/pdf.gif')}}" width="20px" height="20px">`;
+            }
+
+            if(extens[1] == 'txt') {
+                extension_img = `<img src="{{asset('default_imgs/txt.gif')}}" width="20px" height="20px">`;
+            }
+
+            if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
+                extension_img = `<img src="{{asset('default_imgs/word.gif')}}" width="20px" height="20px">`;
+            }
+
+            if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
+                extension_img = `<img src="{{asset('default_imgs/xlx.gif')}}" width="20px" height="20px">`;
+            }
+
+            if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
+                extension_img = `<img src="{{asset('default_imgs/ppt.gif')}}" width="20px" height="20px">`;
+            }
+
+            file_row +=`
+                <div class="col-md-12 mt-1">
+                    ${extension_img}
+                    <a href="${root}/storage/tickets/${ticket_details.id}/${files[i]}" target="_blank">${files[i]}</a> 
+                </div> `
+        }
+        return file_row;
+    }
+
+}
+
 
 $('#res-template').change(function() {
     if( $(this).val() == "" ) {
@@ -481,7 +524,7 @@ function cancelEditRequest() {
     $('#subject').css('display', 'none');
     $('#ticket-details').css('display', 'none');
 
-    $('#ticket_details_p').html(getTicketDetailsContent());
+    $('#ticket_details_p').html(ticket_attachemnt_view());
     $('#ticket_details_p2').html(getTicketDetailsContent());
     $('#ticket_details_p3').html(getTicketDetailsContent());
 }
@@ -784,7 +827,7 @@ function saveRequest() {
                     $('#cancel_request_btn').css('display', 'none');
 
                     $('#ticket_subject_heading').text('Subject : ' + $('#ticket_subject_edit').val());
-                    $('#ticket_details_p').html(getTicketDetailsContent());
+                    $('#ticket_details_p').html(ticket_attachemnt_view());
                     $('#ticket_details_p2').html(getTicketDetailsContent());
                     $('#ticket_details_p3').html(getTicketDetailsContent());
                 }
@@ -1033,7 +1076,7 @@ function listReplies() {
 
             if(reply.customer_replies != null) {
                 if(reply.customer_replies.avatar_url != null) {
-                    let path = js_origin + reply.customer_replies.avatar_url;
+                    let path = root +'/'+ reply.customer_replies.avatar_url;
                     customer_img += `<img src="${path}"  width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
                 }else{
                     customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
