@@ -287,7 +287,8 @@
 
     <script>
         const org_path = "{{Session::get('is_live')}}";
-        const js_origin  = window.location.origin + (org_path == 1 ? '/public/' : '/');
+        const root = "{{request()->root()}}";
+        const js_origin  = root + (org_path == 1 ? '/public/' : '/');
         $(window).on('load', function() {
             if (feather) {
                 feather.replace({
