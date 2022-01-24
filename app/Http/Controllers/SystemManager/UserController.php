@@ -831,6 +831,7 @@ class UserController extends Controller
         $response['status'] = 200;
         $response['success'] = true;
         $response['img'] = $user->profile_pic;
+        $response['id'] = $user->id;
         return response()->json($response);
     }
 

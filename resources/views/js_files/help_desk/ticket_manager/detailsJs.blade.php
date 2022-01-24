@@ -1044,7 +1044,7 @@ function listReplies() {
 
             if(reply.reply_user != null) {
                 if(reply.reply_user.profile_pic != null) {
-                    let path = js_origin + reply.reply_user.profile_pic;
+                    let path = root + '/' + reply.reply_user.profile_pic;
                     user_img += `<img src="${path}" style="border-radius: 50%;" width="40px" height="40px" class="img-fluid" />`;
                 }else{
                     user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;

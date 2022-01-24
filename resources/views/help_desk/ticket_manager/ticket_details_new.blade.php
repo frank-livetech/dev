@@ -289,9 +289,9 @@
                                             $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                         @endphp
                                         @if($details->is_staff_tkt == 0)
-                                            @if($ticket_customer->avatar_url != NULL)
-                                                @if(file_exists( public_path($file_path . $ticket_customer->avatar_url) ))
-                                                    <img src=" {{ asset( $file_path . $ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                            @if($ticket_customer->avatar_url != null)
+                                                @if(file_exists( public_path() .'/'. $ticket_customer->avatar_url ))
+                                                    <img src=" {{ asset( request()->root() .'/'. $ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                 @endif
@@ -300,9 +300,9 @@
                                             @endif
                                             <span class="badge badge-secondary type_bdge">User</span>
                                         @else
-                                            @if($ticket_customer->profile_pic != NULL)
-                                                @if(file_exists( public_path( $file_path . $ticket_customer->profile_pic )) )
-                                                    <img src="{{ asset( $file_path . $ticket_customer->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                            @if($ticket_customer->profile_pic != null)
+                                                @if(file_exists( public_path() .'/'. $ticket_customer->profile_pic ) )
+                                                    <img src="{{ asset( request()->root() .'/'. $ticket_customer->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                 @endif

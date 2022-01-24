@@ -463,22 +463,6 @@ function get_all_staff_members() {
                         {
                             "render": function(data, type, full, meta) {
                                 var path = root + '/' + full.profile_pic;
-
-                                $.get(path)
-                                .done(function() {
-                                }).fail(function() {
-                                    return `
-                                    <div class="d-flex align-items-center">
-                                        <img src="${root}/default_imgs/logo.png" alt="user Photo" width="35" height="35" class="rounded-circle">
-                                        <div class="ml-2">
-                                            <div class="user-meta-info">
-                                                <h5 class="user-name mb-0"><a href="` + user_profile_route + `/` + full.id+ `">` + full.name + `</a></h5>
-                                                <small class="user-work text-muted">${full.role && full.role.hasOwnProperty('name') ? full.role.name : ''}</small>
-                                            </div>
-                                        </div>
-                                    </div>`
-                                })
-                                
                                 if(full.profile_pic != null) {
                                     return `
                                     <div class="d-flex align-items-center">
@@ -493,7 +477,7 @@ function get_all_staff_members() {
                                 }else{
                                     return `
                                     <div class="d-flex align-items-center">
-                                        <img src="${root}/default_imgs/logo.png" alt="user Photo" width="35" height="35" class="rounded-circle">
+                                        <img src="${js_origin}default_imgs/customer.png" alt="user Photo" width="35" height="35" class="rounded-circle">
                                         <div class="ml-2">
                                             <div class="user-meta-info">
                                                 <h5 class="user-name mb-0"><a href="` + user_profile_route + `/` + full.id+ `">` + full.name + `</a></h5>
