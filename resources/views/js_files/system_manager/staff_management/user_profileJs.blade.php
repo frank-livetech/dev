@@ -391,12 +391,17 @@
                         toastr.success(data.message, { timeOut: 5000 });
                         $("#editPicModal").modal('hide');
                         
-                        let path = js_origin + data.img;
+                        let path = root + '/' + data.img;
+                        let id = "{{auth()->user()->id}}";
 
-                        $('#profile-user-img').attr('src', path);
-                        $('#login_usr_logo').attr('src', path);
-                        $('#modal_profile_user_img').attr('src', path);
-                
+                        if(id == data.id) {
+                            $('#profile-user-img').attr('src', path);
+                            $('#login_usr_logo').attr('src', path);
+                            $('#modal_profile_user_img').attr('src', path);
+                        }else{
+                            $('#profile-user-img').attr('src', path);
+                            $('#modal_profile_user_img').attr('src', path);
+                        }                
                     } else {
                         toastr.error(data.message, { timeOut: 5000 });
                     }
