@@ -51,7 +51,7 @@
                                 if (item.reply_user != null) {
                                     type = `staff`;
                                     if (item.reply_user.profile_pic != null) {
-                                        let path = js_origin + item.reply_user.profile_pic;
+                                        let path = root + item.reply_user.profile_pic;
                                         user_img = `<span class="avatar"><img src="${path}" 
                                 width="40px" height="40px" class="round"/> </span>`;
                                     } else {

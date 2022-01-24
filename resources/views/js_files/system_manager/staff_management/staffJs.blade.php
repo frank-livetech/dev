@@ -437,7 +437,6 @@ function get_all_staff_members() {
 
     $("#user-table-list").DataTable().destroy();
     $.fn.dataTable.ext.errMode = "none";
-
     $.ajax({
         type: "GET",
         url: get_staff_route,
@@ -463,21 +462,46 @@ function get_all_staff_members() {
                         },
                         {
                             "render": function(data, type, full, meta) {
-                                var path = js_origin + full.profile_pic;
-                                let img = `<img src="${path}" alt="user Photo"width="35" height="35" class="rounded-circle">`;
-                                let default_img = `<img src="${path}" alt="user Photo" width="35" height="35" class="rounded-circle">`;
-                                var data =  `
-                                <div class="d-flex align-items-center">
-                                    `+ (full.profile_pic != null ? img : default_img) +`
-                                    <div class="ml-2">
-                                        <div class="user-meta-info">
-                                            <h5 class="user-name mb-0"><a href="` + user_profile_route + `/` + full.id+ `">` + full.name + `</a></h5>
-                                            <small class="user-work text-muted">${full.role && full.role.hasOwnProperty('name') ? full.role.name : ''}</small>
+                                var path = root + '/' + full.profile_pic;
+
+                                $.get(path)
+                                .done(function() {
+                                }).fail(function() {
+                                    return `
+                                    <div class="d-flex align-items-center">
+                                        <img src="${root}/default_imgs/logo.png" alt="user Photo" width="35" height="35" class="rounded-circle">
+                                        <div class="ml-2">
+                                            <div class="user-meta-info">
+                                                <h5 class="user-name mb-0"><a href="` + user_profile_route + `/` + full.id+ `">` + full.name + `</a></h5>
+                                                <small class="user-work text-muted">${full.role && full.role.hasOwnProperty('name') ? full.role.name : ''}</small>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>`;
-            
-                                return data;
+                                    </div>`
+                                })
+                                
+                                if(full.profile_pic != null) {
+                                    return `
+                                    <div class="d-flex align-items-center">
+                                        <img src="${path}" alt="user Photo"width="35" height="35" class="rounded-circle">
+                                        <div class="ml-2">
+                                            <div class="user-meta-info">
+                                                <h5 class="user-name mb-0"><a href="` + user_profile_route + `/` + full.id+ `">` + full.name + `</a></h5>
+                                                <small class="user-work text-muted">${full.role && full.role.hasOwnProperty('name') ? full.role.name : ''}</small>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                }else{
+                                    return `
+                                    <div class="d-flex align-items-center">
+                                        <img src="${root}/default_imgs/logo.png" alt="user Photo" width="35" height="35" class="rounded-circle">
+                                        <div class="ml-2">
+                                            <div class="user-meta-info">
+                                                <h5 class="user-name mb-0"><a href="` + user_profile_route + `/` + full.id+ `">` + full.name + `</a></h5>
+                                                <small class="user-work text-muted">${full.role && full.role.hasOwnProperty('name') ? full.role.name : ''}</small>
+                                            </div>
+                                        </div>
+                                    </div>`
+                                }
             
                             }
                         },

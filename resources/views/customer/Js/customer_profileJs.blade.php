@@ -8,7 +8,6 @@
             }
         });
         
-
     });
     $("#twt").click(function(e) {
         e.preventDefault();
@@ -384,7 +383,7 @@
                         toastr.success(data.message, {
                             timeOut: 5000
                         });
-                        let url = js_origin + data.filename;
+                        let url = root + '/' + data.filename;
                         $('#profile-user-img').attr('src', url);
                         $('#modal_profile_user_img').attr('src', url);
                         $('#usr_pic').attr('src', url);
