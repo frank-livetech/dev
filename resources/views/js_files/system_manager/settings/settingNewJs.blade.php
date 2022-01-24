@@ -15,6 +15,160 @@ let g_priority_arr = null;
 let g_status_arr = null;
 
 $(document).ready(function() {
+    get_mails_table_list();
+ // save sla 
+    $("#sla_form").submit(function(event) {
+        event.preventDefault();
+
+        let action = $(this).attr('action');
+        let method = $(this).attr('method');
+        var form_data = new FormData(this);
+
+        if ($("#customRadio1").is(":checked")) {
+            form_data.append("sla_status", 1);
+        } else {
+            form_data.append("sla_status", 0);
+        }
+
+        $.ajax({
+            url: action,
+            type: method,
+            data: form_data,
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                if (data.status_code == 200 && data.success == true) {
+                    toastr.success(data.message, { timeOut: 5000 });
+                    $("#save-SLA-plan").modal('hide');
+                    $("#sla_form")[0].reset();
+                    getAllSLA();
+                } else {
+                    toastr.error(data.message, { timeOut: 5000 });
+                }
+            },
+            error: function(e) {
+                console.log(e)
+            }
+
+        });
+
+    });
+
+    // update sla
+    $("#edit_sla_form").submit(function(event) {
+        event.preventDefault();
+
+        let action = $(this).attr('action');
+        let method = $(this).attr('method');
+        var form_data = new FormData(this);
+
+        if ($("#edit_customRadio1").is(":checked")) {
+            form_data.append("sla_status", 1);
+        } else {
+            form_data.append("sla_status", 0);
+        }
+        if ($("#edit_custumCheck").is(":checked")) {
+            form_data.append("is_default", 1);
+        } else {
+            form_data.append("is_default", 0);
+        }
+
+        if($('#reply_deadline').val() > 12) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Deadline cannnot be greater than 12 hours',
+                showConfirmButton: false,
+                timer: swal_message_time
+            });
+            return false;
+        }
+        if($('#due_deadline').val() > 12) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Deadline cannnot be greater than 12 hours',
+                showConfirmButton: false,
+                timer: swal_message_time
+            });
+            return false;
+        }
+
+        $.ajax({
+            url: action,
+            type: method,
+            data: form_data,
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                if (data.status_code == 200 && data.success == true) {
+                    toastr.success(data.message, { timeOut: 5000 });
+                    $("#edit-SLA-plan").modal('hide');
+                    getAllSLA();
+                } else {
+                    toastr.error(data.message, { timeOut: 5000 });
+                }
+            },
+            error: function(e) {
+                console.log(e)
+            }
+
+        });
+
+    });
+
+      // save sla setting
+      $("#sla_setting_form").submit(function(event) {
+        event.preventDefault();
+
+        let action = $(this).attr('action');
+        let method = $(this).attr('method');
+        var form_data = new FormData(this);
+
+        if ($("#flexRadioDefault12").is(':checked')) {
+            form_data.append("reply_due_deadline", 1);
+        } else if ($("#flexRadioDefault22").is(':checked')) {
+            form_data.append("reply_due_deadline", 0);
+        }
+
+        if ($("#flexRadioDefault13").is(':checked')) {
+            form_data.append("default_reply_and_resolution_deadline", 1);
+        } else if ($("#flexRadioDefault23").is(':checked')) {
+            form_data.append("default_reply_and_resolution_deadline", 0);
+        }
+
+        if ($("#flexRadioDefault14").is(':checked')) {
+            form_data.append("reply_due_deadline_when_adding_ticket_note", 1);
+        } else if ($("#flexRadioDefault24").is(':checked')) {
+            form_data.append("reply_due_deadline_when_adding_ticket_note", 0);
+        }
+
+        $.ajax({
+            url: action,
+            type: method,
+            data: form_data,
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                if (data.status_code == 200 && data.success == true) {
+                    toastr.success(data.message, { timeOut: 5000 });
+                } else {
+                    toastr.error(data.message, { timeOut: 5000 });
+                }
+            },
+            error: function(e) {
+                console.log(e)
+            }
+
+        });
+
+    });
 
     var today = new Date();
     var dt_option = ``;
@@ -62,6 +216,7 @@ $(document).ready(function() {
 
     getAllresTemp();
     showresponseTemp();
+   
     $("#edit_temp_response").hide();
 
     $("#email_recap_notification_form").submit(function(event) {
@@ -396,186 +551,11 @@ $(document).ready(function() {
     });
 
 
-    // save sla 
-    $("#sla_form").submit(function(event) {
-        event.preventDefault();
-
-        let action = $(this).attr('action');
-        let method = $(this).attr('method');
-        var form_data = new FormData(this);
-
-        if ($("#customRadio1").is(":checked")) {
-            form_data.append("sla_status", 1);
-        } else {
-            form_data.append("sla_status", 0);
-        }
-
-        // if($('#rep-deadline').val() > 12) {
-        //     Swal.fire({
-        //         position: 'center',
-        //         icon: 'error',
-        //         title: 'Deadline cannnot be greater than 12 hours',
-        //         showConfirmButton: false,
-        //         timer: swal_message_time
-        //     });
-        //     return false;
-        // }
-        // if($('#due-deadline').val() > 12) {
-        //     Swal.fire({
-        //         position: 'center',
-        //         icon: 'error',
-        //         title: 'Deadline cannnot be greater than 12 hours',
-        //         showConfirmButton: false,
-        //         timer: swal_message_time
-        //     });
-        //     return false;
-        // }
-        // if ($("#custumCheck").is(":checked")) {
-        //     form_data.append("is_default", 1);
-        // } else {
-        //     form_data.append("is_default", 0);
-        // }
-
-        $.ajax({
-            url: action,
-            type: method,
-            data: form_data,
-            dataType: 'JSON',
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(data) {
-                if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
-                    $("#save-SLA-plan").modal('hide');
-                    $("#sla_form")[0].reset();
-                    getAllSLA();
-                } else {
-                    toastr.error(data.message, { timeOut: 5000 });
-                }
-            },
-            error: function(e) {
-                console.log(e)
-            }
-
-        });
-
-    });
+   
 
 
-    // update sla
-    $("#edit_sla_form").submit(function(event) {
-        event.preventDefault();
 
-        let action = $(this).attr('action');
-        let method = $(this).attr('method');
-        var form_data = new FormData(this);
-
-        if ($("#edit_customRadio1").is(":checked")) {
-            form_data.append("sla_status", 1);
-        } else {
-            form_data.append("sla_status", 0);
-        }
-        if ($("#edit_custumCheck").is(":checked")) {
-            form_data.append("is_default", 1);
-        } else {
-            form_data.append("is_default", 0);
-        }
-
-        if($('#reply_deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
-        if($('#due_deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
-
-        $.ajax({
-            url: action,
-            type: method,
-            data: form_data,
-            dataType: 'JSON',
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(data) {
-                if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
-                    $("#edit-SLA-plan").modal('hide');
-                    getAllSLA();
-                } else {
-                    toastr.error(data.message, { timeOut: 5000 });
-                }
-            },
-            error: function(e) {
-                console.log(e)
-            }
-
-        });
-
-    });
-
-    // save sla setting
-    $("#sla_setting_form").submit(function(event) {
-        event.preventDefault();
-
-        let action = $(this).attr('action');
-        let method = $(this).attr('method');
-        var form_data = new FormData(this);
-
-        if ($("#flexRadioDefault12").is(':checked')) {
-            form_data.append("reply_due_deadline", 1);
-        } else if ($("#flexRadioDefault22").is(':checked')) {
-            form_data.append("reply_due_deadline", 0);
-        }
-
-        if ($("#flexRadioDefault13").is(':checked')) {
-            form_data.append("default_reply_and_resolution_deadline", 1);
-        } else if ($("#flexRadioDefault23").is(':checked')) {
-            form_data.append("default_reply_and_resolution_deadline", 0);
-        }
-
-        if ($("#flexRadioDefault14").is(':checked')) {
-            form_data.append("reply_due_deadline_when_adding_ticket_note", 1);
-        } else if ($("#flexRadioDefault24").is(':checked')) {
-            form_data.append("reply_due_deadline_when_adding_ticket_note", 0);
-        }
-
-        $.ajax({
-            url: action,
-            type: method,
-            data: form_data,
-            dataType: 'JSON',
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(data) {
-                if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
-                } else {
-                    toastr.error(data.message, { timeOut: 5000 });
-                }
-            },
-            error: function(e) {
-                console.log(e)
-            }
-
-        });
-
-    });
+  
 
     // save sla setting
     $("#customer_setting_form").submit(function(event) {
@@ -1080,7 +1060,7 @@ $(document).ready(function() {
 
     radioswitch.init();
 
-});
+    });
 
 function updateresponseTemp(id,title, cat_id, temp) {
 
@@ -2271,11 +2251,8 @@ function editDepartment(id, name,slug,dept_counter) {
         $('#dept_counter').prop('checked');
     }
     $('#save-department').modal('show');
+    $("#dept").html('Edit Department');
 
-    var label = $("#dept").text();
-    if (label == 'Add Department') {
-        $("#dept").html('Edit Department');
-    }
 
 
 }
@@ -2312,10 +2289,7 @@ function editStatus(id, name, depart_id, color,slug,seq_no,sts_counter) {
 
     $('#save-status').modal('show');
 
-    var label = $("#stat").text();
-    if (label == 'Add Status') {
         $("#stat").html('Edit Status');
-    }
 
 
 }
@@ -2326,10 +2300,7 @@ function editType(id, name) {
     $('#type_id').val(id);
     $('#save-type').modal('show');
 
-    var label = $("#typeh2").text();
-    if (label == 'Add Type') {
-        $("#typeh2").html('Edit Type');
-    }
+    $("#typeh2").html('Edit Type');
 
 
 }
@@ -2340,10 +2311,7 @@ function editCustomerType(id, name) {
     $('#customer_type_id').val(id);
     $('#save-customer-type').modal('show');
 
-    var label = $("#customer_typeh2").text();
-    if (label == 'Add Type') {
-        $("#customer_typeh2").html('Edit Type');
-    }
+        $("#customer_typeh2").html('Edit Customer Type');
 
 
 }
@@ -2353,11 +2321,7 @@ function editDispatchStatus(id, name) {
     $('#dispatch_status_name').val(name);
     $('#dispatch_status_id').val(id);
     $('#save-dispatch-status').modal('show');
-
-    var label = $("#dispatch_statush2").text();
-    if (label == 'Add Type') {
-        $("#dispatch_statush2").html('Edit Type');
-    }
+    $("#dispatch_statush2").html('Edit Type');
 
 
 }
@@ -2368,10 +2332,7 @@ function editProjectType(id, name) {
     $('#project_type_id').val(id);
     $('#save-project-type').modal('show');
 
-    var label = $("#project_typeh2").text();
-    if (label == 'Add Project Task Type') {
         $("#project_typeh2").html('Edit Project Task Type');
-    }
 
 
 }
@@ -2383,10 +2344,7 @@ function editPriority(id, name, color) {
     $('#priority_color').val(color);
     $('#save-priority').modal('show');
 
-    var label = $("#prior").text();
-    if (label == 'Add Priority') {
         $("#prior").html('Edit Priority');
-    }
 
 
 }
@@ -2394,10 +2352,8 @@ function editPriority(id, name, color) {
 function showDepModel(id, name) {
     $('#dep_name').val(name);
     $('#dep_id').val(id);
-    var label = $("#dept").text();
-    if (label == 'Add Department') {
-        $("#dept").html('New Department');
-    };
+     $("#dept").html('New Department');
+    $(".form-control").val("");
 
     $('#save-department').modal('show');
 
@@ -2407,10 +2363,9 @@ function showDepModel(id, name) {
 function showStatusModel(id, name) {
     $('#status_name').val(name);
     $('#status_id').val(id);
-    var label = $("#stat").text();
-    if (label == 'Add Status') {
         $("#stat").html('New Status');
-    };
+// alert();
+    $(".form-control").val("");
 
     $('#save-status').modal('show');
 
@@ -2420,12 +2375,14 @@ function showStatusModel(id, name) {
 function showTypeModel(id, name) {
     $('#type_name').val(name);
     $('#type_id').val(id);
-    var label = $("#typeh2").text();
-    if (label == 'Add Type') {
         $("#typeh2").html('New Type');
-    };
-
+   
+    $(".form-control").val("");
+    // $('.select2-container').select2('val', '');
     $('#save-type').modal('show');
+    $('#department_id1').val("").trigger('change');
+    $('.select2-container').select2('val', '');
+
 
 
 }
@@ -2434,10 +2391,9 @@ function showPriorityModel(id, name) {
     $('#priority_name').val(name);
     $('#priority_id').val(id);
     var label = $("#prior").text();
-    if (label == 'Add Priority') {
         $("#prior").html('New Priority');
-    };
-
+    $(".form-control").val("");
+    // $('.select2-container').select2('val', '');
     $('#save-priority').modal('show');
 
 
@@ -2447,10 +2403,8 @@ function showCustomerTypeModel(id, name) {
     $('#customer_type_name').val(name);
     $('#customer_type_id').val(id);
     var label = $("#customer_typeh2").text();
-    if (label == 'Add Type') {
         $("#customer_typeh2").html('New Type');
-    };
-
+    $(".form-control").val("");
     $('#save-customer-type').modal('show');
 
 
@@ -2460,10 +2414,8 @@ function showDispatchStatusModel(id, name) {
     $('#dispatch_status_name').val(name);
     $('#dispatch_status_id').val(id);
     var label = $("#dispatch_statush2").text();
-    if (label == 'Add Status') {
         $("#dispatch_statush2").html('New Status');
-    };
-
+    $(".form-control").val("");
     $('#save-dispatch-status').modal('show');
 
 
@@ -2473,10 +2425,8 @@ function showProjectTypeModel(id, name) {
     $('#project_type_name').val(name);
     $('#project_type_id').val(id);
     var label = $("#project_typeh2").text();
-    if (label == 'Add Project Type') {
         $("#project_typeh2").html('New Project Type');
-    };
-
+    $(".form-control").val("");
     $('#save-project-type').modal('show');
 
 
@@ -2489,7 +2439,7 @@ function showSLAModel() {
     // if (label == 'Add Project Type') {
     //     $("#project_typeh2").html('New Project Type');
     // };
-
+    $(".form-control").val("");
     $('#save-SLA-plan').modal('show');
 
 
@@ -2540,32 +2490,36 @@ function showPop3Model(type, edit = false, id = '') {
 }
 
 function get_mails_table_list() {
+    
     // mail_table_list.clear().draw();
     $.ajax({
-        type: "get",
+        type: "GET",
         url: mails_route,
-        dataType: "json",
+        dataType: 'json',
         beforeSend: function(data) {
             $("#emailtableloader").show();
         },
         success: function(data) {
+            var obj = data.data;
             console.log(data, "mail data");
 
-            $('#ticket-mails-list').DataTable().destroy();
-            $.fn.dataTable.ext.errMode = 'none';
-            var tbl = $('#ticket-mails-list').DataTable({
-                data: data,
-                "pageLength": 10,
-                "bInfo": false,
-                "paging": true,
+            $("#ticket-mails-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#ticket-mails-list").DataTable({
+                data: obj,
+                pageLength: 25,
+                bInfo: true,
+                paging: true,
                 columns: [{
-                        "data": null,
-                        "defaultContent": ""
+                        data: null,
+                        defaultContent: ""
                     },
                     {
                         "render": function(data, type, full, meta) {
                             return full.from_mail != null ? full.from_mail : '-';
                         }
+
+
                     },
                     {
                         "render": function(data, type, full, meta) {
@@ -2602,18 +2556,19 @@ function get_mails_table_list() {
                                     <button onclick="deleteMail(` + full.id + `)" class="btn btn-danger ml-2"><i class="fas fa-trash"></i></button>
                                 </div>`;
                         }
-                    },
-
-                ],
+                    }
+                ]
             });
 
-            tbl.on('order.dt search.dt', function() {
+            tbl.on("order.dt search.dt", function() {
                 tbl.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+                        search: "applied",
+                        order: "applied"
+                    })
+                    .nodes()
+                    .each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
             }).draw();
         },
         complete: function(data) {
@@ -2624,6 +2579,7 @@ function get_mails_table_list() {
         }
     });
 }
+   
 
 function getEmailByID(id) {
     $("#email_id").val(id);
@@ -3532,8 +3488,10 @@ function showStatusModel() {
     $("#stat").text("Add Status");
     $('#save-status').modal('show');
 
-    $("#status_name").val(" ");
+    $("#status_name").val("");
+    $(".form-control").val("");
     $('#department_id2').val("").trigger('change');
+    $('.select2-container').select2('val', '');
 
 }
 
