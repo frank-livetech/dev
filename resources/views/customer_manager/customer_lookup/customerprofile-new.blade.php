@@ -126,8 +126,8 @@
                                 $path = Session::get('is_live') == 1 ? 'public/' : '/';
                             @endphp
                             @if($customer->avatar_url != null)
-                                @if(is_file(public_path( $path . $customer->avatar_url)))
-                                    <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                @if(is_file( getcwd() .'/'. $customer->avatar_url))
+                                    <img src="{{ request()->root() .'/'. $customer->avatar_url }}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @else
                                     <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @endif
@@ -2135,18 +2135,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
-                        @php
-                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
-                        @endphp
-                        @if($customer->avatar_url != null)
-                            @if(is_file(public_path( $path . $customer->avatar_url)))
-                                <img src="{{ asset( $path . $customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                            @php
+                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                            @endphp
+                            @if($customer->avatar_url != null)
+                                @if(is_file( getcwd() .'/'. $customer->avatar_url))
+                                    <img src="{{ request()->root() .'/'. $customer->avatar_url}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                @else
+                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                @endif
                             @else
                                 <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
-                        @else
-                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
-                        @endif
                     </div>
                     <form class="mt-4" id="upload_customer_img">
                         <div class="input-group">

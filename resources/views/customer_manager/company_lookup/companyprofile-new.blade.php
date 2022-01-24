@@ -110,7 +110,7 @@ blockquote {
                                 $path = Session::get('is_live') == 1 ? 'public/' : '/';
                             @endphp
                             @if($company->com_logo != null)
-                                @if(is_file( getced() .'/'. $company->com_logo ))
+                                @if(is_file( getcwd() .'/'. $company->com_logo ))
                                     <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
                                 @else
                                 <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
@@ -1582,7 +1582,7 @@ aria-hidden="true">
                     $path = Session::get('is_live') == 1 ? 'public/' : '/';
                 @endphp
                 @if($company->com_logo != null)
-                    @if(is_file( getced() .'/'. $company->com_logo ))
+                    @if(is_file( getcwd() .'/'. $company->com_logo ))
                         <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
                     @else
                     <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
