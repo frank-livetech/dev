@@ -405,7 +405,7 @@ class HomeController
         
         try {
             
-            $ticket_replies = TicketReply::where('ticket_id' , $request->id)->with('replyUser')->get();
+            $ticket_replies = TicketReply::where('ticket_id' , $request->id)->with('replyUser')->orderByDesc('created_at')->get();
 
             return response()->Json([
                 "status_code" => 200 , 
