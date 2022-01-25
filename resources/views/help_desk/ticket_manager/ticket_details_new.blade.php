@@ -217,6 +217,9 @@
     height:91px;
     /* width:auto !important; */
 }
+.modal-slide-in .modal-dialog.sidebar-lg {
+    width: 55rem;
+}
 .tag {
     width: fit-content !important;
     padding: 0.25rem;
