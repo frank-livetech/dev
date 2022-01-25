@@ -214,8 +214,8 @@
     float: right
 }
 .attImg{
-    height:117px;
-    width:auto !important;
+    height:91px;
+    /* width:auto !important; */
 }
 .tag {
     width: fit-content !important;
