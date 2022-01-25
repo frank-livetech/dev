@@ -121,13 +121,16 @@
                                 $path = Session::get('is_live') == 1 ? 'public/' : '/';
                             @endphp
                             @if($profile->profile_pic != null)
-                                @if(is_file(public_path() .'/'. $profile->profile_pic  ))
-                                    <img src="{{ request()->root() .'/'. $profile->profile_pic}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                @if(is_file( getcwd() .'/'. $profile->profile_pic ))
+                                <img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
+                                    width="100" height="100" id="profile-user-img" />
                                 @else
-                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                    id="profile-user-img" />
                                 @endif
                             @else
-                                <img src="{{asset($path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                id="profile-user-img" />
                             @endif
                             <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal"><i class="fa fa-pencil-alt picEdit"></i></a>
                             <h4 class="card-title mt-2" id="staff_name">{{$profile->name}}</h4>
@@ -1313,13 +1316,16 @@
                             $path = Session::get('is_live') == 1 ? 'public/' : '/';
                         @endphp
                         @if($profile->profile_pic != null)
-                            @if(is_file(public_path() .'/'. $profile->profile_pic  ))
-                                <img src="{{ request()->root() .'/'. $profile->profile_pic}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            @if(is_file( getcwd() .'/'. $profile->profile_pic ))
+                            <img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
+                                width="100" height="100" id="profile-user-img" />
                             @else
-                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                id="profile-user-img" />
                             @endif
                         @else
-                            <img src="{{asset($path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                        <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            id="profile-user-img" />
                         @endif
                     </div>
                     <form class="mt-4" id="upload_user_img">

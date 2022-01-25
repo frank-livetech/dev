@@ -284,13 +284,12 @@
                             <div class="profile-pic mt-2">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-3 text-center">
-                                        <!-- Image path -->
                                         @php
                                             $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                         @endphp
                                         @if($details->is_staff_tkt == 0)
                                             @if($ticket_customer->avatar_url != null)
-                                                @if(file_exists( public_path() .'/'. $ticket_customer->avatar_url ))
+                                                @if(file_exists( getcwd() .'/'. $ticket_customer->avatar_url ))
                                                     <img src=" {{ asset( request()->root() .'/'. $ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
@@ -301,7 +300,7 @@
                                             <span class="badge badge-secondary type_bdge">User</span>
                                         @else
                                             @if($ticket_customer->profile_pic != null)
-                                                @if(file_exists( public_path() .'/'. $ticket_customer->profile_pic ) )
+                                                @if(file_exists( getcwd() .'/'. $ticket_customer->profile_pic ) )
                                                     <img src="{{ asset( request()->root() .'/'. $ticket_customer->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
@@ -1497,7 +1496,6 @@
     $(".meta_tags").tagsinput('items');
 
 function hung(){
-    alert("king");
     $("#viewFullDetails2").modal("show");
     $(this).find("col-md-3").addClass("col-md-6");
     $(this).find("col-md-6").removeClass("col-md-3");

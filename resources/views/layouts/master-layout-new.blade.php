@@ -163,9 +163,9 @@
                             @endif
                         </div>
                         <span class="avatar">
-                            @if(Auth::user()->profile_pic != null)
-                                @if(file_exists( public_path(). $file_path . auth()->user()->profile_pic))
-                                    <img src="{{ asset( $file_path . auth()->user()->profile_pic)}}"
+                            @if(auth()->user()->profile_pic != null)
+                                @if(file_exists( getcwd(). '/' . auth()->user()->profile_pic))
+                                    <img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
                                         alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
                                 @else
                                     <img src="{{asset(  $file_path . 'default_imgs/logo.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
