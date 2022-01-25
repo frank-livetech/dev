@@ -643,7 +643,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="table-responsive">
-                                                            <table id="ticket-mails-list" class="display table-striped table-bordered text-center ticket-mails-list"
+                                                            <table id="ticket-mails-list" class="display table-striped table-bordered text-center"
                                                                 style="width:100%">
                                                                 <thead>
                                                                     <tr>
