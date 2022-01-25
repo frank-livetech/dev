@@ -1177,6 +1177,92 @@ function getAllSLA() {
     });
 }
 
+function get_mails_table_list() {
+    
+    // mail_table_list.clear().draw();
+    $.ajax({
+        type: "GET",
+        url: mails_route,
+        dataType: 'json',
+        beforeSend: function(data) {
+            $("#emailtableloader").show();
+        },
+        success: function(data) {
+            var obj = data.data;
+            console.log(data, "mail data");
+
+            $("#ticket-mails-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#ticket-mails-list").DataTable({
+                data: obj,
+                columns: [{
+                        data: null,
+                        defaultContent: ""
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.from_mail != null ? full.from_mail : '-';
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            if (full.mail_type != null && full.mail_type != '') {
+                                return full.mail_type.name != null ? full.mail_type.name : '-'
+                            } else {
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            if (full.department != null && full.department != '') {
+                                return full.department.name != null ? full.department.name : '-'
+                            } else {
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.registration_required != null ? full.registration_required : '-';
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.is_default != null ? full.is_default : '-';
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return `<div class="d-flex justify-content-center">
+                                    <button onclick="getEmailByID(` + full.id + `)" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                    <button onclick="deleteMail(` + full.id + `)" class="btn btn-danger ml-2"><i class="fas fa-trash"></i></button>
+                                </div>`;
+                        }
+                    }
+                ]
+            });
+
+            tbl.on("order.dt search.dt", function() {
+                tbl.column(0, {
+                        search: "applied",
+                        order: "applied"
+                    })
+                    .nodes()
+                    .each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+            }).draw();
+        },
+        complete: function(data) {
+            $("#emailtableloader").hide();
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
 function viewRecord(id, title, reply_deadline, due_deadline, status, is_default) {
 
     $("#edit-SLA-plan").modal('show');
@@ -2489,96 +2575,7 @@ function showPop3Model(type, edit = false, id = '') {
     $('#save-mail').modal('show');
 }
 
-function get_mails_table_list() {
-    
-    // mail_table_list.clear().draw();
-    $.ajax({
-        type: "GET",
-        url: mails_route,
-        dataType: 'json',
-        beforeSend: function(data) {
-            $("#emailtableloader").show();
-        },
-        success: function(data) {
-            var obj = data.data;
-            console.log(data, "mail data");
 
-            $("#ticket-mails-list").DataTable().destroy();
-            $.fn.dataTable.ext.errMode = "none";
-            var tbl = $("#ticket-mails-list").DataTable({
-                data: obj,
-                pageLength: 25,
-                bInfo: true,
-                paging: true,
-                columns: [{
-                        data: null,
-                        defaultContent: ""
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return full.from_mail != null ? full.from_mail : '-';
-                        }
-
-
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            if (full.mail_type != null && full.mail_type != '') {
-                                return full.mail_type.name != null ? full.mail_type.name : '-'
-                            } else {
-                                return '-';
-                            }
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            if (full.department != null && full.department != '') {
-                                return full.department.name != null ? full.department.name : '-'
-                            } else {
-                                return '-';
-                            }
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return full.registration_required != null ? full.registration_required : '-';
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return full.is_default != null ? full.is_default : '-';
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return `<div class="d-flex justify-content-center">
-                                    <button onclick="getEmailByID(` + full.id + `)" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></button>&nbsp;
-                                    <button onclick="deleteMail(` + full.id + `)" class="btn btn-danger ml-2"><i class="fas fa-trash"></i></button>
-                                </div>`;
-                        }
-                    }
-                ]
-            });
-
-            tbl.on("order.dt search.dt", function() {
-                tbl.column(0, {
-                        search: "applied",
-                        order: "applied"
-                    })
-                    .nodes()
-                    .each(function(cell, i) {
-                        cell.innerHTML = i + 1;
-                    });
-            }).draw();
-        },
-        complete: function(data) {
-            $("#emailtableloader").hide();
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    });
-}
    
 
 function getEmailByID(id) {
@@ -2876,9 +2873,6 @@ function updateEmailQueue() {
     });
 
 }
-
-
-
 
 function verify_connection(el, value) {
 
