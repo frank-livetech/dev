@@ -378,9 +378,9 @@
                                     <h3 class="mb-0">Initial Request&nbsp;&nbsp;
                                         <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
                                         <a onClick="hung()" title="View Details" style="position:absolute;right:88px;cursor:pointer;">
-                                            <i data-feather='eye'></i>
+                                        <i data-feather='maximize'></i>
                                         </a>
-                                        <a class=" " style="position:absolute;right:50px;cursor:pointer;"  data-bs-toggle="modal" data-bs-target="#viewFullDetails" data-bs-toggle="tooltip" data-bs-placement="top" title="View Details" data-bs-original-title="View Details"><i data-feather='maximize'></i></a>
+                                        <!-- <a class=" " style="position:absolute;right:50px;cursor:pointer;"  data-bs-toggle="modal" data-bs-target="#viewFullDetails" data-bs-toggle="tooltip" data-bs-placement="top" title="View Details" data-bs-original-title="View Details"><i data-feather='maximize'></i></a> -->
                                         <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
                                         <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span>
                                         <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
