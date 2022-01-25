@@ -842,150 +842,150 @@ function getTicketDetailsContent() {
     if(ticket_details != null || ticket_details != "") {
         content = content.replace(/<img[^>]*>/g,"");
         tdet = `<div class="col-12">${content}</div>`;
-        if(ticket_details.attachments != null || ticket_details.attachments != ""){
+        // if(ticket_details.attachments != null || ticket_details.attachments != ""){
 
-            let files = ticket_details.attachments.split(',');
-            let file_row = ``;
-            let extension_img = ``;
-            tdet += '<div class="col-12 row">';
-            for(let i =0; i < files.length; i++) {
+        //     let files = ticket_details.attachments.split(',');
+        //     let file_row = ``;
+        //     let extension_img = ``;
+        //     tdet += '<div class="col-12 row">';
+        //     for(let i =0; i < files.length; i++) {
 
-                let extens = files[i].split('.');
+        //         let extens = files[i].split('.');
 
-                if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
-                    extension_img = `<img src="{{asset('default_imgs/image.jpeg')}}" width="20px" height="20px">`;
-                }
+        //         if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
+        //             extension_img = `<img src="{{asset('default_imgs/image.jpeg')}}" width="20px" height="20px">`;
+        //         }
 
-                if(extens[1] == 'pdf') {
-                    extension_img = `<img src="{{asset('default_imgs/pdf.gif')}}" width="20px" height="20px">`;
-                }
+        //         if(extens[1] == 'pdf') {
+        //             extension_img = `<img src="{{asset('default_imgs/pdf.gif')}}" width="20px" height="20px">`;
+        //         }
 
-                if(extens[1] == 'txt') {
-                    extension_img = `<img src="{{asset('default_imgs/txt.gif')}}" width="20px" height="20px">`;
-                }
+        //         if(extens[1] == 'txt') {
+        //             extension_img = `<img src="{{asset('default_imgs/txt.gif')}}" width="20px" height="20px">`;
+        //         }
 
-                if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
-                    extension_img = `<img src="{{asset('default_imgs/word.gif')}}" width="20px" height="20px">`;
-                }
+        //         if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
+        //             extension_img = `<img src="{{asset('default_imgs/word.gif')}}" width="20px" height="20px">`;
+        //         }
 
-                if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
-                    extension_img = `<img src="{{asset('default_imgs/xlx.gif')}}" width="20px" height="20px">`;
-                }
+        //         if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
+        //             extension_img = `<img src="{{asset('default_imgs/xlx.gif')}}" width="20px" height="20px">`;
+        //         }
 
-                if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
-                    extension_img = `<img src="{{asset('default_imgs/ppt.gif')}}" width="20px" height="20px">`;
-                }
+        //         if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
+        //             extension_img = `<img src="{{asset('default_imgs/ppt.gif')}}" width="20px" height="20px">`;
+        //         }
 
-                tdet +=`
-                    <div class="col-md-12 mt-1">
-                        ${extension_img}
-                        <a href="${root}/storage/tickets/${ticket_details.id}/${files[i]}" target="_blank">${files[i]}</a> 
-                    </div> `
-            }
-            tdet += '</div>';
+        //         tdet +=`
+        //             <div class="col-md-12 mt-1">
+        //                 ${extension_img}
+        //                 <a href="${root}/storage/tickets/${ticket_details.id}/${files[i]}" target="_blank">${files[i]}</a> 
+        //             </div> `
+        //     }
+        //     tdet += '</div>';
 
-        }
+        // }
         
     }
 
-    // if(ticket_details.attachments) {
-    //     let attchs = ticket_details.attachments.split(',');
-    //     tdet += '<div class="col-12 row">';
-    //     attchs.forEach(item => {
-    //         // tdet += `<p><a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
-    //         var tech =  `{{asset('/files/tickets/${ticket_details.id}/${item}')}}`;
-    //         var ter = getExt(tech);
+    if(ticket_details.attachments) {
+        let attchs = ticket_details.attachments.split(',');
+        tdet += '<div class="col-12 row">';
+        attchs.forEach(item => {
+            // tdet += `<p><a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
+            var tech =  `{{asset('/files/tickets/${ticket_details.id}/${item}')}}`;
+            var ter = getExt(tech);
 
-    //         // return ter;
-    //         if(ter == "pdf" ){
-    //             tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
-    //                             <div class="card__corner">
-    //                                 <div class="card__corner-triangle"></div>
-    //                             </div>
-    //                         <div class="borderOne">
-    //                             <span class="overlayAttach"></span>
-    //                             <img src="{{asset ('/files/file_icon/Pdf.png')}}"  alt="">
-    //                             <span class="fileName">${item}</span>
-    //                             <a href="{{asset('/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-    //                         </div>
-    //                     </div>` 
-    //         }
-    //         else if(ter == "csv" || ter == "xls" || ter == "xlsx"){
-    //             tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
-    //                             <div class="card__corner">
-    //                                 <div class="card__corner-triangle"></div>
-    //                             </div>
-    //                         <div class="borderOne">
-    //                             <span class="overlayAttach"></span>
+            // return ter;
+            if(ter == "pdf" ){
+                tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
+                                <div class="card__corner">
+                                    <div class="card__corner-triangle"></div>
+                                </div>
+                            <div class="borderOne">
+                                <span class="overlayAttach"></span>
+                                <img src="{{asset ('public//files/file_icon/Pdf.png')}}"  alt="">
+                                <span class="fileName">${item}</span>
+                                <a href="{{asset('public//files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                            </div>
+                        </div>` 
+            }
+            else if(ter == "csv" || ter == "xls" || ter == "xlsx"){
+                tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
+                                <div class="card__corner">
+                                    <div class="card__corner-triangle"></div>
+                                </div>
+                            <div class="borderOne">
+                                <span class="overlayAttach"></span>
 
-    //                             <img src="{{asset ('/files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
-    //                             <span class="fileName">${item}</span>
-    //                             <a href="{{asset('/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-    //                         </div>
-    //                     </div>` 
-    //         }
-    //         else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-    //             tdet+= `<div class="col-md-3 mt-1" style='position:relative;' >
-    //                             <div class="card__corner">
-    //                                 <div class="card__corner-triangle"></div>
-    //                             </div>
-    //                         <div class="borderOne">
-    //                            <span class="overlayAttach"></span> 
+                                <img src="{{asset ('public//files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
+                                <span class="fileName">${item}</span>
+                                <a href="{{asset('public//files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                            </div>
+                        </div>` 
+            }
+            else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
+                tdet+= `<div class="col-md-3 mt-1" style='position:relative;' >
+                                <div class="card__corner">
+                                    <div class="card__corner-triangle"></div>
+                                </div>
+                            <div class="borderOne">
+                               <span class="overlayAttach"></span> 
  
-    //                             <img src="{{asset ('files/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
-    //                             <span class="fileName">${item}</span>
-    //                             <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-    //                         </div>
-    //                     </div>` 
-    //         }
-    //         else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-    //             tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
-    //                             <div class="card__corner">
-    //                                 <div class="card__corner-triangle"></div>
-    //                             </div>
-    //                         <div class="borderOne">
-    //                             <span class="overlayAttach"></span>
+                                <img src="{{asset ('public/files/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                <span class="fileName">${item}</span>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                            </div>
+                        </div>` 
+            }
+            else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
+                tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
+                                <div class="card__corner">
+                                    <div class="card__corner-triangle"></div>
+                                </div>
+                            <div class="borderOne">
+                                <span class="overlayAttach"></span>
 
-    //                             <img src="{{asset ('files/file_icon/Docs.png')}}" class="imgIcon" width="48" alt="">
-    //                             <span class="fileName">${item}</span>
-    //                             <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-    //                         </div>
-    //                     </div>` 
-    //         }
-    //         else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-    //             tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
-    //                             <div class="card__corner">
-    //                                 <div class="card__corner-triangle"></div>
-    //                             </div>
-    //                         <div class="borderOne">
-    //                             <span class="overlayAttach"></span>
+                                <img src="{{asset ('public/files/file_icon/Docs.png')}}" class="imgIcon" width="48" alt="">
+                                <span class="fileName">${item}</span>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                            </div>
+                        </div>` 
+            }
+            else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
+                tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
+                                <div class="card__corner">
+                                    <div class="card__corner-triangle"></div>
+                                </div>
+                            <div class="borderOne">
+                                <span class="overlayAttach"></span>
 
-    //                             <img src="{{asset ('files/file_icon/Ppt.png')}}" class="imgIcon" width="48" alt="">
-    //                             <span class="fileName">${item}</span>
-    //                             <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-    //                         </div>
-    //                     </div>` 
-    //         }
-    //         else{
-    //             tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
-    //                             <div class="card__corner">
-    //                                 <div class="card__corner-triangle"></div>
-    //                             </div>
-    //                         <div class="borderOne">
-    //                             <span class="overlayAttach"></span>
+                                <img src="{{asset ('public/files/file_icon/Ppt.png')}}" class="imgIcon" width="48" alt="">
+                                <span class="fileName">${item}</span>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                            </div>
+                        </div>` 
+            }
+            else{
+                tdet+= `<div class="col-md-3 mt-1" style='position:relative;'>
+                                <div class="card__corner">
+                                    <div class="card__corner-triangle"></div>
+                                </div>
+                            <div class="borderOne">
+                                <span class="overlayAttach"></span>
 
-    //                             <img src="{{asset ('files/file_icon/Files.png')}}" class="imgIcon"  alt="">
-    //                             <span class="fileName">${item}</span>
-    //                             <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-    //                         </div>
-    //                     </div>` 
-    //         }
-    //         // tdet += `
-    //         // <input type="file" data-height="100" id="input-file-now-custom-1" class="dropify" data-default-file="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" />`;
-    //     });
+                                <img src="{{asset ('public/files/file_icon/Files.png')}}" class="imgIcon"  alt="">
+                                <span class="fileName">${item}</span>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                            </div>
+                        </div>` 
+            }
+            // tdet += `
+            // <input type="file" data-height="100" id="input-file-now-custom-1" class="dropify" data-default-file="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" />`;
+        });
 
-    //     tdet += '</div>';
-    // }
+        tdet += '</div>';
+    }
 
     return tdet;
 }
