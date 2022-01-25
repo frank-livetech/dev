@@ -75,26 +75,26 @@ $(document).ready(function() {
             form_data.append("is_default", 0);
         }
 
-        if($('#reply_deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
-        if($('#due_deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
+        // if($('#reply_deadline').val() > 12) {
+        //     Swal.fire({
+        //         position: 'center',
+        //         icon: 'error',
+        //         title: 'Deadline cannnot be greater than 12 hours',
+        //         showConfirmButton: false,
+        //         timer: swal_message_time
+        //     });
+        //     return false;
+        // }
+        // if($('#due_deadline').val() > 12) {
+        //     Swal.fire({
+        //         position: 'center',
+        //         icon: 'error',
+        //         title: 'Deadline cannnot be greater than 12 hours',
+        //         showConfirmButton: false,
+        //         timer: swal_message_time
+        //     });
+        //     return false;
+        // }
 
         $.ajax({
             url: action,
