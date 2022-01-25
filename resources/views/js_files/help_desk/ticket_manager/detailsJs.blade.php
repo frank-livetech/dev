@@ -838,9 +838,10 @@ function saveRequest() {
 
 function getTicketDetailsContent() {
     let tdet = '';
-
+    var content = ticket_details.ticket_detail;
     if(ticket_details != null || ticket_details != "") {
-        tdet = `<div class="col-12">${ticket_details.ticket_detail}</div>`;
+        content = content.replace(/<img[^>]*>/g,"");
+        tdet = `<div class="col-12">${content}</div>`;
         if(ticket_details.attachments != null || ticket_details.attachments != ""){
 
             let files = ticket_details.attachments.split(',');
