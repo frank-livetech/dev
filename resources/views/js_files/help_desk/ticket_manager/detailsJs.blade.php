@@ -1165,6 +1165,7 @@ function listReplies() {
             }else{
                 user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
+            var content = reply.reply.replace(/<img[^>]*>/g,"");
             
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
@@ -1176,7 +1177,7 @@ function listReplies() {
 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
                         <div class="my-1 bor-top" id="reply-html-` + reply.id + `">
-                            ` + reply.reply + `
+                            ` + content + `
                         </div>
                         <div class="row mt-1">
                             ${tdet}
