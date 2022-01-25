@@ -1,3 +1,7 @@
+@php
+    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+    $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+@endphp
 <div class="card">
                         <div class="card-body">
 
@@ -86,7 +90,7 @@
                                                             <div class="col-md-4 col-sm-6">
                                                                 <button class="btn waves-effect waves-light btn-success rounded btn-sm"
                                                                 data-bs-toggle="modal" data-bs-target="#save-SLA-plan" style="float:right">
-                                                                    <i class="mdi mdi-plus-circle" style="padding-right:3px;"></i>&nbsp;Add SLA Plan</button>
+                                                                    <i class="fa fa-plus-circle" style="padding-right:3px;"></i>&nbsp;Add SLA Plan</button>
                                                             </div>
                                                         </div>
                                                         <br>
@@ -144,6 +148,7 @@
                                                         <div class="widget-main">
                                                             <div class="setting_body pt-3 p-1">
                                                                 <form id="sla_setting_form" method="POST" action="{{url('sla_setting')}}" enctype="multipart/form-data">
+                                                                    @csrf
                                                                     <div class="row ">
                                                                         <div class="col-md-8">
                                                                         <p><b>Clear reply due deadline on staff reply</b></p>
@@ -152,8 +157,8 @@
                                                                             be calculated when a user next replies to a ticket. </small>
                                                                             <hr>
                                                                         </div>
-                                                                        <div class="col-md-4 ">
-                                                                            <div class="row text-end demo-inline-spacing">    
+                                                                        <div class="col-md-4 text-end">
+                                                                            <div class=" ">    
                                                                                 <div class="form-check mx-2 form-check-inline">
                                                                                     @if(sizeOf($sla_setting) > 0)
                                                                                         @if($sla_setting['reply_due_deadline'] == 1)
@@ -193,9 +198,9 @@
                                                                         <small>The time below will be used to calculate the ticket reply and resolution deadline if an SLA plan is not assigned to the ticket, user, user group or department. </small>
                                                                             <hr>
                                                                         </div>
-                                                                        <div class="col-md-4 ">
-                                                                            <div class="row float-end">
-                                                                                <div class="form-check mx-2">
+                                                                        <div class="col-md-4 text-end">
+                                                                            <div class="">
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     @if($sla_setting['default_reply_and_resolution_deadline'] == 1)
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault13" checked>
@@ -209,7 +214,7 @@
                                                                                     <label class="form-check-label" for="flexRadioDefault13"> Yes </label>
                                                                                 @endif
                                                                                 </div>
-                                                                                <div class="form-check mx-2">
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     @if($sla_setting['default_reply_and_resolution_deadline'] == 0)
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault23" value="0" checked>
@@ -232,10 +237,10 @@
                                                                         <small>If a user is not responded to within these hours, the ticket will be marked as overdue. </small>
                                                                             <hr>
                                                                         </div>
-                                                                        <div class="col-md-4 ">
+                                                                        <div class="col-md-4 text-end">
                                                                             <div class="row text-end">
-                                                                                <div class="col-md-3"></div>
-                                                                                <div class="col-md-6 form-group my-1 mx-2">
+                                                                                <div class="col-md-6"></div>
+                                                                                <div class="col-md-6 form-group my-1">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     <input class="form-control" value="{{$sla_setting['default_reply_time_deadline']}}" name="default_reply_time_deadline" type="number" placeholder="24" name="" id="default_reply_time_deadline" placeholder="">
                                                                                 @else
@@ -251,10 +256,10 @@
                                                                         <small>If a ticket is not resolved to within these hours, the ticket will be marked as overdue. </small>
                                                                             <hr>
                                                                         </div>
-                                                                        <div class="col-md-4 ">
+                                                                        <div class="col-md-4 text-end">
                                                                             <div class="row text-end">
-                                                                                <div class="col-md-3"></div>
-                                                                                <div class="col-md-6 form-group my-1 mx-2">
+                                                                                <div class="col-md-6"></div>
+                                                                                <div class="col-md-6 form-group my-1">
                                                                                 @if(sizeOf($sla_setting) > 0)
                                                                                     <input class="form-control" value="{{$sla_setting['default_resolution_deadline']}}" name="default_resolution_deadline" type="number" placeholder="72" name="" id="default_resolution_deadline">
                                                                                 @else
@@ -271,7 +276,7 @@
                                                                         <small>Overdue tickets can be highlighted with a background color. Choose a light color so the text is still readable.</small>
                                                                             <hr>
                                                                         </div>
-                                                                        <div class="col-md-4 ">
+                                                                        <div class="col-md-4 text-end">
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
 
@@ -292,7 +297,7 @@
                                                                         <small>Overdue tickets can be highlighted with a Text color. Choose a light color so the text is still readable.</small>
                                                                             <hr>
                                                                         </div>
-                                                                        <div class="col-md-4 ">
+                                                                        <div class="col-md-4 text-end">
                                                                             <div class="row text-end">
                                                                                 <div class="col-md-3"></div>
                                                                                 <div class="col-md-9 form-group my-1 " style="padding-right:9px;">
@@ -312,22 +317,22 @@
                                                                         <small>When a ticket is updated (i.e. replied to by a staff user), the reply due time clock is reset. By enabling this setting, a ticket note will also count as a ticket update. </small>
                                                                             <hr>
                                                                         </div>
-                                                                        <div class="col-md-4 ">
-                                                                            <div class="row float-end">
+                                                                        <div class="col-md-4 text-end">
+                                                                            <div class="">
                                                                             @if(sizeOf($sla_setting) > 0)
                                                                                 @if($sla_setting['reply_due_deadline_when_adding_ticket_note'] == 1)
-                                                                                <div class="form-check mx-2">
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault14" checked>
                                                                                     <label class="form-check-label" for="flexRadioDefault14"> Yes </label>
                                                                                 </div>
                                                                                 @else
-                                                                                <div class="form-check mx-2">
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault14" checked>
                                                                                     <label class="form-check-label" for="flexRadioDefault14"> Yes </label>
                                                                                 </div>
                                                                                 @endif
                                                                             @else
-                                                                                <div class="form-check mx-2">
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault14" checked>
                                                                                     <label class="form-check-label" for="flexRadioDefault14"> Yes </label>
                                                                                 </div>
@@ -335,18 +340,18 @@
 
                                                                             @if(sizeOf($sla_setting) > 0)
                                                                                 @if($sla_setting['reply_due_deadline_when_adding_ticket_note'] == 0)
-                                                                                    <div class="form-check mx-2">
+                                                                                    <div class="form-check mx-2 form-check-inline">
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault24" checked>
                                                                                         <label class="form-check-label" for="flexRadioDefault24"> No </label>
                                                                                     </div>
                                                                                 @else
-                                                                                    <div class="form-check mx-2">
+                                                                                    <div class="form-check mx-2 form-check-inline">
                                                                                         <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault24">
                                                                                         <label class="form-check-label" for="flexRadioDefault24"> No </label>
                                                                                     </div>
                                                                                 @endif
                                                                             @else
-                                                                                <div class="form-check mx-2">
+                                                                                <div class="form-check mx-2 form-check-inline">
                                                                                     <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault24">
                                                                                     <label class="form-check-label" for="flexRadioDefault24"> No </label>
                                                                                 </div>
@@ -386,7 +391,7 @@
                                                                 <h4 class="widget-title lighter smaller menu_title">Department Table</h4>
                                                             </div>
                                                             <div class="col-md-4 col-sm-6">
-                                                                <button class="btn waves-effect waves-light btn-success" data-bs-toggle="" data-bs-target="" onclick="showDepModel()" style="float:right"><i class="mdi mdi-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Department</button>
+                                                                <button class="btn waves-effect waves-light btn-success" data-bs-toggle="" data-bs-target="" onclick="showDepModel()" style="float:right"><i class="fa fa-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Department</button>
                                                             </div>
                                                         </div>
                                                         <br>
@@ -446,7 +451,7 @@
                                                             <div class="col-md-4 col-sm-6">
                                                                 <button class="btn waves-effect waves-light btn-success"
                                                                     onclick="showStatusModel()" style="float:right">
-                                                                    <i class="mdi mdi-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Status</button>
+                                                                    <i class="fa fa-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Status</button>
                                                             </div>
                                                         </div>
                                                         <br>
@@ -513,7 +518,7 @@
                                                             <div class="col-md-4 col-sm-6">
                                                                 <button class="btn waves-effect waves-light btn-success"
                                                                     onclick="showTypeModel()" style="float:right">
-                                                                    <i class="mdi mdi-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Type</button>
+                                                                    <i class="fa fa-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Type</button>
                                                             </div>
                                                         </div>
                                                         <br>
@@ -576,7 +581,7 @@
                                                             <div class="col-md-4 col-sm-6">
                                                                 <button class="btn waves-effect waves-light btn-success"
                                                                     onclick="showPriorityModel()" style="float:right">
-                                                                    <i class="mdi mdi-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Priority</button>
+                                                                    <i class="fa fa-plus-circle" style="padding-right:3px;"></i>&nbsp;Add Priority</button>
                                                             </div>
                                                         </div>
                                                         <br>
@@ -626,7 +631,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-6" style="text-align:right">
                                                     <button class="btn waves-effect waves-light btn-success"
-                                                        onclick="showPop3Model('tickets')"><i class="mdi mdi-plus-circle"></i>&nbsp;Add New
+                                                        onclick="showPop3Model('tickets')"><i class="fa fa-plus-circle"></i>&nbsp;Add New
                                                         Mail</button>
                                                 </div>
                                             </div>
@@ -689,7 +694,7 @@
                                                             <div class="col-md-4 col-sm-6">
                                                                 <button class="btn waves-effect waves-light btn-success rounded btn-sm"
                                                                 data-bs-toggle="modal" data-bs-target="#save-category-modal" style="float:right">
-                                                                    <i class="mdi mdi-plus-circle" style="padding-right:3px;"></i>&nbsp;Add new Category</button>
+                                                                    <i class="fa fa-plus-circle" style="padding-right:3px;"></i>&nbsp;Add new Category</button>
                                                             </div>
                                                         </div>
                                                         <br>
@@ -837,11 +842,11 @@
                         <div class="form-group my-1">
                             <label for="departmrnt" class="d-flex mb-1 align-items-center">
                                 <span>Department Name</span>
-                                <div class="mx-1">
-                                    <input type="checkbox" checked data-on-color="warning" data-off-color="danger" data-on-text="Enabled" data-off-text="Disabled" id="dept_is_enabled">
-                                </div>
+                                <div class="form-check form-switch" style="position:absolute; right:14px;">
+                                            <input type="checkbox" class="form-check-input"  checked data-on-color="warning" data-off-color="danger" data-on-text="Enabled" data-off-text="Disabled" id="dept_is_enabled" />
+                                        </div>
                             </label>
-                            <input class="form-control mb-1 type="text" name="name" id="dep_name" placeholder="" required>
+                            <input class="form-control mb-1" type="text" name="name" id="dep_name" placeholder="" required>
                             <input class="form-control" type="text" name="dep_id" id="dep_id" hidden>
                         </div>
                         <div class="form-group my-1">
@@ -851,9 +856,9 @@
                             <input class="form-control mb-1" type="text" name="dept_slug" id="dept_slug" placeholder="" required>
                         </div>
                         <label for="departmrnt" class="d-flex mb-1 align-items-center">
-                            <span>Show Counter</span>
+                            <span class="form-check-label">Show Counter</span>
                             <div class="mx-1">
-                                <input type="checkbox" name="dept_counter" id="dept_counter">
+                                <input type="checkbox" class="form-check-input" name="dept_counter" id="dept_counter">
                             </div>
                         </label>
                         <div class="form-group my-1 text-end mt-2">
@@ -906,8 +911,8 @@
 
                         <label for="departmrnt" class="d-flex mb-2 align-items-center">
                             <span>Show Counter</span>
-                            <div class="ml-auto">
-                                <input type="checkbox" name="status_counter" id="status_counter">
+                            <div class="mx-1">
+                                <input type="checkbox" class="form-check-input"  name="status_counter" id="status_counter">
                             </div>
                         </label>
 
@@ -994,11 +999,6 @@
         </div>
     </div>
 
-  
-
-
-
-
     <!-- add SLA Modal -->
     <div id="save-SLA-plan" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
@@ -1008,7 +1008,8 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
-                    <form method="POST" id="sla_form" action="{{url('add_sla')}}" enctype="multipart/form-data" onsubmit="return false;">
+                    <form method="POST" id="sla_form" action="{{url('add_sla')}}" enctype="multipart/form-data" >
+                      @csrf
                         <div class="form-group my-1">
                             <label for="departmrnt">SLA Plan Title</label>
                             <input class="form-control" type="text" name="title" placeholder="" required>
@@ -1026,13 +1027,13 @@
                             <small>The number of hours by which tickets which have been assigned this SLA plan should be resolved (set to a resolved type status). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
                         <div class="form-group my-1">
-                            <div class="row ml-2">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
+                            <div class="ml-2 my-1">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="customRadio1" name="customRadio" class="form-check-input">
                                     <label class="custom-control-label" for="customRadio1">Activate</label>
                                 </div>
-                                <div class="custom-control custom-radio ml-2">
-                                    <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+                                <div class="form-check form-check-inline ml-2">
+                                    <input type="radio" id="customRadio2" name="customRadio" class="form-check-input">
                                     <label class="custom-control-label" for="customRadio2">Deactivate</label>
                                 </div>
                             </div>
@@ -1056,7 +1057,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- add Category Modal -->
     <div id="save-category-modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
@@ -1113,7 +1113,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="project_typeh2" >Add SLA Plan</h5>
+                        <h5 class="modal-title" id="project_typeh2" >Edit SLA Plan</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 <div class="modal-body">
@@ -1136,14 +1136,14 @@
                             <small>The number of hours by which tickets which have been assigned this SLA plan should be resolved (set to a resolved type status). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
                         <div class="form-group my-1">
-                            <div class="row ml-2">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="edit_customRadio1" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label" for="edit_customRadio1">Activate</label>
+                            <div class="ml-2 my-1">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="customRadio1" name="customRadio" class="form-check-input">
+                                    <label class="custom-control-label" for="customRadio1">Activate</label>
                                 </div>
-                                <div class="custom-control custom-radio ml-2">
-                                    <input type="radio" id="edit_customRadio2" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label" for="edit_customRadio2">Deactivate</label>
+                                <div class="form-check form-check-inline ml-2">
+                                    <input type="radio" id="customRadio2" name="customRadio" class="form-check-input">
+                                    <label class="custom-control-label" for="customRadio2">Deactivate</label>
                                 </div>
                             </div>
                             <small>Whether or not this SLA plan is enabled.</small>
