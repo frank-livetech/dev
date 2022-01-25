@@ -904,9 +904,9 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-                                <img src="{{asset ('public//files/file_icon/Pdf.png')}}"  alt="">
+                                <img src="{{asset ('public/files/file_icon/Pdf.png')}}"  alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public//files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -918,9 +918,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
 
-                                <img src="{{asset ('public//files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
+                                <img src="{{asset ('public/files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
                                 <span class="fileName">${item}</span>
-                                <a href="{{asset('public//files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -929,7 +929,7 @@ function getTicketDetailsContent() {
                                 <div class="card__corner">
                                     <div class="card__corner-triangle"></div>
                                 </div>
-                            <div class="borderOne">
+                            <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
  
                                 <img src="{{asset ('public/files/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
