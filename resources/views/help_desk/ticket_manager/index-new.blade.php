@@ -326,24 +326,22 @@
                                         <label class="control-label col-sm-12 end_padding text-white "><strong>Status</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="status-h5"></h5>
                                         <select class="select2 form-control " id="status" name="status" style="width: 100%; height:36px;">
-                                            
                                             @foreach($statuses as $status)
                                                 <option value="{{$status->id}}" data-color="{{$status->color}}" >{{$status->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white;;padding: 12px;">
+                                    <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white; padding: 12px;">
                                         <label class="control-label col-sm-12 end_padding text-white " ><strong>Priority</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="prio-h5"></h5>
                                         <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
-                                            {{-- <option value="">Select Priority</option> --}}
                                             @foreach($priorities as $priority)
                                                 <option value="{{$priority->id}}" data-color="{{$priority->priority_color}}" >{{$priority->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-2 chim text-center " style=";padding: 12px;">
-                                        <button class="btn btn-primary upBtn"> Update</button>
+                                        <button class="btn btn-primary upBtn" onclick="updateTickets()"> Update</button>
                                         <!-- <span style="cursor:pointer;" onclick="flagTicket(this, 33);" aria-hidden="true"></span> -->
                                     </div>
             

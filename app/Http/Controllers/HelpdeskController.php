@@ -313,6 +313,39 @@ class HelpdeskController extends Controller
         }
     }
 
+
+    // updated selected ticket
+    public function update_selected_ticket(Request $request) {
+
+        $tkt_id = explode(',', $request->tkt_id);
+        
+        for($i = 0; $i < count($tkt_id); $i++) {
+
+            $tk = Tickets::where('id' , $tkt_id[$i])->first();
+            $tk->assigned_to = $request->assigned_to;
+            $tk->type = $request->type;
+            $tk->status = $request->status;
+            $tk->priority = $request->priority;
+            $tk->dept_id = $request->dept_id;
+            $tk->updated_at = Carbon::now();
+            $tk->save();
+            
+            // save activity logs
+            $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+            $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$tk->coustom_id.'">'.$tk->coustom_id.'</a>  Updated By '. $name_link;
+
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'tickets' , $tkt_id[$i] , auth()->id() , $action_perform);
+
+        }
+
+        return response()->json([
+            "status_code" => 200 ,
+            "success" => true ,
+            "message" => "Updated Successfully!",
+        ]);
+    }
+
     public function save_tickets(Request $request){    
         $current_date = Carbon::now();
 

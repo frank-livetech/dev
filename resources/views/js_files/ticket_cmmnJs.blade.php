@@ -4,6 +4,7 @@
 let page_name = '';
 var system_date_format = $("#system_date_format").val();
 var usrtimeZone = $("#usrtimeZone").val();
+
 function initializeTicketTable(p_name='') {
     page_name = p_name;
     tickets_table_list = $('#ticket-table-list').DataTable({
@@ -76,15 +77,79 @@ function initializeTicketTable(p_name='') {
     });
 }
 
-// tkt single check box click
-$('.select_single').change(function() {
-    
-});
+
 
 function selectSingle(id) {
     let chck = $("#select_single_"+id).prop('checked');
-    (chck == true ? $('.show_tkt_btns').show() : $('.show_tkt_btns').hide());
+    $("#select_single_"+id).toggleClass('chkd');
+    if(chck == true) {
+        $('.show_tkt_btns').show()
+    }
+    var checked_tkt = jQuery(".chkd").length;
+    if(checked_tkt == 0) {
+        $('.show_tkt_btns').hide()
+    }
 }
+
+function updateTickets() {
+
+    var tkt_id = [];
+
+    $("input:checkbox[name=select_all]:checked").each(function() {
+        tkt_id.push( $(this).val() ); 
+    });
+
+    if(tkt_id.length == 0) {
+        toastr.error('select ticket first', { timeOut: 5000 });
+    }else{
+
+        let dept_id = $("#dept_id").val();
+        let assigned_to = $("#assigned_to").val();
+        let type = $("#type").val();
+        let status = $("#status").val();
+        let priority = $("#priority").val();
+
+        let form_data = new FormData();
+        form_data.append('dept_id' , dept_id)
+        form_data.append('assigned_to' , assigned_to)
+        form_data.append('type' , type)
+        form_data.append('status' , status)
+        form_data.append('priority' , priority)
+        form_data.append('tkt_id' , tkt_id)
+        
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            url: "{{route('admin.updateTkt')}}",
+            type: 'POST',
+            data: form_data,
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                console.log(data , "data");
+                if (data.status_code == 200 && data.success == true) {
+                    toastr.success(data.message, { timeOut: 5000 });
+
+                    get_ticket_table_list();
+                    $('.show_tkt_btns').hide();
+                } else {
+                    toastr.error(data.message, { timeOut: 5000});
+                }
+            },
+            error: function(e) {
+                console.log(e)
+            }
+
+        });
+    }
+
+    
+}
+
 
 $("#ShowGeneralSettings").click(function(){ 
     $("#general-opt").toggle();
@@ -212,7 +277,6 @@ function listTickets(f_key = '') {
 function redrawTicketsTable(ticket_arr) {
     var la_color = ``;
     tickets_table_list.clear().draw();
-    console.log(ticket_arr , "ticket_arr");
     $.each(ticket_arr, function(key, val) {
         let prior = '<div class="text-center">' + val['priority_name'] + '</div>';
         if (val['priority_color']) {
@@ -304,9 +368,7 @@ function redrawTicketsTable(ticket_arr) {
                 // use sla deadlines
                 let hm = val.sla_plan.reply_deadline.split('.');
                 rep_due = moment( moment(val.sla_rep_deadline_from).toDate() ).local().add(hm[0], 'hours');
-                console.log(rep_due , "final"); 
                 if(hm.length > 1) rep_due.add(hm[1], 'minutes');
-                console.log(rep_due , ":ow");
             }
             if(rep_due) {
                 // overdue or change format of the date
@@ -368,7 +430,7 @@ function redrawTicketsTable(ticket_arr) {
             la_color = `#8BB467`;
         }
         let row = `<tr>
-            <td><div class="text-center"><input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" name="select_all" value="${val['id']}"></div></td>
+            <td><div class="text-center"><input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" class="tkt_chk" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
             <td class='text-center'>${status}</td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
@@ -384,8 +446,6 @@ function redrawTicketsTable(ticket_arr) {
             <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
             
         </tr>`;
-// date col commented out
-        // <td>${ jsTimeZone(val['created_at']) }</td>
         
         tickets_table_list.row.add($(row)).draw();
     });

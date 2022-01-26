@@ -541,6 +541,10 @@ Route::get('/get-filtered-tickets/{dept?}/{sts?}','HelpdeskController@getFiltere
 
 Route::get('/ticket-details/{id}','HelpdeskController@get_details');
 Route::post('/update_ticket','HelpdeskController@update_ticket');
+
+Route::post('/update_selected_ticket','HelpdeskController@update_selected_ticket')->name("admin.updateTkt");
+
+
 Route::post('/merge_tickets','HelpdeskController@mergeTickets');
 
 Route::post('/searchEmails','HelpdeskController@searchEmails');
