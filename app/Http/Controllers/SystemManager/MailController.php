@@ -63,7 +63,12 @@ class MailController extends Controller
             $mail->mail_type = DB::Table("ticket_types")->where("id","=",$mail->mail_type_id)->first();
             $mail->department = DB::Table("departments")->where("id","=",$mail->mail_dept_id)->first();
         }
-        return $mails;
+
+        return response()->json([
+            "status_code" => 200 ,
+            "success" => true, 
+            "mails" => $mails,
+        ]);
     }
 
     public function get_email_by_id(Request $request) {

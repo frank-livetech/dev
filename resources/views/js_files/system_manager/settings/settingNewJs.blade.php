@@ -75,26 +75,26 @@ $(document).ready(function() {
             form_data.append("is_default", 0);
         }
 
-        if($('#reply_deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
-        if($('#due_deadline').val() > 12) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Deadline cannnot be greater than 12 hours',
-                showConfirmButton: false,
-                timer: swal_message_time
-            });
-            return false;
-        }
+        // if($('#reply_deadline').val() > 12) {
+        //     Swal.fire({
+        //         position: 'center',
+        //         icon: 'error',
+        //         title: 'Deadline cannnot be greater than 12 hours',
+        //         showConfirmButton: false,
+        //         timer: swal_message_time
+        //     });
+        //     return false;
+        // }
+        // if($('#due_deadline').val() > 12) {
+        //     Swal.fire({
+        //         position: 'center',
+        //         icon: 'error',
+        //         title: 'Deadline cannnot be greater than 12 hours',
+        //         showConfirmButton: false,
+        //         timer: swal_message_time
+        //     });
+        //     return false;
+        // }
 
         $.ajax({
             url: action,
@@ -379,6 +379,8 @@ $(document).ready(function() {
         }
     });
 
+    
+
     getAllSLA();
     get_departments_table_list();
     get_status_table_list();
@@ -388,6 +390,7 @@ $(document).ready(function() {
     get_project_type_table_list();
     get_priority_table_list();
     get_mails_table_list();
+    
     $("#dept_is_enabled").bootstrapSwitch();
     //Response Template
 
@@ -852,14 +855,14 @@ $(document).ready(function() {
         }
     });
 
-    get_departments_table_list();
-    get_status_table_list();
-    get_type_table_list();
-    get_customer_type_table_list();
-    get_dispatch_status_table_list();
-    get_project_type_table_list();
-    get_priority_table_list();
-    get_mails_table_list();
+    // get_departments_table_list();
+    // get_status_table_list();
+    // get_type_table_list();
+    // get_customer_type_table_list();
+    // get_dispatch_status_table_list();
+    // get_project_type_table_list();
+    // get_priority_table_list();
+    // get_mails_table_list();
 
     const textDark = Pickr.create({
         el: '#text-dark',
@@ -1170,6 +1173,98 @@ function getAllSLA() {
         },
         complete: function(data) {
             $(".loader_container").hide();
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function get_mails_table_list() {
+    
+    // mail_table_list.clear().draw();
+    $.ajax({
+        type: "GET",
+        url: mails_route,
+        dataType: 'json',
+        beforeSend: function(data) {
+            $("#emailtableloader").show();
+        },
+        success: function(data) {
+
+            if(data.status_code == 200 && data.success == true) {
+                var obj = data.mails;
+
+                $("#ticket-mails-list").DataTable().destroy();
+                $.fn.dataTable.ext.errMode = "none";
+                var tbl = $("#ticket-mails-list").DataTable({
+                    data: obj,
+                    columns: [{
+                            data: null,
+                            defaultContent: ""
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                return full.from_mail != null ? full.from_mail : '-';
+                            }
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                if (full.mail_type != null && full.mail_type != '') {
+                                    return full.mail_type.name != null ? full.mail_type.name : '-'
+                                } else {
+                                    return '-';
+                                }
+                            }
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                if (full.department != null && full.department != '') {
+                                    return full.department.name != null ? full.department.name : '-'
+                                } else {
+                                    return '-';
+                                }
+                            }
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                return full.registration_required != null ? full.registration_required : '-';
+                            }
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                return full.is_default != null ? full.is_default : '-';
+                            }
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                return `<div class="d-flex justify-content-center">
+                                        <button onclick="getEmailByID(${full.id})"  class="mx-1 btn btn-icon rounded-circle btn-outline-warning waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" onclick="deleteMail(${full.id})" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </div>`;
+                            }
+                        }
+                    ]
+                });
+
+                tbl.on("order.dt search.dt", function() {
+                    tbl.column(0, {
+                            search: "applied",
+                            order: "applied"
+                        })
+                        .nodes()
+                        .each(function(cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                }).draw();
+            }
+        },
+        complete: function(data) {
+            $("#emailtableloader").hide();
         },
         error: function(e) {
             console.log(e);
@@ -1539,11 +1634,12 @@ function get_status_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             return `<div class="d-flex justify-content-center">
-                                <button class="btn btn-circle btn-success mr-2" title="Edit Department" onclick="editStatus(` + full.id + `,'` + full.name + `','` + full.department_id + `','` + full.color + `' ,'` + full.slug + `' ,'` + full.seq_no + `' ,'` + full.status_counter + `')">
+                                <button class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department" onclick="editStatus(${full.id})">
                                     <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
                                     &nbsp;
-                                    <button class="btn btn-circle btn-danger" title = "Delete Status" onclick = "deleteStatus(` + full.id + `)">
-                                    <i class="fa fa-trash " aria-hidden="true"></i></button>
+                                    <button type="button" onclick="deleteStatus(${full.id})" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
                             </div>`;
                         }
                     },
@@ -2273,25 +2369,31 @@ function editResponseTemp(id, title, cat_id, temp_html, view_access) {
 
 }
 
-function editStatus(id, name, depart_id, color,slug,seq_no,sts_counter) {
+function editStatus(id) {
 
-    $('#status_name').val(name);
-    $('#status_id').val(id);
-    $('#status_color').val(color);
-    $('#slug').val(slug);
-    $('#seq_no').val(seq_no);
-    if(sts_counter == 1){
-        $('#status_counter').prop('checked');
+    var item = g_status_arr.find(item => item.id === id);
+    console.log(item , "item");
+    $("#stat").html('Edit Status');
+    if(item != null) {
+
+        $('#status_name').val(item.name);
+        $('#status_id').val(id);
+        $('#status_color').val(item.color);
+        $('#slug').val(item.slug);
+        $('#seq_no').val(item.seq_no);
+
+        let depid = item.department_id.split(',');
+        $('#department_id2').val(depid).trigger('change');
+
+        item.status_counter == 1 ? 
+            $('#status_counter').prop('checked', true) :  
+            $('#status_counter').prop('checked', false);
+        
+
+    
+        $('#save-status').modal('show');
+
     }
-
-    var dept_id = depart_id.split(",");
-    $('#department_id2').val(dept_id).trigger('change');
-
-    $('#save-status').modal('show');
-
-        $("#stat").html('Edit Status');
-
-
 }
 
 function editType(id, name) {
@@ -2363,8 +2465,8 @@ function showDepModel(id, name) {
 function showStatusModel(id, name) {
     $('#status_name').val(name);
     $('#status_id').val(id);
-        $("#stat").html('New Status');
-// alert();
+    $("#stat").html('New Status');
+
     $(".form-control").val("");
 
     $('#save-status').modal('show');
@@ -2489,96 +2591,7 @@ function showPop3Model(type, edit = false, id = '') {
     $('#save-mail').modal('show');
 }
 
-function get_mails_table_list() {
-    
-    // mail_table_list.clear().draw();
-    $.ajax({
-        type: "GET",
-        url: mails_route,
-        dataType: 'json',
-        beforeSend: function(data) {
-            $("#emailtableloader").show();
-        },
-        success: function(data) {
-            var obj = data.data;
-            console.log(data, "mail data");
 
-            $("#ticket-mails-list").DataTable().destroy();
-            $.fn.dataTable.ext.errMode = "none";
-            var tbl = $("#ticket-mails-list").DataTable({
-                data: obj,
-                pageLength: 25,
-                bInfo: true,
-                paging: true,
-                columns: [{
-                        data: null,
-                        defaultContent: ""
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return full.from_mail != null ? full.from_mail : '-';
-                        }
-
-
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            if (full.mail_type != null && full.mail_type != '') {
-                                return full.mail_type.name != null ? full.mail_type.name : '-'
-                            } else {
-                                return '-';
-                            }
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            if (full.department != null && full.department != '') {
-                                return full.department.name != null ? full.department.name : '-'
-                            } else {
-                                return '-';
-                            }
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return full.registration_required != null ? full.registration_required : '-';
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return full.is_default != null ? full.is_default : '-';
-                        }
-                    },
-                    {
-                        "render": function(data, type, full, meta) {
-                            return `<div class="d-flex justify-content-center">
-                                    <button onclick="getEmailByID(` + full.id + `)" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></button>&nbsp;
-                                    <button onclick="deleteMail(` + full.id + `)" class="btn btn-danger ml-2"><i class="fas fa-trash"></i></button>
-                                </div>`;
-                        }
-                    }
-                ]
-            });
-
-            tbl.on("order.dt search.dt", function() {
-                tbl.column(0, {
-                        search: "applied",
-                        order: "applied"
-                    })
-                    .nodes()
-                    .each(function(cell, i) {
-                        cell.innerHTML = i + 1;
-                    });
-            }).draw();
-        },
-        complete: function(data) {
-            $("#emailtableloader").hide();
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    });
-}
    
 
 function getEmailByID(id) {
@@ -2876,9 +2889,6 @@ function updateEmailQueue() {
     });
 
 }
-
-
-
 
 function verify_connection(el, value) {
 

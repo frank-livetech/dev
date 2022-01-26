@@ -643,7 +643,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <div class="table-responsive">
-                                                            <table id="ticket-mails-list" class="display table-striped table-bordered text-center ticket-mails-list"
+                                                            <table id="ticket-mails-list" class="display table-striped table-bordered text-center"
                                                                 style="width:100%">
                                                                 <thead>
                                                                     <tr>
@@ -1127,22 +1127,22 @@
                         </div>
                         <div class="form-group my-1">
                             <label for="departmrnt">Reply Deadline</label>
-                            <input class="form-control" min="1" max="12" type="number" name="reply_deadline" id="reply_deadline" placeholder="">
+                            <input class="form-control"  type="number" name="reply_deadline" id="reply_deadline" placeholder="">
                             <small class="text-end"> The number of hours by which a ticket should be replied to (following a reply from an end user). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
                         <div class="form-group my-1">
                             <label for="departmrnt">Resolution due Deadline</label>
-                            <input class="form-control" min="1" max="12" type="number" name="due_deadline" id="due_deadline" placeholder="">
+                            <input class="form-control"  type="number" name="due_deadline" id="due_deadline" placeholder="">
                             <small>The number of hours by which tickets which have been assigned this SLA plan should be resolved (set to a resolved type status). Please type the number of hours and minutes separated by a decimal point (i.e 1.30 becomes 1 hour and 30 minutes)</small>
                         </div>
                         <div class="form-group my-1">
                             <div class="ml-2 my-1">
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" id="customRadio1" name="customRadio" class="form-check-input">
+                                    <input type="radio" id="edit_customRadio1" name="customRadio" class="form-check-input">
                                     <label class="custom-control-label" for="customRadio1">Activate</label>
                                 </div>
                                 <div class="form-check form-check-inline ml-2">
-                                    <input type="radio" id="customRadio2" name="customRadio" class="form-check-input">
+                                    <input type="radio" id="edit_customRadio2" name="customRadio" class="form-check-input">
                                     <label class="custom-control-label" for="customRadio2">Deactivate</label>
                                 </div>
                             </div>
