@@ -291,7 +291,7 @@
                 <div class="row show_tkt_btns" style="display:none;">
                     <div class="col-md-12">
                         <div class="card" >
-                            <div class="card-body drop-dpt " style="background-color:red;border-radius:9px;">
+                            <div class="card-body drop-dpt " style="background-color:#b0bec5;border-radius:9px;">
                                 <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
                                     <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
                                         <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
