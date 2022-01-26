@@ -375,7 +375,7 @@ class MailController extends Controller
                                         // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
                                         $all_parsed = $mail;
                                         $attaches = $this->mail_parse_attachments($mail, $ticket->id);
-                                        $reply = $this->email_body_parser($all_parsed);
+                                        $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
         
                                         //converting html to secure bbcode
                                         $bbcode = new BBCode();
@@ -621,7 +621,7 @@ class MailController extends Controller
         return false;
     }
 
-    private function email_body_parser($all_parsed, $type="reply") {
+    private function email_body_parser($all_parsed, $type="reply",$from = '') {
         $data = '';
         // $attachments = '<br><br>';
         foreach ($all_parsed as $key => $value) {
@@ -632,7 +632,7 @@ class MailController extends Controller
             //     $attachments .= $value['data'];
             // }
         }
-
+        
         if(array_key_exists(2, $all_parsed) && array_key_exists('charset', $all_parsed[2])) {
             $data = $all_parsed[2];
         } else if(array_key_exists('1.2', $all_parsed) && array_key_exists('charset', $all_parsed['1.2'])) {
@@ -646,6 +646,13 @@ class MailController extends Controller
         if($data['charset'] == 'ISO-8859-1' || $data['charset'] == 'iso-8859-1') $data = utf8_encode($data['data']);
         else $data = $data['data'];
 
+        if($type == 'reply'){
+            $str = 'From: '.$from.' <'.$from.'>';
+            if (str_contains($data, $str)){
+                echo "yes";exit;
+            }
+
+        }
         // return $data.$attachments;
         return $data;
         // if($type == 'ticket') {
