@@ -375,20 +375,38 @@ class MailController extends Controller
                                     //         $query->where('customer_id', $cid)->orWhere('assigned_to', $sid);
                                     //     })->first();
                                     // }
-                                    
+                                    $bbcode = new BBCode();
                                     if(!empty($ticket)) {
                                         // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
                                         $all_parsed = $mail;
                                         $attaches = $this->mail_parse_attachments($mail, $ticket->id);
                                         $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
-        
+                                        $html_reply = $bbcode->convertFromHtml($reply);
+                                        
                                         //converting html to secure bbcode
-                                        $bbcode = new BBCode();
-        
+                                        
+                                        $str = 'From: '.$eq_value->mailserver_username.' <'.$eq_value->mailserver_username.'>';
+                                        $gmail_str = $eq_value->mailserver_username;
+                                        // // echo $gmail_str;exit;
+                                        if (str_contains($html_reply, $str)){
+                                            echo "yes";exit;
+                                        }else if(str_contains($html_reply, $gmail_str)){
+                                            // echo 'in gmail if';
+                                            if(str_contains($html_reply, '<div class="gmail_quote">')){
+                                                // echo "yes";exit;
+                                                $content =  explode('<div class="gmail_quote">',$reply);
+                                                $html_reply = $content[0];
+                                            }
+                                            
+                                        }
+                                        
+                                        // $content = explode($reply,'<div class="gmail_quote">');
+                                        // dd($html_reply);exit;
+                                        
                                         $data = array(
                                             "ticket_id" => $ticket->id,
                                             "msgno" => $message,
-                                            "reply" => $bbcode->convertFromHtml($reply),
+                                            "reply" => $html_reply,
                                             "date" => new Carbon($all_parsed[0]['parsed']['Date']),
                                             "attachments" => $attaches
                                         );
@@ -546,7 +564,7 @@ class MailController extends Controller
                 return response()->json($response);
             }
         } catch(Throwable $e) {
-            $response['message'] = $e;
+            $response['message'] = $e->getMessage();
                 $response['status_code'] = 500;
                 $response['success'] = true;
                 return response()->json($response);
@@ -650,14 +668,18 @@ class MailController extends Controller
 
         if($data['charset'] == 'ISO-8859-1' || $data['charset'] == 'iso-8859-1') $data = utf8_encode($data['data']);
         else $data = $data['data'];
+        
+        // if($type == 'reply'){
+        //     $str = 'From: '.$from.' <'.$from.'>';
+        //     $gmail_str = $from.' wrote:';
+        //     // echo $gmail_str;exit;
+        //     if (str_contains($data, $str)){
+        //         echo "yes";exit;
+        //     }else if(str_contains($data, $gmail_str)){
+        //         echo "yes";exit;
+        //     }
 
-        if($type == 'reply'){
-            $str = 'From: '.$from.' <'.$from.'>';
-            if (str_contains($data, $str)){
-                echo "yes";exit;
-            }
-
-        }
+        // }
         // return $data.$attachments;
         return $data;
         // if($type == 'ticket') {
