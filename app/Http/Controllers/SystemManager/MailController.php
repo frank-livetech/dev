@@ -269,7 +269,7 @@ class MailController extends Controller
             $repliesSaved = false;
 
             $emailQueue = DB::table('email_queues')->where('is_deleted', 0)->get()->toArray();
-
+            
             foreach ($emailQueue as $eq_value) {
                 if($eq_value->is_enabled == 'no') continue;
 
@@ -385,16 +385,25 @@ class MailController extends Controller
                                         
                                         //converting html to secure bbcode
                                         
-                                        $str = 'From: '.$eq_value->mailserver_username.' <'.$eq_value->mailserver_username.'>';
+                                        
                                         $gmail_str = $eq_value->mailserver_username;
                                         // // echo $gmail_str;exit;
-                                        if (str_contains($html_reply, $str)){
-                                            echo "yes";exit;
+                                        if (str_contains($html_reply, '<div id="appendonsend"></div>')){
+                                            // echo "yes";
+                                            $content =  explode('<div id="appendonsend"></div>',$html_reply);
+                                            $html_reply = $content[0].'</div></body></html>';
+                                            // dd($html_reply);exit;
+                                            
+                                        }else if(str_contains($html_reply, '<div id="divRplyFwdMsg"></div>')){
+                                            
+                                            $content =  explode('<div class="divRplyFwdMsg">',$html_reply);
+                                            $html_reply = $content[0].'</div></body></html>';
+                                            
                                         }else if(str_contains($html_reply, $gmail_str)){
                                             // echo 'in gmail if';
                                             if(str_contains($html_reply, '<div class="gmail_quote">')){
                                                 // echo "yes";exit;
-                                                $content =  explode('<div class="gmail_quote">',$reply);
+                                                $content =  explode('<div class="gmail_quote">',$html_reply);
                                                 $html_reply = $content[0];
                                             }
                                             
