@@ -58,8 +58,7 @@
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center">
                     <h5 class="modal-title" class="modal-title">Add Feature</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>                </div>
                 <div class="modal-body">
                     <div class="add-contact-box">
                         <div class="add-contact-content">
@@ -147,9 +146,7 @@
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center">
                     <h5 class="modal-title" class="modal-title">Update Feature</h5>
-                    <button type="button" class="close ml-auto" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="loader_container" style="display:none">
