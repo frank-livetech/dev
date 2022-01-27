@@ -551,29 +551,44 @@ $(document).ready(function(){
         $("#dropD ").find("h5").show();
     selectD();
 })
+
 $('.br-white').click(function(event){
-        event.stopPropagation();
+    event.stopPropagation();
 
-        $("#dropD ").find(".select2").toggle();
-        $("#dropD ").find("h5").toggle();
-        $(".chim ").find("a").toggleClass("pt-6");
-        $(".upBtn").toggleClass("mt-2");
-    });
+    $("#dropD ").find(".select2").toggle();
+    $("#dropD ").find("h5").toggle();
+    $(".chim ").find("a").toggleClass("pt-6");
+    $(".upBtn").toggleClass("mt-2");
+});
+
 $(".select2").change(function () {
-        selectD();
-    })
+    selectD();
+})
 
-    function selectD(){ 
-        var Priority =  $("#prio-label").find(".select2 option:selected").text();
-        $("#prio-h5").text(Priority);    
-        var Dep =  $("#dep-label").find(".select2 option:selected").text();
-        $("#dep-h5").text(Dep);    
-        var Tech =  $("#tech-label").find(".select2 option:selected").text();
-        $("#tech-h5").text(Tech);    
-        var Status =  $("#status-label").find(".select2 option:selected").text();
-        $("#status-h5").text(Status);    
-        var Type =  $("#type-label").find(".select2 option:selected").text();
-        $("#type-h5").text(Type);    
+function selectD(){ 
+    var Priority =  $("#prio-label").find(".select2 option:selected").text();
+    $("#prio-h5").text(Priority);    
+    var Dep =  $("#dep-label").find(".select2 option:selected").text();
+    $("#dep-h5").text(Dep);    
+    var Tech =  $("#tech-label").find(".select2 option:selected").text();
+    $("#tech-h5").text(Tech);    
+    var Status =  $("#status-label").find(".select2 option:selected").text();
+    $("#status-h5").text(Status);    
+    var Type =  $("#type-label").find(".select2 option:selected").text();
+    $("#type-h5").text(Type);    
 
-    }
+}
+
+
+// status change bar coor
+$('#status').change(function() {
+    var color = $('#status option:selected').data('color');
+    $('.drop-dpt').css('background-color',color);    
+});
+
+$('#priority').change(function() {
+    var color = $('#priority option:selected').data('color');
+    $('#prio-label').css('background-color',color);    
+});
+
 </script>
