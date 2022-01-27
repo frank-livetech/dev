@@ -2396,7 +2396,14 @@ class HelpdeskController extends Controller
 
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by '. $user->name;
                 $notification_title = 'Reply Added';
-            }else if($action_name == "Type updated") {
+            }else if($action_name == 'ticket_cus_reply'){
+                $attachs = $data_id;
+                $pathTo = 'replies/'.$ticket['id'];
+
+                $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by '. $user->name;
+                $notification_title = 'Reply Added';
+            }
+            else if($action_name == "Type updated") {
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' } Type Updated by '. $user->name;
                 $notification_title = 'Ticket # { ' . $ticket['coustom_id']. ' } Type Updated';
             }else if($action_name == "Deptartment updated") {
