@@ -288,16 +288,32 @@ class MailController extends Controller
                 $helpDesk = new HelpdeskController();
 
                 foreach ($mails as $key => $message) {
+                    
                     $mail = imap_fetchstructure($imap, $message);
+                    $type = $mail->subtype;
+                    // dd($mail->subtype);exit;
+                    
+                    // For getting basic info , subject , mail from , mail to etc.
+                    $header=imap_fetch_overview($imap, $message);
+                    $strAddress_Sender=$header[0]->from;
+                    $date = $header[0]->date;
+                    $strFromName = explode(' ', $strAddress_Sender);
+                    $strAddress_Sender = explode('<',$strAddress_Sender);
+                    $strAddress_Sender = trim($strAddress_Sender[1],'>');
+                    $email_subject =$header[0]->subject;
+                    /////////////////////////////////////////////////////////////
+                    
                     $mail = $this->mail_get_parts($imap, $message, $mail, 0);
                     $mail[0]["parsed"] = $this->mail_parse_headers($mail[0]["data"]);
-
-                    // print_r($mail); continue;
-                    
-                    if(array_key_exists('Authentication-Results', $mail[0]["parsed"]) && !empty($mail[0]["parsed"]['Subject'])) {
+                  
+                    // dd($date);exit;
+                    if(!empty($email_subject)) {
+                    // if(array_key_exists('Authentication-Results', $mail[0]["parsed"]) && !empty($mail[0]["parsed"]['Subject'])) {
                         // get the sender email from headers
-                        $emailFrom =  $this->getCustomerEmailParser($mail[0]["parsed"]['Authentication-Results']);
-            
+                        // dd($email_subject);exit;
+                        // $emailFrom =  $this->getCustomerEmailParser($mail[0]["parsed"]['Authentication-Results']);
+                        $emailFrom =  $strAddress_Sender;
+                        
                         if(!empty($emailFrom)) {
                             if($eq_value->registration_required == 'yes') {
                                 // email is from our customer
@@ -306,7 +322,7 @@ class MailController extends Controller
                                 $customer = Customer::where('email', trim($emailFrom))->first();
 
                                 if(empty($customer)) {
-                                    $name = explode(' ', $mail[0]["parsed"]['From']);
+                                    $name = $strFromName;
                                     $customer = Customer::create([
                                         'username' => trim($emailFrom),
                                         'first_name' => array_key_exists(0, $name) ? $name[0] : '',
@@ -314,14 +330,14 @@ class MailController extends Controller
                                         'email' => trim($emailFrom)
                                     ]);
                                 }
-                            }   
+                            }  
                             
-                            if(strpos($mail[0]["parsed"]['Subject'], '[') !== false && strpos($mail[0]["parsed"]['Subject'], ']:') !== false && strpos($mail[0]["parsed"]['Subject'], '!') !== false){
+                            if(strpos($email_subject, '[') !== false && strpos($email_subject, ']:') !== false && strpos($email_subject, '!') !== false){
                                 $id = '';
-                                if(strpos($mail[0]["parsed"]['Subject'], $eq_value->mail_queue_address) !== false){
+                                if(strpos($email_subject, $eq_value->mail_queue_address) !== false){
                                     
-                                    $pos = strpos($mail[0]["parsed"]['Subject'], '!');
-                                    $sub = substr($mail[0]["parsed"]['Subject'],$pos+1);
+                                    $pos = strpos($email_subject, '!');
+                                    $sub = substr($email_subject,$pos+1);
                                     $pos1 = strpos($sub,']:');
                                     $id = substr($sub,0,$pos1);
                                     
@@ -331,8 +347,8 @@ class MailController extends Controller
                                     }
                                     
                                 }else{
-                                    $pos = strpos($mail[0]["parsed"]['Subject'], '!');
-                                    $sub = substr($mail[0]["parsed"]['Subject'],$pos+1);
+                                    $pos = strpos($email_subject, '!');
+                                    $sub = substr($email_subject,$pos+1);
                                     $pos1 = strpos($sub,']:');
                                     $id = substr($sub,0,$pos1);
                                     
@@ -346,12 +362,12 @@ class MailController extends Controller
                                     $ticketID = $id;
                                     // echo $ticketID;exit;
                                     if(empty($ticketID)) {
-                                        echo 'Ticket with subject "'.$mail[0]["parsed"]['Subject']. '" not found!<br>';
+                                        echo 'Ticket with subject "'.$email_subject. '" not found!<br>';
                                         continue;
                                     }
                                     // save ticket reply
-                                    // $sbj = str_replace('Re: ', '', $mail[0]["parsed"]['Subject']);
-                                    $sbj = str_replace('Re: ', '', $mail[0]["parsed"]['Subject']);
+                                    // $sbj = str_replace('Re: ', '', $email_subject);
+                                    $sbj = str_replace('Re: ', '', $email_subject);
                                     $cid = (!empty($customer)) ? $customer->id : '';
                                     $sid = '';
                                     
@@ -385,38 +401,68 @@ class MailController extends Controller
                                         
                                         //converting html to secure bbcode
                                         
+                                        // dd($html_reply);exit;
                                         
                                         $gmail_str = $eq_value->mailserver_username;
-                                        // // echo $gmail_str;exit;
-                                        if (str_contains($html_reply, '<div id="appendonsend"></div>')){
-                                            // echo "yes";
-                                            $content =  explode('<div id="appendonsend"></div>',$html_reply);
-                                            $html_reply = $content[0].'</div></body></html>';
-                                            // dd($html_reply);exit;
-                                            
-                                        }else if(str_contains($html_reply, '<div id="divRplyFwdMsg"></div>')){
-                                            
-                                            $content =  explode('<div class="divRplyFwdMsg">',$html_reply);
-                                            $html_reply = $content[0].'</div></body></html>';
-                                            
-                                        }else if(str_contains($html_reply, $gmail_str)){
-                                            // echo 'in gmail if';
-                                            if(str_contains($html_reply, '<div class="gmail_quote">')){
+                                        $tkt_str = '['.$eq_value->mail_queue_address.' !'.$ticket->coustom_id.']:';
+                                        if($type == 'PLAIN'){
+                                            $html_reply = nl2br($html_reply);
+                                        }else{
+                                         
+                                            // // echo $gmail_str;exit;
+                                            if (str_contains($html_reply, '<div id="appendonsend"></div>')){
+                                                echo "yes";
+                                                $content =  explode('<div id="appendonsend"></div>',$html_reply);
+                                                $html_reply = $content[0].'</div></body></html>';
+                                                // dd($html_reply);exit;
+                                                
+                                            }else if(str_contains($html_reply, '<div id="divRplyFwdMsg"></div>')){
+                                                echo "yes";
+                                                $content =  explode('<div class="divRplyFwdMsg">',$html_reply);
+                                                $html_reply = $content[0].'</div></body></html>';
+                                                
+                                            }else if(str_contains($html_reply, '<div class="gmail_quote">')){
+                                                
                                                 // echo "yes";exit;
                                                 $content =  explode('<div class="gmail_quote">',$html_reply);
                                                 $html_reply = $content[0];
-                                            }
+                                                
+                                                
+                                            }else if(str_contains($html_reply,$tkt_str)){
+                                                
+                                                if(str_contains($html_reply,'From:')){
+                                                    if(str_contains($html_reply,'<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">')){
+                                                        
+                                                        $content =  explode('<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">',$html_reply);
+                                                        $html_reply = $content[0].'</div></body></html>';
+                                                    }else{
+                                                        // dd($reply);exit;
+                                                        if(str_contains($html_reply,'From: '.$eq_value->mailserver_username)){
+                                                            echo "sdfsdf";
+                                                        }else{
+                                                            $content =  explode('From:',$html_reply);
+                                                            $html_reply = $content[0].'</b></p></div></body></html>';
+                                                        }
+                                                        
+                                                    }
+                                                    
+                                                }
+                                                
+                                            }   
                                             
                                         }
                                         
+                                        
                                         // $content = explode($reply,'<div class="gmail_quote">');
+                                        // echo nl2br($html_reply);exit;
                                         // dd($html_reply);exit;
                                         
                                         $data = array(
                                             "ticket_id" => $ticket->id,
+                                            "type" => 'cron',
                                             "msgno" => $message,
                                             "reply" => $html_reply,
-                                            "date" => new Carbon($all_parsed[0]['parsed']['Date']),
+                                            "date" => new Carbon($date),
                                             "attachments" => $attaches
                                         );
     
@@ -488,8 +534,8 @@ class MailController extends Controller
                                         $customer_id = $customer->id;
                                     }
                                 //  if(!empty($customer)) {
-                                    // $ticket = Tickets::where('customer_id', $customer->id)->where('subject', trim($mail[0]["parsed"]['Subject']))->first();
-                                    $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $mail[0]["parsed"]['Subject'])->first();
+                                    // $ticket = Tickets::where('customer_id', $customer->id)->where('subject', trim($email_subject))->first();
+                                    $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $email_subject)->first();
                                     
                                     if(empty($ticket)) {
                                         $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
@@ -498,7 +544,7 @@ class MailController extends Controller
                                         $ticket = Tickets::create([
                                             'dept_id' => $eq_value->mail_dept_id,
                                             'priority' => $eq_value->mail_priority_id,
-                                            'subject' => trim($mail[0]["parsed"]['Subject']),
+                                            'subject' => trim($email_subject),
                                             'customer_id' => $customer_id,
                                             'status' => $eq_value->mail_status_id,
                                             'type' => $eq_value->mail_type_id,
@@ -550,7 +596,7 @@ class MailController extends Controller
                              
                         }
                     }
-
+//  dd('before delete');exit;
                     imap_delete($imap, $message);
                 }
 
@@ -844,7 +890,6 @@ class MailController extends Controller
 
     public function mail_decode_part($connection,$message_number,$part,$prefix){
         $attachment = array();
-    
         if($part->ifdparameters) {
             foreach($part->dparameters as $object) {
                 $attachment[strtolower($object->attribute)]=$object->value;
@@ -865,13 +910,33 @@ class MailController extends Controller
             }
         }
     
-        $attachment['data'] = imap_fetchbody($connection, $message_number, $prefix);
+        // $attachment['data'] = imap_fetchbody($connection, $message_number, $prefix);
+        // dd($attachment['data']);exit;
+        $attachment['data'] = ($prefix)?
+        imap_fetchbody($connection,$message_number,$prefix):  // multipart
+        imap_body($connection,$message_number);
         if($part->encoding == 3) { // 3 = BASE64
             $attachment['data'] = base64_decode($attachment['data']);
         }
         elseif($part->encoding == 4) { // 4 = QUOTED-PRINTABLE
             $attachment['data'] = quoted_printable_decode($attachment['data']);
+            // echo $attachment['data'];
+            // dd($attachment['data']);exit;
         }
+        
+    //     if ($part->type==0 && $attachment['data']) {
+    //     // Messages may be split in different parts because of inline attachments,
+    //     // so append parts together with blank row.
+    //     if (strtolower($part->subtype)=='plain'){
+    //         $plainmsg .= trim($attachment['data']) ."\n\n";
+    //         return $plainmsg;
+    //     }
+    //     else{
+    //         $htmlmsg .= $attachment['data'] ."<br><br>";
+    //     $charset = $params['charset'];  // assume all parts are same charset
+    //     }
+    // }
+        
         return($attachment);
     }
 
