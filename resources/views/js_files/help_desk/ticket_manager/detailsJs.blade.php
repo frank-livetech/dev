@@ -1533,6 +1533,7 @@ $('#status').change(function() {
     var status = $(this).val();
 
     var color = $('#status option:selected').data('color');
+    $('.drop-dpt').css('background-color',color);
     // no change to do update
     if (status == ticket.status)
     {
@@ -1566,6 +1567,7 @@ $('#status').change(function() {
 $('#priority').change(function() {
     var priority = $(this).val();
     var color = $('#priority option:selected').data('color');
+    $('#prio-label').css('background-color',color);
     // no change to do update
     if (priority == ticket.priority){
         updates_Arr = $.grep(updates_Arr, function(e){ 
