@@ -326,7 +326,9 @@ class HomeController
         // return dd($request->all());
         $customer = Customer::where('email' , auth()->user()->email)->first();
         $ticket = Tickets::where('id' , $request->ticket_id)->first();
-
+        $name_link = "";
+        $action_perform = "";
+        
         if($ticket) {
 
             if($ticket->trashed === 1) {
@@ -345,12 +347,24 @@ class HomeController
                     "attachments" => $request->attachments,
                     "is_published" => 1,
                 );
+                $name_link = '<a href="'.url('customer-profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
 
                 if($request->has('id')) {
                     TicketReply::where('id' , $request->id)->update($data);
+                    $action_perf = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
                 }else{
                     TicketReply::create($data); 
+                    $action_perf = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
                 }
+
+                $ticket->updated_at = Carbon::now();
+                $ticket->save();
+
+                $log = new ActivitylogController();
+                $helpDesk = new HelpdeskController();
+
+                $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $request->reply, $data['cc'], $action, $data['attachments']);
 
                 return response()->json([
                     "message" => ($request->has('id') ? 'Ticket Reply Added Successfully' : 'Reply Updated Successfully'),
