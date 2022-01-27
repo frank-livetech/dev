@@ -276,9 +276,14 @@
                 });
             }
         });
-        // $(window).on('load', function() {
-            
-        // });
+        $(window).on('load', function() {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        });
         var user_photo_url = "{{asset('files/user_photos')}}";
         var url = "{{asset('/get_all_counts')}}";
         var get_notifications = "{{url('getNotifications')}}";

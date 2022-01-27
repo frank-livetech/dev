@@ -83,7 +83,7 @@
                                                         <div class="custom-file">
                                                             <input type="file" class="form-control mb-1" id="site_logo"
                                                                 name="site_logo">
-                                                                <div class="d-flex" style="top: 37px; position: absolute;">
+                                                                <div class="d-flex" style="top: 45px; position: absolute;">
                                                                     <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
                                                             <!-- <label class="custom-file-label" for="site_logo">Choose file</label> -->
@@ -100,7 +100,7 @@
                                                         <div class="custom-file">
                                                             <input type="file" class="form-control mb-1" id="site_favicon"
                                                                 name="site_favicon">
-                                                                <div class="d-flex" style="top: 37px; position: absolute;">
+                                                                <div class="d-flex" style="top: 45px; position: absolute;">
                                                                     <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
                                                             <!-- <label class="custom-file-label" for="site_favicon">Choose file</label> -->
@@ -149,7 +149,7 @@
                                                         <div class="custom-file">
                                                             <input type="file" class="form-control mb-1" id="login_logo"
                                                                 name="login_logo">
-                                                                <div class="d-flex" style="top: 37px; position: absolute;">
+                                                                <div class="d-flex" style="top: 45px; position: absolute;">
                                                                     <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
                                                             <!-- <label class="custom-file-label" for="login_logo">Choose file</label> -->
@@ -164,7 +164,7 @@
                                                         <div class="custom-file">
                                                             <input type="file" class="form-control mb-1" id="customer_logo"
                                                                 name="customer_logo">
-                                                                <div class="d-flex" style="top: 37px; position: absolute;">
+                                                                <div class="d-flex" style="top: 45px; position: absolute;">
                                                                     <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
                                                             <!-- <label class="custom-file-label" for="customer_logo">Choose file</label> -->
@@ -217,7 +217,7 @@
                                                         <div class="custom-file">
                                                             <input type="file" class="form-control mb-1" id="company_logo"
                                                                 name="company_logo">
-                                                                <div class="d-flex" style="top: 37px; position: absolute;">
+                                                                <div class="d-flex" style="top: 45px; position: absolute;">
                                                                     <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
                                                             <!-- <label class="custom-file-label" for="company_logo">Choose file</label> -->
@@ -232,7 +232,7 @@
                                                         <div class="custom-file">
                                                             <input type="file" class="form-control mb-1" id="user_logo"
                                                                 name="user_logo">
-                                                                <div class="d-flex" style="top: 37px; position: absolute;">
+                                                                <div class="d-flex" style="top: 45px; position: absolute;">
                                                                     <small id="name13" class="badge badge-light-primary">Note</small><small style="padding-left: 6px;padding-top: 3px;">Allowed File Extensions jpg, jpeg, png</small>
                                                                 </div>
                                                             <!-- <label class="custom-file-label" for="user_logo">Choose file</label> -->

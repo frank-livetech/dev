@@ -200,12 +200,12 @@
                             </div>
                             <div class="col-md-6 form-group" style="margin-top: 15px;">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="php_mailer">
+                                    <input type="checkbox" class="form-check-input " id="php_mailer">
                                     <label class="custom-control-label" for="php_mailer">User PHP Mailer </label>
                                 </div>
 
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="is_enabled">
+                                    <input type="checkbox" class="form-check-input" id="is_enabled">
                                     <label class="custom-control-label" for="is_enabled">Email Queue is <span id="is_enabled_text" class="text-danger">disabled</span>  </label>
                                 </div>
                             </div>
@@ -269,25 +269,25 @@
                         <div class="row" style="margin-top: 35px;">
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="registration_required">
+                                    <input type="checkbox" class="form-check-input" id="registration_required">
                                     <label class="custom-control-label" for="registration_required">Registration Required</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="email_outbound">
+                                    <input type="checkbox" class="form-check-input" id="email_outbound">
                                     <label class="custom-control-label" for="email_outbound">Email Outbound</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="autosend_ticket">
+                                    <input type="checkbox" class="form-check-input" id="autosend_ticket">
                                     <label class="custom-control-label" for="autosend_ticket">Do not send new ticket autoresponder</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="is_dept_default">
+                                    <input type="checkbox" class="form-check-input" id="is_dept_default">
                                     <label class="custom-control-label" for="is_dept_default">Set as default</label>
                                 </div>
                             </div>
@@ -351,12 +351,12 @@
                             </div>
                             <div class="col-md-6 form-group" style="margin-top:15px;">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="edit_php_mailer">
+                                    <input type="checkbox" class="form-check-input" id="edit_php_mailer">
                                     <label class="custom-control-label" for="edit_php_mailer">User PHP Mailer </label>
                                 </div>
 
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="edit_is_enabled">
+                                    <input type="checkbox" class="form-check-input" id="edit_is_enabled">
                                     <label class="custom-control-label" for="edit_is_enabled">Email Queue is <span id="edit_is_enabled_text" class="text-danger">disabled</span> </label>
                                 </div>
                             </div>
@@ -420,25 +420,25 @@
                         <div class="row" style="margin-top: 35px;">
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="edit_reg">
+                                    <input type="checkbox" class="form-check-input" id="edit_reg">
                                     <label class="custom-control-label" for="edit_reg">Registration Required</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="edit_outbound_ticket">
+                                    <input type="checkbox" class="form-check-input" id="edit_outbound_ticket">
                                     <label class="custom-control-label" for="edit_outbound_ticket">Email Outbound</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="edit_autosend_ticket">
+                                    <input type="checkbox" class="form-check-input" id="edit_autosend_ticket">
                                     <label class="custom-control-label" for="edit_autosend_ticket">Send new ticket autoresponder</label>
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="edit_is_dept_default">
+                                    <input type="checkbox" class="form-check-input" id="edit_is_dept_default">
                                     <label class="custom-control-label" for="edit_is_dept_default">Set as default</label>
                                 </div>
                             </div>

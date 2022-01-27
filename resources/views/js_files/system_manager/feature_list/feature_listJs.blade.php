@@ -228,7 +228,7 @@ function get_all_feature_list() {
                         <td>
                             <div class="d-flex justify-content-center">
                                 <button title="Edit role" onclick="show_single_feature_list(` + data[i].f_id + `)" class="btn btn-warning btn-circle">
-                                <i class="mdi mdi-account-check font-20"></i></button>
+                                <i data-feather='edit'></i></button>
                             </div>
                         </td>
                     </tr>
