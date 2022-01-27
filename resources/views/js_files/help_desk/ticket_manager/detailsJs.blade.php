@@ -1165,7 +1165,12 @@ function listReplies() {
             }else{
                 user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
-            var content = reply.reply.replace(/<img[^>]*>/g,"");
+            var content = '';
+            if(reply.type == 'cron'){
+                content = reply.reply.replace(/<img[^>]*>/g,"");
+            }else{
+                content = reply.reply;
+            }
             
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
