@@ -72,7 +72,7 @@
                                     }
                                 }
 
-                                row += `
+                                row = `
                                     <li class="media" id="reply__${item.id}">
                                         <span class="mr-3"> ${item.reply_user == null ? customer_img : user_img} </span>
                                         <div class="media-body px-2 w-100">
@@ -107,8 +107,8 @@
                                     <hr>
 
                                 `;
+                                $('.show_replies').append(row);
                             }
-                            $('.show_replies').html(row);
                         }else{
                             $('.show_replies').html("");
                         }
