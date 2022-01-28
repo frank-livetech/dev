@@ -80,6 +80,15 @@
                             },
                             {
                                 "render": function (data, type, full, meta) {
+                                    let subject =  full.subject != null ? (full.subject.length > 35 ? full.subject.substring(0,35) + '...' : full.subject) : '-';
+                                    let coustom_id =  full.coustom_id != null ? full.coustom_id : '-';
+                                    let url = "{{route('customer.tkt_dtl', ':id')}}";
+                                    url = url.replace(':id', coustom_id);
+                                    return `<div> <strong> <a href="${url}">${subject}</a> </strong> </div>`;
+                                }
+                            },
+                            {
+                                "render": function (data, type, full, meta) {
                                     return full.updated_at != null ? customer.region_wise_dateTime(full.updated_at) : '-';
                                 }
                             },

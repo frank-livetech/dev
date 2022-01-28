@@ -34,14 +34,14 @@
                     <a class="d-flex align-items-center" href="{{route('customer.tickets')}}">
                         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>
                         
-                        <span class="menu-title text-truncate" data-i18n="Ticket">My Ticket </span>
+                        <span class="menu-title text-truncate" data-i18n="Ticket">My Tickets </span>
                     </a>
                 </li>
                 <li class=" nav-item {{ (request()->is('add-tkt')) ? 'active' : '' }}">
                     <a class="d-flex align-items-center" href="{{route('customer.addTicket')}}">
                         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mouse-pointer"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path><path d="M13 13l6 6"></path></svg></span>
                         
-                        <span class="menu-title text-truncate" data-i18n="Ticket">Submit Ticket</span>
+                        <span class="menu-title text-truncate" data-i18n="Ticket">Submit a Ticket</span>
                     </a>
                 </li>
             </ul>

@@ -74,6 +74,7 @@
                             <thead>
                                 <tr>
                                     <th>Ticket ID</th>
+                                    <th>Subject</th>
                                     <th> Last Update </th>
                                     <th> Last Replier </th>
                                     <th>Department </th>
