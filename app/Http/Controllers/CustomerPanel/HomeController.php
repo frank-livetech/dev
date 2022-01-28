@@ -597,7 +597,7 @@ class HomeController
         $department = Departments::where('id' , $ticket->dept_id)->first();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff', 0)->get();
         $type = TicketType::where('id' , $ticket->type)->first();
-        $statuses = TicketStatus::where('name',['Open','Closed','On Hold / Call Back'])->orderBy('seq_no', 'desc')->get();
+        $statuses = TicketStatus::whereIn('name',['Open','Closed','On Hold / Call Back'])->orderBy('seq_no', 'desc')->get();
         $priorities = TicketPriority::all();
 
         $current_status = TicketStatus::where('id' , $ticket->status)->first();
