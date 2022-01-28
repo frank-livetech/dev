@@ -351,20 +351,20 @@ class HomeController
 
                 if($request->has('id')) {
                     TicketReply::where('id' , $request->id)->update($data);
-                    $action_perf = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
+                    $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
                 }else{
                     TicketReply::create($data); 
-                    $action_perf = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
+                    $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
                 }
-
-                $ticket->updated_at = Carbon::now();
-                $ticket->save();
 
                 $log = new ActivitylogController();
                 $helpDesk = new HelpdeskController();
 
                 $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
-                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_cus_reply', $request->reply, $data['cc'], $action_perform, $data['attachments']);
+                $content = $data['reply'];
+                $action = 'ticket_cus_reply';
+                
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
 
                 return response()->json([
                     "message" => ($request->has('id') ? 'Ticket Reply Added Successfully' : 'Reply Updated Successfully'),
