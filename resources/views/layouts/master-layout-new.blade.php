@@ -261,6 +261,10 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script>
     <!-- END: Page JS-->
 
+    <script type="text/javascript" src="{{asset($file_path . 'assets/dist/js/flashy.min.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{$file_path . asset('assets/extra-libs/countdown/countdown.css')}}" />
+    <script type="text/javascript" src="{{asset('$file_path . assets/extra-libs/countdown/countdown.js')}}"></script>
+
     <script>
         const org_path = "{{Session::get('is_live')}}";
         const root = "{{request()->root()}}";
