@@ -1059,7 +1059,7 @@ class HelpdeskController extends Controller
 
                 // save activity logs
                 $log = new ActivitylogController();
-                $log->saveActivityLogs('Tickets' , 'ticket_replies' , $ticket->id , auth()->id() , $action_perf);
+                // $log->saveActivityLogs('Tickets' , 'ticket_replies' , $ticket->id , auth()->id() , $action_perf);
 
                 $settings = $this->getTicketSettings(['reply_due_deadline']);
                 if(isset($settings['reply_due_deadline'])) {

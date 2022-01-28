@@ -1597,6 +1597,8 @@ $('#priority').change(function() {
 
     }
     updates_Arr.push(obj);
+    $("#update_ticket").css("display", "block");
+
     console.log(updates_Arr);
     
 });
