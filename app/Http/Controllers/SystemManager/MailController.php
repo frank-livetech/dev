@@ -45,6 +45,7 @@ class MailController extends Controller
     public static $mailserver_username = 'dev_testing@mylive-tech.com';
     public static $mailserver_password = '0C,AQxp,x%%X';
     public $cc_string = '';
+    const DEFAULTSLA_TITLE = 'Default SLA';
 
     const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'svg', 'gif', 'webp'];
 
@@ -571,6 +572,24 @@ class MailController extends Controller
                                             $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
                                         }
                                         $ticket->save();
+
+                                        // ticket assoc with sla plan
+                                        $settings = $helpDesk->getTicketSettings(['default_reply_and_resolution_deadline']);
+                                        if(isset($settings['default_reply_and_resolution_deadline'])) {
+                                            if($settings['default_reply_and_resolution_deadline'] == 1) {
+                                                $sla_plan = SlaPlan::where('title', self::DEFAULTSLA_TITLE)->first();
+                                                if(empty($sla_plan)) {
+                                                    $sla_plan = SlaPlan::create([
+                                                        'title' => self::DEFAULTSLA_TITLE,
+                                                        'sla_status' => 1
+                                                    ]);
+                                                }
+                                                SlaPlanAssoc::create([
+                                                    'sla_plan_id' => $sla_plan->id,
+                                                    'ticket_id' => $ticket->id
+                                                ]);
+                                            }
+                                        }
 
                                         $repliesSaved = true;
                                         
