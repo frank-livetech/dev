@@ -363,7 +363,7 @@ class HomeController
                 $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
                 $content = $data['reply'];
                 $action = 'ticket_cus_reply';
-                
+
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
 
                 return response()->json([
@@ -420,6 +420,22 @@ class HomeController
         try {
             
             $ticket_replies = TicketReply::where('ticket_id' , $request->id)->with('replyUser')->orderByDesc('created_at')->get();
+            
+            $bbcode = new BBCode();
+
+            foreach ($ticket_replies as $key => $rep) {
+                $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
+
+                if( empty($rep['user_id']) ){
+                    $user = Customer::where('id', $rep['customer_id'])->first();
+                    $rep['name'] = $user['first_name'] . ' ' . $user['last_name'];
+                    $rep['user_type'] = 5;
+                }else{
+                    $user = User::where('id', $rep['user_id'])->first();
+                    $rep['name'] = $user['name'];
+                    $rep['user_type'] = $user['user_type'];
+                }
+            }
 
             return response()->Json([
                 "status_code" => 200 , 
