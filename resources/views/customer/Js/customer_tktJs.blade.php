@@ -75,7 +75,7 @@
                                     let coustom_id =  full.coustom_id != null ? full.coustom_id : '-';
                                     let url = "{{route('customer.tkt_dtl', ':id')}}";
                                     url = url.replace(':id', coustom_id);
-                                    return `<div>  ${coustom_id} </div>`;
+                                    return `<div> <a href="${url}"> ${coustom_id}</a> </div>`;
                                 }
                             },
                             {
