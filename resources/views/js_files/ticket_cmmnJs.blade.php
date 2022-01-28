@@ -433,7 +433,7 @@ function redrawTicketsTable(ticket_arr) {
             <td><div class="text-center"><input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" class="tkt_chk" name="select_all" value="${val['id']}"></div></td>
             <td>${restore_flag_btn}</td>
             <td class='text-center'>${status}</td>
-            <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(1,35) + '...' : shortname)}</a></td>
+            <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}</a></td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
             <td class='text-center'>${prior}</td>
             <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
