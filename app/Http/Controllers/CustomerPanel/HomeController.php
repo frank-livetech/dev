@@ -364,7 +364,7 @@ class HomeController
                 $helpDesk = new HelpdeskController();
 
                 $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
-                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_cus_reply', $request->reply, $data['cc'], $action, $data['attachments']);
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_cus_reply', $request->reply, $data['cc'], $action_perform, $data['attachments']);
 
                 return response()->json([
                     "message" => ($request->has('id') ? 'Ticket Reply Added Successfully' : 'Reply Updated Successfully'),
