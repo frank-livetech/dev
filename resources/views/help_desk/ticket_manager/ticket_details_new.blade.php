@@ -1461,9 +1461,7 @@
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
-<script type="text/javascript" src="{{asset('assets/dist/js/flashy.min.js')}}"></script>
-<link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/countdown/countdown.css')}}" />
-<script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
+
 
 @include('js_files.atwho.atwhoJs')
 @include('js_files.atwho.caretJs')
