@@ -504,7 +504,7 @@ class MailController extends Controller
 
                                         $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
                                         $log = new ActivitylogController();
-                                        $log->saveActivityLogs('Tickets' , 'ticket_replies' , $rep->id , auth()->id() , $action_perform);
+                                        // $log->saveActivityLogs('Tickets' , 'ticket_replies' , $rep->id , auth()->id() , $action_perform);
                                         $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $rep->id , auth()->id() , $action_perform);
                                     }
                                     
