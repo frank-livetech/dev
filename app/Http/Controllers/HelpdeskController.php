@@ -1018,13 +1018,11 @@ class HelpdeskController extends Controller
             if($request->has('id')) {
                 $save_reply = TicketReply::findOrFail($data['id']);
             }
-
-            if($data['type'] == 'publish') {
-                $content = $data['reply'];
-                $action = 'ticket_reply';
-                $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
+            $type = $data['type'];
+            if($type == 'publish'){
                 $data['is_published'] = 1;
             }
+            
             unset($data['type']);
 
             //converting html to secure bbcode
@@ -1052,7 +1050,14 @@ class HelpdeskController extends Controller
             }
 
             $ticket->updated_at = Carbon::now();
+            $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
+
+            if($type == 'publish') {
+                $content = $data['reply'];
+                $action = 'ticket_reply';
+                $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
+            }
 
             $sla_updated = false;
 
