@@ -572,7 +572,7 @@ class MailController extends Controller
                                             $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
                                         }
                                         $ticket->save();
-
+                                        
                                         // ticket assoc with sla plan
                                         $settings = $helpDesk->getTicketSettings(['default_reply_and_resolution_deadline']);
                                         if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -590,7 +590,7 @@ class MailController extends Controller
                                                 ]);
                                             }
                                         }
-
+                                        
                                         $repliesSaved = true;
                                         
                                         echo 'Created Ticket By "'.$name.' ('.$email.')" with SUBJECT "'.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
@@ -605,10 +605,12 @@ class MailController extends Controller
                                         $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
                                         
                                         try {
+                                            $ticket = Tickets::where('id',$ticket->id)->first();
                                             $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron');
                                         } catch(Throwable $e) {
                                             echo $e->getMessage();
                                         }
+                                        // dd('sent');exit;
                                     }
                                 // }
                             }
@@ -1220,7 +1222,6 @@ class MailController extends Controller
             $tckt = array_values(array_filter($data_list, function ($var) {
                 return ($var['module'] == 'Ticket');
             }));
-            
             if(sizeof($tckt) > 0) {
                 $helpd = new HelpdeskController();
                 $slaPlan = $helpd->getTicketSlaPlan($tckt[0]['values']['id']);
