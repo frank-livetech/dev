@@ -116,31 +116,28 @@
 }
 .fileName{
     position: absolute;
-    padding-right:19px;
+    padding-left:9px;
     top: 7px;
     font-size: 11px;
     display:none;
-    color:#fff;
+    color:#777;
+    text-align:left;
     
 }
 .downFile{
     position: absolute;
     bottom: 4px;
-    right: 55px;
-    /* left: 46%; */
-    border-radius: 50%;
-    color: green;
-    padding: 2px 7px;
-    border: 1px solid #fff;
+    right: 65px;
+    border-radius: 4px;
+    color: #fff;
+    padding: 2px 10px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #777;
     display:none;
 }
-.downFile i{
-    color: #fff;
-    font-size:14px;
-}
 .downFile:hover{
-    background:green;
-    border: 1px solid #e6e7e8;
+    background:rgba(0,0,0,0.7);
+    border: 1px solid #777;
 
 }
 .downFile:hover i{
@@ -166,17 +163,20 @@
    display:block;
 }
 .borderOne img{
-    width: 35px;
+    width: 100%;
+    max-width:89px;
 }
 .xlIcon{
-    width:41px;
+    width: 41px !important;
+    padding-top: 20px;
 }
 .imgIcon{
-    width:48px;
+    width: 48px !important;
+    padding-top: 24px;
 }
 .overlayAttach{
     position: absolute;
-    background: rgba(0,0,0,0.5);
+    background: #f5f5f5;
     top: 0;
     left: 0;
     width:100%;
@@ -377,17 +377,21 @@
                                 <div class="mail-items">
                                     <h3 class="mb-0">Initial Request&nbsp;&nbsp;
                                         <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
-                                        <a onClick="hung()" title="View Details" style="position:absolute;right:88px;cursor:pointer;">
-                                        <i data-feather='maximize'></i>
+                                        <a onClick="hung()" title="View Details" style="position:absolute;right:62px;cursor:pointer;">
+                                            <i data-feather='maximize'></i>
                                         </a>
                                         <!-- <a class=" " style="position:absolute;right:50px;cursor:pointer;"  data-bs-toggle="modal" data-bs-target="#viewFullDetails" data-bs-toggle="tooltip" data-bs-placement="top" title="View Details" data-bs-original-title="View Details"><i data-feather='maximize'></i></a> -->
                                         <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
                                         <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span>
                                         <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
                                         <a onclick="cancelEditRequest()">
-                                        <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span>
+                                            <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span>
                                         <span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn">
-                                        <a onclick="saveRequest()"><i data-feather='save'></i></a></span></h3>
+                                            <a onclick="saveRequest()">
+                                                <i data-feather='save'></i>
+                                            </a>
+                                        </span>
+                                    </h3>
                                     <br>
                                     <h4 id="ticket_subject_heading">Subject : {{$details->subject}}</h4>
                                     <hr>
@@ -417,6 +421,32 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <!-- <div class="card-header email-detail-head sec d-none" >
+                            <div class="user-details d-flex justify-content-between align-items-center flex-wrap pb-1" style="border-bottom:1px solid #ebe9f1;">
+                                <div class="mail-items">
+                                    <h5 class="mb-0">Subject : {{$details->subject}}</h5>
+                                </div>
+                                <div class="mail-meta-item d-flex align-items-center">
+                                    <small class="mail-date-time text-muted" id="ticket-timestamp2"></small>
+                                    <div class="dropdown ms-50">
+                                        <div role="button" class="dropdown-toggle hide-arrow" id="email_more" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i data-feather="more-vertical" class="font-medium-2"></i>
+                                        </div>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="email_more">
+                                            <div class="dropdown-item" onclick="editRequest()"><i data-feather="corner-up-left" class="me-50"></i>Edit</div>
+                                            <div class="dropdown-item" onclick="toggleReq()"><i data-feather="eye-off" class="me-50"></i>Close</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div> -->
+                        <div class="card-body mail-message-wrapper pt-2 sec d-none">
+                            <div class="mail-message">
+                                <div class="row" id="ticket_details_p2"></div>
                             </div>
                         </div>
                         <div class="card-body mail-message-wrapper frst">
