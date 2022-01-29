@@ -427,7 +427,7 @@ class MailController extends Controller
                                                 // echo "yes";exit;
                                                 $content =  explode('<div class="gmail_quote">',$html_reply);
                                                 $html_reply = $content[0];
-                                                
+                                                // dd($html_reply);exit;
                                                 
                                             }else if(str_contains($html_reply,$tkt_str)){
                                                 
@@ -439,7 +439,7 @@ class MailController extends Controller
                                                     }else{
                                                         // dd($reply);exit;
                                                         if(str_contains($html_reply,'From: '.$eq_value->mailserver_username)){
-                                                            echo "sdfsdf";
+                                                            // echo "sdfsdf";
                                                         }else{
                                                             $content =  explode('From:',$html_reply);
                                                             $html_reply = $content[0].'</b></p></div></body></html>';
@@ -453,7 +453,7 @@ class MailController extends Controller
                                             
                                         }
                                         
-                                        
+                                        // dd($html_reply);exit;
                                         // $content = explode($reply,'<div class="gmail_quote">');
                                         // echo nl2br($html_reply);exit;
                                         // dd($html_reply);exit;
@@ -462,7 +462,7 @@ class MailController extends Controller
                                             "ticket_id" => $ticket->id,
                                             "type" => 'cron',
                                             "msgno" => $message,
-                                            "reply" => $html_reply,
+                                            "reply" => nl2br($html_reply),
                                             "date" => new Carbon($date),
                                             "attachments" => $attaches
                                         );
@@ -476,7 +476,7 @@ class MailController extends Controller
                                             $user = $staff;
     
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $reply, '', 'cron', $attaches, $staff->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', nl2br($html_reply), '', 'cron', $attaches, $staff->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
