@@ -932,7 +932,7 @@ function getTicketDetailsContent() {
                             <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
  
-                                <img src="{{asset('files/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                <img src="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/image_icon.png')}}"  alt="">  ${item}</span>
                                 <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
