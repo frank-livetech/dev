@@ -2397,6 +2397,7 @@ class HelpdeskController extends Controller
             if($action_name != 'cron'){
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first(); 
             }
+            
 
             if($action_name == 'cron') {
                 $is_cron = true;
@@ -2406,6 +2407,9 @@ class HelpdeskController extends Controller
                 } else if($template_code == 'ticket_reply') {
                     $action_name = 'ticket_reply';
                 }
+            }elseif($action_name == 'cust_cron'){
+                $action_name = 'ticket_cus_reply';
+                
             }elseif($action_name == 'Customer Ticket Create'){
 
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
