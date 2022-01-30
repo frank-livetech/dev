@@ -1147,23 +1147,23 @@ function listReplies() {
             if(reply.customer_replies != null) {
                 if(reply.customer_replies.avatar_url != null) {
                     let path = root +'/'+ reply.customer_replies.avatar_url;
-                    customer_img += `<img src="${path}"  width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
+                    customer_img += `<img src="${path}"  width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
                 }else{
-                    customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }                
             }else{
-                customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
 
             if(reply.reply_user != null) {
                 if(reply.reply_user.profile_pic != null) {
                     let path = root + '/' + reply.reply_user.profile_pic;
-                    user_img += `<img src="${path}" style="border-radius: 50%;" width="40px" height="40px" class="img-fluid" />`;
+                    user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                 }else{
-                    user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }                
             }else{
-                user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
             var content = '';
             if(reply.type == 'cron'){
