@@ -1,4 +1,6 @@
 @extends('layouts.master-layout-new')
+@section('Help Desk','open')
+@section('Ticket Manager','active')
 @section('body')
 <style>
     #dropD {

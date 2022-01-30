@@ -542,6 +542,8 @@ Route::get('/get-filtered-tickets/{dept?}/{sts?}','HelpdeskController@getFiltere
 Route::get('/ticket-details/{id}','HelpdeskController@get_details');
 Route::post('/update_ticket','HelpdeskController@update_ticket');
 
+Route::post('/get_flag_tickets','HelpdeskController@get_flag_tickets')->name('admin.flagTickets');
+
 Route::post('/update_selected_ticket','HelpdeskController@update_selected_ticket')->name("admin.updateTkt");
 
 

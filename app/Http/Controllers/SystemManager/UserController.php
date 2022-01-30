@@ -490,51 +490,51 @@ class UserController extends Controller
     }
     
     public function my_profile(Request $request){
-        
         if($request->wantsJson()){
             $profile = User::with('staffProfile')->where('email',$request->input('email'))->first();
             return response()->json($profile);
         }
-
-        $profile = User::with('staffProfile')->where('id',\Auth::user()->id)->first();
-        if($profile) {
-            if(!empty($profile->alt_pwd)) {
-                $profile->alt_pwd = Crypt::decryptString($profile->alt_pwd);
-            }
+        $id = auth()->id();
+        $profile = User::with('staffProfile')->where('id',$id)->first();
+        if(!empty($profile->alt_pwd)) {
+            $profile->alt_pwd = Crypt::decryptString($profile->alt_pwd);
         }
+
+        $tickets = Tickets::select("*")
+            ->where('assigned_to',$id)
+            ->where('is_deleted', 0)->orderBy('updated_at', 'desc')
+            ->get();
         
+        // $tickets = DB::Table('tickets')
+        // ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
+        // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
+        // ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
+        // ->join('ticket_types','ticket_types.id','=','tickets.type')
+        // ->join('departments','departments.id','=','tickets.dept_id')
+        // ->join('users','users.id','=','tickets.assigned_to')
+        // ->where('tickets.assigned_to',$id)
+        // ->get();
+
         
-        $tickets = DB::Table('tickets')
-        ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
-        ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
-        ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
-        ->join('ticket_types','ticket_types.id','=','tickets.type')
-        ->join('departments','departments.id','=','tickets.dept_id')
-        ->join('users','users.id','=','tickets.assigned_to')
-        ->where('tickets.assigned_to',\Auth::user()->id)
-        ->get();
-        $staff_att_data = StaffAttendance::with('user_clocked')->where('user_id',\Auth::user()->id)->get();
-        $certificates = Usercertification::where("created_by","=", \Auth::user()->id)->get();
-        $docs = DB::table("user_docs")->where("created_by","=", \Auth::user()->id)->get();
-        
-        $ticket_format =TicketSettings::where('tkt_key','ticket_format')->first();
+        $certificates = DB::table("user_certification")->where("user_id","=",$id)->get();
+        $docs = DB::table("user_docs")->where("user_id","=",$id)->get();
+        $staff_att_data = StaffAttendance::with('user_clocked')->where('user_id',$id)->get();
+
+        $ticket_format = TicketSettings::where('tkt_key','ticket_format')->first();
         $customers = Customer::all();
         $users = User::all();
         // $departments = Departments::all();
-        $departments = $this->listPermissions(\Auth::user()->id);
         $statuses = TicketStatus::all();
         $priorities = TicketPriority::all();
         $types = TicketType::all();
 
-        $tasks =  Tasks::with('taskCreator')->with('taskProject')->where('assign_to',\Auth::user()->id)->where('task_status','!=','success')->where('task_status','!=','Select')->where('is_deleted',0)->get();
-
         $staff_state = DB::Table('states')->where('id',"=",$profile->state)->first();
-        $tasks =  Tasks::with('taskCreator')->with('taskProject')->where('assign_to',\Auth::user()->id)->where('task_status','!=','success')->where('task_status','!=','Select')->where('is_deleted',0)->get();
+        $tasks =  Tasks::with('taskCreator')->with('taskProject')->where('assign_to',$id)->where('task_status','!=','success')->where('task_status','!=','Select')->where('is_deleted',0)->get();
 
         foreach($tasks as $task) {
-            $task->assign_to = DB::Table("users")->where("id","=",\Auth::user()->id)->first();
+            $task->assign_to = DB::Table("users")->where("id","=",$id)->first();
         }
-        
+
         $google_api = 0;
         $google = Integrations::where("slug","google-api")->where('status', 1)->first();
         if(!empty($google)) {
@@ -545,6 +545,8 @@ class UserController extends Controller
         $countries = [];
         if($google_api === 0) $countries = DB::Table('countries')->get();
 
+        $departments = $this->listPermissions($id);
+        
         $date_format = Session('system_date');
 
         $general_staff_note = SystemSetting::where('sys_key', 'general_staff_note')->first();
@@ -554,10 +556,10 @@ class UserController extends Controller
         $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
+    
 
-        $id = \Auth::user()->id;
-
-        return view('system_manager.staff_management.user_profile',compact('id', 'priorities','date_format','types','departments','statuses','customers','users','ticket_format','docs', 'tickets','certificates','profile','staff_att_data','countries','tasks','staff_state','google', 'google_api','selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
+        return view('system_manager.staff_management.user_profile_new', get_defined_vars());
+        // return view('system_manager.staff_management.user_profile',compact('id', 'priorities','date_format','types','departments','statuses','customers','users','ticket_format','docs', 'tickets','certificates','profile','staff_att_data','countries','tasks','staff_state','google', 'google_api','selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
     }
 
     public function profile($id) {

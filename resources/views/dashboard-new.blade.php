@@ -7,6 +7,16 @@
     table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
         opacity:0;
     }
+    .flagged-tr,
+    .flagged-tr .sorting_1
+    {
+        background-color: #FFE4C4 !important;
+    }
+
+    .flagged-tr .fa-flag
+    {
+        color: red !important;
+    }
 </style>
 @php
     $file_path = $live->sys_value == 1 ? 'public/' : '/';
@@ -274,7 +284,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered table-hover">
+                                        <table class="table table-bordered table-hover" id="flagged_ticket_table">
                                             <thead>
                                                 <tr>
                                                     <th>
@@ -291,7 +301,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <!-- <tr>
                                                     <td>
                                                         <div class="text-center">
                                                             <input type="checkbox" name="select_all[]" id="select-all">
@@ -309,7 +319,7 @@
                                                     <td >Ticket ID</td>
                                                     <td >Priority</td>
                                                     <td >Customer</td>
-                                                </tr>
+                                                </tr> -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -327,13 +337,12 @@
                             <div class="row p-2">
                                 @foreach($users as $user)
                                 <div class="col-md-2 mb-1">
-                                    
                                     @if($user->profile_pic != "" && $user->profile_pic != null)
-                                        @if(file_exists( public_path(). $file_path . '/files/user_photo/'. $user->profile_pic ))
+                                        @if(file_exists( getcwd() .'/'. $user->profile_pic ))
                                             <span class="avatar">
                                                 <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip" data-placement="top" title="{{$user->name}}">
-                                                    <img  src="{{asset( $file_path . 'files/user_phot')}}/{{$user->profile_pic}}"
-                                                        alt="'s Photo" class="rounded-circle" width="65" height="72">
+                                                    <img  src="{{ request()->root() .'/'. $user->profile_pic}}"
+                                                        alt="'s Photo" class="rounded-circle" width="50" height="50">
                                                 </a>
                                             <span class="avatar-status-online"></span></span>
                                         @else
@@ -537,6 +546,7 @@
 
 
 @include('js_files.dashboardjs')
+@include('js_files.help_desk.ticket_manager.flag_ticketJs')
 
 <script type="text/javascript">
 $.ajaxSetup({

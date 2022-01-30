@@ -329,7 +329,7 @@
                 cache: false,
                 async:false,
                 success: function(data) {
-                    console.log(data)
+                    console.log(data , 'data counts');
                     let counts = data.counts;
                     for(var i = 0 ; i < counts.length ; i++){
                         console.log(counts[i].dept_counter)
