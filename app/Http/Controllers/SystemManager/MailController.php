@@ -485,8 +485,13 @@ class MailController extends Controller
                                             $data["customer_id"] = $cid;
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
+                                            try {
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', nl2br($html_reply), '', 'cust_cron', $attaches, $customer->email);
+                                            } catch(Throwable $e) {
+                                                echo 'Reply Notification! '. $e->getMessage();
+                                            }
                                         }
-        
+                                        // dd($cid);exit;
                                         $rep = TicketReply::create($data);
     
                                         $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
@@ -617,7 +622,7 @@ class MailController extends Controller
                              
                         }
                     }
-//  dd('before delete');exit;
+ dd('before delete');exit;
                     imap_delete($imap, $message);
                 }
 
