@@ -1052,7 +1052,7 @@ function listReplies() {
                                     <div class="borderOne">
                                         <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('public/files/replies/${ticket_details.id}/${item}')}}"  alt="">
+                                        <img src="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/image_icon.png')}}"  alt=""> ${item}</span>
                                         <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
