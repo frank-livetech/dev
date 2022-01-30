@@ -156,33 +156,31 @@
         width: 150px;
     }
     
-.fileName{
+    .fileName{
     position: absolute;
-    padding-right:19px;
+    padding-left:9px;
+    padding-right:9px;
     top: 7px;
     font-size: 11px;
     display:none;
-    color:#fff;
-    
+    color:#777;
+    text-align:left;
+    word-break: break-all;
 }
 .downFile{
     position: absolute;
     bottom: 4px;
-    right: 40%;
-    /* left: 46%; */
-    border-radius: 50%;
-    color: green;
-    padding: 2px 7px;
-    border: 1px solid #fff;
+    right: 65px;
+    border-radius: 4px;
+    color: #fff;
+    padding: 2px 10px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #777;
     display:none;
 }
-.downFile i{
-    color: #fff;
-    font-size:14px;
-}
 .downFile:hover{
-    background:green;
-    border: 1px solid #e6e7e8;
+    background:rgba(0,0,0,0.7);
+    border: 1px solid #777;
 
 }
 .downFile:hover i{
@@ -192,10 +190,11 @@
     border: 1px solid #e6e7e8;
     text-align: center;
     width: 100%;
-    height: 94px;
+    min-height: 94px;
     /* padding: 29px 12px; */
-    padding-top: 21%;
+    /* padding-top: 21%; */
     transition: 0.3s ease;
+    position: relative;
 }
 .borderOne:hover .downFile
 {
@@ -224,7 +223,7 @@
     bottom: 0;
     display:none;
 }
-.card__corner {
+/* .card__corner {
     position: absolute;
     bottom: 0;
     right: 15px;
@@ -241,7 +240,7 @@
     border-style: solid;
     border-width: 1.5em 1.5em 0 0;
     border-color: #e6e7e8 #fff #fff #fff;
-}
+} */
 
 </style>
 
