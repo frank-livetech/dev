@@ -164,7 +164,7 @@
 }
 .borderOne img{
     width: 100%;
-    max-width:89px;
+    /* max-width:89px; */
 }
 .xlIcon{
     width: 41px !important;
@@ -214,7 +214,7 @@
     float: right
 }
 .attImg{
-    height:91px;
+    height:100px;
     /* width:auto !important; */
 }
 .modal-slide-in .modal-dialog.sidebar-lg {
