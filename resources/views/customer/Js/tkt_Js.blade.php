@@ -73,6 +73,7 @@
                                 }
 
                                 row = `
+                                
                                     <li class="media" id="reply__${item.id}">
                                         <span class="mr-3"> ${item.reply_user == null ? customer_img : user_img} </span>
                                         <div class="media-body px-2 w-100">
@@ -100,7 +101,17 @@
 
                                             <div class="row mt-1 bor-top">
                                                 ${item.reply} <br>
-                                                <span class="mt-2">${item.attachments != null ? attachments_name : ''}</span>
+                                                <div class="row">
+                                                    <div class="col-md-2 mt-1" style='position:relative;'>
+                                                        <div class="borderOne">
+                                                            <span class="overlayAttach"></span>
+                                                            <img src="{{asset('public/files/tickets/${item.id}/${item.attachments}')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/pdf_icon.png')}}"  alt=""> ${item.attachments != null ? attachments_name : ''}</span>
+                                                            <a href="" download="" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 <span class="mt-2"></span>
                                             </div>
                                         </div>
                                     </li>

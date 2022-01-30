@@ -27,6 +27,72 @@
     display: flex;
     align-items: flex-start;
 }
+.fileName{
+    position: absolute;
+    padding-left:9px;
+    padding-right:9px;
+    top: 7px;
+    font-size: 11px;
+    display:none;
+    color:#777;
+    text-align:left;
+    word-break: break-all;
+}
+.downFile{
+    position: absolute;
+    bottom: 4px;
+    right: 65px;
+    border-radius: 4px;
+    color: #fff;
+    padding: 2px 10px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid #777;
+    display:none;
+}
+.downFile:hover{
+    background:rgba(0,0,0,0.7);
+    border: 1px solid #777;
+
+}
+.downFile:hover i{
+    color: #fff;
+}
+.borderOne{
+    border: 1px solid #e6e7e8;
+    text-align: center;
+    width: 100%;
+    min-height: 94px;
+    /* padding: 29px 12px; */
+    /* padding-top: 21%; */
+    transition: 0.3s ease;
+    position: relative;
+}
+.borderOne:hover .downFile
+{
+   display:block;
+}
+.borderOne:hover .fileName,
+.borderOne:hover .overlayAttach
+{
+   display:block;
+}
+.borderOne img{
+    width: 100%;
+    /* max-width:89px; */
+}
+.imgIcon{
+    width: 48px !important;
+    padding-top: 24px;
+}
+.overlayAttach{
+    position: absolute;
+    background: #f5f5f5;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    display:none;
+}
 </style>
 
 <div class="content-body">
@@ -63,7 +129,7 @@
             <div class="card mt-2">
                 <div class="card-body">
                     <div class="text-muted">Attachments</div>
-                    <span class="show_attachments"></span>
+                    <div class="row show_attachments"></div>
                 </div>
             </div>
         </div>
@@ -249,9 +315,14 @@
 
                     }
                     files += `
-                        <div class="d-flex my-1">
-                            ${ext}  
-                            <a href="{{asset('storage/tickets')}}/${ticket.id}/${attachments[i]}"target="_blank">   ${attachments[i]}</a>
+                        
+                        <div class="col-md-6 mt-1" style='position:relative;'>
+                            <div class="borderOne">
+                                <span class="overlayAttach"></span>
+                                <img src="{{asset('storage/tickets')}}/${ticket.id}/${attachments[i]}}}" class=" attImg"  alt="">
+                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/pdf_icon.png')}}"  alt=""> ${attachments[i]}</span>
+                                <a href="" download="" class="downFile"><i class="fa fa-download"></i></a>
+                            </div>
                         </div>`
                 }
                 $('.show_attachments').html(files);

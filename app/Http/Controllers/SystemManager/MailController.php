@@ -412,7 +412,7 @@ class MailController extends Controller
                                          
                                             // // echo $gmail_str;exit;
                                             if (str_contains($html_reply, '<div id="appendonsend"></div>')){
-                                                echo "yes";
+                                                // echo "yes";
                                                 $content =  explode('<div id="appendonsend"></div>',$html_reply);
                                                 $html_reply = $content[0].'</div></body></html>';
                                                 // dd($html_reply);exit;
@@ -476,7 +476,7 @@ class MailController extends Controller
                                             $user = $staff;
     
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', nl2br($html_reply), '', 'cron', $attaches, $staff->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $html_reply, '', 'cron', $attaches, $staff->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
@@ -486,7 +486,7 @@ class MailController extends Controller
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', nl2br($html_reply), '', 'cust_cron', $attaches, $customer->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $html_reply, '', 'cust_cron', $attaches, $customer->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
@@ -510,7 +510,7 @@ class MailController extends Controller
                                         $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
                                         $log = new ActivitylogController();
                                         // $log->saveActivityLogs('Tickets' , 'ticket_replies' , $rep->id , auth()->id() , $action_perform);
-                                        $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $rep->id , auth()->id() , $action_perform);
+                                        $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $rep->id , 0 , $action_perform);
                                     }
                                     
                                 }
@@ -607,7 +607,7 @@ class MailController extends Controller
 
                                         $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By CRON';
                                         $log = new ActivitylogController();
-                                        $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
+                                        $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
                                         
                                         try {
                                             $ticket = Tickets::where('id',$ticket->id)->first();
@@ -622,7 +622,7 @@ class MailController extends Controller
                              
                         }
                     }
- dd('before delete');exit;
+//  dd('before delete');exit;
                     imap_delete($imap, $message);
                 }
 

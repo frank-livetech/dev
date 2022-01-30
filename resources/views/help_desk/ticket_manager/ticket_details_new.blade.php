@@ -130,7 +130,7 @@
 .downFile{
     position: absolute;
     bottom: 4px;
-    right: 65px;
+    right:55px;
     border-radius: 4px;
     color: #fff;
     padding: 2px 10px;
