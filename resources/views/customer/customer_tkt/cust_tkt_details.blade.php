@@ -316,7 +316,7 @@
                     }
                     files += `
                         
-                        <div class="col-md-3 mt-1" style='position:relative;'>
+                        <div class="col-md-6 mt-1" style='position:relative;'>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
                                 <img src="{{asset('storage/tickets')}}/${ticket.id}/${attachments[i]}}}" class=" attImg"  alt="">
