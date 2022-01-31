@@ -339,6 +339,27 @@ class HomeController
                 ]);
             }else{
 
+                if(array_key_exists('inner_attachments', $data)) {
+                    // target dir for ticket files against ticket id
+                    $target_dir = public_path().'/files/replies/'.$data['ticket_id'];
+                    if (!File::isDirectory($target_dir)) {
+                        mkdir($target_dir, 0777, true);
+                    }
+    
+                    // set files
+                    foreach ($data['inner_attachments'] as $key => $value) {
+                        if (filter_var($value[1], FILTER_VALIDATE_URL)) { 
+                            $file = file_get_contents($value[1]);
+                        }else{
+                            $file = base64_decode($value[1]);
+                        }
+                        
+                        $target_src = 'public/files/replies/'.$data['ticket_id'].'/'.$value[0];
+                            
+                        file_put_contents($target_src, $file);
+                    }
+                }
+
                 $data = array(
                     "ticket_id" => $request->ticket_id,
                     "customer_id" => $customer->id ,
