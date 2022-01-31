@@ -2788,17 +2788,17 @@ function showDepartStatus(value) {
         },
         success: function(data) {
             console.log(data , "assignee");
-            let obj = data.status;
+            let obj1 = data.status;
             let obj_user = data.users;
 
             let option = ``;
             let select = ``;
             let open_sts = '';
-            for(var i =0; i < obj.length; i++) {
-                if(obj[i].name == 'Open'){
-                    open_sts = obj[i].id;
+            for(var i =0; i < obj1.length; i++) {
+                if(obj1[i].name == 'Open'){
+                    open_sts = obj1[i].id;
                 }
-                option +=`<option value="`+obj[i].id+`">`+obj[i].name+`</option>`;
+                option +=`<option value="`+obj1[i].id+`">`+obj1[i].name+`</option>`;
             }
             $("#status").html(select + option);
             if (dept_id == ticket.dept_id){
