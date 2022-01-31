@@ -1023,10 +1023,10 @@ function listReplies() {
                                         <div class="card__corner">
                                             <div class="card__corner-triangle"></div>
                                         </div>
-                                    <div class="borderOne">
+                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                     <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/pdf.gif')}}" alt="">
+                                        <img src="{{asset('${js_path}default_imgs/pdf.gif')}}" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.gif')}}"  alt=""> ${item}</span>
                                         <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
@@ -1037,10 +1037,10 @@ function listReplies() {
                                         <div class="card__corner">
                                             <div class="card__corner-triangle"></div>
                                         </div>
-                                    <div class="borderOne">
+                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                         <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/xlx.gif')}}" class="xlIcon" width="48" alt="">
+                                        <img src="{{asset('${js_path}default_imgs/xlx.gif')}}" class="xlIcon" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.gif')}}"  alt=""> ${item}</span>
                                         <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
@@ -1064,10 +1064,10 @@ function listReplies() {
                                         <div class="card__corner">
                                             <div class="card__corner-triangle"></div>
                                         </div>
-                                    <div class="borderOne">
+                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                         <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/word.gif')}}" class="imgIcon" width="48" alt="">
+                                        <img src="{{asset('${js_path}default_imgs/word.gif')}}" class="imgIcon" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.gif')}}"  alt=""> ${item}</span>
                                         <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
@@ -1078,10 +1078,10 @@ function listReplies() {
                                         <div class="card__corner">
                                             <div class="card__corner-triangle"></div>
                                         </div>
-                                    <div class="borderOne">
+                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                         <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/ppt.gif')}}" class="imgIcon" width="48" alt="">
+                                        <img src="{{asset('${js_path}default_imgs/ppt.gif')}}" class="imgIcon" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/ppt.gif')}}"  alt=""> ${item}</span>
                                         <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
@@ -1092,10 +1092,10 @@ function listReplies() {
                                         <div class="card__corner">
                                             <div class="card__corner-triangle"></div>
                                         </div>
-                                    <div class="borderOne">
+                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                         <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon"  alt="">
+                                        <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon" style="width:30px; height:30px"  alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.gif')}}"  alt=""> ${item}</span>
                                         <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
