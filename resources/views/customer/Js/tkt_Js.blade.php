@@ -74,6 +74,105 @@
                                     }
                                 }
 
+                                let tdet = '';
+                                if(item.attachments) {
+                                    let attchs = item.attachments.split(',');
+                                    tdet += '';
+                                    attchs.forEach(attch => {
+                                        var tech =  `{{asset('public/files/replies/${ticket_id}/${attch}')}}`;
+                                        var ter = getExt(tech);
+
+                                        
+                                        // return ter;
+                                        if(ter == "pdf" ){
+                                            tdet+= `<div class="col-md-4 mt-1">
+                                                            <div class="card__corner">
+                                                                <div class="card__corner-triangle"></div>
+                                                            </div>
+                                                        <div class="borderOne">
+                                                        <span class="overlayAttach"></span>
+
+                                                            <img src="{{asset('files/file_icon/Pdf.png')}}" alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/pdf_icon.png')}}"  alt=""> ${item}</span>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>` 
+                                        }
+                                        else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter =="sql"){
+                                            tdet+= `<div class="col-md-4 mt-1">
+                                                            <div class="card__corner">
+                                                                <div class="card__corner-triangle"></div>
+                                                            </div>
+                                                        <div class="borderOne">
+                                                            <span class="overlayAttach"></span>
+
+                                                            <img src="{{asset('files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/sql_icon.png')}}"  alt=""> ${item}</span>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>` 
+                                        }
+                                        else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
+                                            tdet+= `<div class="col-md-4 mt-1">
+                                                            <div class="card__corner">
+                                                                <div class="card__corner-triangle"></div>
+                                                            </div>
+                                                        <div class="borderOne">
+                                                            <span class="overlayAttach"></span>
+                                                            <img src="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/image_icon.png')}}"  alt=""> ${item}</span>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>` 
+                                        }
+                                        else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
+                                            tdet+= `<div class="col-md-4 mt-1">
+                                                            <div class="card__corner">
+                                                                <div class="card__corner-triangle"></div>
+                                                            </div>
+                                                        <div class="borderOne">
+                                                            <span class="overlayAttach"></span>
+
+                                                            <img src="{{asset('files/file_icon/Docs.png')}}" class="imgIcon" width="48" alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/text_icon.png')}}"  alt=""> ${item}</span>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>` 
+                                        }
+                                        else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
+                                            tdet+= `<div class="col-md-4 mt-1">
+                                                            <div class="card__corner">
+                                                                <div class="card__corner-triangle"></div>
+                                                            </div>
+                                                        <div class="borderOne">
+                                                            <span class="overlayAttach"></span>
+
+                                                            <img src="{{asset('files/file_icon/Ppt.png')}}" class="imgIcon" width="48" alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/ppt_icon.png')}}"  alt=""> ${item}</span>
+                                                            <a href="{{asset('public/files/replies/${tticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>` 
+                                        }
+                                        else{
+                                            tdet+= `<div class="col-md-4 mt-1">
+                                                            <div class="card__corner">
+                                                                <div class="card__corner-triangle"></div>
+                                                            </div>
+                                                        <div class="borderOne">
+                                                            <span class="overlayAttach"></span>
+
+                                                            <img src="{{asset('files/file_icon/Files.png')}}" class="imgIcon"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/text_icon.png')}}"  alt=""> ${item}</span>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>` 
+                                        }
+                                        // tdet += `<p><a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
+                                    });
+
+                                    tdet += '';
+                                }
+
                                 row = `
                                 
                                     <li class="media" id="reply__${item.id}">
@@ -100,20 +199,11 @@
                                                 </div>
                                                 
                                             </div>
-
-                                            <div class="row mt-1 bor-top">
-                                                ${item.reply} <br>
-                                                <div class="row">
-                                                    <div class="col-md-2 mt-1" style='position:relative;'>
-                                                        <div class="borderOne">
-                                                            <span class="overlayAttach"></span>
-                                                            <img src="{{asset('public/files/${item.id}/${item.attachments}')}}" class=" attImg"  alt="">
-                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/pdf_icon.png')}}"  alt=""> ${item.attachments != null ? attachments_name : ''}</span>
-                                                            <a href="" download="" class="downFile"><i class="fa fa-download"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                 <span class="mt-2"></span>
+                                            <div class="my-1 bor-top" id="reply-html-` + reply.id + `">
+                                                ${item.reply}
+                                            </div>
+                                            <div class="row mt-1">
+                                                ${tdet}
                                             </div>
                                         </div>
                                     </li>
@@ -462,6 +552,12 @@
                 }
             });
         }
+    }
+
+    function getExt(filename) {
+        var ext = filename.split('.').pop();
+        if(ext == filename) return "";
+        return ext;
     }
 
     async function tinyContentEditor(content, action) {
