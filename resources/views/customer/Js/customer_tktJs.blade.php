@@ -223,6 +223,7 @@
                                 },
                                 dataType: 'json',
                                 cache: false,
+                                async:false,
                                 success: function(res) {
                                     ticket_notify(response.id, 'ticket_create');
 
@@ -408,6 +409,7 @@
             type: 'POST',
             url: "{{url('ticket_notification')}}",
             data: { id: id, template: template, action: 'Customer Ticket Create' },
+            async:false,
             success: function(data) {
                 if (!data.success) {
                     console.log(data.message);
