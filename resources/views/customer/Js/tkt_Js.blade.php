@@ -117,9 +117,9 @@
                                                             </div>
                                                         <div class="borderOne">
                                                             <span class="overlayAttach"></span>
-                                                            <img src="{{asset('public/storage/replies/${ticket_id}/${attch}')}}"class=" attImg"  alt="">
+                                                            <img src="{{asset('public/files/replies/${ticket_id}/${attch}')}}"class=" attImg"  alt="">
                                                             <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}"  alt=""> ${attch}</span>
-                                                            <a href="{{asset('public/storage/replies/${ticket_id}/${attch}')}}" download="{{asset('public/storage/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
                                         }
