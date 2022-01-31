@@ -292,7 +292,7 @@
 
     <script>
         const org_path = "{{Session::get('is_live')}}";
-        const root = "{{request()->root()}}";
+        const root = "{{request()->root()}}/";
         const js_origin  = root + (org_path == 1 ? '/public/' : '/');
         $(window).on('load', function() {
             if (feather) {
