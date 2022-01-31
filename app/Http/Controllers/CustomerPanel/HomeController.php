@@ -324,6 +324,7 @@ class HomeController
     // save ticket replies
     public function saveTicketReply(Request $request) {
         // return dd($request->all());
+        $req_data = $request->all();
         $customer = Customer::where('email' , auth()->user()->email)->first();
         $ticket = Tickets::where('id' , $request->ticket_id)->first();
         $name_link = "";
@@ -339,22 +340,22 @@ class HomeController
                 ]);
             }else{
 
-                if(array_key_exists('inner_attachments', $data)) {
+                if(array_key_exists('inner_attachments', $req_data)) {
                     // target dir for ticket files against ticket id
-                    $target_dir = public_path().'/files/replies/'.$data['ticket_id'];
+                    $target_dir = public_path().'/files/replies/'.$req_data['ticket_id'];
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
     
                     // set files
-                    foreach ($data['inner_attachments'] as $key => $value) {
+                    foreach ($req_data['inner_attachments'] as $key => $value) {
                         if (filter_var($value[1], FILTER_VALIDATE_URL)) { 
                             $file = file_get_contents($value[1]);
                         }else{
                             $file = base64_decode($value[1]);
                         }
                         
-                        $target_src = 'public/files/replies/'.$data['ticket_id'].'/'.$value[0];
+                        $target_src = 'public/files/replies/'.$req_data['ticket_id'].'/'.$value[0];
                             
                         file_put_contents($target_src, $file);
                     }
