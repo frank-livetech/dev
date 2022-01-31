@@ -221,6 +221,7 @@
 .modal-slide-in .modal-dialog.sidebar-lg {
     width: 55rem;
 }
+br + br { display: none; }
 .tag {
     width: fit-content !important;
     padding: 0.25rem;
