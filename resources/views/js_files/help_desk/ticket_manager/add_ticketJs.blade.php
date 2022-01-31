@@ -18,12 +18,14 @@
                 // theme: "modern",
                 height: 300,
                 file_picker_types: 'image',
+                paste_data_images: true,
                 plugins: [
                     "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
                     "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
                     "save table contextmenu directionality emoticons template paste textcolor"
                 ],
                 toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons",
+
                 file_picker_callback: function(cb, value, meta) {
                     var input = document.createElement('input');
                     input.setAttribute('type', 'file');
@@ -284,6 +286,7 @@
                                     },
                                     dataType: 'json',
                                     cache: false,
+                                    async:false,
                                     success: function(res) {
                                         ticket_notify(data.id, 'ticket_create');
 
@@ -419,6 +422,7 @@
                 type: 'POST',
                 url: "{{url('ticket_notification')}}",
                 data: { id: id, template: template, action: 'Ticket Create' },
+                async:false,
                 success: function(data) {
                     if (!data.success) {
                         console.log(data.message);
