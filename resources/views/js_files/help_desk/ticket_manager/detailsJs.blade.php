@@ -605,7 +605,7 @@ async function tinyContentEditor(content, action) {
             let name = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index + '.' + ext;
 
             if (src.includes(ticket_attach_path_search + '/' + action + '/' + ticket.id)) {
-                name = baseName(src) + '.' + ext;
+                // name = baseName(src) + '.' + ext;
             } else {
                 $(this).attr('src', ticket_attach_path + `/${action}/${ticket.id}/${name}`);
                 // $(this).attr('height', '120');
@@ -840,7 +840,7 @@ function getTicketDetailsContent() {
     let tdet = '';
     var content = ticket_details.ticket_detail;
     if(ticket_details != null || ticket_details != "") {
-        content = content.replace(/<img[^>]*>/g,"");
+        // content = content.replace(/<img[^>]*>/g,"");
         tdet = `<div class="col-12">${content}</div>`;
         // if(ticket_details.attachments != null || ticket_details.attachments != ""){
 
