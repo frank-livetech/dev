@@ -505,10 +505,10 @@
             if (validImg) {
                 let name = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index + '.' + ext;
 
-                if (src.includes(ticket_attach_path_search + '/' + action + '/' + ticket.id)) {
+                if (src.includes(ticket_attach_path_search + '/' + action + '/' + ticket_id)) {
                     // name = baseName(src) + '.' + ext;
                 } else {
-                    $(this).attr('src', ticket_attach_path + `/${action}/${ticket.id}/${name}`);
+                    $(this).attr('src', ticket_attach_path + `/${action}/${ticket_id}/${name}`);
                     // $(this).attr('height', '120');
                     // $(this).attr('width', '120');
 
