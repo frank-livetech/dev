@@ -319,7 +319,7 @@
                         <div class="col-md-6 mt-1" style='position:relative;'>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-                                <img src="{{asset('storage/tickets')}}/${ticket.id}/${attachments[i]}}}" class=" attImg"  alt="">
+                                <img src="{{asset('public/files/tickets')}}/${ticket.id}/${attachments[i]}}}" class=" attImg"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/pdf_icon.png')}}"  alt=""> ${attachments[i]}</span>
                                 <a href="" download="" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
