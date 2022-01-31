@@ -504,7 +504,7 @@
                 let name = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index + '.' + ext;
 
                 if (src.includes(ticket_attach_path_search + '/' + action + '/' + ticket.id)) {
-                    name = baseName(src) + '.' + ext;
+                    // name = baseName(src) + '.' + ext;
                 } else {
                     $(this).attr('src', ticket_attach_path + `/${action}/${ticket.id}/${name}`);
                     // $(this).attr('height', '120');

@@ -253,13 +253,13 @@ class HomeController
         $log = new ActivitylogController();
         $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
 
-        $helpDesk = new HelpdeskController();
+        // $helpDesk = new HelpdeskController();
         
-        try {
-            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
-        } catch(Throwable $e) {
-            echo $e->getMessage();
-        }
+        // try {
+        //     $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
+        // } catch(Throwable $e) {
+        //     echo $e->getMessage();
+        // }
 
         return response()->json([
             "status_code" => 200 , 

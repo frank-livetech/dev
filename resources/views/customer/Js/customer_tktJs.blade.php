@@ -3,6 +3,10 @@
     var system_date_format = $("#system_date_format").val();
     var timezone = $("#timezone").val();
     let ticket_attachments_count = 1;
+    let attachments_src = [];
+    var ticket_attach_path = `{{asset('public/files/tickets')}}`;
+    var ticket_attach_path_search = 'public/files/tickets';
+    
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
@@ -205,6 +209,42 @@
                             }
 
                         });
+                        var content = tinyMCE.activeEditor.getContent();
+                        tinyContentEditor(content, response.id).then(function() {
+                            content = $('#tinycontenteditor').html();
+
+                            $.ajax({
+                                type: "post",
+                                url: "{{asset('update_ticket')}}",
+                                data: {
+                                    id: response.id,
+                                    ticket_detail: content,
+                                    attachments: attachments_src,
+                                },
+                                dataType: 'json',
+                                cache: false,
+                                success: function(res) {
+                                    ticket_notify(response.id, 'ticket_create');
+
+                                    // toastr.success(data.message, { timeOut: 5000 });
+                                    // var preivous_url = $("#previous_url").val();
+                                    // window.location = preivous_url;
+                                    
+                                    // Swal.fire({
+                                    //     title: 'Success',
+                                    //     text: "Ticket created successfully!",
+                                    //     icon: 'success',
+                                    //     confirmButtonColor: '#3085d6',
+                                    //     confirmButtonText: 'OK!'
+                                    // }).then((result) => {
+                                    //     if (result.value) {
+                                    //         var preivous_url = $("#previous_url").val();
+                                    //         window.location = preivous_url;
+                                    //     }
+                                    // });
+                                }
+                            });
+                        });
                         window.location.href = "{{route('customer.tickets')}}";
                     }else{
                         toastr.error( 'Something went wrong' , { timeOut: 5000 });
@@ -306,6 +346,77 @@
             ticket_attachments_count++;
         },
 
+    }
+
+    async function tinyContentEditor(content, tid) {
+        attachments_src = [];
+        let res;
+        $('#tinycontenteditor').html(content);
+
+        $('#tinycontenteditor').find('img').each(function(index) {
+            let src = $(this).attr('src');
+            let ext = 'png';
+
+            let validImg = true;
+
+            let marker = '.';
+
+            if (src.includes('base64')) marker = '/';
+
+            if (src.includes(marker + 'jpg') || src.includes(marker + 'JPG')) {
+                ext = "jpg";
+            } else if (src.includes(marker + 'ico') || src.includes(marker + 'ICO')) {
+                ext = "ico";
+            } else if (src.includes(marker + 'jpeg') || src.includes(marker + 'JPEG')) {
+                ext = "jpeg";
+            } else if (src.includes(marker + 'png') || src.includes(marker + 'PNG')) {
+                ext = "png";
+            } else if (src.includes(marker + 'gif') || src.includes(marker + 'GIF')) {
+                ext = "gif";
+            } else if (src.includes(marker + 'webp') || src.includes(marker + 'WEBP')) {
+                ext = "webp";
+            } else if (src.includes(marker + 'svg') || src.includes(marker + 'SVG')) {
+                ext = "svg";
+            } else if (src.includes(marker + 'mp4') || src.includes(marker + 'MP4')) {
+                ext = "mp4";
+            } else {
+                $(this).remove();
+                validImg = false;
+            }
+
+            if (src.includes('base64')) {
+                src = src.replace(/^data:.+;base64,/, '');
+            }
+
+            if (validImg) {
+                let name = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index + '.' + ext;
+
+                if (src.includes(ticket_attach_path_search + '/' + tid)) {
+                    // name = baseName(src) + '.' + ext;
+                } else {
+                    $(this).attr('src', ticket_attach_path + `/${tid}/${name}`);
+                }
+                attachments_src.push([name, src]);
+            }
+        });
+
+        return await res;
+    }
+
+    function ticket_notify(id, template) {
+        $.ajax({
+            type: 'POST',
+            url: "{{url('ticket_notification')}}",
+            data: { id: id, template: template, action: 'Customer Ticket Create' },
+            success: function(data) {
+                if (!data.success) {
+                    console.log(data.message);
+                }
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
+        });
     }
 
 
