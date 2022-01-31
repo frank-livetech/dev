@@ -50,7 +50,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -64,8 +64,7 @@ class HelpdeskController extends Controller
     // ***************   METHODS   *****************
 
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -119,7 +118,7 @@ class HelpdeskController extends Controller
 
     public function ticket_management(Request $request){
         $departments = Departments::all();
-        $statuses = TicketStatus::all();
+        $statuses = TicketStatus::orderBy('seq_no')->get();
         $priorities = TicketPriority::all();
         $types = TicketType::all();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
@@ -311,6 +310,20 @@ class HelpdeskController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }
+    }
+
+
+    // get flagged tickets
+    public function get_flag_tickets() {
+
+        $tickets = Tickets::where('is_flagged',1)->with('ticket_customer')->get();
+
+        return response()->json([
+            "status_code" => 200 ,
+            "success" => true ,
+            "tickets" => $tickets,
+        ]);
+        
     }
 
 
@@ -2565,12 +2578,24 @@ class HelpdeskController extends Controller
                         // $subject = 'Re: '.$subject;
                     }
                 }
-                
-                $users_list = User::whereIn('id', $assigned_users)->get()->toArray();
-
-                if($sendingMailServer->outbound == 'yes' || $action_name == "ticket_reply") {
-                    if(!empty($tech)) $users_list[] = $tech->attributesToArray();
+                // echo "in hd";
+                // dd($mail_frm_param);exit;
+                if($mail_frm_param != null || $mail_frm_param != ''){
                     
+                    $users_list = User::whereIn('id', $assigned_users)->where('email','!=',$mail_frm_param)->get()->toArray();
+                    //  echo "in hd";
+                    // dd($users_list);exit;
+                }else{
+                //     echo "in hd else";
+                // dd($mail_frm_param);exit;
+                    $users_list = User::whereIn('id', $assigned_users)->get()->toArray();
+                }
+                
+                
+                if($sendingMailServer->outbound == 'yes' || $action_name == "ticket_reply") {
+                    // if(!empty($tech)) $users_list[] = $tech->attributesToArray();
+                    // echyo "dfs";
+                    // dd($users_list);exit;
                     if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo);
                 }
 

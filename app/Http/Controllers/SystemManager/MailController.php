@@ -321,7 +321,7 @@ class MailController extends Controller
                                 $customer = Customer::where('email', trim($emailFrom))->first();
                             } else {
                                 $customer = Customer::where('email', trim($emailFrom))->first();
-
+                                
                                 if(empty($customer)) {
                                     $name = $strFromName;
                                     $customer = Customer::create([
@@ -382,6 +382,7 @@ class MailController extends Controller
                                         }
                                         $sid = $staff->id;
                                     }
+                                    
     
                                     // $ticket = Tickets::where(DB::raw('concat(coustom_id, " ", subject)'), trim($sbj))->first();
                                     $ticket = Tickets::where('coustom_id', $ticketID)->first();
@@ -477,11 +478,13 @@ class MailController extends Controller
                                             $ticket->assigned_to = $sid;
                                             $ticket->save();
                                             try {
+                                                //  dd($staff);exit;
                                                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $html_reply, '', 'cron', $attaches, $staff->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
                                         }
+                                        // dd($user);exit;
                                         if(!empty($cid)) {
                                             $data["customer_id"] = $cid;
                                             $fullname = $customer->first_name.' '.$customer->last_name;
@@ -1018,7 +1021,7 @@ class MailController extends Controller
             $mail->Subject = $subject;
             $mail->Body    = $body;
             $mail->AltBody = '';
-
+            // dd($recipient);exit;
             if(is_array($recipient)) {
                 foreach ($recipient as $key => $value) {
                     $mail->clearAllRecipients();
