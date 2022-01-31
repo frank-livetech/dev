@@ -199,7 +199,7 @@
                                                 </div>
                                                 
                                             </div>
-                                            <div class="my-1 bor-top" id="reply-html-` + reply.id + `">
+                                            <div class="my-1 bor-top" id="reply-html-` + item.id + `">
                                                 ${item.reply}
                                             </div>
                                             <div class="row mt-1">
