@@ -1471,7 +1471,7 @@ $('#dept_id').change(function() {
     updates_Arr.push(obj);
     console.log(updates_Arr);
     $("#update_ticket").css("display", "block");
-
+    showDepartStatus(dept_id);
 });
 
 $('#assigned_to').change(function() {
@@ -2773,6 +2773,71 @@ function getLatestLogs() {
         },
         failure: function(errMsg) {
             
+        }
+    });
+}
+
+function showDepartStatus(value) {
+    $.ajax({
+        type: "POST",
+        url: "{{url('get_department_status')}}",
+        data: {id:value},
+        dataType: 'json',
+        beforeSend: function(data) {
+            $("#dropdown_loader").show();
+        },
+        success: function(data) {
+            console.log(data , "assignee");
+            let obj = data.status;
+            let obj_user = data.users;
+
+            let option = ``;
+            let select = ``;
+            let open_sts = '';
+            for(var i =0; i < obj.length; i++) {
+                if(obj[i].name == 'Open'){
+                    open_sts = obj[i].id;
+                }
+                option +=`<option value="`+obj[i].id+`">`+obj[i].name+`</option>`;
+            }
+            $("#status").html(select + option);
+            if (dept_id == ticket.dept_id){
+                updates_Arr = $.grep(updates_Arr, function(e){ 
+                    return e.id != 1; 
+                });
+                if(update_flag > 0){
+                    update_flag--;
+                    if(update_flag == 0){
+                        $("#update_ticket").css("display", "none");
+                    }
+                }
+                $('#status').val(ticket.status); // Select the option with a value of '1'
+                $('#status').trigger('change');
+                // return false;
+            }else{
+                var obj = {};
+                 obj = {
+                    id:1,
+                    data: ticket.status_name, // Saving old value to show in email notification
+                    new_data:open_sts,
+                    new_text:'Open'
+                }
+                updates_Arr.push(obj);
+                console.log(updates_Arr)
+            }
+            
+            select = `<option value="">Unassigned</option>`;
+            for(var i =0; i < obj_user.length; i++) {
+                select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
+            }
+            $("#assigned_to").html(select);
+        },
+        complete: function(data) {
+            $("#dropdown_loader").hide();
+        },
+        error: function(error) {
+            $("#dropdown_loader").hide();
+            console.log(error);
         }
     });
 }
