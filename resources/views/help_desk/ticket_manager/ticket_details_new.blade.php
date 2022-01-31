@@ -69,7 +69,7 @@
 	                   color-stop(.5, rgba(255, 255, 255, .2)),
 					   color-stop(.5, transparent), to(transparent));
 }
-.card__corner {
+/* .card__corner {
     position: absolute;
     bottom: 0;
     right: 15px;
@@ -85,7 +85,7 @@
     border-style: solid;
     border-width: 1.5em 1.5em 0 0;
     border-color: #e6e7e8 #fff #fff #fff;
-}
+} */
 .reply-btns .btn {
     margin-left:5px; width: 165px;
 }
@@ -117,17 +117,18 @@
 .fileName{
     position: absolute;
     padding-left:9px;
+    padding-right:9px;
     top: 7px;
     font-size: 11px;
     display:none;
     color:#777;
     text-align:left;
-    
+    word-break: break-all;
 }
 .downFile{
     position: absolute;
     bottom: 4px;
-    right: 65px;
+    right:55px;
     border-radius: 4px;
     color: #fff;
     padding: 2px 10px;
@@ -183,7 +184,7 @@
     height:100%;
     display:none;
 }
-.card__corner {
+/* .card__corner {
     position: absolute;
     bottom: 0;
     right: 15px;
@@ -200,7 +201,7 @@
     border-style: solid;
     border-width: 1.5em 1.5em 0 0;
     border-color: #e6e7e8 #fff #fff #fff;
-}
+} */
 .nav-tabs{
     margin-bottom: unset !important
 }
