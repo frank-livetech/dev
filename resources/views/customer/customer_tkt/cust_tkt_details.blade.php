@@ -47,7 +47,7 @@ br + br { display: none; }
 .downFile{
     position: absolute;
     bottom: 4px;
-    right: 45%;
+    right: 40%;
     border-radius: 4px;
     color: #fff;
     padding: 2px 10px;
