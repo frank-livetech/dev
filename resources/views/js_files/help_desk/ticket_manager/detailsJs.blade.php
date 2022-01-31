@@ -1160,10 +1160,10 @@ function listReplies() {
                     let path = root + '/' + reply.reply_user.profile_pic;
                     user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                 }else{
-                    user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }                
             }else{
-                user_img += `<img src="{{asset('${js_path}default_imgs/logo.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
             }
             var content = '';
             if(reply.type == 'cron'){

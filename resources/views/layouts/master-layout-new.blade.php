@@ -168,10 +168,10 @@
                                     <img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
                                         alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
                                 @else
-                                    <img src="{{asset(  $file_path . 'default_imgs/logo.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
+                                    <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
                                 @endif
                             @else
-                                <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" id="login_usr_logo" alt="'s Photo" height="50px"  width="50px" class="rounded-circle">
+                                <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" alt="'s Photo" height="50px"  width="50px" class="rounded-circle">
                             @endif
                             <span class="avatar-status-online"></span></span>
                     </a>
