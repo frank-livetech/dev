@@ -205,6 +205,7 @@ Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], func
     
     Route::post('/billing/published','BillingController@billing_home');
     Route::get('/billing/home','BillingController@billingHomePage')->name('billing.home');
+    Route::get('/billing/home-new','BillingController@billingHomePageNew')->name('billing.home-new');
     Route::get('/get-all-orders','BillingController@get_all_orders');
     Route::get('/get-all-subs','BillingController@get_all_subs');
 

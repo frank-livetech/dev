@@ -23,6 +23,9 @@
     .nav-item .active{
         color:#fff !important;
     }
+    .fa-file-pdf{
+        padding-top: 6px;
+    }
 </style>
 @section('body-content')
 
