@@ -498,7 +498,7 @@
 
                         }
                         else{
-                            alert("relse");
+                            // alert("relse");
                             // noti_div = `<li>
                             //                 <span class="font-12 text-nowrap d-block text-muted text-truncate" style="text-align:center">No Unread Notifications.</span> 
                             //             </li>`;

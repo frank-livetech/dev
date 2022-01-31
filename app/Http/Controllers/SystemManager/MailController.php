@@ -474,7 +474,8 @@ class MailController extends Controller
                                             $data["user_id"] = $sid;
                                             $fullname = $staff->name;
                                             $user = $staff;
-    
+                                            $ticket->assigned_to = $sid;
+                                            $ticket->save();
                                             try {
                                                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $html_reply, '', 'cron', $attaches, $staff->email);
                                             } catch(Throwable $e) {
