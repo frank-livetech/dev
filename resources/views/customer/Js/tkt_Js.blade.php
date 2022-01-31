@@ -6,6 +6,8 @@
     var ticket_id = $("#ticket_id").val();
     var js_path = $("#js_path").val();
     js_path = (js_path == 1 ? 'public/' : '');
+    var ticket_attach_path = `{{asset('public/files/tickets')}}`;
+    var ticket_attach_path_search = 'public/files/tickets';
     
     $(document).ready(function() {
         $.ajaxSetup({
