@@ -1371,6 +1371,9 @@ function publishReply(ele, type = 'publish') {
                             setSlaPlanDeadlines();
                         }
 
+                        if(updates_Arr.length > 0){
+                            updateTicket();
+                        }
                         // let msg = 'Added';
                         // if (edit_reply_mode !== false) msg = 'Updated';
                         // if (type != 'publish') msg = 'saved as draft';
