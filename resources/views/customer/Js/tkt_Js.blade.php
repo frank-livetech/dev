@@ -173,6 +173,13 @@
                                     tdet += '';
                                 }
 
+                                var content = '';
+                                if(item.type == 'cron'){
+                                    content = item.reply.replace(/<img[^>]*>/g,"");
+                                }else{
+                                    content = item.reply;
+                                }
+
                                 row = `
                                 
                                     <li class="media" id="reply__${item.id}">
@@ -200,7 +207,7 @@
                                                 
                                             </div>
                                             <div class="my-1 bor-top" id="reply-html-` + item.id + `">
-                                                ${item.reply}
+                                                ${content}
                                             </div>
                                             <div class="row mt-1">
                                                 ${tdet}
