@@ -13,6 +13,10 @@
     width: 100% !important;
     border: 1px solid #ccc;
 }
+.attImg{
+    height:100px;
+    /* width:auto !important; */
+}
 .bootstrap-tagsinput {
     display: flex !important;
     margin-top: 5px !important;
