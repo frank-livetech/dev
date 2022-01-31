@@ -118,7 +118,7 @@ br + br { display: none; }
             <div class="card mt-2">
                 <div class="card-body">
                     <div class="text-muted">Subject</div>
-                    <h3>{{$ticket->subject}}</h3>
+                    <h3>{{$ticket->subject}} -</h3>
 
                     Created : <span id="tkt_created_at"> </span>
                     Updated : <span id="tkt_updated_at"> </span>
@@ -290,43 +290,50 @@ br + br { display: none; }
                 attachments = attachments.split(',');
                 let files = ``;
                 let ext = ``;
+                let file_name = ``;
 
                 for(var i =0; i < attachments.length; i++) {
                     let extens = attachments[i].split('.');
 
                     for(var k =0; k < extens.length; k++) {
                         if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
-                            ext = `<img src="{{asset('app-assets/images/svg/image.svg')}}" width="25px" height="25px">`;
+                            ext = `<img src="{{asset('public/files/tickets/${ticket.id}/${attachments[i]}')}}" class="img-fluid">`;
+                            file_name = `image.jpeg`;
                         }
 
                         if(extens[1] == 'pdf') {
-                            ext = `<img src="{{asset('app-assets/images/svg/pdf.svg')}}" width="25px" height="25px">`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/pdf.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
+                            file_name = `pdf.gif`;
                         }
 
                         if(extens[1] == 'txt') {
-                            ext = `<img src="{{asset('app-assets/images/svg/textfile.svg')}}" width="25px" height="25px">`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/txt.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
+                            file_name = `txt.gif`;
                         }
 
                         if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
-                            ext = `<img src="{{asset('app-assets/images/svg/word.svg')}}" width="25px" height="25px">`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/word.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
+                            file_name = `word.gif`;
                         }
 
                         if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
-                            ext = `<img src="{{asset('app-assets/images/svg/excel.svg')}}" width="25px" height="25px">`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/xlx.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
+                            file_name = `xlx.gif`;
                         }
 
                         if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
-                            ext = `<img src="{{asset('app-assets/images/svg/ppt.svg')}}" width="25px" height="25px">`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/ppt.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
+                            file_name = `ppt.gif`;
                         }
 
                     }
                     files += `
                         
                         <div class="col-md-6 mt-1" style='position:relative;'>
-                            <div class="borderOne">
+                            <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                 <span class="overlayAttach"></span>
-                                <img src="{{asset('public/files/tickets')}}/${ticket.id}/${attachments[i]}" class=" attImg"  alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('public/assets/images/icon/pdf_icon.png')}}"  alt=""> ${attachments[i]}</span>
+                                ${ext}
+                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/${file_name}')}}"  alt=""> ${attachments[i]}</span>
                                 <a href="" download="{{asset('public/files/tickets/${ticket.id}/${attachments[i]}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>`
