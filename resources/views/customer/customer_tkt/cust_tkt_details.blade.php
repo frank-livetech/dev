@@ -327,7 +327,7 @@ br + br { display: none; }
                                 <span class="overlayAttach"></span>
                                 <img src="{{asset('public/files/tickets')}}/${ticket.id}/${attachments[i]}" class=" attImg"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('public/assets/images/icon/pdf_icon.png')}}"  alt=""> ${attachments[i]}</span>
-                                <a href="" download="" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="" download="{{asset('public/files/tickets/${ticket.id}/${attachments[i]}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>`
                 }
