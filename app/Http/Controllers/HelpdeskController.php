@@ -1039,6 +1039,7 @@ class HelpdeskController extends Controller
             unset($data['type']);
 
             //converting html to secure bbcode
+            $mail_reply = $data['reply'];
             $bbcode = new BBCode();
             $data['reply'] = $bbcode->convertFromHtml($data['reply']);
 
@@ -1067,7 +1068,7 @@ class HelpdeskController extends Controller
             $ticket->save();
 
             if($type == 'publish') {
-                $content = $data['reply'];
+                $content = $mail_reply;
                 $action = 'ticket_reply';
                 $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
             }
@@ -2424,10 +2425,11 @@ class HelpdeskController extends Controller
                 $action_name = 'ticket_cus_reply';
                 
             }elseif($action_name == 'Customer Ticket Create'){
-
+                
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
                 $notification_message = 'Ticket Created By Customer ' . $user->name;
                 $notification_title = 'New Ticket Created';
+                
 
             } else if($action_name == 'Ticket Create') {
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
@@ -2449,7 +2451,7 @@ class HelpdeskController extends Controller
             } else if($action_name == "ticket_reply") {
                 $customer_send = true;
                 $cust_template_code = 'auto_res_ticket_reply';
-// dd($cust_template_code);exit;
+
                 // if(!empty($user)) $mail_from = $user->email;
                 $attachs = $data_id;
                 $pathTo = 'replies/'.$ticket['id'];
@@ -2581,7 +2583,7 @@ class HelpdeskController extends Controller
                 // echo "in hd";
                 // dd($mail_frm_param);exit;
                 if($mail_frm_param != null || $mail_frm_param != ''){
-                    
+
                     $users_list = User::whereIn('id', $assigned_users)->where('email','!=',$mail_frm_param)->get()->toArray();
                     //  echo "in hd";
                     // dd($users_list);exit;
@@ -2598,7 +2600,7 @@ class HelpdeskController extends Controller
                     // dd($users_list);exit;
                     if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo);
                 }
-
+// dd($users_list);exit;
                 $allwd_users = [];
 
                 try {
