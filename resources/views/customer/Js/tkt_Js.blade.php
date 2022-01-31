@@ -94,7 +94,7 @@
 
                                                             <img src="{{asset('files/file_icon/Pdf.png')}}" alt="">
                                                             <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/pdf_icon.png')}}"  alt=""> ${item}</span>
-                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
                                         }
@@ -108,7 +108,7 @@
 
                                                             <img src="{{asset('files/file_icon/Excel.png')}}" class="xlIcon" width="48" alt="">
                                                             <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/sql_icon.png')}}"  alt=""> ${item}</span>
-                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
                                         }
@@ -121,7 +121,7 @@
                                                             <span class="overlayAttach"></span>
                                                             <img src="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class=" attImg"  alt="">
                                                             <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/image_icon.png')}}"  alt=""> ${item}</span>
-                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
                                         }
@@ -135,7 +135,7 @@
 
                                                             <img src="{{asset('files/file_icon/Docs.png')}}" class="imgIcon" width="48" alt="">
                                                             <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/text_icon.png')}}"  alt=""> ${item}</span>
-                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
                                         }
@@ -149,7 +149,7 @@
 
                                                             <img src="{{asset('files/file_icon/Ppt.png')}}" class="imgIcon" width="48" alt="">
                                                             <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/ppt_icon.png')}}"  alt=""> ${item}</span>
-                                                            <a href="{{asset('public/files/replies/${tticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                            <a href="{{asset('public/files/replies/${tticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
                                         }
@@ -163,7 +163,7 @@
 
                                                             <img src="{{asset('files/file_icon/Files.png')}}" class="imgIcon"  alt="">
                                                             <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/text_icon.png')}}"  alt=""> ${item}</span>
-                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                            <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
                                         }
