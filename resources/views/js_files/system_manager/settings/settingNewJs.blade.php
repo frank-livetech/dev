@@ -11,6 +11,8 @@ let mail_table_list = '';
 let g_mails_arr = null;
 let g_depts_arr = null;
 let g_types_arr = null;
+let st_types = null;
+let sr_proirity_arr = null;
 let g_priority_arr = null;
 let g_status_arr = null;
 
@@ -1572,12 +1574,14 @@ function get_departments_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             return `
-                                <div class="d-flex justify-content-center">
-                                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="editDepartment(` + full.id + `,'` + full.name + `','`+full.dept_slug+`','`+full.dept_counter+`')"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
+                            <div class="d-flex justify-content-center">
+                                <button onclick="editDepartment(` + full.id + `)" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
                                     &nbsp;
-                                    <button class="btn btn-circle btn-danger mr-2 ml-2" title="Delete Department"
-                                    onclick = "deleteDepartment(` + full.id + `)"><i class="fa fa-trash " aria-hidden="true"></i></button>
-                                </div>`;
+                                    <button type="button" onclick="deleteDepartment(` + full.id + `)" onclick="deleteStatus(42)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                            </div>`;
                         }
                     },
                 ],
@@ -1679,6 +1683,7 @@ function get_type_table_list() {
         success: function(data) {
             g_types_arr = data.types;
             var types_arr = data.types;
+            st_types = data.types;
             console.log(types_arr,"Ticket Types array");
 
 
@@ -1701,7 +1706,15 @@ function get_type_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
-                            return `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editType(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteType(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                            return `
+                            <div class="d-flex justify-content-center">
+                                <button onclick="editType(${full.id})" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
+                                    &nbsp;
+                                    <button type="button" onclick="deleteType(` + full.id + `)" onclick="deleteStatus(42)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                            </div>`
                         }
                     },
                 ],
@@ -1936,8 +1949,7 @@ function get_priority_table_list() {
             console.log(data);
             g_priority_arr = data.priorities;
             var priorities_arr = data.priorities;
-            console.log(priorities_arr, "ticket priority");
-
+            sr_proirity_arr = data.priorities;
 
             $("#ticket-priority-list").DataTable().destroy();
             $.fn.dataTable.ext.errMode = "none";
@@ -1969,11 +1981,15 @@ function get_priority_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
-                            return `<div class="text-center">
-                    <button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editPriority(${full.id},\'${full.name}\', \'${full.priority_color}\');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;
-                    <button class="btn btn-circle btn-danger"
-                    title = "Delete Priority"
-                    onclick = "event.stopPropagation();deletePriority(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button></div>`;
+                            return `
+                            <div class="d-flex justify-content-center">
+                                <button onclick="editPriority(${full.id})" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
+                                    &nbsp;
+                                    <button type="button" onclick="deletePriority(` + full.id + `)" onclick="deleteStatus(42)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                            </div>`;
                         }
                     },
                 ],
@@ -2338,16 +2354,26 @@ function deleteDepartment(id) {
     })
 }
 
-function editDepartment(id, name,slug,dept_counter) {
+function editDepartment(id) {
 
-    $('#dep_name').val(name);
-    $('#dep_id').val(id);
-    $('#dept_slug').val(slug);
-    if(dept_counter == 1){
-        $('#dept_counter').prop('checked');
-    }
-    $('#save-department').modal('show');
+    let item = g_depts_arr.find(item => item.id === id);
     $("#dept").html('Edit Department');
+    if(item != null) {
+        $('#dep_name').val(item.name);
+        $('#dep_id').val(id);
+        $('#dept_slug').val(item.dept_slug);
+
+        if(item.dept_counter == 1){
+            $('#dept_counter').prop('checked' , true);
+        }else{
+            $('#dept_counter').prop('checked' , false);
+        }
+
+        $('#save-department').modal('show');
+    
+    }
+
+
 
 
 
@@ -2396,15 +2422,21 @@ function editStatus(id) {
     }
 }
 
-function editType(id, name) {
-    // alert(name);
-    $('#type_name').val(name);
-    $('#type_id').val(id);
-    $('#save-type').modal('show');
-
+function editType(id) {
     $("#typeh2").html('Edit Type');
+    var item = st_types.find(type => type.id === id);
+    if(item != null) {
+        $('#type_name').val(item.name);
+        $('#type_id').val(id);
 
+        if(item.department_id != null) {
+            let depid = item.department_id.split(',');
+            $('#department_id1').val(depid).trigger('change');
+        }
+        
 
+        $('#save-type').modal('show');
+    }
 }
 
 function editCustomerType(id, name) {
@@ -2440,15 +2472,26 @@ function editProjectType(id, name) {
 }
 
 
-function editPriority(id, name, color) {
-    $('#priority_name').val(name);
-    $('#priority_id').val(id);
-    $('#priority_color').val(color);
-    $('#save-priority').modal('show');
+function editPriority(id) {
 
-        $("#prior").html('Edit Priority');
+    $("#prior").html('Edit Priority');
+
+    var item = sr_proirity_arr.find(item => item.id === id);
+    console.log(item );
+    console.log(id);
+    if(sr_proirity_arr != null) {
+        $('#priority_name').val(item.name);
+        $('#priority_id').val(id);
+        $('#priority_color').val(item.priority_color);
+
+        if(item.department_id != null) {
+            let depid = item.department_id.split(',');
+            $('#department_id').val(depid).trigger('change');
+        }
 
 
+        $('#save-priority').modal('show');
+    }
 }
 
 function showDepModel(id, name) {

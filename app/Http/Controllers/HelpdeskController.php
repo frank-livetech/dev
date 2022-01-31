@@ -64,8 +64,7 @@ class HelpdeskController extends Controller
     // ***************   METHODS   *****************
 
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
     }
 
@@ -119,7 +118,7 @@ class HelpdeskController extends Controller
 
     public function ticket_management(Request $request){
         $departments = Departments::all();
-        $statuses = TicketStatus::all();
+        $statuses = TicketStatus::orderBy('seq_no')->get();
         $priorities = TicketPriority::all();
         $types = TicketType::all();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
@@ -311,6 +310,20 @@ class HelpdeskController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }
+    }
+
+
+    // get flagged tickets
+    public function get_flag_tickets() {
+
+        $tickets = Tickets::where('is_flagged',1)->with('ticket_customer')->get();
+
+        return response()->json([
+            "status_code" => 200 ,
+            "success" => true ,
+            "tickets" => $tickets,
+        ]);
+        
     }
 
 
