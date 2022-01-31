@@ -1051,7 +1051,6 @@ function listReplies() {
                                         </div>
                                     <div class="borderOne">
                                         <span class="overlayAttach"></span>
-
                                         <img src="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/image_icon.png')}}"  alt=""> ${item}</span>
                                         <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
@@ -1471,6 +1470,7 @@ $('#dept_id').change(function() {
     updates_Arr.push(obj);
     console.log(updates_Arr);
     $("#update_ticket").css("display", "block");
+  
     showDepartStatus(dept_id);
 });
 
@@ -1567,7 +1567,7 @@ $('#status').change(function() {
 
     }
     updates_Arr.push(obj);
-    console.log(updates_Arr);
+    console.log(updates_Arr+'askdkaskjd');
     $("#update_ticket").css("display", "block");
 
 });
@@ -2788,17 +2788,17 @@ function showDepartStatus(value) {
         },
         success: function(data) {
             console.log(data , "assignee");
-            let obj1 = data.status;
+            let obj = data.status;
             let obj_user = data.users;
 
             let option = ``;
             let select = ``;
             let open_sts = '';
-            for(var i =0; i < obj1.length; i++) {
-                if(obj1[i].name == 'Open'){
-                    open_sts = obj1[i].id;
+            for(var i =0; i < obj.length; i++) {
+                if(obj[i].name == 'Open'){
+                    open_sts = obj[i].id;
                 }
-                option +=`<option value="`+obj1[i].id+`">`+obj1[i].name+`</option>`;
+                option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
             }
             $("#status").html(select + option);
             if (dept_id == ticket.dept_id){
@@ -2815,16 +2815,10 @@ function showDepartStatus(value) {
                 $('#status').trigger('change');
                 // return false;
             }else{
-                var obj = {};
-                 obj = {
-                    id:1,
-                    data: ticket.status_name, // Saving old value to show in email notification
-                    new_data:open_sts,
-                    new_text:'Open'
-                }
-                updates_Arr.push(obj);
-                console.log(updates_Arr)
+                $('#status').val(open_sts); // Select the option with a value of '1'
+                $('#status').trigger('change');
             }
+            
             
             select = `<option value="">Unassigned</option>`;
             for(var i =0; i < obj_user.length; i++) {
