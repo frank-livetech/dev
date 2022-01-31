@@ -245,7 +245,7 @@
                                 }
                             });
                         });
-                        window.location.href = "{{route('customer.tickets')}}";
+                        // window.location.href = "{{route('customer.tickets')}}";
                     }else{
                         toastr.error( 'Something went wrong' , { timeOut: 5000 });
                     }
