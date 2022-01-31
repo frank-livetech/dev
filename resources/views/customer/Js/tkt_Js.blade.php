@@ -211,6 +211,11 @@
 
                                 `;
                                 $('.show_replies').append(row);
+                                if (item.hasOwnProperty('msgno') && item.msgno) {
+                                    $('#reply-html-' + item.id).find('img').attr('width', 120);
+                                    $('#reply-html-' + item.id).find('img').attr('height', 120);
+                                    $('#reply-html-' + item.id).find('img').css('margin', '0 8px 8px 0');
+                                }
                             }
                         }else{
                             $('.show_replies').html("");
