@@ -85,7 +85,7 @@
                                         
                                         // return ter;
                                         if(ter == "pdf" ){
-                                            tdet+= `<div class="col-md-4 mt-1">
+                                            tdet+= `<div class="col-md-3 mt-1">
                                                             <div class="card__corner">
                                                                 <div class="card__corner-triangle"></div>
                                                             </div>
@@ -99,7 +99,7 @@
                                                     </div>` 
                                         }
                                         else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter =="sql"){
-                                            tdet+= `<div class="col-md-4 mt-1">
+                                            tdet+= `<div class="col-md-3 mt-1">
                                                             <div class="card__corner">
                                                                 <div class="card__corner-triangle"></div>
                                                             </div>
@@ -113,7 +113,7 @@
                                                     </div>` 
                                         }
                                         else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                                            tdet+= `<div class="col-md-4 mt-1">
+                                            tdet+= `<div class="col-md-3 mt-1">
                                                             <div class="card__corner">
                                                                 <div class="card__corner-triangle"></div>
                                                             </div>
@@ -126,7 +126,7 @@
                                                     </div>` 
                                         }
                                         else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                                            tdet+= `<div class="col-md-4 mt-1">
+                                            tdet+= `<div class="col-md-3 mt-1">
                                                             <div class="card__corner">
                                                                 <div class="card__corner-triangle"></div>
                                                             </div>
@@ -140,7 +140,7 @@
                                                     </div>` 
                                         }
                                         else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                                            tdet+= `<div class="col-md-4 mt-1">
+                                            tdet+= `<div class="col-md-3 mt-1">
                                                             <div class="card__corner">
                                                                 <div class="card__corner-triangle"></div>
                                                             </div>
@@ -154,7 +154,7 @@
                                                     </div>` 
                                         }
                                         else{
-                                            tdet+= `<div class="col-md-4 mt-1">
+                                            tdet+= `<div class="col-md-3 mt-1">
                                                             <div class="card__corner">
                                                                 <div class="card__corner-triangle"></div>
                                                             </div>
