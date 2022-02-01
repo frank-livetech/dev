@@ -26,4 +26,9 @@ table thead, .table_head_back {
     background: #ebe9f1 !important;
   
 }
+.nav-toggle{
+    position: absolute;
+    top: -17px;
+    right: 0;
+}
 /*Custom Sidebar Changes*/
