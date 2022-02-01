@@ -51,7 +51,16 @@ class BillingController extends Controller
 
         return view('billing.rfq.index',compact('tags','categories','companies','setting_notes'));
     }
+    public function rfqNew(){
 
+        $tags = Tags::all();
+        $categories = Category::all();
+        $companies = Company::all();
+
+        $setting_notes = SystemSetting::where('sys_key','sell_inst_note')->first();
+
+        return view('billing.rfq.index-new',compact('tags','categories','companies','setting_notes'));
+    }
     public function vendorsProfile($id){
         $tags = Tags::all();
         $categories = Category::all();

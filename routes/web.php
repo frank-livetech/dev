@@ -186,6 +186,7 @@ Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], func
 
     //Billing RFQ  Routes
     Route::get('/rfq','BillingController@rfq')->name('rfq.index');
+    Route::get('/rfq-new','BillingController@rfqNew')->name('rfq.index-new');
     Route::post('/save_rfq_requests','BillingController@saveRFQRquests');
     Route::post('/save_inst_notes','BillingController@saveInstNotes');
     //Vendor Profile View Route
