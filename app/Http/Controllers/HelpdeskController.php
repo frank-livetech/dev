@@ -1023,7 +1023,7 @@ class HelpdeskController extends Controller
                 //     mkdir($target_dir, 0777, true);
                 // }
 
-                $target_dir = 'storage/tickets-replies/'.$data['id'];
+                $target_dir = 'storage/tickets-replies/'.$data['ticket_id'];
                     
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
