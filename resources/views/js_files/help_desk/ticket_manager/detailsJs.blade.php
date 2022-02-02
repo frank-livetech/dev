@@ -16,8 +16,8 @@ let updates_Arr = [];
 // var ticket_attach_path = `{{asset('public/files')}}`;
 // var ticket_attach_path_search = 'public/files';
 
-var ticket_attach_path = `{{asset('storage/files')}}`;
-var ticket_attach_path_search = 'storage/files';
+var ticket_attach_path = `{{asset('storage')}}`;
+var ticket_attach_path_search = 'storage';
 
 var time_zone = $("#usrtimeZone").val();
 var js_path = "{{Session::get('is_live')}}";

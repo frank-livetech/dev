@@ -24,8 +24,8 @@
     var update_ticket_route = "{{asset('update_ticket')}}";
     // var ticket_attach_path = `{{asset('public/files')}}`;
     // var ticket_attach_path_search = 'public/files';
-    var ticket_attach_path = `{{asset('storage/files')}}`;
-    var ticket_attach_path_search = 'storage/files';
+    var ticket_attach_path = `{{asset('storage')}}`;
+    var ticket_attach_path_search = 'storage';
     var publish_reply_route = "{{asset('publish-ticket-reply')}}";
     var ticket_followup_route = "{{asset('get-ticket-follow-up')}}";
     var delete_followup_route = "{{asset('del-ticket-follow-up')}}";
