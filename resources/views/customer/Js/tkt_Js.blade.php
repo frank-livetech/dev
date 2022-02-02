@@ -8,8 +8,8 @@
     js_path = (js_path == 1 ? 'public/' : '');
     // var ticket_attach_path = `{{asset('public/files')}}`;
     // var ticket_attach_path_search = 'public/files';
-    var ticket_attach_path = `{{asset('storage/files')}}`;
-    var ticket_attach_path_search = 'storage/files';
+    var ticket_attach_path = `{{asset('storage')}}`;
+    var ticket_attach_path_search = 'storage';
     
     $(document).ready(function() {
         $.ajaxSetup({
