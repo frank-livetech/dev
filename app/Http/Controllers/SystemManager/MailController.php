@@ -1341,7 +1341,7 @@ class MailController extends Controller
                     $attachs = explode('|', $data['values']['attachments']);
                     foreach ($attachs as $att) {
                         $ext = pathinfo($att, PATHINFO_EXTENSION);
-                        $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/tickets/'.$data['values']['id'].'/'.$att;
+                        $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$data['values']['id'].'/'.$att;
                         if( in_array($ext, self::IMAGE_EXTENSIONS) ) {
                             $content .= '<div class="reply-attachs-container">
                             <div class="reply-image"><img src="'.$filepath.'" alt="'.$att.'" class="reply-image"></div>
