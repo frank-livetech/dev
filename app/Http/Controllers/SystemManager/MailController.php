@@ -811,8 +811,8 @@ class MailController extends Controller
                 //     mkdir($target_dir, 0777, true);
                 // }
 
-                $target_dir = 'storage/tickets-replies/'.$tid.'/';
-                $target_src = $target_dir.$filename;
+                $target_dir = 'storage/tickets-replies/'.$tid;
+                $target_src = $target_dir.'/'.$filename;
                     
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
