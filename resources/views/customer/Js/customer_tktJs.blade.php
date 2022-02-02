@@ -4,8 +4,10 @@
     var timezone = $("#timezone").val();
     let ticket_attachments_count = 1;
     let attachments_src = [];
-    var ticket_attach_path = `{{asset('public/files/tickets')}}`;
-    var ticket_attach_path_search = 'public/files/tickets';
+    // var ticket_attach_path = `{{asset('public/files/tickets')}}`;
+    // var ticket_attach_path_search = 'public/files/tickets';
+    var ticket_attach_path = `{{asset('storage/tickets')}}`;
+    var ticket_attach_path_search = 'storage/tickets';
     
     $(document).ready(function() {
         $.ajaxSetup({

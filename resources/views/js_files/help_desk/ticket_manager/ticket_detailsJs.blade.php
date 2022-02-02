@@ -22,8 +22,10 @@
     var gl_color_notes = 'rgb(255, 230, 177)';
     var user_photo_url = "{{ URL::asset('files/user_photos/user-photo.jpg') }}";
     var update_ticket_route = "{{asset('update_ticket')}}";
-    var ticket_attach_path = `{{asset('public/files')}}`;
-    var ticket_attach_path_search = 'public/files';
+    // var ticket_attach_path = `{{asset('public/files')}}`;
+    // var ticket_attach_path_search = 'public/files';
+    var ticket_attach_path = `{{asset('storage/files')}}`;
+    var ticket_attach_path_search = 'storage/files';
     var publish_reply_route = "{{asset('publish-ticket-reply')}}";
     var ticket_followup_route = "{{asset('get-ticket-follow-up')}}";
     var delete_followup_route = "{{asset('del-ticket-follow-up')}}";
