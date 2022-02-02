@@ -198,7 +198,17 @@ class HelpdeskController extends Controller
             if(!empty($ticket)) {
                 if(array_key_exists('attachments', $data)) {
                     // target dir for ticket files against ticket id
-                    $target_dir = public_path().'/files/tickets/'.$data['id'];
+
+                    
+                    
+                    // $target_dir = public_path().'/files/tickets/'.$data['id'];
+                    // if (!File::isDirectory($target_dir)) {
+                    //     mkdir($target_dir, 0777, true);
+                    // }
+
+                    $file_path = \Session::get('is_live') == 1 ? 'public/' : '';
+                    $target_dir = $file_path . 'storage/tickets'.$data['id'];
+
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
@@ -226,7 +236,7 @@ class HelpdeskController extends Controller
                             $file = base64_decode($value[1]);
                         }
                         
-                        $target_src = 'public/files/tickets/'.$data['id'].'/'.$value[0];
+                        $target_src = $target_dir.'/'.$value[0];
                             
                         file_put_contents($target_src, $file);
                     }
