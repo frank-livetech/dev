@@ -110,7 +110,7 @@
     <!-- Left Part -->
     <!-- ============================================================== -->
     <div class="row">
-        <div class="col-lg-4 col-md-12">
+        <div class="col-lg-3 col-md-12">
             <div class="card">
                 <div class="card-body">
 
@@ -158,14 +158,14 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="settings_stats">
+        <div class="col-md-9 gears" id="settings_stats">
             <div class="card">
                 <div class="card-body">
                 </div>
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="tickets_settings" style="display:none">
+        <div class="col-md-9 gears" id="tickets_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -247,7 +247,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">SLA Plans Table
                                                         </h4>
                                                     </div>
@@ -313,7 +313,7 @@
                                                     <div class="setting_body p-3">
                                                         <form id="sla_setting_form" method="POST" action="{{url('sla_setting')}}" enctype="multipart/form-data">
                                                             <div class="row ">
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-9">
                                                                 <p><b>Clear reply due deadline on staff reply</b></p>
                                                                 <small>When a staff user reply to a ticket, the ticket reply 
                                                                 due deadline will be cleared. A new reply due deadline will
@@ -356,7 +356,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row ">
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-9">
                                                                 <p><b>Use default reply and resolution deadline</b></p>
                                                                 <small>The time below will be used to calculate the ticket reply and resolution deadline if an SLA plan is not assigned to the ticket, user, user group or department. </small>
                                                                     <hr>
@@ -395,7 +395,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row ">
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-9">
                                                                 <p><b>Default reply time deadline</b></p>
                                                                 <small>If a user is not responded to within these hours, the ticket will be marked as overdue. </small>
                                                                     <hr>
@@ -413,7 +413,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row ">
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-9">
                                                                 <p><b>Default resolution deadline</b></p>
                                                                 <small>If a ticket is not resolved to within these hours, the ticket will be marked as overdue. </small>
                                                                     <hr>
@@ -432,7 +432,7 @@
                                                             </div>
 
                                                             <div class="row ">
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-9">
                                                                 <p><b>Overdue ticket background color</b></p>
                                                                 <small>Overdue tickets can be highlighted with a background color. Choose a light color so the text is still readable.</small>
                                                                     <hr>
@@ -451,7 +451,7 @@
                                                             </div>
 
                                                             <div class="row ">
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-9">
                                                                 <p><b>Overdue ticket text & button color</b></p>
                                                                 <small>Overdue tickets can be highlighted with a Text color. Choose a light color so the text is still readable.</small>
                                                                     <hr>
@@ -470,7 +470,7 @@
                                                             </div>
 
                                                             <div class="row ">
-                                                                <div class="col-md-8">
+                                                                <div class="col-md-9">
                                                                 <p><b>Clear reply due deadline when adding a ticket note</b></p>
                                                                 <small>When a ticket is updated (i.e. replied to by a staff user), the reply due time clock is reset. By enabling this setting, a ticket note will also count as a ticket update. </small>
                                                                     <hr>
@@ -545,7 +545,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Department Table</h4>
                                                     </div>
                                                     <div class="col-md-4 col-sm-6">
@@ -602,7 +602,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Status Table
                                                         </h4>
                                                     </div>
@@ -669,7 +669,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Type Table
                                                         </h4>
                                                     </div>
@@ -732,7 +732,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Priority
                                                             Table</h4>
                                                     </div>
@@ -845,7 +845,7 @@
 
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Response Template Category
                                                         </h4>
                                                     </div>
@@ -983,7 +983,7 @@
             </div> 
         </div>
 
-        <div class="col-md-8 gears" id="billing_settings" style="display:none">
+        <div class="col-md-9 gears" id="billing_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -1117,7 +1117,7 @@
             </div> 
         </div>
     
-        <div class="col-md-8 gears" id="customer_settings" style="display:none">
+        <div class="col-md-9 gears" id="customer_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -1200,7 +1200,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Customer Type Table
                                                         </h4>
                                                     </div>
@@ -1249,7 +1249,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="marketing_settings" style="display:none">
+        <div class="col-md-9 gears" id="marketing_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -1281,7 +1281,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="security_settings" style="display:none">
+        <div class="col-md-9 gears" id="security_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -1453,9 +1453,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-9">
                                             <p>Lorem ipsum dolor sit amet consectetur adipisicing. 
                                             </p>
                                         </div>
@@ -1464,7 +1464,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h2>Whitelist your IPs</h2>
@@ -1511,7 +1511,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="system_settings" style="display:none">
+        <div class="col-md-9 gears" id="system_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -1567,7 +1567,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="branding_settings" style="display:none">
+        <div class="col-md-9 gears" id="branding_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -2150,7 +2150,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="menu_settings" style="display:none">
+        <div class="col-md-9 gears" id="menu_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -2201,7 +2201,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="dispatch_settings" style="display:none">
+        <div class="col-md-9 gears" id="dispatch_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -2248,7 +2248,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Dispatch Status Table
                                                         </h4>
                                                     </div>
@@ -2300,7 +2300,7 @@
             </div>
         </div> 
 
-        <div class="col-md-8 gears" id="project_settings" style="display:none">
+        <div class="col-md-9 gears" id="project_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
 
@@ -2397,7 +2397,7 @@
                                         <div class="card-body">
                                             <div class="widget-header widget-header-small">
                                                 <div class="row">
-                                                    <div class="col-md-8 col-sm-6">
+                                                    <div class="col-md-9 col-sm-6">
                                                         <h4 class="widget-title lighter smaller menu_title">Project Task Type Table
                                                         </h4>
                                                     </div>
@@ -2638,7 +2638,7 @@
             </div>
         </div>
 
-        <div class="col-md-8 gears" id="payroll_settings" style="display:none">
+        <div class="col-md-9 gears" id="payroll_settings" style="display:none">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-3">Payroll Settings</h4>
