@@ -912,7 +912,7 @@ function getTicketDetailsContent() {
                                 <span class="overlayAttach"></span>
                                 <img src="{{asset('${js_path}default_imgs/pdf.gif')}}"  class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.gif')}}"  alt=""> ${item}</span>
-                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -926,7 +926,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/xlx.gif')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.gif')}}"  alt=""> ${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -938,9 +938,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
  
-                                <img src="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}" alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -954,7 +954,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/word.gif')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.gif')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -968,7 +968,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/ppt.gif')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/ppt.gif')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -982,7 +982,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.gif')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1017,7 +1017,7 @@ function listReplies() {
                 let attchs = reply.attachments.split(',');
                 tdet += '';
                 attchs.forEach(item => {
-                    var tech =  `{{asset('public/files/replies/${ticket_details.id}/${item}')}}`;
+                    var tech =  `{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}`;
                     var ter = getExt(tech);
 
                     
@@ -1032,7 +1032,7 @@ function listReplies() {
 
                                         <img src="{{asset('${js_path}default_imgs/pdf.gif')}}" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.gif')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
                                 </div>` 
                     }
@@ -1046,7 +1046,7 @@ function listReplies() {
 
                                         <img src="{{asset('${js_path}default_imgs/xlx.gif')}}" class="xlIcon" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.gif')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
                                 </div>` 
                     }
@@ -1057,9 +1057,9 @@ function listReplies() {
                                         </div>
                                     <div class="borderOne">
                                         <span class="overlayAttach"></span>
-                                        <img src="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
                                 </div>` 
                     }
@@ -1073,7 +1073,7 @@ function listReplies() {
 
                                         <img src="{{asset('${js_path}default_imgs/word.gif')}}" class="imgIcon" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.gif')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
                                 </div>` 
                     }
@@ -1087,7 +1087,7 @@ function listReplies() {
 
                                         <img src="{{asset('${js_path}default_imgs/ppt.gif')}}" class="imgIcon" style="width:30px; height:30px" alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/ppt.gif')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
                                 </div>` 
                     }
@@ -1101,7 +1101,7 @@ function listReplies() {
 
                                         <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon" style="width:30px; height:30px"  alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.gif')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
                                 </div>` 
                     }
