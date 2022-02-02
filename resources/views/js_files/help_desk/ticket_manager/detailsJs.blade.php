@@ -1246,7 +1246,7 @@ function deleteReply(id , index) {
 
 function publishReply(ele, type = 'publish') {
     var content = tinyMCE.editors.mymce.getContent();
-    tinyContentEditor(content, 'replies').then(function() {
+    tinyContentEditor(content, 'tickets-replies').then(function() {
         content = $('#tinycontenteditor').html();
 
         if (!content || content == '<p></p>') {
