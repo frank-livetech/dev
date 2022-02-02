@@ -393,7 +393,7 @@
                 return false;
             }
 
-            tinyContentEditor(content, 'replies').then(function() {
+            tinyContentEditor(content, 'tickets-replies').then(function() {
             content = $('#tinycontenteditor').html();
 
                 if (!content || content == '<p></p>') {
