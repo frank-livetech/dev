@@ -107,7 +107,6 @@ blockquote {
                     <div class="card-body">
                         <center class="mt-1"> 
                             @php
-                                <!-- $path = Session::get('is_live') == 1 ? 'public/' : '/'; -->
                                 $path = Session::get('is_live') == 1 ? '/' : '/';
                             @endphp
                             <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
@@ -1582,7 +1581,7 @@ aria-hidden="true">
     <div class="modal-body">
             <div class="text-center" id="prof-img ">
                              @php
-                                <!-- $path = Session::get('is_live') == 1 ? 'public/' : '/'; -->
+                              
                                 $path = Session::get('is_live') == 1 ? '/' : '/';
                             @endphp
                 @if($company->com_logo != null)

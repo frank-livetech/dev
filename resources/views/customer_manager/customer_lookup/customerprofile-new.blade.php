@@ -124,7 +124,7 @@
                         <center class="mt-4">
                             @php
                                 $path = Session::get('is_live') == 1 ? '/' : '/';
-                                <!-- $path = Session::get('is_live') == 1 ? 'public/' : '/'; -->
+                                
                             @endphp
                             <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
 
@@ -2143,7 +2143,7 @@
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
                             @php
-                                <!-- $path = Session::get('is_live') == 1 ? 'public/' : '/'; -->
+                                
                                 $path = Session::get('is_live') == 1 ? '/' : '/';
                             @endphp
                             @if($customer->avatar_url != null)
