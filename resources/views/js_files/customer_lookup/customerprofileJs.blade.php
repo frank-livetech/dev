@@ -1112,14 +1112,14 @@
         });
     });
 
-    $("#customFilePP").change(function() {
-        // alert("Bingo");
-        var ter = $("#customFilePP").val();
-        // alert(ter);
-        var terun = ter.replace(/^.*\\/, "");
-        $(".custom-file-label").text(terun);
-        readURL(this);
-    });
+    // $("#customFilePP").change(function() {
+    //     // alert("Bingo");
+    //     var ter = $("#customFilePP").val();
+    //     // alert(ter);
+    //     var terun = ter.replace(/^.*\\/, "");
+    //     $(".custom-file-label").text(terun);
+    //     readURL(this);
+    // });
     // till here
 
     $('.form-group small').addClass('d-none');
