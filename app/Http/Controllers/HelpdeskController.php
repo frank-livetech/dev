@@ -207,7 +207,7 @@ class HelpdeskController extends Controller
                     // }
 
                     $file_path = \Session::get('is_live') == 1 ? 'public/' : '';
-                    $target_dir = $file_path . 'storage/tickets'.$data['id'];
+                    $target_dir = 'storage/tickets/'.$data['id'];
 
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
