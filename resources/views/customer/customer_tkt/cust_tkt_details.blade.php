@@ -125,8 +125,13 @@ br + br { display: none; }
 
                     <hr>
 
-                    <div class="text-muted">Description</div>
-                    {!! $ticket->ticket_detail !!}
+                    <div class="text-muted" >Description</div>
+            
+                    <div class="card-body mail-message-wrapper frst">
+                        <div class="mail-message">
+                            <div class="row" id="ticket_details_p"></div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -283,8 +288,11 @@ br + br { display: none; }
         let ticket = {!!json_encode($ticket) !!};
         console.log(ticket , "ticket");
 
-        // show attachments
-        if(ticket != null) {
+            // show attachments
+            if(ticket != null) {
+                var content = content.replace(/<img[^>]*>/g,"");
+                tdet = `<div class="col-12">${content}</div>`;
+            }
             if(ticket.attachments != null) {
                 let attachments = ticket.attachments;
                 attachments = attachments.split(',');
