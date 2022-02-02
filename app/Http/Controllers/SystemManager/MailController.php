@@ -802,11 +802,18 @@ class MailController extends Controller
 
                 $filename = 'Live-tech_'.date_format(Carbon::now(), 'Y-m-d_h-i-s').'_'.$key.'.'.$ext;
                 
-                $target_src = 'public/files/replies/'.$tid.'/'.$filename;
-                $target_dir = public_path('files/replies/'.$tid);
+                // $target_src = 'public/files/replies/'.$tid.'/'.$filename;
+                // $target_dir = public_path('files/replies/'.$tid);
                 // $filepath = 'http://localhost/framework/public/files/replies/'.$tid.'/'.$filename;
-                $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/replies/'.$tid.'/'.$filename;
+                // $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/replies/'.$tid.'/'.$filename;
                 
+                // if (!File::isDirectory($target_dir)) {
+                //     mkdir($target_dir, 0777, true);
+                // }
+
+                $target_dir = 'storage/tickets-replies/'.$tid.'/';
+                $target_src = $target_dir.$filename;
+                    
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
@@ -856,10 +863,17 @@ class MailController extends Controller
                 // if(empty($ext)) $ext = 'svg';
                 // $filename = 'Live-tech_'.date_format(Carbon::now(), 'Y-m-d_h-i-s').'_'.$key.'.'.$ext;
                 
-                $target_src = 'public/files/tickets/'.$tid.'/'.$filename;
-                $target_dir = public_path('files/tickets/'.$tid);
-                $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/tickets/'.$tid.'/'.$filename;
+                // $target_src = 'public/files/tickets/'.$tid.'/'.$filename;
+                // $target_dir = public_path('files/tickets/'.$tid);
+                // $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/tickets/'.$tid.'/'.$filename;
                 
+                // if (!File::isDirectory($target_dir)) {
+                //     mkdir($target_dir, 0777, true);
+                // }
+
+                $target_dir = 'storage/tickets/'.$tid.'/';
+                $target_src = $target_dir.$filename;
+                    
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
