@@ -293,6 +293,7 @@ blockquote {
                         @php
                             $path = Session::get('is_live') == 1 ? 'public/' : '/';
                         @endphp
+                        <a href="#" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal">
                         @if($customer->avatar_url != null)
                             @if(is_file(public_path( $path .$customer->avatar_url)))
                             <img src="{{ asset( $path .$customer->avatar_url)}}" class="rounded-circle"
@@ -305,8 +306,9 @@ blockquote {
                         <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
                             id="profile-user-img" />
                         @endif
-                        <a type="button" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal"><i
-                                class="fa fa-pencil-alt picEdit"></i></a>
+                        </a>
+                        <!-- <a type="button" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal"><i
+                                class="fa fa-pencil-alt picEdit"></i></a> -->
 
                         <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} - {{$customer->last_name}} </h4>
                     </center>
@@ -2319,22 +2321,24 @@ blockquote {
                         @endphp
                         @if($customer->avatar_url != null)
                             @if(is_file(public_path( $path . $customer->avatar_url)))
-                            <img src="{{ asset( $path .$customer->avatar_url)}}" class="rounded-circle"
+                            <img src="{{ asset( $path .$customer->avatar_url)}}" class="modalImg rounded-circle"
                                 width="100" height="100" id="modal_profile_user_img" />
                             @else
-                            <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            <img src="{{ asset('default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100"
                                 id="modal_profile_user_img" />
                             @endif
                         @else
-                        <img src="{{ asset('default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                        <img src="{{ asset('default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100"
                             id="modal_profile_user_img" />
                         @endif
+                        <img src="{{asset( $path . 'default_imgs/customer.png')}}" id="hung22" alt="" class=" rounded-circle" width="100" height="100"  style="display:none;">
+
                     </div>
                 
                     <div class="input-group mt-1">
                         <div class="custom-file  w-100">
                             <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}">
-                            <input type="file" name="profile_img" class="form-control" id="customFilePP" accept="image/*">
+                            <input type="file" name="profile_img" onchange="loadFile(event)" class="form-control" id="customFilePP" accept="image/*">
                         </div>
                     </div>
 
@@ -2521,4 +2525,15 @@ blockquote {
 @endsection
 @section('scripts')
     @include('customer.Js.customer_profileJs')
+    <script>
+         function loadFile(event) {
+            $('.modalImg').hide();
+            $("#hung22").show()
+            var output = document.getElementById('hung22');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+    </script>
 @endsection
