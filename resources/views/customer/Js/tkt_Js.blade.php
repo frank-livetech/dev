@@ -6,8 +6,10 @@
     var ticket_id = $("#ticket_id").val();
     var js_path = $("#js_path").val();
     js_path = (js_path == 1 ? 'public/' : '');
-    var ticket_attach_path = `{{asset('public/files')}}`;
-    var ticket_attach_path_search = 'public/files';
+    // var ticket_attach_path = `{{asset('public/files')}}`;
+    // var ticket_attach_path_search = 'public/files';
+    var ticket_attach_path = `{{asset('storage')}}`;
+    var ticket_attach_path_search = 'storage';
     
     $(document).ready(function() {
         $.ajaxSetup({
@@ -405,7 +407,7 @@
                 return false;
             }
 
-            tinyContentEditor(content, 'replies').then(function() {
+            tinyContentEditor(content, 'tickets-replies').then(function() {
             content = $('#tinycontenteditor').html();
 
                 if (!content || content == '<p></p>') {

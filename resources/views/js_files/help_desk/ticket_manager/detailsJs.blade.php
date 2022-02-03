@@ -13,8 +13,12 @@ let ticket_attachments_count = 1;
 let date_format = {!! json_encode($date_format) !!};
 let update_flag = 0;
 let updates_Arr = [];
-var ticket_attach_path = `{{asset('public/files')}}`;
-var ticket_attach_path_search = 'public/files';
+// var ticket_attach_path = `{{asset('public/files')}}`;
+// var ticket_attach_path_search = 'public/files';
+
+var ticket_attach_path = `{{asset('storage')}}`;
+var ticket_attach_path_search = 'storage';
+
 var time_zone = $("#usrtimeZone").val();
 var js_path = "{{Session::get('is_live')}}";
 js_path = (js_path == 1 ? 'public/' : '');
@@ -843,7 +847,7 @@ function getTicketDetailsContent() {
     let tdet = '';
     var content = ticket_details.ticket_detail;
     if(ticket_details != null || ticket_details != "") {
-        // content = content.replace(/<img[^>]*>/g,"");
+        content = content.replace(/<img[^>]*>/g,"");
         tdet = `<div class="col-12">${content}</div>`;
         // if(ticket_details.attachments != null || ticket_details.attachments != ""){
 
@@ -896,7 +900,7 @@ function getTicketDetailsContent() {
         tdet += '<div class="col-12 row">';
         attchs.forEach(item => {
             // tdet += `<p><a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
-            var tech =  `{{asset('/files/tickets/${ticket_details.id}/${item}')}}`;
+            var tech =  `{{asset('/storage/tickets/${ticket_details.id}/${item}')}}`;
             var ter = getExt(tech);
             // return ter;
             if(ter == "pdf" ){
@@ -934,9 +938,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
  
-                                <img src="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}" alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -992,7 +996,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.gif')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1027,7 +1031,7 @@ function listReplies() {
                 let attchs = reply.attachments.split(',');
                 tdet += '';
                 attchs.forEach(item => {
-                    var tech =  `{{asset('public/files/replies/${ticket_details.id}/${item}')}}`;
+                    var tech =  `{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}`;
                     var ter = getExt(tech);
 
                     
@@ -1067,9 +1071,9 @@ function listReplies() {
                                         </div>
                                     <div class="borderOne">
                                         <span class="overlayAttach"></span>
-                                        <img src="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                         <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                     </div>
                                 </div>` 
                     }
@@ -1270,7 +1274,7 @@ function deleteReply(id , index) {
 
 function publishReply(ele, type = 'publish') {
     var content = tinyMCE.editors.mymce.getContent();
-    tinyContentEditor(content, 'replies').then(function() {
+    tinyContentEditor(content, 'tickets-replies').then(function() {
         content = $('#tinycontenteditor').html();
 
         if (!content || content == '<p></p>') {

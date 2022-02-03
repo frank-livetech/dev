@@ -40,7 +40,7 @@
         </div>
         <div class="content-body">
             <div class="row">
-                <div class="col-lg-4 col-md-12">
+                <div class="col-lg-3 col-md-12">
                     <div class="card">
                         <div class="card-body">
                         
@@ -77,7 +77,7 @@
                                         <div class="dd-handle nav-link dispatch" data-cls=".dispatch" data-trg="#dispatch_settings">Dispatch</div>
                                     </li>
                                     <li class="dd-item nav-item" data-id="11">
-                                        <div class="dd-handle nav-link project" data-cls=".project" data-trg="#project_settings">Project Management</div>
+                                        <div class="dd-handle nav-link project  px-0" data-cls=".project" data-trg="#project_settings">Project Management</div>
                                     </li>
                                     <li class="dd-item nav-item" data-id="12">
                                         <div class="dd-handle nav-link payroll" data-cls=".payroll" data-trg="#payroll_settings">Payroll</div>
@@ -88,61 +88,61 @@
                     </div>
                 </div>
 
-                <div class="col-md-8 gears" id="settings_stats">
+                <div class="col-md-9 gears" id="settings_stats">
                     <div class="card">
                         <div class="card-body">
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-8 gears" id="tickets_settings" style="display:none">
+                <div class="col-md-9 gears" id="tickets_settings" style="display:none">
                    @include('system_manager.settings.tabs.tickets')
                 </div>
 
-                <div class="col-md-8 gears" id="billing_settings" style="display:none">
+                <div class="col-md-9 gears" id="billing_settings" style="display:none">
                     @include('system_manager.settings.tabs.billing')
                 </div>
             
-                <div class="col-md-8 gears" id="customer_settings" style="display:none">
+                <div class="col-md-9 gears" id="customer_settings" style="display:none">
                     @include('system_manager.settings.tabs.customer')
                 </div>
 
-                <div class="col-md-8 gears" id="marketing_settings" style="display:none">
+                <div class="col-md-9 gears" id="marketing_settings" style="display:none">
                     @include('system_manager.settings.tabs.marketing')
                     
                 </div>
 
-                <div class="col-md-8 gears" id="security_settings" style="display:none">
+                <div class="col-md-9 gears" id="security_settings" style="display:none">
                     @include('system_manager.settings.tabs.security')
                     
                 </div>
 
-                <div class="col-md-8 gears" id="system_settings" style="display:none">
+                <div class="col-md-9 gears" id="system_settings" style="display:none">
                     @include('system_manager.settings.tabs.system')
                    
                 </div>
 
-                <div class="col-md-8 gears" id="branding_settings" style="display:none">
+                <div class="col-md-9 gears" id="branding_settings" style="display:none">
                      @include('system_manager.settings.tabs.branding')
                     
                 </div>
 
-                <div class="col-md-8 gears" id="menu_settings" style="display:none">
+                <div class="col-md-9 gears" id="menu_settings" style="display:none">
                     @include('system_manager.settings.tabs.menu_management')
                     
                 </div>
 
-                <div class="col-md-8 gears" id="dispatch_settings" style="display:none">
+                <div class="col-md-9 gears" id="dispatch_settings" style="display:none">
                     @include('system_manager.settings.tabs.dispatch')
                     
                 </div> 
 
-                <div class="col-md-8 gears" id="project_settings" style="display:none">
+                <div class="col-md-9 gears" id="project_settings" style="display:none">
                     @include('system_manager.settings.tabs.prjct_mgt')
                    
                 </div>
 
-                <div class="col-md-8 gears" id="payroll_settings" style="display:none">
+                <div class="col-md-9 gears" id="payroll_settings" style="display:none">
                     @include('system_manager.settings.tabs.payroll')
                     
                 </div>

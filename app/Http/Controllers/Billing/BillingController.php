@@ -51,7 +51,16 @@ class BillingController extends Controller
 
         return view('billing.rfq.index',compact('tags','categories','companies','setting_notes'));
     }
+    public function rfqNew(){
 
+        $tags = Tags::all();
+        $categories = Category::all();
+        $companies = Company::all();
+
+        $setting_notes = SystemSetting::where('sys_key','sell_inst_note')->first();
+
+        return view('billing.rfq.index-new',compact('tags','categories','companies','setting_notes'));
+    }
     public function vendorsProfile($id){
         $tags = Tags::all();
         $categories = Category::all();
@@ -449,6 +458,15 @@ class BillingController extends Controller
         $pending_payment_order = Orders::where("status_text","Pending Payment")->count();
         $processing_order = Orders::where("status_text","Processing")->count();
         return view('billing.home', compact('date_format','completed_order','pending_payment_order','all_order','processing_order'));
+    }
+    public function billingHomePageNew() {
+
+        $date_format = Session('system_date');
+        $all_order = Orders::all()->count();
+        $completed_order = Orders::where("status_text","Completed")->count();
+        $pending_payment_order = Orders::where("status_text","Pending Payment")->count();
+        $processing_order = Orders::where("status_text","Processing")->count();
+        return view('billing.home-new', compact('date_format','completed_order','pending_payment_order','all_order','processing_order'));
     }
 
     public function get_all_orders(Request $request) {

@@ -277,8 +277,8 @@ class HomeController
 
             if($ticket) {
 
-                $file_path = \Session::get('is_live') == 1 ? 'public/' : '';
-                $target_dir = $file_path . 'storage'.'/'.$request->module.'/'.$request->ticket_id;
+                // $file_path = \Session::get('is_live') == 1 ? 'public/' : '';
+                $target_dir = 'storage'.'/'.$request->module.'/'.$request->ticket_id;
 
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
@@ -342,7 +342,13 @@ class HomeController
 
                 if(array_key_exists('inner_attachments', $req_data)) {
                     // target dir for ticket files against ticket id
-                    $target_dir = public_path().'/files/replies/'.$req_data['ticket_id'];
+                    // $target_dir = public_path().'/files/replies/'.$req_data['ticket_id'];
+                    // if (!File::isDirectory($target_dir)) {
+                    //     mkdir($target_dir, 0777, true);
+                    // }
+
+                    $target_dir = 'storage/tickets-replies/'.$req_data['ticket_id'];
+                    
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
@@ -355,7 +361,7 @@ class HomeController
                             $file = base64_decode($value[1]);
                         }
                         
-                        $target_src = 'public/files/replies/'.$req_data['ticket_id'].'/'.$value[0];
+                        $target_src = $target_dir.'/'.$value[0];
                             
                         file_put_contents($target_src, $file);
                     }

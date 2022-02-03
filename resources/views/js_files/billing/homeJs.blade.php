@@ -96,7 +96,7 @@
                 status_class = "badge text-megna badge-light-megna";
             }
 
-            let pdf_btn = `<a href="`+create_pdf+`/`+full.custom_id+`" class="btn btn-danger btn-circle mr-1" title="download pdf"><i class="far fa-file-pdf mt-1"></i></a><button class="btn btn-success btn-circle mr-1" ><i class="far fa-eye" title="view"></i></button>`;
+            let pdf_btn = `<a href="`+create_pdf+`/`+full.custom_id+`" class="btn btn-danger btn-icon btn-circle rounded-circle mr-1 me-1" title="download pdf"><i class="far fa-file-pdf"></i></a><button class="btn  btn-success btn-icon btn-circle rounded-circle mr-1 me-1" ><i class="far fa-eye" title="view"></i></button>`;
             
             let checkout_btn = '';
 
@@ -105,7 +105,7 @@
                 let url = ``+checkoutpage+`/`+full.customer.id+``;
 
                 if(full.status_text == "Pending Payment") {
-                    checkout_btn = `<a href="`+checkoutpage+`/`+full.customer.id + `/`+full.custom_id+`" class="btn btn-info btn-circle mr-1" title="checkout"><i class="fas fa-check-circle mt-1"></i></a>`;
+                    checkout_btn = `<a href="`+checkoutpage+`/`+full.customer.id + `/`+full.custom_id+`" class="btn btn-info btn-icon btn-circle rounded-circle mr-1 me-1" title="checkout"><i class="fas fa-check-circle mt-1"></i></a>`;
                 }
             }
 
@@ -223,14 +223,14 @@
                         //     {
                         //         "render": function(data, type, full, meta) {
             
-                        //             let pdf_btn = `<a href="`+create_pdf+`/`+full.custom_id+`" class="btn btn-danger btn-circle mr-1" title="download pdf"><i class="far fa-file-pdf mt-1"></i></a>`;
+                        //             let pdf_btn = `<a href="`+create_pdf+`/`+full.custom_id+`" class="btn btn-danger btn-icon btn-circle rounded-circle mr-1 me-1" title="download pdf"><i class="far fa-file-pdf"></i></a>`;
             
-                        //             let view_btn = `<button class="btn btn-success btn-circle mr-1" ><i class="far fa-eye" title="view"></i></button>`;
+                        //             let view_btn = `<button class="btn btn-success btn-icon btn-circle rounded-circle mr-1 me-1" ><i class="far fa-eye" title="view"></i></button>`;
             
             
                         //             if(full.customer != null) {
                         //                 let url = ``+checkoutpage+`/`+full.customer.id+``;
-                        //                 let checkout_btn = `<a href="`+checkoutpage+`/`+full.customer.id + `/`+full.custom_id+`" class="btn btn-info btn-circle mr-1" title="checkout"><i class="fas fa-check-circle mt-1"></i></a>`;
+                        //                 let checkout_btn = `<a href="`+checkoutpage+`/`+full.customer.id + `/`+full.custom_id+`" class="btn btn-info btn-icon btn-circle rounded-circle mr-1 me-1" title="checkout"><i class="fas fa-check-circle mt-1"></i></a>`;
             
                         //                 if(full.status_text == "Pending Payment") {
                         //                     return checkout_btn + pdf_btn + view_btn;

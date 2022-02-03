@@ -186,6 +186,7 @@ Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], func
 
     //Billing RFQ  Routes
     Route::get('/rfq','BillingController@rfq')->name('rfq.index');
+    Route::get('/rfq-new','BillingController@rfqNew')->name('rfq.index-new');
     Route::post('/save_rfq_requests','BillingController@saveRFQRquests');
     Route::post('/save_inst_notes','BillingController@saveInstNotes');
     //Vendor Profile View Route
@@ -205,6 +206,7 @@ Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], func
     
     Route::post('/billing/published','BillingController@billing_home');
     Route::get('/billing/home','BillingController@billingHomePage')->name('billing.home');
+    Route::get('/billing/home-new','BillingController@billingHomePageNew')->name('billing.home-new');
     Route::get('/get-all-orders','BillingController@get_all_orders');
     Route::get('/get-all-subs','BillingController@get_all_subs');
 

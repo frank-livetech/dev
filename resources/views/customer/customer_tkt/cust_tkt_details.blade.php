@@ -125,8 +125,13 @@ br + br { display: none; }
 
                     <hr>
 
-                    <div class="text-muted">Description</div>
-                    {!! $ticket->ticket_detail !!}
+                    <div class="text-muted" >Description</div>
+            
+                    <div class="card-body mail-message-wrapper frst">
+                        <div class="mail-message">
+                            <div class="row" id="ticket_details_p"></div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -283,8 +288,11 @@ br + br { display: none; }
         let ticket = {!!json_encode($ticket) !!};
         console.log(ticket , "ticket");
 
-        // show attachments
-        if(ticket != null) {
+            // show attachments
+            if(ticket != null) {
+                var content = content.replace(/<img[^>]*>/g,"");
+                tdet = `<div class="col-12">${content}</div>`;
+            }
             if(ticket.attachments != null) {
                 let attachments = ticket.attachments;
                 attachments = attachments.split(',');
@@ -297,7 +305,7 @@ br + br { display: none; }
 
                     for(var k =0; k < extens.length; k++) {
                         if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
-                            ext = `<img src="{{asset('public/files/tickets/${ticket.id}/${attachments[i]}')}}" class="img-fluid">`;
+                            ext = `<img src="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="img-fluid">`;
                             file_name = `image.jpeg`;
                         }
 
@@ -339,7 +347,7 @@ br + br { display: none; }
                                 <span class="overlayAttach"></span>
                                 ${ext}
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/${file_name}')}}"  alt=""> ${attachments[i]}</span>
-                                <a href="" download="{{asset('public/files/tickets/${ticket.id}/${attachments[i]}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="" download="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>`
                 }

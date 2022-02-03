@@ -654,11 +654,11 @@
                             {
                                 "render": function(data, type, full, meta) {
                                     return `
-                                    <button class="btn btn-circle btn-success" title="Edit Type" 
+                                    <button class="btn btn-circle btn-icon rounded-circle btn-success" title="Edit Type" 
                                         onclick="editContact(`+ full.id+ `,'`+ full.first_name+ `','` + full.last_name +`',
-                                        '`+ full.comp_id +`','`+full.email +`','`+ full.direct_line +`','` + full.phone + `','` +full.website + `','` +full.tags + `','` +full.categories +`')"><i class="mdi mdi-grease-pencil font-20" aria-hidden="true"></i></button>
+                                        '`+ full.comp_id +`','`+full.email +`','`+ full.direct_line +`','` + full.phone + `','` +full.website + `','` +full.tags + `','` +full.categories +`')"><i class="fa fa-pencil font-20" aria-hidden="true"></i></button>
                                     
-                                    <button class="btn btn-circle btn-danger" title="Delete Department" onclick="deleteContact(` +full.id +`)"><i class="fa fa-trash font-20 " aria-hidden="true"></i></button>
+                                    <button class="btn btn-circle btn-icon rounded-circle btn-danger" title="Delete Department" onclick="deleteContact(` +full.id +`)"><i class="fa fa-trash font-20 " aria-hidden="true"></i></button>
                                     `;
                                 }
                             },

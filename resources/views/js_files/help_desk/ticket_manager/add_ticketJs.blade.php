@@ -7,8 +7,10 @@
     // Add Ticket Script Bladde
         let res_templates_list = {!! json_encode($responseTemplates) !!};
         let attachments_src = [];
-        var ticket_attach_path = `{{asset('public/files/tickets')}}`;
-        var ticket_attach_path_search = 'public/files/tickets';
+        // var ticket_attach_path = `{{asset('public/files/tickets')}}`;
+        // var ticket_attach_path_search = 'public/files/tickets';
+        var ticket_attach_path = `{{asset('storage/tickets')}}`;
+        var ticket_attach_path_search = 'storage/tickets';
         let ticket_action_lvl = 'create';
         let ticket_attachments_count = 1;
 
