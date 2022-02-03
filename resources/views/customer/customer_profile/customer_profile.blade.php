@@ -2538,5 +2538,9 @@ blockquote {
             URL.revokeObjectURL(output.src) // free memory
             }
         };
+        $(".btn-close").click(function(){
+            $('.modalImg').show();
+            $("#hung22").hide()
+        })
     </script>
 @endsection

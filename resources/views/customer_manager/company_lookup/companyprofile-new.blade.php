@@ -1747,6 +1747,11 @@ aria-hidden="true">
             URL.revokeObjectURL(output.src) // free memory
             }
         };
+        $(".btn-close").click(function(){
+            $('.modalImg').show();
+            $("#hung22").hide()
+            $('#customFilePP').val("");
+        })
     </script>
     
     @include('js_files.help_desk.asset_manager.templateJs')

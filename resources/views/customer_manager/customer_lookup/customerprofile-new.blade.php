@@ -2374,5 +2374,10 @@
             URL.revokeObjectURL(output.src) // free memory
             }
         };
+        $(".btn-close").click(function(){
+            $('.modalImg').show();
+            $("#hung22").hide()
+            $('#customFilePP').val("");
+        })
 </script>
 @endsection
