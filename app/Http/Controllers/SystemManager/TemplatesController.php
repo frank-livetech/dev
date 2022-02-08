@@ -20,9 +20,15 @@ class TemplatesController extends Controller
         $templates = mailEclipse::getTemplates();
 
         $tmp_cats = DB::table('template_categories')->get();
+        foreach($tmp_cats as $cat) {
+            $cat->template = DB::table('templates')->where('catid',$cat->cat_id)->get();
+        }
+
+        // dd($tmp_cats->toArray());
+
         $tem_cats_modal = DB::table('template_categories')->whereRaw('cat_id !=2')->get();
 
-        return View(self::$prifixRoute . 'sections.templates', compact('skeletons', 'templates','tmp_cats','tem_cats_modal'));
+        return View(self::$prifixRoute . 'sections.templates_new', compact('skeletons', 'templates','tmp_cats','tem_cats_modal'));
     }
 
     function new ($type, $name, $skeleton) {

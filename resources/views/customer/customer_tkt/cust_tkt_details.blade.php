@@ -118,7 +118,7 @@ br + br { display: none; }
             <div class="card mt-2">
                 <div class="card-body">
                     <div class="text-muted">Subject</div>
-                    <h3>{{$ticket->subject}} -</h3>
+                    <h3>{{$ticket->subject}} </h3>
 
                     Created : <span id="tkt_created_at"> </span>
                     Updated : <span id="tkt_updated_at"> </span>
@@ -310,28 +310,33 @@ br + br { display: none; }
                         }
 
                         if(extens[1] == 'pdf') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/pdf.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
-                            file_name = `pdf.gif`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/pdf.png')}}" class=" attImg"  alt="" >`;
+                            file_name = `pdf.png`;
                         }
 
                         if(extens[1] == 'txt') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/txt.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
-                            file_name = `txt.gif`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/txt.png')}}" class=" attImg"  alt="" >`;
+                            file_name = `txt.png`;
                         }
 
                         if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/word.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
-                            file_name = `word.gif`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/word.png')}}" class=" attImg"  alt="" >`;
+                            file_name = `word.png`;
                         }
 
                         if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/xlx.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
-                            file_name = `xlx.gif`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/xlx.png')}}" class=" attImg"  alt="" >`;
+                            file_name = `xlx.png`;
                         }
 
                         if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/ppt.gif')}}" class=" attImg"  alt="" style="width:30px !important; height:30px !important">`;
-                            file_name = `ppt.gif`;
+                            ext = `<img src="{{asset('${js_path}default_imgs/pptx.png')}}" class=" attImg"  alt="" >`;
+                            file_name = `pptx.png`;
+                        }
+
+                        if(extens[1] == 'zip') {
+                            ext = `<img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class=" attImg"  alt="" >`;
+                            file_name = `zip.jpeg`;
                         }
 
                     }
