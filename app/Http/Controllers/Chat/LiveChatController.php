@@ -17,8 +17,9 @@ class LiveChatController extends Controller
         $this->middleware('auth');
     }
     public function index(){
-        $users = User::where('is_deleted',0)->get();
-        // $users = User::where('is_deleted',0)->where('id','!=',\Auth::id())->get();
+        // $users = User::where('is_deleted',0)->get();
+        $users = User::where('is_deleted',0)->where('id','!=',\Auth::id())->get();
+        // return $users;
         // return view('chat.index',compact('users'));
         return view('chat.index-new',compact('users'));
 

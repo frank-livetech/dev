@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -38,6 +39,9 @@ class User extends Authenticatable implements JWTSubject
     'linkedin','google_id','company_id','privacy_policy',
     ];
 
+    protected $appends = ['role'];
+
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -55,6 +59,13 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getRoleAttribute() {
+
+        $id = $this->user_type;
+        $role = Role::where('id',$id)->first();
+        return $role->name;
+    }
 
     public function staffProfile() {
         return $this->hasOne(Models\StaffProfile::class);

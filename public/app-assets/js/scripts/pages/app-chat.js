@@ -140,6 +140,11 @@ $(function () {
       var $this = $(this),
         startArea = $('.start-chat-area'),
         activeChat = $('.active-chat');
+        var name = this.getAttribute("data_nm");
+        var pic = this.getAttribute("data_pc");
+
+        $('#active_user_name').text(name);
+        $("#active_user_img").attr("src",pic);
 
       if (chatUsersListWrapper.find('ul li').hasClass('active')) {
         chatUsersListWrapper.find('ul li').removeClass('active');
