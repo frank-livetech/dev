@@ -558,7 +558,8 @@ class MailController extends Controller
                                             'customer_id' => $customer_id,
                                             'status' => $eq_value->mail_status_id,
                                             'type' => $eq_value->mail_type_id,
-                                            'is_staff_tkt' => $is_staff_tkt
+                                            'is_staff_tkt' => $is_staff_tkt,
+                                            'tkt_crt_type' => 'cron'
                                         ]);
                                         
                                         // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
