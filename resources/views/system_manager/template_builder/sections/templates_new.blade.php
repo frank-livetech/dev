@@ -1,5 +1,9 @@
 @extends('layouts.master-layout-new')
 @section('customtheme')
+@php
+        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+    @endphp
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,800,800i,900,900i" rel="stylesheet">
 <!-- Custom built theme - This already includes Bootstrap 4 -->

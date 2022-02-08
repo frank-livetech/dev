@@ -847,7 +847,13 @@ function getTicketDetailsContent() {
     let tdet = '';
     var content = ticket_details.ticket_detail;
     if(ticket_details != null || ticket_details != "") {
-        content = content.replace(/<img[^>]*>/g,"");
+
+        if(ticket_details.tkt_crt_type == 'cron'){
+            content = content.replace(/<img[^>]*>/g,"");
+        }else{
+            content = content;
+        }
+      
         tdet = `<div class="col-12">${content}</div>`;
         // if(ticket_details.attachments != null || ticket_details.attachments != ""){
 
