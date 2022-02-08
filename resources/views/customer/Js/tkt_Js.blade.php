@@ -93,8 +93,8 @@
                                                             </div>
                                                         <div class="borderOne"  style="display: flex; justify-content: center; align-items: center;">
                                                         <span class="overlayAttach"></span>
-                                                            <img src="{{asset('${js_path}default_imgs/pdf.gif')}}" width="30px" height="30px" class=" attImg"  alt="">
-                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.gif')}}"  alt=""> ${attch}</span>
+                                                            <img src="{{asset('${js_path}default_imgs/pdf.png')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${attch}</span>
                                                             <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
@@ -106,8 +106,8 @@
                                                             </div>
                                                         <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                                             <span class="overlayAttach"></span>
-                                                            <img src="{{asset('${js_path}default_imgs/xlx.jpeg')}}" width="30px" height="30px" class=" attImg"  alt="">
-                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.jpeg')}}"  alt=""> ${attch}</span>
+                                                            <img src="{{asset('${js_path}default_imgs/xlx.png')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.png')}}"  alt=""> ${attch}</span>
                                                             <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
@@ -133,8 +133,8 @@
                                                         <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                                             <span class="overlayAttach"></span>
 
-                                                            <img src="{{asset('${js_path}default_imgs/word.gif')}}" width="30px" height="30px" class=" attImg"  alt="">
-                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.gif')}}"  alt=""> ${attch}</span>
+                                                            <img src="{{asset('${js_path}default_imgs/word.png')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.png')}}"  alt=""> ${attch}</span>
                                                             <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
@@ -147,8 +147,22 @@
                                                         <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                                             <span class="overlayAttach"></span>
 
-                                                            <img src="{{asset('${js_path}default_imgs/ppt.gif')}}" width="30px" height="30px" class=" attImg"  alt="">
-                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/ppt.gif')}}"  alt=""> ${attch}</span>
+                                                            <img src="{{asset('${js_path}default_imgs/pptx.png')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pptx.png')}}"  alt=""> ${attch}</span>
+                                                            <a href="{{asset('public/files/replies/${tticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                                        </div>
+                                                    </div>` 
+                                        }
+                                        else if(ter == "zip"){
+                                            tdet+= `<div class="col-md-2 mt-1">
+                                                            <div class="card__corner">
+                                                                <div class="card__corner-triangle"></div>
+                                                            </div>
+                                                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+                                                            <span class="overlayAttach"></span>
+
+                                                            <img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/zip.jpeg')}}"  alt=""> ${attch}</span>
                                                             <a href="{{asset('public/files/replies/${tticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 
@@ -160,8 +174,8 @@
                                                             </div>
                                                         <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                                             <span class="overlayAttach"></span>
-                                                            <img src="{{asset('${js_path}default_imgs/txt.gif')}}" width="30px" height="30px" class=" attImg"  alt="">
-                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/txt.gif')}}"  alt=""> ${attch}</span>
+                                                            <img src="{{asset('${js_path}default_imgs/txt.png')}}" class=" attImg"  alt="">
+                                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('assets/images/icon/txt.png')}}"  alt=""> ${attch}</span>
                                                             <a href="{{asset('public/files/replies/${ticket_id}/${attch}')}}" download="{{asset('public/files/replies/${ticket_id}/${attch}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                                         </div>
                                                     </div>` 

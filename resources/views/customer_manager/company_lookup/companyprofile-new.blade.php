@@ -107,8 +107,9 @@ blockquote {
                     <div class="card-body">
                         <center class="mt-1"> 
                             @php
-                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                                $path = Session::get('is_live') == 1 ? '/' : '/';
                             @endphp
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
                             @if($company->com_logo != null)
                                 @if(is_file( getcwd() .'/'. $company->com_logo ))
                                     <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
@@ -118,7 +119,8 @@ blockquote {
                             @else
                                 <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
                             @endif
-                            <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left:50px;bottom:60px"><i class="fa fa-pencil-alt picEdit"></i></a>
+                            </a>
+                            <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left:50px;bottom:60px"><i class="fa fa-pencil-alt picEdit"></i></a> -->
                             <h4 class="card-title mt-2" id="comp_name">{{$company->name}}</h4>
                         </center> 
                     </div>
@@ -1578,24 +1580,27 @@ aria-hidden="true">
     </div>
     <div class="modal-body">
             <div class="text-center" id="prof-img ">
-                @php
-                    $path = Session::get('is_live') == 1 ? 'public/' : '/';
-                @endphp
+                             @php
+                              
+                                $path = Session::get('is_live') == 1 ? '/' : '/';
+                            @endphp
                 @if($company->com_logo != null)
                     @if(is_file( getcwd() .'/'. $company->com_logo ))
-                        <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
+                        <img src="{{ request()->root() .'/'. $company->com_logo }}" class="modalImg rounded-circle" width="100" height="100" id="company_curr_img" />
                     @else
-                    <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
+                    <img src="{{asset( $path . 'default_imgs/company.png')}}" class="modalImg rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
                     @endif
                 @else
-                    <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
+                    <img src="{{asset( $path . 'default_imgs/company.png')}}" class="modalImg rounded-circle shadow-sm" width="100" height="100" id="company_curr_img" />
                 @endif
+                <img src="{{asset( $path . 'default_imgs/customer.png')}}" id="hung22" alt="" class=" rounded-circle" width="100" height="100"  style="display:none;">
+
             </div>
             <form class="mt-4" id="upload_company_img">
                 <div class="input-group">
                     <div class="custom-file col-md-12">
                         <input type="hidden" name="company_id" id="company_id" value="{{$company->id}}">
-                        <input class="form-control" name="profile_img" type="file" id="customFilePP" accept="image/*">
+                        <input class="form-control" name="profile_img" type="file"  onchange="loadFile(event)" id="customFilePP" accept="image/*">
                     </div>
                 </div>
                 <div class="text-right mt-3">
@@ -1721,6 +1726,8 @@ aria-hidden="true">
 </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div><!-- /.modal Notes Modal -->
+@endsection
+
 @section('scripts')    
     <!-- jQuery ui files-->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
@@ -1729,6 +1736,17 @@ aria-hidden="true">
         var asset_customer_uid = '';
         var asset_company_id = '{{$company->id}}';
         var asset_ticket_id = '';
+
+        
+        function loadFile(event) {
+            $('.modalImg').hide();
+            $("#hung22").show()
+            var output = document.getElementById('hung22');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+            }
+        };
     </script>
     
     @include('js_files.help_desk.asset_manager.templateJs')
@@ -1737,5 +1755,4 @@ aria-hidden="true">
 
     @include('js_files.company_lookup.companyprofileJs')
     
-@endsection
 @endsection

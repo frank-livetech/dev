@@ -412,15 +412,26 @@
 
             });
         });
-
-        $("#customFilePP").change(function() {
-            // alert("Bingo");
-            var ter = $("#customFilePP").val();
-            // alert(ter);
-            var terun = ter.replace(/^.*\\/, "");
-            $(".custom-file-label").text(terun);
-            readURL(this);
-        });
+        
+        // $("#customFilePP").change(function() {
+        //     // alert("Bingo");
+        //     var ter = $("#customFilePP").val();
+        //     // // alert(ter);
+        //     // var terun = ter.replace(/^.*\\/, "");
+        //     // $(".custom-file-label").text(terun);
+        //     // // if (ter) {
+        //     // //         .src = URL.createObjectURL(ter)
+        //     // //     }
+        //     // $("#profile-user-img").attr('src',URL.createObjectURL(terun));
+            
+        //             var output = document.getElementById('customFilePP');
+        //             output.src = URL.createObjectURL($(this).target.files[0]);
+        //             output.onload = function() {
+        //             URL.revokeObjectURL(output.src) // free memory
+          
+        //     readURL(this);
+        //     alert(ter)
+        // });
 
 
         // save work hours

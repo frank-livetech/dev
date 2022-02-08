@@ -123,18 +123,25 @@
                     <div class="card-body">
                         <center class="mt-4">
                             @php
-                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                                $path = Session::get('is_live') == 1 ? '/' : '/';
+                                
                             @endphp
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
+
                             @if($customer->avatar_url != null)
+
+                            
                                 @if(is_file( getcwd() .'/'. $customer->avatar_url))
                                     <img src="{{ request()->root() .'/'. $customer->avatar_url }}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @else
                                     <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @endif
                             @else
+                            
                                 <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
-                            <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a>
+                            </a>
+                            <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a> -->
     
                             <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} {{$customer->last_name}}
                             </h4>
@@ -2136,23 +2143,26 @@
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
                             @php
-                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                                
+                                $path = Session::get('is_live') == 1 ? '/' : '/';
                             @endphp
                             @if($customer->avatar_url != null)
                                 @if(is_file( getcwd() .'/'. $customer->avatar_url))
-                                    <img src="{{ request()->root() .'/'. $customer->avatar_url}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                    <img src="{{ request()->root() .'/'. $customer->avatar_url}}" class="modalImg rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @else
-                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @endif
                             @else
-                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" id="hung22" alt="" class=" rounded-circle" width="100" height="100"  style="display:none;">
+
                     </div>
                     <form class="mt-4" id="upload_customer_img">
                         <div class="input-group">
-                            <div class="custom-file">
+                            <div class="custom-file w-100">
                                 <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}">
-                                <input type="file" name="profile_img" class="form-control" id="customFilePP" accept="image/*">
+                                <input type="file" name="profile_img" class="form-control"  onchange="loadFile(event)" id="customFilePP" accept="image/*">
                             </div>
                         </div>
                         <div class="text-right mt-3">
@@ -2353,4 +2363,16 @@
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
 
 @include('js_files.customer_lookup.customerprofileJs')
+
+<script>
+     function loadFile(event) {
+            $('.modalImg').hide();
+            $("#hung22").show()
+            var output = document.getElementById('hung22');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+</script>
 @endsection

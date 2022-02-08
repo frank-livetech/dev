@@ -120,19 +120,21 @@
                             @php
                                 $path = Session::get('is_live') == 1 ? 'public/' : '/';
                             @endphp
-                            @if($profile->profile_pic != null)
-                                @if(is_file( getcwd() .'/'. $profile->profile_pic ))
-                                <img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
-                                    width="100" height="100" id="profile-user-img" />
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
+                                @if($profile->profile_pic != null)
+                                    @if(is_file( getcwd() .'/'. $profile->profile_pic ))
+                                    <img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
+                                        width="100" height="100" id="profile-user-img" />
+                                    @else
+                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                        id="profile-user-img" />
+                                    @endif
                                 @else
-                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
                                     id="profile-user-img" />
                                 @endif
-                            @else
-                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                                id="profile-user-img" />
-                            @endif
-                            <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal"><i class="fa fa-pencil-alt picEdit"></i></a>
+                            </a>
+                            <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal"><i class="fa fa-pencil-alt picEdit"></i></a> -->
                             <h4 class="card-title mt-2" id="staff_name">{{$profile->name}}</h4>
                             <span class="badge bg-info badge-pill text-white" id="job_title_bg">{{$profile->job_title}}</span>
                         </div>
@@ -1317,22 +1319,23 @@
                         @endphp
                         @if($profile->profile_pic != null)
                             @if(is_file( getcwd() .'/'. $profile->profile_pic ))
-                            <img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
+                            <img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="modalImg rounded-circle"
                                 width="100" height="100" id="profile-user-img" />
                             @else
-                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100"
                                 id="profile-user-img" />
                             @endif
                         @else
-                        <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                        <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100"
                             id="profile-user-img" />
                         @endif
+                        <img src="{{asset( $path . 'default_imgs/customer.png')}}" id="hung22" alt="" class=" rounded-circle" width="100" height="100"  style="display:none;">
                     </div>
                     <form class="mt-4" id="upload_user_img">
                         <div class="input">
-                            <div class="custom-file">
+                            <div class="custom-file w-100">
                                 <input type="hidden" name="staff_id" id="staff_id" value="{{$profile->id}}">
-                                <input type="file" name="profile_img" class="form-control" id="customFilePP">
+                                <input type="file" name="profile_img" class="form-control" onchange="loadFile(event)" id="customFilePP">
                                 
                             </div>
                         </div>
@@ -1476,6 +1479,16 @@
             $("#my-schedule-tab").click();
         }
         console.log(js_origin , "js_origin");
+
+        function loadFile(event) {
+            $('.modalImg').hide();
+            $("#hung22").show()
+            var output = document.getElementById('hung22');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+            }
+        };
 </script>
 
 
