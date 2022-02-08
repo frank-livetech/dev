@@ -1,4 +1,5 @@
 @extends('layouts.master-layout-new')
+@section('title', 'Staff Profile | ' . $profile->name )
 @push('css')
 <link href="{{asset('assets/libs/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet" />
     <style>
@@ -247,7 +248,7 @@
                             </div>
                         </div>
     
-                        <div class="tab-pane fade show " id="staff-schedule" role="tabpanel" aria-labelledby="my-schedule-tab">
+                        <div class="tab-pane fade" id="staff-schedule" role="tabpanel" aria-labelledby="my-schedule-tab">
                             <hr>
                             <div class="card-body">
                                 <div class="row">
@@ -603,20 +604,39 @@
                                             <span class="text-danger small" id="phone_error"></span>
                                         </div>
                                     </div>
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
-                                            <label>Password</label> <span class="text-danger">*</span>
+
+                                    <div class="row mt-1 mb-2">
+                                        <div class="col-md-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="change_password_checkbox" name="change_password_checkbox">
+                                                <label class="form-check-label" for="change_password_checkbox"> Change Password </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-1 change_password_row" style="display:none">
+                                        <div class="col-md-4 form-group">
+                                            <label>Old Password</label>
                                             <div class=" input-group form-password-toggle input-group-merge">
-                                                <input type="password" name="password" id="update_password" class="form-control" value="{{$profile->alt_pwd}}">
+                                                <input type="password" name="old_password" id="old_password" class="form-control" value="{{$profile->alt_pwd}}">
                                                 <div class="input-group-text cursor-pointer">
                                                     <i data-feather="eye"></i>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-4 form-group">
+                                            <label>New Password</label> <span class="text-danger">*</span>
+                                            <div class=" input-group form-password-toggle input-group-merge">
+                                                <input type="password" name="password" id="update_password" class="form-control">
+                                                <div class="input-group-text cursor-pointer">
+                                                    <i data-feather="eye"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
                                             <label>Confirm Password</label>
                                             <div class="input-group form-password-toggle input-group-merge">
-                                                <input class="form-control " type="password" id="confirm_password" name="confirm_password" value="{{$profile->alt_pwd}}">
+                                                <input class="form-control " type="password" id="confirm_password" name="confirm_password">
                                                 <div class="input-group-text cursor-pointer">
                                                     <i data-feather="eye"></i>
                                                 </div>
