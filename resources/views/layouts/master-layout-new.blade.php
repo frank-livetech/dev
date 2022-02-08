@@ -157,7 +157,7 @@
                         <div class="user-nav d-sm-flex d-none">
                             <span class="user-name fw-bolder">{{ Auth::user()->name }}</span>
                             @if(\Auth::user()->user_type == "1")
-                            <span class="user-status">Administrator</span>
+                            <span class="user-status">{{Auth::user()->role}}</span>
                             @else
                             <span class="user-status"></span>
                             @endif
@@ -236,6 +236,15 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/pickers/pickadate/legacy.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/file-uploaders/dropzone.min.js')}}"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
 
     <!-- END: Page Vendor JS-->
 
