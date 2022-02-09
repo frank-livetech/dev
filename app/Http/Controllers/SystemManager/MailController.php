@@ -1314,7 +1314,7 @@ class MailController extends Controller
 
     public function replaceShortCodes($data_list, &$template) {
         $brand_setting = DB::table("brand_settings")->first();
-        $img = '<img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/brand_files/'.$brand_setting->site_logo .'" width="150" height="150"/>';
+        $img = '<img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/brand_files/'.$brand_setting->site_logo .'" style="display:block;width:100%;max-width:80px;" width="80"/>';
 
         if(str_contains($template, '{Company-Logo}')) {
             $template = str_replace('{Company-Logo}', $img, $template);
