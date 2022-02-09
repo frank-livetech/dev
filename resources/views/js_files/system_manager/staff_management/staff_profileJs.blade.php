@@ -523,6 +523,15 @@ $("#update_user").submit(function (event) {
                 values();
                 toastr.success( data.message , { timeOut: 5000 });
 
+                // hide change password row & uncheck password checkbox
+                if($('.change_password_checkbox').is(":checked")){ 
+                    $('.change_password_checkbox').prop("checked" , false);
+                    $('.change_password_row').hide() 
+                }
+                
+                $('.change_password_checkbox').prop("checked" , false);
+                $('.change_password_row').hide();
+
                 $("#staff_address").text($("#address").val());
                 $("#staff_apt_address").text(", " +$("#apt_address").val());
                 $("#staff_city").text($("#update_city").val());
@@ -543,6 +552,9 @@ $("#update_user").submit(function (event) {
                 $("#pint_link").attr('href', $("#update_pinterest").val());
                 $("#linkedin_link").attr('href', $("#update_linkedin").val());
                 $("#website_link").attr('href', $("#update_website").val());
+
+
+
             }else{
                 toastr.error( data.message , { timeOut: 5000 });
             }
