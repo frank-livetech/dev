@@ -622,8 +622,8 @@ class UserController extends Controller
         if(!empty($note_for_selected_staff)) $note_for_selected_staff = $note_for_selected_staff->sys_value;
         $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
-        else $selected_staff_members = array();
-    
+        else $selected_staff_members = array();  
+          
         return view('system_manager.staff_management.user_profile_new', get_defined_vars());
     }
 
@@ -1291,13 +1291,29 @@ class UserController extends Controller
             $user->apt_address = $data['apt_address'];
             $user->notes = $data['notes'];
             $user->website = $data['website'];
-
             $user->name = $data['full_name'];
 
-            if(!empty($data['password'])){
-                $user->password = Hash::make($data['password']);
-                $user->alt_pwd = Crypt::encryptString($data['password']);
+            if($request->change_password_checkbox) {
+
+                if($data['password'] != $data['confirm_password']) {
+                    return response()->json([
+                        "code" => 500,
+                        "success" => false,
+                        "message" => 'Password not matached!',
+                    ]);
+                }else{
+                    if (Hash::check($data['old_password'] , $user->password )) {
+                        $user->password = Hash::make($data['password']);
+                    }else{
+                        return response()->json([
+                            "code" => 500,
+                            "success" => false,
+                            "message" => 'Incorrect password!',
+                        ]);
+                    } 
+                }
             }
+
             $user->save();
             
             $mailer = new MailController();
