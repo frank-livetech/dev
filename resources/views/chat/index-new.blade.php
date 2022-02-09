@@ -162,9 +162,9 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                 <li data_uid="{{$user->id}}" data_nm="{{$user->name}}" data_pc="{{$user->profile_pic}}">
                                     <!-- <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" height="42" width="42" alt="Generic placeholder image" />
                                     </span> -->
-                                    @if(auth()->user()->profile_pic != null)
-                                        @if(file_exists( getcwd(). '/' . auth()->user()->profile_pic))
-                                        <span class="avatar"><img height="42" width="42" src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}" height="42" width="42"></span>
+                                    @if($user->profile_pic != null)
+                                        @if(file_exists( getcwd(). '/' . $user->profile_pic))
+                                        <span class="avatar"><img height="42" width="42" src="{{ asset( request()->root() .'/'. $user->profile_pic)}}" height="42" width="42"></span>
                                         @else
                                         <span class="avatar"> <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
                                         @endif
