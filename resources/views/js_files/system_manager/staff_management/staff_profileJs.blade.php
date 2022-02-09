@@ -399,6 +399,16 @@ $("#phone").keyup(function(){
     }
 });
 
+
+// change password checkbox
+$("#change_password_checkbox").click(function() {
+    
+    $(this).is(":checked") ? 
+    $('.change_password_row').show() : 
+    $('.change_password_row').hide();
+
+});
+
 $("#update_user").submit(function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -488,13 +498,18 @@ $("#update_user").submit(function (event) {
 
   
 
-    var formData = $("#update_user").serialize()  + "&user_id=" + user_id;
+    // var formData = $("#update_user").serialize()  + "&user_id=" + user_id;
+    var formData = new FormData(this);
+    formData.append('user_id' , user_id);
 
     $.ajax({
         type: $(this).attr('method'),
         url: $(this).attr('action'),
         data: formData,
         dataType:'json',
+        cache: false,
+        contentType: false,
+        processData: false,
         beforeSend:function(data) {
             $("#usr_btn").hide();
             $("#usr_process").show();
@@ -504,29 +519,33 @@ $("#update_user").submit(function (event) {
         },
         success: function (data) {
             console.log(data);
-            values();
-            toastr.success( data.message , { timeOut: 5000 });
+            if(data.code == 200 && data.success == true) {
+                values();
+                toastr.success( data.message , { timeOut: 5000 });
 
-            $("#staff_address").text($("#address").val());
-            $("#staff_apt_address").text(", " +$("#apt_address").val());
-            $("#staff_city").text($("#update_city").val());
-            $("#staff_zip").text( ", " +$("#update_zip").val());
-            $("#staff_phone").text($("#phone").val());
-            $("#staff_name").text($("#full_name").val());
-            $("#job_title_bg").text($("#job_title").val())
+                $("#staff_address").text($("#address").val());
+                $("#staff_apt_address").text(", " +$("#apt_address").val());
+                $("#staff_city").text($("#update_city").val());
+                $("#staff_zip").text( ", " +$("#update_zip").val());
+                $("#staff_phone").text($("#phone").val());
+                $("#staff_name").text($("#full_name").val());
+                $("#job_title_bg").text($("#job_title").val())
 
-            var state = $("#state").find("option:selected").text();
-            $("#staff_state").text(state == "Select State" ? ' ' : ", " + state);
+                var state = $("#state").find("option:selected").text();
+                $("#staff_state").text(state == "Select State" ? ' ' : ", " + state);
 
-            var country = $("#country").find("option:selected").text();
-            $("#staff_coun").text(country == "Select Country" ? ' ' : ", " + country);
+                var country = $("#country").find("option:selected").text();
+                $("#staff_coun").text(country == "Select Country" ? ' ' : ", " + country);
 
-            $("#twt_link").attr('href', $("#update_twt").val());
-            $("#fb_link").attr('href', $("#update_fb").val());
-            $("#insta_link").attr('href', $("#update_ig").val());
-            $("#pint_link").attr('href', $("#update_pinterest").val());
-            $("#linkedin_link").attr('href', $("#update_linkedin").val());
-            $("#website_link").attr('href', $("#update_website").val());
+                $("#twt_link").attr('href', $("#update_twt").val());
+                $("#fb_link").attr('href', $("#update_fb").val());
+                $("#insta_link").attr('href', $("#update_ig").val());
+                $("#pint_link").attr('href', $("#update_pinterest").val());
+                $("#linkedin_link").attr('href', $("#update_linkedin").val());
+                $("#website_link").attr('href', $("#update_website").val());
+            }else{
+                toastr.error( data.message , { timeOut: 5000 });
+            }
         },
         complete:function(data) {
             $("#usr_btn").show();

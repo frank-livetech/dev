@@ -7,13 +7,16 @@
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,800,800i,900,900i" rel="stylesheet">
 <!-- Custom built theme - This already includes Bootstrap 4 -->
-<link rel="stylesheet" href="{{ asset('public/css/maileclipse-app.min.css') }}">
+<!-- <link rel="stylesheet" href="{{ asset('public/css/maileclipse-app.min.css') }}"> -->
 <!-- Font Awesome -->
+@php
+    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+@endphp
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
 
-<link rel="stylesheet" type="text/css" href="{{asset($file_path .'app-assets/vendors/css/extensions/jstree.min.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset($file_path .'app-assets/css/plugins/extensions/ext-component-tree.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/vendors/css/extensions/jstree.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/plugins/extensions/ext-component-tree.css')}}">
 
 <!-- Bootstrap & jquery & lodash & popper & lozad -->
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
@@ -237,8 +240,8 @@
 @endsection
 @section('scripts')
 
-<script src="{{asset('app-assets/vendors/js/extensions/jstree.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/extensions/ext-component-tree.js')}}"></script>
+<script src="{{asset($file_path . 'app-assets/vendors/js/extensions/jstree.min.js')}}"></script>
+<script src="{{asset($file_path . 'app-assets/js/scripts/extensions/ext-component-tree.min.js')}}"></script>
 
 <script type="text/javascript">
     let tmp_cats = {!!json_encode($tmp_cats) !!};
