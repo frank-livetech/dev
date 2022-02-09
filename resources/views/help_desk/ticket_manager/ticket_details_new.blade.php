@@ -448,11 +448,11 @@ br + br { display: none; }
                             </div>
 
                         </div> -->
-                        <div class="card-body mail-message-wrapper pt-2 sec d-none">
+                        <!-- <div class="card-body mail-message-wrapper pt-2 sec d-none">
                             <div class="mail-message">
                                 <div class="row" id="ticket_details_p2"></div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="card-body mail-message-wrapper frst">
                             <div class="mail-message">
                                 <div class="row" id="ticket_details_p"></div>
@@ -1450,7 +1450,7 @@ br + br { display: none; }
 </div>
 <input type="hidden" id="sys_date_format" value="{{$date_format}}">
 
-<div class="modal fade" id="viewFullDetails" tabindex="-1" aria-labelledby="viewFullDetailsTitle" aria-hidden="true">
+<!-- <div class="modal fade" id="viewFullDetails" tabindex="-1" aria-labelledby="viewFullDetailsTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -1470,7 +1470,7 @@ br + br { display: none; }
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="modal modal-slide-in event-sidebar fade" id="viewFullDetails2">
     <div class="modal-dialog sidebar-lg">
         <div class="modal-content p-0">

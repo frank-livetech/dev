@@ -97,7 +97,7 @@ $(document).ready(function() {
     setCustomerCompany();
     getLatestLogs();
     $('#ticket-timestamp').text( convertDate(ticket.created_at) );
-    $('#ticket-timestamp2').text( convertDate(ticket.created_at) );
+    // $('#ticket-timestamp2').text( convertDate(ticket.created_at) );
     $('#ticket-timestamp3').text( convertDate(ticket.created_at) );
 
     
@@ -532,7 +532,7 @@ function cancelEditRequest() {
     $('#ticket-details').css('display', 'none');
 
     $('#ticket_details_p').html(getTicketDetailsContent());
-    $('#ticket_details_p2').html(getTicketDetailsContent());
+    // $('#ticket_details_p2').html(getTicketDetailsContent());
     $('#ticket_details_p3').html(getTicketDetailsContent());
 }
 
@@ -835,7 +835,7 @@ function saveRequest() {
 
                     $('#ticket_subject_heading').text('Subject : ' + $('#ticket_subject_edit').val());
                     $('#ticket_details_p').html(getTicketDetailsContent());
-                    $('#ticket_details_p2').html(getTicketDetailsContent());
+                    // $('#ticket_details_p2').html(getTicketDetailsContent());
                     $('#ticket_details_p3').html(getTicketDetailsContent());
                 }
             }
@@ -3102,7 +3102,7 @@ function toggleReq(){
     $(".frst").toggleClass("d-none");
     $(".sec").toggleClass("d-none");
     let ter = $('#ticket_details_p').html();
-    $('#ticket_details_p2').html(ter);
+    // $('#ticket_details_p2').html(ter);
 
     // $("#ticket-timestamp2").text($("#ticket-timestamp").text());
 }
