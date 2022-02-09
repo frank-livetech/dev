@@ -2386,8 +2386,8 @@ class HelpdeskController extends Controller
                     $oldval = '';
                     if($request->has('data_id')) $data_id = $request->data_id;
                     if($request->has('oldval')) $oldval = $request->oldval;
-                    $user->email = \Auth::user()->email;
-                    $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$user->email,$oldval);
+                    $email = \Auth::user()->email;
+                    $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval);
                 } else {
                     $response['message'] = 'Ticket is either deleted or not exists!';
                 }
