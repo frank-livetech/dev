@@ -1,4 +1,5 @@
 @extends('layouts.master-layout-new')
+@section('title', 'Staff Memebers')
 @section('body')
 <style>
     .full_name{
@@ -17,6 +18,9 @@
         font-size: 6px;
     }
 </style>
+@php
+    $path = Session::get('is_live') == 1 ? 'public/' : '/';
+@endphp
 <input type="hidden" value="{{Session('system_date')}}" id="system_date">
 
 <div class="app-content content">
@@ -65,21 +69,69 @@
                                         <div class="col-12">
                                             
                                             <div class="table-responsive">
-                                                <table id="user-table-list"
-                                                    class="table table-striped table-bordered table-hover w-100">
+                                            <!-- id="user-table-list" -->
+                                                <table
+                                                    class="table table-striped table-bordered table-hover w-100 staff_table">
                                                     <thead>
-                                                        <tr>
+                                                        <tr style="height:50px !important">
                                                             <th>#</th>
-                                                            <th class="full_name">Full Name</th>
+                                                            <th>Full Name</th>
                                                             <th>Username</th>
                                                             <th>Phone</th>
                                                             <th>Tags Assigned</th>
-                                                            <th>Created At</th>
+                                                            <th>Created At </th>
                                                             <th>Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-    
+                                                        @foreach($users as $user)
+                                                            <tr class="__row_{{$user['id']}}">
+                                                                <td> {{$loop->iteration}} </td>
+                                                                <td> 
+                                                                    <div class="d-flex align-items-center">
+                                                                        @if($user['profile_pic'] != null)
+                                                                            @if(is_file( getcwd() .'/'. $user['profile_pic'] ))
+                                                                                <img src="{{ request()->root() .'/'. $user['profile_pic'] }}" alt="user Photo" width="35" height="35" class="rounded-circle"/>
+                                                                            @else
+                                                                                <img src="{{asset( $path . 'default_imgs/customer.png')}}"  alt="user Photo" width="35" height="35" class="rounded-circle"/>
+                                                                            @endif
+                                                                        @else
+                                                                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" alt="user Photo" width="35" height="35" class="rounded-circle" />
+                                                                        @endif
+                                                                        <div class="ml-2">
+                                                                            <div class="user-meta-info">
+                                                                                <h5 class="user-name mb-0"><a href=" {{url('profile')}}/{{$user['id']}} "> {{$user['name'] != null ? $user['name'] : '-'}} </a></h5>
+                                                                                <small class="user-work text-muted">
+                                                                                {{ array_key_exists('role' , $user) ? ($user['role'] == null && $user['role'] == "" ? '-' : $user['role']) : '-'}}
+                                                                                </small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td> {{$user['email'] != null ? $user['email'] : '-'}}  </td>
+                                                                <td>
+                                                                    @if($user['phone_number'] != null) 
+                                                                        <a href="tel:{{$user['phone_number']}}"> {{$user['phone_number']}} <a/>
+                                                                    @else
+                                                                        <span> - </span>
+                                                                    @endif
+                                                                <td>
+                                                                    {{ array_key_exists('staffTags' , $user) ? ($user['staffTags'] == null && $user['staffTags'] == "" ? '-' : $user['staffTags']) : '-'}}
+                                                                </td>
+                                                                <td>
+                                                                    @if($user['created_at'] != null) 
+                                                                        {{ \Carbon\Carbon::parse($user['created_at'])->format('d/m/Y') }}
+                                                                    @else
+                                                                        <span> - </span>
+                                                                    @endif
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <button type="button" onclick="deleteUsers({{$user['id']}})" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                                                        <i class="fa fa-trash"  aria-hidden="true"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach    
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -243,9 +295,11 @@
 </div>
 @endsection
 @section('scripts')
+    <script>
+        $('.staff_table').DataTable();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-    <!-- <script src="{{asset('public/js/system_manager/staff_management/staff.js').'?ver='.rand()}}"></script> -->
     @include('js_files.system_manager.staff_management.staffJs')
     @include('js_files.system_manager.staff_management.indexJs')
 @endsection

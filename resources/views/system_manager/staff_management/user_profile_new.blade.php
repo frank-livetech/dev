@@ -82,6 +82,18 @@
     border-radius: 100%;
     background: #fbfbfb;
 }
+/* #curr_user_pic figure {
+    background: #4a3753;
+} */
+#curr_user_pic figure img{
+    opacity: 1;
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+#curr_user_pic figure:hover img {
+	opacity: .5;
+}
+
     </style>
 @endpush
 @section('body')
@@ -117,22 +129,22 @@
             <div class="col-lg-3 col-xlg-3 col-md-5">
                 <div class="card">
                     <div class="card-body">
-                        <div class="mt-4 text-center">
+                        <div class="mt-4 text-center" id="curr_user_pic">
                             @php
                                 $path = Session::get('is_live') == 1 ? 'public/' : '/';
                             @endphp
                             <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
                                 @if($profile->profile_pic != null)
                                     @if(is_file( getcwd() .'/'. $profile->profile_pic ))
-                                    <img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
-                                        width="100" height="100" id="profile-user-img" />
+                                    <figure><img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
+                                        width="100" height="100" id="profile-user-img" /></figure>
                                     @else
-                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                                        id="profile-user-img" />
+                                    <figure><img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                        id="profile-user-img" /></figure>
                                     @endif
                                 @else
-                                    <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                                    id="profile-user-img" />
+                                <figure><img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                    id="profile-user-img" /></figure>
                                 @endif
                             </a>
                             <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal"><i class="fa fa-pencil-alt picEdit"></i></a> -->
@@ -146,8 +158,15 @@
                     <div class="card-body">
                         <input type="hidden" id="user_id" value="{{$profile->id}}">
     
-                        <small class="text-muted">Email address <a href="#" class="text-muted" onclick="openSettingTab()"><i class="fas fa-pencil-alt float-right" aria-hidden="true"></i></a></small>
-                        <h6> <a href="mailto:{{$profile->email}}">{{$profile->email}}</a> </h6>
+                        <small class="text-muted">Email address <a href="#" class="text-muted" onclick="openSettingTab()"><i class="fas 
+                        fa-pencil-alt float-right" aria-hidden="true"></i></a></small>
+                        
+                        <h6> 
+                            <a href="mailto:{{$profile->email}}" title="{{$profile->email}}">
+                                {{ $profile->email != null ? Str::of($profile->email)->before('@') : '-'}}
+                            </a> 
+                        </h6>
+
                         <small class="text-muted pt-4 db">Phone</small>
                         <h6><a href="tel:{{$profile->phone_number}}" id="staff_phone">{{$profile->phone_number}}</a></h6>
                         <small class="text-muted pt-4 db">Address</small> <br>
@@ -211,7 +230,10 @@
                     <!-- Tabs -->
                     <ul class="nav nav-pills custom-pills mt-1 ml-1" id="pills-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="my-history-tab" data-bs-toggle="pill" href="#current-month" role="tab" aria-controls="my-history" aria-selected="true">History</a>
+                            <a class="nav-link active" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="my-history-tab" data-bs-toggle="pill" href="#current-month" role="tab" aria-controls="my-history" aria-selected="true">History</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " id="my-schedule-tab" data-bs-toggle="pill" href="#staff-schedule" role="tab" aria-controls="my-schedule" aria-selected="true">Schedule</a>
@@ -226,9 +248,6 @@
                             <a class="nav-link" id="pills-tickets-tab" data-bs-toggle="pill" href="#tickets" role="tab" aria-controls="pills-tickets" aria-selected="false">Tickets</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Profile</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" id="pills-documents-tab" data-bs-toggle="pill" href="#user_docs_tab" role="tab" aria-controls="pills-documents" aria-selected="false">Documents</a>
                         </li>
                         <li class="nav-item">
@@ -240,8 +259,202 @@
                     </ul>
                     <!-- Tabs -->
                     <div class="tab-content" id="pills-tabContent">
+
+                        <!-- profile -->
+                        <div class="tab-pane fade show active" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
+                            <div class="card-body p-1">
+                                <hr>
+                                <form action="{{asset('/update-staff')}}" method="post" enctype="multipart/form-data" id="update_user">
+                                    <h2 class="mt-4 font-weight-bold text-dark">Personal Info</h2>
+                                    <div class="row">
+                                        <input type="hidden" value="{{$profile->id}}" id="profile_id">
     
-                        <div class="tab-pane fade show active" id="current-month" role="tabpanel" aria-labelledby="my-history-tab">
+                                        <div class="col-md-6 form-group">
+                                            <label>Name</label> <span class="text-danger">*</span>
+                                            <input type="text" name="full_name" id="full_name" placeholder="Name" value="{{$profile->name}}" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Job Title</label>
+                                            <input type="text" name="job_title" id="job_title" placeholder="Job Title" value="{{$profile->job_title}}" class="form-control">
+                                        </div>
+                                    </div>
+    
+                                    <div class="row mt-1">
+                                        <div class="col-md-6 form-group">
+                                            <label for="example-email">Email</label><span class="text-danger">*</span>
+                                            <input type="email" value="{{$profile->email}}" placeholder="Email" class="form-control " name="email" id="email" disabled required>
+    
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Phone No </label>
+                                            <input type="phone" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control">
+                                            <span class="text-danger small" id="phone_error"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-1 mb-2">
+                                        <div class="col-md-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="change_password_checkbox" name="change_password_checkbox">
+                                                <label class="form-check-label" for="change_password_checkbox"> Change Password </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-1 change_password_row" style="display:none">
+                                        <div class="col-md-4 form-group">
+                                            <label>Old Password</label>
+                                            <div class=" input-group form-password-toggle input-group-merge">
+                                                <input type="password" name="old_password" id="old_password" class="form-control">
+                                                <div class="input-group-text cursor-pointer">
+                                                    <i data-feather="eye"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label>New Password</label> <span class="text-danger">*</span>
+                                            <div class=" input-group form-password-toggle input-group-merge">
+                                                <input type="password" name="password" id="update_password" class="form-control">
+                                                <div class="input-group-text cursor-pointer">
+                                                    <i data-feather="eye"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label>Confirm Password</label>
+                                            <div class="input-group form-password-toggle input-group-merge">
+                                                <input class="form-control " type="password" id="confirm_password" name="confirm_password">
+                                                <div class="input-group-text cursor-pointer">
+                                                    <i data-feather="eye"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                    <div class="row mt-1">
+                                        <div class="col-12">
+                                            <label>Street Address</label>
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <input type="text" name="address" class=" form-control" value="{{$profile->address}}" id="address" placeholder="House number and street name">
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <input type="text" name="apt_address" id="apt_address" class=" form-control" value="{{$profile->apt_address}}" id="" placeholder="Apartment, suit, unit etc. (optional)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                    <div class="row mt-1">
+                                        <div class="col-md-3 form-group">
+                                            <label>City</label>
+    
+                                            <input type="text" name="city" class="form-control" value="{{$profile->city}}" id="update_city">
+    
+                                            <span class="text-danger" id="err2"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>State</label>
+                                            @if(isset($google_api) && $google_api == 1) 
+                                                <input type="text" name="state" class="form-control" value="{{$profile->state}}" id="state">
+                                            @else
+                                                <select class="select2 form-control" id="state" name="state" style="width: 100%; height:36px;"></select>
+                                            @endif
+                                            
+                                            <span class="text-danger" id="err1"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Zip Code</label>
+    
+                                            <input type="text" name="zip" class="form-control" value="{{$profile->zip}}" id="update_zip">
+    
+                                            <span class="text-danger" id="err3"></span>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Country</label>
+                                            @if(isset($google_api) && $google_api == 1) 
+                                                <input type="text" name="country" class="form-control" value="{{$profile->country}}" id="country">
+                                            @else
+                                                <select class="select2 form-control" name="country" id="country" style="width: 100%; height:36px;" onchange="listStates(this.value, 'state', 'state')">
+                                                    <option value="">Select Country</option>
+                                                    @foreach ($countries as $cty)
+                                                        @if(!empty($profile->country) && $profile->country == $cty->name)
+                                                            <option value="{{$cty->name}}" selected>{{$cty->name}}</option>
+                                                        @else
+                                                            <option value="{{$cty->name}}" {{$cty->short_name == 'US' ? 'selected' : ''}}>{{$cty->name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                            <span class="text-danger" id="err"></span>
+                                        </div>
+                                    </div>
+    
+    
+                                    <h2 class="mt-4 font-weight-bold text-dark">Social</h2>
+                                    <div class="row mt-1">
+                                        <div class="col-md-6 form-group">
+                                            <label class="small">Facebook</label>
+                                            <input type="url" name="fb" class="form-control" value="{{$profile->fb}}" placeholder="https://facebook.com/yourprofile" id="update_fb">
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label class="small">Pinterest</label>
+                                            <input type="url" name="pinterest" class="form-control" value="{{$profile->pinterest}}" placeholder="https://pinterest.com/@Username" value="{{$profile->pinterest}}" id="update_pinterest">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-md-6 form-group">
+                                            <label class="small">Twitter</label>
+                                            <input type="url" name="twitter" class="form-control" value="{{$profile->twitter}}" placeholder="https://twitter.com/username" value="{{$profile->twitter}}" id="update_twt">
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label class="small">Instagram</label>
+                                            <input type="url" name="insta" class="form-control" value="{{$profile->insta}}" placeholder="https://instagram.com/username" value="{{$profile->insta}}" id="update_ig">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-md-6 form-group">
+                                            <label class="small">LinkedIn</label>
+                                            <input type="url" name="linkedin" class="form-control" value="{{$profile->linkedin}}" placeholder="https://linkedin.com/username" value="{{$profile->linkedin}}" id="update_linkedin">
+                                        </div>
+                                    
+                                    
+                                        <div class="col-md-6 form-group">
+                                            <label class="small">Website</label>
+                                            <input type="text" id="website" name="website" class="form-control" value="{{$profile->website}}" placeholder="https://www.yoursite.com" id="update_website">
+                                            <span class="text-danger small" id="website_error"></span>
+                                        </div>
+                                    </div>
+    
+    
+                                    <div class="row mt-1">
+                                        <div class="col-md-12 form-group">
+                                            <label>About</label>
+    
+                                            <textarea class="form-control" name="notes" id="notes" cols="30" rows="5">{{$profile->notes}}</textarea>
+    
+                                        </div>
+                                    </div>
+    
+                                    <div class="row mt-2">
+                                        <div class="col-sm-12 text-right">
+                                            <button class="btn btn-success rounded float-right" id="usr_btn" type="submit"><i class="fas fa-check-circle"></i> Save</button>
+                                            <button type="button" style="display:none" disabled id="usr_process" 
+                                                class="btn  rounded btn-success float-right"> 
+                                                <i class="fas fa-circle-notch fa-spin"> </i> Processing 
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="loader_container" id="usr_loader" style="display:none">
+                                    <div class="loader"></div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="tab-pane fade" id="current-month" role="tabpanel" aria-labelledby="my-history-tab">
                             <hr>
                             <div class="card-body">
                                 No Data Found
@@ -571,199 +784,6 @@
                                 </div>
                             </div>
                                 
-                            </div>
-                        </div>
-    
-                        <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
-                            <div class="card-body p-1">
-                                <hr>
-                                <form action="{{asset('/update-staff')}}" method="post" enctype="multipart/form-data" id="update_user">
-                                    <h2 class="mt-4 font-weight-bold text-dark">Personal Info</h2>
-                                    <div class="row">
-                                        <input type="hidden" value="{{$profile->id}}" id="profile_id">
-    
-                                        <div class="col-md-6 form-group">
-                                            <label>Name</label> <span class="text-danger">*</span>
-                                            <input type="text" name="full_name" id="full_name" placeholder="Name" value="{{$profile->name}}" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Job Title</label>
-                                            <input type="text" name="job_title" id="job_title" placeholder="Job Title" value="{{$profile->job_title}}" class="form-control">
-                                        </div>
-                                    </div>
-    
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
-                                            <label for="example-email">Email</label><span class="text-danger">*</span>
-                                            <input type="email" value="{{$profile->email}}" placeholder="Email" class="form-control " name="email" id="email" disabled required>
-    
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Phone No </label>
-                                            <input type="phone" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control">
-                                            <span class="text-danger small" id="phone_error"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-1 mb-2">
-                                        <div class="col-md-12">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="change_password_checkbox" name="change_password_checkbox">
-                                                <label class="form-check-label" for="change_password_checkbox"> Change Password </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row mt-1 change_password_row" style="display:none">
-                                        <div class="col-md-4 form-group">
-                                            <label>Old Password</label>
-                                            <div class=" input-group form-password-toggle input-group-merge">
-                                                <input type="password" name="old_password" id="old_password" class="form-control" value="{{$profile->alt_pwd}}">
-                                                <div class="input-group-text cursor-pointer">
-                                                    <i data-feather="eye"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 form-group">
-                                            <label>New Password</label> <span class="text-danger">*</span>
-                                            <div class=" input-group form-password-toggle input-group-merge">
-                                                <input type="password" name="password" id="update_password" class="form-control">
-                                                <div class="input-group-text cursor-pointer">
-                                                    <i data-feather="eye"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 form-group">
-                                            <label>Confirm Password</label>
-                                            <div class="input-group form-password-toggle input-group-merge">
-                                                <input class="form-control " type="password" id="confirm_password" name="confirm_password">
-                                                <div class="input-group-text cursor-pointer">
-                                                    <i data-feather="eye"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-    
-    
-                                    <div class="row mt-1">
-                                        <div class="col-12">
-                                            <label>Street Address</label>
-                                            <div class="row">
-                                                <div class="col-md-6 form-group">
-                                                    <input type="text" name="address" class=" form-control" value="{{$profile->address}}" id="address" placeholder="House number and street name">
-                                                </div>
-                                                <div class="col-md-6 form-group">
-                                                    <input type="text" name="apt_address" id="apt_address" class=" form-control" value="{{$profile->apt_address}}" id="" placeholder="Apartment, suit, unit etc. (optional)">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-    
-    
-                                    <div class="row mt-1">
-                                        <div class="col-md-3 form-group">
-                                            <label>City</label>
-    
-                                            <input type="text" name="city" class="form-control" value="{{$profile->city}}" id="update_city">
-    
-                                            <span class="text-danger" id="err2"></span>
-                                        </div>
-                                        <div class="col-md-3 form-group">
-                                            <label>State</label>
-                                            @if(isset($google_api) && $google_api == 1) 
-                                                <input type="text" name="state" class="form-control" value="{{$profile->state}}" id="state">
-                                            @else
-                                                <select class="select2 form-control" id="state" name="state" style="width: 100%; height:36px;"></select>
-                                            @endif
-                                            
-                                            <span class="text-danger" id="err1"></span>
-                                        </div>
-                                        <div class="col-md-3 form-group">
-                                            <label>Zip Code</label>
-    
-                                            <input type="text" name="zip" class="form-control" value="{{$profile->zip}}" id="update_zip">
-    
-                                            <span class="text-danger" id="err3"></span>
-                                        </div>
-                                        <div class="col-md-3 form-group">
-                                            <label>Country</label>
-                                            @if(isset($google_api) && $google_api == 1) 
-                                                <input type="text" name="country" class="form-control" value="{{$profile->country}}" id="country">
-                                            @else
-                                                <select class="select2 form-control" name="country" id="country" style="width: 100%; height:36px;" onchange="listStates(this.value, 'state', 'state')">
-                                                    <option value="">Select Country</option>
-                                                    @foreach ($countries as $cty)
-                                                        @if(!empty($profile->country) && $profile->country == $cty->name)
-                                                            <option value="{{$cty->name}}" selected>{{$cty->name}}</option>
-                                                        @else
-                                                            <option value="{{$cty->name}}" {{$cty->short_name == 'US' ? 'selected' : ''}}>{{$cty->name}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            @endif
-                                            <span class="text-danger" id="err"></span>
-                                        </div>
-                                    </div>
-    
-    
-                                    <h2 class="mt-4 font-weight-bold text-dark">Social</h2>
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
-                                            <label class="small">Facebook</label>
-                                            <input type="url" name="fb" class="form-control" value="{{$profile->fb}}" placeholder="https://facebook.com/yourprofile" id="update_fb">
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label class="small">Pinterest</label>
-                                            <input type="url" name="pinterest" class="form-control" value="{{$profile->pinterest}}" placeholder="https://pinterest.com/@Username" value="{{$profile->pinterest}}" id="update_pinterest">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
-                                            <label class="small">Twitter</label>
-                                            <input type="url" name="twitter" class="form-control" value="{{$profile->twitter}}" placeholder="https://twitter.com/username" value="{{$profile->twitter}}" id="update_twt">
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label class="small">Instagram</label>
-                                            <input type="url" name="insta" class="form-control" value="{{$profile->insta}}" placeholder="https://instagram.com/username" value="{{$profile->insta}}" id="update_ig">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
-                                            <label class="small">LinkedIn</label>
-                                            <input type="url" name="linkedin" class="form-control" value="{{$profile->linkedin}}" placeholder="https://linkedin.com/username" value="{{$profile->linkedin}}" id="update_linkedin">
-                                        </div>
-                                    
-                                    
-                                        <div class="col-md-6 form-group">
-                                            <label class="small">Website</label>
-                                            <input type="text" id="website" name="website" class="form-control" value="{{$profile->website}}" placeholder="https://www.yoursite.com" id="update_website">
-                                            <span class="text-danger small" id="website_error"></span>
-                                        </div>
-                                    </div>
-    
-    
-                                    <div class="row mt-1">
-                                        <div class="col-md-12 form-group">
-                                            <label>Notes</label>
-    
-                                            <textarea class="form-control" name="notes" id="notes" cols="30" rows="5">{{$profile->notes}}</textarea>
-    
-                                        </div>
-                                    </div>
-    
-                                    <div class="row mt-2">
-                                        <div class="col-sm-12 text-right">
-                                            <button class="btn btn-success rounded float-right" id="usr_btn" type="submit"><i class="fas fa-check-circle"></i> Save</button>
-                                            <button type="button" style="display:none" disabled id="usr_process" 
-                                                class="btn  rounded btn-success float-right"> 
-                                                <i class="fas fa-circle-notch fa-spin"> </i> Processing 
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="loader_container" id="usr_loader" style="display:none">
-                                    <div class="loader"></div>
-                                </div>
                             </div>
                         </div>
     
@@ -1333,7 +1353,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="text-center" id="prof-img ">
+                    <div class="text-center" id="prof-img">
                         @php
                             $path = Session::get('is_live') == 1 ? 'public/' : '/';
                         @endphp

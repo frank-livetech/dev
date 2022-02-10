@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Models\Role;
+use App\Models\Tags;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -39,7 +40,7 @@ class User extends Authenticatable implements JWTSubject
     'linkedin','google_id','company_id','privacy_policy',
     ];
 
-    protected $appends = ['role'];
+    protected $appends = ['role','staffTags'];
 
 
     /**
@@ -65,6 +66,12 @@ class User extends Authenticatable implements JWTSubject
         $id = $this->user_type;
         $role = Role::where('id',$id)->first();
         return $role->name;
+    }
+
+    public function getStaffTagsAttribute() {
+        $tags_arr = explode(",",$this->tags);
+        $arr = Tags::select('name')->whereIn('id',$tags_arr)->get();
+        return $this->attributes['staffTags'] = collect($arr)->implode('name', ', ');
     }
 
     public function staffProfile() {

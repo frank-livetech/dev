@@ -396,9 +396,8 @@ function deleteUsers(id) {
                     id: id
                 },
                 success: function(data) {
-                    //  console.log(data);
+                    $('.__row_'+ id).remove();
                     if (data) {
-                        get_all_staff_members();
                         showAlertMessage('User Deleted!', 'success');
                     } else {
                         showAlertMessage('Something went wrong!', 'error');

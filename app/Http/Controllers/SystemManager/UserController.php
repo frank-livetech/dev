@@ -71,8 +71,22 @@ class UserController extends Controller
     public function index(){
         $tags = Tags::all();
         $roles = Role::all();
-        // $roles = Role::where('id','!=','1')->get();
-        return view('system_manager.staff_management.index-new',compact('tags','roles'));
+
+        $users = User::with('staffProfile')
+                    ->where('is_deleted', 0)
+                    ->where('is_support_staff',0)
+                    ->whereNotIn('user_type', [4 , 5])
+                    ->orderByDesc('id')->get()->toArray();
+
+        // if(array_key_exists('rolesad' , $users[0]->toArray() )) {
+        //     dd("has");
+        // }else{
+        //     dd("not");
+        // }
+        
+        // dd($users->toArray());
+
+        return view('system_manager.staff_management.index-new', get_defined_vars());
     }
     public function new(){
         $tags = Tags::all();
@@ -150,7 +164,7 @@ class UserController extends Controller
 
                     $user->save();
                     $user->staffProfile->save();
-                    $response['message'] = 'User Update Successfully! 123213123';
+                    $response['message'] = 'User Update Successfully!';
                 }
             } else {
                 $check_user = User::where('email', $data['email'])->where('is_deleted', 0)->first();
