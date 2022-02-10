@@ -46,7 +46,7 @@
         postalField = document.querySelector("#update_zip");
         // Create the autocomplete object, restricting the search predictions to
         // addresses in the US and Canada.
-        console.log('address1Field', address1Field.value);
+        // console.log('address1Field', address1Field.value);
         if(address1Field.value) {
             autocomplete = new google.maps.places.Autocomplete(address1Field, {
                 componentRestrictions: { country: ["us", "ca"] },
@@ -59,7 +59,7 @@
 
         // When the user selects an address from the drop-down, populate the
         // address fields in the form.
-        autocomplete.addListener("place_changed", fillInAddress);
+        // autocomplete.addListener("place_changed", fillInAddress);
     }
 
     function fillInAddress() {
@@ -131,12 +131,12 @@
         }
 
         var googleObject = {!! json_encode($google) !!};
-        console.log(googleObject);
+        // console.log(googleObject);
         if(!$.isEmptyObject(googleObject)){
             if( googleObject.hasOwnProperty('api_key')){
                 var api_key = googleObject.api_key;
                 $("#google_api_key").val(api_key);
-                console.log(api_key)
+                // console.log(api_key)
                 if(api_key!=''){
                     var script ="https://maps.googleapis.com/maps/api/js?key="+api_key+"&libraries=places&sensor=false&callback=initMap";
                     var s = document.createElement("script");
@@ -455,7 +455,7 @@
                 },
                 success: function(data) {
                     $(this).find('.btn').attr('disabled', false);
-                    console.log(data);
+                    // console.log(data);
                     if (data.success == true) {
                         $('#'+$('#attendance_id').val()+'-hw').html($('#worked_hours_value').val());
                         $('#workHoursModal').modal('hide');
@@ -495,7 +495,7 @@
             },
             success: function(data) {
                 var obj = data.data;
-                console.log(obj, "obj")
+                // console.log(obj, "obj")
                 var total_hours = 0;
 
                 var date = new Date();
@@ -656,7 +656,7 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -679,7 +679,7 @@
                 $(".loader_container").show();
             },
             success: function(data) {
-                console.log(data, "permission list 123123");
+                // console.log(data, "permission list 123123");
                 var obj = data.permissions;
 
                 var yes = '';
@@ -735,7 +735,7 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data) {
-                console.log(data);
+                // console.log(data);
 
                 Swal.fire({
                     position: 'center',
@@ -761,7 +761,7 @@
                 $("#permission_loader").show();
             },  
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 toastr.success(data.message, { timeOut: 5000 });
             },
             complete:function(data) {
@@ -800,7 +800,7 @@
                 $(".loader_container").show();
             },
             success: function(data) {
-                console.log(data , "user task data");
+                // console.log(data , "user task data");
                 var obj = data.data;
 
                 $('#staff_tasks_list').DataTable().destroy();
@@ -1213,7 +1213,7 @@
                 }
             },
             complete: function(data) {
-                console.log('Success', data);
+                // console.log('Success', data);
             },
             error: function(data) {
                 console.log('Error', data);

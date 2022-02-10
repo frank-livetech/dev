@@ -54,7 +54,7 @@ function initializeTicketTable(p_name='') {
             dataType: 'json',
             cache: false,
             success: function(data) {
-                console.log(data, "data tickets");
+                // console.log(data, "data tickets");
             
                 redrawTicketsTable(data.tickets);
             }
@@ -130,7 +130,7 @@ function updateTickets() {
             cache: false,
             processData: false,
             success: function(data) {
-                console.log(data , "data");
+                // console.log(data , "data");
                 if (data.status_code == 200 && data.success == true) {
                     toastr.success(data.message, { timeOut: 5000 });
 
@@ -174,9 +174,9 @@ function get_ticket_table_list() {
         dataType: 'json',
         cache: false,
         success: function(data) {
-            console.log(data, "data 123123123");
+            // console.log(data, "data 123123123");
             date_formate = data.date_format;
-            console.log(data.tickets);
+            // console.log(data.tickets);
             ticketsList = data.tickets;
             listTickets(url_type);
             if(page_name == 'tickets') ShowCalendarModel();
@@ -203,7 +203,7 @@ function getCounterTickets(key){
             dataType: 'json',
             cache: false,
             success: function(data) {
-                console.log(data, "data tickets");
+                // console.log(data, "data tickets");
             
                 redrawTicketsTable(data.tickets);
             }
@@ -218,7 +218,7 @@ function getCounterTickets(key){
             dataType: 'json',
             cache: false,
             success: function(data) {
-                console.log(data, "data tickets");
+                // console.log(data, "data tickets");
             
                 redrawTicketsTable(data.tickets);
             }

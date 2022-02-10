@@ -1,4 +1,5 @@
 @extends('layouts.master-layout-new')
+@section('title' , 'Live-tech System | Template Builder')
 @section('customtheme')
 @php
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -266,6 +267,7 @@ let get_codes_route = "{{asset('/get_all_short_codes')}}";
          ],
          content_css: "css/content.css",
          toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | table | print preview media fullpage | forecolor backcolor emoticons | tb_variables | code",
+         paste_data_images: true,
          fullpage_default_encoding: "UTF-8",
          fullpage_default_doctype: "<!DOCTYPE html>",
          file_picker_callback: function(cb, value, meta) {

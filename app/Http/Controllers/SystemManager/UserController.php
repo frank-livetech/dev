@@ -1287,8 +1287,8 @@ class UserController extends Controller
 
         $data = $request->all();
 
-        try {      
-
+        try {   
+            
             $user = User::where('id', $request->user_id)->first();
             $user->phone_number = $data['phone'];
             $user->country = $data['country'];
@@ -1316,15 +1316,23 @@ class UserController extends Controller
                         "message" => 'Password not matached!',
                     ]);
                 }else{
-                    if (Hash::check($data['old_password'] , $user->password )) {
-                        $user->password = Hash::make($data['password']);
+                    if(password_verify($data['old_password'], auth()->user()->password)) {
+                        if (Hash::check($data['old_password'] , $user->password )) {
+                            $user->password = Hash::make($data['password']);
+                        }else{
+                            return response()->json([
+                                "code" => 500,
+                                "success" => false,
+                                "message" => 'Incorrect password!',
+                            ]);
+                        } 
                     }else{
                         return response()->json([
                             "code" => 500,
                             "success" => false,
-                            "message" => 'Incorrect password!',
-                        ]);
-                    } 
+                            "message" => 'old password not match!',
+                        ]);  
+                    }
                 }
             }
 
