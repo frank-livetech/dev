@@ -4,8 +4,8 @@
 @section('body')
 <style>
     #dropD {
-    padding-left: 15px;
-}
+        padding-left: 15px;
+    }
     .mt-0{
         margin: unset
     }
@@ -40,37 +40,34 @@
         margin-right: 1rem !important;
     }
     .media {
-    display: flex;
-    align-items: flex-start;
-}
+        display: flex;
+        align-items: flex-start;
+    }
     .innerBox{
         font-size: 15px;
         height: 100px;
         overflow-y: scroll;
     }
-    #style-5::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
-}
-.text-white{
-    color:white;
-}
-#style-5::-webkit-scrollbar
-{
-	width: 3px;
-    height: 10px;
-	background-color: #F5F5F5;
-}
+    #style-5::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+    .text-white{
+        color:white;
+    }
+    #style-5::-webkit-scrollbar {
+        width: 3px;
+        height: 10px;
+        background-color: #F5F5F5;
+    }
 
-#style-5::-webkit-scrollbar-thumb
-{
-	background-color: #0ae;
-	
-	background-image: -webkit-gradient(linear, 0 0, 0 100%,
-	                   color-stop(.5, rgba(255, 255, 255, .2)),
-					   color-stop(.5, transparent), to(transparent));
-}
+    #style-5::-webkit-scrollbar-thumb {
+        background-color: #0ae;
+        
+        background-image: -webkit-gradient(linear, 0 0, 0 100%,
+                        color-stop(.5, rgba(255, 255, 255, .2)),
+                        color-stop(.5, transparent), to(transparent));
+    }
 /* .card__corner {
     position: absolute;
     bottom: 0;
@@ -295,14 +292,18 @@ br + br { display: none; }
                                             $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                         @endphp
                                         @if($details->is_staff_tkt == 0)
-                                            @if($ticket_customer->avatar_url != null)
-                                                @if(file_exists( getcwd() .'/'. $ticket_customer->avatar_url ))
-                                                    <img src=" {{ asset( request()->root() .'/'. $ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                            @if($ticket_customer != null)
+                                                @if($ticket_customer->avatar_url != null)
+                                                    @if(file_exists( getcwd() .'/'. $ticket_customer->avatar_url ))
+                                                        <img src=" {{ asset( request()->root() .'/'. $ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                                    @else
+                                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                    @endif
                                                 @else
-                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                 @endif
-                                            @else($ticket_customer->avatar_url == NULL)
-                                            <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            @else
+                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
                                             <span class="badge badge-secondary type_bdge">User</span>
                                         @else

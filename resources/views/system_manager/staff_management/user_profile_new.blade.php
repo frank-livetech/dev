@@ -133,7 +133,7 @@
                             @php
                                 $path = Session::get('is_live') == 1 ? 'public/' : '/';
                             @endphp
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
+                            <a href="#" id="uploadProfilePic">
                                 @if($profile->profile_pic != null)
                                     @if(is_file( getcwd() .'/'. $profile->profile_pic ))
                                     <figure><img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"

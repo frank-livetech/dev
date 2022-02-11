@@ -2,202 +2,202 @@
     // Staff_profile SCript Blade
     $(document).ready(function(){
         values();
-        const textDark = Pickr.create({
-            el: '#text-dark',
-            theme: 'nano',
-            default: "{{session('text_dark')}}",
-            components: {
+        // const textDark = Pickr.create({
+        //     el: '#text-dark',
+        //     theme: 'nano',
+        //     default: "{{session('text_dark')}}",
+        //     components: {
 
-                // Main components
-                preview: true,
-                opacity: true,
-                hue: true,
+        //         // Main components
+        //         preview: true,
+        //         opacity: true,
+        //         hue: true,
 
-                // Input / output Options
-                interaction: {
-                    save: true
-                }
-            }
-        });
+        //         // Input / output Options
+        //         interaction: {
+        //             save: true
+        //         }
+        //     }
+        // });
 
-        textDark.on('change', function (color) {
-            const newColor = color.toHEXA().toString();
-            dark(newColor, "{{Session::get('bg_dark')}}");
-        }).on('save', function (color) {
-            const newColor = color.toHEXA().toString();
-            $.ajax({
-                type: "post",
-                url: save_staff_color_route,
-                data: { action: 'textDark', color: newColor },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        dark(newColor, "{{Session::get('bg_dark')}}");
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    } else {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    }
-                }
-            });
-        });
-        const bgDark = Pickr.create({
-            el: '#bg-dark',
-            theme: 'nano',
-            default: "{{session('bg_dark')}}",
-            components: {
+        // textDark.on('change', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     dark(newColor, "{{Session::get('bg_dark')}}");
+        // }).on('save', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     $.ajax({
+        //         type: "post",
+        //         url: save_staff_color_route,
+        //         data: { action: 'textDark', color: newColor },
+        //         success: function (data) {
+        //             if (data['success'] == true) {
+        //                 dark(newColor, "{{Session::get('bg_dark')}}");
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'success',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             } else {
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'error',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             }
+        //         }
+        //     });
+        // });
+        // const bgDark = Pickr.create({
+        //     el: '#bg-dark',
+        //     theme: 'nano',
+        //     default: "{{session('bg_dark')}}",
+        //     components: {
 
-                // Main components
-                preview: true,
-                opacity: true,
-                hue: true,
+        //         // Main components
+        //         preview: true,
+        //         opacity: true,
+        //         hue: true,
 
-                // Input / output Options
-                interaction: {
-                    save: true
-                }
-            }
-        });
+        //         // Input / output Options
+        //         interaction: {
+        //             save: true
+        //         }
+        //     }
+        // });
 
-        bgDark.on('change', function (color) {
-            const newColor = color.toHEXA().toString();
-            dark("{{Session::get('text_dark')}}", newColor)
-        }).on('save', function (color) {
-            const newColor = color.toHEXA().toString();
-            $.ajax({
-                type: "post",
-                url: save_staff_color_route,
-                data: { action: 'bgDark', color: newColor },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        dark("{{Session::get('text_dark')}}", newColor)
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    } else {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    }
-                }
-            });
-        });
-        const textLight = Pickr.create({
-            el: '#text-light',
-            theme: 'nano',
-            default: "{{session('text_light')}}",
-            components: {
+        // bgDark.on('change', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     dark("{{Session::get('text_dark')}}", newColor)
+        // }).on('save', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     $.ajax({
+        //         type: "post",
+        //         url: save_staff_color_route,
+        //         data: { action: 'bgDark', color: newColor },
+        //         success: function (data) {
+        //             if (data['success'] == true) {
+        //                 dark("{{Session::get('text_dark')}}", newColor)
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'success',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             } else {
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'error',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             }
+        //         }
+        //     });
+        // });
+        // const textLight = Pickr.create({
+        //     el: '#text-light',
+        //     theme: 'nano',
+        //     default: "{{session('text_light')}}",
+        //     components: {
 
-                // Main components
-                preview: true,
-                opacity: true,
-                hue: true,
+        //         // Main components
+        //         preview: true,
+        //         opacity: true,
+        //         hue: true,
 
-                // Input / output Options
-                interaction: {
-                    save: true
-                }
-            }
-        });
+        //         // Input / output Options
+        //         interaction: {
+        //             save: true
+        //         }
+        //     }
+        // });
 
-        textLight.on('change', function (color) {
-            const newColor = color.toHEXA().toString();
-            light(newColor, "{{Session::get('bg_light')}}")
-        }).on('save', function (color) {
-            const newColor = color.toHEXA().toString();
-            $.ajax({
-                type: "post",
-                url: save_staff_color_route,
-                data: { action: 'textLight', color: newColor },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        light(newColor, "{{Session::get('bg_light')}}")
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    } else {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    }
-                }
-            });
-        });
-        const bglight = Pickr.create({
-            el: '#bg-light',
-            theme: 'nano',
-            default: "{{session('bg_light')}}",
-            components: {
+        // textLight.on('change', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     light(newColor, "{{Session::get('bg_light')}}")
+        // }).on('save', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     $.ajax({
+        //         type: "post",
+        //         url: save_staff_color_route,
+        //         data: { action: 'textLight', color: newColor },
+        //         success: function (data) {
+        //             if (data['success'] == true) {
+        //                 light(newColor, "{{Session::get('bg_light')}}")
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'success',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             } else {
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'error',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             }
+        //         }
+        //     });
+        // });
+        // const bglight = Pickr.create({
+        //     el: '#bg-light',
+        //     theme: 'nano',
+        //     default: "{{session('bg_light')}}",
+        //     components: {
 
-                // Main components
-                preview: true,
-                opacity: true,
-                hue: true,
+        //         // Main components
+        //         preview: true,
+        //         opacity: true,
+        //         hue: true,
 
-                // Input / output Options
-                interaction: {
-                    save: true
-                }
-            }
-        });
+        //         // Input / output Options
+        //         interaction: {
+        //             save: true
+        //         }
+        //     }
+        // });
 
-        bglight.on('change', function (color) {
-            const newColor = color.toHEXA().toString();
-            light("{{Session::get('text_light')}}", newColor)
-        }).on('save', function (color) {
-            const newColor = color.toHEXA().toString();
-            $.ajax({
-                type: "post",
-                url: save_staff_color_route,
-                data: { action: 'bgLight', color: newColor },
-                success: function (data) {
-                    if (data['success'] == true) {
-                        light("{{Session::get('text_light')}}", newColor)
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'success',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    } else {
-                        Swal.fire({
-                            position: 'top-end',
-                            icon: 'error',
-                            title: data['message'],
-                            showConfirmButton: false,
-                            timer: 2500
-                        })
-                    }
-                }
-            });
-        });
+        // bglight.on('change', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     light("{{Session::get('text_light')}}", newColor)
+        // }).on('save', function (color) {
+        //     const newColor = color.toHEXA().toString();
+        //     $.ajax({
+        //         type: "post",
+        //         url: save_staff_color_route,
+        //         data: { action: 'bgLight', color: newColor },
+        //         success: function (data) {
+        //             if (data['success'] == true) {
+        //                 light("{{Session::get('text_light')}}", newColor)
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'success',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             } else {
+        //                 Swal.fire({
+        //                     position: 'top-end',
+        //                     icon: 'error',
+        //                     title: data['message'],
+        //                     showConfirmButton: false,
+        //                     timer: 2500
+        //                 })
+        //             }
+        //         }
+        //     });
+        // });
 
         tickets_table_list = $('#ticket_table').DataTable({
             processing: true,
@@ -214,7 +214,7 @@
             ],
             order: [[2, 'asc']],
             createdRow: function(row, data, dataIndex){
-                console.log($(data[1]).attr('class'));
+                // console.log($(data[1]).attr('class'));
                 if($(data[1]).attr('class').match('flagged')){
                     $(row).addClass('flagged-tr');
                 }
@@ -409,6 +409,13 @@ $("#change_password_checkbox").click(function() {
 
 });
 
+// upload profile pic -> show modal
+$("#uploadProfilePic").click(function () {
+    $('#editPicModal').modal('show');
+    $('.modalImg').show();
+    $("#hung22").hide()
+});
+
 $("#update_user").submit(function (event) {
     event.preventDefault();
     event.stopPropagation();
@@ -518,7 +525,7 @@ $("#update_user").submit(function (event) {
             $("#usr_lnk_loader").show();
         },
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             if(data.code == 200 && data.success == true) {
                 values();
                 toastr.success( data.message , { timeOut: 5000 });
@@ -750,7 +757,7 @@ function get_ticket_table_list() {
         dataType: 'json',
         cache: false,
         success: function (data) {
-            console.log(data.tickets);
+            // console.log(data.tickets);
             ticketsList = data.tickets;
 
             // $('#my_tickets_count').html(ticketsList.length);

@@ -276,7 +276,7 @@ $("#save_user").submit(function(event) {
             $("#usr_loader").show();
         },
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
                 $('#addNewUser').modal('hide');
                 get_all_staff_members();
@@ -292,7 +292,7 @@ $("#save_user").submit(function(event) {
             $("#usr_loader").hide();
         },
         error: function(e) {
-            console.log(e);
+            // console.log(e);
             $("#usr_save").show();
             $("#usr_pro").hide();
             $("#usr_loader").hide();
@@ -302,7 +302,7 @@ $("#save_user").submit(function(event) {
 
 $("#update_password").submit(function(event) {
     event.preventDefault();
-    console.log($(this)[0]);
+    // console.log($(this)[0]);
 
     if (!validatePassword($('#update_password').find("input[name='password']").val(), $('#update_password').find("input[name='confirm_password']").val())) {
         return false;
@@ -322,7 +322,7 @@ $("#update_password").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
                 $('#updateUserPwd').modal('hide');
 
@@ -371,7 +371,7 @@ tag_form.submit(function() {
             alert("Success");
         },
         failure: function(errMsg) {
-            console.log(errMsg);
+            // console.log(errMsg);
         }
     });
     return false;
@@ -549,10 +549,10 @@ function get_all_staff_members() {
             }
         },
         complete: function(data) {
-            console.log('Success', data);
+            // console.log('Success', data);
         },
         error: function(data) {
-            console.log('Error', data);
+            // console.log('Error', data);
         }
     });
 }
