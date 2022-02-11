@@ -354,12 +354,12 @@
             var y = date.getFullYear();
             var form = '';
             var today = new Date($.now());
-            console.log($.now() + 506800000)
+            // console.log($.now() + 506800000)
             var defaultEvents = [];
             
             get_all_schedules(defaultEvents);
 
-            console.log( defaultEvents , "default" );
+            // console.log( defaultEvents , "default" );
 
             var $this = this;
             $this.$calendarObj = $this.$calendar.fullCalendar({
@@ -419,7 +419,7 @@ function get_all_schedules(defaultEvents) {
         cache: false,
         async:false,
         success: function (data) {
-            console.log(data.data , "calender");
+            // console.log(data.data , "calender");
             var title_text = '';
             if(data.success == true){
                 var timings = data.data;

@@ -313,7 +313,7 @@
                     title: title, 
                     description: description},
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if(!data.success) {
                         Swal.fire({
                             position: 'top-end',
@@ -338,10 +338,10 @@
                 cache: false,
                 async:false,
                 success: function(data) {
-                    console.log(data , 'data counts');
+                    // console.log(data , 'data counts');
                     let counts = data.counts;
                     for(var i = 0 ; i < counts.length ; i++){
-                        console.log(counts[i].dept_counter)
+                        // console.log(counts[i].dept_counter)
                         if(counts[i].dept_counter == 1){
                             if(counts[i].tkt_dept_count > 0){
                                 $('#dept_cnt_'+counts[i].id).html(counts[i].tkt_dept_count);
@@ -371,7 +371,7 @@
                 cache: false,
                 async:false,
                 success: function(data) {
-                    console.log(data+' parser')
+                    // console.log(data+' parser')
                     if(data.status_code == 200){
                         toastr.success(data.message, { timeOut: 5000 });
                     }else{
@@ -450,7 +450,7 @@
                 cache: false,
                 async:false,
                 success: function(data) {
-                    console.log(data , "notification");
+                    // console.log(data , "notification");
                     var noti_div = ``;
                     var sender = data.data;
 

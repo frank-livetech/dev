@@ -256,7 +256,7 @@
                         $("#staff_table tbody").append(
                         `<tr id="new_entry">
                             <td></td>
-                            <td>` + curr_user_name + `</td>
+                            <td>${curr_user_name} </td>
                             <td>` + clock_in + `</td>
                             <td>` + date + `</td>
                             <td>` + time + `</td>
@@ -311,7 +311,7 @@
                         $("#staff_table tbody").append(
                         `<tr id="new_entry">
                             <td></td>
-                            <td>` + curr_user_name + `</td>
+                            <td> {{auth()->user()->name}} </td>
                             <td>` + clock_out + `</td>
                             <td>` + date + `</td>
                             <td>` + moment(data.clock_in_time).format(system_date_format + ' h:mm:ss') + `</td>
