@@ -50,7 +50,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -2430,7 +2430,7 @@ class HelpdeskController extends Controller
             $customer_send = false;
             $cust_template_code = '';
             $is_cron = false;
-            if($action_name != 'cron'){
+            if($action_name != 'cron' && $action_name != 'cust_cron'){
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first(); 
             }
             
@@ -2489,7 +2489,7 @@ class HelpdeskController extends Controller
                 $attachs = $data_id;
                 $pathTo = 'replies/'.$ticket['id'];
 
-                $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by '. $user->name;
+                $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by System';
                 $notification_title = 'Reply Added';
             }
             else if($action_name == "Type updated") {
