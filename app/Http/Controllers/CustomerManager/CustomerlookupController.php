@@ -864,7 +864,7 @@ class CustomerlookupController extends Controller
                 ]);
                 
                 $mailer = new MailController();
-                $mailer->UserRegisteration($request->email);
+                $mailer->UserRegisteration($request->email,true,'customer');
             }
 
             return response()->json($response);

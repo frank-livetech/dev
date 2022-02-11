@@ -1061,7 +1061,11 @@ class MailController extends Controller
         $mail_template = '';
         $subject = "New Registration";
         if($new == true) {
-            $mail_template = DB::table('templates')->where('code','new_user_signup')->first();
+            if($user->user_type == 5){
+                $mail_template = DB::table('templates')->where('code','new_customer_signup')->first();
+            }else{
+                $mail_template = DB::table('templates')->where('code','new_user_signup')->first();
+            }
         } else {
             $subject = "User Info Updated";
             $mail_template = DB::table('templates')->where('code','user_info_update')->first();
@@ -1379,6 +1383,12 @@ class MailController extends Controller
                 if(str_contains($template, '{User-Password}') && !empty($data['values']['alt_pwd'])) {
                     $template = str_replace('{User-Password}', Crypt::decryptString($data['values']['alt_pwd']), $template);
                 }
+                if(str_contains($template, '{URL}') && $data['values']['user_type'] == 5) {
+                    $template = str_replace('{URL}', request()->root().'/user-login', $template);
+                }else{
+                    $template = str_replace('{URL}', request()->root().'/login', $template);
+                }
+
             }
 
             if(!is_array($data['values'])) $data['values'] = (array) $data['values'];
