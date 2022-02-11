@@ -92,9 +92,11 @@ class HomeController extends Controller
         // }
 
 
-        $clockin = StaffAttendance::where('user_id',\Auth::user()->id)->where('clock_out',NULL)->first();
+        $clockin = StaffAttendance::with('user_clocked')->where('user_id',\Auth::user()->id)->where('clock_out',NULL)->get();
+        // dd($clockin->toArray());
         $staff_count = User::where('is_deleted',0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff','!=',1)->where('status',1)->count();
         $staff_att_data = StaffAttendance::with('user_clocked')->where('date',date_format(Carbon::now(),"Y-m-d"))->limit(15)->get();
+        // dd($staff_att_data->toArray());
         // $staff_att_data = StaffAttendance::with('user_clocked')->where('clock_out',NULL)->limit(15)->get();
 
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();

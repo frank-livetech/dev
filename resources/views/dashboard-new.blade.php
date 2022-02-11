@@ -28,6 +28,9 @@
     <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
 @endif
 
+
+<input type="hidden" id="curr_user_name" value="{{Auth::user()->name}}">
+
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -48,13 +51,23 @@
             </div>
         </div>
          <div class="content-header-right text-md-end col-md-7 col-12 d-md-block d-none">
-            <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fa fa-cog" aria-hidden="true"></i>&nbsp; Support Dashboard</button>
-            <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fas fa-chart-line" aria-hidden="true"></i>&nbsp; CFO Dashboard</button>
-            @if($clockin)
-            <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn" onclick="staffatt('clockout')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
-            @else
-            <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn" onclick="staffatt('clockin')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>
-            @endif
+            <div class="d-flex justify-content-end">
+                <div>
+                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fa fa-cog" aria-hidden="true"></i>&nbsp; Support Dashboard</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fas fa-chart-line" aria-hidden="true"></i>&nbsp; CFO Dashboard</button>
+                </div>
+                <div class="clock_btn_div mx-1">
+                @if($clockin)
+                    <button type="button" 
+                        class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockout')">
+                        <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
+                @else
+                    <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockin')">
+                    <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>
+                @endif
+                </div>
+            </div>
+            
         </div> 
     </div>
     <div class="content-body">
@@ -388,7 +401,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="card-datatable">
-                                            {{-- <div class="table-responsive">
+                                            <div class="table-responsive">
                                                 <table class="table table-hover no-wrap" id="staff_table">
                                                     <thead class="table_head_back">
                                                         <tr>
@@ -403,11 +416,33 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                
+                                                        @foreach($staff_att_data as $active)
+                                                            <tr>
+                                                                <td> {{$loop->iteration}} </td>
+                                                                <td>
+                                                                    @if($active->user_clocked == null) 
+                                                                        <span> - </span>
+                                                                    @else
+                                                                        {{$active->user_clocked->name != null ? $active->user_clocked->name : '-'}}
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if($active->clock_out != null)
+                                                                        <span class="badge bg-danger">Clocked Out</span>
+                                                                    @else
+                                                                        <span class="badge bg-success py-1">Clocked In</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td> {{$active->date != null ? $active->date : '-'}} </td>
+                                                                <td> {{$active->clock_in != null ? $active->clock_in : '-'}} </td>
+                                                                <td> {{$active->clock_out != null ? $active->clock_out : '-'}} </td>
+                                                                <td> {{$active->hour_worked != null ? $active->hour_worked : '-'}} </td>
+                                                            </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
-                                            </div> --}}
-                                            <div class="table-responsive">
+                                            </div>
+                                            <!-- <div class="table-responsive">
                                                 <table class="table table-bordered table-hover">
                                                     <thead>
                                                         <tr>
@@ -444,7 +479,7 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>

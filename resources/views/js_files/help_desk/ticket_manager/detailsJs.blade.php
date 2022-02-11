@@ -1146,10 +1146,11 @@ function listReplies() {
             }
 
             let user_type = 'Staff';
-
+            
             if(reply.user_type == 5){
                 user_type = 'User'
             }
+
             let new_tag = '' ;
             var now = moment( new Date().toLocaleString('en-US', { timeZone: time_zone }));
             console.log(now)
@@ -1207,13 +1208,23 @@ function listReplies() {
             }else{
                 content = reply.reply;
             }
+
+            let link = ``;
+            console.log(reply , "reply");
+            if(reply.user_type == 5) {
+                link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
+            }else{
+                link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
+            }
             
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
                     <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
                     <div class="media-body">
 
-                        <h5 class="mt-0"><span class="text-primary">` + reply.name + `</span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
+                        <h5 class="mt-0"><span class="text-primary">
+                            ${link}
+                            </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
                         &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
