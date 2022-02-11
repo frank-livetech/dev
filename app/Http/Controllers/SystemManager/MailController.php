@@ -403,7 +403,7 @@ class MailController extends Controller
                                         
                                         //converting html to secure bbcode
                                         
-                                        // dd($html_reply);exit;
+                                        // dd($reply);exit;
                                         
                                         $gmail_str = $eq_value->mailserver_username;
                                         $tkt_str = '['.$eq_value->mail_queue_address.' !'.$ticket->coustom_id.']:';
@@ -450,6 +450,9 @@ class MailController extends Controller
                                                     
                                                 }
                                                 
+                                            }else if(str_contains($html_reply,'On') && str_contains($html_reply,'wrote') && str_contains($html_reply,$eq_value->mail_queue_address) && str_contains($html_reply,'<blockquote type="cite">On')){
+                                                $content =  explode('<blockquote type="cite">On',$html_reply);
+                                                $html_reply = $content[0];
                                             }   
                                             
                                         }
@@ -457,7 +460,7 @@ class MailController extends Controller
                                         // dd($html_reply);exit;
                                         // $content = explode($reply,'<div class="gmail_quote">');
                                         // echo nl2br($html_reply);exit;
-                                        // dd($html_reply);exit;
+                                        // dd(nl2br($html_reply));exit;
                                         
                                         $data = array(
                                             "ticket_id" => $ticket->id,
@@ -478,19 +481,19 @@ class MailController extends Controller
                                             $ticket->assigned_to = $sid;
                                             $ticket->save();
                                             try {
-                                                //  dd($staff);exit;
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $html_reply, '', 'cron', $attaches, $staff->email);
+
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $reply, '', 'cron', $attaches, $staff->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
                                         }
-                                        // dd($user);exit;
+                                        
                                         if(!empty($cid)) {
                                             $data["customer_id"] = $cid;
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $html_reply, '', 'cust_cron', $attaches, $customer->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $reply, '', 'cust_cron', $attaches, $customer->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
@@ -1036,7 +1039,7 @@ class MailController extends Controller
             $mail->Subject = $subject;
             $mail->Body    = $body;
             $mail->AltBody = '';
-            // dd($recipient);exit;
+
             if(is_array($recipient)) {
                 foreach ($recipient as $key => $value) {
                     $mail->clearAllRecipients();
