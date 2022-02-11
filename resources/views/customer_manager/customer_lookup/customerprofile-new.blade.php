@@ -123,7 +123,7 @@
                     <div class="card-body">
                         <center class="mt-4">
                             @php
-                                $path = Session::get('is_live') == 1 ? '/public' : '/';
+                                $path = Session::get('is_live') == 1 ? 'public/' : '/';
                                 
                             @endphp
                             <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
