@@ -1,5 +1,7 @@
 @extends('layouts.master-layout-new')
 @section('title', 'Staff Memebers')
+@section('System Manager','open')
+@section('Staff Manager','active')
 @section('body')
 <style>
     .full_name{
