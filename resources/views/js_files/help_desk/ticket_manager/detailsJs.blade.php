@@ -1018,7 +1018,7 @@ function getTicketDetailsContent() {
 
 function listReplies() {
     $('#ticket-replies').html('');
-    console.log(ticketReplies , "ticketReplies");
+    // console.log(ticketReplies , "ticketReplies");
     ticketReplies = ticketReplies.sort(function(a, b) {
         var keyA = new Date(a.updated_at),
             keyB = new Date(b.updated_at);
@@ -1153,7 +1153,7 @@ function listReplies() {
 
             let new_tag = '' ;
             var now = moment( new Date().toLocaleString('en-US', { timeZone: time_zone }));
-            console.log(now)
+            // console.log(now)
             var d = new Date(reply.created_at);
             
             var min = d.getMinutes();
@@ -1170,7 +1170,7 @@ function listReplies() {
             var duration = moment.duration(now.diff(end));
             var days = duration.asHours();
 
-            console.log(days + ' sadasdasd' + a)
+            // console.log(days + ' sadasdasd' + a)
             
             if(days <= 1){
                 new_tag = `<span class="badge badge-primary" style="background-color:#4eafcb">New</span>`;
@@ -1210,7 +1210,7 @@ function listReplies() {
             }
 
             let link = ``;
-            console.log(reply , "reply");
+            // console.log(reply , "reply");
             if(reply.user_type == 5) {
                 link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
             }else{
@@ -1516,7 +1516,7 @@ $('#dept_id').change(function() {
         new_text:$("#dept_id option:selected").text()
     }
     updates_Arr.push(obj);
-    console.log(updates_Arr);
+    // console.log(updates_Arr);
     $("#update_ticket").css("display", "block");
   
     showDepartStatus(dept_id);
@@ -1548,7 +1548,7 @@ $('#assigned_to').change(function() {
         new_text:$("#assigned_to option:selected").text()
     }
     updates_Arr.push(obj);
-    console.log(updates_Arr);
+    // console.log(updates_Arr);
     $("#update_ticket").css("display", "block");
    
 });
@@ -1580,7 +1580,7 @@ $('#type').change(function() {
 
     }
     updates_Arr.push(obj);
-    console.log(updates_Arr);
+    // console.log(updates_Arr);
     $("#update_ticket").css("display", "block");
     
 });
@@ -1615,7 +1615,7 @@ $('#status').change(function() {
 
     }
     updates_Arr.push(obj);
-    console.log(updates_Arr+'askdkaskjd');
+    // console.log(updates_Arr+'askdkaskjd');
     $("#update_ticket").css("display", "block");
 
 });
@@ -1650,7 +1650,7 @@ $('#priority').change(function() {
     updates_Arr.push(obj);
     $("#update_ticket").css("display", "block");
 
-    console.log(updates_Arr);
+    // console.log(updates_Arr);
     
 });
 
@@ -1674,7 +1674,7 @@ function updateTicket(){
         dataType: 'json',
         cache: false,
         success: function(data) {
-            console.log(data)
+            // console.log(data)
             if (data.success == true) {
 
                 for(var i = 0 ; i < updates_Arr.length ; i++){
@@ -2507,10 +2507,9 @@ function get_ticket_notes() {
         url: ticket_notes_route,
         data: { id: ticket_details.id },
         success: function(data) {
-            
             if (data.success) {
                 notes = data.notes;
-                console.log(notes , "notes");
+                // console.log(notes , "notes");
                 var type = '';
 
                 if (timeouts_list.length) {
@@ -2558,16 +2557,23 @@ function get_ticket_notes() {
                     }
 
                     var user_img = ``;
+                    let is_live = "{{Session::get('is_live')}}";
+                    let path = is_live == 0 ? '' : 'public/';
 
                     if(notes[i].profile_pic != null) {
-                        user_img += `<img src="{{asset('files/user_photos/${notes[i].profile_pic}')}}" 
+
+                        user_img += `<img src="{{asset('${path}${notes[i].profile_pic}')}}" 
                         width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
+
                     }else{
-                        user_img += `<img src="{{asset('public/default_imgs/logo.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+
+                        user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                                width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+
                     }
 
                     let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
-                        <div class="pr-2">
+                        <div style="margin-right: 10px; margin-left: -8px;">
                             ${user_img}
                         </div>
                         <div class="w-100">
@@ -2835,7 +2841,7 @@ function showDepartStatus(value) {
             $("#dropdown_loader").show();
         },
         success: function(data) {
-            console.log(data , "assignee");
+            // console.log(data , "assignee");
             let obj = data.status;
             let obj_user = data.users;
 
