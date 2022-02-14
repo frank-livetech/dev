@@ -7,7 +7,7 @@ use App\Http\Controllers\HelpdeskController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\Mail;
 use App\Models\Customer;
@@ -630,7 +630,7 @@ class MailController extends Controller
                              
                         }
                     }
-//  dd('before delete');exit;
+                    //  dd('before delete');exit;
                     imap_delete($imap, $message);
                 }
 
@@ -1396,6 +1396,16 @@ class MailController extends Controller
             }
 
             if(!is_array($data['values'])) $data['values'] = (array) $data['values'];
+
+
+            // timezone 
+            $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+            $tm_name = '';
+            if($timezone) {
+                $tm_name = $timezone->sys_key != null ? $timezone->sys_key : 'America/New_York';
+            }else{
+                $tm_name = 'America/New_York';
+            }
             
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
@@ -1407,7 +1417,8 @@ class MailController extends Controller
                     // if($data['module'] == 'Ticket')
                     // echo '{'.$data['module'].'-'.$k.'}\n';
                     // echo str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
-                    if($k == 'Created-At' || $k == 'Updated-At') $value = Carbon::parse($value)->format('Y-m-d h:m:s A');
+                    // change created at and updated at according to user timezone if null then timezone will be america/newyork
+                    if($k == 'Created-At' || $k == 'Updated-At') $value = Carbon::parse($value)->timezone($tm_name)->format('Y-m-d h:m:s A');
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
                 }
             }

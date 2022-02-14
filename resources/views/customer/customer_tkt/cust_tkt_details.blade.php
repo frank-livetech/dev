@@ -112,7 +112,7 @@ br + br { display: none; }
     <input type="hidden" id="s_id" >
 
     <h1>View Ticket : {{$ticket->coustom_id}}</h1>
-
+    
     <div class="row">
         <div class="col-md-8">
             <div class="card mt-2">
@@ -126,12 +126,7 @@ br + br { display: none; }
                     <hr>
 
                     <div class="text-muted" >Description</div>
-            
-                    <div class="card-body mail-message-wrapper frst">
-                        <div class="mail-message">
-                            <div class="row" id="ticket_details_p"></div>
-                        </div>
-                    </div>
+                    <p>{!! $ticket->ticket_detail !!}</p>
 
                 </div>
             </div>
