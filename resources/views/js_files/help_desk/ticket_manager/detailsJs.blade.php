@@ -83,15 +83,16 @@ $(document).ready(function() {
     $('#creation-date').text( convertDate(ticket.created_at)  );
 
     // old code
-    let dt = new Date(ticket.sla_res_deadline_from);
-    if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
+    // console.log(ticket , "ticket")
+    // let dt = new Date(ticket.sla_res_deadline_from);
+    // if(new Date(ticket.sla_rep_deadline_from) > new Date(ticket.sla_res_deadline_from)) dt = new Date(ticket.sla_rep_deadline_from);
 
-    // updted dt ---> new code
+    // // updted dt ---> new code
     // let res = moment(ticket.sla_res_deadline_from).valueOf();
     // let rep = moment(ticket.sla_rep_deadline_from).valueOf();
     // let updt_dt = rep > res ? ticket.sla_rep_deadline_from : ticket.sla_res_deadline_from;
     
-    $('#updation-date').html( convertDate(dt) );
+    $('#updation-date').html( convertDate(ticket.updated_at) );
     
     // settle company name and phone values
     setCustomerCompany();
