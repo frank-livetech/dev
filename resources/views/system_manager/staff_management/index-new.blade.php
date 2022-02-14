@@ -1,5 +1,7 @@
 @extends('layouts.master-layout-new')
 @section('title', 'Staff Memebers')
+@section('System Manager','open')
+@section('Staff Manager','active')
 @section('body')
 <style>
     .full_name{
@@ -79,7 +81,7 @@
                                                             <th>Username</th>
                                                             <th>Phone</th>
                                                             <th>Tags Assigned</th>
-                                                            <th>Created At </th>
+                                                            <!-- <th>Created At </th> -->
                                                             <th>Actions</th>
                                                         </tr>
                                                     </thead>
@@ -118,13 +120,10 @@
                                                                 <td>
                                                                     {{ array_key_exists('staffTags' , $user) ? ($user['staffTags'] == null && $user['staffTags'] == "" ? '-' : $user['staffTags']) : '-'}}
                                                                 </td>
-                                                                <td>
-                                                                    @if($user['created_at'] != null) 
-                                                                        {{ \Carbon\Carbon::parse($user['created_at'])->format('d/m/Y') }}
-                                                                    @else
-                                                                        <span> - </span>
-                                                                    @endif
-                                                                </td>
+                                                                <!-- <td>
+                                                                    <div class="show_date" id="show_{{$user['id']}}" data-date="{{\Carbon\Carbon::parse($user['created_at'])}}" data-id="{{$user['id']}}">
+                                                                    </div>
+                                                                </td> -->
                                                                 <td class="text-center">
                                                                     <button type="button" onclick="deleteUsers({{$user['id']}})" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                                                         <i class="fa fa-trash"  aria-hidden="true"></i>
@@ -297,6 +296,14 @@
 @section('scripts')
     <script>
         $('.staff_table').DataTable();
+        // let a = "{{Session('system_date')}}";
+        // console.log(a , "a");
+
+        // $('.show_date').each(function() {
+        //     let date = $(this).data('date');
+        //     let id = $(this).data('id');
+        //     $("#show_"+id).html( moment(date).format("{{Session('system_date')}}") );
+        // });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>

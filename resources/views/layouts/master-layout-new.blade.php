@@ -278,6 +278,7 @@
         const org_path = "{{Session::get('is_live')}}";
         const root = "{{request()->root()}}";
         const js_origin  = root + (org_path == 1 ? '/public/' : '/');
+        const change_theme_url = "{{asset('change_theme_mode')}}";
         $(document).ready(function() {
             getAllCounts();
             getNotifications();
@@ -402,45 +403,45 @@
             }
         });
 
-        $(".nav-link-style").click(function(){
-            var ter = $(this).find(".feather").attr("class");
+        // $(".nav-link-style").click(function(){
+        //     var ter = $(this).find(".feather").attr("class");
 
 
-            if(ter == "feather feather-sun ficon"){
-                $.ajax({
-                    url: "{{asset('change_theme_mode')}}",
-                    type: "POST",
-                    data: {
-                        theme: 'dark'
-                    },
-                    dataType: 'json',
-                    cache: false,
-                    success: function(data) {
+        //     if(ter == "feather feather-sun ficon"){
+        //         $.ajax({
+        //             url: "{{asset('change_theme_mode')}}",
+        //             type: "POST",
+        //             data: {
+        //                 theme: 'dark'
+        //             },
+        //             dataType: 'json',
+        //             cache: false,
+        //             success: function(data) {
 
-                    },
-                    failure: function(errMsg) {
+        //             },
+        //             failure: function(errMsg) {
 
-                        console.log(errMsg);
-                    }
-                });
-            }
-            else{
-                $.ajax({
-                    url: "{{asset('change_theme_mode')}}",
-                    type: "POST",
-                    data: {
-                        theme: 'light'
-                    },
-                    dataType: 'json',
-                    cache: false,
-                    success: function(data) {},
-                    failure: function(errMsg) {
-                        console.log(errMsg);
-                    }
-                });
+        //                 console.log(errMsg);
+        //             }
+        //         });
+        //     }
+        //     else{
+        //         $.ajax({
+        //             url: "{{asset('change_theme_mode')}}",
+        //             type: "POST",
+        //             data: {
+        //                 theme: 'light'
+        //             },
+        //             dataType: 'json',
+        //             cache: false,
+        //             success: function(data) {},
+        //             failure: function(errMsg) {
+        //                 console.log(errMsg);
+        //             }
+        //         });
 
-            }
-        })
+        //     }
+        // })
 
         function getNotifications(){
             $.ajax({

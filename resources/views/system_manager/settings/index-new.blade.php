@@ -1,4 +1,6 @@
 @extends('layouts.master-layout-new')
+@section('System Manager','open')
+@section('Settings','active')
 @section('body')
 <style>
     .nav-pills .nav-link.menu_active {

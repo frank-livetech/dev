@@ -185,7 +185,7 @@ class AssetManagerController extends Controller
 
             $asset = [
                 'asset_forms_id' => $data['form_id'],
-                'created_by' => \Auth::user()->id
+                'created_by' => auth()->id(),
             ];
 
             $module = '';
@@ -217,7 +217,6 @@ class AssetManagerController extends Controller
                 $sendingMailServer = Mail::where('mail_dept_id', $ticket->dept_id)->first();
                 
                 if(empty($sendingMailServer)) {
-                    // dept email queue not found
                     throw new Exception('Ticket department email not found!');
                 }
 
@@ -239,7 +238,7 @@ class AssetManagerController extends Controller
             if(!empty($assetRes->ticket_id)) {
                 $ticket = Tickets::findOrFail($assetRes->ticket_id);
                 $ticket->updated_at = Carbon::now();
-                $ticket->updated_by = \Auth::user()->id;
+                $ticket->updated_by = auth()->id() ;
                 $ticket->save();
                 
                 $action_perform = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset added By '. $name_link;
@@ -255,26 +254,56 @@ class AssetManagerController extends Controller
 
             $fields = AssetFields::where('asset_forms_id', $data['form_id'])->get();
 
-            // foreach ($fields as $key => $value) {
-            //     if($value['type'] == 'ipv4') {
-            //         $data['fl_'.$value['id']] = $data['fl_'.$value['id'].'_1'].'.'.$data['fl_'.$value['id'].'_2'].'.'.$data['fl_'.$value['id'].'_3'].'.'.$data['fl_'.$value['id'].'_4'];
-                    
-            //         unset($data['fl_'.$value['id'].'_1']);
-            //         unset($data['fl_'.$value['id'].'_2']);
-            //         unset($data['fl_'.$value['id'].'_3']);
-            //         unset($data['fl_'.$value['id'].'_4']);
-            //     }
-            // }
 
             $data['asset_id'] = $assetRes->id;
-            $data['created_by'] = \Auth::user()->id;
+            $data['created_by'] = auth()->id();
 
-            DB::table('asset_records_'.$data['form_id'])->insert($data);
 
-            // if(array_key_exists('ticket_id', $asset) && !empty($asset['ticket_id'])) {
-            //     $ticket = Tickets::findOrFail($asset['ticket_id']);
-            //     $this->sendNotificationMail($ticket->toArray(), 'ticket_update');
-            // }
+            $check = Schema::hasTable('asset_records_' . $data['form_id']);
+
+            if($check) {
+
+                DB::table('asset_records_'.$data['form_id'])->insert($data);
+
+            }else{
+
+                $fieldsAdded = [];
+                foreach ($fields as $key => $value) {
+                    if(array_key_exists('options', $value)) {
+                        $value['options'] = $value['options'] = implode('|',$value['options']);
+                    }
+                    $value['asset_forms_id'] = $data['form_id'];
+                    $value['created_by'] = auth()->id();
+                    $fieldsAdded[] = AssetFields::create($value);
+                }
+
+                $table_name = 'asset_records_'.$data['form_id'];
+                Schema::create($table_name, function(Blueprint $table) use ($fieldsAdded, $table_name) {
+                    $table->engine = 'InnoDB';
+
+                    $table->increments('id');
+                    $table->integer('form_id');
+                    $table->integer('asset_id');
+                    if (count($fieldsAdded) > 0) {
+                        foreach ($fieldsAdded as $field) {
+                            $table->string('fl_'.$field->id)->nullable();
+                        }
+                    }
+                    $table->timestamps();
+                    $table->timestamp('deleted_at')->nullable();
+                    $table->integer('created_by');
+                    $table->integer('updated_by')->nullable();
+                    $table->integer('deleted_by')->nullable();
+                    $table->tinyInteger('is_deleted')->default(0);
+                    $table->foreign('form_id')->references('id')->on('asset_templates_form');
+                    $table->foreign('asset_id')->references('id')->on('assets');
+                });
+
+
+                DB::table('asset_records_'.$data['form_id'])->insert($data);
+
+            }
+
 
             $response['message'] = 'Asset Saved Successfully!';
             $response['status_code'] = 200;

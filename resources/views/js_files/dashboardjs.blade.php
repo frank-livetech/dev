@@ -231,114 +231,93 @@
     }
 
     function staffatt(btn_text) {
-        // var btn_text = $('.clock_btn').text();
 
-        if (btn_text == 'clockin') {
-            $.ajax({
-                url: "{{asset('add_checkin')}}",
-                type: 'POST',
-                async: true,
-                success: function(data) {
-                    console.log(data);
-                    if (data.success == true) {
-                        $('.clock_btn').remove();
-                        var btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
-                        $('.clock_btn_div').append(btn);
+        let url = "{{asset('add_checkin')}}";
 
-                        var curr_user_name = $("#curr_user_name").val();
-                        var system_date_format = $("#system_date_format").val();
-                        let clock_in = `<span class="badge badge-success py-1">Clocked In</span>`;
-                        var today = new Date();
-                        let time = moment(today).format('h:mm:ss');
-                        let date = moment(today).format(system_date_format);
-                        let clock_out = `<span class="badge badge-danger py-1">Clocked Out</span>`;
+        if(btn_text == 'clockout') {
+            url = `{{asset('add_checkout')}}`;
+        }
 
-                        $("#staff_table tbody").append(
+        $.ajax({
+            url: url,
+            type: 'POST',
+            async: true,
+            success: function(data) {
+                console.log(data);
+                if (data.success == true) {
+                    $('.clock_btn').remove();
+                    let btn = ``;
+
+                    if(btn_text == 'clockin') {
+                        btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
+                    }else{
+                        btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
+                    }
+                    
+                    $('.clock_btn_div').append(btn);
+
+                    var curr_user_name = $("#curr_user_name").val();
+                    var system_date_format = $("#system_date_format").val();
+                    var today = new Date();
+                    let time = moment(today).format('h:mm:ss');
+                    let date = moment(today).format(system_date_format);
+
+                    let clock_out_time = data.hasOwnProperty('clock_out_time');
+                    
+                    if(clock_out_time) {
+                        clock_out_time = moment(data.clock_out_time).format(system_date_format + ' h:mm:ss')
+                    }else{
+                        clock_out_time = `-`;
+                    }
+
+                    let clock_in_time = ``;
+                    let clock_in = ``;
+
+                    if(btn_text == 'clockin') {
+                        clock_in_time = time;
+                        clock_in = `<span class="badge bg-success">Clocked In</span>`;
+                    }else{
+                        clock_in_time = moment(data.clock_out_time).format(system_date_format + ' h:mm:ss');
+                        clock_in = `<span class="badge bg-danger">Clocked Out</span>`;
+                    }
+
+                    let working_hour = data.hasOwnProperty('worked_time');;
+
+                    if(working_hour) {
+                        working_hour = data.worked_time;
+                    }else{
+                        working_hour = `-`;
+                    }
+
+                    $("#staff_table tbody").append(
                         `<tr id="new_entry">
                             <td></td>
                             <td>${curr_user_name} </td>
-                            <td>` + clock_in + `</td>
-                            <td>` + date + `</td>
-                            <td>` + time + `</td>
-                            <td></td>
-                            <td></td>
+                            <td>${clock_in}</td>
+                            <td>${date}</td>
+                            <td>${clock_in_time}</td>
+                            <td>${clock_out_time}</td>
+                            <td>${working_hour}</td>
                         </tr>`);
 
-                        if(data.status_code == 201) {
-                            toastr.warning(data.message, {
-                                timeOut: 5000
-                            });
-                        } else {
-                            toastr.success(data.message, {
-                                timeOut: 5000
-                            });
-                        }
+                    if(data.status_code == 201) {
+                        toastr.warning(data.message, { timeOut: 5000 });
                     } else {
-                        toastr.error(data.message, {
-                            timeOut: 5000
-                        });
+                        toastr.success(data.message, { timeOut: 5000 });
                     }
-                },
-                failure: function(data) {
-                    console.log(data);
+                } else {
                     toastr.error(data.message, {
                         timeOut: 5000
                     });
                 }
-            });
-        } else {
-            $.ajax({
-                url: "{{asset('add_checkout')}}",
-                type: 'POST',
-                async: true,
-                success: function(data) {
-                    console.log(data);
-                    if (data.success == true) {
-                        $('.clock_btn').remove();
-                        var btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;
-                        $('.clock_btn_div').append(btn);
-
-                        $("#new_entry").remove();
-
-                        var curr_user_name = $("#curr_user_name").val();
-                        var system_date_format = $("#system_date_format").val();
-                        let clock_in = `<span class="badge badge-success py-1">Clocked In</span>`;
-                        var today = new Date();
-                        let time = moment(today).format('h:mm:ss');
-                        let date = moment(today).format(system_date_format);
-                        let clock_out = `<span class="badge badge-danger py-1">Clocked Out</span>`;
-
-                        $("#staff_table tbody").append(
-                        `<tr id="new_entry">
-                            <td></td>
-                            <td> {{auth()->user()->name}} </td>
-                            <td>` + clock_out + `</td>
-                            <td>` + date + `</td>
-                            <td>` + moment(data.clock_in_time).format(system_date_format + ' h:mm:ss') + `</td>
-                            <td> ` + moment(data.clock_out_time).format(system_date_format + ' h:mm:ss') + ` </td>
-                            <td> ` + data.worked_time + `</td>
-                        </tr>`);
-
-                        if(data.status_code == 201) {
-                            toastr.warning(data.message, {
-                                timeOut: 5000
-                            });
-                        } else {
-                            toastr.success(data.message, {
-                                timeOut: 5000
-                            });
-                        }
-                    } else {
-                        toastr.error(data.message, {
-                            timeOut: 5000
-                        });
-                    }
-                },
-                failure: function(data) {
-                    console.log(data);
-                }
-            });
-        }
+            },
+            failure: function(data) {
+                console.log(data);
+                toastr.error(data.message, {
+                    timeOut: 5000
+                });
+            }
+        });
     }
 
     function searchTicket() {

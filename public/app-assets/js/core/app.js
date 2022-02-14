@@ -962,6 +962,29 @@ window.colors = {
 
   // Navbar Dark / Light Layout Toggle Switch
   $('.nav-link-style').on('click', function () {
+    
+    let find_class = $(this).find(".feather").attr("class");
+    let mood = ``;
+    if(find_class == `feather feather-moon ficon`) {
+      mood = `dark`;
+    }else{
+      mood = `light`;
+    }
+
+    console.log(mood , "mood");
+
+    $.ajax({
+      url: change_theme_url,
+      type: "POST",
+      data: { theme: mood  },
+      dataType: 'json',
+      cache: false,
+      success: function(data) {},
+      failure: function(errMsg) {
+        console.log(errMsg);
+      }
+    });
+
     var currentLayout = getCurrentLayout(),
       switchToLayout = '',
       prevLayout = localStorage.getItem(dataLayout + '-prev-skin', currentLayout);

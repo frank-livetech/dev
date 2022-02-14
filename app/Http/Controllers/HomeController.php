@@ -40,27 +40,6 @@ class HomeController extends Controller
     {
         $user_type = 1;
 
-        // if(\Auth::user()->user_type == 1) {
-        //     $role_features = DB::table("ac_features")->where("parent_id","=",0)->get();
-        //     foreach($role_features as $feature) {
-        //         $sub_menu = DB::table("ac_features")->where('parent_id','=',$feature->f_id)->get();
-        //         $feature->sub_menu = $sub_menu;
-        //     }
-        // }else{
-        //     $role_features = DB::table('role_has_permission')
-        //     ->join('ac_features', 'role_has_permission.feature_id', '=', 'ac_features.f_id')
-        //     ->where('ac_features.parent_id', '=', 0)
-        //     ->where('role_has_permission.role_id',\Auth::user()->user_type)->get();
-    
-        //     foreach ($role_features as $feature) {
-        //             $sub_menu = DB::table("ac_features")->where('parent_id','=',$feature->f_id)->get();
-        //             $feature->sub_menu = $sub_menu;
-        //     }
-        // }
-
-        
-        
-        
         $customers = Customer::count();
         $orders = Orders::count();
         $project = Project::count();
@@ -68,44 +47,57 @@ class HomeController extends Controller
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
-        // $helpdesk = new HelpdeskController();
-        // echo "<pre>";
-        // $tickets = json_decode(json_encode($helpdesk->getTickets()), true);
 
-
-
-        // print_r($tickets['original']['open_tickets_count']);exit;
         
-        $open_tickets_count = Tickets::where('status', $open_status->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        // $open_tickets_count = $tickets['original']['open_tickets_count'];
-        // $unassigned_tickets_count = $tickets['original']['unassigned_tickets_count'];
-        // $my_tickets_count = $tickets['original']['my_tickets_count'];
+        $open_tickets_count = Tickets::where('status', $open_status->id)
+                                ->where('is_deleted', 0)
+                                ->where('tickets.trashed', 0)
+                                ->where('tickets.status', '!=', $closed_status_id)->count();
 
-        // if( array_key_exists('late_tickets_count', $tickets['original'])) {
-        //     $late_tickets_count = $tickets['original']['late_tickets_count'];
-        // }else{
-        //     $late_tickets_count = 0;
-        // }
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')
+                                        ->where('is_deleted', 0)
+                                        ->where('tickets.trashed', 0)
+                                        ->where('tickets.status', '!=', $closed_status_id)->count();
+
+        $my_tickets_count = Tickets::where('assigned_to', auth()->id() )
+                                ->where('is_deleted', 0)
+                                ->where('tickets.trashed', 0)
+                                ->where('tickets.status', '!=', $closed_status_id)->count();
+
+        $total_tickets_count = Tickets::where('is_deleted', 0)
+                                ->where('tickets.trashed', 0)
+                                ->where('tickets.status', '!=', $closed_status_id)->count();
+
+        $late_tickets_count = Tickets::where('is_overdue',1)
+                                ->where('is_deleted', 0)
+                                ->where('tickets.trashed', 0)
+                                ->where('tickets.status', '!=', $closed_status_id)->count();
 
 
-        $clockin = StaffAttendance::with('user_clocked')->where('user_id',\Auth::user()->id)->where('clock_out',NULL)->get();
-        // dd($clockin->toArray());
-        $staff_count = User::where('is_deleted',0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff','!=',1)->where('status',1)->count();
-        $staff_att_data = StaffAttendance::with('user_clocked')->where('date',date_format(Carbon::now(),"Y-m-d"))->limit(15)->get();
-        // dd($staff_att_data->toArray());
-        // $staff_att_data = StaffAttendance::with('user_clocked')->where('clock_out',NULL)->limit(15)->get();
+
+        $clockin = StaffAttendance::with('user_clocked')
+                        ->where('user_id', auth()->id())
+                        ->where('clock_out',NULL)->first();
+
+
+        $staff_count = User::where('is_deleted',0)
+                        ->where('user_type','!=',5)
+                        ->where('user_type','!=',4)
+                        ->where('is_support_staff','!=',1)
+                        ->where('status',1)->count();
+
+        $staff_att_data = StaffAttendance::with('user_clocked')
+                            ->where('date',date_format(Carbon::now(),"Y-m-d"))
+                            ->limit(15)->get();
+
 
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
         $staff_inactive_count = $staff_count - $staff_active_count;
-        //return $staff_att_data;
+        
 
         $users = User::where('is_deleted',0)->where('user_type','!=',5)->where('is_support_staff','!=',1)->get();
 
-        $ticket_follow_ups = TicketFollowUp::where('created_by',\Auth::user()->id)
+        $ticket_follow_ups = TicketFollowUp::where('created_by', auth()->id() )
         ->with(['ticket' => function ($query) {
             $query->with('ticket_customer');
         }])
@@ -114,8 +106,8 @@ class HomeController extends Controller
         }])->get();
 
         $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
-        // return view('dashboard',compact('staff_inactive_count','staff_active_count','staff_count','staff_att_data','clockin','notifications','customers','project','total_tickets_count','open_tickets_count', 'unassigned_tickets_count', 'my_tickets_count', 'late_tickets_count','orders','users','ticket_follow_ups','live'));
-        return view('dashboard-new',compact('staff_inactive_count','staff_active_count','staff_count','staff_att_data','clockin','notifications','customers','project','total_tickets_count','open_tickets_count', 'unassigned_tickets_count', 'my_tickets_count', 'late_tickets_count','orders','users','ticket_follow_ups','live'));
+
+        return view('dashboard-new', get_defined_vars());
     
     }
 
