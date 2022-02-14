@@ -992,6 +992,7 @@ class MailController extends Controller
         try {
             // $mail = new PHPMailer(true);
             $mail = new PHPMailer();
+            $mail->CharSet = "UTF-8";
             //Server settings
             // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
             // $mail->SMTPDebug = 3;
