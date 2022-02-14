@@ -1391,15 +1391,20 @@ function publishReply(ele, type = 'publish') {
                     $(ele).attr('disabled', false);
                     $(ele).find('.spinner-border').hide();
 
-                    if (data.success) {
+                    if (data.success == true) {
+
+                        
+
                         $('#tinycontenteditor').html('');
 
                         let draft = false;
                         if (edit_reply_mode !== false) {
+                            // console.log("here");
                             ticketReplies[edit_reply_mode] = data.data;
                             ticketReplies[edit_reply_mode].reply = content;
                             ticketReplies[edit_reply_mode].attachments = rep_attaches;
                         } else {
+                            // console.log("here 1");
                             data.data.reply = content;
                             data.data.attachments = rep_attaches;
                             draft = ticketReplies.push(data.data);
@@ -2562,7 +2567,7 @@ function get_ticket_notes() {
 
                     if(notes[i].profile_pic != null) {
 
-                        user_img += `<img src="{{asset('${path}${notes[i].profile_pic}')}}" 
+                        user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
                         width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
 
                     }else{
