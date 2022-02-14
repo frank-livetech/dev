@@ -1228,9 +1228,7 @@ function listReplies() {
                         &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
 
                         <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
-                        <div class="my-1 bor-top" id="reply-html-` + reply.id + `">
-                            ` + content + `
-                        </div>
+                        <div class="my-1 bor-top" id="reply-html-` + reply.id + `"> ${content} </div>
                         <div class="row mt-1">
                             ${tdet}
                         </div>
@@ -2568,12 +2566,12 @@ function get_ticket_notes() {
                     if(notes[i].profile_pic != null) {
 
                         user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
-                        width="40px" height="40px" class="img-fluid" style="border-radius: 50%;"/>`;
+                        width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
 
                     }else{
 
                         user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
-                                width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                                width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
                     }
 
