@@ -32,7 +32,7 @@ function initializeTicketTable(p_name='') {
                     return data;
                 }
             },
-        ]
+        ],
         // ,
         // order: [
         //     [2, 'asc']
