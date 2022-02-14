@@ -32,10 +32,11 @@ function initializeTicketTable(p_name='') {
                     return data;
                 }
             },
-        ],
-        order: [
-            [2, 'asc']
-        ],
+        ]
+        // ,
+        // order: [
+        //     [2, 'asc']
+        // ],
         createdRow: function(row, data, dataIndex) {
             if ($(data[1]).attr('class') && $(data[1]).attr('class').match('flagged')) {
                 $(row).addClass('flagged-tr');
