@@ -50,7 +50,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
+require './../vendor/autoload.php';
+// require 'vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -1083,11 +1084,11 @@ class HelpdeskController extends Controller
             $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
 
-            if($type == 'publish') {
-                $content = $mail_reply;
-                $action = 'ticket_reply';
-                $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
-            }
+            // if($type == 'publish') {
+            //     $content = $mail_reply;
+            //     $action = 'ticket_reply';
+            //     $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
+            // }
 
             $sla_updated = false;
 
@@ -1114,6 +1115,7 @@ class HelpdeskController extends Controller
 
             $up_tkt = Tickets::where('id' , $request->ticket_id)->first();
             $save_reply->name = \Auth::user()->name;
+            $save_reply['reply_user'] = User::where('id' , auth()->id())->first();
             $response['message'] = ($request->has('id')) ? 'Reply Added Successfully! '.$data['attachments'] : 'Reply Updated Successfully! '.$data['attachments'];
             $response['sla_updated'] = $sla_updated;
             $response['status_code'] = 200;
@@ -2622,7 +2624,7 @@ class HelpdeskController extends Controller
                     // dd($users_list);exit;
                     if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo);
                 }
-// dd($users_list);exit;
+                // dd($users_list);exit;
                 $allwd_users = [];
 
                 try {
