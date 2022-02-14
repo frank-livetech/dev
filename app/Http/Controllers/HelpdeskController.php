@@ -50,8 +50,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require './../vendor/autoload.php';
-// require 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -1084,11 +1083,11 @@ class HelpdeskController extends Controller
             $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
 
-            // if($type == 'publish') {
-            //     $content = $mail_reply;
-            //     $action = 'ticket_reply';
-            //     $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
-            // }
+            if($type == 'publish') {
+                $content = $mail_reply;
+                $action = 'ticket_reply';
+                $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
+            }
 
             $sla_updated = false;
 
