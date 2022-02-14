@@ -104,7 +104,10 @@ class SettingsController extends Controller
             "time" =>  ($timeformat != null ? $timeformat->sys_value : 'hh:mm:ss'),
         ];
         // return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
-        return view('system_manager.settings.index', get_defined_vars());
+       
+        // old data
+        // return view('system_manager.settings.index', get_defined_vars());
+        return view('system_manager.settings.index-new', get_defined_vars());
     }
     public function settingsNew(){
 

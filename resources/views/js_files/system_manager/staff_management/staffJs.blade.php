@@ -60,7 +60,7 @@
             column.visible(!column.visible());
         });
 
-        get_all_staff_members();
+        // get_all_staff_members();
 
         for (let i in tags) {
             $('#tags').append('<option value="' + tags[i].id + '">' + tags[i].name + '</option>');

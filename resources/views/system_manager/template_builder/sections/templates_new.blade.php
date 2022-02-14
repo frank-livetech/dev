@@ -1,5 +1,7 @@
 @extends('layouts.master-layout-new')
 @section('title' , 'Live-tech System | Template Builder')
+@section('System Manager','open')
+@section('Template Builder','active')
 @section('customtheme')
 @php
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';

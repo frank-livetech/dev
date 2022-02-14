@@ -430,7 +430,7 @@
                                                                     @if($active->clock_out != null)
                                                                         <span class="badge bg-danger">Clocked Out</span>
                                                                     @else
-                                                                        <span class="badge bg-success py-1">Clocked In</span>
+                                                                        <span class="badge bg-success">Clocked In</span>
                                                                     @endif
                                                                 </td>
                                                                 <td> {{$active->date != null ? $active->date : '-'}} </td>
