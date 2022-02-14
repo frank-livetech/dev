@@ -1402,7 +1402,7 @@ class MailController extends Controller
             $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
             $tm_name = '';
             if($timezone) {
-                $tm_name = $timezone->sys_key != null ? $timezone->sys_key : 'America/New_York';
+                $tm_name = $timezone->sys_value != null ? $timezone->sys_value : 'America/New_York';
             }else{
                 $tm_name = 'America/New_York';
             }
