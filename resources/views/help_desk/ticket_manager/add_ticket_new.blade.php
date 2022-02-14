@@ -243,6 +243,22 @@
                                                             <textarea class="form-control" rows="3" id="ticket_detail" name="ticket_detail"></textarea>
                                                             <span class="text-danger small" id="ticket_detail_error"></span>
                                                         </div>
+
+                                                        <div class="d-flex mt-3">
+                                                            <div class="form-check form-check-primary">
+                                                                <input type="checkbox" value="1" class="form-check-input" id="send_email" name="send_email" checked>
+                                                                <label class="custom-form-label" for="send_email">Send Email</label>
+                                                            </div>
+                                                            <div class="form-check form-check-primary ms-2">
+                                                                <input type="checkbox" value="1" class="form-check-input" id="autoresponder" name="autoresponder" checked>
+                                                                <label class="custom-form-label" for="autoresponder">Send autoresponder</label>
+                                                            </div>
+                                                            <div class="form-check form-check-primary ms-2">
+                                                                <input type="checkbox" value="1" class="form-check-input" id="macro" name="macro">
+                                                                <label class="custom-form-label" for="macro">Macro</label>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="col-md-12 mt-3" id="ticket_attachments">
                                                             <button class="btn btn-outline-primary btn-sm" type="button" onclick="addAttachment()"><span class="fa fa-plus"></span> Add Attachment</button>
                                                             {{-- <button id="clear-dropzone"  class="btn btn-outline-primary mb-1">
