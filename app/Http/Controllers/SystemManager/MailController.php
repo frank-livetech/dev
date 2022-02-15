@@ -15,6 +15,8 @@ use App\User;
 
 // tickets models
 use App\Models\Tickets;
+use App\Models\TicketStatus;
+use App\Models\TicketPriority;
 use App\Models\TicketReply;
 use App\Models\TicketSettings;
 
@@ -1321,6 +1323,7 @@ class MailController extends Controller
     }
 
     public function replaceShortCodes($data_list, &$template) {
+        
         $brand_setting = DB::table("brand_settings")->first();
         $img = '<img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/brand_files/'.$brand_setting->site_logo .'" style="display:block;width:100%;max-width:80px;" width="80"/>';
 
@@ -1420,6 +1423,28 @@ class MailController extends Controller
                     // change created at and updated at according to user timezone if null then timezone will be america/newyork
                     if($k == 'Created-At' || $k == 'Updated-At') $value = Carbon::parse($value)->timezone($tm_name)->format('Y-m-d h:m:s A');
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
+
+
+
+                    if($k == 'Status-Name') {
+                        if($data['module'] == 'Ticket') {
+                            $name = '{'.$data['module'].'-'.$k.'}';
+                            $status = TicketStatus::where('id' , $data['values'][$key]['status'])->first();
+                        
+                            $value = '<span class="badge" style="background-color='.$status['color'].'"> '. $status['name'] .'</span>';
+                            $template = str_replace( $name , $value, $template);
+                        }
+                    }
+
+                    if($k == 'Priority-Name') {
+                        if($data['module'] == 'Ticket') {
+                            $name = '{'.$data['module'].'-'.$k.'}';
+                            $priority = TicketPriority::where('id' , $data['values'][$key]['priority'])->first();
+                        
+                            $value = '<span class="badge" style="background-color='.$priority['color'].'"> '. $priority['name'] .'</span>';
+                            $template = str_replace( $name , $value, $template);
+                        }
+                    }
                 }
             }
         }
