@@ -1441,7 +1441,7 @@ class MailController extends Controller
                             $name = '{'.$data['module'].'-'.$k.'}';
                             $priority = TicketPriority::where('id' , $data['values'][$key]['priority'])->first();
                         
-                            $value = '<span class="badge" style="background-color='.$priority['color'].'"> '. $priority['name'] .'</span>';
+                            $value = '<span class="badge" style="background-color='.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
                             $template = str_replace( $name , $value, $template);
                         }
                     }
