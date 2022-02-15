@@ -43,7 +43,6 @@ function initializeTicketTable(p_name='') {
             }
         }
     });
-
     $('#ticket-table-list').parent().css('overflow', 'auto');
 
     if(p_name == 'staff_self'){
@@ -160,14 +159,15 @@ function get_ticket_table_list() {
     $('#select-all').prop('checked', false);
     tickets_table_list.clear().draw();
 
-    dept = $('#dept').val();
-    sts = $('#sts').val();
-
+    let dept = $('#dept').val();
+    let sts = $('#sts').val();
+    
     url = get_filteredtkt_route +'/'+dept+'/'+sts ;
 
-    if(dept == '' && sts == ''){
+    if(dept == undefined && sts == undefined){
         url = get_tickets_route ;
     }
+
     $.ajax({
         type: "get",
         url: url,
