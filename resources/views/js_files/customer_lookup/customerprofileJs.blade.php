@@ -7,12 +7,16 @@
         }
     });
 
+    // let ticketsList = [];
+    let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
+
     var customer_subscription_table = '';
     var subscriptionsList = {!!json_encode($subscriptions) !!};
 
     let customer = {!! json_encode($customer) !!};
+    console.log(customer , "customercustomercustomercustomer");
     let all_customers_emails = {!! json_encode($customers) !!};
-    console.log(all_customers_emails , "all_customers_emails");
+
     let ticket_format = {!!json_encode($ticket_format) !!};
     let statuses_list = {!!json_encode($statuses) !!};
 
