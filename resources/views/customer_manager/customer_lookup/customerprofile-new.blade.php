@@ -1258,29 +1258,29 @@
                                     </div> --}}
     
                                     <table id="ticket-table-list" class="table table-striped table-bordered table-hover display ticket-table-list">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <div class="text-center">
-                                                        <input type="checkbox" name="select_all[]" id="select-all">
-                                                    </div>
-                                                </th>
-                                                <th></th>
-                                                <th>Status</th>
-                                                <th>Subject</th>
-                                                <th>Ticket ID</th>
-                                                <th>Priority</th>
-                                                <th>Customer</th>
-                                                <th>Last Replier</th>
-                                                <th>Replies</th>
-                                                <th>Last Activity</th>
-                                                <th>Reply Due</th>
-                                                <th>Resolution Due</th>
-                                                <th>Assigned Tech</th>
-                                                <th>Department</th>
-                                                <th>Creation Date</th>
-                                            </tr>
-                                        </thead>
+                                    <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div class="text-center">
+                                                                <input type="checkbox" name="select_all[]" id="select-all">
+                                                            </div>
+                                                        </th>
+                                                        <th></th>
+                                                        <th>Status</th>
+                                                        <th class='custom'>Subject</th>
+                                                        <th class='pr-ticket'>Ticket ID</th>
+                                                        <th >Priority</th>
+                                                        <th class='custom-cst'>Customer</th>
+                                                        <th class='pr-replies custom-cst'>Last Replier</th>
+                                                        <th>Replies</th>
+                                                        <th class='pr-activity '>Last Activity</th>
+                                                        <th class='pr-ticket'>Reply Due</th>
+                                                        <th class='pr-due'>Resolution Due</th>
+                                                        <th class='pr-tech custom-cst'>Assigned Tech</th>
+                                                        <th class='custom-cst'>Department</th>
+                                                        <!-- <th class='pr-tech custom-cst'>Creation Date</th> -->
+                                                    </tr>
+                                                </thead>
                                         <tbody></tbody>
                                     </table>
                                 </div>
@@ -2366,13 +2366,18 @@
 
 <script>
      function loadFile(event) {
-            $('.modalImg').hide();
-            $("#hung22").show()
-            var output = document.getElementById('hung22');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function() {
-            URL.revokeObjectURL(output.src) // free memory
-            }
-        };
+        $('.modalImg').hide();
+        $("#hung22").show()
+        var output = document.getElementById('hung22');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+
+    // let ticketsList = [];
+    // let get_tickets_route = "{{asset('/get-tickets')}}";
+    // let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
+    // let ticket_details_route = "{{asset('/ticket-details')}}";
 </script>
 @endsection
