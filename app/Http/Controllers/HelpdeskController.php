@@ -50,8 +50,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require './../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -709,7 +709,7 @@ class HelpdeskController extends Controller
         $is_del = 0;
         if($statusOrUser == 'closed') $cnd = '=';
         if($statusOrUser == 'trash') $is_del = 1;
-        
+
         if(\Auth::user()->user_type == 1) {
 
             $tickets = Tickets::select("*")

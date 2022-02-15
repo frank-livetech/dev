@@ -463,13 +463,7 @@ class MailController extends Controller
                                         // $content = explode($reply,'<div class="gmail_quote">');
                                         // echo nl2br($html_reply);exit;
                                         // dd(nl2br($html_reply));exit;
-                                        if(!empty($sid)) {
-                                            $data["user_id"] = $sid;
-                                        }
                                         
-                                        if(!empty($cid)) {
-                                            $data["customer_id"] = $cid;
-                                        }
                                         
                                         $data = array(
                                             "ticket_id" => $ticket->id,
@@ -482,9 +476,14 @@ class MailController extends Controller
     
                                         $fullname = '';
                                         $user = null;
+                                        if(!empty($sid)) {
+                                            $data["user_id"] = $sid;
+                                        }
                                         
-                                        
-                                        // dd($cid);exit;
+                                        if(!empty($cid)) {
+                                            $data["customer_id"] = $cid;
+                                        }
+                                      
                                         $rep = TicketReply::create($data);
     
                                         $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
@@ -499,7 +498,7 @@ class MailController extends Controller
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
 
                                         if(!empty($sid)) {
-                                            $data["user_id"] = $sid;
+                                          
                                             $fullname = $staff->name;
                                             $user = $staff;
                                             $ticket->assigned_to = $sid;
@@ -514,7 +513,7 @@ class MailController extends Controller
                                         }
                                         
                                         if(!empty($cid)) {
-                                            $data["customer_id"] = $cid;
+                                            
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
                                             try {
