@@ -476,6 +476,21 @@ class MailController extends Controller
                                         $fullname = '';
                                         $user = null;
                                         
+                                        
+                                        // dd($cid);exit;
+                                        $rep = TicketReply::create($data);
+    
+                                        $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
+                                        if(isset($sett->tkt_value)) {
+                                            if($sett->tkt_value === 1) {
+                                                $ticket->reply_deadline = null;
+                                                $ticket->save();
+                                            }
+                                        }
+                                        $ticket->updated_at = Carbon::now();
+                                        $ticket->save();
+                                        $ticket = Tickets::where('coustom_id', $ticketID)->first();
+
                                         if(!empty($sid)) {
                                             $data["user_id"] = $sid;
                                             $fullname = $staff->name;
@@ -485,6 +500,7 @@ class MailController extends Controller
                                             try {
 
                                                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $reply, '', 'cron', $attaches, $staff->email);
+
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
@@ -498,16 +514,6 @@ class MailController extends Controller
                                                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $reply, '', 'cust_cron', $attaches, $customer->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
-                                            }
-                                        }
-                                        // dd($cid);exit;
-                                        $rep = TicketReply::create($data);
-    
-                                        $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
-                                        if(isset($sett->tkt_value)) {
-                                            if($sett->tkt_value === 1) {
-                                                $ticket->reply_deadline = null;
-                                                $ticket->save();
                                             }
                                         }
     
@@ -1350,14 +1356,14 @@ class MailController extends Controller
 
                 if(str_contains($template, '{Ticket-Status-Name}')) {
                     $status = TicketStatus::where('id' , $data['values']['status'])->first();    
-                    $status_badge = '<span class="badge" style="background-color='.$status['color'].'"> '. $status['name'] .'</span>';
+                    $status_badge = '<span class="badge" style="background:'.$status['color'].'"> '. $status['name'] .'</span>';
 
                     $template = str_replace('{Ticket-Status-Name}', $status_badge, $template);
                 }
 
                 if(str_contains($template, '{Ticket-Priority-Name}')) {
                     $priority = TicketPriority::where('id' , $data['values']['priority'])->first();
-                    $priority_badge = '<span class="badge" style="background-color='.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
+                    $priority_badge = '<span class="badge" style="background-color:'.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
 
                     $template = str_replace('{Ticket-Priority-Name}', $priority_badge, $template);
                 }
