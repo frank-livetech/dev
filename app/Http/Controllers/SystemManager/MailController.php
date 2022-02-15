@@ -1323,7 +1323,6 @@ class MailController extends Controller
     }
 
     public function replaceShortCodes($data_list, &$template) {
-        
         $brand_setting = DB::table("brand_settings")->first();
         $img = '<img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/brand_files/'.$brand_setting->site_logo .'" style="display:block;width:100%;max-width:80px;" width="80"/>';
 
@@ -1348,6 +1347,21 @@ class MailController extends Controller
                         $template = str_replace('{Initial-Request}', $data['values']['ticket_detail'], $template);
                     }
                 }
+
+                if(str_contains($template, '{Ticket-Status-Name}')) {
+                    $status = TicketStatus::where('id' , $data['values']['status'])->first();    
+                    $status_badge = '<span class="badge" style="background-color='.$status['color'].'"> '. $status['name'] .'</span>';
+
+                    $template = str_replace('{Ticket-Status-Name}', $status_badge, $template);
+                }
+
+                if(str_contains($template, '{Ticket-Priority-Name}')) {
+                    $priority = TicketPriority::where('id' , $data['values']['priority'])->first();
+                    $priority_badge = '<span class="badge" style="background-color='.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
+
+                    $template = str_replace('{Ticket-Priority-Name}', $priority_badge, $template);
+                }
+
                 if(str_contains($template, '{Ticket-Attachments}') && !empty($data['values']['attachments'])) {
                     $content = '';
                     $attachs = explode('|', $data['values']['attachments']);
@@ -1424,27 +1438,24 @@ class MailController extends Controller
                     if($k == 'Created-At' || $k == 'Updated-At') $value = Carbon::parse($value)->timezone($tm_name)->format('Y-m-d h:m:s A');
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
 
-
-
-                    if($k == 'Status-Name') {
-                        if($data['module'] == 'Ticket') {
-                            $name = '{'.$data['module'].'-'.$k.'}';
-                            $status = TicketStatus::where('id' , $data['values'][$key]['status'])->first();
+                    // if($k == 'Status-Name') {
+                    //     if($data['module'] == 'Ticket') {
+                    //         $name = '{'.$data['module'].'-'.$k.'}';
+                    //         $status = TicketStatus::where('id' , $data['values'][$key]['status'])->first();
                         
-                            $value = '<span class="badge" style="background-color='.$status['color'].'"> '. $status['name'] .'</span>';
-                            $template = str_replace( $name , $value, $template);
-                        }
-                    }
+                    //         $value = '<span class="badge" style="background-color='.$status['color'].'"> '. $status['name'] .'</span>';
+                    //         $template = str_replace( $name , $value, $template);
+                    //     }
+                    // }
 
-                    if($k == 'Priority-Name') {
-                        if($data['module'] == 'Ticket') {
-                            $name = '{'.$data['module'].'-'.$k.'}';
-                            $priority = TicketPriority::where('id' , $data['values'][$key]['priority'])->first();
-                        
-                            $value = '<span class="badge" style="background-color='.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
-                            $template = str_replace( $name , $value, $template);
-                        }
-                    }
+
+                    // if($data['module'] == 'Ticket') {
+                    //     $name = '{'.$data['module'].'-'.$k.'}';
+                    //     $priority = TicketPriority::where('id' , $data['values'][$key]['priority'])->first();
+                    
+                    //     $value = '<span class="badge" style="background-color='.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
+                    //     $template = str_replace( $name , $value, $template);
+                    // }
                 }
             }
         }
