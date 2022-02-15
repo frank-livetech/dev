@@ -716,7 +716,10 @@ class HelpdeskController extends Controller
             ->when($statusOrUser == 'self', function($q) use($id) {
                 return $q->where('tickets.assigned_to', \Auth::user()->id);
             })
-         
+            ->when($statusOrUser == 'customer', function($q) use ($cid) {
+                return $q->where('tickets.customer_id',$cid);
+                // get ticket according to customers
+            })
             ->when($statusOrUser == 'unassigned', function($q) use($id) {
                 return $q->whereNull('tickets.assigned_to');
             })
