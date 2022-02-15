@@ -463,6 +463,13 @@ class MailController extends Controller
                                         // $content = explode($reply,'<div class="gmail_quote">');
                                         // echo nl2br($html_reply);exit;
                                         // dd(nl2br($html_reply));exit;
+                                        if(!empty($sid)) {
+                                            $data["user_id"] = $sid;
+                                        }
+                                        
+                                        if(!empty($cid)) {
+                                            $data["customer_id"] = $cid;
+                                        }
                                         
                                         $data = array(
                                             "ticket_id" => $ticket->id,
