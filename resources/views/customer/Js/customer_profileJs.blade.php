@@ -98,6 +98,13 @@
         customerClass.uploadProfileImage(form_data);
     });
 
+
+    $("#change_password_checkbox").click(function() {
+        $(this).is(":checked") ? 
+        $('.change_password_row').show() : 
+        $('.change_password_row').hide();
+    });
+
     const customerClass = {
 
         updateCustomerProfile : () => {
@@ -184,12 +191,16 @@
                 return false;
             }
 
+            let pass_checkbox =  $("#change_password_checkbox").is(":checked") ? 1 : 0;
+
             var form = {
                 customer_id: customer_id,
                 first_name: $('#first_name').val(),
                 last_name: $('#last_name').val(),
                 email: $('#prof_email').val(),
                 password: $('#password').val(),
+                confirm_password : $('#confirm_password').val(),
+                pass_checkbox : pass_checkbox,
                 phone: phone,
                 address: $('#prof_address').val(),
                 apt_address: $('#apt_address').val(),
@@ -226,38 +237,43 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    toastr.success(data.message, { timeOut: 5000 });
+                    if(data.status_code == 200 && data.success == true) {
 
-                    $("#cust_name").text($("#first_name").val() + " " + $("#last_name").val());
-                    $("#cust_email").text($("#prof_email").val());
-                    $("#cust_add").text($("#prof_address").val());
-                    $("#cust_apprt").text($("#apt_address").val());
-                    $("#cust_zip").text($("#prof_zip").val());
-                    $("#cust_city").text($("#prof_city").val());
+                        toastr.success(data.message, { timeOut: 5000 });
 
-
-                    var state = $("#prof_state").val();
-                    // $("#cust_state").text(state);
-                    // if(state == "Select State"){
-                    //     $("#cust_state").text('');
-                    // }else{
-                        $("#cust_state").text(state);
-                    // }
-
-                    var country = $("#prof_country").val();
-                    // $("#cust_country").text(country);
-                    // if(country == "Select Country"){
-                    //     $("#cust_country").text('');
-                    // }else{
-                        $("#cust_country").text(country);
-                    // }
+                        $("#cust_name").text($("#first_name").val() + " " + $("#last_name").val());
+                        $("#cust_email").text($("#prof_email").val());
+                        $("#cust_add").text($("#prof_address").val());
+                        $("#cust_apprt").text($("#apt_address").val());
+                        $("#cust_zip").text($("#prof_zip").val());
+                        $("#cust_city").text($("#prof_city").val());
 
 
-                    $("#twt").attr('href', $("#prof_twitter").val());
-                    $("#fb_icon").attr('href', $("#prof_fb").val());
-                    $("#inst").attr('href', $("#prof_insta").val());
-                    $("#lkdn").attr('href', $("#prof_linkedin").val());
-                    $("#pintrst").attr('href', $("#prof_pinterest").val());
+                        var state = $("#prof_state").val();
+                        // $("#cust_state").text(state);
+                        // if(state == "Select State"){
+                        //     $("#cust_state").text('');
+                        // }else{
+                            $("#cust_state").text(state);
+                        // }
+
+                        var country = $("#prof_country").val();
+                        // $("#cust_country").text(country);
+                        // if(country == "Select Country"){
+                        //     $("#cust_country").text('');
+                        // }else{
+                            $("#cust_country").text(country);
+                        // }
+
+
+                        $("#twt").attr('href', $("#prof_twitter").val());
+                        $("#fb_icon").attr('href', $("#prof_fb").val());
+                        $("#inst").attr('href', $("#prof_insta").val());
+                        $("#lkdn").attr('href', $("#prof_linkedin").val());
+                        $("#pintrst").attr('href', $("#prof_pinterest").val());
+                    }else{
+                        toastr.error(data.message, { timeOut: 5000 });
+                    }
 
                 },
                 complete: function(data) {
@@ -265,14 +281,14 @@
                     $("#processing").hide();
                 },
                 error: function(e) {
+                    $("#saveBtn").show();
+                    $("#processing").hide();
                     console.log(e);
                     if (e.responseJSON.errors.email != null) {
                         toastr.error(e.responseJSON.errors.email[0], {
                             timeOut: 5000
                         });
                     }
-                    $("#saveBtn").show();
-                    $("#processing").hide();
                 }
             });
         },

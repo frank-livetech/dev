@@ -1310,44 +1310,40 @@
                                         </div>
                                     </div>
     
-                                    <div class="row mt-1">
-                                        @if($customer->has_account != 0)
-                                            <div class="col-md-6 form-group">
-                                                <label>Password</label>
-                                                <div class="input-group form-password-toggle input-group-merge">
-                                                    <input type="password" class="form-control" name="password" id="password" placeholder="" value="{{$customer->password}}" />
-                                                    <div class="input-group-text cursor-pointer">
-                                                        <i data-feather="eye"></i>
-                                                    </div>
+                                    @if($customer->has_account != 0)
+                                        <div class="row mt-1 mb-2">
+                                            <div class="col-md-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="change_password_checkbox" name="change_password_checkbox">
+                                                    <label class="form-check-label" for="change_password_checkbox"> Change Password </label>
                                                 </div>
-                                                {{-- <div class="user-password-div">
-                                                    <span class="block input-icon input-icon-right">
-                                                        <input type="password" name="password" id="password"
-                                                            placeholder="password" class="form-control form-control-line"
-                                                            value="{{$customer->password}}">
-                                                        <span toggle="#password-field"
-                                                            class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span>
-                                                    </span>
-                                                    
-                                                </div> --}}
                                             </div>
-                                            <div class="col-md-6 form-group">
-                                                <label>Confirm Password</label>
-                                                <div class="input-group form-password-toggle input-group-merge">
-                                                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" value="{{$customer->password}}" />
-                                                    <div class="input-group-text cursor-pointer">
-                                                        <i data-feather="eye"></i>
-                                                    </div>
-                                                </div>
-                                                {{-- <div class="user-confirm-password-div">
-                                                    <input name="confirm_password" class="form-control form-control-line"
-                                                        type="password" placeholder="Confirm Password"
+                                        </div>
+                                    @endif
+
+                                    <div class="row mt-1 mb-2 change_password_row" style="display:none">
+                                        <div class="col-md-6 form-group">
+                                            <label>Password</label>
+                                            <div class="user-password-div">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="password" name="password" id="password"
+                                                        placeholder="password" class="form-control form-control-line"
                                                         value="{{$customer->password}}">
-                                                    <span toggle="#password-field"
-                                                        class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span>
-                                                </div> --}}
+                                                    <!-- <span toggle="#password-field"
+                                                        class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span> -->
+                                                </span>
                                             </div>
-                                        @endif
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Confirm Password</label>
+                                            <div class="user-confirm-password-div">
+                                                <input name="confirm_password" class="form-control form-control-line"
+                                                    type="password" id="confirm_password" placeholder="Confirm Password"
+                                                    value="{{$customer->password}}">
+                                                <!-- <span toggle="#password-field"
+                                                    class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span> -->
+                                            </div>
+                                        </div>
                                     </div>
     
                                     <div class="row mt-1">

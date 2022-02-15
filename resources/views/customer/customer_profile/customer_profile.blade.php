@@ -475,8 +475,28 @@ blockquote {
                         </div>
 
                         <div class="row">
-                        @if($customer->has_account != 0)
                             <div class="col-md-4 form-group">
+                                <label>Phone No</label>
+                                <input type="text" id="prof_phone" name="prof_phone"
+                                    value="{{$customer->phone}}" class="form-control form-control-line">
+                                    <span class="text-danger small" id="phone_error"></span>
+                            </div>
+                            <div class="col-md-8"></div>
+                        </div>
+
+                        @if($customer->has_account != 0)
+                        <div class="row mt-1 mb-2">
+                            <div class="col-md-12">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="change_password_checkbox" name="change_password_checkbox">
+                                    <label class="form-check-label" for="change_password_checkbox"> Change Password </label>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
+                        <div class="row mt-1 mb-2 change_password_row" style="display:none">
+                            <div class="col-md-6 form-group">
                                 <label>Password</label>
                                 <div class="user-password-div">
                                     <span class="block input-icon input-icon-right">
@@ -488,23 +508,15 @@ blockquote {
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-4 form-group">
+                            <div class="col-md-6 form-group">
                                 <label>Confirm Password</label>
                                 <div class="user-confirm-password-div">
                                     <input name="confirm_password" class="form-control form-control-line"
-                                        type="password" placeholder="Confirm Password"
+                                        type="password" id="confirm_password" placeholder="Confirm Password"
                                         value="{{$customer->password}}">
                                     <!-- <span toggle="#password-field"
                                         class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span> -->
                                 </div>
-                            </div>
-                        @endif
-
-                            <div class="col-md-4 form-group">
-                                <label>Phone No</label>
-                                <input type="text" id="prof_phone" name="prof_phone"
-                                    value="{{$customer->phone}}" class="form-control form-control-line">
-                                    <span class="text-danger small" id="phone_error"></span>
                             </div>
                         </div>
 

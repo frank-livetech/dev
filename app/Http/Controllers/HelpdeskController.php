@@ -50,8 +50,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -521,10 +521,6 @@ class HelpdeskController extends Controller
     public function getSlaDeadlineFrom($ticketID) {
         try {
             $ticket = Tickets::findOrFail($ticketID);
-            // $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->orWhere([
-            //     ['table_ref', 'tickets'], ['table_ref', 'ticket_replies'], ['table_ref', 'ticket_notes']
-            // ])->orderBy('created_at', 'desc')->first();
-            // $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_deadline_from')->orderBy('created_at', 'desc')->first();
             $deadlines = [];
             $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_rep_deadline_from')->orderBy('created_at', 'desc')->first();
             $deadlines[0] = empty($logs) ? $ticket->created_at : $logs->created_at;
@@ -537,6 +533,7 @@ class HelpdeskController extends Controller
             throw new Exception($e->getMessage());
         }
     }
+    
     public function getFilteredTickets($dept = '' , $sts = ''){
 
         $open_status = TicketStatus::where('name','Open')->first();
@@ -546,14 +543,7 @@ class HelpdeskController extends Controller
         $is_del = 0;
 
         if(\Auth::user()->user_type == 1) {
-            // $tickets = DB::Table('tickets')
-            // ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
-            // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
-            // ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
-            // ->join('ticket_types','ticket_types.id','=','tickets.type')
-            // ->join('departments','departments.id','=','tickets.dept_id')
-            // ->join('customers','customers.id','=','tickets.customer_id')
-            // ->leftjoin('users','users.id','=','tickets.created_by')
+
             $tickets = Tickets::select("*")
             ->when($sts != '', function($q) use($sts) {
                 return $q->where('tickets.status', $sts);
@@ -568,14 +558,6 @@ class HelpdeskController extends Controller
             $aid = \Auth::user()->id;
             $assigned_depts = DepartmentAssignments::where('user_id', $aid)->get()->pluck('dept_id')->toArray();
 
-            // $tickets = DB::Table('tickets')
-            // ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
-            // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
-            // ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
-            // ->join('ticket_types','ticket_types.id','=','tickets.type')
-            // ->join('departments','departments.id','=','tickets.dept_id')
-            // ->join('customers','customers.id','=','tickets.customer_id')
-            // ->leftjoin('users','users.id','=','tickets.created_by')
             $tickets = Tickets::select("*")
             ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
                 return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
@@ -597,36 +579,11 @@ class HelpdeskController extends Controller
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-
+        
         foreach($tickets as $value) {
-            // $value->tech_name = 'Unassigned';
-            // if(!empty($value->assigned_to)) {
-            //     $u = User::where('id', $value->assigned_to)->first();
-            //     if(!empty($u)) $value->tech_name = $u->name;
-            // }
-            // else $unassigned_tickets_count++;
-
-            // $rep = TicketReply::where('ticket_id', $value->id)->orderBy('created_at', 'desc')->first();
-            // $repCount = TicketReply::where('ticket_id', $value->id)->count();
-            // $value->lastReplier = '';
-            // $value->replies = '';
-            // if(!empty($rep)) {
-            //     if($rep['user_id']) {
-            //         $user = User::where('id', $rep['user_id'])->first();
-            //         if(!empty($user)) $value->lastReplier = $user->name;
-            //     } else if($rep['customer_id']) {
-            //         $user = Customer::where('id', $rep['customer_id'])->first();
-            //         if(!empty($user)) $value->lastReplier = $user->first_name.' '.$user->last_name;
-            //     }
-            //     $value->replies = $repCount;
-            // }
-
-            // if($value->assigned_to == \Auth::user()->id) $my_tickets_count++;
-            // if($value->status == $open_status->id) $open_tickets_count++;
-
-            // $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
+            
             if($value->is_overdue == 0){
             
                 $dd = $this->getSlaDeadlineFrom($value->id);
@@ -694,6 +651,7 @@ class HelpdeskController extends Controller
         return response()->json($response);
 
     }
+
     public function getTickets($statusOrUser='', $id='') {
         $cid = '';
         $sid = '';

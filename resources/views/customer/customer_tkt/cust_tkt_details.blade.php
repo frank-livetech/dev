@@ -281,74 +281,70 @@ br + br { display: none; }
         });
 
         let ticket = {!!json_encode($ticket) !!};
-        console.log(ticket , "ticket");
 
-            // show attachments
-            if(ticket != null) {
-                var content = content.replace(/<img[^>]*>/g,"");
-                tdet = `<div class="col-12">${content}</div>`;
-            }
-            if(ticket.attachments != null) {
-                let attachments = ticket.attachments;
-                attachments = attachments.split(',');
-                let files = ``;
-                let ext = ``;
-                let file_name = ``;
+        // show attachments
+        // if(ticket != null) {
+        //     var content = content.replace(/<img[^>]*>/g,"");
+        //     tdet = `<div class="col-12">${content}</div>`;
+        // }
+        if(ticket.attachments != null) {
+            let attachments = ticket.attachments;
+            attachments = attachments.split(',');
+            let files = ``;
+            let ext = ``;
+            let file_name = ``;
 
-                for(var i =0; i < attachments.length; i++) {
-                    let extens = attachments[i].split('.');
+            for(var i =0; i < attachments.length; i++) {
+                let extens = attachments[i].split('.');
 
-                    for(var k =0; k < extens.length; k++) {
-                        if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
-                            ext = `<img src="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="img-fluid">`;
-                            file_name = `image.jpeg`;
-                        }
-
-                        if(extens[1] == 'pdf') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/pdf.png')}}" class=" attImg"  alt="" >`;
-                            file_name = `pdf.png`;
-                        }
-
-                        if(extens[1] == 'txt') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/txt.png')}}" class=" attImg"  alt="" >`;
-                            file_name = `txt.png`;
-                        }
-
-                        if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/word.png')}}" class=" attImg"  alt="" >`;
-                            file_name = `word.png`;
-                        }
-
-                        if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/xlx.png')}}" class=" attImg"  alt="" >`;
-                            file_name = `xlx.png`;
-                        }
-
-                        if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/pptx.png')}}" class=" attImg"  alt="" >`;
-                            file_name = `pptx.png`;
-                        }
-
-                        if(extens[1] == 'zip') {
-                            ext = `<img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class=" attImg"  alt="" >`;
-                            file_name = `zip.jpeg`;
-                        }
-
+                for(var k =0; k < extens.length; k++) {
+                    if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
+                        ext = `<img src="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="img-fluid">`;
+                        file_name = `image.jpeg`;
                     }
-                    files += `
-                        
-                        <div class="col-md-6 mt-1" style='position:relative;'>
-                            <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
-                                <span class="overlayAttach"></span>
-                                ${ext}
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/${file_name}')}}"  alt=""> ${attachments[i]}</span>
-                                <a href="" download="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                            </div>
-                        </div>`
-                }
-                $('.show_attachments').html(files);
-            }
 
+                    if(extens[1] == 'pdf') {
+                        ext = `<img src="{{asset('${js_path}default_imgs/pdf.png')}}" class=" attImg"  alt="" >`;
+                        file_name = `pdf.png`;
+                    }
+
+                    if(extens[1] == 'txt') {
+                        ext = `<img src="{{asset('${js_path}default_imgs/txt.png')}}" class=" attImg"  alt="" >`;
+                        file_name = `txt.png`;
+                    }
+
+                    if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
+                        ext = `<img src="{{asset('${js_path}default_imgs/word.png')}}" class=" attImg"  alt="" >`;
+                        file_name = `word.png`;
+                    }
+
+                    if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
+                        ext = `<img src="{{asset('${js_path}default_imgs/xlx.png')}}" class=" attImg"  alt="" >`;
+                        file_name = `xlx.png`;
+                    }
+
+                    if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
+                        ext = `<img src="{{asset('${js_path}default_imgs/pptx.png')}}" class=" attImg"  alt="" >`;
+                        file_name = `pptx.png`;
+                    }
+
+                    if(extens[1] == 'zip') {
+                        ext = `<img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class=" attImg"  alt="" >`;
+                        file_name = `zip.jpeg`;
+                    }
+
+                }
+                files += `
+                <div class="col-md-6 mt-1" style='position:relative;'>
+                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+                            <span class="overlayAttach"></span>
+                            ${ext}
+                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/${file_name}')}}"  alt=""> ${attachments[i]}</span>
+                            <a href="" download="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                        </div>
+                    </div>`;
+            }
+            $('.show_attachments').html(files);
         }
 
         $(".meta_tags").tagsinput('items');
@@ -369,7 +365,7 @@ br + br { display: none; }
         // customer image
         if(ticket.ticket_customer != null) {
             if(ticket.ticket_customer.avatar_url != null) {
-                let path = root +'/' + ticket.ticket_customer.avatar_url;
+                let path = root + ticket.ticket_customer.avatar_url;
                 customer_img = `<span class="avatar"><img src="${path}"  width="40px" height="40px" class="round"/> </span>`;  
             }else{
                 customer_img = `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;
