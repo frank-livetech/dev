@@ -579,6 +579,7 @@ class HelpdeskController extends Controller
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $late_tickets_count = 0;
         
         foreach($tickets as $value) {
 
@@ -793,7 +794,7 @@ class HelpdeskController extends Controller
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
         $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        
+        $late_tickets_count = 0;
         foreach($tickets as $value) {
             // $value->tech_name = 'Unassigned';
             // if(!empty($value->assigned_to)) {
