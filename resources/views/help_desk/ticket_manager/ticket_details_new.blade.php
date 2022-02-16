@@ -634,7 +634,7 @@ br + br { display: none; }
         
                         
                     <div class="card" >
-                        <div class="card-body drop-dpt " style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color : ' ')}}">
+                        <div class="card-body drop-dpt" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color . ' !important' : ' ')}}">
                             <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
                                 <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
                                     <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
@@ -815,7 +815,7 @@ br + br { display: none; }
                                     </div>
                                 </div>
                                 <div class="col-5"></div>
-                                <div class="col-7 d-flex py-2" style="" >
+                                <div class="d-flex justify-content-end py-2" style="" >
                                     <label style="margin-right: 6px"> Note Type: </label>
                                     <div class="ml-auto d-flex" >
                                         <div class="form-check mr-2" style="margin-right:12px ">
@@ -830,12 +830,14 @@ br + br { display: none; }
                                                 User
                                             </label>
                                         </div>
+                                        @if($ticket_customer->company_id != null)
                                         <div class="form-check">
                                             <input class="form-check-input note-type-user-org" type="radio" name="type" id="note-type-user-org"  value="User Organization">
                                             <label class="form-check-label" for="note-type-user-org">
                                                 User Organization
                                             </label>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
 

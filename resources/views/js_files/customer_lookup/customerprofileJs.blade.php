@@ -6,8 +6,7 @@
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
         }
     });
-
-    // let ticketsList = [];
+    let ticketsList = [];
     let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
 
     var customer_subscription_table = '';
@@ -53,14 +52,15 @@
     let gl_sel_note_index = null;
     let notes = [];
     let tkts_ids = [];
+    let cust_tkt_ids = [];
 
-    let ticketsList = [];
     let get_tickets_route = "{{asset('/get-tickets')}}/customer/"+customer.id;
     let ticket_details_route = "{{asset('/ticket-details')}}";
     let ticket_notify_route = "{{asset('/ticket_notification')}}";
     let flag_ticket_route = "{{asset('/flag_ticket')}}";
     let loggedInUser = {!! json_encode(\Auth::user()->id) !!};
     let date_format = $('#system_date_format').val();
+    let time_zone = "{{Session::get('timezone')}}";
     let url_type = '';
 
     let autocomplete;
@@ -526,9 +526,10 @@
             })
             window.location = url.split("#")[0];
         }
-
-    
     });
+
+
+    console.log(tkts_ids , "tkts_ids");
 
 
     $("#prof_email").focusout(function(){
@@ -1126,15 +1127,6 @@
         });
     });
 
-    // $("#customFilePP").change(function() {
-    //     // alert("Bingo");
-    //     var ter = $("#customFilePP").val();
-    //     // alert(ter);
-    //     var terun = ter.replace(/^.*\\/, "");
-    //     $(".custom-file-label").text(terun);
-    //     readURL(this);
-    // });
-    // till here
 
     $('.form-group small').addClass('d-none');
 
@@ -1396,89 +1388,6 @@
             }
         });
     });
-
-    function get_ticket_notes() {
-        $.ajax({
-            type: 'GET',
-            url: "{{asset('/get-ticket-notes')}}",
-            data: {
-                id: tkts_ids,
-                type: 'User'
-            },
-            // contentType: 'json',
-            // enctype: 'multipart/form-data',
-            // processData: false,
-            success: function(data) {
-                if (data.success) {
-                    // $('#ticket_notes .card-body').html(`<div class="col-12 px-0 text-right">
-                    //     <button class="btn btn-success" data-target="#notes_manager_modal" data-toggle="modal"><i class="mdi mdi-plus-circle"></i> Add Note</button>
-                    // </div>`);
-                    $('#ticket_notes .card-body').html('');
-
-                    notes = data.notes;
-
-                    if (timeouts_list.length) {
-                        for (let i in timeouts_list) {
-                            clearTimeout(timeouts_list[i]);
-                        }
-                    }
-
-                    timeouts_list = [];
-
-                    for (let i in notes) {
-                        let timeOut = '';
-                        let autho = '';
-                        if (notes[i].created_by == loggedInUser) {
-                            autho = `<div class="ml-auto">
-                                <span class="fas fa-edit text-primary ml-2" onclick="editNote(this, ` + (i) + `)" style="cursor: pointer;"></span>
-                                
-                                <span class="fas fa-trash text-danger" onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')" style="cursor: pointer;"></span>
-                            </div>`;
-                        }
-
-                        if (notes[i].followup_id && notes[i].followUp_date) {
-                            let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
-
-                            // set timeout for only 1 day's followups
-                            if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
-
-                            if (timeOut2 > 0) {
-                                timeOut = timeOut2 * 1000;
-                            }
-                        }
-
-                        let tkt_subject = '';
-                        let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
-                        if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
-
-                        let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-${notes[i].id}" style="background-color: ${notes[i].color}">
-                            <div class="pr-2">
-                                <img src="{{asset('/files/asset_img/1601560516.png')}}" alt="User" width="40">
-                            </div>
-                            <div class="w-100">
-                                <div class="col-12 p-0 d-flex">
-                                    <h5 class="note-head">Original Posted to ${tkt_subject} by ${notes[i].name} ${moment(notes[i].created_at).format('YYYY-MM-DD HH:mm:ss A')}</h5>
-                                    ${autho}
-                                </div>
-                                <p class="note-details">${notes[i].note}</p>
-                            </div>
-                        </div>`;
-
-                        if (timeOut) {
-                            timeouts_list.push(setTimeout(function() {
-                                $('#ticket_notes .card-body').append(flup);
-                            }, timeOut));
-                        } else {
-                            $('#ticket_notes .card-body').append(flup);
-                        }
-                    }
-                }
-            },
-            failure: function(errMsg) {
-                console.log(errMsg);
-            }
-        });
-    }
 
     function editNote(ele, index) {
         gl_sel_note_index = index;
@@ -1788,6 +1697,141 @@
             }
         });
     }
+
+    function getNotes() {
+        tkts_ids = ticketsList.map(a => a.id);
+        cust_tkt_ids = tkts_ids;
+        console.log(notes.length);
+        notes.length == 0 ? get_ticket_notes(tkts_ids) : render_notes(notes);
+    }
+
+    function get_ticket_notes(tkts_ids) {
+        $.ajax({
+            type: 'GET',
+            url: "{{asset('/get-ticket-notes')}}",
+            data: {
+                id: tkts_ids,
+                type: 'User'
+            },
+            // contentType: 'json',
+            // enctype: 'multipart/form-data',
+            // processData: false,
+            success: function(data) {
+                if (data.success) {
+                    // $('#ticket_notes .card-body').html(`<div class="col-12 px-0 text-right">
+                    //     <button class="btn btn-success" data-target="#notes_manager_modal" data-toggle="modal"><i class="mdi mdi-plus-circle"></i> Add Note</button>
+                    // </div>`);
+                    $('#ticket_notes .card-body').html('');
+
+                    notes = data.notes;
+
+                    render_notes(notes)
+
+                }
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
+        });
+    }
+
+    function render_notes(notes) {
+
+        if (timeouts_list.length) {
+            for (let i in timeouts_list) {
+                clearTimeout(timeouts_list[i]);
+            }
+        }
+
+        timeouts_list = [];
+
+        for (let i in notes) {
+            let timeOut = '';
+            let autho = '';
+            if (notes[i].created_by == loggedInUser) {
+                autho = `<div class="ml-auto mt-2">
+
+                        <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+                            style= "float:right;cursor:pointer;position:relative;bottom:25px"
+                            onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')"></span>
+                    
+                        <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+                            style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+                            onclick="editNote(this, ` + (i) + `)"></span>
+
+                </div>`;
+            }
+
+            if (notes[i].followup_id && notes[i].followUp_date) {
+                let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
+
+                // set timeout for only 1 day's followups
+                if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
+
+                if (timeOut2 > 0) {
+                    timeOut = timeOut2 * 1000;
+                }
+            }
+
+            var user_img = ``;
+            let is_live = "{{Session::get('is_live')}}";
+            let path = is_live == 0 ? '' : 'public/';
+
+            if(notes[i].profile_pic != null) {
+
+                user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
+                width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+
+            }else{
+
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                        width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+
+            }
+
+            let tkt_subject = '';
+            let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
+            if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
+
+            let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-${notes[i].id}" style="background-color: ${notes[i].color}">
+                <div class="pr-2">
+                    ${user_img}
+                </div>
+                <div class="w-100">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="note-head">Original Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span> </h5>
+                        ${autho}
+                    </div>
+                    <p class="note-details">${notes[i].note}</p>
+                </div>
+            </div>`;
+
+            if (timeOut) {
+                timeouts_list.push(setTimeout(function() {
+                    $('#ticket_notes .card-body').html(flup);
+                }, timeOut));
+            } else {
+                $('#ticket_notes .card-body').html(flup);
+            }
+        }
+    }
+
+    function jsTimeZone(date) {
+        let d = new Date(date);
+        
+        var year = d.getFullYear();
+        var month = d.getMonth();
+        var day = d.getDay();
+        var hour = d.getHours();
+        var min = d.getMinutes();
+        var mili = d.getMilliseconds();
+                
+        // year , month , day , hour , minutes , seconds , miliseconds;
+        let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
+        let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
+        return moment(converted_date).format(date_format + ' ' +'hh:mm A');
+    }
+
 </script>
 
 @include('js_files.ticket_cmmnJs')

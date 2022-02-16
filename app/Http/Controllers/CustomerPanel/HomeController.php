@@ -415,36 +415,49 @@ class HomeController
     public function cstUpdateTicket(Request $request) {
         
         $data = array();
-        if($request->s_id != null) {
-            $data['status'] = $request->s_id;
-            $tkt_status = TicketStatus::where('id',$request->s_id)->first();
-            if($tkt_status && $tkt_status->name == 'Closed'){
-                $data['reply_deadline'] = 'cleared';
-                $data['resolution_deadline'] = 'cleared';
+
+        $ticket = Tickets::find($request->tkt_id);
+        if($ticket) {
+
+            if($request->s_id != null) {
+                $data['status'] = $request->s_id;
+                $tkt_status = TicketStatus::where('id',$request->s_id)->first();
+                if($tkt_status && $tkt_status->name == 'Closed'){
+                    $data['reply_deadline'] = 'cleared';
+                    $data['resolution_deadline'] = 'cleared';
+                }
             }
+
+            if($request->p_id != null) {
+                $data['priority'] = $request->p_id;
+            }
+
+            $data['updated_at'] = Carbon::now();
+            $data['updated_by'] = auth()->id();
+
+            // $ticket = Tickets::where('id', $request->tkt_id)->update($data);
+            $ticket->save();
+
+            $name_link = '<a href="'.url('customer-profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+            $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Status & Priority Updated By '. $name_link;
+
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'tickets' , $request->tkt_id , auth()->id() , $action_perform);
+
+            return response()->json([
+                "message" => 'Ticket Updated Successfully',
+                "status_code" => 200,
+                "tkt_updated_at" => Carbon::now(),
+                "success" => true,
+            ]);
+            
+        }else{
+            return response()->json([
+                "message" => 'Something went wrong!',
+                "status_code" => 500,
+                "success" => false,
+            ]);
         }
-
-        if($request->p_id != null) {
-            $data['priority'] = $request->p_id;
-        }
-
-        $data['updated_at'] = Carbon::now();
-        $data['updated_by'] = auth()->id();
-
-        Tickets::where('id', $request->tkt_id)->update($data);
-
-        $name_link = '<a href="'.url('customer-profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-        $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Status & Priority Updated By '. $name_link;
-
-        $log = new ActivitylogController();
-        $log->saveActivityLogs('Tickets' , 'tickets' , $request->tkt_id , auth()->id() , $action_perform);
-
-        return response()->json([
-            "message" => 'Ticket Updated Successfully',
-            "status_code" => 200,
-            "tkt_updated_at" => Carbon::now(),
-            "success" => true,
-        ]);
 
     }
 

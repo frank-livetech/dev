@@ -1591,12 +1591,11 @@ $('#type').change(function() {
 
 $('#status').change(function() {
     var status = $(this).val();
-
     var color = $('#status option:selected').data('color');
-    $('.drop-dpt').css('background-color',color);
+    $('.drop-dpt').attr('style', 'background-color: ' + color + ' !important');
+
     // no change to do update
-    if (status == ticket.status)
-    {
+    if (status == ticket.status) {
         updates_Arr = $.grep(updates_Arr, function(e){ 
             return e.id != 4; 
         });
