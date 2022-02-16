@@ -163,8 +163,7 @@ function get_ticket_table_list() {
     let sts = $('#sts').val();
     
     var url = get_tickets_route;
-
-    if(dept == '' && sts == ''){
+    if(dept == '' || dept == undefined  && sts == '' || sts == undefined){
         url = get_tickets_route ;
     }else{
         url = get_filteredtkt_route +'/'+dept+'/'+sts ;
