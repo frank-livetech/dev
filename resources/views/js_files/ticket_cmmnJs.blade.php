@@ -182,6 +182,7 @@ function get_ticket_table_list() {
             ticketsList = data.tickets;
             listTickets(url_type);
             if(page_name == 'tickets') ShowCalendarModel();
+            if(data.hasOwnProperty('open_ticket_count')) $('#open_ticket_count').html(data.open_ticket_count);
             if(data.hasOwnProperty('total_tickets_count')) $('#total_tickets_count').html(data.total_tickets_count);
             if(data.hasOwnProperty('my_tickets_count')) $('#my_tickets_count').html(data.my_tickets_count);
             if(data.hasOwnProperty('flagged_tickets_count')) $('#flagged_tickets_count').html(data.flagged_tickets_count);
