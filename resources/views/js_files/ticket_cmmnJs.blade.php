@@ -162,7 +162,7 @@ function get_ticket_table_list() {
     let dept = $('#dept').val();
     let sts = $('#sts').val();
     
-    var url = '';
+    var url = get_tickets_route;
 
     if(dept == '' && sts == ''){
         url = get_tickets_route ;
