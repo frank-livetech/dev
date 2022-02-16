@@ -655,14 +655,6 @@
     
                         <div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="pills-tickets-tab">
                             <div class="card-body">
-                            <div class="text-right mb-3">
-                                    <a href="{{url('add-ticket')}}/{{$customer->id}}" class="btn btn-info rounded ml-auto mb-auto float-right mb-3">
-                                        <i class="fas fa-plus"></i>&nbsp;Add ticket
-                                    </a>
-                                    <!-- <button type="button" class="btn btn-info ml-auto mb-auto" onclick="ShowTicketsModel()">
-                                        <i class="fas fa-plus"></i>&nbsp;Add ticket
-                                    </button> -->
-                                </div>
                                 <div class="row mt-3">
                                     <div class="col-md-3">
                                         <a href="javascript:listTickets('total')" class="card card-hover border-info" >
