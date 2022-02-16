@@ -1188,18 +1188,10 @@
                                         </a>
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="javascript:listTickets('unassigned')" class="card card-hover border-primary">
+                                        <a href="javascript:listTickets('closed')" class="card card-hover border-primary">
                                             <div class="box p-2 rounded primary text-center">
-                                                <h1 class="font-weight-light " id="unassigned_tickets_count"></h1>
-                                                <h6 class="text-primary">Unassigned</h6>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <a href="javascript:listTickets('closed')" class="card card-hove border-danger">
-                                            <div class="box p-2 rounded danger text-center">
                                                 <h1 class="font-weight-light " id="closed_tickets_count"></h1>
-                                                <h6 class="text-danger">Overdue</h6>
+                                                <h6 class="text-primary">Closed</h6>
                                             </div>
                                         </a>
                                     </div>
