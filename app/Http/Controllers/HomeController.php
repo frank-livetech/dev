@@ -39,7 +39,6 @@ class HomeController extends Controller
     public function index()
     {
         $user_type = 1;
-
         $customers = Customer::count();
         $orders = Orders::count();
         $project = Project::count();
@@ -89,7 +88,13 @@ class HomeController extends Controller
         $staff_att_data = StaffAttendance::with('user_clocked')
                             ->where('date',date_format(Carbon::now(),"Y-m-d"))
                             ->limit(15)->get();
-
+        
+        foreach($staff_att_data as $data) {
+            $data['clock_in'] = Carbon::parse($data['clock_in'])->timezone(\Session::get('timezone'))->format('Y-m-d h:m:s A');
+            if($data['clock_out'] != null) {
+                $data['clock_out'] = Carbon::parse($data['clock_out'])->timezone(\Session::get('timezone'))->format('Y-m-d h:m:s A');
+            }
+        }
 
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
         $staff_inactive_count = $staff_count - $staff_active_count;

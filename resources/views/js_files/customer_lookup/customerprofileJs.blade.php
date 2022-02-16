@@ -613,6 +613,12 @@
         }
     });
 
+    $("#change_password_checkbox").click(function() {
+        $(this).is(":checked") ? 
+        $('.change_password_row').show() : 
+        $('.change_password_row').hide();
+    }); 
+
     $('#update_customer').submit(function(event) {
         event.preventDefault();
 
@@ -704,6 +710,8 @@
             return false;
         }
         
+        let pass_checkbox =  $("#change_password_checkbox").is(":checked") ? 1 : 0;
+
         var phone_type = $("#phone_type").val();
         var form = {
             customer_id: customer_id,
@@ -711,6 +719,8 @@
             last_name: $('#last_name').val(),
             email: $('#prof_email').val(),
             password: $('#password').val(),
+            confirm_password : $('#confirm_password').val(),
+            pass_checkbox : pass_checkbox,
             phone: phone,
             address: $('#prof_address').val(),
             apt_address: $('#apt_address').val(),

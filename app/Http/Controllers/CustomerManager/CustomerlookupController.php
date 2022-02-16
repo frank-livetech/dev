@@ -1814,6 +1814,19 @@ class CustomerlookupController extends Controller
             $customer->has_account = $request->customer_login;
         }
 
+        if($request->pass_checkbox == 1) {
+
+            if($request->password != $request->confirm_password) {
+                return response()->json([
+                    "code" => 500,
+                    "success" => false,
+                    "message" => 'Password not matached!',
+                ]);
+            }else{
+                $data['password'] = Hash::make( $request->password  );
+            }
+        }
+
         $response = [
             'message' => 'Customer Detail Updated Successfully!',
             'status_code' => 200,
@@ -1859,12 +1872,26 @@ class CustomerlookupController extends Controller
             if($is_user) {
                 $data = ["email" => $request->email];
 
-                if($request->has('password')) {
-                    if(!empty($request->password) && $request->password != Crypt::decryptString($is_user->alt_pwd)) {
-                        $data["password"] = Hash::make($request->password);
-                        $data["alt_pwd"] = Crypt::encryptString($request->password);
+                // if($request->has('password')) {
+                //     if(!empty($request->password) && $request->password != Crypt::decryptString($is_user->alt_pwd)) {
+                //         $data["password"] = Hash::make($request->password);
+                //         $data["alt_pwd"] = Crypt::encryptString($request->password);
+                //     }
+                // }
+
+                if($request->pass_checkbox == 1) {
+
+                    if($request->password != $request->confirm_password) {
+                        return response()->json([
+                            "code" => 500,
+                            "success" => false,
+                            "message" => 'Password not matached!',
+                        ]);
+                    }else{
+                        $data['password'] = Hash::make( $request->password  );
                     }
                 }
+                
                 DB::table("users")->where("email", $old_email)->update($data);
 
                 // $mailer->UserRegisteration($request->email, false);

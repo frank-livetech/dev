@@ -408,10 +408,10 @@
                                                             <th class="text-center border-0">#</th>
                                                             <th>Name</th>
                                                             <th>Status</th>
-                                                            <th class="border-0">DATE</th>
-                                                            <th class="border-0">Clock In</th>
-                                                            <th class="border-0">Clock Out</th>
-                                                            <th class="border-0">Worked Hours</th>
+                                                            <th>DATE</th>
+                                                            <th>Clock In</th>
+                                                            <th>Clock Out</th>
+                                                            <th>Worked Hours</th>
                 
                                                         </tr>
                                                     </thead>
@@ -436,7 +436,7 @@
                                                                 <td> {{$active->date != null ? $active->date : '-'}} </td>
                                                                 <td> {{$active->clock_in != null ? $active->clock_in : '-'}} </td>
                                                                 <td> {{$active->clock_out != null ? $active->clock_out : '-'}} </td>
-                                                                <td> {{$active->hour_worked != null ? $active->hour_worked : '-'}} </td>
+                                                                <td> {{$active->hours_worked != null ? $active->hours_worked : '-'}} </td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

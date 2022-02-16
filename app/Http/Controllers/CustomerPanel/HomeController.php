@@ -453,7 +453,7 @@ class HomeController
         
         try {
             
-            $ticket_replies = TicketReply::where('ticket_id' , $request->id)->with('replyUser')->orderByDesc('created_at')->get();
+            $ticket_replies = TicketReply::where('ticket_id' , $request->id)->with('replyUser')->orderByDesc('id')->get();
             
             $bbcode = new BBCode();
 
@@ -749,8 +749,6 @@ class HomeController
     // update customer
     public function update_customer_profile(Request $request) {
 
-        // return dd($request->all());
-
         $data = array(
             "email" => $request->email,
             "phone" => $request->phone,
@@ -760,7 +758,6 @@ class HomeController
             "company_id" => $request->company_id,
             "cust_type" => $request->cust_type,
             "country" => $request->country,
-
             "cust_state" => $request->state,
             "cust_city" => $request->city,
             "cust_zip" => $request->zip,
@@ -780,7 +777,7 @@ class HomeController
             "is_bill_add" => $request->is_bill_add,
 
         );
-
+        
         $customer = Customer::find($request->customer_id);
         $old_email = $customer->email;
 
@@ -817,7 +814,7 @@ class HomeController
         $customer = Customer::where('id', $request->customer_id)->update($data);
         if($customer) {
             $is_user = User::where("email", $old_email)->first();
-
+            
             $pwd = Str::random(15);
             if($request->has('password')) {
                 if(!empty($request->password)) {
@@ -828,12 +825,19 @@ class HomeController
             if($is_user) {
                 $data = ["email" => $request->email];
 
-                if($request->has('password')) {
-                    if(!empty($request->password) && $request->password != Crypt::decryptString($is_user->alt_pwd)) {
-                        $data["password"] = Hash::make($request->password);
-                        $data["alt_pwd"] = Crypt::encryptString($request->password);
+                if($request->pass_checkbox == 1) {
+
+                    if($request->password != $request->confirm_password) {
+                        return response()->json([
+                            "code" => 500,
+                            "success" => false,
+                            "message" => 'Password not matached!',
+                        ]);
+                    }else{
+                        $data['password'] = Hash::make( $request->password  );
                     }
                 }
+
                 DB::table("users")->where("email", $old_email)->update($data);
             } else {
                 if($request->has('customer_login')) {

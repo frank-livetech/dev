@@ -40,7 +40,6 @@
                 success: function(data) {
                     if(data.status_code == 200 && data.success == true) {
                         var obj = data.ticket_replies;
-
                         var row = ``;
                         var user_img = ``;
                         var attachments_name = ``;
@@ -56,8 +55,8 @@
                                     type = `staff`;
                                     if (item.reply_user.profile_pic != null) {
                                         let path = root + item.reply_user.profile_pic;
-                                        user_img = `<span class="avatar"><img src="${path}" 
-                                width="40px" height="40px" class="round"/> </span>`;
+                                        user_img = `<span class="avatar">
+                                                        <img src="${path}" width="40px" height="40px" class="round"/> </span>`;
                                     } else {
                                         user_img = `<span class="avatar"><img src="{{asset('${js_path}default_imgs/customer.png')}}" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" /></span>`;
                                     }
@@ -213,9 +212,6 @@
                                                     <button type="button" onclick="ticketDetail.updateTktReply(${item.id})" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
                                                         <i data-feather='edit'></i>
                                                     </button>
-                                                   <!-- <button type="button" onclick="" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
-                                                        <i data-feather='trash'></i>
-                                                    </button>-->
                                                 </div>
                                                 
                                             </div>
