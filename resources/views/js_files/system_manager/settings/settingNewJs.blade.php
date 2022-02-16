@@ -176,31 +176,21 @@ $(document).ready(function() {
     var dt_option = ``;
     var tm_option = ``;
 
-    console.log(datetime.date , "datetime in file");
-    console.log(datetime.time , "datetime in file");
-
-    var format1 = moment(today).format('DD-MM-YYYY');
-    var format2 = moment(today).format('DD/MM/YYYY');
-    var format3 = moment(today).format('DD/MM/YY');
-    var format4 = moment(today).format('Do MMMM YYYY');
-    var format5 = moment(today).format('DD.MM.YYYY');
-    var format6 = moment(today).format('MM/DD/YYYY');
-
-    var time1 = moment(today).format('hh:mm:ss');
-    var time2 = moment(today).format('LT');
-
     var arr = [
-        { frmt: "DD/MM/YYYY", date: format2 },
-        { frmt: "DD-MM-YYYY", date: format1 },
-        { frmt: "DD/MM/YY", date: format3 },
-        { frmt: "Do MMMM YYYY", date: format4 },
-        { frmt: "DD.MM.YYYY", date: format5 },
-        { frmt: "MM/DD/YYYY", date: format6 },
+        { frmt: "DD/MM/YYYY", date: moment(today).format('DD/MM/YYYY') },
+        { frmt: "DD-MM-YYYY", date: moment(today).format('DD-MM-YYYY') },
+        { frmt: "DD/MM/YY", date: moment(today).format('DD/MM/YY') },
+        { frmt: "D MMMM YYYY", date: moment(today).format('D MMMM YYYY') },
+        { frmt: "DD.MM.YYYY", date: moment(today).format('DD.MM.YYYY') },
+        { frmt: "MM/DD/YYYY", date: moment(today).format('MM/DD/YYYY') },
     ]
 
     var time_arr = [
-        { frmt: "hh:mm:ss", tm: time1 },
-        { frmt: "LT", tm: time2 },
+        { frmt: "hh:mm:ss", tm: moment(today).format('hh:mm:ss') },
+        { frmt: "hh:mm:ss AM/PM", tm: moment(today).format('hh:mm:ss A') },
+        { frmt: "hh:mm", tm: moment(today).format('hh:mm') },
+        { frmt: "hh:mm AM/PM", tm: moment(today).format('hh:mm A') },
+        { frmt: "LT", tm: moment(today).format('LT') },
     ]
 
     for (var i = 0; i < arr.length; i++) {
@@ -1065,7 +1055,7 @@ $(document).ready(function() {
 
     radioswitch.init();
 
-    });
+});
 
 function updateresponseTemp(id,title, cat_id, temp) {
 

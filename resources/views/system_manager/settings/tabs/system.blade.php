@@ -17,7 +17,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group my-1 ">
                                             <label for="sys_dt_frmt">Date Format</label>
-                                            <select name="sys_dt_frmt" id="sys_dt_frmt" class="form-control">
+                                            <select name="sys_dt_frmt" id="sys_dt_frmt" class="form-control select2">
                                                 
                                             </select>
                                         </div>
@@ -25,7 +25,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group my-1 ">
                                             <label for="sys_time_frmt">Time Format</label>
-                                            <select name="sys_time_frmt" id="sys_time_frmt" class="form-control"></select>
+                                            <select name="sys_time_frmt" id="sys_time_frmt" class="form-control select2"></select>
                                         </div>
                                     </div>
                                 </div>
