@@ -626,7 +626,7 @@ class HelpdeskController extends Controller
                 
                 $value->is_overdue = 0;
                 if($lcnt) {
-                    $late_tickets_count++;
+                    // $late_tickets_count++;
                     $value->is_overdue = 1;
                     $tkt = Tickets::where('id',$value->id)->first();
                     $tkt->is_overdue = 1;
@@ -789,12 +789,26 @@ class HelpdeskController extends Controller
             // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.id', 'desc')->get();
         }
 
-        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $total_tickets_count = Tickets::
+        when($statusOrUser == 'customer', function($q) use ($cid) {
+            return $q->where('tickets.customer_id', $cid);
+        })
+        ->when($statusOrUser == 'staff', function($q) use ($sid) {
+            return $q->where('tickets.assigned_to', $sid);
+        })
+        ->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
         $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
+        $closed_tickets_count = Tickets::
+        when($statusOrUser == 'customer', function($q) use ($cid) {
+            return $q->where('tickets.customer_id', $cid);
+        })
+        ->when($statusOrUser == 'staff', function($q) use ($sid) {
+            return $q->where('tickets.assigned_to', $sid);
+        })
+        ->where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
         $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         
@@ -890,7 +904,7 @@ class HelpdeskController extends Controller
                 
                 // $value->is_overdue = 0;
                 if($lcnt) {
-                    $late_tickets_count++;
+                    // $late_tickets_count++;
                     $value->is_overdue = 1;
                     $tkt = Tickets::where('id',$value->id)->first();
                     $tkt->is_overdue = 1;
