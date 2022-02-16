@@ -288,14 +288,9 @@ blockquote {
 
         <div class="col-lg-3 col-xlg-3 col-md-5">
             <div class="card">
-                <div class="card-body">
-                    <center class="mt-4">
-                        @php
-                            $path = Session::get('is_live') == 1 ? '/' : '/';
-                            
-
-                        @endphp
-                        <a href="#" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal">
+                <div style="height:110px;">
+                    @php $path = Session::get('is_live') == 1 ? '/' : '/'; @endphp
+                    <a href="#" data-bs-toggle="modal" class="editPencil w-100 d-flex justify-content-center align-self-center" data-bs-target="#editPicModal">
                         @if($customer->avatar_url != null)
                             @if(is_file(public_path( $path .$customer->avatar_url)))
                             <img src="{{ asset( $path .$customer->avatar_url)}}" class="rounded-circle"
@@ -308,17 +303,13 @@ blockquote {
                         <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
                             id="profile-user-img" />
                         @endif
-                        </a>
-                        <!-- <a type="button" data-bs-toggle="modal" class="editPencil " data-bs-target="#editPicModal"><i
-                                class="fa fa-pencil-alt picEdit"></i></a> -->
+                    </a>
+                </div>
 
-                        <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} - {{$customer->last_name}} </h4>
-                    </center>
-                </div>
-                <div>
-                    <hr>
-                </div>
-                <div class="card-body">
+                <h4 class="card-title mt-1 text-center" id="cust_name"> {{$customer->first_name}} - {{$customer->last_name}} </h4>
+                <hr>
+
+                <div class="card-body position-relative">
 
                     @if($customer->company != null)
                     <small class="text-muted">Company Name </small>
@@ -520,7 +511,7 @@ blockquote {
                             </div>
                         </div>
 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-6 form-group">
                                 <label>Customer Type</label>
                                 <div class=" d-flex justify-content-center">
@@ -547,7 +538,7 @@ blockquote {
                                         id="new-company" class="btn-new btn btn-info">New</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         @if($customer->has_account == 0)
                         <div class="row mb-2 mt-2">

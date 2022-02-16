@@ -1793,18 +1793,20 @@
             let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
             if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
 
-            let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-${notes[i].id}" style="background-color: ${notes[i].color}">
-                <div class="pr-2">
+            let flup = `
+            <div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+                <div style="margin-right: 10px; margin-left: -8px;">
                     ${user_img}
                 </div>
                 <div class="w-100">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="note-head">Original Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span> </h5>
+                    <div class="col-12 p-0">
+                    <h5 class="note-head">Original Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span> </h5>
                         ${autho}
                     </div>
                     <p class="note-details">${notes[i].note}</p>
                 </div>
-            </div>`;
+            </div>
+                    `;
 
             if (timeOut) {
                 timeouts_list.push(setTimeout(function() {
