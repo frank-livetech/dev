@@ -815,7 +815,7 @@ br + br { display: none; }
                                     </div>
                                 </div>
                                 <div class="col-5"></div>
-                                <div class="col-7 d-flex py-2" style="" >
+                                <div class="d-flex justify-content-end py-2" style="" >
                                     <label style="margin-right: 6px"> Note Type: </label>
                                     <div class="ml-auto d-flex" >
                                         <div class="form-check mr-2" style="margin-right:12px ">
@@ -830,12 +830,14 @@ br + br { display: none; }
                                                 User
                                             </label>
                                         </div>
+                                        @if($ticket_customer->company_id != null)
                                         <div class="form-check">
                                             <input class="form-check-input note-type-user-org" type="radio" name="type" id="note-type-user-org"  value="User Organization">
                                             <label class="form-check-label" for="note-type-user-org">
                                                 User Organization
                                             </label>
                                         </div>
+                                        @endif
                                     </div>
                                 </div>
 

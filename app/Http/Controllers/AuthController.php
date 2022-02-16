@@ -397,6 +397,8 @@ class AuthController extends Controller
                     $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
                     if($system_format) {
                         Session::put('system_date', $system_format->sys_value);
+                    }else{
+                        Session::put('system_date' , 'DD-MM-YYYY');
                     }
 
                     $live = DB::table("sys_settings")->where('sys_key','is_live')->first();

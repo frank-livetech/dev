@@ -294,6 +294,7 @@
         const org_path = "{{Session::get('is_live')}}";
         const root = "{{request()->root()}}/";
         const js_origin  = root + (org_path == 1 ? '/public/' : '/');
+        const change_theme_url = "{{asset('change_theme_mode')}}";
         $(window).on('load', function() {
             if (feather) {
                 feather.replace({
