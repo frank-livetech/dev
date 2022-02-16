@@ -811,7 +811,15 @@ class HelpdeskController extends Controller
         ->where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
         $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        
+        $open_ticket_count = Tickets::
+        when($statusOrUser == 'customer', function($q) use ($cid) {
+            return $q->where('tickets.customer_id', $cid);
+        })
+        ->when($statusOrUser == 'staff', function($q) use ($sid) {
+            return $q->where('tickets.assigned_to', $sid);
+        })
+        ->where('status','!=', $closed_status->id)->where('is_deleted', 0)->count();
+
         foreach($tickets as $value) {
             // $value->tech_name = 'Unassigned';
             // if(!empty($value->assigned_to)) {
@@ -921,7 +929,7 @@ class HelpdeskController extends Controller
         $response['total_tickets_count']= $total_tickets_count;
         $response['my_tickets_count']= $my_tickets_count;
         $response['flagged_tickets_count']= $flagged_tickets_count;
-        // $response['overdue_tickets_count']= $overdue_tickets_count;
+        $response['open_ticket_count']= $open_ticket_count;
         $response['unassigned_tickets_count']= $unassigned_tickets_count;
         $response['late_tickets_count']= $late_tickets_count;
         $response['closed_tickets_count']= $closed_tickets_count;

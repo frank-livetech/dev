@@ -1182,7 +1182,7 @@
                                     <div class="col-md-3">
                                         <a href="javascript:listTickets('open')" class="card card-hover border-warning" >
                                             <div class="box p-2 rounded warning text-center">
-                                                <h1 class="font-weight-light " id="open_tickets_count"></h1>
+                                                <h1 class="font-weight-light " id="open_ticket_count"></h1>
                                                 <h6 class="text-warning">Open</h6>
                                             </div>
                                         </a>
