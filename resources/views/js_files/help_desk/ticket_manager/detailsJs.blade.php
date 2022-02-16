@@ -260,7 +260,7 @@ function convertDate(date) {
 
     let a = d.toLocaleString("en-US" , {timeZone: time_zone});
     // return a;
-    var converted_date = moment(a).format(date_format + ' ' +'hh:mm a');
+    var converted_date = moment(a).format(date_format + ' ' +'hh:mm A');
     return converted_date;
 }
 
@@ -1383,7 +1383,7 @@ function publishReply(ele, type = 'publish') {
                 cache: false,
                 success: function(data) {
                     var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
-                    new_date =  moment(new_date).format(date_format + ' ' +'hh:mm a');
+                    new_date =  moment(new_date).format(date_format + ' ' +'hh:mm A');
                     $("#updation-date").html(new_date);
                     
 
@@ -2408,7 +2408,7 @@ function visibilityOptions() {
 
 function updateTicketDate(){
     var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
-    new_date =  moment(new_date).format(date_format + ' ' +'hh:mm a');
+    new_date =  moment(new_date).format(date_format + ' ' +'hh:mm A');
     $("#updation-date").html(new_date);
 }
 
@@ -2450,12 +2450,18 @@ $("#save_ticket_note").submit(function(event) {
         contentType: false,
         enctype: 'multipart/form-data',
         processData: false,
+        beforeSend:function(data) {
+            $("#note_save_btn").hide();
+            $("#note_processing").removeAttr('style');
+        },
         success: function(data) {
             // console.log(data);
             if (data.success) {
 
+                toastr.success( data.message , { timeOut: 5000 });
+
                 let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
-                let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm a');
+                let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm A');
                 // send mail notification regarding ticket action
                 $("#updation-date").html(tkt_updted_date);
 
@@ -2471,13 +2477,7 @@ $("#save_ticket_note").submit(function(event) {
                 getLatestLogs();
 
                 $(this).trigger('reset');
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
+  
                 get_ticket_notes();
 
                 if(data.hasOwnProperty('sla_updated') && data.sla_updated !== false) {
@@ -2490,16 +2490,16 @@ $("#save_ticket_note").submit(function(event) {
 
                 $('#note-visibilty').val('Everyone').trigger('change');
             } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
+                toastr.error( data.message , { timeOut: 5000 });
             }
         },
+        complete:function(data) {
+            $("#note_save_btn").show();
+            $("#note_processing").attr('style','display:none');
+        },
         failure: function(errMsg) {
+            $("#note_save_btn").show();
+            $("#note_processing").attr('style','display:none');
         }
     });
 });
@@ -2530,9 +2530,15 @@ function get_ticket_notes() {
                     let autho = '';
                     if (notes[i].created_by == loggedInUser_id) {
                         autho = `<div class="ml-auto">
-                            
-                        <span class="fas fa-trash text-danger" style= "float:right;cursor:pointer;position:relative;bottom:25px" onclick="deleteTicketNote(this, '` + notes[i].id + `')" style="cursor: pointer;"></span>
-                        <span class="fas fa-edit text-primary ml-2" style= "float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px" onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')" style="cursor: pointer;"></span>
+
+                            <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+                                style= "float:right;cursor:pointer;position:relative;bottom:25px"
+                                onclick="deleteTicketNote(this, '` + notes[i].id + `')" ></span>
+                        
+                            <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+                                style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+                                onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')"></span>
+
                         
                         </div>`;
                     }
@@ -2582,7 +2588,7 @@ function get_ticket_notes() {
                         </div>
                         <div class="w-100">
                             <div class="col-12 p-0">
-                                <h5 class="note-head">Note by ` + notes[i].name + ` ` + jsTimeZone(notes[i].created_at) + ` ` + type + `</h5>
+                                <h5 class="note-head"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
                             <p class="note-details">` + notes[i].note + `</p>
@@ -2621,7 +2627,7 @@ function jsTimeZone(date) {
     // year , month , day , hour , minutes , seconds , miliseconds;
     let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
     let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
-    return moment(converted_date).format(date_format + ' ' +'hh:mm a');
+    return moment(converted_date).format(date_format + ' ' +'hh:mm A');
 }
 
 function editNote(id, note, type ,color) {
