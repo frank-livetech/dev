@@ -45,23 +45,23 @@ function initializeTicketTable(p_name='') {
     });
     $('#ticket-table-list').parent().css('overflow', 'auto');
 
-    if(p_name == 'staff_self'){
-        let ret = $.ajax({
-            type: "get",
-            url: get_tickets_route + '/self' ,
-            async: false,
-            data: "",
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
-                // console.log(data, "data tickets");
+    // if(p_name == 'staff_self'){
+    //     let ret = $.ajax({
+    //         type: "get",
+    //         url: get_tickets_route + '/self' ,
+    //         async: false,
+    //         data: "",
+    //         dataType: 'json',
+    //         cache: false,
+    //         success: function(data) {
+    //             // console.log(data, "data tickets");
             
-                redrawTicketsTable(data.tickets);
-            }
-        });
-    }else{
+    //             redrawTicketsTable(data.tickets);
+    //         }
+    //     });
+    // }else{
         get_ticket_table_list();
-    }
+    // }
 
     $('#select-all').change(function() {
         let chck = $(this).prop('checked');
@@ -162,9 +162,8 @@ function get_ticket_table_list() {
     let dept = $('#dept').val();
     let sts = $('#sts').val();
     
-    var url = '';
-
-    if(dept == '' && sts == ''){
+    var url = get_tickets_route;
+    if(dept == '' || dept == undefined  && sts == '' || sts == undefined){
         url = get_tickets_route ;
     }else{
         url = get_filteredtkt_route +'/'+dept+'/'+sts ;
