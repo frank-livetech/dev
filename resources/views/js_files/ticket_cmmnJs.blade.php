@@ -162,10 +162,12 @@ function get_ticket_table_list() {
     let dept = $('#dept').val();
     let sts = $('#sts').val();
     
-    url = get_filteredtkt_route +'/'+dept+'/'+sts ;
+    var url = '';
 
-    if(dept == undefined && sts == undefined){
+    if(dept == '' && sts == ''){
         url = get_tickets_route ;
+    }else{
+        url = get_filteredtkt_route +'/'+dept+'/'+sts ;
     }
 
     $.ajax({
