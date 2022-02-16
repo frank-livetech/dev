@@ -2,6 +2,8 @@
     let tickets_logs_list = null;
     let tickets_followups = [];
     let ticketsList = [];
+    let date_format = $("#system_date_format").val();
+    let time_zone = "{{Session::get('timezone')}}";
     var settings = {
         Color: '',
         LinkColor: '',
@@ -262,10 +264,10 @@
                     let time = moment(today).format('h:mm:ss');
                     let date = moment(today).format(system_date_format);
 
-                    let clock_out_time = data.hasOwnProperty('clock_out_time');
+                    let clock_out_time = ``;
                     
-                    if(clock_out_time) {
-                        clock_out_time = moment(data.clock_out_time).format(system_date_format + ' h:mm:ss')
+                    if( data.hasOwnProperty('clock_out_time') ) {
+                        clock_out_time =convertDate( data.clock_out_time );
                     }else{
                         clock_out_time = `-`;
                     }
@@ -274,11 +276,11 @@
                     let clock_in = ``;
 
                     if(btn_text == 'clockin') {
-                        clock_in_time = time;
-                        clock_in = `<span class="badge bg-success">Clocked In</span>`;
+                        clock_in_time = convertDate(new Date());
+                        clock_in = `<span class="badge bg-success">Clock In</span>`;
                     }else{
-                        clock_in_time = moment(data.clock_out_time).format(system_date_format + ' h:mm:ss');
-                        clock_in = `<span class="badge bg-danger">Clocked Out</span>`;
+                        clock_in_time = convertDate( data.clock_in_time );
+                        clock_in = `<span class="badge bg-danger">Clock Out</span>`;
                     }
 
                     let working_hour = data.hasOwnProperty('worked_time');;
@@ -288,6 +290,7 @@
                     }else{
                         working_hour = `-`;
                     }
+
 
                     $("#staff_table tbody").append(
                         `<tr id="new_entry">
@@ -318,6 +321,23 @@
                 });
             }
         });
+    }
+
+    function convertDate(date) {
+        var d = new Date(date);
+
+        var min = d.getMinutes();
+        var dt = d.getDate();
+        var d_utc = d.getUTCHours();
+
+        d.setMinutes(min);
+        d.setDate(dt);
+        d.setUTCHours(d_utc);
+
+        let a = d.toLocaleString("en-US" , {timeZone: time_zone});
+        // return a;
+        var converted_date = moment(a).format(date_format + ' ' +'hh:mm A');
+        return converted_date;
     }
 
     function searchTicket() {
