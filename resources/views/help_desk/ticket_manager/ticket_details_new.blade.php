@@ -242,6 +242,12 @@ br + br { display: none; }
 .label-info {
     background-color: #6d5eac !important;
 }
+
+.nav-pills .nav-link, .nav-tabs .nav-link {
+    /* display: flex;
+    align-items: center; */
+    justify-content: left !important;
+}
 </style>
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -275,7 +281,7 @@ br + br { display: none; }
             <div class="row">
                 <div class="col-md-5">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="height:270px; overflow-y:auto; overflow-x:hidden">
                             <h5 class="card-title mb-0">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a><a href="javascript:void(0)" onclick="copyToClipBoard()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 
@@ -305,7 +311,7 @@ br + br { display: none; }
                                             @else
                                                 <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
-                                            <span class="badge badge-secondary type_bdge">User</span>
+                                            <!-- <span class="badge badge-secondary type_bdge">User</span> -->
                                         @else
                                             @if($ticket_customer->profile_pic != null)
                                                 @if(file_exists( getcwd() .'/'. $ticket_customer->profile_pic ) )
@@ -316,7 +322,7 @@ br + br { display: none; }
                                             @else($ticket_customer->profile_pic == NULL)
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
-                                            <span class="badge badge-secondary type_bdge">Staff</span>
+                                            <!-- <span class="badge badge-secondary type_bdge">Staff</span> -->
                                         
                                         @endif
                                         <br><br>
@@ -340,7 +346,11 @@ br + br { display: none; }
 
                                     @endphp
                                     <div class="col-lg-9 col-md-8 innerBox" id="style-5" style="">
-                                        <p style="margin-bottom: 0.2rem; !important">Name : <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }} </a></p>
+
+                                        <p style="margin-bottom: 0.2rem; !important">Name : 
+                                            <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
+                                                <span class="badge badge-secondary type_bdge"> {{$details->is_staff_tkt == 0 ? 'User' : 'Staff'}}  </span> </a></p>
+
                                         <p style="margin-bottom: 0.2rem; !important" id="cst-company"></p>
                                         <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
                                         <p style="margin-bottom: 0.2rem; !important" id="cst-company-name"></p>
@@ -365,12 +375,6 @@ br + br { display: none; }
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    
-                                    
-                                </div>   
-                                
-                                <!--<a href="mailto:danielkristeen@gmail.com">danielkristeen@gmail.com</a>-->
                             </div>
                         </div>
                     </div>
@@ -480,34 +484,61 @@ br + br { display: none; }
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card" id="resizable">
                         <div class=" nav-vertical">
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="nav nav-tabs nav-left w-100" id="v-pills-tab" role="tablist" style="border-right:1px solid rgb(185, 183, 183);">
-                                        <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">Notes</a>
-                                        <a class="nav-link" id="v-pills-assets-tab" data-bs-toggle="tab" href="#v-pills-assets" role="tab" aria-controls="v-pills-assets" aria-selected="false">Asset Manager</a>
+
+                                        <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">
+                                            <div class="d-flex justify-content-between w-100 align-self-center">
+                                                <span style="display: flex; justify-content: center; align-items: center;">Notes</span>
+                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Add Notes" 
+                                                    style="padding:5px 10px" data-bs-toggle="modal" onclick="openNotesModal()"> </button>
+                                            </div>
+                                        </a>
+
+                                        <a class="nav-link" id="v-pills-assets-tab" data-bs-toggle="tab" href="#v-pills-assets" role="tab" aria-controls="v-pills-assets" aria-selected="false">
+                                            <div class="d-flex justify-content-between w-100 align-self-center">
+                                                <span style="display: flex; justify-content: center; align-items: center;"> Asset Manager </span>
+                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Add Assets" 
+                                                    style="padding:5px 10px" data-bs-toggle="modal" onclick="ShowAssetModel()"> </button>
+                                            </div>
+                                        </a>
+
                                         <a class="nav-link" id="v-pills-billing-tab" data-bs-toggle="tab" href="#v-pills-billing" role="tab" aria-controls="v-pills-billing" aria-selected="false">Billing Details</a>
                                         <a class="nav-link" id="v-pills-audit-tab" data-bs-toggle="tab" href="#v-pills-audit" role="tab" aria-controls="v-pills-audit" aria-selected="false">Audit</a>
-                                        <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">Follow Ups</a>
+
+                                        <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">
+                                            <div class="d-flex justify-content-between w-100 align-self-center">
+                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups </span>
+                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
+                                                    style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
+                                            </div>
+                                        </a>
+
                                     </div>
                                 </div>
-                                <div class="col-md-10">
-                                    <div class="tab-content" id="v-pills-tabContent style-5" style="max-height: 187px; overflow-y: auto;">
+                                <div class="col-md-10 p-2">
+                                    <div class="tab-content" id="v-pills-tabContent style-5" style="overflow-y: auto; height:250px">
+
                                         <div class="tab-pane fade show active p-2" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
-                                            <div class="col-12 text-right">
+                                            <!-- <div class="col-12 text-right">
                                                 <button class="btn btn-success" data-bs-toggle="modal" onclick="openNotesModal()" style="float: right; margin-bottom: 3px"><i class="fa fa-plus-circle"></i> Add Note</button>
-                                            </div>
+                                            </div> -->
                                             <div class="col-12" id="v-pills-notes-list"></div>
                                         </div>
                 
                                         <div class="tab-pane fade show p-2" id="v-pills-assets" role="tabpanel" aria-labelledby="v-pills-assets-tab">
                                             <div class="row">
-                                            <div class="col-12 px-0 text-right">
+                                            <!-- <div class="col-12 px-0 text-right">
                                                 <button type="button" class="btn btn-success" onclick="ShowAssetModel()" style="float: right">
                                                     <i class="fa fa-plus-circle"></i>&nbsp;Add Asset
                                                 </button>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="row">
                                             <div class="col-12 px-0 my-2">
@@ -551,11 +582,11 @@ br + br { display: none; }
                                         </div>
                 
                                         <div class="tab-pane fade p-2" id="v-pills-followup" role="tabpanel" aria-labelledby="v-pills-followup-tab">
-                                            <div class="w-100">
+                                            <!-- <div class="w-100">
                                                 <button class="btn btn-success float-right" onclick="showFollowUpModal()">
                                                     <span class="fa fa-plus-circle"></span> Add Follow Up
                                                 </button>
-                                            </div>
+                                            </div> -->
                                             <div id="accordion" class="custom-accordion">
                                                 <div class="card mb-0 shadow-none">
                                                     <div class="w-100 pt-4" id="clockdiv"></div>
@@ -577,15 +608,17 @@ br + br { display: none; }
                         <div class="card p-0" id="card-sla" style="background-color: unset !important">
                             <div class="card-body p-1" id="ticket-sla-plan">
                                 <div class="row" >
+
                                     <div class="col-md-9">
                                         <p style="font-size: 13px;margin-bottom: unset !important"">
                                             <span class="sla-selc"><strong>Reply due: </strong> <span class="text-red mr-2" id="sla-rep_due"></span></span>
-                                            <span class="sla-selc"><strong>Resolution due: </strong><span class="text-blue mr-2" id="sla-res_due"></span></span>
+                                            <span class="sla-selc px-1"><strong>Resolution due: </strong><span class="text-blue mr-2" id="sla-res_due"></span></span>
                                             <strong>SLA plan: </strong><span class="text-red mr-2" id="sla-title">{{$ticket_slaPlan->title}}</span>  
                                             <!-- <span class="sla-selc"><Strong>Created: </Strong><span class="text-red mr-2" id="creation-date"></span></span> -->
-                                            <span class="sla-selc"><strong>Updated: </strong><span class="text-red mr-2" id="updation-date"></span></span>
+                                            <span class="sla-selc px-1"><strong>Updated: </strong><span class="text-red mr-2" id="updation-date"></span></span>
                                         </p>
                                     </div>
+
                                     <div class="col-md-3">
                                         <p style="margin-left: 70px;margin-bottom: unset !important">
                                             <a type="button" class="float-right" href="javascript:resetSlaPlan();">Reset</a>
@@ -817,8 +850,15 @@ br + br { display: none; }
                                 </div>
 
                                 <div class="col-12 pt-3" >
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="float: right">Close</button>
-                                    <button type="submit" class="btn btn-success" style="float: right;margin-right: 3px">Save</button>
+                                    <button type="button" class="btn btn-secondary ms-1" data-bs-dismiss="modal" style="float: right">Close</button>
+
+                                    <button class="btn btn-outline-success waves-effect float-right" id="note_processing" type="button" style="display:none" disabled="">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        <span class="ms-25 align-middle">Processing...</span>
+                                    </button>
+
+                                    <button type="submit" class="btn btn-success" id="note_save_btn" style="float: right;margin-right: 3px"> Save </button>
+
                                 </div>
                             </div>
                         </form>
@@ -1537,6 +1577,7 @@ function hung(){
     $(this).find("col-md-6").removeClass("col-md-3");
 }
 
+    $("#resizable").resizable();
     
 </script>
 
