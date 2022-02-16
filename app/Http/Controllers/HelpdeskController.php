@@ -584,7 +584,7 @@ class HelpdeskController extends Controller
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
             
-            if($value->is_overdue == 0){
+            // if($value->is_overdue == 0){
             
                 $dd = $this->getSlaDeadlineFrom($value->id);
                 $value->sla_rep_deadline_from = $dd[0];
@@ -632,7 +632,7 @@ class HelpdeskController extends Controller
                     $tkt->is_overdue = 1;
                     $tkt->save();
                 }
-            }
+            // }
         }
         
         $response['message'] = 'Success';
@@ -823,7 +823,7 @@ class HelpdeskController extends Controller
             // $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
-            if($value->is_overdue == 0){
+            // if($value->is_overdue == 0){
                 $dd = $this->getSlaDeadlineFrom($value->id);
                 $value->sla_rep_deadline_from = $dd[0];
                 $value->sla_res_deadline_from = $dd[1];
@@ -892,7 +892,7 @@ class HelpdeskController extends Controller
                     $tkt->is_overdue = 1;
                     $tkt->save();
                 }
-            }
+            // }
             
         }
         
