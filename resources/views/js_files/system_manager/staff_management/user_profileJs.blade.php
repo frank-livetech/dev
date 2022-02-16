@@ -22,7 +22,7 @@
     let save_staff_color_route = "{{asset('/save-staff-color')}}";
 
     let ticketsList = [];
-    let get_tickets_route = "{{asset('/get-tickets')}}";
+    let get_tickets_route = "{{asset('/get-tickets')}}/staff/"+staff_id;
     let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
     let ticket_details_route = "{{asset('/ticket-details')}}";
     let ticket_notify_route = "{{asset('/ticket_notification')}}";
@@ -154,7 +154,7 @@
                         // window.google = {};
             }
         }
-        initializeTicketTable('staff_self');
+        initializeTicketTable();
 
         // get all leaves
         get_all_leaves();
