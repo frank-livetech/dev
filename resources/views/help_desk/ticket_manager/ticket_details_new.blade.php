@@ -634,7 +634,7 @@ br + br { display: none; }
         
                         
                     <div class="card" >
-                        <div class="card-body drop-dpt " style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color : ' ')}}">
+                        <div class="card-body drop-dpt" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color . ' !important' : ' ')}}">
                             <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
                                 <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
                                     <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
