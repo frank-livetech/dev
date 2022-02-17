@@ -2427,7 +2427,7 @@ $("#save_ticket_note").submit(function(event) {
 
     let vis = [];
     if (document.getElementById('note-type-user-org').checked || document.getElementById('note-type-user').checked) {
-        $('#note-visibilty').val('Everyone');
+        vis = all_staff_ids
     } else {
         vis = $('#note-visibilty').val();
         if (vis.indexOf('Everyone') > -1) vis = all_staff_ids;
