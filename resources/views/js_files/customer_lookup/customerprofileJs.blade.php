@@ -59,7 +59,7 @@
     let ticket_notify_route = "{{asset('/ticket_notification')}}";
     let flag_ticket_route = "{{asset('/flag_ticket')}}";
     let loggedInUser = {!! json_encode(\Auth::user()->id) !!};
-    let date_format = $('#system_date_format').val();
+    let date_format = "{{Session::get('system_date')}}";
     let time_zone = "{{Session::get('timezone')}}";
     let url_type = '';
 
@@ -528,10 +528,6 @@
         }
     });
 
-
-    console.log(tkts_ids , "tkts_ids");
-
-
     $("#prof_email").focusout(function(){
         let user_email = $(this).val();
 
@@ -546,8 +542,7 @@
         
 
     });
-
-       
+  
     // here
     $("#twt").click(function(e) {
         e.preventDefault();
@@ -1701,7 +1696,6 @@
     function getNotes() {
         tkts_ids = ticketsList.map(a => a.id);
         cust_tkt_ids = tkts_ids;
-        console.log(notes.length);
         notes.length == 0 ? get_ticket_notes(tkts_ids) : render_notes(notes);
     }
 
@@ -1744,9 +1738,10 @@
         }
 
         timeouts_list = [];
-
+        let timeOut = '';
+        let flup = ``;
         for (let i in notes) {
-            let timeOut = '';
+            
             let autho = '';
             if (notes[i].created_by == loggedInUser) {
                 autho = `<div class="ml-auto mt-2">
@@ -1793,7 +1788,7 @@
             let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
             if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
 
-            let flup = `
+            flup += `
             <div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                 <div style="margin-right: 10px; margin-left: -8px;">
                     ${user_img}
@@ -1803,35 +1798,19 @@
                     <h5 class="note-head">Original Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span> </h5>
                         ${autho}
                     </div>
-                    <p class="note-details">${notes[i].note}</p>
+                    <p class="note-details">${notes[i].note} </p>
                 </div>
-            </div>
-                    `;
-
-            if (timeOut) {
-                timeouts_list.push(setTimeout(function() {
-                    $('#ticket_notes .card-body').html(flup);
-                }, timeOut));
-            } else {
-                $('#ticket_notes .card-body').html(flup);
-            }
+            </div>`;
         }
-    }
 
-    function jsTimeZone(date) {
-        let d = new Date(date);
-        
-        var year = d.getFullYear();
-        var month = d.getMonth();
-        var day = d.getDay();
-        var hour = d.getHours();
-        var min = d.getMinutes();
-        var mili = d.getMilliseconds();
-                
-        // year , month , day , hour , minutes , seconds , miliseconds;
-        let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
-        let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
-        return moment(converted_date).format(date_format + ' ' +'hh:mm A');
+        if (timeOut) {
+            timeouts_list.push(setTimeout(function() {
+                $('#ticket_notes .card-body').html(flup);
+            }, timeOut));
+        } else {
+            $('#ticket_notes .card-body').html(flup);
+        }
+
     }
 
 </script>

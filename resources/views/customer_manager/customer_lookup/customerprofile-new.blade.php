@@ -1516,7 +1516,7 @@
     
                         <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
                             <hr>
-                            <div class="card-body">
+                            <div class="card-body" id="show_ticket_notes">
                                 No Data Found.
                             </div>
                         </div>
@@ -2332,7 +2332,8 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal Notes Modal -->
+    </div>
+    <!-- /.modal Notes Modal -->
 
     </div>
 </div>

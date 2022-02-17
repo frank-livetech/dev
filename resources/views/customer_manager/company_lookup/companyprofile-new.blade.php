@@ -1687,45 +1687,48 @@ aria-hidden="true">
 </div>
 </div>
 </div>
-<!-- Notes Modal -->
-<div class="modal fade" id="notes_manager_modal" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="notesLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-    <div class="modal-header d-flex align-items-center">
-        <h4 class="modal-title" id="notesLargeModalLabel">Notes</h4>
-        <button type="button" class="close ml-auto" data-dismiss="modal" aria-hidden="true">×</button>
-    </div>
-    <div class="modal-body">
-        <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post">
-            <input type="text" id="note-id" style="display: none;">
-            <div class="row">
-                <div class="col-12 d-flex py-2">
-                    <label for="">Notes</label>
-                    <div class="ml-4">
-                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;" onclick="selectColor('rgb(255, 230, 177)')"></span>
-                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;" onclick="selectColor('rgb(218, 125, 179)')"></span>
-                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;" onclick="selectColor('rgb(195, 148, 255)')"></span>
-                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;" onclick="selectColor('rgb(151, 235, 172)')"></span>
-                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;" onclick="selectColor('rgb(229, 143, 149)')"></span>
-                    </div>
-                </div>
 
-                <div class="col-12 py-2">
-                    <div class="form-group">
-                        <textarea name="note" id="note" class="form-control" rows="10" required style="background-color: rgb(255, 230, 177)"></textarea>
-                    </div>
+    <!-- Notes Modal -->
+    <div class="modal fade text-start" id="notes_manager_modal"  tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="note_title">Notes</h4>
+                    <button type="button" class="btn-close text-danger" onclick="notesModalClose()"></button>
                 </div>
+                <div class="modal-body">
+                    <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post">
+                        <input type="text" id="note-id" style="display: none;">
+                        <div class="row">
+                            <div class="col-12 d-flex py-2">
+                                <label for=""><h4>Notes:</h4></label>
+                                <div class="" style="margin-left:6px ">
+                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;" onclick="selectColor('rgb(255, 230, 177)')"></span>
+                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;" onclick="selectColor('rgb(218, 125, 179)')"></span>
+                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;" onclick="selectColor('rgb(195, 148, 255)')"></span>
+                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;" onclick="selectColor('rgb(151, 235, 172)')"></span>
+                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;" onclick="selectColor('rgb(229, 143, 149)')"></span>
+                                </div>
+                            </div>
 
-                <div class="col-12 text-right pt-3">
-                    <button type="submit" class="btn btn-primary mr-2">Save</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div class="col-12 py-2">
+                                <div class="form-group">
+                                    <textarea name="note" id="note" class="form-control" rows="10" required style="background-color: rgb(255, 230, 177)"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12 text-right pt-3">
+                                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </div>
-        </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
-</div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal Notes Modal -->
+    <!-- /.modal Notes Modal -->
+    
 @endsection
 
 @section('scripts')    
