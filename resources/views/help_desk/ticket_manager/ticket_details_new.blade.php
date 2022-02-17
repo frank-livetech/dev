@@ -276,6 +276,7 @@ br + br { display: none; }
             </div>
         </div>
         <input type="hidden" id="loggedInUser_id" value="{{\Auth::user()->id}}">
+        <input type="hidden" id="loggedInUser_t" value="{{\Auth::user()->user_type}}">
         <input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
         <div class="content-body">
             <div class="row">
