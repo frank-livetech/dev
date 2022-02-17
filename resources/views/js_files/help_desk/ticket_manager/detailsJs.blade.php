@@ -7,6 +7,8 @@ let g_followUp_timeouts = [];
 let cc__emails = [];
 let prv_clicked = null;
 var loggedInUser_id = $("#loggedInUser_id").val();
+var loggedInUser_t = $("#loggedInUser_t").val();
+
 let edit_reply_mode = false;
 let attachments_src = [];
 let ticket_attachments_count = 1;
@@ -165,13 +167,13 @@ $(document).ready(function() {
     setSlaPlanDeadlines();
 
     $('.note-type-ticket').on('change', function() {
-        $('.note-visibilty').removeAttr('readonly',false);
+        $('.note-visibilty').removeAttr('disabled',false);
     });
     $('.note-type-user').on('change', function() {
-        $('.note-visibilty').attr('readonly',true);
+        $('.note-visibilty').attr('disabled',true);
     });
     $('.note-type-user-org').on('change', function() {
-        $('.note-visibilty').attr('readonly',true);
+        $('.note-visibilty').attr('disabled',true);
     });
 
 });
@@ -2425,7 +2427,7 @@ $("#save_ticket_note").submit(function(event) {
 
     let vis = [];
     if (document.getElementById('note-type-user-org').checked || document.getElementById('note-type-user').checked) {
-        $('#note-visibilty').val('');
+        $('#note-visibilty').val('Everyone');
     } else {
         vis = $('#note-visibilty').val();
         if (vis.indexOf('Everyone') > -1) vis = all_staff_ids;
@@ -2533,7 +2535,9 @@ function get_ticket_notes() {
 
                     let timeOut = '';
                     let autho = '';
-                    if (notes[i].created_by == loggedInUser_id) {
+                    // if (notes[i].created_by == loggedInUser_id) {
+                    if (loggedInUser_t == 1) {
+
                         autho = `<div class="ml-auto">
 
                             <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
