@@ -1362,14 +1362,14 @@ class MailController extends Controller
 
                 if(str_contains($template, '{Ticket-Status-Name}')) {
                     $status = TicketStatus::where('id' , $data['values']['status'])->first();    
-                    $status_badge = '<span class="badge" style="background:'.$status['color'].'"> '. $status['name'] .'</span>';
+                    $status_badge = '<span class="badge" style="background:'.$status['color'].'; padding: 2px 8px; border-radius: 20px; color: white; font-size: 11px;"> '. $status['name'] .'</span>';
 
                     $template = str_replace('{Ticket-Status-Name}', $status_badge, $template);
                 }
 
                 if(str_contains($template, '{Ticket-Priority-Name}')) {
                     $priority = TicketPriority::where('id' , $data['values']['priority'])->first();
-                    $priority_badge = '<span class="badge" style="background-color:'.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
+                    $priority_badge = '<span class="badge" style="background-color:'.$priority['priority_color'].'; padding: 2px 8px; border-radius: 20px; color: white; font-size: 11px;"> '. $priority['name'] .'</span>';
 
                     $template = str_replace('{Ticket-Priority-Name}', $priority_badge, $template);
                 }
