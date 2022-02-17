@@ -165,13 +165,13 @@ $(document).ready(function() {
     setSlaPlanDeadlines();
 
     $('.note-type-ticket').on('change', function() {
-        $('.note-visibilty').prop('disabled',false);
+        $('.note-visibilty').removeAttr('readonly',false);
     });
     $('.note-type-user').on('change', function() {
-        $('.note-visibilty').prop('disabled',true);
+        $('.note-visibilty').attr('readonly',true);
     });
     $('.note-type-user-org').on('change', function() {
-        $('.note-visibilty').prop('disabled',true);
+        $('.note-visibilty').attr('readonly',true);
     });
 
 });
@@ -1385,6 +1385,7 @@ function publishReply(ele, type = 'publish') {
                     var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
                     new_date =  moment(new_date).format(date_format + ' ' +'hh:mm A');
                     $("#updation-date").html(new_date);
+                    $("#compose_btn").show();
                     
 
                     $(ele).attr('disabled', false);
@@ -1445,8 +1446,9 @@ function publishReply(ele, type = 'publish') {
 }
 
 function composeReply() {
-    // if (edit_reply_mode !== false) cancelReply();
-
+    
+    $('.reply_btns').attr('style', 'display: block !important');
+    $("#compose_btn").hide();
     document.getElementById('compose-reply').classList.toggle('d-none');
 
     $('#replies_attachments').html('');
@@ -1484,13 +1486,17 @@ function editReply(rindex) {publishReply(this)
 
 function cancelReply() {
     edit_reply_mode = false;
-
+    
     document.getElementById('compose-reply').classList.add('d-none');
 
     tinyMCE.editors.mymce.setContent('');
 
-    $('#cancel-rply').hide();
-    $('#draft-rply').show();
+    // $('#cancel-rply').hide();
+    // $('#draft-rply').show();
+
+    
+    $('.reply_btns').attr('style', 'display: none !important');
+    $("#compose_btn").show();
 
     listReplies();
 }
@@ -2536,7 +2542,7 @@ function get_ticket_notes() {
                         
                             <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
                                 style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
-                                onclick="editNote(` + notes[i].id + `,'`+notes[i].note+`','`+notes[i].type+`','`+notes[i].color+`')"></span>
+                                onclick="editNote(${notes[i].id})"></span>
 
                         
                         </div>`;
@@ -2590,7 +2596,9 @@ function get_ticket_notes() {
                                 <h5 class="note-head"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
-                            <p class="note-details">` + notes[i].note + `</p>
+                            <p class="note-details">
+                                ${notes[i].note} - ${notes[i].created_at}
+                            </p>
                         </div>
                     </div>`;
 
@@ -2616,59 +2624,44 @@ function get_ticket_notes() {
 function jsTimeZone(date) {
     let d = new Date(date);
     
-    var year = d.getFullYear();
+    var year =  d.getFullYear();
     var month = d.getMonth();
-    var day = d.getDay();
+    var date = d.getDate();
     var hour = d.getHours();
     var min = d.getMinutes();
     var mili = d.getMilliseconds();
             
     // year , month , day , hour , minutes , seconds , miliseconds;
-    let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
+    let new_date = new Date(Date.UTC(year, (month), date, hour, min, mili));
     let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
     return moment(converted_date).format(date_format + ' ' +'hh:mm A');
 }
 
-function editNote(id, note, type ,color) {
-    // console.log(index , "a");
-    $("#note_title").text("Edit Notes");
-    $('#notes_manager_modal').modal('show');
-    
-    $('#note-id').val(id);
+function editNote(id) {
+    let item = notes.find(item => item.id === id);
+    console.log(item ,"item");
+    if(item != null || item != undefined || item != "") {
 
-    $("#note-visibilty").val("Everyone").trigger('change');
-    $('#save_ticket_note').find('#note').val(note);
-    $('#save_ticket_note').find('#note').css('background-color', color);
-    // $('#save_ticket_note').find('.form-check-input[value="' + type + '"]').prop('checked', true);
+        $("#note_title").text("Edit Notes");
+        $('#notes_manager_modal').modal('show');
+        
+        $('#note-id').val(id);
 
-    if(type == 'Ticket') {
-        $("#note-type-ticket").prop('checked',true);
-        $('.note-visibilty').prop('disabled',false);
-    }else if(type == 'User'){
-        $("#note-type-user").prop('checked',true);
-        $('.note-visibilty').prop('disabled',true);
-    }else{
-        $("#note-type-user-org").prop('checked',true);
-        $('.note-visibilty').prop('disabled',true);
+        $("#note-visibilty").val("Everyone").trigger('change');
+        $('#save_ticket_note').find('#note').val(item.note != null ? item.color : '');
+        $('#save_ticket_note').find('#note').css('background-color', item.color != null ? item.color : '');
+        if(item.type == 'Ticket') {
+            $("#note-type-ticket").prop('checked',true);
+            $('.note-visibilty').prop('disabled',false);
+        }else if(item.type == 'User'){
+            $("#note-type-user").prop('checked',true);
+            $('.note-visibilty').prop('disabled',true);
+        }else{
+            $("#note-type-user-org").prop('checked',true);
+            $('.note-visibilty').prop('disabled',true);
+        }
+
     }
-
-
-    // if (notes[index].visibility) {
-    //     let vals = all_staff_ids.filter(x => notes[index].visibility.indexOf(x) > -1);
-    //     if (vals.length == all_staff_ids.length) vals = 'Everyone';
-
-    //     console.log(vals);
-    //     $('#save_ticket_note').find('#note-visibilty').val(vals).trigger('change');
-    // } else {
-    //     $('#save_ticket_note').find('#note-visibilty').val('').trigger('change');
-    // }
-    // $('#save_ticket_note').find('#note').val(notes[index].note);
-    // $('#save_ticket_note').find('#note').css('background-color', gl_color_notes);
-    // $('#save_ticket_note').find('.form-check-input[value="' + notes[index].type + '"]').prop('checked', true);
-
-    // changeVisibility(notes[index].type);
-
-    
 }
 
 $('#notes_manager_modal').on('show.bs.modal', function(e) {

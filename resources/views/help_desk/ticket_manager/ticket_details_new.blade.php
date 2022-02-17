@@ -709,16 +709,30 @@ br + br { display: none; }
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body" >
-                            <h4 class="card-title mb-0">Ticket Replies
-                                   
-                                <a href="#v-pills-tab" class="btn btn-success float-right" onclick="composeReply()">
-                                    Compose 
-                                </a>
-                               
-                                <a id="update_ticket" style="display:none" class="btn btn-success float-right mx-2" onclick="updateTicket()">
-                                    Update 
-                                </a>    
-                            </h4>
+                            <div class="d-flex justify-content-between">
+                                <h4 class="card-title mb-0">Ticket Replies </h4>
+                                <div>
+                                    <a href="#v-pills-tab" id="compose_btn" class="btn btn-success float-right" onclick="composeReply()">
+                                        Compose 
+                                    </a>                               
+                                    <a id="update_ticket" style="display:none" class="btn btn-success float-right mx-2" onclick="updateTicket()">
+                                        Update 
+                                    </a> 
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-end mt-2 reply_btns" style="display:none !important">
+                                <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this)">
+                                    <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    Reply
+                                </button>
+                                
+                                <button id="draft-rply" type="button" class="btn waves-effect waves-light btn-info float-right mx-1" onclick="publishReply(this, 'draft')">Save As Draft</button>
+                                <button id="cancel-rply" type="button" class="btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
+                            </div>
+
                             <div class="mt-4 d-none" id="compose-reply">
                                 <div class="row">
                                     <div class="col-md-8">
@@ -769,8 +783,9 @@ br + br { display: none; }
                                             </div>
                                             Reply
                                         </button>
-                                        <button id="cancel-rply" type="button" class="mt-3 btn waves-effect waves-light btn-secondary float-right" style="display: none;" onclick="cancelReply(this)">Cancel</button>
+                                        
                                         <button id="draft-rply" type="button" class="mt-3 btn waves-effect waves-light btn-info float-right" onclick="publishReply(this, 'draft')">Save As Draft</button>
+                                        <button id="cancel-rply" type="button" class="mt-3 btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
                                     </div>
                                 </div>
                             </div>
