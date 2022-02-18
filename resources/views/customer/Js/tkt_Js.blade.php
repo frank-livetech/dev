@@ -209,8 +209,7 @@
                                                 </div>
                                                 
                                                 <div class="col-md-6 text-end">
-                                                    <button type="button" onclick="ticketDetail.updateTktReply(${item.id})" class="btn btn-icon rounded-circle btn-outline-primary waves-effect">
-                                                        <i data-feather='edit'></i>
+                                                    <button type="button" onclick="ticketDetail.updateTktReply(${item.id})" class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit">
                                                     </button>
                                                 </div>
                                                 
