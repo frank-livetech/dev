@@ -1388,7 +1388,7 @@ function publishReply(ele, type = 'publish') {
                     new_date =  moment(new_date).format(date_format + ' ' +'hh:mm A');
                     $("#updation-date").html(new_date);
                     $("#compose_btn").show();
-                    
+                    $('.reply_btns').attr('style', 'display: none !important');
 
                     $(ele).attr('disabled', false);
                     $(ele).find('.spinner-border').hide();
