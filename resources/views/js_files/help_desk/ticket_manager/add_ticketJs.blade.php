@@ -556,4 +556,8 @@
             let file = e.target.files[0];
             $(this).parent().find('.custom-file-label').text(file.name);
         });
+
+        $("#response_template").click(function() {
+            $(this).is(":checked") ? $('#response_template_fields').show() :  $('#response_template_fields').hide();
+        });
     </script>

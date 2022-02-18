@@ -376,6 +376,10 @@ $("#ticket-rep-due").on('change' , function() {
     
 });
 
+$("#response_template").click(function() {
+    $(this).is(":checked") ? $('#response_template_fields').show() :  $('#response_template_fields').hide();
+});
+
 function updateDeadlines() {
     let rep_deadline = $('#ticket-rep-due').val();
     let res_deadline = $('#ticket-res-due').val();
