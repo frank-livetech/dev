@@ -810,7 +810,7 @@ br + br { display: none; }
                         <button type="button" class="btn-close text-danger" onclick="notesModalClose()"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post">
+                        <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post" enctype="multipart/form-data">
                             <input type="text" id="note-id" style="display: none;">
                             <div class="row">
                                 <div class="col-12 d-flex py-2">
@@ -868,15 +868,9 @@ br + br { display: none; }
                                 </div>
 
                                 <div class="col-12 pt-3" >
+                                    <button type="button" class="btn btn-success float-right ms-1" disabled id="note_processing" style="display:none"> Processing ... </button>
+                                    <button type="submit" class="btn btn-success ms-1" id="note_save_btn" style="float: right;margin-right: 3px"> Save </button>
                                     <button type="button" class="btn btn-secondary ms-1" data-bs-dismiss="modal" style="float: right">Close</button>
-
-                                    <button class="btn btn-outline-success waves-effect float-right" id="note_processing" type="button" style="display:none" disabled="">
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                        <span class="ms-25 align-middle">Processing...</span>
-                                    </button>
-
-                                    <button type="submit" class="btn btn-success" id="note_save_btn" style="float: right;margin-right: 3px"> Save </button>
-
                                 </div>
                             </div>
                         </form>

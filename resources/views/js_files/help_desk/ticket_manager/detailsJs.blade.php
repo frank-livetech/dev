@@ -2445,21 +2445,17 @@ $("#save_ticket_note").submit(function(event) {
         formData.append('tag_emails', extract_notes_email.join(','));
     }
 
-    var action = $(this).attr('action');
-    var method = $(this).attr('method');
-
     $.ajax({
-        type: method,
-        url: action ,
+        type: "POST",
+        url: "{{asset('save-ticket-note')}}" ,
         data: formData,
-        async: false,
+        // async: false,
         cache: false,
         contentType: false,
-        enctype: 'multipart/form-data',
         processData: false,
         beforeSend:function(data) {
             $("#note_save_btn").hide();
-            $("#note_processing").removeAttr('style');
+            $('#note_processing').attr('style', 'display: block !important');
         },
         success: function(data) {
             // console.log(data);
@@ -2493,20 +2489,21 @@ $("#save_ticket_note").submit(function(event) {
                 }
                 setSlaPlanDeadlines();
 
+                $('#note-visibilty').val('Everyone').trigger('change');
+
                 $('#notes_manager_modal').modal('hide');
 
-                $('#note-visibilty').val('Everyone').trigger('change');
             } else {
                 toastr.error( data.message , { timeOut: 5000 });
             }
         },
         complete:function(data) {
             $("#note_save_btn").show();
-            $("#note_processing").attr('style','display:none');
+            $('#note_processing').attr('style', 'display: none !important');
         },
         failure: function(errMsg) {
             $("#note_save_btn").show();
-            $("#note_processing").attr('style','display:none');
+            $('#note_processing').attr('style', 'display: none !important');
         }
     });
 });
