@@ -288,27 +288,31 @@ blockquote {
 
         <div class="col-lg-3 col-xlg-3 col-md-5">
             <div class="card">
-                <div style="height:110px;">
-                    @php $path = Session::get('is_live') == 1 ? '/' : '/'; @endphp
-                    <a href="#" data-bs-toggle="modal" class="editPencil w-100 d-flex justify-content-center align-self-center" data-bs-target="#editPicModal">
+                <div class="card-body">
+                    <center class="mt-4">
+                        @php
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
+                        @endphp
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
+
                         @if($customer->avatar_url != null)
-                            @if(is_file(public_path( $path .$customer->avatar_url)))
-                            <img src="{{ asset( $path .$customer->avatar_url)}}" class="rounded-circle"
-                                width="100" height="100" id="profile-user-img" />
+
+                            @if(is_file( getcwd() .'/'. $customer->avatar_url))
+                                <img src="{{ request()->root() .'/'. $customer->avatar_url }}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @else
-                            <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                                id="profile-user-img" />
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
                         @else
-                        <img src="{{ asset('public/default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                            id="profile-user-img" />
+                        
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                         @endif
-                    </a>
+                        </a>
+                        <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} {{$customer->last_name}} </h4>
+                    </center>
                 </div>
-
-                <h4 class="card-title mt-1 text-center" id="cust_name"> {{$customer->first_name}} - {{$customer->last_name}} </h4>
-                <hr>
-
+                <div>
+                    <hr>
+                </div>
                 <div class="card-body position-relative">
 
                     @if($customer->company != null)
@@ -2322,22 +2326,18 @@ blockquote {
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
                         @php
-                            
-                            $path = Session::get('is_live') == 1 ? '/' : '/';
+                            $path = Session::get('is_live') == 1 ? 'public/' : '/';
                         @endphp
                         @if($customer->avatar_url != null)
-                            @if(is_file(public_path( $path . $customer->avatar_url)))
-                            <img src="{{ asset( $path .$customer->avatar_url)}}" class="modalImg rounded-circle"
-                                width="100" height="100" id="modal_profile_user_img" />
+                            @if(is_file( getcwd() .'/'. $customer->avatar_url))
+                                <img src="{{ request()->root() .'/'. $customer->avatar_url }}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                             @else
-                            <img src="{{ asset('default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100"
-                                id="modal_profile_user_img" />
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
                             @endif
                         @else
-                        <img src="{{ asset('default_imgs/customer.png')}}" class="modalImg rounded-circle" width="100" height="100"
-                            id="modal_profile_user_img" />
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            id="profile-user-img"/>
                         @endif
-                        <img src="{{asset( $path . 'default_imgs/customer.png')}}" id="hung22" alt="" class=" rounded-circle" width="100" height="100"  style="display:none;">
 
                     </div>
                 

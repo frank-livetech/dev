@@ -152,7 +152,7 @@
                         <li class="scrollable-container media-list ps notifications list_all_notifications">
                             
                         </li>
-                        <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()">Read all notifications</a></li>
+                        <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()"> Mark all as read </a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown dropdown-user">
