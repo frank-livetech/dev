@@ -483,6 +483,7 @@
 
                     if(data){
                         notifications = data.data;
+                        console.log(notifications , "notifications");
 
                         $("#noti_count").text(notifications.length);
 
@@ -492,18 +493,18 @@
                                 if(notifications[i].sender != null) {
                                     
                                     if(notifications[i].sender.profile_pic != null ) {
-                                        user_image = `<img src="`+user_photo_url + '/' + notifications[i].sender.profile_pic  +`" alt="avatar" width="32" height="32">`;
+                                        user_image = `<img src="${root}/${notifications[i].sender.profile_pic}" alt="avatar" width="32" height="32">`;
                                     }else{
-                                        user_image = `<img src="`+user_photo_url + '/' + 'user-photo.jpg' +`" alt="avatar" width="32" height="32">`;
+                                        user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
                                     }
                                 }
                                 else{
-                                    user_image = `<img src="`+user_photo_url + '/' + 'user-photo.jpg' +`" alt="avatar" width="32" height="32">`;
+                                    user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
                                 }
 
                                 var date = new Date(notifications[i].created_at);
                                 
-                                default_icon = `<span class="btn `+notifications[i].btn_class+` rounded-circle btn-circle"">
+                                default_icon = `<span class="`+notifications[i].btn_class+` rounded-circle btn-circle"" style="padding:8px 12px">
                                                 <i class="`+notifications[i].noti_icon+`"></i></span>`;
 
                                 var title = notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification';
@@ -518,7 +519,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="list-item-body flex-grow-1">
-                                                        <p class="media-heading">\
+                                                        <p class="media-heading">
                                                         <span class="fw-bolder">`+title+`</span> <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
                                                         <small class="notification-text"> `+desc+`</small>
                                                     </div>
@@ -530,11 +531,11 @@
 
                         }
                         else{
-                            // alert("relse");
-                            // noti_div = `<li>
-                            //                 <span class="font-12 text-nowrap d-block text-muted text-truncate" style="text-align:center">No Unread Notifications.</span> 
-                            //             </li>`;
-                            // $('.notif_div_ul').append(noti_div)
+                            
+                            noti_div = `<li>
+                                            <span class="font-12 text-nowrap d-block text-muted text-truncate p-2" style="text-align:center">No Unread Notifications.</span> 
+                                        </li>`;
+                            $('.notifications').append(noti_div)
                             
                         }
                     }
