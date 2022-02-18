@@ -460,13 +460,13 @@
         
         var year = d.getFullYear();
         var month = d.getMonth();
-        var day = d.getDay();
+        var date = d.getDate();
         var hour = d.getHours();
         var min = d.getMinutes();
         var mili = d.getMilliseconds();
                 
         // year , month , day , hour , minutes , seconds , miliseconds;
-        let new_date = new Date(Date.UTC(year, month, day, hour, min, mili));
+        let new_date = new Date(Date.UTC(year, month, date, hour, min, mili));
         let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
         return moment(converted_date).format(date_format + ' ' +'hh:mm A');
     }

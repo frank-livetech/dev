@@ -2601,7 +2601,7 @@ function get_ticket_notes() {
                                 ` + autho + `
                             </div>
                             <p class="note-details">
-                                ${notes[i].note} - ${notes[i].created_at}
+                                ${notes[i].note}
                             </p>
                         </div>
                     </div>`;
@@ -2652,7 +2652,7 @@ function editNote(id) {
         $('#note-id').val(id);
 
         $("#note-visibilty").val("Everyone").trigger('change');
-        $('#save_ticket_note').find('#note').val(item.note != null ? item.color : '');
+        $('#save_ticket_note').find('#note').val(item.note != null ? item.note : '');
         $('#save_ticket_note').find('#note').css('background-color', item.color != null ? item.color : '');
         if(item.type == 'Ticket') {
             $("#note-type-ticket").prop('checked',true);
