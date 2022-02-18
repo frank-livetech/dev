@@ -146,10 +146,10 @@
                             <div class="dropdown-header d-flex">
                                 <h4 class="notification-title mb-0 me-auto">Notifications</h4>
                               
-                                <div class="badge rounded-pill badge-light-primary"><a href="{{url('all-notifications')}}" class="small p-2">view all</a></div>
+                                <div class="badge rounded-pill badge-light-primary bg-primary"><a href="{{url('all-notifications')}}" class="small p-2">view all</a></div>
                             </div>
                         </li>
-                        <li class="scrollable-container media-list ps notifications">
+                        <li class="scrollable-container media-list ps notifications list_all_notifications">
                             
                         </li>
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()">Read all notifications</a></li>
@@ -388,6 +388,24 @@
                     console.log(errMsg);
                 }
             });
+        }
+
+        function allRead(){
+            $.ajax({
+                url: "{{url('mark_all_read')}}",
+                type: "get",
+                dataType: 'json',
+                cache: false,
+                async:false,
+                success: function(data) {
+                    getNotifications();
+                    $('.list_all_notifications').remove();
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            });
+            
         }
         
         $('.sidebar-link').click(function(){
