@@ -135,21 +135,12 @@ class HomeController extends Controller
 
     public function markAllRead(){
                 
-         $id = Auth::user()->id; 
-        //  print_r($id);
+        Notification::where('receiver_id', auth()->id())->update(['read_at' => Carbon::now()]);
 
-         $notification =  Notification::where('receiver_id', $id)->update(['read_at' => Carbon::now()]);
-
-        // Notification::where('receiver_id',$id)->first();
-        //    if($notification){
-        //      $notification->read_at = Carbon::now();
-        //      $notification->save();
-            
         $response['message'] = "Success Message";
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-
 
     }
     public function getNotifications(){

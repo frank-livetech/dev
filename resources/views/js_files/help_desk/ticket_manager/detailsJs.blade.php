@@ -2743,7 +2743,8 @@ function closeAssetModal() {
 function setCustomerCompany() {
     let cust_cmp = companies_list.filter(item => { return item.id == ticket_customer.company_id });
     if (cust_cmp.length) {
-        $('#cst-company').html('Company : ' + cust_cmp[0].name);
+        let name = `<a href="{{url('company-profile')}}/${cust_cmp[0].id}"> ${cust_cmp[0].name} </a>`;
+        $('#cst-company').html('Company : ' + name);
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
     } else {
         $('#cst-company').html('');
