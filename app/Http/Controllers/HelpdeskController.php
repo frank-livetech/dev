@@ -2624,7 +2624,7 @@ class HelpdeskController extends Controller
                         $type = 'Tickets';
                         $data = 'data';
                         $title = $notification_title;
-                        $icon = 'ti-calendar';
+                        $icon = 'calendar';
                         $class = 'btn-success';
                         $desc = $notification_message;
                         
