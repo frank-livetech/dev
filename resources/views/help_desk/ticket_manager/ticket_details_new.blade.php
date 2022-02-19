@@ -937,8 +937,8 @@ br + br { display: none; }
                             
                             <div class="form-row">
                                 <div class="row mb-2">
-                                <div class="col-md-6 form-group">
-                                    <select class="select2 form-control" name="schedule_type" id="schedule_type" onchange="showDateTimeDiv(this.value)" required>
+                                <div class="col-md-6">
+                                    <select class="select2" name="schedule_type" id="schedule_type" onchange="showDateTimeDiv(this.value)" required>
                                         <option selected value="minutes">In minutes</option>
                                         <option value="hours">In hours</option>
                                         <option value="days">In days</option>
@@ -949,7 +949,7 @@ br + br { display: none; }
                                         <option value="time">Time (For recursive pattern)</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6 form-group" id="schedule_time_div">
+                                <div class="col-md-6" id="schedule_time_div">
                                     <input class="form-control" type="number" min="1" name="schedule_time" id="schedule_time">
                                 </div>
                             </div>
@@ -961,22 +961,22 @@ br + br { display: none; }
                                 </div>
                             </div>
                             
-                            <div class="form-row">
-                                <div class="col-md-12 form-group border p-1 bg-light">
+                            <div class="form-row mt-1">
+                                <div class="col-md-12 form-group border p-1 bg-light rounded">
                                     <div class="form-check-inline" id="general_div" style="">
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="general">
-                                            <label class="custom-control-label" for="general">General</label>
+                                            <label class="custom-control-label" for="general"> <strong> General </strong> </label>
                                         </div>
                                     </div>                                       
                                 </div>
                                 <br>
-                                <div class="col-md-12" id="general_details_div" style="display:none">
-                                    <div class="form-row">
+                                <div class="col-md-12 p-1" id="general_details_div" style="display:none">
+
                                     <div class="row">
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Department</label>
-                                            <select class="select2 form-control " id="follow_up_dept_id" name="follow_up_dept_id" style="width: 100%; height:36px;">
+                                            <select class="select2" id="follow_up_dept_id" name="follow_up_dept_id" style="width: 100%; height:36px;">
                                                 
                                                 @foreach($departments as $department)
                                                     <option value="{{$department->id}}" {{ $department->id == $details->dept_id ? 'selected' : '' }}>{{$department->name}}</option>
@@ -985,7 +985,7 @@ br + br { display: none; }
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Tech Lead</label>
-                                            <select class="select2 form-control " id="follow_up_assigned_to" name="follow_up_assigned_to" style="width: 100%; height:36px;">
+                                            <select class="select2" id="follow_up_assigned_to" name="follow_up_assigned_to" style="width: 100%; height:36px;">
                                                 <option value="">Unassigned</option>
                                                 @foreach($users as $user)
                                                     <option value="{{$user->id}}" {{ $user->id == $details->assigned_to ? 'selected' : '' }}>{{$user->name}}</option>
@@ -994,19 +994,18 @@ br + br { display: none; }
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Type</label>
-                                            <select class="select2 form-control " id="follow_up_type" name="follow_up_type" style="width: 100%; height:36px;">
+                                            <select class="select2" id="follow_up_type" name="follow_up_type" style="width: 100%; height:36px;">
                                                 @foreach($types as $type)
                                                     <option value="{{$type->id}}" {{ $type->id == $details->type ? 'selected' : '' }}>{{$type->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    </div> 
-                                    <div class="form-row">
-                                        <div class="row">
+
+                                    <div class="row mt-2">
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Status</label>
-                                            <select class="select2 form-control " id="follow_up_status" name="follow_up_status" style="width: 100%; height:36px;">
+                                            <select class="select2" id="follow_up_status" name="follow_up_status" style="width: 100%; height:36px;">
                                                 
                                                 @foreach($statuses as $status)
                                                     <option value="{{$status->id}}" {{ $status->id == $details->status ? 'selected' : '' }}>{{$status->name}}</option>
@@ -1016,7 +1015,7 @@ br + br { display: none; }
                                         
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Priority</label>
-                                            <select class="select2 form-control " id="follow_up_priority" name="follow_up_priority" style="width: 100%; height:36px;">
+                                            <select class="select2" id="follow_up_priority" name="follow_up_priority" style="width: 100%; height:36px;">
                                                 @foreach($priorities as $priority)
                                                     <option value="{{$priority->id}}" {{$priority->id == $details->priority ? 'selected' : ''}}>{{$priority->name}}</option>
                                                 @endforeach
@@ -1024,7 +1023,7 @@ br + br { display: none; }
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Link Project</label>
-                                            <select class="select2 form-control " id="follow_up_project" name="follow_up_project" style="width: 100%; height:36px;">
+                                            <select class="select2" id="follow_up_project" name="follow_up_project" style="width: 100%; height:36px;">
                                                 
                                                 <option value="">Select</option>
                                                 @foreach($projects as $project)
@@ -1033,7 +1032,7 @@ br + br { display: none; }
                                             </select>
                                         </div>
                                     </div>
-                                    </div>
+
                                 </div>
                             </div>
 
@@ -1042,11 +1041,11 @@ br + br { display: none; }
                                     <div class="form-check-inline" id="notes_div" style=""> 
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="notes">
-                                            <label class="custom-control-label" for="notes">Notes</label>
+                                            <label class="custom-control-label" for="notes"> <strong> Notes </strong> </label>
                                         </div>
                                     </div> 
                                 </div> 
-                                <div class="col-md-12 form-group mt-1" id="ticket_follow_notes" style="display:none">
+                                <div class="col-md-12 p-1 mt-1" id="ticket_follow_notes" style="display:none">
                                     <textarea class="form-control" rows="3" id="follow_up_notes" name="follow_up_notes"></textarea>
                                 </div>
                             </div>
@@ -1055,12 +1054,12 @@ br + br { display: none; }
                                 <div class="col-md-12 form-group border p-2 bg-light">
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="is_recurring">
-                                        <label class="custom-control-label" for="is_recurring">Recurrence</label>
+                                        <label class="custom-control-label" for="is_recurring"> <strong> Recurrence </strong> </label>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12" id="followup-recurrence" style="display:none">
-                                    <h4 for="">Recurrence Pattern</h4>
+                                <div class="col-md-12 p-1 mt-2" id="followup-recurrence" style="display:none">
+                                    <h4 >Recurrence Pattern</h4>
                                     <div class="form-group">
                                         <label for="new_time">New Time</label>
                                         <input type="time" class="form-control" name="recurrence_time2">
@@ -1190,12 +1189,12 @@ br + br { display: none; }
                                     </div>
                                 </div>
 
-                                <div class="row" id="recurrence-range" style="display:none">
+                                <div class="row mt-1 p-1" id="recurrence-range" style="display:none">
                                     <h4 class="col-12">Recurrence Range</h4>
                                     <div class="col-md-6" id="start-range">
                                         <div class="form-check form-check-inline d-flex align-items-center py-2">
                                             <input type="radio" id="start-after-date" name="recurrence_start" class="form-check-input" value="date">
-                                            <label class="custom-control-label" for="start-after-date">Start date: </label>&nbsp;&nbsp;
+                                            <label class="custom-control-label" for="start-after-date">Start date: </label> <br>
                                             <input type="date" class="form-control allow-req" id="recur-start-date" style="width: 200px;" disabled>
                                         </div>
                                         <div class="custom-control custom-radio d-flex align-items-center py-2">
