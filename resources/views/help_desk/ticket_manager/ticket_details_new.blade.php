@@ -764,6 +764,49 @@ br + br { display: none; }
         
                                 <label style="margin-top: 10px;">Write a reply</label>
                                 <textarea id="mymce" name="reply"></textarea>
+
+                                <div class="d-flex mt-3">
+                                    <div class="form-check form-check-primary">
+                                        <input type="checkbox" value="1" class="form-check-input" id="send_email" name="send_email" checked>
+                                        <label class="custom-form-label" for="send_email"> Send mail to customer </label>
+                                    </div>
+                                    <div class="form-check form-check-primary ms-2">
+                                        <input type="checkbox" value="1" class="form-check-input" id="response_template" name="response_template">
+                                        <label class="custom-form-label" for="response_template"> Response Template </label>
+                                    </div>
+                                </div>
+
+                                <div class="row bg-light p-2 m-2" id="response_template_fields" style="display:none">
+                                    <strong> <h4>Response template properties</h4> </strong>
+                                    <hr>
+                                    <form id="responseTemplateForm">
+                                    <div class="row mt-1">
+                                        <div class="col-md-6">
+                                            <label for="title">Title</label>
+                                            <input type="text" class="form-control" name="title" id="res_title">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="category_name">Category Name</label>
+                                            <select name="category_name" id="category_name" class="select2">
+                                                <option value=""> Choose </option>
+                                                @foreach($responseTemplates as $tem)
+                                                    <option value="{{$tem->id}}"> {{$tem->title}} </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-start mt-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="view_access" id="onlyMe">
+                                            <label class="form-check-label" for="onlyMe"> Show only to Me </label>
+                                        </div>
+                                        <div class="form-check mx-2">
+                                            <input class="form-check-input" type="radio" name="view_access" id="allStaff">
+                                            <label class="form-check-label" for="allStaff"> Show to all Staff </label>
+                                        </div> 
+                                    </div>
+                                    </form>
+                                </div>
                                 
                                 <div class="form-group pt-3">
                                     <button class="btn btn-outline-primary btn-sm" type="button" onclick="addAttachment('replies')"><span class="fa fa-plus"></span> Add Attachment</button>
@@ -772,10 +815,10 @@ br + br { display: none; }
         
                                 <div class="row mt-4 reply-btns">
                                     <div class="col-md-4" style="padding-top: 30px;">
-                                        <div class="form-check form-check-inline">
+                                        <!-- <div class="form-check form-check-inline">
                                             <input id="checkbox0" class="form-check-input" type="checkbox" >
                                             <label class="mb-0" for="checkbox0"> Do not mail response </label>
-                                        </div>
+                                        </div> -->
                                     </div>    
                                     <div class="col-md-8">
                                         <button id="rply" type="button" class="mt-3 btn waves-effect waves-light btn-success float-right" onclick="publishReply(this)">

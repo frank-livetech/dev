@@ -247,15 +247,43 @@
                                                         <div class="d-flex mt-3">
                                                             <div class="form-check form-check-primary">
                                                                 <input type="checkbox" value="1" class="form-check-input" id="send_email" name="send_email" checked>
-                                                                <label class="custom-form-label" for="send_email">Send Email</label>
+                                                                <label class="custom-form-label" for="send_email"> Send mail to customer </label>
                                                             </div>
                                                             <div class="form-check form-check-primary ms-2">
-                                                                <input type="checkbox" value="1" class="form-check-input" id="autoresponder" name="autoresponder" checked>
-                                                                <label class="custom-form-label" for="autoresponder">Send autoresponder</label>
+                                                                <input type="checkbox" value="1" class="form-check-input" id="response_template" name="response_template" value="1">
+                                                                <label class="custom-form-label" for="response_template"> Response Template </label>
                                                             </div>
-                                                            <div class="form-check form-check-primary ms-2">
-                                                                <input type="checkbox" value="1" class="form-check-input" id="macro" name="macro">
-                                                                <label class="custom-form-label" for="macro">Macro</label>
+                                                        </div>
+
+                                                        <div class="col-md-12 bg-light p-2 mt-2" id="response_template_fields" style="display:none">
+                                                            <strong> <h4>Response template properties</h4> </strong>
+                                                            <hr>
+                                                            <form id="responseTemplateForm">
+                                                                <div class="row mt-1">
+                                                                    <div class="col-md-6">
+                                                                        <label for="title">Title</label>
+                                                                        <input type="text" class="form-control" name="title" id="res_title">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label for="category_name">Category Name</label>
+                                                                        <select name="category_name" id="category_name" class="select2">
+                                                                            <option value=""> Choose </option>
+                                                                            @foreach($responseTemplates as $tem)
+                                                                                <option value="{{$tem->id}}"> {{$tem->title}} </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-start mt-2">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio" name="view_access" id="onlyMe">
+                                                                        <label class="form-check-label" for="onlyMe"> Show only to Me </label>
+                                                                    </div>
+                                                                    <div class="form-check mx-2">
+                                                                        <input class="form-check-input" type="radio" name="view_access" id="allStaff">
+                                                                        <label class="form-check-label" for="allStaff"> Show to all Staff </label>
+                                                                    </div> 
+                                                                </div>
                                                             </div>
                                                         </div>
 

@@ -376,6 +376,10 @@ $("#ticket-rep-due").on('change' , function() {
     
 });
 
+$("#response_template").click(function() {
+    $(this).is(":checked") ? $('#response_template_fields').show() :  $('#response_template_fields').hide();
+});
+
 function updateDeadlines() {
     let rep_deadline = $('#ticket-rep-due').val();
     let res_deadline = $('#ticket-res-due').val();
@@ -1372,8 +1376,29 @@ function publishReply(ele, type = 'publish') {
                 reply: content,
                 inner_attachments: attachments_src
             };
+
             if (edit_reply_mode !== false) {
                 params.id = ticketReplies[edit_reply_mode].id;
+            }
+
+            // getting response template data
+            if($('#response_template').is(":checked" , true) ) {
+                let access = ``;
+
+                if( $("#onlyMe").is(":checked") ) {
+                    access = `only_me`;
+                }
+
+                if( $("#allStaff").is(":checked") ) {
+                    access = `all_staff`;
+                }
+                params.title = $("#res_title").val();
+                params.cat_id = $("#category_name").val();
+                params.temp_html = content;
+                params.view_access = access;
+                params.res = 1;
+            }else{
+                params.res = 0;
             }
 
             $.ajax({
@@ -1432,6 +1457,8 @@ function publishReply(ele, type = 'publish') {
                         // if (edit_reply_mode !== false) msg = 'Updated';
                         // if (type != 'publish') msg = 'saved as draft';
                         toastr.success( data.message , { timeOut: 5000 });
+                        $("#responseTemplateForm").trigger("reset");
+                        $("#response_template").is(":checked",false);
                     } else {
                         Swal.fire({
                             position: 'center',

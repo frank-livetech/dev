@@ -15,6 +15,7 @@ let st_types = null;
 let sr_proirity_arr = null;
 let g_priority_arr = null;
 let g_status_arr = null;
+let response_temp_arr = [];
 
 $(document).ready(function() {
     get_mails_table_list();
@@ -445,6 +446,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 var obj = data.data;
+                response_temp_arr = obj;
                 var html = "";
                 console.log(data, "Category data 2");
                 console.log(obj.length, 'obj');
@@ -452,7 +454,7 @@ $(document).ready(function() {
                 for (var i = 0; i < obj.length; i++) {
                     html += `<div class="d-flex justify-content-between mt-3 border-bottom">
                                 <div><h5>` + obj[i].title + `</h5></div>
-                                <div><a type="button" onclick="updateresponseTemp(`+obj[i].id+`,'`+obj[i].title+`',`+obj[i].cat_id+`,'`+obj[i].temp_html+`')" class="text-dark" style="float:right;"><i class="fas fa-pencil-alt"></i></a></div>
+                                <div><a type="button" onclick="updateresponseTemp(${obj[i].id})" class="text-dark" style="float:right;"><i class="fas fa-pencil-alt"></i></a></div>
                             </div>
                     `
                 }
@@ -1057,14 +1059,36 @@ $(document).ready(function() {
 
 });
 
-function updateresponseTemp(id,title, cat_id, temp) {
+function updateresponseTemp(id) {
 
-    $("#res_id").val(id);
-    $(".res_title").val(title);
-    $("#cat_id").val(cat_id).trigger('change');
+    let item = response_temp_arr.find(item => item.id === id);
+    if(item != null) {
+        $("#res_id").val(id);
+        $(".res_title").val(item.title);
+        $("#cat_id").val(item.cat_id).trigger('change');
 
-    tinymce.activeEditor.setContent(temp);
+        tinymce.activeEditor.setContent(item.temp_html);
 
+        if(item.view_access != null) {
+
+            if(item.view_access == "all_staff") {
+                $("#allStaff").prop("checked" , true);
+            }else{
+                $("#allStaff").prop("checked" , false);
+            }
+
+            if(item.view_access == "only_me") {
+                $("#onlyMe").prop("checked" , true);
+            }else{
+                $("#onlyMe").prop("checked" , false);
+            }
+        }else{
+            $("#onlyMe").prop("checked" , false);
+            $("#allStaff").prop("checked" , false);
+        }
+
+
+    }
 };
 
 function sendOnDemandRecap() {
