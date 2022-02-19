@@ -680,9 +680,9 @@
                 <div class="modal-body">
                     <div id="calendar"></div>
                 </div>
-                <div class="modal-footer">
+                <!-- <div class="modal-footer">
                     <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
