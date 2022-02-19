@@ -251,18 +251,22 @@ function restoreTicket(id) {
     });
 }
 
-function ShowCalendarModel() {
-    var element = document.getElementById('calendar');
-    element.innerHTML = '';
-    var events = [];
+$("#show-clndr").click(function() {
+    
+    $("#calendarModal").modal('show');
 
+    ShowCalendarModel();
+});
+
+function ShowCalendarModel() {
+    // var element = document.getElementById('calendar');
+    // element.innerHTML = '';
+    var events = [];
     let f_counts = 0;
     for (let i in tickets_followups) {
         let tid = ticketsList.filter(item => item.id == tickets_followups[i].ticket_id);
-
         if (tid.length) {
             tid = tid[0].coustom_id;
-
             let followUpDate = '';
             if (tickets_followups[i].is_recurring == 1) {
                 followUpDate = moment(moment.utc(tickets_followups[i].date).toDate()).local();
@@ -278,28 +282,40 @@ function ShowCalendarModel() {
                         followUpDate = moment(followUpDate).local();
                     } else {
                         followUpDate = moment.utc(tickets_followups[i].created_at).toDate();
+                        
                         followUpDate = moment(followUpDate).local();
                         followUpDate.add(tickets_followups[i].schedule_time, tickets_followups[i].schedule_type);
                     }
                 }
             }
-
             if (moment(followUpDate).diff(moment(), 'seconds') < 0) continue;
 
             f_counts++;
-
             let dd = new Date(followUpDate);
 
-            events.push({
-                Date: new Date(dd.getFullYear(), dd.getMonth(), dd.getDate()),
-                Title: tid,
-                Link: 'ticket-details/' + tid
-            });
+            let data = {
+                id: tid,
+                url : '',
+                backgroundColor : '#7367f0',
+                start: new Date(dd.getFullYear(), dd.getMonth(), dd.getDate()),
+                title: tid,
+                extendedProps: {
+                    calendar: 'Holiday',
+                    link: `ticket-details/${tid}`
+                }
+            }
+
+            ticket_events.push(data);
+            // events.push({
+            //     Date: new Date(dd.getFullYear(), dd.getMonth(), dd.getDate()),
+            //     Title: tid,
+            //     Link: 'ticket-details/' + tid
+            // });
         }
     }
 
     document.getElementById('show-clndr').innerHTML = '<i class="fas fa-calendar"></i>&nbsp;Calendar (' + f_counts + ')';
-    caleandar(element, events, settings);
+    // caleandar(element, events, settings);
 
     // $('#calendarModal').modal('show');
 }

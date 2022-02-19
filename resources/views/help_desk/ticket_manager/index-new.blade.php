@@ -156,7 +156,10 @@
 	                   color-stop(.5, rgba(255, 255, 255, .2)),
 					   color-stop(.5, transparent), to(transparent));
 }
-    
+    .fc-col-header , .fc-scrollgrid-sync-table , .fc-daygrid-body , .fc-daygrid-body-unbalanced  {
+        width: 100% !important;
+    }
+
 </style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -377,7 +380,7 @@
 
                                         <button type="button" class="btn btn-danger" id="btnDelete" style="display: none;"><i class="fas fa-trash-alt"></i>&nbsp;Delete Permanently</button>
 
-                                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light" id="show-clndr" data-toggle="modal" data-target="#calendarModal"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp; Calender</button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light" id="show-clndr"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp; Calender</button>
 
                                         <a href="{{url('add-ticket')}}" type="button" class="btn btn-success waves-effect waves-float waves-light">
                                             <i class="fa fa-plus"></i>&nbsp;Add ticket
@@ -666,36 +669,34 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal content ticket end --> --}}
 
-    <!--  Modal content ticket start -->
-    <div class="modal fade" id="calendarModal" role="dialog"  data-backdrop="static" aria-labelledby="calendarLargeModalLabel" aria-hidden="true">
+    <!-- calender -->
+    <div class="modal fade text-start" id="calendarModal" tabindex="-1" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header d-flex align-items-center">
-                    <h4 class="modal-title" id="calendarLargeModalLabel" style="color:#009efb;">Calendar</h4>
-                    <button type="button" class="close ml-auto" data-dismiss="modal" aria-hidden="true">×</button>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel1"> Calender </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12" id="calendar"></div>
-
-                        <button type="button" class="btn btn-secondary ml-auto mr-3" data-dismiss="modal" aria-hidden="true">Close</button>
-                    </div>
+                    <div id="calendar"></div>
                 </div>
-            </div><!-- /.modal-content calendar -->
-        </div><!-- /.modal-dialog calendar -->
-    </div><!-- /.modal content calendar end -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @endsection
 @section('scripts')
-<script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
-<script src="{{asset($file_path . 'assets\extra-libs\calendar-master\js\calendar.js')}}"></script>
-<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-
 
 <script>
-
+    let calendarEl;
+    let calendar;
     let ticketsList = null;
+    let ticket_events = [];
     let ticket_format = {!! json_encode($ticket_format) !!};
     let tickets_followups = {!! json_encode($tickets_followups) !!};
     let statuses_list = {!! json_encode($statuses) !!};
@@ -717,6 +718,39 @@
     let get_counter_tickets = "{{asset('/get-counter-tickets')}}";
     
     let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
+
+</script>
+<script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
+<!-- <script src="{{asset($file_path . 'assets\extra-libs\calendar-master\js\calendar.js')}}"></script> -->
+<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
+<!-- <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
+<script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  calendarEl = document.getElementById('calendar');
+  calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    initialDate: moment(new Date()).startOf('month').format('YYYY-MM-DD'),
+    selectable: true,
+    editable: true,
+    dayMaxEvents: true,
+    headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,listWeek'
+    },
+    events: ticket_events,
+    select:function(start, end ,allday) {
+            
+    },
+    eventClick: function (info) {
+        console.log(info , "info");
+    },
+  });
+  calendar.render();
+});
 
 </script>
 @include('js_files.ticket_cmmnJs')
