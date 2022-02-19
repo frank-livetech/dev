@@ -1511,10 +1511,10 @@ br + br { display: none; }
                     <button type="button" data-bs-dismiss="modal" class="btn-close" onclick="closeAssetModal()"></button>
             </div>
             <div class="modal-body">
-                <form id="sla_plan_form" enctype="multipart/form-data" onsubmit="return false">
-                    <div class="form-group">
+                <!-- <form id="sla_plan_form" enctype="multipart/form-data" onsubmit="return false"> -->
+                    <div class="col-12">
                         <label for="select">SLA Plan</label>
-                        <select class="form-control select2" id="sla_plan_id" required style="width: 100%; height: 36px;">
+                        <select class="select2" id="sla_plan_id" required style="width: 100%; height: 36px;">
                             @foreach ($sla_plans as $item)
                                 @if ($item->title == 'Default SLA')
                                     <option value="{{$item->id}}" selected>{{$item->title}}</option>
@@ -1531,7 +1531,7 @@ br + br { display: none; }
                         <button class="btn btn-rounded btn-success float-right" type="button" onclick="setSlaPlan()">Save</button>
                         <button class="btn btn-rounded btn-danger float-right" style="margin-right: 5px" type="button" data-bs-dismiss="modal">Close</button>
                     </div>
-                </form>
+                <!-- </form> -->
             </div>
         </div>
     </div>

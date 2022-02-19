@@ -157,11 +157,11 @@ $(document).ready(function() {
 
     $("#save_ticket_follow_up").on('submit', createFollowUp);
 
-    $("#sla_plan_id").select2({
-        matcher: matchStart,
-        minimumInputLength: 2,
-        minimumResultsForSearch: 10
-    });
+    // $("#sla_plan_id").select2({
+    //     matcher: matchStart,
+    //     minimumInputLength: 2,
+    //     minimumResultsForSearch: 10
+    // });
 
     
     setSlaPlanDeadlines();
