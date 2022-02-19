@@ -1038,7 +1038,7 @@ br + br { display: none; }
                             </div>
 
                             <div class="form-row mt-2" >
-                                <div class="col-md-12 form-group border p-1 bg-light">
+                                <div class="col-md-12 form-group border p-1 bg-light rounded">
                                     <div class="form-check-inline" id="notes_div" style=""> 
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="notes">
@@ -1052,7 +1052,7 @@ br + br { display: none; }
                             </div>
 
                             <div class="form-row mt-3">
-                                <div class="col-md-12 form-group border p-2 bg-light">
+                                <div class="col-md-12 form-group border p-1 bg-light rounded">
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="is_recurring">
                                         <label class="custom-control-label" for="is_recurring"> <strong> Recurrence </strong> </label>
