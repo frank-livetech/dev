@@ -952,13 +952,14 @@ br + br { display: none; }
                                 <div class="col-md-6" id="schedule_time_div">
                                     <input class="form-control" type="number" min="1" name="schedule_time" id="schedule_time">
                                 </div>
-                            </div>
                                 <div class="col-md-6 form-group" id="date_picker_div" style="display: none;">
                                     <input type="datetime-local" id="custom_date" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group" id="recurrence_time_div" style="display: none;">
                                     <input type="time" id="recurrence_time" class="form-control">
                                 </div>
+                            </div>
+                                
                             </div>
                             
                             <div class="form-row mt-1">
@@ -1003,7 +1004,7 @@ br + br { display: none; }
                                     </div>
 
                                     <div class="row mt-2">
-                                        <div class="col-md-4 form-group">
+                                        <div class="col-md-6 form-group">
                                             <label class="dorpdown_font">Status</label>
                                             <select class="select2" id="follow_up_status" name="follow_up_status" style="width: 100%; height:36px;">
                                                 
@@ -1013,7 +1014,7 @@ br + br { display: none; }
                                             </select>
                                         </div>
                                         
-                                        <div class="col-md-4 form-group">
+                                        <div class="col-md-6 form-group">
                                             <label class="dorpdown_font">Priority</label>
                                             <select class="select2" id="follow_up_priority" name="follow_up_priority" style="width: 100%; height:36px;">
                                                 @foreach($priorities as $priority)
@@ -1021,7 +1022,7 @@ br + br { display: none; }
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="col-md-4 form-group">
+                                        <!-- <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Link Project</label>
                                             <select class="select2" id="follow_up_project" name="follow_up_project" style="width: 100%; height:36px;">
                                                 
@@ -1030,7 +1031,7 @@ br + br { display: none; }
                                                     <option value="{{$project->id}}">{{$project->name}} </option>
                                                 @endforeach
                                             </select>
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                 </div>
@@ -1060,11 +1061,11 @@ br + br { display: none; }
 
                                 <div class="col-md-12 p-1 mt-2" id="followup-recurrence" style="display:none">
                                     <h4 >Recurrence Pattern</h4>
-                                    <div class="form-group">
+                                    <div class="form-group mt-1">
                                         <label for="new_time">New Time</label>
                                         <input type="time" class="form-control" name="recurrence_time2">
                                     </div>
-                                    <ul class="list-group list-group-horizontal-lg pb-3">
+                                    <ul class="list-group list-group-horizontal-lg pb-3 mt-1">
                                         <li class="list-group-item d-flex align-items-center">
                                             <div class="radio radio-primary">
                                                 <input type="radio" name="recur_type" id="recur-daily" value="daily" class="d-none" checked>
@@ -1105,47 +1106,47 @@ br + br { display: none; }
                                             <input type="number" class="form-control" id="recur_after_w" value="1" min="1" max="52" style="width: 100px;">
                                             <label for="recur_after">&nbsp;&nbsp; week(s) on:</label>
                                         </div>
-                                        <div id="week-days-list">
+                                        <div id="week-days-list mt-2">
                                             <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="monday" value="1">
-                                                    <label class="custom-control-label" for="monday">Monday</label>
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input" id="monday" value="1">
+                                                    <label class="form-check-label" for="monday">Monday</label>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="tuesday" value="2">
-                                                    <label class="custom-control-label" for="tuesday">Tuesday</label>
+                                            <div class="form-group mt-1">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input" id="tuesday" value="2">
+                                                    <label class="form-check-label" for="tuesday">Tuesday</label>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="wednesday" value="3">
-                                                    <label class="custom-control-label" for="wednesday">Wednesday</label>
+                                            <div class="form-group mt-1">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input" id="wednesday" value="3">
+                                                    <label class="form-check-label" for="wednesday">Wednesday</label>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="thursday" value="4">
-                                                    <label class="custom-control-label" for="thursday">Thursday</label>
+                                            <div class="form-group mt-1">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input" id="thursday" value="4">
+                                                    <label class="form-check-label" for="thursday">Thursday</label>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="friday" value="5">
-                                                    <label class="custom-control-label" for="friday">Friday</label>
+                                            <div class="form-group mt-1">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input" id="friday" value="5">
+                                                    <label class="form-check-label" for="friday">Friday</label>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="saturday" value="6">
-                                                    <label class="custom-control-label" for="saturday">Saturday</label>
+                                            <div class="form-group mt-1">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input" id="saturday" value="6">
+                                                    <label class="form-check-label" for="saturday">Saturday</label>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="sunday" value="7">
-                                                    <label class="custom-control-label" for="sunday">Sunday</label>
+                                            <div class="form-group mt-1">
+                                                <div class="form-check form-check-inline">
+                                                    <input type="checkbox" class="form-check-input" id="sunday" value="7">
+                                                    <label class="form-check-label" for="sunday">Sunday</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1161,16 +1162,16 @@ br + br { display: none; }
                                         </div>
                                     </div>
 
-                                    <div id="yearly-container" class="recur-container pb-3" style="display: none;">
+                                    <div id="yearly-container" class="recur-container pb-3 mt-1" style="display: none;">
                                         <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
                                             <label>Recur every &nbsp;&nbsp;</label>
                                             <input type="number" class="form-control" id="recur_after_y" value="1" min="1" style="width: 100px;">
                                             <label>&nbsp;&nbsp; year(s)</label>
                                         </div>
 
-                                        <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
+                                        <div class="form-group d-flex align-items-center mt-1" style="margin-left: 16px;">
                                             <label>On &nbsp;&nbsp;</label>
-                                            <select class="form-control" id="recur-month" style="width: 200px;">
+                                            <select class="select2" id="recur-month" style="width: 300px;">
                                                 <option value="January">January</option>
                                                 <option value="February">February</option>
                                                 <option value="March">March</option>
@@ -1190,31 +1191,51 @@ br + br { display: none; }
                                 </div>
 
                                 <div class="row mt-1 p-1" id="recurrence-range" style="display:none">
+
                                     <h4 class="col-12">Recurrence Range</h4>
                                     <div class="col-md-6" id="start-range">
-                                        <div class="form-check form-check-inline d-flex align-items-center py-2">
-                                            <input type="radio" id="start-after-date" name="recurrence_start" class="form-check-input" value="date">
-                                            <label class="custom-control-label" for="start-after-date">Start date: </label> <br>
-                                            <input type="date" class="form-control allow-req" id="recur-start-date" style="width: 200px;" disabled>
+                                        <div class="d-flex justify-content-between align-items-center mt-1">
+                                            <div class="form-check">
+                                                <input type="radio" id="start-after-date" name="recurrence_start" class="form-check-input" value="date">
+                                                <label class="custom-control-label" for="start-after-date">Start date: </label> <br>
+                                            </div>
+                                            <div>
+                                                <input type="date" class="form-control allow-req" id="recur-start-date" disabled>
+                                            </div>
                                         </div>
-                                        <div class="custom-control custom-radio d-flex align-items-center py-2">
+                                        <div class="custom-control mt-1">
                                             <input type="radio" id="start-now-recur" name="recurrence_start" class="form-check-input" value="now">
                                             <label class="custom-control-label" for="start-now-recur">Start now</label>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
-                                        <div class="custom-control custom-radio d-flex align-items-center py-2">
-                                            <input type="radio" id="end-after-date" name="recurrence_end" class="form-check-input" value="date">
-                                            <label class="custom-control-label" for="end-after-date">End by: </label>&nbsp;&nbsp;
-                                            <input type="date" class="form-control allow-req" id="recur-end-date" style="width: 200px;" disabled>
+                                        <div class="col-12 mt-1">
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <div class="form-check">
+                                                    <input type="radio" id="end-after-date" name="recurrence_end" class="form-check-input" value="date">
+                                                    <label class="custom-control-label" for="end-after-date">End by: </label>
+                                                </div>    
+                                                <div>
+                                                    <input type="date" class="form-control allow-req" id="recur-end-date" style="width: 200px;" disabled>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="custom-control custom-radio d-flex align-items-center py-2">
-                                            <input type="radio" id="end-after-occurences" name="recurrence_end" class="form-check-input" value="count">
-                                            <label class="custom-control-label" for="end-after-occurences">End after: </label>&nbsp;&nbsp;
-                                            <input type="number" class="form-control allow-req" id="end-after-occur" value="1" min="1" style="width: 100px;" disabled>
-                                            <label>&nbsp;&nbsp; occurences</label>
+                                        <div class="col-12 mt-1">
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <div class="form-check">
+                                                    <input type="radio" id="end-after-occurences" name="recurrence_end" class="form-check-input" value="count">
+                                                    <label class="custom-control-label" for="end-after-occurences">End after: </label>
+                                                </div>    
+                                                <div>
+                                                    <input type="number" class="form-control allow-req" id="end-after-occur" value="1" min="1" style="width: 100px;" disabled>
+                                                </div>
+                                                <div>
+                                                    <label> occurences</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="custom-control custom-radio d-flex align-items-center py-2">
+                                        <div class="custom-control mt-1">
                                             <input type="radio" id="no-end" name="recurrence_end" class="form-check-input" value="no end">
                                             <label class="custom-control-label" for="no-end">No end date</label>
                                         </div>
