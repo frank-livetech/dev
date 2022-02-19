@@ -779,6 +779,7 @@ br + br { display: none; }
                                 <div class="row bg-light p-2 m-2" id="response_template_fields" style="display:none">
                                     <strong> <h4>Response template properties</h4> </strong>
                                     <hr>
+                                    <form id="responseTemplateForm">
                                     <div class="row mt-1">
                                         <div class="col-md-6">
                                             <label for="title">Title</label>
@@ -804,6 +805,7 @@ br + br { display: none; }
                                             <label class="form-check-label" for="allStaff"> Show to all Staff </label>
                                         </div> 
                                     </div>
+                                    </form>
                                 </div>
                                 
                                 <div class="form-group pt-3">

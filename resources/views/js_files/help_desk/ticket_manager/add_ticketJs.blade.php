@@ -135,10 +135,13 @@
                 var priority = $('#priority').val();
                 var type = $('#type').val();
                 var customer_id = $('#customer_id').val();
-                // var ticket_detail = $('#ticket_detail').val();
                 var assigned_to = $("#assigned_to").val();
                 var deadline = $("#deadline").val();
                 var user_role = $("#for_customer_role").val();
+
+
+                // response template
+
 
                 form_Data = {
                     subject:subject,
@@ -148,8 +151,32 @@
                     assigned_to:assigned_to,
                     customer_id:customer_id,
                     type:type,
-                    deadline:deadline
+                    deadline:deadline,
+                    
                 };
+
+                // getting response template data
+                if($('#response_template').is(":checked" , true) ) {
+                    let access = ``;
+
+                    if( $("#onlyMe").is(":checked") ) {
+                        access = `only_me`;
+                    }
+
+                    if( $("#allStaff").is(":checked") ) {
+                        access = `all_staff`;
+                    }
+
+                    form_Data.title = $("#res_title").val();
+                    form_Data.cat_id = $("#category_name").val();
+                    form_Data.temp_html = ticket_detail;
+                    form_Data.view_access = access;
+                    form_Data.res = 1;
+
+
+                }else{
+                    form_Data.res = 0;
+                }
 
                 if($('#new_customer').prop('checked')) {
 
@@ -227,8 +254,6 @@
                     form_Data['customer_id'] = for_customer_profile_id;
                 }
 
-                // console.log(form_Data , "form");
-              
                 $.ajax({
                     type: "POST",
                     url: "{{url('save-tickets')}}",
@@ -244,6 +269,7 @@
 
                         if(data.success) {
                             // upload attachments
+                            $("#responseTemplateForm").trigger("reset");
                             $('.ticket_attaches').each(function(index) {
                                 console.log(this.files);
                                 if(this.files.length) {

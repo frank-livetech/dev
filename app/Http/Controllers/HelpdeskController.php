@@ -39,6 +39,7 @@ use Exception;
 use Genert\BBCode\BBCode;
 use App\Models\Mail;
 use App\Http\Controllers\GeneralController;
+use App\Http\Controllers\SystemManager\SettingsController;
 use App\Http\Controllers\CustomerPanel\HomeController;
 use App\Http\Controllers\SystemManager\MailController;
 use App\Http\Controllers\NotifyController;
@@ -370,7 +371,8 @@ class HelpdeskController extends Controller
         ]);
     }
 
-    public function save_tickets(Request $request){    
+    public function save_tickets(Request $request){   
+        // return dd($request->all()); 
         $current_date = Carbon::now();
 
         $data = $request->all();
@@ -446,7 +448,14 @@ class HelpdeskController extends Controller
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
             $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
             $log = new ActivitylogController();
-            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);            
+            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);    
+            
+            
+            // saving response template
+            if($request->res == 1) {
+                $resTemp = new SettingsController();
+                $resTemp->addResponseTemplate($request);
+            }     
 
             // return false;
             $response['id'] = $ticket->id;
@@ -1099,6 +1108,13 @@ class HelpdeskController extends Controller
                     }
                 }
             }
+
+
+            // saving response template
+            if($request->res == 1) {
+                $resTemp = new SettingsController();
+                $resTemp->addResponseTemplate($request);
+            }   
 
             $up_tkt = Tickets::where('id' , $request->ticket_id)->first();
             $save_reply->name = \Auth::user()->name;

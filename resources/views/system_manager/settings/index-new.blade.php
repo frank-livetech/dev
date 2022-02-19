@@ -481,7 +481,8 @@
     <script src="{{asset( $path . 'js/jquery_asColorPicker.min.js')}}"></script>
     <script src="{{asset( $path . 'js/jquery_minicolors.min.js')}}"></script>
     <script src="{{asset( $path . 'js/tinymce.min.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.3/bootstrapSwitch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.3/bootstrapSwitch.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.js"></script> -->
 
     @include('js_files.system_manager.settings.indexJs')
@@ -499,5 +500,9 @@
 
     <script>
         let datetime = {!! json_encode($datetime) !!};
+
+        tinymce.init({
+            selector: '#mymce'
+        });
     </script>
 @endsection
