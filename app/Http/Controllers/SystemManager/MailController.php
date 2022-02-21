@@ -1343,14 +1343,24 @@ class MailController extends Controller
         }
 
         foreach ($data_list as $key => $data) {
+            
             if($data['module'] == 'Customer') {
+
                 if(str_contains($template, '{Customer-ID}')) {
                     $template = str_replace('{Customer-ID}', $data['values']['id'], $template);
                 }
+
                 if(str_contains($template, '{Customer-Name}')) {
                     $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
                 }
+
+                if(str_contains($template, '{Site-Link}')) {
+                    $val = 'https://mylive-tech.com/dev';
+                    $template = str_replace('{Site-Link}', $val , $template);
+                }
+
             } else if($data['module'] == 'Ticket') {
+
                 if(str_contains($template, '{Ticket-ID}')) {
                     $template = str_replace('{Ticket-ID}', $data['values']['coustom_id'], $template);
                 }
@@ -1358,6 +1368,11 @@ class MailController extends Controller
                     if(array_key_exists('ticket_detail', $data['values'])) {
                         $template = str_replace('{Initial-Request}', $data['values']['ticket_detail'], $template);
                     }
+                }
+
+                if(str_contains($template, '{Site-Link}')) {
+                    $val = 'https://mylive-tech.com/dev';
+                    $template = str_replace('{Site-Link}', $val , $template);
                 }
 
                 if(str_contains($template, '{Ticket-Status-Name}')) {
@@ -1407,19 +1422,28 @@ class MailController extends Controller
                     }
                 }
             } else if($data['module'] == 'User') {
+
                 if(str_contains($template, '{User-Name}')) {
                     $template = str_replace('{User-Name}', $data['values']['name'], $template);
                 }
+
                 if(str_contains($template, '{User-Email}')) {
                     $template = str_replace('{User-Email}', $data['values']['email'], $template);
                 }
+
                 if(str_contains($template, '{User-Password}') && !empty($data['values']['alt_pwd'])) {
                     $template = str_replace('{User-Password}', Crypt::decryptString($data['values']['alt_pwd']), $template);
                 }
+
                 if(str_contains($template, '{URL}') && $data['values']['user_type'] == 5) {
                     $template = str_replace('{URL}', request()->root().'/user-login', $template);
                 }else{
                     $template = str_replace('{URL}', request()->root().'/login', $template);
+                }
+
+                if(str_contains($template, '{Site-Link}')) {
+                    $val = 'https://mylive-tech.com/dev';
+                    $template = str_replace('{Site-Link}', $val , $template);
                 }
 
             }

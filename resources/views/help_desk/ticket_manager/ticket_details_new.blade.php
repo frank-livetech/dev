@@ -512,12 +512,29 @@ br + br { display: none; }
                                         <a class="nav-link" id="v-pills-billing-tab" data-bs-toggle="tab" href="#v-pills-billing" role="tab" aria-controls="v-pills-billing" aria-selected="false">Billing Details</a>
                                         <a class="nav-link" id="v-pills-audit-tab" data-bs-toggle="tab" href="#v-pills-audit" role="tab" aria-controls="v-pills-audit" aria-selected="false">Audit</a>
 
-                                        <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">
+
+                                        <!-- dont remove or uncomment this anchor tag -->
+                                        <a style="display:none" class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
-                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups </span>
+
+                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Up </span>
+
                                                 <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
+
+                                            </div>
+                                        </a>
+
+                                        <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">
+                                            <div class="d-flex justify-content-between w-100 align-self-center">
+
+                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups </span>
+
+                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
+                                                    style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
+
                                             </div>
                                         </a>
 
@@ -590,7 +607,7 @@ br + br { display: none; }
                                             </div> -->
                                             <div id="accordion" class="custom-accordion">
                                                 <div class="card mb-0 shadow-none">
-                                                    <div class="w-100 pt-4" id="clockdiv"></div>
+                                                    <div class="w-100" id="clockdiv"></div>
                                                 </div>
                                             </div>
                                         </div>
