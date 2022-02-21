@@ -702,10 +702,10 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                     <div class="col-sm-4 " style="border-right:1px solid grey;">
                                         <div class="row ">
                                             <div class="col-md-12">
-                                                <input type="text" class="form-control " placeholder="Search for...">
+                                                <input type="text" class="form-control " placeholder="Search for..." id="search_res_template">
                                                 <a class="srh-btn"><i class="ti-search"></i></a>
                                             </div>
-                                            <div id="alltempResponse" class="w-100 pt-3 pr-3 pl-3 pb-1">
+                                            <div id="alltempResponse" class="w-100 pr-3 pl-3 pb-1" style="height: 700px; overflow: hidden; overflow-y: scroll;">
 
                                             </div>
 
@@ -720,7 +720,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                             </div>
                                             <div class="form-group my-1">
                                                 <label for="departmrnt">Category Name</label>
-                                                <select class="form-control" id="cat_id" name="cat_id">
+                                                <select class="select2" id="cat_id" name="cat_id">
                                                 </select>
                                             </div>
 
@@ -736,7 +736,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                                     <input class="form-check-input" type="radio" name="view_access" id="onlyMe">
                                                     <label class="form-check-label" for="onlyMe"> Show only to Me </label>
                                                 </div>
-                                                <div class="form-check mx-2">
+                                                <div class="form-check mx-2 mt-1">
                                                     <input class="form-check-input" type="radio" name="view_access" id="allStaff">
                                                     <label class="form-check-label" for="allStaff"> Show to all Staff </label>
                                                 </div>

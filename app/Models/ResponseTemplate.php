@@ -8,6 +8,6 @@ class ResponseTemplate extends Model
 {
     protected $table = 'res_templates';
     protected $fillable = [
-        'title','cat_id','temp_html','view_access'
+        'title','cat_id','temp_html','view_access' ,'created_by', 'updated_by',
     ];
 }

@@ -588,6 +588,6 @@
             $("#res_title").val("");
             $("#category_name").val("").trigger('change');
             $("#onlyMe").prop("checked", false);
-            $("#allStaff").prop("checked", false);
+            $("#allStaff").prop("checked", true);
         });
     </script>
