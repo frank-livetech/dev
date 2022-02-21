@@ -3138,6 +3138,14 @@ function matchStart(params, data) {
 
 
 // reset fields
+function resetSLA(value) {
+    if(value == 'reply_due') {
+        $("#ticket-rep-due").val("");
+    }else{
+        $("#ticket-res-due").val("");
+    }
+}
+
 function resetTktSLA(value) {
     if(value  == 1) {
         $("#ticket-rep-due").val("");
