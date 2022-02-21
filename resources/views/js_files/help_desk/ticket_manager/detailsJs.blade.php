@@ -378,6 +378,10 @@ $("#ticket-rep-due").on('change' , function() {
 
 $("#response_template").click(function() {
     $(this).is(":checked") ? $('#response_template_fields').show() :  $('#response_template_fields').hide();
+    $("#res_title").val("");
+    $("#category_name").val("").trigger('change');
+    $("#onlyMe").prop("checked", false);
+    $("#allStaff").prop("checked", true);
 });
 
 function updateDeadlines() {
@@ -3138,6 +3142,14 @@ function matchStart(params, data) {
 
 
 // reset fields
+function resetSLA(value) {
+    if(value == 'reply_due') {
+        $("#ticket-rep-due").val("");
+    }else{
+        $("#ticket-res-due").val("");
+    }
+}
+
 function resetTktSLA(value) {
     if(value  == 1) {
         $("#ticket-rep-due").val("");

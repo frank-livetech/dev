@@ -452,11 +452,27 @@ $(document).ready(function() {
                 console.log(obj.length, 'obj');
 
                 for (var i = 0; i < obj.length; i++) {
-                    html += `<div class="d-flex justify-content-between mt-3 border-bottom">
-                                <div><h5>` + obj[i].title + `</h5></div>
-                                <div><a type="button" onclick="updateresponseTemp(${obj[i].id})" class="text-dark" style="float:right;"><i class="fas fa-pencil-alt"></i></a></div>
-                            </div>
-                    `
+
+                    if( obj[i].created_by != "{{auth()->id()}}" && obj[i].view_access == 'all_staff') {
+
+                        html += `<div class="d-flex justify-content-between mt-3 border-bottom" id="resTemp_${obj[i].id}">
+                                    <div><h5>${obj[i].title}</h5></div>
+                                    <div>
+                                        <a type="button" onclick="updateresponseTemp(${obj[i].id})" class="text-dark px-1"> <i class="fas fa-pencil-alt"></i> </a>
+                                        <a type="button" onclick="deleteResponseTemp(${obj[i].id})"  class="text-dark"> <i class="fas fa-trash"></i> </a>
+                                    </div>
+                                </div>`;
+                    }
+
+                    if( obj[i].created_by == "{{auth()->id()}}" ) {
+                        html += `<div class="d-flex justify-content-between mt-3 border-bottom" id="resTemp_${obj[i].id}">
+                                    <div><h5>${obj[i].title} </h5></div>
+                                    <div>
+                                        <a type="button" onclick="updateresponseTemp(${obj[i].id})" class="text-dark px-1"> <i class="fas fa-pencil-alt"></i> </a>
+                                        <a type="button" onclick="deleteResponseTemp(${obj[i].id})"  class="text-dark"> <i class="fas fa-trash"></i> </a>
+                                    </div>
+                                </div>`;
+                    }
                 }
                 $("#alltempResponse").html(html);
 
@@ -469,6 +485,34 @@ $(document).ready(function() {
             }
         });
     }
+
+    // search template
+    $("#search_res_template").on('keyup', function() {
+        let value = $(this).val().toLowerCase();
+
+        var filtertext = $.grep(response_temp_arr , function(object) {
+            return object.title.toLowerCase().includes(value);
+        });
+
+        let html = ``;
+        if(filtertext.length > 0) {
+            for (var i = 0; i < filtertext.length; i++) {
+                html += `<div class="d-flex justify-content-between mt-3 border-bottom" id="resTemp_${filtertext[i].id}">
+                    <div><h5>${filtertext[i].title}</h5></div>
+                    <div>
+                        <a type="button" onclick="updateresponseTemp(${filtertext[i].id})" class="text-dark px-1"> <i class="fas fa-pencil-alt"></i> </a>
+                        <a type="button" onclick="deleteResponseTemp(${filtertext[i].id})"  class="text-dark"> <i class="fas fa-trash"></i> </a>
+                    </div>
+                </div>`;
+            }
+        }else{
+            html += `<div class="d-flex justify-content-between mt-3 border-bottom" id="resTemp_">
+                    Nothing found
+                </div>`;
+        }
+
+        $("#alltempResponse").html(html);
+    });
 
 
 
@@ -1090,6 +1134,43 @@ function updateresponseTemp(id) {
 
     }
 };
+
+// delete response template
+function deleteResponseTemp(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: 'POST',
+                url: "{{url('delete_response_template')}}",
+                data: {id:id},
+                dataType: 'json',
+                success: function(data) {
+                    
+                    if (data.status_code == 200 && data.success == true) {
+                        toastr.success(data.message, { timeOut: 5000 });
+                        $("#resTemp_"+id).remove();
+                        $("#res_id").val("");
+                        $("#save_temp_response").trigger("reset");
+
+                    } else {
+                        toastr.error(data.message, { timeOut: 5000 });
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+    });
+   
+}
 
 function sendOnDemandRecap() {
 

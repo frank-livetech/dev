@@ -108,6 +108,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/save-temp-response','SettingsController@addResponseTemplate');
     Route::get('/show_response_template','SettingsController@showResponseTemplate');
     Route::post('/update_response_template','SettingsController@updateResponseTemplate');
+    Route::post('/delete_response_template','SettingsController@deleteResponseTemplate');
 
     Route::get('/all-notifications','SettingsController@showAllNotifications');
 

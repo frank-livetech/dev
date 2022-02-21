@@ -501,8 +501,51 @@
     <script>
         let datetime = {!! json_encode($datetime) !!};
 
+
         tinymce.init({
-            selector: '#mymce'
+            selector: "textarea#mymce",
+            // theme: "modern",
+            height: 300,
+            file_picker_types: 'image',
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons",
+            paste_data_images: true,
+            file_picker_callback: function(cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
+
+                input.onchange = function() {
+                    
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = async function() {
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache = tinymce.editors.mymce.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+
+                        if (reader.result.includes('/svg') || reader.result.includes('/SVG')) {
+                            base64 = await downloadPNGFromAnyImageSrc(reader.result);
+                        }
+
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            },
+        }).then(function() {
+            listReplies();
+        }).catch(function(error) {
+            listReplies();
         });
     </script>
 @endsection

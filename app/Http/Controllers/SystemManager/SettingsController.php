@@ -961,10 +961,11 @@ class SettingsController extends Controller
             "cat_id" => $request->cat_id,
             "temp_html" => $request->temp_html,
             "view_access" => $request->view_access,
-            "created_by" => \Auth::user()->id,
+            "created_by" => auth()->id(),
         );
 
         if($request->res_id != null && $request->res_id != " ") {
+            $data['updated_by'] = auth()->id();
             ResponseTemplate::where('id',$request->res_id)->update($data);
             $title = 'Updated';
         }else{
@@ -981,7 +982,7 @@ class SettingsController extends Controller
     public function showResponseTemplate(Request $request) {  
         $data = ResponseTemplate::all();
 
-        $response['message'] = 'CAtegory Saved Successfully';
+        $response['message'] = 'Category Saved Successfully';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['data'] = $data;
@@ -1003,6 +1004,26 @@ class SettingsController extends Controller
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
+    }
+
+    // delete response template
+    public function deleteResponseTemplate(Request $request) {
+        $res = ResponseTemplate::findOrFail($request->id);
+        if($res) {
+            $res->delete();
+
+            return response()->json([
+                'message' => 'Response Template Deleted Successfully',
+                'status_code' => 200,
+                'success' => true,
+            ]);
+        }else{
+            return response()->json([
+                'message' => 'Something went wrong!',
+                'status_code' => 500,
+                'success' => false,
+            ]);
+        }
     }
 
     /// Response Category Template

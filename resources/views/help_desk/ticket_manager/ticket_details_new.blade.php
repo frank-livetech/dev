@@ -739,7 +739,7 @@ br + br { display: none; }
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-end mt-2 reply_btns" style="display:none !important">
+                            <div class="d-flex justify-content-end mt-2 reply_btns reply-btns" style="display:none !important">
                                 <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this)">
                                     <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
                                         <span class="sr-only">Loading...</span>
@@ -789,7 +789,7 @@ br + br { display: none; }
                                     </div>
                                     <div class="form-check form-check-primary ms-2">
                                         <input type="checkbox" value="1" class="form-check-input" id="response_template" name="response_template">
-                                        <label class="custom-form-label" for="response_template"> Response Template </label>
+                                        <label class="custom-form-label" for="response_template"> Quick Save Reply </label>
                                     </div>
                                 </div>
 
@@ -1564,14 +1564,28 @@ br + br { display: none; }
             </div>
             <div class="modal-body">
                 <form id="sla_plan_reset_form" enctype="multipart/form-data" onsubmit="return false" method="post" action="{{asset('/update-ticket-deadlines')}}">
-                    <div class="form-group">
-                        <label for="ticket-rep-due">Reply Due</label>
-                        <input type="datetime-local" id="ticket-rep-due" name="" class="form-control">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="form-group w-100 px-1">
+                            <label for="ticket-rep-due">Reply Due</label>
+                            <input type="datetime-local" id="ticket-rep-due" name="" class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light mt-1"
+                            title="Reset reply due" onclick="resetSLA('reply_due')"> <i data-feather='refresh-cw'></i> </button>
+                        </div>
                     </div>
-                    <div class="form-group pt-1">
-                        <label for="ticket-res-due">Resolution Due</label>
-                        <input type="datetime-local" id="ticket-res-due" name="" class="form-control">
+
+                    <div class="d-flex justify-content-between align-items-center mt-1">
+                        <div class="form-group w-100 px-1">
+                            <label for="ticket-res-due">Resolution Due</label>
+                            <input type="datetime-local" id="ticket-res-due" name="" class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light mt-1"
+                            title="Reset resolution due" onclick="resetSLA('resolution_due')"> <i data-feather='refresh-cw'></i> </button>
+                        </div>
                     </div>
+
                     <div class="form-group text-right mt-3">
                         <button class="btn btn-rounded btn-success float-right" type="button" onclick="updateDeadlines();">Save</button>
                         <button class="btn btn-rounded btn-danger float-right" style="margin-right: 5px" type="button" data-dismiss="modal">Close</button>
