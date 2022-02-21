@@ -585,5 +585,9 @@
 
         $("#response_template").click(function() {
             $(this).is(":checked") ? $('#response_template_fields').show() :  $('#response_template_fields').hide();
+            $("#res_title").val("");
+            $("#category_name").val("").trigger('change');
+            $("#onlyMe").prop("checked", false);
+            $("#allStaff").prop("checked", false);
         });
     </script>
