@@ -739,7 +739,7 @@ br + br { display: none; }
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-end mt-2 reply_btns" style="display:none !important">
+                            <div class="d-flex justify-content-end mt-2 reply_btns reply-btns" style="display:none !important">
                                 <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this)">
                                     <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
                                         <span class="sr-only">Loading...</span>
