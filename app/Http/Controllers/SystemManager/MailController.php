@@ -1395,6 +1395,13 @@ class MailController extends Controller
                 }
                 // ends here
 
+                // customer ticket url
+                if(str_contains($template, '{Customer-URL}')) {
+                    $url = request()->root() . '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
+                    $template = str_replace('{URL}', $url , $template);
+                }
+
+
                 if(str_contains($template, '{Ticket-Status-Name}')) {
                     $status = TicketStatus::where('id' , $data['values']['status'])->first();    
                     $status_badge = '<span class="badge" style="background:'.$status['color'].'; padding: 2px 8px; border-radius: 20px; color: white; font-size: 11px;"> '. $status['name'] .'</span>';
