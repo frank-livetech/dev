@@ -725,7 +725,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                             </div>
 
                                             <div class="form-group my-1">
-                                                <label>Quote Details</label>
+                                                <label>Response Details</label>
 
                                                 <textarea class="form-control mymce" id="mymce" rows="2"></textarea>
 
@@ -737,7 +737,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                                     <label class="form-check-label" for="onlyMe"> Show only to Me </label>
                                                 </div>
                                                 <div class="form-check mx-2 mt-1">
-                                                    <input class="form-check-input" type="radio" name="view_access" id="allStaff">
+                                                    <input class="form-check-input" type="radio" name="view_access" id="allStaff" checked="checked">
                                                     <label class="form-check-label" for="allStaff"> Show to all Staff </label>
                                                 </div>
                                             </div>

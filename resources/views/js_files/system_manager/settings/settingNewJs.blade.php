@@ -403,6 +403,16 @@ $(document).ready(function() {
             form_data.append("view_access", 'all_staff');
         }
 
+        if(content == '<p></p>' || content == '') {
+            toastr.error('Response Detail is required', { timeOut: 5000 });
+            return false;
+        }
+
+        if( $("#title").val() == '') {
+            toastr.error('Title is required', { timeOut: 5000 });
+            return false;
+        }
+
         form_data.append("temp_html", content);
 
 
@@ -411,7 +421,6 @@ $(document).ready(function() {
             type: method,
             data: form_data,
             dataType: 'JSON',
-
             contentType: false,
             cache: false,
             processData: false,
@@ -491,7 +500,11 @@ $(document).ready(function() {
         let value = $(this).val().toLowerCase();
 
         var filtertext = $.grep(response_temp_arr , function(object) {
-            return object.title.toLowerCase().includes(value);
+            let re_title = object.title.toLowerCase();
+            console.log(re_title);
+            if(re_title != null) {
+                return re_title.includes(value);
+            }
         });
 
         let html = ``;
@@ -507,7 +520,7 @@ $(document).ready(function() {
             }
         }else{
             html += `<div class="d-flex justify-content-between mt-3 border-bottom" id="resTemp_">
-                    Nothing found
+                    No response template found
                 </div>`;
         }
 
