@@ -638,6 +638,8 @@ class UserController extends Controller
         $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();  
+
+        $ticketView = TicketView::where('user_id' , $id)->first();
           
         return view('system_manager.staff_management.user_profile_new', get_defined_vars());
     }
