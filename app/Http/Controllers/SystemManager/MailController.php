@@ -1377,21 +1377,8 @@ class MailController extends Controller
 
                 // if module is ticket then replace url to according to customer && user ticket detail urls.
                 if(str_contains($template, '{URL}')) {
-                    if( $data['values']['created_by'] != null) {
-
-                        $user = User::where('id', $data['values']['created_by'])->first();
-    
-                        if($user) {
-                            if($user->user_type == 5) {
-                                $url = request()->root() . '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
-                                $template = str_replace('{URL}', $url , $template);
-                            }else{
-                                $url = request()->root() . '/ticket-details' . '/' . $data['values']['coustom_id'];
-                                $template = str_replace('{URL}', $url , $template);
-                            }
-                        }
-    
-                    }
+                    $url = request()->root() . '/ticket-details' . '/' . $data['values']['coustom_id'];
+                    $template = str_replace('{URL}', $url , $template);
                 }
                 // ends here
 

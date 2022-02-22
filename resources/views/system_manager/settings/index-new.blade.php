@@ -15,6 +15,11 @@
 .dd-handle{
     cursor: pointer;
 }
+.nav-pills .nav-link, .nav-tabs .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: left !important;
+}
 </style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -42,9 +47,13 @@
         </div>
         <div class="content-body">
             <div class="row">
-                <div class="col-lg-3 col-md-12">
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                        
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body p-1">
                         
                             <div class="dd myadmin-dd" id="nestable-menu">
                                 <ol class="dd-list nav nav-pills flex-column ">
@@ -79,7 +88,7 @@
                                         <div class="dd-handle nav-link dispatch" data-cls=".dispatch" data-trg="#dispatch_settings">Dispatch</div>
                                     </li>
                                     <li class="dd-item nav-item" data-id="11">
-                                        <div class="dd-handle nav-link project  px-0" data-cls=".project" data-trg="#project_settings">Project Management</div>
+                                        <div class="dd-handle nav-link project" data-cls=".project" data-trg="#project_settings">Project Management</div>
                                     </li>
                                     <li class="dd-item nav-item" data-id="12">
                                         <div class="dd-handle nav-link payroll" data-cls=".payroll" data-trg="#payroll_settings">Payroll</div>
@@ -88,63 +97,66 @@
                             </div>
                         </div>
                     </div>
+
+                    </div>
+                    </div>
                 </div>
 
-                <div class="col-md-9 gears" id="settings_stats">
+                <div class="col-md-10 gears" id="settings_stats">
                     <div class="card">
                         <div class="card-body">
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-9 gears" id="tickets_settings" style="display:none">
+                <div class="col-md-10 gears" id="tickets_settings" style="display:none">
                    @include('system_manager.settings.tabs.tickets')
                 </div>
 
-                <div class="col-md-9 gears" id="billing_settings" style="display:none">
+                <div class="col-md-10 gears" id="billing_settings" style="display:none">
                     @include('system_manager.settings.tabs.billing')
                 </div>
             
-                <div class="col-md-9 gears" id="customer_settings" style="display:none">
+                <div class="col-md-10 gears" id="customer_settings" style="display:none">
                     @include('system_manager.settings.tabs.customer')
                 </div>
 
-                <div class="col-md-9 gears" id="marketing_settings" style="display:none">
+                <div class="col-md-10 gears" id="marketing_settings" style="display:none">
                     @include('system_manager.settings.tabs.marketing')
                     
                 </div>
 
-                <div class="col-md-9 gears" id="security_settings" style="display:none">
+                <div class="col-md-10 gears" id="security_settings" style="display:none">
                     @include('system_manager.settings.tabs.security')
                     
                 </div>
 
-                <div class="col-md-9 gears" id="system_settings" style="display:none">
+                <div class="col-md-10 gears" id="system_settings" style="display:none">
                     @include('system_manager.settings.tabs.system')
                    
                 </div>
 
-                <div class="col-md-9 gears" id="branding_settings" style="display:none">
+                <div class="col-md-10 gears" id="branding_settings" style="display:none">
                      @include('system_manager.settings.tabs.branding')
                     
                 </div>
 
-                <div class="col-md-9 gears" id="menu_settings" style="display:none">
+                <div class="col-md-10 gears" id="menu_settings" style="display:none">
                     @include('system_manager.settings.tabs.menu_management')
                     
                 </div>
 
-                <div class="col-md-9 gears" id="dispatch_settings" style="display:none">
+                <div class="col-md-10 gears" id="dispatch_settings" style="display:none">
                     @include('system_manager.settings.tabs.dispatch')
                     
                 </div> 
 
-                <div class="col-md-9 gears" id="project_settings" style="display:none">
+                <div class="col-md-10 gears" id="project_settings" style="display:none">
                     @include('system_manager.settings.tabs.prjct_mgt')
                    
                 </div>
 
-                <div class="col-md-9 gears" id="payroll_settings" style="display:none">
+                <div class="col-md-10 gears" id="payroll_settings" style="display:none">
                     @include('system_manager.settings.tabs.payroll')
                     
                 </div>
@@ -480,10 +492,8 @@
     <script src="{{asset( $path . 'js/jquery_asGradient.js')}}"></script>
     <script src="{{asset( $path . 'js/jquery_asColorPicker.min.js')}}"></script>
     <script src="{{asset( $path . 'js/jquery_minicolors.min.js')}}"></script>
-    <script src="{{asset( $path . 'js/tinymce.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.3/bootstrapSwitch.min.js"></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 
     @include('js_files.system_manager.settings.indexJs')
     @include('js_files.system_manager.settings.settingNewJs')
@@ -501,39 +511,36 @@
     <script>
         let datetime = {!! json_encode($datetime) !!};
 
-
         tinymce.init({
             selector: "textarea#mymce",
             // theme: "modern",
             height: 300,
             file_picker_types: 'image',
+            paste_data_images: true,
             plugins: [
                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
                 "save table contextmenu directionality emoticons template paste textcolor"
             ],
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons",
-            paste_data_images: true,
+
             file_picker_callback: function(cb, value, meta) {
                 var input = document.createElement('input');
                 input.setAttribute('type', 'file');
                 input.setAttribute('accept', 'image/*');
-                // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
-
                 input.onchange = function() {
-                    
                     var file = this.files[0];
 
                     var reader = new FileReader();
                     reader.onload = async function() {
                         var id = 'blobid' + (new Date()).getTime();
-                        var blobCache = tinymce.editors.mymce.editorUpload.blobCache;
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                         var base64 = reader.result.split(',')[1];
 
-                        if (reader.result.includes('/svg') || reader.result.includes('/SVG')) {
+                        if(reader.result.includes('/svg') || reader.result.includes('/SVG')) {
                             base64 = await downloadPNGFromAnyImageSrc(reader.result);
                         }
-
+                        
                         var blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
                         cb(blobInfo.blobUri(), { title: file.name });
@@ -542,10 +549,7 @@
                 };
                 input.click();
             },
-        }).then(function() {
-            listReplies();
-        }).catch(function(error) {
-            listReplies();
         });
+        
     </script>
 @endsection
