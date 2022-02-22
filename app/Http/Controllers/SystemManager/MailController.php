@@ -1375,6 +1375,26 @@ class MailController extends Controller
                     $template = str_replace('{Site-Link}', $val , $template);
                 }
 
+                // if module is ticket then replace url to according to customer && user ticket detail urls.
+                if(str_contains($template, '{URL}')) {
+                    if( $data['values']['created_by'] != null) {
+
+                        $user = User::where('id', $data['values']['created_by'])->first();
+    
+                        if($user) {
+                            if($user->user_type == 5) {
+                                $url = request()->root() . `/customer-ticket-details/` . $data['values']['coustom_id'];
+                                $template = str_replace('{URL}', $url , $template);
+                            }else{
+                                $url = request()->root() . `/ticket-details/` . $data['values']['coustom_id'];
+                                $template = str_replace('{URL}', $url , $template);
+                            }
+                        }
+    
+                    }
+                }
+                // ends here
+
                 if(str_contains($template, '{Ticket-Status-Name}')) {
                     $status = TicketStatus::where('id' , $data['values']['status'])->first();    
                     $status_badge = '<span class="badge" style="background:'.$status['color'].'; padding: 2px 8px; border-radius: 20px; color: white; font-size: 11px;"> '. $status['name'] .'</span>';
