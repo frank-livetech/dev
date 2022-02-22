@@ -1398,7 +1398,7 @@ class MailController extends Controller
                 // customer ticket url
                 if(str_contains($template, '{Customer-URL}')) {
                     $url = request()->root() . '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
-                    $template = str_replace('{URL}', $url , $template);
+                    $template = str_replace('{Customer-URL}', $url , $template);
                 }
 
 
