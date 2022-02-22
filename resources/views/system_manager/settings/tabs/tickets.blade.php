@@ -727,7 +727,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                             <div class="form-group my-1">
                                                 <label>Response Details</label>
 
-                                                <textarea class="form-control mymce" id="mymce" rows="2"></textarea>
+                                                <textarea class="form-control" id="mymce" rows="2"></textarea>
 
                                             </div>
 
