@@ -36,9 +36,9 @@ class Tickets extends Model
 
     public function getLastActivityAttribute() {
 
-        $id = $this->id;
-        $lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $id)->orderBy('created_at', 'desc')->value('created_at');
-        return $lastActivity;
+        // $id = $this->id;
+        // $lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $id)->orderBy('created_at', 'desc')->value('created_at');
+        return $this->updated_at;
     }
     public function getStatusColorAttribute() {
 
