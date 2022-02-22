@@ -1383,10 +1383,10 @@ class MailController extends Controller
     
                         if($user) {
                             if($user->user_type == 5) {
-                                $url = request()->root() . `/customer-ticket-details/` . $data['values']['coustom_id'];
+                                $url = request()->root() . '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
                                 $template = str_replace('{URL}', $url , $template);
                             }else{
-                                $url = request()->root() . `/ticket-details/` . $data['values']['coustom_id'];
+                                $url = request()->root() . '/ticket-details' . '/' . $data['values']['coustom_id'];
                                 $template = str_replace('{URL}', $url , $template);
                             }
                         }
