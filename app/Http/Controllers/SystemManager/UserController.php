@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\User;
 use Illuminate\Support\Facades\Crypt;
-
+use App\Models\TicketView;
 use App\Models\Customer;
 use App\Models\DepartmentAssignments;
 use App\Models\Departments;
@@ -571,6 +571,7 @@ class UserController extends Controller
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
     
+        $ticketView = TicketView::where('user_id' , $id)->first();
 
         return view('system_manager.staff_management.user_profile_new', get_defined_vars());
         // return view('system_manager.staff_management.user_profile',compact('id', 'priorities','date_format','types','departments','statuses','customers','users','ticket_format','docs', 'tickets','certificates','profile','staff_att_data','countries','tasks','staff_state','google', 'google_api','selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
@@ -1471,6 +1472,5 @@ class UserController extends Controller
             'status_code' => 200,
         ]);
     }
-
 
 }

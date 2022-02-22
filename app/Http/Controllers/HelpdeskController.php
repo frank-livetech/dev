@@ -36,6 +36,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Exception;
+use App\Models\TicketView;
 use Genert\BBCode\BBCode;
 use App\Models\Mail;
 use App\Http\Controllers\GeneralController;
@@ -656,6 +657,7 @@ class HelpdeskController extends Controller
         $response['closed_tickets_count']= $closed_tickets_count;
         $response['trashed_tickets_count']= $trashed_tickets_count;
         $response['date_format'] = Session('system_date');
+        $response['ticket_view'] = TicketView::where('user_id' , auth()->id() )->first();
         
         return response()->json($response);
 
@@ -944,6 +946,7 @@ class HelpdeskController extends Controller
         $response['closed_tickets_count']= $closed_tickets_count;
         $response['trashed_tickets_count']= $trashed_tickets_count;
         $response['date_format'] = Session('system_date');
+        $response['ticket_view'] = TicketView::where('user_id' , auth()->id() )->first();
         
         return response()->json($response);
     }
@@ -2810,5 +2813,30 @@ class HelpdeskController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }
+    }
+
+    // save ticket general info
+    public function saveTicketGeneralInfo(Request $request) {
+
+        $data = array(
+            "per_page" => $request->per_page , 
+            "user_id" => $request->user_id , 
+            "created_by" => auth()->id(),
+        );
+
+        $tkt = TicketView::where('user_id' , $request->user_id)->first();
+
+        if($tkt) {
+            $data['updated_by'] = auth()->id();
+            TicketView::where('user_id' , $request->user_id)->update($data);
+        }else{
+            TicketView::create($data);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Saved Successfully!',
+            'status_code' => 200,
+        ]);
     }
 }

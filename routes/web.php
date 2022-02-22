@@ -166,7 +166,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/ticket-format','SettingsController@ticket_format');
     Route::get('/get-color','UserController@get_color');
     Route::Post('/delete-user','UserController@delete_user');
-
+    
     // leaves
     Route::post('/add-leaves','UserController@addLeaves');
     Route::get('/get-leaves','UserController@get_all_leaves');
@@ -488,6 +488,9 @@ Route::get('/system-info','AboutController@System_info')->name('system_info.inde
 Route::get('/feature-suggestions','AboutController@feature_suggestions')->name('feature_suggestions.index');
 Route::get('/ticket-manager/{type?}','HelpdeskController@ticket_management')->name('ticket_management.index');
 Route::get('/ticket-manager/{dept?}/{sts?}','HelpdeskController@ticket_manager')->name('ticket-manager.index');
+
+// ticket general
+Route::post('/ticket-general-info','HelpdeskController@saveTicketGeneralInfo')->name('saveGeneralInfo');
 
 
 // Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage');

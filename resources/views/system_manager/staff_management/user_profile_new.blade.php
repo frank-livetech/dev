@@ -745,6 +745,7 @@
                                             <div class="card-title">
                                             <h3>GENERAL OPTIONS</h3>
                                             </div>
+                                            <form action="{{route('saveGeneralInfo')}}" method="POST" id="ticketGeneralForm">
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <h5>Tickets to display per page</h5>
@@ -753,7 +754,8 @@
                                                         Automatically refresh the ticket listing</small>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <input type="number" id="" class="form-control" name="contact" placeholder="">
+                                                    <input type="number" name="per_page" class="form-control" name="contact" placeholder=""
+                                                     value="{{$ticketView == null ? '' : ($ticketView->per_page == null ? '' : $ticketView->per_page) }}">
                                                 </div>
                                                 <hr>
                                                 <div class="col-md-8">
@@ -802,9 +804,14 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-12 mt-2">
+                                                        <button class="btn btn-success waves-effect float-right mx-1" id="loaderBtn" style="display:none" type="button" disabled="">
+                                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                            <span class="ms-25 align-middle">Loading...</span>
+                                                        </button>
                                                         <button class="btn btn-success rounded float-right" id="gen-btn" type="submit"><strong><i data-feather='refresh-ccw'></i> Update</strong></button>
                                                     </div>
                                             </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

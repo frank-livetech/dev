@@ -880,4 +880,49 @@ $('#ticket_table tbody').on('change', 'input[type="checkbox"]', function() {
         }
     }
 });
+
+
+// save ticket geenral info
+$("#ticketGeneralForm").submit(function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    let user_id = $("#user_id").val()
+
+
+    var formData = new FormData(this);
+    formData.append('user_id' , user_id);
+
+    $.ajax({
+        type: $(this).attr('method'),
+        url: $(this).attr('action'),
+        data: formData,
+        dataType:'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend:function(data) {
+            $("#gen-btn").hide();
+            $("#loaderBtn").show();
+        },
+        success: function (data) {
+            // console.log(data);
+            if(data.status_code == 200 && data.success == true) {
+                toastr.success( data.message , { timeOut: 5000 });
+
+            }else{
+                toastr.error( data.message , { timeOut: 5000 });
+            }
+        },
+        complete:function(data) {
+            $("#gen-btn").show();
+            $("#loaderBtn").hide();
+        },
+        error: function (e) {
+            $("#gen-btn").show();
+            $("#loaderBtn").hide();
+            console.log(e);
+        }
+    });
+});
 </script>
