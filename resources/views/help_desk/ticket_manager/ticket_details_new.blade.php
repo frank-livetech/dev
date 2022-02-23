@@ -228,9 +228,9 @@ br + br { display: none; }
     margin-left: 4px;
     margin-top: 4px;
 }
-.bootstrap-tagsinput > .bootstrap-tagsinput {
+.bootstrap-tagsinput {
     width: 100% !important;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc !important;
 }
 .bootstrap-tagsinput {
     display: flex !important;
@@ -741,7 +741,7 @@ br + br { display: none; }
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-end mt-2 reply_btns reply-btns" style="display:none !important">
+                            <div class="d-flex justify-content-end mt-2 p-1 reply_btns reply-btns" style="display:none !important">
                                 <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this)">
                                     <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
                                         <span class="sr-only">Loading...</span>
@@ -753,36 +753,68 @@ br + br { display: none; }
                                 <button id="cancel-rply" type="button" class="btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
                             </div>
 
-                            <div class="mt-4 d-none" id="compose-reply">
+                            <div class="mt-5 d-none p-2" id="compose-reply">
                                 <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="" style="margin-top: 10px;">
-                                            <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
-                                            @if( array_key_exists(0 , $shared_emails) )
-                                                <input type="text" id="to_mails" name="to_mails"
-                                                 class="form-control border" placeholder="Email" 
-                                                 data-role="tagsinput" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}" required>
-                                            @else
-                                                <input type="text" id="to_mails" name="to_mails" class="form-control border" placeholder="Email"  data-role="tagsinput" value="" required>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4" id="select_customer">
+                                    <div class="col-md-4" id="select_customer">
                                         <label class="form-label">Response Template</label>
                                         <select class="select2 form-control custom-select dropdown w-100" id="res-template" style="width:100%">
                                             <option value="">Select</option>
                                             @if(!empty($responseTemplates))
                                                 @foreach($responseTemplates as $res)
-                                                    <option value="{{$res->id}}">{{$res->title}}</option>
+                                                    <option value="{{$res->id}}">{{$res->title}} ({{$res->category_name}}) </option>
                                                 @endforeach
                                             @endif
                                         </select>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="d-flex mt-3">
+                                            <div class="form-check form-check-primary">
+                                                <input type="checkbox" value="1" class="form-check-input" id="show_cc_email" name="show_cc_email">
+                                                <label class="custom-form-label" for="show_cc_email"> CC </label>
+                                            </div>
+                                            <div class="form-check form-check-primary ms-2">
+                                                <input type="checkbox" value="1" class="form-check-input" id="show_bcc_emails" name="show_bcc_emails">
+                                                <label class="custom-form-label" for="show_bcc_emails"> BCC </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 cc_email_field" style="display:none">
+                                        <div class="" style="margin-top: 10px;">
+                                            <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
+                                            @if( array_key_exists(0 , $shared_emails) )
+                                                    <input type="text" id="to_mails" name="to_mails"
+                                                 class="form-control" placeholder="Email" 
+                                                 data-role="tagsinput" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}" required>                                                
+                                            @else
+                                                <input type="text" id="to_mails" name="to_mails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 bcc_email_field" style="display:none">
+                                        <div class="" style="margin-top: 10px;">
+                                            <label for="bcc_emails">BCC <span class="help"> e.g. "example@gmail.com"</span></label>
+                                            @if( array_key_exists(0 , $shared_emails) )
+
+                                                @if( array_search(2, array_column($shared_emails, 'mail_type')) )
+                                                    <input type="text" id="bcc_emails" name="bcc_emails"
+                                                    class="form-control" placeholder="Email" 
+                                                    data-role="tagsinput" value="{{$shared_emails[1]['mail_type'] == 2 ? $shared_emails[1]['email'] : '' }}" required>
+                                                @else
+                                                    <input type="text" id="bcc_emails" name="bcc_emails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+                                                @endif
+                                            @else
+                                                <input type="text" id="bcc_emails" name="bcc_emails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                                 
         
                                 <label style="margin-top: 10px;">Write a reply</label>
-                                <textarea id="mymce" name="reply"></textarea>
+                                <textarea id="mymce" class="mymce mt-2" name="reply"></textarea>
 
                                 <div class="d-flex mt-3">
                                     <div class="form-check form-check-primary">
@@ -808,8 +840,8 @@ br + br { display: none; }
                                             <label for="category_name">Category Name</label>
                                             <select name="category_name" id="category_name" class="select2">
                                                 <option value=""> Choose </option>
-                                                @foreach($responseTemplates as $tem)
-                                                    <option value="{{$tem->id}}"> {{$tem->title}} </option>
+                                                @foreach($response_categories as $tem)
+                                                    <option value="{{$tem->id}}"> {{$tem->name}} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -942,7 +974,7 @@ br + br { display: none; }
         </div><!-- /.modal Notes Modal -->
 
         <div class="modal fade text-start" id="follow_up" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Follow Up</h5>
@@ -957,6 +989,7 @@ br + br { display: none; }
                             <div class="form-row">
                                 <div class="row mb-2">
                                 <div class="col-md-6">
+                                    <label for="schedule_type"> Duration Type  </label>
                                     <select class="select2" name="schedule_type" id="schedule_type" onchange="showDateTimeDiv(this.value)" required>
                                         <option selected value="minutes">In minutes</option>
                                         <option value="hours">In hours</option>
@@ -969,12 +1002,15 @@ br + br { display: none; }
                                     </select>
                                 </div>
                                 <div class="col-md-6" id="schedule_time_div">
+                                    <label for="schedule_time"> Duration Length </label>
                                     <input class="form-control" type="number" min="1" name="schedule_time" id="schedule_time">
                                 </div>
                                 <div class="col-md-6 form-group" id="date_picker_div" style="display: none;">
+                                    <label for="schedule_type"> Duration Length  </label>
                                     <input type="datetime-local" id="custom_date" class="form-control">
                                 </div>
                                 <div class="col-md-6 form-group" id="recurrence_time_div" style="display: none;">
+                                    <label for="schedule_type"> Duration Length  </label>
                                     <input type="time" id="recurrence_time" class="form-control">
                                 </div>
                             </div>
@@ -1056,7 +1092,7 @@ br + br { display: none; }
                                 </div>
                             </div>
 
-                            <div class="form-row mt-2" >
+                            <div class="form-row" >
                                 <div class="col-md-12 form-group border p-1 bg-light rounded">
                                     <div class="form-check-inline" id="notes_div" style=""> 
                                         <div class="form-check form-check-inline">
@@ -1070,7 +1106,7 @@ br + br { display: none; }
                                 </div>
                             </div>
 
-                            <div class="form-row mt-3">
+                            <div class="form-row mt-1">
                                 <div class="col-md-12 form-group border p-1 bg-light rounded">
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="is_recurring">
@@ -1084,7 +1120,133 @@ br + br { display: none; }
                                         <label for="new_time">New Time</label>
                                         <input type="time" class="form-control" name="recurrence_time2">
                                     </div>
-                                    <ul class="list-group list-group-horizontal-lg pb-3 mt-1">
+
+                                    <!-- start -->
+                                    <div class="col-md-12 mt-1">
+                                        <div class="nav-vertical border p-1">
+                                            <ul class="nav nav-tabs nav-left flex-column border" role="tablist" style="height: 161px;">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="baseVerticalLeft-tab1" data-bs-toggle="tab" aria-controls="daily" href="#daily" role="tab" aria-selected="false"> Daily </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="baseVerticalLeft-tab2" data-bs-toggle="tab" aria-controls="weekly" href="#weekly" role="tab" aria-selected="false"> Weekly </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="baseVerticalLeft-tab3" data-bs-toggle="tab" aria-controls="monthly" href="#monthly" role="tab" aria-selected="true"> Monthly </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="baseVerticalLeft-tab4" data-bs-toggle="tab" aria-controls="yearly" href="#yearly" role="tab" aria-selected="true"> Yearly </a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+
+                                                <div class="tab-pane active" id="daily" role="tabpanel" aria-labelledby="baseVerticalLeft-tab1">
+                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
+                                                        <label for="recur_after">Every &nbsp;&nbsp;</label>
+                                                        <input type="number" class="form-control" id="recur_after_d" value="1" min="1" max="7" style="width: 100px;">
+                                                        <label for="recur_after">&nbsp;&nbsp; day(s)</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="weekly" role="tabpanel" aria-labelledby="baseVerticalLeft-tab2">
+                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
+                                                        <label for="recur_after">Recur every &nbsp;&nbsp;</label>
+                                                        <input type="number" class="form-control" id="recur_after_w" value="1" min="1" max="52" style="width: 100px;">
+                                                        <label for="recur_after">&nbsp;&nbsp; week(s) on:</label>
+                                                    </div>
+                                                    
+                                                    <div id="week-days-list" class="d-flex mt-1">
+                                                        <div class="form-group mt-1">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="monday" value="1">
+                                                                <label class="form-check-label" for="monday">Monday</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mt-1">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="tuesday" value="2">
+                                                                <label class="form-check-label" for="tuesday">Tuesday</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mt-1">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="wednesday" value="3">
+                                                                <label class="form-check-label" for="wednesday">Wednesday</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mt-1">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="thursday" value="4">
+                                                                <label class="form-check-label" for="thursday">Thursday</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="week-days-list" class="d-flex mt-1">
+                                                        <div class="form-group mt-1">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="friday" value="5">
+                                                                <label class="form-check-label" for="friday">Friday</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mt-1">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="saturday" value="6">
+                                                                <label class="form-check-label" for="saturday">Saturday</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mt-1">
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="sunday" value="7">
+                                                                <label class="form-check-label" for="sunday">Sunday</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="monthly" role="tabpanel" aria-labelledby="baseVerticalLeft-tab3">
+                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
+                                                        <label>Day &nbsp;&nbsp;</label>
+                                                        <input type="number" class="form-control" id="recur_after_m" value="1" min="1" max="31" style="width: 100px;">
+                                                        <label>&nbsp;&nbsp; of every &nbsp;&nbsp;</label>
+                                                        <input type="number" class="form-control" id="recur_after_month" value="1" min="1" max="12" style="width: 100px;">
+                                                        <label>&nbsp;&nbsp; month(s)</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="yearly" role="tabpanel" aria-labelledby="baseVerticalLeft-tab4">
+                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
+                                                        <label>Recur every &nbsp;&nbsp;</label>
+                                                        <input type="number" class="form-control" id="recur_after_y" value="1" min="1" style="width: 100px;">
+                                                        <label>&nbsp;&nbsp; year(s)</label>
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-start align-items-center mt-1" style="margin-left: 16px;">
+                                                        <div class="w-50">
+                                                            <label>On</label>
+                                                            <select class="select2" id="recur-month">
+                                                                <option value="January">January</option>
+                                                                <option value="February">February</option>
+                                                                <option value="March">March</option>
+                                                                <option value="April">April</option>
+                                                                <option value="May">May</option>
+                                                                <option value="June">June</option>
+                                                                <option value="July">July</option>
+                                                                <option value="August">August</option>
+                                                                <option value="September">September</option>
+                                                                <option value="October">October</option>
+                                                                <option value="November">November</option>
+                                                                <option value="December">December</option>
+                                                            </select>
+                                                        </div>
+                                                        <input type="number" class="form-control mt-1 mx-1" id="recur_month_day" value="1" min="1" max="31" style="width: 100px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ends -->
+
+                                    <!-- <ul class="list-group list-group-horizontal-lg pb-3 mt-1">
                                         <li class="list-group-item d-flex align-items-center">
                                             <div class="radio radio-primary">
                                                 <input type="radio" name="recur_type" id="recur-daily" value="daily" class="d-none" checked>
@@ -1206,7 +1368,7 @@ br + br { display: none; }
                                             </select>&nbsp;&nbsp;
                                             <input type="number" class="form-control" id="recur_month_day" value="1" min="1" max="31" style="width: 100px;">
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <div class="row mt-1 p-1" id="recurrence-range" style="display:none">
@@ -1259,6 +1421,21 @@ br + br { display: none; }
                                             <label class="custom-control-label" for="no-end">No end date</label>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        
+
+                            <div class="form-row mt-1" >
+                                <div class="col-md-12 form-group border p-1 bg-light rounded">
+                                    <div class="form-check-inline" id="fu_post_reply_div" style=""> 
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" id="fu_post_reply">
+                                            <label class="custom-control-label" for="fu_post_reply"> <strong> Post Reply </strong> </label>
+                                        </div>
+                                    </div> 
+                                </div> 
+                                <div class="col-md-12 p-1 mt-1" id="fu_post_reply_ttar_div" style="display:none">
+                                    <textarea class="form-control mymce" rows="3" id="fu_post_reply_ttar" name="fu_post_reply_ttar"></textarea>
                                 </div>
                             </div>
                         </div>

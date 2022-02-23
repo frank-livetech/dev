@@ -135,9 +135,9 @@
                                                                 @if($customers != null && $customers != "")
                                                                     @foreach($customers as $key => $customer)
                                                                         @if ($key == 0)
-                                                                            <option value="{{$customer->id}}" >{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}}</option>
+                                                                            <option value="{{$customer->id}}" > {{$customer->first_name}} {{$customer->last_name}} (#{{$customer->id}}) | {{$customer->email}}</option>
                                                                         @else
-                                                                            <option value="{{$customer->id}}" {{$id == $customer->id ? 'selected' : ''}}>{{$customer->first_name}} {{$customer->last_name}} | {{$customer->email}} </option>
+                                                                            <option value="{{$customer->id}}" {{$id == $customer->id ? 'selected' : ''}}>{{$customer->first_name}} {{$customer->last_name}} (#{{$customer->id}}) | {{$customer->email}} </option>
                                                                         @endif
                                                                     @endforeach
                                                                 @endif
@@ -156,7 +156,7 @@
                                                                 <option value="">Select</option>
                                                                 @if(!empty($responseTemplates))
                                                                     @foreach($responseTemplates as $res)
-                                                                        <option value="{{$res->id}}">{{$res->title}}</option>
+                                                                        <option value="{{$res->id}}">{{$res->title}} ({{$res->category_name}}) </option>
                                                                     @endforeach
                                                                 @endif
                                                             </select>
@@ -268,8 +268,8 @@
                                                                         <label for="category_name">Category Name</label>
                                                                         <select name="category_name" id="category_name" class="select2">
                                                                             <option value=""> Choose </option>
-                                                                            @foreach($responseTemplates as $tem)
-                                                                                <option value="{{$tem->id}}"> {{$tem->title}} </option>
+                                                                            @foreach($response_categories as $tem)
+                                                                                <option value="{{$tem->id}}"> {{$tem->name}} </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
