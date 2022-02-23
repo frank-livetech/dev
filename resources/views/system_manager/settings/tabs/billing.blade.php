@@ -102,7 +102,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <table id="ticket-mails-list"
-                                                            class="display table-striped table-bordered ticket-mails-list"
+                                                            class="table display table-striped table-bordered ticket-mails-list"
                                                             style="width:100%">
                                                             <thead>
                                                                 <tr>

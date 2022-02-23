@@ -34,7 +34,7 @@ $.ajaxSetup({
 $(document).ready(function() {
        
     tinymce.init({
-        selector: "textarea#mymce",
+        selector: "textarea.mymce",
         // theme: "modern",
         height: 300,
         file_picker_types: 'image',
@@ -177,6 +177,25 @@ $(document).ready(function() {
     });
 
 });
+
+// show hide cc & bcc email 
+$("#show_cc_email").click(function() {
+    if( $(this).is(":checked") ) {
+        $('.cc_email_field').show();
+    }else{
+        $('.cc_email_field').hide();
+    }
+});
+
+$("#show_bcc_emails").click(function() {
+    if( $(this).is(":checked") ) {
+        $('.bcc_email_field').show();
+    }else{
+        $('.bcc_email_field').hide();
+    }
+});
+
+
 
 function ticket_attachemnt_view() {
     if(ticket_details != null || ticket_details != "") {
@@ -340,10 +359,11 @@ function setSlaPlanDeadlines(ret = false) {
     // else $('.sla-selc').show();
 
     // any deadline is overdue can be reset
+    let bgcolor = $("#bgcolor").val();
+    let textcolor = $("#textcolor").val();
     if (resetable) {
-        $("#card-sla").css('background-color', {!! json_encode($ticket_overdue_bg_color) !!});
-        $("#card-sla").css('color', {!! json_encode($ticket_overdue_txt_color) !!});
-        $("#card-sla a").css('color', {!! json_encode($ticket_overdue_txt_color) !!});
+        $('#card-sla').attr('style', `background-color: ${bgcolor} !important; color : ${textcolor} !important`);
+        $('#card-sla a').attr('style', `color : ${textcolor} !important`);
     } else {
         $("#card-sla").css('background-color', 'white');
         $("#card-sla").css('color', '#000');
@@ -2049,20 +2069,36 @@ $('#general').change(function() {
     }
 });
 
-$('#is_recurring').change(function() {
+$('#fu_post_reply').change(function() {
+    if ($(this).is(":checked")) {
+        $('#fu_post_reply_ttar_div').css('display', 'block')
+    } else {
+        $('#fu_post_reply_ttar_div').css('display', 'none')
+    }
+});
+
+$('#is_recurring').click(function() {
     if ($(this).is(":checked")) {
         $('#recurrence-range').show();
+
+        $('#followup-recurrence').show();
         $('#start-range').show();
 
-        if ($('#schedule_type').val() == 'time') {
-            $('#followup-recurrence').css('display', 'block');
-        } else if ($('#schedule_type').val() == 'custom') {
-            // for custom no need for start date
-            $('#start-range').hide();
-        }
+        $("#schedule_type").val("time").trigger("change");
+
+        // if ($('#schedule_type').val() == 'time') {
+        //     $('#followup-recurrence').css('display', 'block');
+        // } else if ($('#schedule_type').val() == 'custom') {
+        //     // for custom no need for start date
+        //     $('#start-range').hide();
+        // }
     } else {
         $('#followup-recurrence').css('display', 'none');
+
         $('#recurrence-range').hide();
+        $('#followup-recurrence').hide();
+
+        $("#schedule_type").val("minutes").trigger("change");
     }
 });
 
@@ -2115,6 +2151,11 @@ function showDateTimeDiv(value) {
 
     if (value == 'custom') {
         document.getElementById('date_picker_div').style.display = 'block';
+
+        $('#is_recurring').prop('checked' , false);
+        $('#followup-recurrence').hide();
+        $('#recurrence-range').hide();
+
         if ($('#is_recurring').prop('checked')) {
             $('#followup-recurrence').css('display', 'none');
             $('#recurrence-range').show();
@@ -2124,10 +2165,18 @@ function showDateTimeDiv(value) {
         document.getElementById('recurrence_time_div').style.display = 'block';
 
         $('#is_recurring').prop('checked', true);
-        $('#is_recurring').trigger('change');
-        $('#is_recurring').attr('disabled', true);
+        $('#followup-recurrence').show();
+        $('#recurrence-range').show();
+        // $('#is_recurring').trigger('change');
+        // $('#is_recurring').attr('disabled', true);
     } else {
         document.getElementById('schedule_time_div').style.display = 'block';
+
+        $('#is_recurring').prop('checked' , false);
+        $('#followup-recurrence').hide();
+        $('#recurrence-range').hide();
+
+
         if ($('#is_recurring').prop('checked')) {
             $('#followup-recurrence').css('display', 'none');
             $('#recurrence-range').show();

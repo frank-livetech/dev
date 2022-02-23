@@ -4,22 +4,29 @@
 @section('body')
 <style>
     .nav-pills .nav-link.menu_active {
-    border-color: #7367f0;
-    box-shadow: 0 4px 18px -4px rgb(115 103 240 / 65%);
-    background
-}
-.nav-pills .nav-link.menu_active, .nav-pills .show > .nav-link {
-    color: #fff;
-    background-color: #7367f0;
-}
-.dd-handle{
-    cursor: pointer;
-}
-.nav-pills .nav-link, .nav-tabs .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: left !important;
-}
+        border-color: #7367f0;
+        box-shadow: 0 4px 18px -4px rgb(115 103 240 / 65%);
+        background
+    }
+    .nav-pills .nav-link.menu_active, .nav-pills .show > .nav-link {
+        color: #fff;
+        background-color: #7367f0;
+    }
+    .dd-handle{
+        cursor: pointer;
+    }
+    .nav-pills .nav-link, .nav-tabs .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: left !important;
+    }
+    table.dataTable th {
+        padding: 12px 10px !important;
+        vertical-align: middle !important;
+    }
+    table {
+        border:1px solid #ebe9f1 !important;
+    }
 </style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';

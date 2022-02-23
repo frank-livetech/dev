@@ -1258,10 +1258,11 @@ function getAllSLA() {
                     {
                         "render": function(data, type, full, meta) {
                             return (
-                                ` <div class="d-flex justify-content-center">
-                                    <button onclick="viewRecord(` + full.id + `, '` + full.title + `',` + full.reply_deadline + `,` + full.due_deadline + `,` + full.sla_status + `,` + full.is_default + `)" type="button" class="btn btn-success card_shadow btn-circle">
+                                `<div class="d-flex justify-content-center">
+                                    <button onclick="viewRecord(` + full.id + `, '` + full.title + `',` + full.reply_deadline + `,` + full.due_deadline + `,` + full.sla_status + `,` + full.is_default + `)" 
+                                    type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                     <i class="fas fa-pencil-alt"></i></button>&nbsp;
-                                    <button  onclick="deleteRecord(` + full.id + `)" type="button" class="btn btn-danger ml-2 card_shadow btn-circle">
+                                    <button  onclick="deleteRecord(` + full.id + `)" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                     <i class="fa fa-trash"></i></button>
                                 </div>`
                             );
@@ -1452,14 +1453,14 @@ function getAllresTemp() {
 
                     {
                         "render": function(data, type, full, meta) {
-                            return (
-                                ` <div class="d-flex justify-content-center">
-                                    <button onclick="viewCatRecord(` + full.id + `, '` + full.name + `')" type="button" class="btn btn-success card_shadow btn-circle">
-                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
-                                    <button  onclick="deleteCatRecord(` + full.id + `)" type="button" class="btn btn-danger ml-2 card_shadow btn-circle">
-                                    <i class="fa fa-trash"></i></button>
-                                </div>`
-                            );
+                            return `<div class="d-flex justify-content-center">
+                                    <button onclick="viewCatRecord(` + full.id + `, '` + full.name + `')" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
+                                        <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>
+                                        &nbsp;
+                                        <button type="button" onclick="deleteCatRecord(` + full.id + `)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                </div>`;
                         }
                     }
                 ]
@@ -1885,7 +1886,14 @@ function get_customer_type_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
-                            return `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editCustomerType(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteCustomerType(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                            return `
+                                <div class="d-flex justify-content-center">
+                                    <button onclick="editCustomerType(${full.id},'${full.name}')" 
+                                    type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                    <button onclick="deleteCustomerType(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fa fa-trash"></i></button>
+                                </div`;
                         }
                     },
                 ],
@@ -1951,7 +1959,13 @@ function get_dispatch_status_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
-                            return `<button class="btn btn-circle btn-success" title="Edit Type" onclick="event.stopPropagation();editDispatchStatus(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteDispatchStatus(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                            return `<div class="d-flex justify-content-center">
+                                    <button onclick="editDispatchStatus(${full.id},'${full.name}')" 
+                                    type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                    <button  onclick="deleteDispatchStatus(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fa fa-trash"></i></button>
+                                </div>`
                         }
                     },
                 ],
@@ -2015,7 +2029,13 @@ function get_project_type_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
-                            return `<button class="btn btn-circle btn-success" title="Edit Project Type" onclick="event.stopPropagation();editProjectType(${full.id},'${full.name}');return false;"><i class="fas fa-pencil-alt" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-circle btn-danger" title = "Delete Type" onclick = "event.stopPropagation();deleteProjectType(${full.id});return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>`;
+                                return `<div class="d-flex justify-content-center">
+                                    <button onclick="editProjectType(${full.id},'${full.name})" 
+                                    type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                    <button  onclick="deleteProjectType(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fa fa-trash"></i></button>
+                                </div>`
                         }
                     },
                 ],

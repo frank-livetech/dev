@@ -1343,6 +1343,12 @@ class MailController extends Controller
         }
 
         foreach ($data_list as $key => $data) {
+
+            // checking whole template having {Ticket-Manager} short code
+            if(str_contains($template, '{Ticket-Manager}')) {
+                $url = request()->root() . '/ticket-manager';
+                $template = str_replace('{Ticket-Manager}', $url , $template);
+            }
             
             if($data['module'] == 'Customer') {
 

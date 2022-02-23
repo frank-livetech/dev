@@ -93,7 +93,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                     <div class="widget-main">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="sla_table" class="display table-striped table-bordered project-type-list" style="width:100%">
+                                                <table id="sla_table" class="display table-bordered table-hover" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
@@ -397,7 +397,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                                             </div> -->
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="ticket-departments-list" class="display table-striped table-bordered ticket-departments-list" style="width:100%">
+                                                <table id="ticket-departments-list" class="table display table-bordered table-hover ticket-departments-list" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
@@ -453,7 +453,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                                             </div> -->
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="ticket-status-list" class="display table-striped table-bordered ticket-status-list" style="width:100%">
+                                                <table id="ticket-status-list" class="table display table-hover table-bordered ticket-status-list" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
@@ -511,7 +511,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="ticket-type-list" class="display table-striped table-bordered ticket-type-list" style="width:100%">
+                                                <table id="ticket-type-list" class="table display table-hover table-bordered ticket-type-list" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
@@ -567,7 +567,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                                             </div> -->
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="ticket-priority-list" class="display table-striped table-bordered ticket-priority-list" style="width:100%">
+                                                <table id="ticket-priority-list" class="table display table-hover table-bordered ticket-priority-list" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
@@ -608,7 +608,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="table-responsive">
-                                        <table id="ticket-mails-list" class="display table-striped table-bordered text-center" style="width:100%">
+                                        <table id="ticket-mails-list" class="table display table-hover table-bordered text-center" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>Sr #</th>
@@ -667,7 +667,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                     <div class="widget-main">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="temp_cat_table" class="display table-striped table-bordered project-type-list" style="width:100%">
+                                                <table id="temp_cat_table" class="table display table-bordered table-hover project-type-list" style="width:100%">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>

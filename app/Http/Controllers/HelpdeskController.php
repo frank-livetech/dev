@@ -29,6 +29,7 @@ use App\Models\TicketSettings;
 use App\Models\Company;
 use App\Models\SlaPlan;
 use App\Models\SlaPlanAssoc;
+use App\Models\ResTemplateCat;
 use App\Models\Country;
 use App\Models\ResponseTemplate;
 use Illuminate\Support\Facades\Auth;
@@ -170,7 +171,7 @@ class HelpdeskController extends Controller
         $users = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
         $customers = Customer::where('is_deleted', 0)->get();
 
-        $responseTemplates = ResponseTemplate::get();
+        $responseTemplates = ResponseTemplate::all();
 
         // for customers login and add ticket
         $is_customer = User::findOrFail(\Auth::user()->id);
@@ -184,6 +185,7 @@ class HelpdeskController extends Controller
         }
 
         $page_control = 'super';
+        $response_categories = RestemplateCat::where("is_deleted","=",0)->get();
 
         return view('help_desk.ticket_manager.add_ticket_new', get_defined_vars());
     }
@@ -1152,6 +1154,7 @@ class HelpdeskController extends Controller
         $id = $ticket->id;
         // $details = Tickets::with('ticketReplies')->where('id', $id)->first();
         $details = Tickets::where('id', $id)->first();
+        
         $shared_emails = TicketSharedEmails::where('ticket_id',$details->id)->get()->toArray();
 
         $current_status = TicketStatus::where('id' , $details->status)->first();
@@ -1243,6 +1246,8 @@ class HelpdeskController extends Controller
         }
 
         $date_format = Session('system_date');
+
+        $response_categories = RestemplateCat::where("is_deleted","=",0)->get();
 
         if(Auth::user()->user_type == 5) {
             return view('help_desk.ticket_manager.cust_ticket_details', get_defined_vars());

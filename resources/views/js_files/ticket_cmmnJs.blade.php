@@ -193,6 +193,10 @@ function get_ticket_table_list() {
 
             // ticket datatable per page length start
             let ticket_view = data.ticket_view == null ? '10' : (data.ticket_view.per_page != null ? data.ticket_view.per_page : '10') ;
+            if(ticket_view != 10 && ticket_view != 25 && ticket_view != 50 && ticket_view != 100 ) {
+                let option = `<option value="${ticket_view}" selected> ${ticket_view} </option>`;
+                $('select[name=ticket-table-list_length]').append(option);
+            }
             $('#ticket-table-list').DataTable().page.len(ticket_view).draw();
             // ticket datatable per page length end
 
