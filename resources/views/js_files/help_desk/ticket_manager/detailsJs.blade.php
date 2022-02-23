@@ -340,10 +340,11 @@ function setSlaPlanDeadlines(ret = false) {
     // else $('.sla-selc').show();
 
     // any deadline is overdue can be reset
+    let bgcolor = $("#bgcolor").val();
+    let textcolor = $("#textcolor").val();
     if (resetable) {
-        $("#card-sla").css('background-color', {!! json_encode($ticket_overdue_bg_color) !!});
-        $("#card-sla").css('color', {!! json_encode($ticket_overdue_txt_color) !!});
-        $("#card-sla a").css('color', {!! json_encode($ticket_overdue_txt_color) !!});
+        $('#card-sla').attr('style', `background-color: ${bgcolor} !important; color : ${textcolor} !important`);
+        $('#card-sla a').attr('style', `color : ${textcolor} !important`);
     } else {
         $("#card-sla").css('background-color', 'white');
         $("#card-sla").css('color', '#000');

@@ -227,8 +227,7 @@ function get_all_feature_list() {
                         <td>` + data[i].sequence + `</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <button title="Edit role" onclick="show_single_feature_list(` + data[i].f_id + `)" class="btn btn-warning btn-circle">
-                                <i data-feather='edit'></i></button>
+                                <button onclick="show_single_feature_list(` + data[i].f_id + `)" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;"> <i class="fas fa-pencil-alt"></i></button>
                             </div>
                         </td>
                     </tr>

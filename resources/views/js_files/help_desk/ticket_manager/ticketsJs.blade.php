@@ -26,11 +26,11 @@ var settings = {
 let in_recycle_mode = false;
 
 $(function() {
-    tickets_logs_list = $('#ticket-logs-list').DataTable({
-        ordering: false
-    });
+    // tickets_logs_list = $('#ticket-logs-list').DataTable({
+    //     ordering: false
+    // });
 
-    $('#ticket-logs-list').parent().css('overflow', 'auto');
+    // $('#ticket-logs-list').parent().css('overflow', 'auto');
 
     // $('#tk_log_select').multipleSelect({
     //     width: 300,
@@ -454,16 +454,37 @@ function getLatestLogs() {
         success: function(data) {
             if (data.success) {
                 console.log(data);
-                tickets_logs_list.clear().draw();
-
-                for (let i = 0; i < data.logs.length; i++) {
-                    const element = data.logs[i];
-
-                    tickets_logs_list.row.add([
-                        (i + 1),
-                        element.action_perform+' at '+moment(element.created_at).parseZone(usrtimeZone).format($('#system_date_format').val() + ' ' + 'hh:mm A'),
-                    ]).draw(false).node();
-                }
+                let obj = data.logs;
+                $("#ticket-logs-list").DataTable().destroy();
+                $.fn.dataTable.ext.errMode = "none";
+                var tbl = $("#ticket-logs-list").DataTable({
+                    data: obj,
+                    "pageLength": 10,
+                    "bInfo": false,
+                    "paging": true,
+                    "searching": true,
+                    columns: [{
+                            "data": null,
+                            "defaultContent": ""
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                return full.action_perform+' at '+moment(full.created_at).parseZone(usrtimeZone).format($('#system_date_format').val() + ' ' + 'hh:mm A');
+                            }
+                        },
+                    ],
+                });
+                
+                tbl.on("order.dt search.dt", function() {
+                    tbl.column(0, {
+                            search: "applied",
+                            order: "applied"
+                        })
+                        .nodes()
+                        .each(function(cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                }).draw();
             } else {
                 console.log(data.message);
             }

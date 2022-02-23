@@ -428,12 +428,12 @@
                                             <div class="card-body" style="overflow-y: scroll;">
                                                 <h4 class="card-title">Activity Log</h4>
                                                 <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="table-responsive" style="overflow: hidden;">
-                                                            <table id="ticket-logs-list" class="table table-striped table-bordered no-wrap ticket-table-list">
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive">
+                                                            <table id="ticket-logs-list" class="table table-striped table-bordered ticket-table-list">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th width='20'>ID</th>
+                                                                        <th>ID</th>
                                                                         <th>Activity</th>
                                                                     </tr>
                                                                 </thead>

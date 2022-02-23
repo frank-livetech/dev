@@ -249,6 +249,8 @@ br + br { display: none; }
     justify-content: left !important;
 }
 </style>
+<input type="hidden" id="bgcolor" value="{{$ticket_overdue_bg_color}}">
+<input type="hidden" id="textcolor" value="{{$ticket_overdue_txt_color}}">
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -623,7 +625,7 @@ br + br { display: none; }
             <div class="row">
                 <div class="col-md-12">
                     @if (!empty($ticket_slaPlan))
-                        <div class="card p-0" id="card-sla" style="background-color: unset !important">
+                        <div class="card p-0" id="card-sla" style="background-color: !important">
                             <div class="card-body p-1" id="ticket-sla-plan">
                                 <div class="row" >
 
