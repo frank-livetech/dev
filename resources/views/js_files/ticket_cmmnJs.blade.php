@@ -379,6 +379,7 @@ function redrawTicketsTable(ticket_arr) {
             } else {
        
                 // use sla deadlines
+                // console.log(val.sla_plan.reply_deadline , "deadline");
                 let hm = val.sla_plan.reply_deadline.split('.');
                 rep_due = moment( moment(val.sla_rep_deadline_from).toDate() ).local().add(hm[0], 'hours');
                 if(hm.length > 1) rep_due.add(hm[1], 'minutes');
@@ -557,12 +558,17 @@ function getClockTime(followUpDate, timediff) {
         let remTime = '';
         followUpDate = new Date(Date.parse(new Date()) + (followUpDate - today));
         let rem = getTimeRemaining(followUpDate);
+        console.log(rem , "rem");
         var color = ``;
         if (rem && rem.hasOwnProperty('years') && rem.years > 0) remTime += rem.years + 'y ';
         if (rem && rem.hasOwnProperty('months') && rem.months > 0) remTime += rem.months + 'm ';
         if (rem && rem.hasOwnProperty('days') && rem.days > 0) remTime += rem.days + 'd ';
         if (rem && rem.hasOwnProperty('hours') && rem.hours > 0) remTime += rem.hours + 'h ';
-        if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'm';
+        if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'm ';
+
+        if (rem && rem.hasOwnProperty('seconds') && rem.days == 0) {
+            remTime += rem.seconds + 's';
+        }
 
         if(remTime.includes('d')) {
             color = `#8BB467`;
@@ -587,11 +593,20 @@ function getDateDiff(date1, date2=new Date()) {
     a.add(hours, 'hours');
 
     var mins = b.diff(a, 'minutes');
+    var sec = b.diff(a, 'seconds');
 
     let ret = '';
+
     if(days > 0) ret += days+'d ';
     if(hours > 0) ret += hours+'h ';
-    if(mins > 0) ret += mins+'m';
+    if(mins > 0) ret += mins+'m ';
+
+    // check if day pass then seconds not shown
+    if(days == 0) {
+        var ms = moment(b).diff(moment(a));
+        let d = moment.duration(ms);
+        ret += d.seconds() +'s ';
+    }
 
     if (ret == ''){
         ret = '0s'
@@ -634,6 +649,9 @@ function getTimeRemaining(endtime) {
   let tend = moment(endtime);
   let t = moment();
   let temp = t;
+
+    var ms = moment(tend).diff(moment(t));
+    let d = moment.duration(ms);
   
   let years = 0;
   let months = Math.abs(tend.diff(t, 'months'));
@@ -649,6 +667,7 @@ function getTimeRemaining(endtime) {
   temp.add(days, 'days');
   let hours = Math.abs(temp.diff(tend, 'hours'));
   temp.add(hours, 'hours');
+
   let minutes = Math.abs(temp.diff(tend, 'minutes'));
 
   return {
@@ -657,7 +676,8 @@ function getTimeRemaining(endtime) {
     'months': months,
     'days': days,
     'hours': hours,
-    'minutes': minutes+1
+    'minutes': minutes+1,
+    'seconds': d.seconds(),
   };
 }
 </script>
