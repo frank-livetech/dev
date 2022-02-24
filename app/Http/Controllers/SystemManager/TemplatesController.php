@@ -7,10 +7,21 @@ use App\mailEclipse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use DB;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Validator as Validations;
 
-class TemplatesController extends Controller
-{
+class TemplatesController extends Controller {
+
+    public function __construct() {
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
+    }
+
     public static $prifixRoute = 'system_manager.template_builder.';
 
     public function index()

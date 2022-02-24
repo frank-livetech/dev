@@ -56,7 +56,7 @@ use App\Models\Activitylog;
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
-class HomeController
+class HomeController 
 {
 
      // *************   PROPERTIES   ****************
@@ -65,8 +65,12 @@ class HomeController
      const NOSLAPLAN = 'No SLA Assigned';
      const CUSTOMID_FORMAT = 'XXX-999-9999';
 
-
     public function profile($name,$type = null) {
+
+        if(auth()->user()->user_type == 1) {
+            return view('unauth');
+        }
+
         $user = User::where('id', \Auth::user()->id)->first();
         $customer_id = Customer::where('email',$user->email)->first();
         $customer = Customer::with('company')->where('id',$customer_id->id)->first();
@@ -169,11 +173,18 @@ class HomeController
     }
 
     public function viewTicketPage() {
+        if(auth()->user()->user_type == 1) {
+            return view('unauth');
+        }
         return view('customer.customer_tkt.cust_ticket_view');
     }
 
     // add ticket page
     public function addTicketPage(){
+
+        if(auth()->user()->user_type == 1) {
+            return view('unauth');
+        }
 
         $departments = Departments::all();
         $priorities = TicketPriority::all();
@@ -629,6 +640,11 @@ class HomeController
     }
 
     public function get_tkt_details($id) {
+        
+        if(auth()->user()->user_type == 1) {
+            return view('unauth');
+        }
+
         if(strpos($id, 'T-') === 0) {
             $ticket = Tickets::where('seq_custom_id', $id)->where('is_deleted', 0)->with(['ticketReplies','ticket_customer'])->withCount('ticketReplies')->first();
         } else {
@@ -924,6 +940,5 @@ class HomeController
             }
         }
     }
-
 
 }

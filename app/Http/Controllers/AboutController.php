@@ -9,6 +9,13 @@ class AboutController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->middleware(function (Request $request, $next) {
+            if (auth()->user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
     }
     public function system_info(){
         return view('about.system_info.index');

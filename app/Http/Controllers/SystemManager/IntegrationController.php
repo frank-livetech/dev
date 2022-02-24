@@ -15,6 +15,7 @@ use App\Models\Orders;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -27,6 +28,13 @@ class IntegrationController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
     }
     public function integration(){
         

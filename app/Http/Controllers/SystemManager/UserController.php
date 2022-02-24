@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Hash;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 // use Yajra\Datatables\Datatables;
 
 class UserController extends Controller
@@ -66,6 +67,13 @@ class UserController extends Controller
 
     public function __construct(){
         $this->middleware('auth');
+
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
     }
 
     public function index(){

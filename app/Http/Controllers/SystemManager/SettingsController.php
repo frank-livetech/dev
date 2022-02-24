@@ -27,6 +27,7 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
@@ -35,9 +36,16 @@ use SystemSettings;
 class SettingsController extends Controller
 {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
+
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
+
     }
     public function settings(){
 
