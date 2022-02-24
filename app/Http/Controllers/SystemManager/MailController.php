@@ -1408,6 +1408,7 @@ class MailController extends Controller
 
                     $template = str_replace('{Ticket-Priority-Name}', $priority_badge, $template);
                 }
+                
 
                 if(str_contains($template, '{Ticket-Attachments}') && !empty($data['values']['attachments'])) {
                     $content = '';
@@ -1496,7 +1497,8 @@ class MailController extends Controller
                     date_default_timezone_set($tm_name);
                     $date = date('Y-m-d h:i:s a');
 
-                    $template = str_replace('{'.$data['module'].'-'.$k.'}', $date , $template);
+                    if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
+                    $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
 
                     // if($k == 'Status-Name') {
                     //     if($data['module'] == 'Ticket') {

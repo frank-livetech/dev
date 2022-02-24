@@ -162,7 +162,7 @@
                                         <div id="show_ticket_results"></div>
                                     </div>
                                     <div class="d-grid col-4">
-                                        <a href="{{asset('/add-ticket')}}">
+                                        <a href="{{route('ticket_management.index')}}">
                                         <div class="card card_shadow bg-success card_back border-dark card-hover">
                                             <div class="card-header">
                                                 <div class="text-center">
