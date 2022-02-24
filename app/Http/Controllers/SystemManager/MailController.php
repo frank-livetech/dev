@@ -1491,8 +1491,12 @@ class MailController extends Controller
                     // echo '{'.$data['module'].'-'.$k.'}\n';
                     // echo str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
                     // change created at and updated at according to user timezone if null then timezone will be america/newyork
-                    if($k == 'Created-At' || $k == 'Updated-At') $value = Carbon::parse($value)->timezone($tm_name)->format('Y-m-d h:m:s A');
-                    $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
+
+
+                    date_default_timezone_set($tm_name);
+                    $date = date('Y-m-d h:i:s a');
+
+                    $template = str_replace('{'.$data['module'].'-'.$k.'}', $date , $template);
 
                     // if($k == 'Status-Name') {
                     //     if($data['module'] == 'Ticket') {
