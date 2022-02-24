@@ -823,7 +823,7 @@ br + br { display: none; }
                                     </div>
                                     <div class="form-check form-check-primary ms-2">
                                         <input type="checkbox" value="1" class="form-check-input" id="response_template" name="response_template">
-                                        <label class="custom-form-label" for="response_template"> Quick Save Reply </label>
+                                        <label class="custom-form-label" for="response_template"> Save Response </label>
                                     </div>
                                 </div>
 
