@@ -73,7 +73,6 @@ class HelpdeskController extends Controller
     }
 
     public function ticket_manager($dept,$sts){
-
         $dept = Departments::where('dept_slug',$dept)->first();
         $dept = $dept->id;
         $sts = TicketStatus::where('slug',$sts)->first();
@@ -89,21 +88,21 @@ class HelpdeskController extends Controller
 
         $tickets_followups = TicketFollowUp::where('passed', 0)->where('is_deleted', 0)->get();
 
-        foreach ($tickets_followups as $key => $value) {
-            if($value->is_recurring == 1) {
-                $tickets_followups[$key]->date = $this->follow_up_calculation($value);
-            }
-        }
+        // foreach ($tickets_followups as $key => $value) {
+        //     if($value->is_recurring == 1) {
+        //         $tickets_followups[$key]->date = $this->follow_up_calculation($value);
+        //     }
+        // }
 
-        $followUpsNew = [];
+        // $followUpsNew = [];
 
-        foreach ($tickets_followups as $key => $value) {
-            if($value->passed == 0) {
-                $followUpsNew[] = $value;
-            }
-        }
+        // foreach ($tickets_followups as $key => $value) {
+        //     if($value->passed == 0) {
+        //         $followUpsNew[] = $value;
+        //     }
+        // }
         
-        $tickets_followups = $followUpsNew;
+        // $tickets_followups = $followUpsNew;
 
         $url_type = '';
         if(isset($request->type)) {
@@ -116,7 +115,7 @@ class HelpdeskController extends Controller
 
         $staffs = User::where('user_type','!=',5)->where('user_type','!=',4)->get();
 
-        return view('help_desk.ticket_manager.index-new',compact('loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs','dept','sts'));
+        return view('help_desk.ticket_manager.index-new', get_defined_vars());
 
     }
 
@@ -131,21 +130,21 @@ class HelpdeskController extends Controller
 
         $tickets_followups = TicketFollowUp::where('passed', 0)->where('is_deleted', 0)->get();
 
-        foreach ($tickets_followups as $key => $value) {
-            if($value->is_recurring == 1) {
-                $tickets_followups[$key]->date = $this->follow_up_calculation($value);
-            }
-        }
+        // foreach ($tickets_followups as $key => $value) {
+        //     if($value->is_recurring == 1) {
+        //         $tickets_followups[$key]->date = $this->follow_up_calculation($value);
+        //     }
+        // }
 
-        $followUpsNew = [];
+        // $followUpsNew = [];
 
-        foreach ($tickets_followups as $key => $value) {
-            if($value->passed == 0) {
-                $followUpsNew[] = $value;
-            }
-        }
+        // foreach ($tickets_followups as $key => $value) {
+        //     if($value->passed == 0) {
+        //         $followUpsNew[] = $value;
+        //     }
+        // }
         
-        $tickets_followups = $followUpsNew;
+        // $tickets_followups = $followUpsNew;
 
         $url_type = '';
         if(isset($request->type)) {
@@ -160,7 +159,7 @@ class HelpdeskController extends Controller
         $dept = '';
         $sts = '';
 
-        return view('help_desk.ticket_manager.index-new',compact('dept','sts','loggedInUser','departments','statuses','priorities','types','users','customers', 'ticket_format', 'tickets_followups','url_type','date_format','projects','staffs'));
+        return view('help_desk.ticket_manager.index-new', get_defined_vars());
     }
 
     public function addTicketPage($id =null) {
