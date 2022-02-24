@@ -105,6 +105,14 @@ class CustomerlookupController extends Controller
             }
         }
         // To use express checkout(used by default).
+
+
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
     }
 
     public function getExpressCheckout(Request $request,$id) {

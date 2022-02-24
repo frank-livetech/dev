@@ -70,6 +70,13 @@ class HelpdeskController extends Controller
 
     public function __construct() {
         $this->middleware('auth');
+
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
     }
 
     public function ticket_manager($dept,$sts){

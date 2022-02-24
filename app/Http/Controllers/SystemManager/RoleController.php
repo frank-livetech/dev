@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
+
 use DB;
 
 class RoleController extends Controller
@@ -13,6 +15,12 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
     }
     public function index(Request $request)
     {

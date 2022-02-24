@@ -24,6 +24,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 
@@ -41,6 +42,13 @@ class CompanyController extends Controller
                 'verify_ssl' => false
             ]
         );
+
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
     }
 
     public function index() {

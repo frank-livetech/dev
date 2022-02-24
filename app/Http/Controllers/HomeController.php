@@ -19,16 +19,20 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HelpdeskController;
 
-class HomeController extends Controller
-{
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
+class HomeController extends Controller {
+
+    public function __construct() {
+
         $this->middleware('auth');
+
+
+        $this->middleware(function (Request $request, $next) {
+            if (Auth::user()->user_type == 5) {
+                return redirect()->route('un_auth');
+            }
+            return $next($request);
+        });
+
     }
 
     /**
@@ -36,8 +40,8 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
+    public function index() {
+
         $user_type = 1;
         $customers = Customer::count();
         $orders = Orders::count();
@@ -160,5 +164,9 @@ class HomeController extends Controller
     }
     public function wizard(){
         return view('wizard');
+    }
+
+    public function unauth() {
+        return view('unauth');
     }
 }

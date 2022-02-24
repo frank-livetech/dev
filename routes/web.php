@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 Route::get('/get_all_staff_att', 'HomeController@getAllStaffAttendance');
 Route::get('/mark_all_read', 'HomeController@markAllRead');
+Route::get('/unauth', 'HomeController@unauth')->name('un_auth');
 
 
 Route::get('/getNotifications', 'HomeController@getNotifications');
@@ -387,7 +388,6 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
 
     Route::post('/save_tkt_attachments','HomeController@saveTicketAttachments')->name('customer.saveTicketAttachments');
     Route::post('/save_tkt_reply','HomeController@saveTicketReply')->name('customer.saveTicketReply');
-
 });
 
 Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin']], function () {

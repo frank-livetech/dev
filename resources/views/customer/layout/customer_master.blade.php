@@ -161,7 +161,7 @@
                             <span class="avatar-status-online"></span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
-                        <a class="dropdown-item" href="{{url('my-profile')}}"><i class="me-50" data-feather="user"></i> Profile</a>
+                        <a class="dropdown-item" href="{{route('customer.myProfile')}}"><i class="me-50" data-feather="user"></i> Profile</a>
                         @if(Session::get('default_cmp_id') != 0 )
                             <a class="dropdown-item" href="{{url('company-profile')}}/{{Session::get('default_cmp_id')}}">
                                 <i i class="me-50" data-feather="credit-card"></i> Company Profile </a>
