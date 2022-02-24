@@ -2625,7 +2625,8 @@ class HelpdeskController extends Controller
                 // dd($mail_frm_param);exit;
                 if($mail_frm_param != null || $mail_frm_param != ''){
 
-                    $users_list = User::whereIn('id', $assigned_users)->where('email','!=',$mail_frm_param)->get()->toArray();
+                    // $users_list = User::whereIn('id', $assigned_users)->where('email','!=',$mail_frm_param)->get()->toArray();
+                    $users_list = User::whereIn('id', $assigned_users)->get()->toArray();
                     //  echo "in hd";
                     // dd($users_list);exit;
                 }else{
