@@ -383,7 +383,7 @@
                                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" id="show-clndr"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp; Calender</button>
 
                                         <a href="{{url('add-ticket')}}" type="button" class="btn btn-success waves-effect waves-float waves-light">
-                                            <i class="fa fa-plus"></i>&nbsp;Add ticket
+                                            <i class="fa fa-plus"></i>&nbsp; Create ticket
                                         </a>
 
                                     </span>
