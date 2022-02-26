@@ -600,6 +600,7 @@ function updateDeadlines() {
     };
 
     console.log(formData , "formdata");
+    
     $.ajax({
         type: "post",
         url: $('#sla_plan_reset_form').attr("action"),
