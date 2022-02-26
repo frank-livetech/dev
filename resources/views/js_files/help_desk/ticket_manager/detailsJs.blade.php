@@ -34,9 +34,13 @@ $.ajaxSetup({
 $(document).ready(function() {
 
     if(currentTime.length == 0) {
-        let regiondate = new Date().toLocaleString('en-US', { timeZone: time_zone });
-        currentTime.push( regiondate );
+        // let regiondate = new Date();
+        let regiondate = new Date(ticket.created_at).toLocaleString('en-US', { timeZone: time_zone });
+        // currentTime.push( ticket.created_at );
+
+        console.log(regiondate , "regiondate");
     }
+    
     
     tinymce.init({
         selector: "textarea.mymce",
@@ -414,7 +418,8 @@ function SlaPlanReset() {
                     $("#ticket-rep-due").val(reply_deadline);
 
                     let newDat = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
-                    $("#reply_date").val( moment(reply_deadline).format('YYYY-MM-DD') );
+                    console.log(newDat , "newDat");
+                    $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
                     $("#reply_hour").val(  newDat.format('h') );
                     $("#reply_minute").val(  newDat.format('mm') );
                     $("#reply_type").val(  newDat.format('A') );
@@ -429,7 +434,7 @@ function SlaPlanReset() {
                 $("#ticket-res-due").val(deadline_time);
 
                 let newDat2 = moment(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h');
-                $("#res_date").val( moment(deadline_time).format('YYYY-MM-DD') );
+                $("#res_date").val( moment(newDat2).format('YYYY-MM-DD') );
                 $("#res_hour").val(  newDat2.format('h'));
                 $("#res_minute").val(  newDat2.format('mm') );
                 $("#res_type").val(  newDat2.format('A') );
