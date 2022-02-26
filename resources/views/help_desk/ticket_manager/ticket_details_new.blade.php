@@ -641,6 +641,7 @@ br + br { display: none; }
 
                                     <div class="col-md-3">
                                         <p style="margin-left: 70px;margin-bottom: unset !important">
+                                            <!-- <a type="button" class="float-right" href="javascript:SlaPlanReset();">Reset</a> -->
                                             <a type="button" class="float-right" href="javascript:resetSlaPlan();">Reset</a>
                                             <span class="float-right">&nbsp;&nbsp;|&nbsp;</span>
                                             <a type="button" href="javascript:changeSlaPlan();" class="float-right">Change SLA</a>
@@ -998,7 +999,7 @@ br + br { display: none; }
                                         <option value="months">In months</option>
                                         <option value="years">In years</option>
                                         <option value="custom">Custom</option>
-                                        <option value="time">Time (For recursive pattern)</option>
+                                        <!-- <option value="time">Time (For recursive pattern)</option> -->
                                     </select>
                                 </div>
                                 <div class="col-md-6" id="schedule_time_div">
@@ -1106,7 +1107,7 @@ br + br { display: none; }
                                 </div>
                             </div>
 
-                            <div class="form-row mt-1">
+                            <!-- <div class="form-row mt-1">
                                 <div class="col-md-12 form-group border p-1 bg-light rounded">
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="is_recurring">
@@ -1121,7 +1122,6 @@ br + br { display: none; }
                                         <input type="time" class="form-control" name="recurrence_time2">
                                     </div>
 
-                                    <!-- start -->
                                     <div class="col-md-12 mt-1">
                                         <div class="nav-vertical border p-1">
                                             <ul class="nav nav-tabs nav-left flex-column border" role="tablist" style="height: 161px;">
@@ -1244,131 +1244,6 @@ br + br { display: none; }
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- ends -->
-
-                                    <!-- <ul class="list-group list-group-horizontal-lg pb-3 mt-1">
-                                        <li class="list-group-item d-flex align-items-center">
-                                            <div class="radio radio-primary">
-                                                <input type="radio" name="recur_type" id="recur-daily" value="daily" class="d-none" checked>
-                                                <label class="mb-0" for="recur-daily"> Daily </label>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item d-flex align-items-center">
-                                            <div class="radio radio-primary">
-                                                <input type="radio" name="recur_type" id="recur-weekly" value="weekly" class="d-none">
-                                                <label class="mb-0" for="recur-weekly"> Weekly </label>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item d-flex align-items-center">
-                                            <div class="radio radio-primary">
-                                                <input type="radio" name="recur_type" id="recur-monthly" value="monthly" class="d-none">
-                                                <label class="mb-0" for="recur-monthly"> Monthly </label>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item d-flex align-items-center">
-                                            <div class="radio radio-primary">
-                                                <input type="radio" name="recur_type" id="recur-yearly" value="yearly" class="d-none">
-                                                <label class="mb-0" for="recur-yearly"> Yearly </label>
-                                            </div>
-                                        </li>
-                                    </ul>
-
-                                    <div id="daily-container" class="recur-container pb-3">
-                                        <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                            <label for="recur_after">Every &nbsp;&nbsp;</label>
-                                            <input type="number" class="form-control" id="recur_after_d" value="1" min="1" max="7" style="width: 100px;">
-                                            <label for="recur_after">&nbsp;&nbsp; day(s)</label>
-                                        </div>
-                                    </div>
-
-                                    <div id="weekly-container" class="recur-container pb-3" style="display: none;">
-                                        <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                            <label for="recur_after">Recur every &nbsp;&nbsp;</label>
-                                            <input type="number" class="form-control" id="recur_after_w" value="1" min="1" max="52" style="width: 100px;">
-                                            <label for="recur_after">&nbsp;&nbsp; week(s) on:</label>
-                                        </div>
-                                        <div id="week-days-list mt-2">
-                                            <div class="form-group">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input" id="monday" value="1">
-                                                    <label class="form-check-label" for="monday">Monday</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mt-1">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input" id="tuesday" value="2">
-                                                    <label class="form-check-label" for="tuesday">Tuesday</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mt-1">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input" id="wednesday" value="3">
-                                                    <label class="form-check-label" for="wednesday">Wednesday</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mt-1">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input" id="thursday" value="4">
-                                                    <label class="form-check-label" for="thursday">Thursday</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mt-1">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input" id="friday" value="5">
-                                                    <label class="form-check-label" for="friday">Friday</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mt-1">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input" id="saturday" value="6">
-                                                    <label class="form-check-label" for="saturday">Saturday</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mt-1">
-                                                <div class="form-check form-check-inline">
-                                                    <input type="checkbox" class="form-check-input" id="sunday" value="7">
-                                                    <label class="form-check-label" for="sunday">Sunday</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="monthly-container" class="recur-container pb-3" style="display: none;">
-                                        <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                            <label>Day &nbsp;&nbsp;</label>
-                                            <input type="number" class="form-control" id="recur_after_m" value="1" min="1" max="31" style="width: 100px;">
-                                            <label>&nbsp;&nbsp; of every &nbsp;&nbsp;</label>
-                                            <input type="number" class="form-control" id="recur_after_month" value="1" min="1" max="12" style="width: 100px;">
-                                            <label>&nbsp;&nbsp; month(s)</label>
-                                        </div>
-                                    </div>
-
-                                    <div id="yearly-container" class="recur-container pb-3 mt-1" style="display: none;">
-                                        <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                            <label>Recur every &nbsp;&nbsp;</label>
-                                            <input type="number" class="form-control" id="recur_after_y" value="1" min="1" style="width: 100px;">
-                                            <label>&nbsp;&nbsp; year(s)</label>
-                                        </div>
-
-                                        <div class="form-group d-flex align-items-center mt-1" style="margin-left: 16px;">
-                                            <label>On &nbsp;&nbsp;</label>
-                                            <select class="select2" id="recur-month" style="width: 300px;">
-                                                <option value="January">January</option>
-                                                <option value="February">February</option>
-                                                <option value="March">March</option>
-                                                <option value="April">April</option>
-                                                <option value="May">May</option>
-                                                <option value="June">June</option>
-                                                <option value="July">July</option>
-                                                <option value="August">August</option>
-                                                <option value="September">September</option>
-                                                <option value="October">October</option>
-                                                <option value="November">November</option>
-                                                <option value="December">December</option>
-                                            </select>&nbsp;&nbsp;
-                                            <input type="number" class="form-control" id="recur_month_day" value="1" min="1" max="31" style="width: 100px;">
-                                        </div>
-                                    </div> -->
                                 </div>
 
                                 <div class="row mt-1 p-1" id="recurrence-range" style="display:none">
@@ -1422,7 +1297,7 @@ br + br { display: none; }
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         
 
                             <div class="form-row mt-1" >
@@ -1735,13 +1610,75 @@ br + br { display: none; }
 
 <!-- reset sla plan modal -->
 <div id="reset_sla_plan_modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                     <h4 class="modal-title">Reset SLA Plan</h4>
                     <button type="button" data-bs-dismiss="modal" class="btn-close" onclick="closeAssetModal()"></button>
             </div>
             <div class="modal-body">
+
+                <!-- <div class="row">
+                    <label class="mx-1"> Reply Due</label>
+                    <div class="col-md-5">
+                        <input type="date" class="form-control mx-1">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="d-flex justify-content-between">
+                            <select name="" class="form-control" id="">
+                                @for($i = 1 ; $i < 13; $i++)
+                                    <option value="{{$i}}">{{$i}}</option>
+                                @endfor
+                            </select>
+                            <select name="" class="form-control mx-1" id="">
+                                <option value="00">00</option>
+                                @for($i = 1 ; $i < 60; $i++)
+                                    <option value="{{$i}}">{{$i}}</option>
+                                @endfor
+                            </select>
+                            <select name="" class="form-control" id="">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                            <button class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
+                            title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mt-2">
+                    
+                    <label class="mx-1"> Resolution Due</label>
+                    <div class="col-md-5">
+                        <input type="date" class="form-control mx-1">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="d-flex justify-content-between">
+                            
+                            <select name="" class="form-control" id="">
+                                @for($i = 1 ; $i < 13; $i++)
+                                    <option value="{{$i}}">{{$i}}</option>
+                                @endfor
+                            </select>
+                            <select name="" class="form-control mx-1" id="">
+                                <option value="00">00</option>
+                                @for($i = 1 ; $i < 60; $i++)
+                                    <option value="{{$i}}">{{$i}}</option>
+                                @endfor
+                            </select>
+                            <select name="" class="form-control" id="">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                            <button class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
+                                title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr> -->
                 <form id="sla_plan_reset_form" enctype="multipart/form-data" onsubmit="return false" method="post" action="{{asset('/update-ticket-deadlines')}}">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="form-group w-100 px-1">
