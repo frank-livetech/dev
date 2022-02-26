@@ -32,7 +32,16 @@ $.ajaxSetup({
 });
 
 $(document).ready(function() {
-       
+
+    if(currentTime.length == 0) {
+        // let regiondate = new Date();
+        let regiondate = new Date(ticket.created_at).toLocaleString('en-US', { timeZone: time_zone });
+        // currentTime.push( ticket.created_at );
+
+        console.log(regiondate , "regiondate");
+    }
+    
+    
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
@@ -393,35 +402,147 @@ function resetSlaPlan() {
     $("#reset_sla_plan_modal").modal("show");
 }
 
+// new function 
 function SlaPlanReset() {
     console.log(ticket , "ticket");
     if(ticket != null) {
         
         if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
-
+            console.log("if");
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
                 const today = new Date();
-                console.log(today , "today");
-                console.log(ticket_slaPlan , "ticket_slaPlan");
 
                 if(ticket.reply_deadline != "cleared") {
-                    var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
-                    console.log(reply_deadline , "reply_deadline");
+                    var reply_deadline =  moment().utc(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
+                    
                     $("#ticket-rep-due").val(reply_deadline);
-                }                
 
-                var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
+                    let newDat = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
+                    console.log(newDat , "newDat");
+                    $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
+                    $("#reply_hour").val(  newDat.format('h') );
+                    $("#reply_minute").val(  newDat.format('mm') );
+                    $("#reply_type").val(  newDat.format('A') );
+                }else{
+                    $("#reply_date").val(""); 
+                    $("#reply_hour").val("");
+                    $("#reply_minute").val("");
+                    $("#reply_type").val("");
+                }
+
+                var deadline_time =   moment().utc(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
                 $("#ticket-res-due").val(deadline_time);
+
+                let newDat2 = moment(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h');
+                $("#res_date").val( moment(newDat2).format('YYYY-MM-DD') );
+                $("#res_hour").val(  newDat2.format('h'));
+                $("#res_minute").val(  newDat2.format('mm') );
+                $("#res_type").val(  newDat2.format('A') );
             }
         }else{
-            // setSlaPlanDeadlines();
-            console.log("else");
+            slaPlanDeadlines();
         }
     }
 
     $("#reset_sla_plan_modal").modal("show");
 }
+// new function 
+function slaPlanDeadlines(ret = false) {
+    let res_due = '';
+    let rep_due = '';
+    let resetable = false;
 
+    if (ticket_slaPlan.title != 'No SLA Assigned') {
+        console.log("if");
+        if (ticket.hasOwnProperty('resolution_deadline') && ticket.resolution_deadline) {
+            // use ticket reset deadlines
+            if(ticket.resolution_deadline == 'cleared') {
+                $('#sla-res_due').parent().addClass('d-none');
+            } else {
+                res_due = moment(moment(ticket.resolution_deadline).toDate()).local();
+                $('#ticket-res-due').val(ticket.resolution_deadline);
+
+                let newDat = moment(ticket.resolution_deadline);
+                $("#res_date").val( newDat.format('YYYY-MM-DD') );
+                $("#res_hour").val(  newDat.format('h') );
+                $("#res_minute").val(  newDat.format('mm') );
+                $("#res_type").val(  newDat.format('A') );
+            }
+            
+        } else if (ticket_slaPlan.due_deadline) {
+            let hm = ticket_slaPlan.due_deadline.split('.');
+            res_due = moment(moment(ticket.sla_res_deadline_from).toDate()).local().add(hm[0], 'hours');
+            if (hm.length > 1) res_due.add(hm[1], 'minutes');
+        }
+
+        if (res_due) {
+            // overdue or change format of the date
+            console.log(res_due , "res_due 123");
+            if (res_due.diff(moment(), "seconds") < 0) {
+                resetable = true;
+                res_due = `<span class="text-center" style="color:red;">Overdue</span>`;
+            } else {
+                // do date formatting
+                // res_due = res_due.format(date_format);
+                res_due = getClockTime(res_due, 1);
+
+            }
+        }
+
+        $('#sla-rep_due').parent().removeClass('d-none');
+        if (ticket.hasOwnProperty('reply_deadline') && ticket.reply_deadline) {
+            // use ticket reset deadlines
+            if(ticket.reply_deadline == 'cleared') {
+                $('#sla-rep_due').parent().addClass('d-none');
+            } else {
+                rep_due = moment(moment(ticket.reply_deadline).toDate()).local();
+                $('#ticket-rep-due').val(ticket.reply_deadline);
+
+                let newDat = moment(ticket.reply_deadline);
+                $("#reply_date").val( newDat.format('YYYY-MM-DD') );
+                $("#reply_hour").val(  newDat.format('h') );
+                $("#reply_minute").val(  newDat.format('mm') );
+                $("#reply_type").val(  newDat.format('A') );
+            }
+        } else if (ticket_slaPlan.reply_deadline) {
+            let hm = ticket_slaPlan.reply_deadline.split('.');
+            rep_due = moment(moment(ticket.sla_rep_deadline_from).toDate()).local().add(hm[0], 'hours');
+            if (hm.length > 1) rep_due.add(hm[1], 'minutes');
+        }
+
+        if (rep_due) {
+            // overdue or change format of the date
+            if (rep_due.diff(moment(), "seconds") < 0) {
+                resetable = true;
+                rep_due = `<span class="text-center" style="color:red;"> Overdue </span>`;
+            } else {
+                // do date formatting
+                resetable = false;
+                // rep_due = rep_due.format(date_format);
+                rep_due = getClockTime(rep_due, 1);
+            }
+        }
+    }
+    console.log(ret , "ret");
+    console.log(rep_due , "rep_due123");
+    console.log(res_due , "res_due123");
+    if (ret) return { rep_due: rep_due, res_due: res_due };
+
+
+    if (rep_due) $('#sla-rep_due').html(rep_due);
+    if (res_due) $('#sla-res_due').html(res_due);
+
+    // any deadline is overdue can be reset
+    let bgcolor = $("#bgcolor").val();
+    let textcolor = $("#textcolor").val();
+    if (resetable) {
+        $('#card-sla').attr('style', `background-color: ${bgcolor} !important; color : ${textcolor} !important`);
+        $('#card-sla a').attr('style', `color : ${textcolor} !important`);
+    } else {
+        $("#card-sla").css('background-color', 'white');
+        $("#card-sla").css('color', '#000');
+    }
+}
 
 $("#ticket-rep-due").on('change' , function() {
     
@@ -436,21 +557,36 @@ $("#response_template").click(function() {
 });
 
 function updateDeadlines() {
-    let rep_deadline = $('#ticket-rep-due').val();
-    let res_deadline = $('#ticket-res-due').val();
+    // let rep_deadline = $('#ticket-rep-due').val();
+    // let res_deadline = $('#ticket-res-due').val();
+
+    let rp_date = $("#reply_date").val();
+    let rp_hour = $("#reply_hour").val();
+    let rp_min = $("#reply_minute").val();
+    let rp_type = $("#reply_type").val();
+
+    let rep_deadline = rp_date + ' ' +rp_hour + ':' + rp_min + ' ' + rp_type
+
+    if(rp_date == '') {
+        toastr.error('Reply Date is required!', { timeOut: 5000 });
+        return false;
+    }
+
+    let res_date = $("#res_date").val();
+    let res_hour = $("#res_hour").val();
+    let res_min = $("#res_minute").val();
+    let res_type = $("#res_type").val();
+
+    let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type
+
+    if(res_date == '') {
+        toastr.error('Resolution Date is required!', { timeOut: 5000 });
+        return false;
+    }
 
     if (!rep_deadline && !res_deadline) {
-        // Swal.fire({
-        //     position: 'center',
-        //     icon: "error",
-        //     title: "Please enter date to reset!",
-        //     showConfirmButton: false,
-        //     timer: swal_message_time
-        // });
-        // return false;
         rep_deadline = 'cleared';
         res_deadline = 'cleared';
-
     }
 
     let formData = {
@@ -459,6 +595,7 @@ function updateDeadlines() {
         res_deadline: res_deadline
     };
 
+    console.log(formData , "formdata");
     $.ajax({
         type: "post",
         url: $('#sla_plan_reset_form').attr("action"),
@@ -3223,10 +3360,21 @@ function matchStart(params, data) {
 
 // reset fields
 function resetSLA(value) {
+    // if(value == 'reply_due') {
+    //     $("#ticket-rep-due").val("");
+    // }else{
+    //     $("#ticket-res-due").val("");
+    // }
     if(value == 'reply_due') {
-        $("#ticket-rep-due").val("");
+        $("#reply_date").val("");
+        $("#reply_hour").val("12");
+        $("#reply_minute").val("00");
+        $("#reply_type").val("PM");
     }else{
-        $("#ticket-res-due").val("");
+        $("#res_date").val("");
+        $("#res_hour").val("12");
+        $("#res_minute").val("00");
+        $("#res_type").val("PM");
     }
 }
 

@@ -34,6 +34,7 @@
 
     //Flag Ticket Definings
     var flag_ticket_route = "{{asset('/flag_ticket')}}";
+    let currentTime = [];
 
     // assets data definitions
     var get_assets_route = "{{asset('/get-assets')}}";
