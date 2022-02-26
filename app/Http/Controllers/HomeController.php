@@ -116,6 +116,7 @@ class HomeController extends Controller {
 
         $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
 
+        $followUps = TicketFollowUp::where('is_deleted', 0)->where('passed', 0)->with('ticket')->get();
         return view('dashboard-new', get_defined_vars());
     
     }

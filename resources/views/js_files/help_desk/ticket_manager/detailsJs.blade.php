@@ -371,10 +371,11 @@ function setSlaPlanDeadlines(ret = false) {
 }
 
 function resetSlaPlan() {
+    console.log(ticket , "ticket");
     if(ticket != null) {
         if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
-                var today = new Date();
+                const today = new Date();
 
                 if(ticket.reply_deadline != "cleared") {
                     var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
@@ -391,6 +392,36 @@ function resetSlaPlan() {
 
     $("#reset_sla_plan_modal").modal("show");
 }
+
+function SlaPlanReset() {
+    console.log(ticket , "ticket");
+    if(ticket != null) {
+        
+        if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
+
+            if(ticket_slaPlan != null && ticket_slaPlan != "") {
+                const today = new Date();
+                console.log(today , "today");
+                console.log(ticket_slaPlan , "ticket_slaPlan");
+
+                if(ticket.reply_deadline != "cleared") {
+                    var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
+                    console.log(reply_deadline , "reply_deadline");
+                    $("#ticket-rep-due").val(reply_deadline);
+                }                
+
+                var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
+                $("#ticket-res-due").val(deadline_time);
+            }
+        }else{
+            // setSlaPlanDeadlines();
+            console.log("else");
+        }
+    }
+
+    $("#reset_sla_plan_modal").modal("show");
+}
+
 
 $("#ticket-rep-due").on('change' , function() {
     

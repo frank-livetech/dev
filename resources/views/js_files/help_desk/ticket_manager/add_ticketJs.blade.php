@@ -319,21 +319,9 @@
                                         ticket_notify(data.id, 'ticket_create');
 
                                         toastr.success(data.message, { timeOut: 5000 });
-                                        var preivous_url = $("#previous_url").val();
-                                        window.location = preivous_url;
+                                        // var preivous_url = $("#previous_url").val();
+                                        window.location = "{{route('ticket_management.index')}}";
                                         
-                                        // Swal.fire({
-                                        //     title: 'Success',
-                                        //     text: "Ticket created successfully!",
-                                        //     icon: 'success',
-                                        //     confirmButtonColor: '#3085d6',
-                                        //     confirmButtonText: 'OK!'
-                                        // }).then((result) => {
-                                        //     if (result.value) {
-                                        //         var preivous_url = $("#previous_url").val();
-                                        //         window.location = preivous_url;
-                                        //     }
-                                        // });
                                     }
                                 });
                             });

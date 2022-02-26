@@ -162,7 +162,7 @@
                                         <div id="show_ticket_results"></div>
                                     </div>
                                     <div class="d-grid col-4">
-                                        <a href="{{route('ticket_management.index')}}">
+                                        <a href="{{route('addTicketPage')}}">
                                         <div class="card card_shadow bg-success card_back border-dark card-hover">
                                             <div class="card-header">
                                                 <div class="text-center">
@@ -535,12 +535,12 @@
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>
+                                        <!-- <th>
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck1">
                                                 <label class="custom-control-label" for="customCheck1"></label>
                                             </div>
-                                        </th>
+                                        </th> -->
                                         <th> Sr# </th>
                                         <th> Name </th>
                                         <th> Ticket ID </th>
@@ -550,17 +550,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($followUps as $up)
                                     <tr>
-                                        <td></td>
-                                        <td>1
+                                        <!-- <td></td> -->
+                                        <td> {{$loop->iteration}} </td>
+                                        <td> 
+                                            @if($up->ticket != null)    
+                                                <a href="{{url('ticket-details')}}/{{$up->ticket->coustom_id}}"> {{$up->ticket->subject != null ? $up->ticket->subject : '-'}} </a>
+                                            @else
+                                                <span> - </span>
+                                            @endif
                                         </td>
-                                        <td >Name</td>
-                                        <td >Ticket ID</td>
-                                        <td >Follow-Up</td>
-                                        <td >Assigned tech</td>
-                                        <td >Preferred Contact</td>
+                                        <td> 
+                                            @if($up->ticket != null)    
+                                                <a href="{{url('ticket-details')}}/{{$up->ticket->coustom_id}}"> {{$up->ticket->coustom_id != null ? $up->ticket->coustom_id : '-'}} </a>
+                                            @else
+                                                <span> - </span>
+                                            @endif
+                                        </td>
+                                        <td > {{$up->schedule_time}} {{$up->schedule_type}} </td>
+                                        <td> 
+                                            <a href="{{url('profile')}}/{{$up->follow_up_assigned_to}}"> {{$up->tech_name}} </a>
+                                        </td>
+                                        <td > {{$up->creator_name}}</td>
 
                                     </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

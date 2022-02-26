@@ -3,16 +3,14 @@
     // Ticket Details Script Blade
     var sla_plans_list =  {!! json_encode($sla_plans) !!};
     var ticket_slaPlan =  {!! json_encode($ticket_slaPlan) !!};
+    console.log(ticket_slaPlan , "ticket_slaPlan 123");
     var companies_list =  {!! json_encode($companies) !!};
     var ticket_customer =  {!! json_encode($ticket_customer) !!};
     var temp_sel_customer =  ticket_customer.id;
     var ticket_details =  {!! json_encode($details) !!};
     let res_templates_list = {!! json_encode($responseTemplates) !!};
-        
     var all_users = {!! json_encode($allusers) !!};
-
     var g_followUps = '';
-    
     var active_user = {!! json_encode($active_user) !!};
     var ticket =  {!! json_encode($details) !!};
     var ticketReplies =  {!! json_encode($details->ticketReplies) !!};
@@ -53,13 +51,11 @@
 
     var show_asset = "{{asset('/show-single-assets')}}";
     var update_asset = "{{asset('/update-assets')}}";
-
     var general_info_route = "{{asset('/general-info')}}";
-
     var set_sla_plan_route = "{{asset('/set-sla-plan')}}";
 
-    console.log(ticket);
-    
+    console.log(ticket , "ticket");
+
     $( document ).ready(function() {
        
 

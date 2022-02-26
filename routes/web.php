@@ -494,7 +494,7 @@ Route::post('/ticket-general-info','HelpdeskController@saveTicketGeneralInfo')->
 
 
 // Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage');
-Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage');
+Route::get('/add-ticket/{id?}','HelpdeskController@addTicketPage')->name('addTicketPage');
 
 Route::get('/ticket-details','HelpdeskController@ticket_details');
 Route::Post('/save-tickets','HelpdeskController@save_tickets');
