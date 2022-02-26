@@ -351,7 +351,14 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::group(['prefix' => 'template-builder/templates'], function () {
 
 
+        Route::post('savetemp', 'TemplatesController@saveTemplates')->name('saveTemplates');
+
         Route::get('/', 'TemplatesController@index')->name('templateList');
+        Route::get('getTemplates', 'TemplatesController@getTemplates')->name('getTemplates');
+        Route::get('createTemplate/{id}', 'TemplatesController@createTemplate')->name('createTemplate');
+        Route::post('updateTemp', 'TemplatesController@updateTemp')->name('updateTemp');
+
+
         Route::get('new', 'TemplatesController@select')->name('selectNewTemplate');
         Route::get('new/{type}/{name}/{skeleton}', 'TemplatesController@new')->name('newTemplate');
         Route::get('edit/{templatename}', 'TemplatesController@view')->name('viewTemplate');

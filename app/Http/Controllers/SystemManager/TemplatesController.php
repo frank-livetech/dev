@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Validator as Validations;
 
-class TemplatesController extends Controller {
+class TemplatesController extends Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware(function (Request $request, $next) {
             if (Auth::user()->user_type == 5) {
                 return redirect()->route('un_auth');
@@ -31,23 +33,91 @@ class TemplatesController extends Controller {
         $templates = mailEclipse::getTemplates();
 
         $tmp_cats = DB::table('template_categories')->get();
-        foreach($tmp_cats as $cat) {
-            $cat->template = DB::table('templates')->where('catid',$cat->cat_id)->get();
+        foreach ($tmp_cats as $cat) {
+            $cat->template = DB::table('templates')->where('catid', $cat->cat_id)->get();
         }
 
         // dd($tmp_cats->toArray());
 
         $tem_cats_modal = DB::table('template_categories')->whereRaw('cat_id !=2')->get();
 
-        return View(self::$prifixRoute . 'sections.templates_new', compact('skeletons', 'templates','tmp_cats','tem_cats_modal'));
+        return view('system_manager.templates.index', get_defined_vars());
     }
 
-    function new ($type, $name, $skeleton) {
+    public function saveTemplates(Request $request)
+    {
+        DB::table("template1")->insert([
+            "catid" => $request->catid,
+            "name" => $request->template_name,
+            "subject" => $request->temp_subject,
+            "alert_prefix" => $request->temp_alert_prefix,
+        ]);
+
+        return response()->json([
+            "status_code" => 200,
+            "success" => true,
+            "message" => "Template Saved.",
+        ]);
+    }
+
+    public function getTemplates()
+    {
+        return response()->json([
+            "status" => 200,
+            "success" => true,
+            "templates" => DB::table("template1")->get(),
+        ]);
+    }
+
+    public function createTemplate($id)
+    {
+        return view('system_manager.templates.create', compact('id'));
+    }
+
+    public function updateTemp(Request $request)
+    {
+
+        DB::table("template1")->where('id' , $request->id)->update([
+            "html" => $request->my_html,
+            "components" => $request->my_components,
+            "my_assets" => $request->my_assets,
+            "my_css" => $request->my_css,
+            "my_styles" => $request->my_styles,
+        ]);
+
+        return response()->json([
+            "status_code" => 200,
+            "success" => true,
+            "message" => "Template Saved.",
+        ]);
+        
+    }
+
+    public function index2()
+    {
+        $skeletons = mailEclipse::getTemplateSkeletons();
+
+        $templates = mailEclipse::getTemplates();
+
+        $tmp_cats = DB::table('template_categories')->get();
+        foreach ($tmp_cats as $cat) {
+            $cat->template = DB::table('templates')->where('catid', $cat->cat_id)->get();
+        }
+
+        // dd($tmp_cats->toArray());
+
+        $tem_cats_modal = DB::table('template_categories')->whereRaw('cat_id !=2')->get();
+
+        return View(self::$prifixRoute . 'sections.templates_new', compact('skeletons', 'templates', 'tmp_cats', 'tem_cats_modal'));
+    }
+
+    function new($type, $name, $skeleton)
+    {
         $type = $type === 'html' ? $type : 'markdown';
 
         $skeleton = mailEclipse::getTemplateSkeleton($type, $name, $skeleton);
 
-        return response()->json(['skeleton'=>$skeleton]);
+        return response()->json(['skeleton' => $skeleton]);
         //return View(self::$prifixRoute . 'sections.create-template', compact('skeleton'));
     }
 
@@ -97,8 +167,9 @@ class TemplatesController extends Controller {
         return mailEclipse::updateTemplate($request);
     }
 
-    public function saveCustomTemplate(Request $request){
-       if(isset($request['catid'])){
+    public function saveCustomTemplate(Request $request)
+    {
+        if (isset($request['catid'])) {
             $res = DB::table('templates')->insert([
                 'catid' => $request['catid'],
                 'name' => $request['template_view_name'],
@@ -106,63 +177,65 @@ class TemplatesController extends Controller {
                 'subject' => $request['temp_subject'],
                 'alert_prefix' => $request['temp_alert_prefix'],
             ]);
-            if($res){
-                return response()->json(['status' => 'ok','message' => 'template created successfully...']);
-            }else{
-                return response()->json(['status' => 'error','message' => 'template not created successfully...']);
+            if ($res) {
+                return response()->json(['status' => 'ok', 'message' => 'template created successfully...']);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'template not created successfully...']);
             }
-       }
-       return response()->json(['status' => 'error','message' => 'category is required']);
+        }
+        return response()->json(['status' => 'error', 'message' => 'category is required']);
     }
 
-    public function getTemplate(Request $request){
-        $template = DB::table('templates')->where('id',$request->id)->first();
-        if($template){
-            return response()->json(['status' => 'ok','template' => $template]);
-        }else{
-            return response()->json(['status' => 'error','message' => 'template not found']);
+    public function getTemplate(Request $request)
+    {
+        $template = DB::table('templates')->where('id', $request->id)->first();
+        if ($template) {
+            return response()->json(['status' => 'ok', 'template' => $template]);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'template not found']);
         }
     }
 
-    public function updateCustomTemplate(Request $request){
-        $error = Validations::make($request->all(),[
-          'templateid' => 'required',
-          'template_html' => 'required',
-          'templatename' => 'required'
+    public function updateCustomTemplate(Request $request)
+    {
+        $error = Validations::make($request->all(), [
+            'templateid' => 'required',
+            'template_html' => 'required',
+            'templatename' => 'required'
         ]);
 
-        if($error->fails()){
-          return response()->json(['status'=>'error','message'=>$error->messages()->first()]);
+        if ($error->fails()) {
+            return response()->json(['status' => 'error', 'message' => $error->messages()->first()]);
         }
 
-        $template = DB::table('templates')->where('id',$request['templateid'])->update([
+        $template = DB::table('templates')->where('id', $request['templateid'])->update([
             'name'  => $request['templatename'],
             'template_html' => $request['template_html'],
             'subject' => $request['temp_subject'],
             'alert_prefix' => $request['temp_alert_prefix'],
         ]);
-        if($template){
-            return response()->json(['status' => 'ok','message' => 'Template updated successfully..']);
-        }else{
-            return response()->json(['status' => 'error','message' => 'template not found']);
+        if ($template) {
+            return response()->json(['status' => 'ok', 'message' => 'Template updated successfully..']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'template not found']);
         }
-
     }
 
-    public function deleteCustomTemplate(Request $request){
-        $error = Validations::make($request->all(),[
-          'id' => 'required',
+    public function deleteCustomTemplate(Request $request)
+    {
+        $error = Validations::make($request->all(), [
+            'id' => 'required',
         ]);
 
-        if($error->fails()){
-          return response()->json(['status'=>'error','message'=>$error->messages()->first()]);
+        if ($error->fails()) {
+            return response()->json(['status' => 'error', 'message' => $error->messages()->first()]);
         }
 
-        $template = DB::table('templates')->where('id',$request['id'])->where('catid','!=',2)->delete();
-        if($template){
-            return response()->json(['status' => 'ok','message' => 'Template deleted successfully..']);
-        }else{
-            return response()->json(['status' => 'error','message' => 'template not deleted successfully']);
+        $template = DB::table('templates')->where('id', $request['id'])->where('catid', '!=', 2)->delete();
+        if ($template) {
+            return response()->json(['status' => 'ok', 'message' => 'Template deleted successfully..']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'template not deleted successfully']);
         }
     }
 
@@ -175,7 +248,8 @@ class TemplatesController extends Controller {
     // short codes crud functions
     //==================================
 
-    public function addShortCodes(Request $request) {
+    public function addShortCodes(Request $request)
+    {
 
         DB::table("sc_variables")->insert([
             "code" => $request->code,
@@ -187,11 +261,11 @@ class TemplatesController extends Controller {
         $response['success'] = true;
 
         return response()->json($response);
-
     }
 
-    public function getAllShortCodes() {
-        $code_result=  DB::table("sc_variables")->orderBy("id","desc")->get();
+    public function getAllShortCodes()
+    {
+        $code_result =  DB::table("sc_variables")->orderBy("id", "desc")->get();
 
         $response['message'] = 'Code list';
         $response['status_code'] = 200;
@@ -201,18 +275,20 @@ class TemplatesController extends Controller {
         return response()->json($response);
     }
 
-    public function deleteShortCodes($id) {
+    public function deleteShortCodes($id)
+    {
 
-        DB::table("sc_variables")->where("id","=",$id)->delete();
+        DB::table("sc_variables")->where("id", "=", $id)->delete();
         $response['message'] = 'Record Deleted Successfully';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
     }
 
-    public function updateShortCodes(Request $request) {
+    public function updateShortCodes(Request $request)
+    {
 
-        DB::table("sc_variables")->where("id","=",$request->id)->update([
+        DB::table("sc_variables")->where("id", "=", $request->id)->update([
             "code" => $request->code,
             "description" => $request->desc,
         ]);
@@ -222,16 +298,5 @@ class TemplatesController extends Controller {
         $response['success'] = true;
 
         return response()->json($response);
-
     }
-
-
-
-
-
-
-
-
-
-
 }

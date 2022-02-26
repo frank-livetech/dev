@@ -34,9 +34,8 @@ $.ajaxSetup({
 $(document).ready(function() {
 
     if(currentTime.length == 0) {
-        // let regiondate = new Date();
-        let regiondate = new Date(ticket.created_at).toLocaleString('en-US', { timeZone: time_zone });
-        // currentTime.push( ticket.created_at );
+        let regiondate = convertDate(ticket.created_at);
+        currentTime.push( regiondate );
 
         console.log(regiondate , "regiondate");
     }
