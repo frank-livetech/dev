@@ -641,8 +641,8 @@ br + br { display: none; }
 
                                     <div class="col-md-3">
                                         <p style="margin-left: 70px;margin-bottom: unset !important">
-                                            <!-- <a type="button" class="float-right" href="javascript:SlaPlanReset();">Reset</a> -->
-                                            <a type="button" class="float-right" href="javascript:resetSlaPlan();">Reset</a>
+                                            <a type="button" class="float-right" href="javascript:SlaPlanReset();">Reset</a>
+                                            <!-- <a type="button" class="float-right" href="javascript:resetSlaPlan();">Reset</a> -->
                                             <span class="float-right">&nbsp;&nbsp;|&nbsp;</span>
                                             <a type="button" href="javascript:changeSlaPlan();" class="float-right">Change SLA</a>
                                            
@@ -1618,69 +1618,8 @@ br + br { display: none; }
             </div>
             <div class="modal-body">
 
-                <!-- <div class="row">
-                    <label class="mx-1"> Reply Due</label>
-                    <div class="col-md-5">
-                        <input type="date" class="form-control mx-1">
-                    </div>
-                    <div class="col-md-7">
-                        <div class="d-flex justify-content-between">
-                            <select name="" class="form-control" id="">
-                                @for($i = 1 ; $i < 13; $i++)
-                                    <option value="{{$i}}">{{$i}}</option>
-                                @endfor
-                            </select>
-                            <select name="" class="form-control mx-1" id="">
-                                <option value="00">00</option>
-                                @for($i = 1 ; $i < 60; $i++)
-                                    <option value="{{$i}}">{{$i}}</option>
-                                @endfor
-                            </select>
-                            <select name="" class="form-control" id="">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                            <button class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
-                            title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row mt-2">
-                    
-                    <label class="mx-1"> Resolution Due</label>
-                    <div class="col-md-5">
-                        <input type="date" class="form-control mx-1">
-                    </div>
-                    <div class="col-md-7">
-                        <div class="d-flex justify-content-between">
-                            
-                            <select name="" class="form-control" id="">
-                                @for($i = 1 ; $i < 13; $i++)
-                                    <option value="{{$i}}">{{$i}}</option>
-                                @endfor
-                            </select>
-                            <select name="" class="form-control mx-1" id="">
-                                <option value="00">00</option>
-                                @for($i = 1 ; $i < 60; $i++)
-                                    <option value="{{$i}}">{{$i}}</option>
-                                @endfor
-                            </select>
-                            <select name="" class="form-control" id="">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                            <button class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
-                                title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
-                        </div>
-                    </div>
-
-                </div>
-
-                <hr> -->
                 <form id="sla_plan_reset_form" enctype="multipart/form-data" onsubmit="return false" method="post" action="{{asset('/update-ticket-deadlines')}}">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <!-- <div class="d-flex justify-content-between align-items-center">
                         <div class="form-group w-100 px-1">
                             <label for="ticket-rep-due">Reply Due</label>
                             <input type="datetime-local" id="ticket-rep-due" name="" class="form-control">
@@ -1700,6 +1639,67 @@ br + br { display: none; }
                             <button class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light mt-1"
                             title="Reset resolution due" onclick="resetSLA('resolution_due')"> <i data-feather='refresh-cw'></i> </button>
                         </div>
+                    </div> -->
+
+                    <div class="row">
+                        <label class="mx-1"> Reply Due</label>
+                        <div class="col-md-5">
+                            <input type="date" class="form-control mx-1" id="reply_date">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="d-flex justify-content-between">
+                                <select name="" class="form-control" id="reply_hour">
+                                    @for($i = 1 ; $i < 13; $i++)
+                                        <option value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
+                                <select name="" class="form-control mx-1" id="reply_minute">
+                                    @for($i = 0 ; $i < 60; $i++)
+                                        @php $a = str_pad($i, 2, "0", STR_PAD_LEFT); @endphp
+                                        <option value="{{$a}}">{{$a}}</option>
+                                    @endfor
+                                </select>
+                                <select name="" class="form-control" id="reply_type">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                                <button onclick="resetSLA('reply_due')" class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
+                                title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-2">
+                        
+                        <label class="mx-1"> Resolution Due</label>
+                        <div class="col-md-5">
+                            <input type="date" class="form-control mx-1" id="res_date">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="d-flex justify-content-between">
+                                
+                                <select name="" class="form-control" id="res_hour">
+                                    @for($i = 1 ; $i < 13; $i++)
+                                        <option value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
+                                <select name="" class="form-control mx-1" id="res_minute">
+                                    <option value="00">00</option>
+                                    @for($i = 1 ; $i < 60; $i++)
+                                        @php $a = str_pad($i, 2, "0", STR_PAD_LEFT); @endphp
+                                        <option value="{{$a}}">{{$a}}</option>
+                                    @endfor
+                                </select>
+                                <select name="" class="form-control" id="res_type">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                                <button onclick="resetSLA('resolution_due')" class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
+                                    title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="form-group text-right mt-3">
