@@ -567,10 +567,10 @@ function updateDeadlines() {
 
     let rep_deadline = rp_date + ' ' +rp_hour + ':' + rp_min + ' ' + rp_type
 
-    if(rp_date == '') {
-        toastr.error('Reply Date is required!', { timeOut: 5000 });
-        return false;
-    }
+    // if(rp_date == '') {
+    //     toastr.error('Reply Date is required!', { timeOut: 5000 });
+    //     return false;
+    // }
 
     let res_date = $("#res_date").val();
     let res_hour = $("#res_hour").val();
@@ -579,15 +579,19 @@ function updateDeadlines() {
 
     let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type
 
-    if(res_date == '') {
-        toastr.error('Resolution Date is required!', { timeOut: 5000 });
-        return false;
-    }
+    // if(res_date == '') {
+    //     toastr.error('Resolution Date is required!', { timeOut: 5000 });
+    //     return false;
+    // }
 
-    if (!rep_deadline && !res_deadline) {
+    if (!rp_date && !res_date) {
         rep_deadline = 'cleared';
         res_deadline = 'cleared';
     }
+    // if (!rep_deadline && !res_deadline) {
+    //     rep_deadline = 'cleared';
+    //     res_deadline = 'cleared';
+    // }
 
     let formData = {
         ticket_id: ticket.id,
@@ -596,6 +600,7 @@ function updateDeadlines() {
     };
 
     console.log(formData , "formdata");
+    
     $.ajax({
         type: "post",
         url: $('#sla_plan_reset_form').attr("action"),
