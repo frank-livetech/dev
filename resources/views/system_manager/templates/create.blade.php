@@ -8,10 +8,14 @@
     <meta name="_token" content="{{csrf_token()}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Template Builder</title>
-    <script type="text/javascript" src="{{asset('grapes/grapes.js')}}"></script>
-    <script type="text/javascript" src="{{asset('grapes/news.js')}}"></script>
-    <link rel="stylesheet" href="{{asset('grapes/grapes.css')}}">
-    <link rel="stylesheet" href="{{asset('grapes/news.css')}}">
+    @php
+        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+    @endphp
+    <script type="text/javascript" src="{{asset($file_path . 'grapes/grapes.js')}}"></script>
+    <script type="text/javascript" src="{{asset($file_path . 'grapes/news.js')}}"></script>
+    <link rel="stylesheet" href="{{asset($file_path . 'grapes/grapes.css')}}">
+    <link rel="stylesheet" href="{{asset($file_path . 'grapes/news.css')}}">
     <style>
         body {
             margin: 0;
