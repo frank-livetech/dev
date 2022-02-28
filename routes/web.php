@@ -355,8 +355,12 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
         Route::get('/', 'TemplatesController@index')->name('templateList');
         Route::get('getTemplates', 'TemplatesController@getTemplates')->name('getTemplates');
+        
         Route::get('createTemplate/{id}', 'TemplatesController@createTemplate')->name('createTemplate');
+        Route::get('viewTemplate/{id}', 'TemplatesController@viewTemplate')->name('view.Template');
+
         Route::post('updateTemp', 'TemplatesController@updateTemp')->name('updateTemp');
+        Route::post('deleteTemp', 'TemplatesController@deleteTemp')->name('deleteTemp');
 
 
         Route::get('new', 'TemplatesController@select')->name('selectNewTemplate');

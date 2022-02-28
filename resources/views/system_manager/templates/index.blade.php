@@ -48,8 +48,12 @@
         display: none !important;
     }
     .overlay {
-        background: white !important; width: 100%; height: 100%; z-index: 99999;position: absolute;display: flex;justify-content: center;align-items: center;opacity: 0.8;
+        background: white !important; width: 100%; height: 100%; z-index: 99999;position: absolute;opacity: 0.8;
+        top:0px; right:0px;
     }
+    .img_circle {
+            width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+        }
 </style>
 @endsection
 @section('body')
@@ -76,9 +80,27 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
+                    <h4>Template Categories</h4>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <div id="jstree-basic">
+                        <ul>
+                            @foreach($tmp_cats as $cat)
+                                <li data-jstree='{"icon" : "far fa-folder"}' onclick="getCategoryTemplates({{$cat->cat_id}})">
+                                    <i data-feather='folder'></i> {{$cat->cat_name}} ({{count($cat->template)}})
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9 position-relative">
+            <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div>
                             <h5> {{ __('Templates') }} </h5>
@@ -89,32 +111,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="showRecord">
-                            <thead>
-                                <tr>
-                                    <th>Sr#</th>
-                                    <th> Template Name </th>
-                                    <th> Subject </th>
-                                    <th> Alert Prefix </th>
-                                    <th> Create Template </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+
+                <div class="row" id="showTemplates">
                 </div>
-                <div class="overlay" style="display:none !important;">
+
+                <div class="overlay d-flex justify-content-center align-items-center align-self-center" style="display:none !important">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                </div>
-            </div>
+                </div> 
         </div>
     </div>
 
 </div>
+
 
 <!-- create template modal -->
 <div class="modal fade" id="createTemplate" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -137,6 +147,11 @@
                                 <option value="{{$cat->cat_id}}">{{$cat->cat_name}}</option>
                             @endforeach
                             </select>
+                        </div>
+
+                        <div class="form-group mt-1">
+                            <label class="label-control">Template Code</label>
+                            <input type="text" id="new_template_code" name="template_code" class="form-control">
                         </div>
 
                         <div class="form-group mt-1">
@@ -178,26 +193,25 @@
 <script src="{{asset($file_path . 'app-assets/js/scripts/extensions/ext-component-tree.min.js')}}"></script>
 
 <script type="text/javascript">
-var template_arr = [];
-   $(document).ready(function() {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-        }
-    });
+    var template_arr = [];
+    let template_cateogries = {!! json_encode($tmp_cats) !!};
+    console.log(template_cateogries , "template_cateogries");
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
 
-    getTemplates();
+        // getTemplates();
 
         $('.save-template').click(function(){
-        $("#createTemplate").modal('show');
+            $("#createTemplate").modal('show');
         });
     });
 
     $("#saveCustomTemplate").submit(function(e) {
         e.preventDefault();
-
-
-
         $.ajax({
             type: "POST",
             url: "{{route('saveTemplates')}}",
@@ -212,10 +226,10 @@ var template_arr = [];
             },
             success: function(data) {
                 console.log(data, "a");
-                if ( data.status == 200 && data.success == true) {
+                if ( data.status_code == 200 && data.success == true) {
                     $("#createTemplate").modal("hide");
-
-                    get_all_categories();
+                    toastr.success( data.message , { timeOut: 5000 });
+                    location.reload();
                 } else {
                 }
             },
@@ -230,6 +244,115 @@ var template_arr = [];
             }
         });
     });
+
+
+    function getCategoryTemplates(id) {
+        $(".overlay").attr('style','display:block !important');
+        let item = template_cateogries.find( item => item.cat_id === id);
+        
+        if(item != null) {
+
+            let item_total_templates = item.template.length;
+            let obj = item.template;
+            
+            let template_html = ``;
+
+            if(item_total_templates > 0) {
+
+                for(var i =0 ; i < obj.length; i++) {
+
+                    let name = obj[i].name.charAt(0);
+
+                    let url = "{{route('createTemplate', ':id')}}";
+                    url = url.replace(':id', obj[i].id);
+
+                    let view_url = "{{route('view.Template', ':id')}}";
+                    view_url = view_url.replace(':id', obj[i].id);
+
+                    template_html+=`
+                        <div class="col-md-4" id="temp_${obj[i].id}">
+                            <div class="card p-1">
+                                <div class="d-flex justify-content-between">
+                                    <li class="d-flex user-mail">
+                                        <div class="mail-left pe-50">
+                                            <div class="avatar">
+                                                <span class="bg-primary img_circle text-white"> ${name.toUpperCase()}  </span>
+                                            </div>
+                                        </div>
+                                        <div class="mail-body">
+                                            <div class="mail-details">
+                                                <div class="mail-items">
+                                                    <h5 class="mb-25"> ${obj[i].name} </h5>
+                                                    <span class="text-truncate text-muted small"> ${moment(obj[i].created_at).fromNow()} </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <div class="dropdown chart-dropdown">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-3 cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                        <div class="dropdown-menu dropdown-menu-end" style="">
+                                            <a class="dropdown-item" target="_blank" href="${view_url}"> 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 font-medium-3 me-50"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                            Preview</a>
+                                            <a class="dropdown-item" href="${url}"> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2 font-medium-3 me-50"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg> Edit Template</a>
+                                            <button class="dropdown-item" onclick="deleteTemplate(${obj[i].id})" > <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash font-medium-3 me-50"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                            Delete Template</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+
+                }
+
+
+                $("#showTemplates").html(template_html);
+
+
+            }else{
+                $("#showTemplates").html("No Template Found");
+            }
+
+
+        }
+
+        setTimeout(() => {
+            $(".overlay").attr('style','display:none !important');    
+        }, 1000);
+        
+    }
+
+    function deleteTemplate(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "All data related to this note will be removed!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: 'post',
+                    url: "{{route('deleteTemp')}}",
+                    data: { id: id },
+                    success: function(data) {
+
+                        if (data.success == true &&  data.status_code == 200) {
+                            $("#temp_"+id).remove();
+                            toastr.success( data.message , { timeOut: 5000 });
+                        } else {
+                            toastr.error( data.message , { timeOut: 5000 });
+                        }
+                    },
+                    failure: function(errMsg) {
+                        toastr.error( 'Something went Wrong' , { timeOut: 5000 });
+                    }
+                });
+            }
+        });
+    }
 
 
     function getTemplates() {
@@ -271,7 +394,7 @@ var template_arr = [];
                             {
                                 render: function(data, type, full, meta) {
                                     let url = "{{route('createTemplate', ':id')}}";
-                url = url.replace(':id', full.id);
+                                    url = url.replace(':id', full.id);
                                     return `<div class="d-flex justify-content-start">
                                         <a href="${url}" 
                                             type="button" class="btn btn-icon rounded-circle btn-outline-primary waves-effect" data-toggle="tooltip" data-placement="top" title="Edit">

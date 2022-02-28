@@ -34,7 +34,7 @@ class TemplatesController extends Controller
 
         $tmp_cats = DB::table('template_categories')->get();
         foreach ($tmp_cats as $cat) {
-            $cat->template = DB::table('templates')->where('catid', $cat->cat_id)->get();
+            $cat->template = DB::table('template1')->where('catid', $cat->cat_id)->get();
         }
 
         // dd($tmp_cats->toArray());
@@ -44,11 +44,11 @@ class TemplatesController extends Controller
         return view('system_manager.templates.index', get_defined_vars());
     }
 
-    public function saveTemplates(Request $request)
-    {
+    public function saveTemplates(Request $request) {
         DB::table("template1")->insert([
             "catid" => $request->catid,
             "name" => $request->template_name,
+            "code" => $request->template_code,
             "subject" => $request->temp_subject,
             "alert_prefix" => $request->temp_alert_prefix,
         ]);
@@ -69,13 +69,12 @@ class TemplatesController extends Controller
         ]);
     }
 
-    public function createTemplate($id)
-    {
-        return view('system_manager.templates.create', compact('id'));
+    public function createTemplate($id) {
+        $template = DB::table("template1")->where('id', $id)->first();
+        return view('system_manager.templates.create', get_defined_vars());
     }
 
-    public function updateTemp(Request $request)
-    {
+    public function updateTemp(Request $request) {
 
         DB::table("template1")->where('id' , $request->id)->update([
             "html" => $request->my_html,
@@ -83,14 +82,30 @@ class TemplatesController extends Controller
             "my_assets" => $request->my_assets,
             "my_css" => $request->my_css,
             "my_styles" => $request->my_styles,
+            "name" => $request->templateName,
         ]);
 
         return response()->json([
             "status_code" => 200,
             "success" => true,
-            "message" => "Template Saved.",
+            "message" => "Template Saved Successfully.",
         ]);
-        
+    }
+
+    public function viewTemplate($id) {
+        $data = DB::table("template1")->where('id' , $id)->first();
+        return view('system_manager.templates.view', get_defined_vars());
+    }
+
+    public function deleteTemp(Request $request) {
+
+        DB::table("template1")->where('id' , $request->id)->delete();
+
+        return response()->json([
+            "status_code" => 200,
+            "success" => true,
+            "message" => "Template Deleted Successfully.",
+        ]);
     }
 
     public function index2()
