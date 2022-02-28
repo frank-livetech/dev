@@ -12,4 +12,4 @@
 </style>
 
 
-{!! $data->html !!}
+{!! $data->template_html !!}

@@ -34,10 +34,9 @@ class TemplatesController extends Controller
 
         $tmp_cats = DB::table('template_categories')->get();
         foreach ($tmp_cats as $cat) {
-            $cat->template = DB::table('template1')->where('catid', $cat->cat_id)->get();
+            $cat->template = DB::table('templates')->where('catid', $cat->cat_id)->get();
         }
 
-        // dd($tmp_cats->toArray());
 
         $tem_cats_modal = DB::table('template_categories')->whereRaw('cat_id !=2')->get();
 
@@ -45,7 +44,7 @@ class TemplatesController extends Controller
     }
 
     public function saveTemplates(Request $request) {
-        DB::table("template1")->insert([
+        DB::table("templates")->insert([
             "catid" => $request->catid,
             "name" => $request->template_name,
             "code" => $request->template_code,
@@ -60,24 +59,23 @@ class TemplatesController extends Controller
         ]);
     }
 
-    public function getTemplates()
-    {
+    public function getTemplates() {
         return response()->json([
             "status" => 200,
             "success" => true,
-            "templates" => DB::table("template1")->get(),
+            "templates" => DB::table("templates")->get(),
         ]);
     }
 
     public function createTemplate($id) {
-        $template = DB::table("template1")->where('id', $id)->first();
+        $template = DB::table("templates")->where('id', $id)->first();
         return view('system_manager.templates.create', get_defined_vars());
     }
 
     public function updateTemp(Request $request) {
 
-        DB::table("template1")->where('id' , $request->id)->update([
-            "html" => $request->my_html,
+        DB::table("templates")->where('id' , $request->id)->update([
+            "template_html" => $request->my_html,
             "components" => $request->my_components,
             "my_assets" => $request->my_assets,
             "my_css" => $request->my_css,
@@ -93,13 +91,13 @@ class TemplatesController extends Controller
     }
 
     public function viewTemplate($id) {
-        $data = DB::table("template1")->where('id' , $id)->first();
+        $data = DB::table("templates")->where('id' , $id)->first();
         return view('system_manager.templates.view', get_defined_vars());
     }
 
     public function deleteTemp(Request $request) {
 
-        DB::table("template1")->where('id' , $request->id)->delete();
+        DB::table("templates")->where('id' , $request->id)->delete();
 
         return response()->json([
             "status_code" => 200,
@@ -108,8 +106,7 @@ class TemplatesController extends Controller
         ]);
     }
 
-    public function index2()
-    {
+    public function index2() {
         $skeletons = mailEclipse::getTemplateSkeletons();
 
         $templates = mailEclipse::getTemplates();

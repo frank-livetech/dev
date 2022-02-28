@@ -340,8 +340,8 @@
                     success: function(data) {
 
                         if (data.success == true &&  data.status_code == 200) {
-                            $("#temp_"+id).remove();
                             toastr.success( data.message , { timeOut: 5000 });
+                            location.reload();
                         } else {
                             toastr.error( data.message , { timeOut: 5000 });
                         }

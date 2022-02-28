@@ -16,11 +16,13 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/extensions/toastr.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
 
-
     <link rel="stylesheet" href="{{asset($file_path . 'grapes/grapes.css')}}">
+    <link rel="stylesheet" href="{{asset($file_path . 'grapes/grapes2.css')}}">
     <link rel="stylesheet" href="{{asset($file_path . 'grapes/news.css')}}">
     
+    
     <script type="text/javascript" src="{{asset($file_path . 'grapes/grapes.js')}}"></script>
+    <script type="text/javascript" src="{{asset($file_path . 'grapes/grapes2.js')}}"></script>
     <script type="text/javascript" src="{{asset($file_path . 'grapes/news.js')}}"></script>
     
     
@@ -68,9 +70,11 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
+    <script src="{{asset($file_path . 'grapes/custom_code.js')}}"></script>
+
     <script>
 
-        let temp_html = {!! json_encode($template->html) !!};
+        let temp_html = {!! json_encode($template->template_html) !!};
         let temp_css = {!! json_encode($template->my_css) !!};
         let temp_components = {!! json_encode($template->components) !!};
         let temp_styles = {!! json_encode($template->my_styles) !!};
@@ -89,9 +93,9 @@
             style: LandingPage.css,
             width: "auto", 
             storageManager : false,
-            plugins : ["gjs-preset-newsletter"],
+            plugins : ["gjs-preset-newsletter","grapesjs-custom-code"],
             pluginsOpts : {
-                "gjs-preset-newsletter" : { },
+                'gjs-preset-newsletter': { },
             },
             storageManager : {
                 type : 'remote' ,
