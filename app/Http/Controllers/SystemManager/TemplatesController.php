@@ -74,8 +74,28 @@ class TemplatesController extends Controller
 
     public function updateTemp(Request $request) {
 
+
+        $completeHtml = '<!DOCTYPE html>
+            <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta name="description" content="">
+                    <meta name="author" content="">
+                    <title>Document</title>
+                </head>
+            <style>
+                ' . $request->my_css. '
+                ' . $request->my_styles. '
+            </style>
+            <body>
+                ' . $request->my_html. '
+            </body>
+        </html>';
+
         DB::table("templates")->where('id' , $request->id)->update([
-            "template_html" => $request->my_html,
+            "template_html" => $completeHtml,
             "components" => $request->my_components,
             "my_assets" => $request->my_assets,
             "my_css" => $request->my_css,
