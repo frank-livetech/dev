@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Document</title>
+</head>
 
 <style>
     body {
@@ -10,6 +21,7 @@
     {!! $data->my_css !!}
     {!! $data->my_styles !!}
 </style>
-
-
+<body>
 {!! $data->template_html !!}
+</body>
+</html>
