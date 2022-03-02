@@ -942,12 +942,16 @@ br + br { display: none; }
                                             </label>
                                         </div>
                                         @if($ticket_customer->company_id != null)
-                                        <div class="form-check">
-                                            <input class="form-check-input note-type-user-org" type="radio" name="type" id="note-type-user-org"  value="User Organization">
-                                            <label class="form-check-label" for="note-type-user-org">
-                                                User Organization
-                                            </label>
-                                        </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input note-type-user-org" type="radio" name="type" id="note-type-user-org"  value="User Organization">
+                                                <label class="form-check-label" for="note-type-user-org">
+                                                    User Organization
+                                                </label>
+                                            </div>
+                                        @else
+                                            <div class="form-check">
+                                                <input class="form-check-input note-type-user-org" type="hidden" name="type" id="note-type-user-org"  value="User Organization">
+                                            </div>
                                         @endif
                                     </div>
                                 </div>

@@ -2685,6 +2685,7 @@ $("#save_ticket_note").submit(function(event) {
         if (vis.indexOf('Everyone') > -1) vis = all_staff_ids;
     }
 
+    console.log(vis.toString() , "vis.toString()");
     var formData = new FormData(this);
     formData.append('ticket_id', ticket.id);
     formData.append('color', gl_color_notes);
