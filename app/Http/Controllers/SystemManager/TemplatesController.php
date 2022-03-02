@@ -84,11 +84,12 @@ class TemplatesController extends Controller
                     <meta name="description" content="">
                     <meta name="author" content="">
                     <title>Document</title>
+                    <style>
+                        ' . $request->my_css. '
+                        ' . $request->my_styles. '
+                    </style>
                 </head>
-            <style>
-                ' . $request->my_css. '
-                ' . $request->my_styles. '
-            </style>
+            
             <body>
                 ' . $request->my_html. '
             </body>
