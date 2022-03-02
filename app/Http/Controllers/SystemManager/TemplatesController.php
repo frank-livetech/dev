@@ -86,7 +86,6 @@ class TemplatesController extends Controller
                     <title>Document</title>
                     <style>
                         ' . $request->my_css. '
-                        ' . $request->my_styles. '
                     </style>
                 </head>
             
