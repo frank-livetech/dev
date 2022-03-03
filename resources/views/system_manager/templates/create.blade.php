@@ -127,7 +127,7 @@
         let editPanel = null
         pn.addButton('views', {
             id: 'editMenu',
-            attributes: {class: 'fa fa-address-card-o', title: "Edit Menu"},
+            attributes: {class: 'fa fa-code', title: "Edit Menu"},
             active: false,
             command: {
                 run: function (editor) {
@@ -171,17 +171,14 @@
 
             $("#customShortCode").select();
             document.execCommand("copy");  
-            toastr.success( shortcode + ' copy to clipboard' , { timeOut: 5000 });                 
+            toastr.success( shortcode + ' copy to clipboard' , { timeOut: 5000 });   
+            $("#customShortCode").remove();              
         }
 
         function copy(shortcode){
 			var $inp=$(`<input id='customShortCode' value="${shortcode}">`);
             $("body").append($inp);
 		}
-
-        modal.onceClose(() => {
-            console.log('The modal is closed');
-        });
 
 
         function getContent() {
