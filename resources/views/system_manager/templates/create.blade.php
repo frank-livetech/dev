@@ -32,33 +32,34 @@
             margin: 0;
             padding: 0;
         }
-        html {
+        /* html {
             overflow: scroll;
             overflow-x: hidden;
             -ms-overflow-style: none;
             scrollbar-width: none;
-        }
+        } */
         ::-webkit-scrollbar {
             display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container-fluid p-0 m-0">
 
-        <div id="editor"> </div>
+    <div class="p-0 m-0" style="height:80vh !important">
+
+        <div id="editor"> </div> -->
 
         <div class="row bg-light border" style="position: fixed; width:120%; bottom: 0px; z-index:9999;padding:4px;">
             <div class="col-md-5">
                 <input type="text" id="templateName" class="form-control" value="{{$template->name}}" >
             </div>
             <div class="col-md-3">
-                <button class="btn btn-primary waves-effect loadingBtn" style="display:none" type="button" disabled="">
+                <button class="btn btn-primary waves-effect loadingBtn btn-sm" style="display:none" type="button" disabled="">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     <span class="ms-25 align-middle">Updating...</span>
                 </button>
-                <button class="btn btn-primary saveBtn" type="button" onclick="getContent()"> Update </button>
-                <a href="{{route('templateList')}}" class="btn btn-danger"> Cancel & Go Back </a>
+                <button class="btn btn-primary saveBtn btn-sm" type="button" onclick="getContent()"> Update </button>
+                <a href="{{route('templateList')}}" class="btn btn-danger btn-sm"> Cancel & Go Back </a>
             </div>
         </div>
 
@@ -117,6 +118,7 @@
                 }
             }
         });
+
 
         function getContent() {
             $('.loadingBtn').show();

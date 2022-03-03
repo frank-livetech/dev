@@ -52,8 +52,32 @@
         top:0px; right:0px;
     }
     .img_circle {
-            width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
-        }
+        width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    }
+    .nav-pills .nav-link.menu_active {
+        border-color: #7367f0;
+        box-shadow: 0 4px 18px -4px rgb(115 103 240 / 65%);
+        background
+    }
+    .nav-pills .nav-link.menu_active, .nav-pills .show > .nav-link {
+        color: #fff;
+        background-color: #7367f0;
+    }
+    .dd-handle{
+        cursor: pointer;
+    }
+    .nav-pills .nav-link, .nav-tabs .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: left !important;
+    }
+    table.dataTable th {
+        padding: 12px 10px !important;
+        vertical-align: middle !important;
+    }
+    table {
+        border:1px solid #ebe9f1 !important;
+    }
 </style>
 @endsection
 @section('body')
@@ -80,49 +104,32 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="card">
-                <div class="card-header">
-                    <h4>Template Categories</h4>
-                    <hr>
-                </div>
-                <div class="card-body">
-                    <div id="jstree-basic">
-                        <ul>
+                <div class="card-body p-1">
+            
+                    <div class="dd myadmin-dd" id="nestable-menu">
+                        <ol class="dd-list nav nav-pills flex-column ">
                             @foreach($tmp_cats as $cat)
-                                <li data-jstree='{"icon" : "far fa-folder"}' onclick="getCategoryTemplates({{$cat->cat_id}})">
-                                    <i data-feather='folder'></i> {{$cat->cat_name}} ({{count($cat->template)}})
+                                <li class="dd-item nav-item" data-id="{{$cat->cat_id}}" onclick="getCategoryTemplates({{$cat->cat_id}})" >
+                                    <div class="dd-handle nav-link main" data-cls=".main" data-trg="#tab_{{$cat->cat_id}}"> 
+                                        <i data-feather='folder'></i> {{$cat->cat_name}} ({{count($cat->template)}}) 
+                                    </div>
                                 </li>
                             @endforeach
-                        </ul>
+                        </ol>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-9 position-relative">
-            <div class="card-header">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h5> {{ __('Templates') }} </h5>
-                            <button type="button" style="display:none" class="btn btn-primary float-right update-template">Update</button>
-                        </div>
-                        <div class="div">
-                            <button type="button" class="btn btn-primary float-right save-template">Create</button>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row" id="showTemplates">
-                </div>
+        @foreach($tmp_cats as $cat)
+            <div class="row col-md-10 gears" id="tab_{{$cat->cat_id}}" style="display:none">
+                Lorem ipsum dolor sit amet. {{$cat->cat_id}}
+            </div>
+        @endforeach
 
-                <div class="overlay d-flex justify-content-center align-items-center align-self-center" style="display:none !important">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </div> 
-        </div>
     </div>
-
 </div>
 
 
@@ -192,6 +199,15 @@
 <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/jstree.min.js')}}"></script>
 <script src="{{asset($file_path . 'app-assets/js/scripts/extensions/ext-component-tree.min.js')}}"></script>
 
+<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+    <script src="{{asset('assets/libs/nestable/jquery.nestable.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery.nestable.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_asColor.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_asGradient.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_asColorPicker.min.js')}}"></script>
+    <script src="{{asset( $path . 'js/jquery_minicolors.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.3/bootstrapSwitch.min.js"></script>
+
 <script type="text/javascript">
     var template_arr = [];
     let template_cateogries = {!! json_encode($tmp_cats) !!};
@@ -229,7 +245,10 @@
                 if ( data.status_code == 200 && data.success == true) {
                     $("#createTemplate").modal("hide");
                     toastr.success( data.message , { timeOut: 5000 });
-                    location.reload();
+                    let url = "{{route('createTemplate', ':id')}}";
+                    url = url.replace(':id', data.id);
+                    window.location.href = url;
+
                 } else {
                 }
             },
@@ -306,11 +325,11 @@
                 }
 
 
-                $("#showTemplates").html(template_html);
+                $("#tab_"+id).html(template_html);
 
 
             }else{
-                $("#showTemplates").html("No Template Found");
+                $("#tab_"+id).html("<div class='row w-100 text-danger d-flex justify-content-center display-6 fw-bold align-items-center'>No Template Found</div>");
             }
 
 
@@ -341,7 +360,7 @@
 
                         if (data.success == true &&  data.status_code == 200) {
                             toastr.success( data.message , { timeOut: 5000 });
-                            location.reload();
+                            location.reload();s
                         } else {
                             toastr.error( data.message , { timeOut: 5000 });
                         }
@@ -426,6 +445,16 @@
             }
         });
     }
+
+
+    $('#nestable-menu').on('click', function(e) {
+        var target = $(e.target);
+
+        $('.gears').hide();
+        $('.dd-handle').removeClass("menu_active");
+        $(target[0].getAttribute('data-trg')).show();
+        $(target[0]).addClass('menu_active');
+    });
 </script>
 
 @endsection
