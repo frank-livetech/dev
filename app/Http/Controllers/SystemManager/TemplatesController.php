@@ -37,6 +37,8 @@ class TemplatesController extends Controller
             $cat->template = DB::table('templates')->where('catid', $cat->cat_id)->get();
         }
 
+        // dd($tmp_cats->toArray());
+
 
         $tem_cats_modal = DB::table('template_categories')->whereRaw('cat_id !=2')->get();
 
@@ -44,7 +46,8 @@ class TemplatesController extends Controller
     }
 
     public function saveTemplates(Request $request) {
-        DB::table("templates")->insert([
+
+        $temp = DB::table("templates")->insertGetId([
             "catid" => $request->catid,
             "name" => $request->template_name,
             "code" => $request->template_code,
@@ -56,6 +59,7 @@ class TemplatesController extends Controller
             "status_code" => 200,
             "success" => true,
             "message" => "Template Saved.",
+            "id" => $temp,
         ]);
     }
 
