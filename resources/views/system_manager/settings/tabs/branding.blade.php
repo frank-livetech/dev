@@ -132,11 +132,11 @@
                                                         height="60" src="{{ request()->root() . $file_path .  $brand_settings->site_favicon }}" />
                                                     @else
                                                     <img id="site_favicon_preview" name="site_favicon_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . 'default_imgs/site_logo.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                     @endif
                                                 @else
                                                     <img id="site_favicon_preview" name="site_favicon_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . 'default_imgs/site_logo.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                 @endif
                                             </div>
                                         </div>
