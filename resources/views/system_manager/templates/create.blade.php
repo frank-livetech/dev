@@ -12,6 +12,8 @@
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
         $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/forms/select/select2.min.css')}}">
+
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/extensions/toastr.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
@@ -47,9 +49,9 @@
 
     <div class="p-0 m-0" style="height:80vh !important">
 
-        <div id="editor"> </div> -->
+        <div id="editor"> </div>
 
-        <div class="row bg-light border" style="position: fixed; width:120%; bottom: 0px; z-index:9999;padding:4px;">
+        <div class="row bg-light border" style="position: fixed; width:86%; bottom: 0px; z-index:9999;padding:4px;">
             <div class="col-md-5">
                 <input type="text" id="templateName" class="form-control" value="{{$template->name}}" >
             </div>
@@ -72,6 +74,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
     <script src="{{asset($file_path . 'grapes/custom_code.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
+
 
     <script>
 
@@ -119,6 +123,63 @@
             }
         });
 
+        const pn = editor.Panels
+        let editPanel = null
+        pn.addButton('views', {
+            id: 'editMenu',
+            attributes: {class: 'fa fa-code', title: "Edit Menu"},
+            active: false,
+            command: {
+                run: function (editor) {
+                    if(editPanel == null){
+                        const editMenuDiv = document.createElement('div')
+                        editMenuDiv.innerHTML = `
+                        <div class="row p-1" id="views-container">
+                             <div class="col-12">
+                                <label class="text-left"> Short Codes </label>
+                                <select class="form-control select2" name="shortcode" id="shortcode">
+                                    @foreach($short_codes as $sc)
+                                        <option value="{{$sc->code}}"> {{$sc->code}} </option>
+                                    @endforeach
+                                </select>
+                             </div>
+                             <div class="col-12 mt-1 text-left">
+                                <button class="btn btn-primary w-100 btn-sm" onclick="showAlert()"> Copy </button> 
+                             </div>
+                        </div>
+                    `
+                        const panels = pn.getPanel('views-container')
+                        panels.set('appendContent', editMenuDiv).trigger('change:appendContent')
+                        editPanel = editMenuDiv
+                    }
+                    editPanel.style.display = 'block';
+                    $("#shortcode").select2();
+                },
+                stop: function (editor) {
+                    console.log(editor);
+                    if(editPanel != null){
+                        editPanel.style.display = 'none'
+                    }
+                }
+
+            }
+        })
+
+        function showAlert() {
+            let shortcode = $( "#shortcode option:selected" ).text(); 
+            copy(shortcode);  
+
+            $("#customShortCode").select();
+            document.execCommand("copy");  
+            toastr.success( shortcode + ' copy to clipboard' , { timeOut: 5000 });   
+            $("#customShortCode").remove();              
+        }
+
+        function copy(shortcode){
+			var $inp=$(`<input id='customShortCode' value="${shortcode}">`);
+            $("body").append($inp);
+		}
+
 
         function getContent() {
             $('.loadingBtn').show();
@@ -135,6 +196,8 @@
                 }
             });
         }
+
+        
     </script>
 </body>
 </html>
