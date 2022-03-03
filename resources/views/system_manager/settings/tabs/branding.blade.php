@@ -127,9 +127,9 @@
                                             </div>
                                             <div class="col-md-6">
                                                 @if($brand_settings != null && $brand_settings->site_logo != null)
-                                                    @if(file_exists( public_path() .'/'. $file_path .  $brand_settings->site_favicon ))
+                                                    @if(file_exists( getcwd() .'/'.  $brand_settings->site_favicon ))
                                                         <img id="site_favicon_preview" name="site_favicon_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . $brand_settings->site_favicon)}}" />
+                                                        height="60" src="{{asset( request()->root() .'/'. $brand_settings->site_favicon)}}" />
                                                     @else
                                                     <img id="site_favicon_preview" name="site_favicon_preview" class="rounded" width="60"
                                                         height="60" src="{{asset($file_path . 'default_imgs/site_logo.png')}}" />
@@ -177,9 +177,9 @@
                                             <div class="col-md-6 mt-2">
                                             
                                                 @if($brand_settings != null && $brand_settings->login_logo != null)
-                                                    @if(file_exists( public_path() .'/'. $file_path . $brand_settings->login_logo ))
+                                                    @if(file_exists( getcwd() .'/'. $brand_settings->login_logo ))
                                                         <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset( $file_path . $brand_settings->login_logo)}}" />
+                                                        height="60" src="{{asset( request()->root() .'/'. $brand_settings->login_logo)}}" />
                                                     @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
                                                         height="60" src="{{asset('default_imgs/login_logo.png')}}" />
@@ -193,9 +193,9 @@
                                             <!-- customer -->
                                             <div class="col-md-6 mt-2">
                                                 @if($brand_settings != null && $brand_settings->customer_logo != null)
-                                                    @if(file_exists( public_path().'/'. $file_path . $brand_settings->customer_logo ))
+                                                    @if(file_exists( getcwd() .'/'. $brand_settings->customer_logo ))
                                                         <img id="customer_logo_preview" name="customer_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . $brand_settings->customer_logo)}}" />
+                                                        height="60" src="{{asset( request()->root() .'/'. $brand_settings->customer_logo)}}" />
                                                     @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
                                                         height="60" src="{{asset('default_imgs/customer.png')}}" />
@@ -246,9 +246,9 @@
                                             <div class="col-md-6 mt-2">
 
                                                 @if($brand_settings != null && $brand_settings->company_logo != null)
-                                                    @if(file_exists( public_path().'/'. $file_path .  $brand_settings->company_logo ))
+                                                    @if(file_exists( getcwd() .'/'.  $brand_settings->company_logo ))
                                                         <img id="company_logo_preview" name="company_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . $brand_settings->company_logo)}}" />
+                                                        height="60" src="{{asset(request()->root() .'/'. $brand_settings->company_logo)}}" />
                                                     @else
                                                         <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
                                                             height="60" src="{{asset('default_imgs/company.png')}}" />
@@ -264,9 +264,9 @@
                                             <div class="col-md-6 mt-2">
 
                                                 @if($brand_settings != null && $brand_settings->user_logo != null)
-                                                    @if(file_exists( public_path().'/'. $file_path .  $brand_settings->user_logo ))
+                                                    @if(file_exists( getcwd() .'/'.  $brand_settings->user_logo ))
                                                         <img id="user_logo_preview" name="user_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . $brand_settings->user_logo)}}" />
+                                                        height="60" src="{{asset(request()->root() .'/'. $brand_settings->user_logo)}}" />
                                                     @else
                                                         <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
                                                             height="60" src="{{asset('default_imgs/logo.png')}}" />

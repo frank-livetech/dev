@@ -254,7 +254,7 @@ class SettingsController extends Controller
 
         if($request->hasFile('user_logo')) {
             $image = $request->file('user_logo');
-            $filename = (time() + 7) . '.' . $image->getClientOriginalExtension();
+            $filename = (time() + 8) . '.' . $image->getClientOriginalExtension();
             $filePath = public_path('storage/branding/');
             $image->move($filePath, $filename);
             
