@@ -1495,7 +1495,8 @@ class MailController extends Controller
 
 
                     date_default_timezone_set($tm_name);
-                    $date = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                    $date = date($fr);
 
                     if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
