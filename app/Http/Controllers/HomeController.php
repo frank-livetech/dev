@@ -93,13 +93,7 @@ class HomeController extends Controller {
                             ->where('date',date_format(Carbon::now(),"Y-m-d"))
                             ->limit(15)->get();
         
-        foreach($staff_att_data as $data) {
-            $data['clock_in'] = Carbon::parse($data['clock_in'])->timezone(\Session::get('timezone'))->format('Y-m-d h:m:s A');
-            if($data['clock_out'] != null) {
-                $data['clock_out'] = Carbon::parse($data['clock_out'])->timezone(\Session::get('timezone'))->format('Y-m-d h:m:s A');
-            }
-        }
-
+        
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
         $staff_inactive_count = $staff_count - $staff_active_count;
         
@@ -118,9 +112,7 @@ class HomeController extends Controller {
 
         $followUps = TicketFollowUp::where('is_deleted', 0)->where('passed', 0)->with('ticket')->get();
         return view('dashboard-new', get_defined_vars());
-    
     }
-
 
     public function getAllStaffAttendance() {
         $staff_count = User::where('is_deleted',0)->where('user_type','!=',5)->where('user_type','!=',4)->where('status',1)->count();

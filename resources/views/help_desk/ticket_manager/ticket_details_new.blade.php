@@ -290,7 +290,7 @@ br + br { display: none; }
                                 
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
                                 <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i>
-                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick=""><i data-feather='trash-2'></i> Trash</button>
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="trashTicket({{$details->id}})"><i data-feather='trash-2'></i> Trash</button>
                                 <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:130px;position: absolute" onclick=""><i data-feather='alert-triangle'></i> Spam</button>
                             
                             </h5>

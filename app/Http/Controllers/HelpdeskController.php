@@ -1310,7 +1310,6 @@ class HelpdeskController extends Controller
 
     public function move_to_trash_tkt(Request $request){
         $data  = $request->tickets;
-
         try{
             for($i=0; $i< sizeof($data);$i++) {
                 

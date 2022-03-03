@@ -77,7 +77,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group my-1 ">
-                                                    <label for="departmrnt">Logo</label>
+                                                    <label for="departmrnt">Logo </label>
                                                     <div class="input-group mb-3">
 
                                                         <div class="custom-file">
@@ -113,16 +113,16 @@
                                             <div class="col-md-6">
                                                 
                                                 @if($brand_settings != null && $brand_settings->site_logo != null)
-                                                    @if(file_exists( public_path() .'/'. $file_path .  $brand_settings->site_logo ))
+                                                    @if(file_exists( getcwd() .'/'.  $brand_settings->site_logo ))
                                                         <img id="site_logo_preview" name="site_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . $brand_settings->site_logo)}}" />
+                                                        height="60" src="{{asset( request()->root() .'/'. $brand_settings->site_logo)}}" />
                                                     @else
                                                     <img id="site_logo_preview" name="site_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . 'default_imgs/site_logo.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                     @endif
                                                 @else
                                                     <img id="site_logo_preview" name="site_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . 'default_imgs/site_logo.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                 @endif
                                             </div>
                                             <div class="col-md-6">

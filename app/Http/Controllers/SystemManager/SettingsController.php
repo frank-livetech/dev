@@ -203,51 +203,62 @@ class SettingsController extends Controller
         $brand_settings = BrandSettings::first();
 
         if($request->hasFile('site_logo')) {
-            $path = 'public/branding';
+
             $image = $request->file('site_logo');
-            $image_name = $image->getClientOriginalName();
-            $path = $request->file('site_logo')->storeAs($path , $image_name);
-            $data['site_logo'] = 'storage/branding/'. $image_name;
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $filePath = public_path('storage/branding/');
+            $image->move($filePath, $filename);
+            
+            $data['site_logo'] = 'storage/branding/'. $filename;
         }
 
         if($request->hasFile('site_favicon')) {
-            $path = 'public/branding';
+
             $image = $request->file('site_favicon');
-            $image_name = $image->getClientOriginalName();
-            $path = $request->file('site_favicon')->storeAs($path , $image_name);
-            $data['site_favicon'] = 'storage/branding/'. $image_name;
+            $filename = (time() + 2) . '.' . $image->getClientOriginalExtension();
+            $filePath = public_path('storage/branding/');
+            $image->move($filePath, $filename);
+            
+            $data['site_favicon'] = 'storage/branding/'. $filename;
         }
 
         if($request->hasFile('login_logo')) {
-            $path = 'public/branding';
+
             $image = $request->file('login_logo');
-            $image_name = $image->getClientOriginalName();
-            $path = $request->file('login_logo')->storeAs($path , $image_name);
-            $data['login_logo'] = 'storage/branding/'. $image_name;
+            $filename = (time() + 4) . '.' . $image->getClientOriginalExtension();
+            $filePath = public_path('storage/branding/');
+            $image->move($filePath, $filename);
+            
+            $data['login_logo'] = 'storage/branding/'. $filename;
         }
 
         if($request->hasFile('customer_logo')) {
-            $path = 'public/branding';
+
             $image = $request->file('customer_logo');
-            $image_name = $image->getClientOriginalName();
-            $path = $request->file('customer_logo')->storeAs($path , $image_name);
-            $data['customer_logo'] = 'storage/branding/'. $image_name;
+            $filename = (time() + 5) . '.' . $image->getClientOriginalExtension();
+            $filePath = public_path('storage/branding/');
+            $image->move($filePath, $filename);
+            
+            $data['customer_logo'] = 'storage/branding/'. $filename;
         }
 
         if($request->hasFile('company_logo')) {
-            $path = 'public/branding';
+
             $image = $request->file('company_logo');
-            $image_name = $image->getClientOriginalName();
-            $path = $request->file('company_logo')->storeAs($path , $image_name);
-            $data['company_logo'] = 'storage/branding/'. $image_name;
+            $filename = (time() + 7) . '.' . $image->getClientOriginalExtension();
+            $filePath = public_path('storage/branding/');
+            $image->move($filePath, $filename);
+            
+            $data['company_logo'] = 'storage/branding/'. $filename;
         }
 
         if($request->hasFile('user_logo')) {
-            $path = 'public/branding';
             $image = $request->file('user_logo');
-            $image_name = $image->getClientOriginalName();
-            $path = $request->file('user_logo')->storeAs($path , $image_name);
-            $data['user_logo'] = 'storage/branding/'. $image_name;
+            $filename = (time() + 7) . '.' . $image->getClientOriginalExtension();
+            $filePath = public_path('storage/branding/');
+            $image->move($filePath, $filename);
+            
+            $data['user_logo'] = 'storage/branding/'. $filename;
         }
 
         if($brand_settings) {
