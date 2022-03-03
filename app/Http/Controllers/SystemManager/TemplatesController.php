@@ -73,6 +73,7 @@ class TemplatesController extends Controller
 
     public function createTemplate($id) {
         $template = DB::table("templates")->where('id', $id)->first();
+        $short_codes = DB::table("sc_variables")->get();
         return view('system_manager.templates.create', get_defined_vars());
     }
 
