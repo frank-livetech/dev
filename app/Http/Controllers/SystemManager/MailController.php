@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\Mail;
 use App\Models\Customer;
 use App\User;
-
+use Session;
 // tickets models
 use App\Models\Tickets;
 use App\Models\TicketStatus;
@@ -1495,7 +1495,7 @@ class MailController extends Controller
 
 
                     date_default_timezone_set($tm_name);
-                    $date = date('Y-m-d h:i:s a');
+                    $date = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
 
                     if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
@@ -1521,6 +1521,40 @@ class MailController extends Controller
                 }
             }
         }
+    }
+
+    function convertFormat($format) {
+
+        $replacements = [
+            'DD'   => 'd', 
+            'ddd'  => 'D', 
+            'D'    => 'j', 
+            'dddd' => 'l', 
+            'E'    => 'N', 
+            'o'    => 'S',
+            'e'    => 'w', 
+            'DDD'  => 'z', 
+            'W'    => 'W', 
+            'MMMM' => 'F', 
+            'MM'   => 'm', 
+            'MMM'  => 'M',
+            'M'    => 'n', 
+            'YYYY' => 'Y', 
+            'YY'   => 'y', 
+            'a'    => 'a', 
+            'A'    => 'A', 
+            'h'    => 'g',
+            'H'    => 'G', 
+            'hh'   => 'h', 
+            'HH'   => 'H', 
+            'mm'   => 'i', 
+            'ss'   => 's', 
+            'SSS'  => 'u',
+            'zz'   => 'e', 'X'    => 'U',
+        ];
+
+        $phpFormat = strtr($format, $replacements);
+        return $phpFormat;
     }
 
     public function getAssetDetails_SC($asset) {

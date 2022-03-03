@@ -3399,4 +3399,28 @@ function toggleReq(){
 
     // $("#ticket-timestamp2").text($("#ticket-timestamp").text());
 }
+
+
+
+// trash ticket 
+function trashTicket(id) {
+
+    $.ajax({
+        type: 'post',
+        url: "{{url('move_to_trash_tkt')}}",
+        data: { tickets : [id] },
+        success: function(data) {
+
+            if (data.success == true && data.status_code == 200) {
+                toastr.success(data.message, { timeOut: 5000 });
+                window.location.href = "{{route('ticket_management.index')}}";
+            }else{
+                toastr.error(data.message, { timeOut: 5000 });
+            }
+        },
+        failure: function(errMsg) {
+            console.log(errMsg);
+        }
+    })
+}
 </script>

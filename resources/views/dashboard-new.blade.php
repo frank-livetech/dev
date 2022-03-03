@@ -415,30 +415,7 @@
                 
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        @foreach($staff_att_data as $active)
-                                                            <tr>
-                                                                <td> {{$loop->iteration}} </td>
-                                                                <td>
-                                                                    @if($active->user_clocked == null) 
-                                                                        <span> - </span>
-                                                                    @else
-                                                                        {{$active->user_clocked->name != null ? $active->user_clocked->name : '-'}}
-                                                                    @endif
-                                                                </td>
-                                                                <td>
-                                                                    @if($active->clock_out != null)
-                                                                        <span class="badge bg-danger">Clocked Out</span>
-                                                                    @else
-                                                                        <span class="badge bg-success">Clocked In</span>
-                                                                    @endif
-                                                                </td>
-                                                                <td> {{$active->date != null ? $active->date : '-'}} </td>
-                                                                <td> {{$active->clock_in != null ? $active->clock_in : '-'}} </td>
-                                                                <td> {{$active->clock_out != null ? $active->clock_out : '-'}} </td>
-                                                                <td> {{$active->hours_worked != null ? $active->hours_worked : '-'}} </td>
-                                                            </tr>
-                                                        @endforeach
+                                                    <tbody id="showstaffdata">
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -598,11 +575,59 @@
 @include('js_files.dashboardjs')
 @include('js_files.help_desk.ticket_manager.flag_ticketJs')
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-utils.min.js""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-1970-2030.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
 <script type="text/javascript">
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
+    var system_date_format = $("#system_date_format").val();
+    let data = {!! json_encode($staff_att_data) !!};
+    
+    if(data.length > 0) {
+        let html = ``;
+        let name = ``;
+        for(var i =0; i < data.length; i++) {
+            if(data[i].user_clocked != null) {
+                name = data[i].user_clocked.name != null ? data[i].user_clocked.name : '-';
+            }else{
+                name = '-';
+            }
+
+            let clock_in = moment.tz(data[i].created_at,'{{Session::get("timezone")}}').format(system_date_format + ' ' +'hh:mm A');
+
+            html +=`
+                <tr>
+                    <td> ${i+1} </td>
+                    <td> ${name} </td>
+                    <td>
+                        <span class="badge bg-${data[i].clock_out == null ? 'success' : 'danger'}">${data[i].clock_out == null ? 'Clocked In' : 'Clocked Out'}</span>
+                    </td>
+                    <td> ${data[i].date != null ? data[i].date : '-'}</td>
+                    <td> ${data[i].clock_in != null ? clock_in : '-'} </td>
+                    <td> ${data[i].clock_out != null ? moment(clock_in).add( HmsToSeconds(data[i].hours_worked) , 'seconds').format(system_date_format + ' ' +'hh:mm A') : '-'} </td>
+                    <td> ${data[i].hours_worked != null ? data[i].hours_worked : '-'} </td>
+                </tr>
+            `;
+        }
+
+        $("#showstaffdata").html(html);
+
     }
-});
+
+    
+function HmsToSeconds(hms) {
+    // var hms = '02:04:33';
+    var a = hms.split(':'); // split it at the colons
+
+    // minutes are worth 60 seconds. Hours are worth 60 minutes.
+    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+    return seconds;
+}
 </script>
 @endsection

@@ -127,7 +127,7 @@
         let editPanel = null
         pn.addButton('views', {
             id: 'editMenu',
-            attributes: {class: 'fa fa-code', title: "Edit Menu"},
+            attributes: {class: 'fa fa-address-card-o', title: "Short Codes"},
             active: false,
             command: {
                 run: function (editor) {
@@ -179,7 +179,6 @@
 			var $inp=$(`<input id='customShortCode' value="${shortcode}">`);
             $("body").append($inp);
 		}
-
 
         function getContent() {
             $('.loadingBtn').show();
