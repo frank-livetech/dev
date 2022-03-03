@@ -2124,7 +2124,7 @@ function getClockTime(followUpDate, timediff) {
 function updateFollowUp(data, ticketNotes = false) {
     $.ajax({
         type: 'post',
-        url: update_followup_route,
+        url: \,
         data: data,
         cache: false,
         contentType: false,
@@ -2656,6 +2656,11 @@ function createFollowUp(event) {
 function selectColor(color) {
     gl_color_notes = color;
     $('#note').css('background-color', color);
+}
+
+function followUpNoteColor(color) {
+    $('#follow_up_notes').css('background-color', color);
+    $("#followup_note_color").val(color);
 }
 
 function visibilityOptions() {
@@ -3295,6 +3300,9 @@ function openNotesModal() {
 }
 
 function showFollowUpModal() {
+
+    $("#save_ticket_follow_up").trigger("reset");
+
     $("#follow_up").modal('show');
     $("#schedule_type").val('minutes').trigger('change');
 
@@ -3306,6 +3314,9 @@ function showFollowUpModal() {
 
     $("#is_recurring").prop("checked",false);
     $('#recurrence-range').css('display', 'none')
+
+    $("#fu_post_reply").prop("checked" , false);
+    $("#fu_post_reply_ttar_div").css('display','none');
 }
 
 function notesModalClose() {
