@@ -3,7 +3,6 @@
     // Ticket Details Script Blade
     var sla_plans_list =  {!! json_encode($sla_plans) !!};
     var ticket_slaPlan =  {!! json_encode($ticket_slaPlan) !!};
-    console.log(ticket_slaPlan , "ticket_slaPlan 123");
     var companies_list =  {!! json_encode($companies) !!};
     var ticket_customer =  {!! json_encode($ticket_customer) !!};
     var temp_sel_customer =  ticket_customer.id;

@@ -1413,12 +1413,19 @@ function listReplies() {
             }
 
             let link = ``;
-            // console.log(reply , "reply");
-            if(reply.user_type == 5) {
-                link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
+
+
+            if(reply.hasOwnProperty("user_type")) {
+                if(reply.user_type == 5) {
+                    link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
+                }else{
+                    link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
+                }
             }else{
-                link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
+                link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
             }
+            
+
             
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
@@ -1963,7 +1970,21 @@ function getTicketFollowUp() {
         url: ticket_followup_route + "/" + ticket.id,
         success: function(data) {
             if (data.success == true) {
-                g_followUps = data.data;
+                let obj = data.data;
+                g_followUps = obj;
+
+
+                if(obj.length > 0)  {
+
+                    for(var i =0 ; i < obj.length; i++) {
+
+                        if(obj[i].follow_up_reply != null) {
+                            publishTicketReply(obj[i].follow_up_reply);
+                        }
+                    }
+
+                }
+                // console.log(g_followUps , "g_followUps");
 
                 // clear followups refresh timer
                 if (g_listFlupsTimer) clearTimeout(g_listFlupsTimer);
@@ -1992,6 +2013,7 @@ function listFollowups() {
     let formData = [];
 
     let ticketNotes = false;
+    let ticket_replies = false;
 
     for (var i = 0; i < g_followUps.length; i++) {
         let details = '';
@@ -2009,6 +2031,9 @@ function listFollowups() {
         if (g_followUps[i].follow_up_notes) {
             details += `<li>Will add a ticket note</li>`;
             ticketNotes = true;
+        }
+        if(g_followUps[i].follow_up_reply) {
+            ticket_replies = true;
         }
 
         if (details) details = `<div class="card-body"><ul>${details}</ul></div>`;
@@ -2098,7 +2123,7 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
-        updateFollowUp(form, ticketNotes);
+        updateFollowUp(form, ticketNotes , ticket_replies );
     }
 }
 
@@ -2121,7 +2146,7 @@ function getClockTime(followUpDate, timediff) {
     }
 }
 
-function updateFollowUp(data, ticketNotes = false) {
+function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
     $.ajax({
         type: 'post',
         url: update_followup_route,
@@ -2140,6 +2165,7 @@ function updateFollowUp(data, ticketNotes = false) {
                     timer: swal_message_time
                 });
             } else {
+
                 ticket.dept_id = data.ticket.dept_id;
                 ticket.assigned_to = data.ticket.assigned_to;
                 ticket.type = data.ticket.type;
@@ -2160,6 +2186,8 @@ function updateFollowUp(data, ticketNotes = false) {
 
                 getTicketFollowUp();
 
+                if(ticket_replies) getTicketReplies(ticket.id);
+            
                 if (ticketNotes) get_ticket_notes();
             }
         }
@@ -2660,7 +2688,7 @@ function selectColor(color) {
 
 function followUpNoteColor(color) {
     $('#follow_up_notes').css('background-color', color);
-    $("#followup_note_color").val(color);
+    $("#follow_up_notes_color").val(color);
 }
 
 function visibilityOptions() {
@@ -3428,6 +3456,44 @@ function trashTicket(id) {
             }else{
                 toastr.error(data.message, { timeOut: 5000 });
             }
+        },
+        failure: function(errMsg) {
+            console.log(errMsg);
+        }
+    })
+}
+
+
+
+function publishTicketReply(reply) {
+    let params = {
+        type : 'publish',
+        cc: null,
+        ticket_id: ticket.id,
+        reply: reply,
+    };
+    
+    $.ajax({
+        type: "post",
+        url: publish_reply_route,
+        data: params,
+        dataType: 'json',
+        enctype: 'multipart/form-data',
+        cache: false,
+        success: function(data) {
+            // console.log(data , "publish ticket reply");
+        }
+    });
+}
+
+function getTicketReplies(id) {
+    $.ajax({
+        type: 'GET',
+        url: "{{url('ticket-replies')}}/"+id,
+        success: function(data) {            
+            ticketReplies = data.replies;
+            listReplies();
+            console.log(data , "getTicketReplies");
         },
         failure: function(errMsg) {
             console.log(errMsg);

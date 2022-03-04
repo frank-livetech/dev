@@ -500,6 +500,9 @@ Route::get('/feature-suggestions','AboutController@feature_suggestions')->name('
 Route::get('/ticket-manager/{type?}','HelpdeskController@ticket_management')->name('ticket_management.index');
 Route::get('/ticket-manager/{dept?}/{sts?}','HelpdeskController@ticket_manager')->name('ticket-manager.index');
 
+// get ticket replies
+Route::get('/ticket-replies/{id}','HelpdeskController@getTicketReplies')->name('getTicketReplies');
+
 // ticket general
 Route::post('/ticket-general-info','HelpdeskController@saveTicketGeneralInfo')->name('saveGeneralInfo');
 

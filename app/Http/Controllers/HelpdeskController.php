@@ -127,6 +127,7 @@ class HelpdeskController extends Controller
     }
 
     public function ticket_management(Request $request){
+        
         $departments = Departments::all();
         $statuses = TicketStatus::orderBy('seq_no')->get();
         $priorities = TicketPriority::all();
@@ -165,6 +166,10 @@ class HelpdeskController extends Controller
         $staffs = User::where('user_type','!=',5)->where('user_type','!=',4)->get();
         $dept = '';
         $sts = '';
+
+
+
+
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
     }
@@ -1449,6 +1454,25 @@ class HelpdeskController extends Controller
         }
     }
 
+    public function getTicketReplies($id) {
+        $response = array();
+        try {
+            
+            $replies = TicketReply::where('ticket_id', $id)->with(['replyUser','customerReplies'])->orderBy('created_at', 'DESC')->get();
+
+            $response['replies'] = $replies;
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            return response()->json($response);
+
+        }catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
     public function update_ticket_follow_up(Request $request) {
         $response = array();
 
@@ -1498,8 +1522,8 @@ class HelpdeskController extends Controller
                             TicketNote::create([
                                 'ticket_id' => $flwup->ticket_id,
                                 'followup_id' => $flwup->id,
-                                'color' => 'rgb(255, 230, 177)',
-                                'type' => 'Ticket',
+                                'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
+                                'type' => $flwup->follow_up_notes_type,
                                 'note' => $flwup->follow_up_notes,
                                 'visibility' => 'Everyone',
                                 'created_by' => \Auth::user()->id
