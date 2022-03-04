@@ -2124,7 +2124,7 @@ function getClockTime(followUpDate, timediff) {
 function updateFollowUp(data, ticketNotes = false) {
     $.ajax({
         type: 'post',
-        url: \,
+        url: update_followup_route,
         data: data,
         cache: false,
         contentType: false,
