@@ -247,7 +247,11 @@
                                                         <div class="d-flex mt-3">
                                                             <div class="form-check form-check-primary">
                                                                 <input type="checkbox" value="1" class="form-check-input" id="send_email" name="send_email" checked>
-                                                                <label class="custom-form-label" for="send_email"> Send mail to customer </label>
+                                                                <label class="custom-form-label" for="send_email"> Autoresponder </label>
+                                                            </div>
+                                                            <div class="form-check form-check-primary ms-2">
+                                                                <input type="checkbox" value="1" class="form-check-input" id="send_details" name="send_details" value="1">
+                                                                <label class="custom-form-label" for="send_details"> Send Details </label>
                                                             </div>
                                                             <div class="form-check form-check-primary ms-2">
                                                                 <input type="checkbox" value="1" class="form-check-input" id="response_template" name="response_template" value="1">

@@ -20,7 +20,7 @@ class TicketFollowUp extends Model
     protected $table = 'ticket_follow_up';
     protected $appends = ['department_name', 'priority_name', 'status_name', 'type_name', 'tech_name', 'project_name', 'creator_name'];
     protected $fillable = [
-        'ticket_id', 'schedule_type', 'custom_date', 'schedule_time', 'follow_up_dept_id', 'follow_up_priority', 'follow_up_assigned_to', 'follow_up_status', 'follow_up_type', 'follow_up_project', 'follow_up_notes', 'is_recurring', 'recurrence_time', 'recurrence_time2', 'recurrence_pattern', 'recurrence_start', 'recurrence_end_type', 'recurrence_end_val', 'passed', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by'
+        'ticket_id', 'schedule_type', 'custom_date', 'schedule_time', 'follow_up_dept_id', 'follow_up_priority', 'follow_up_assigned_to', 'follow_up_status', 'follow_up_type', 'follow_up_project', 'follow_up_notes','follow_up_notes_color','follow_up_notes_type', 'follow_up_reply','is_recurring', 'recurrence_time', 'recurrence_time2', 'recurrence_pattern', 'recurrence_start', 'recurrence_end_type', 'recurrence_end_val', 'passed', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_deleted', 'deleted_at', 'deleted_by'
     ];
 
     public function ticket() {

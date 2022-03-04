@@ -519,11 +519,11 @@
                                             </div>
                                         </th> -->
                                         <th> Sr# </th>
-                                        <th> Name </th>
+                                        <th> Subject </th>
                                         <th> Ticket ID </th>
                                         <th> Follow-Up </th>
                                         <th> Assigned tech </th>
-                                        <th> Preferred Contact </th>
+                                        <th> Created By </th>
                                     </tr>
                                 </thead>
                                 <tbody>

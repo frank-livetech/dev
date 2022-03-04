@@ -159,7 +159,14 @@
     .fc-col-header , .fc-scrollgrid-sync-table , .fc-daygrid-body , .fc-daygrid-body-unbalanced  {
         width: 100% !important;
     }
-
+    
+    .cld-main svg {
+        fill: #7367f0 !important;
+    }
+    .cld-datetime .today {
+        font-size: 1.8rem !important;
+        font-weight: bolder;
+    }
 </style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -674,11 +681,11 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1"> Calender </h4>
+                    <h4 class="modal-title" id="myModalLabel1"> Calendar </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="calendar"></div>
+                <div class="col-12" id="calendar"></div>
                 </div>
                 <!-- <div class="modal-footer">
                     <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button>
@@ -721,38 +728,12 @@
 
 </script>
 <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
-<!-- <script src="{{asset($file_path . 'assets\extra-libs\calendar-master\js\calendar.js')}}"></script> -->
+<link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/calendar-master/css/theme2.css')}}" />
+<script src="{{asset($file_path . 'assets/extra-libs/calendar-master/js/calendar.js')}}"></script>
 <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
 <!-- <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
 <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  calendarEl = document.getElementById('calendar');
-  calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    initialDate: moment(new Date()).startOf('month').format('YYYY-MM-DD'),
-    selectable: true,
-    editable: true,
-    dayMaxEvents: true,
-    headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,listWeek'
-    },
-    events: ticket_events,
-    select:function(start, end ,allday) {
-            
-    },
-    eventClick: function (info) {
-        console.log(info , "info");
-    },
-  });
-  calendar.render();
-});
-
-</script>
 @include('js_files.ticket_cmmnJs')
 @include('js_files.help_desk.ticket_manager.ticketsJs')
 @endsection
