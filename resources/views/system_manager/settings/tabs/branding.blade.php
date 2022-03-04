@@ -132,11 +132,11 @@
                                                         height="60" src="{{ request()->root() . $file_path .  $brand_settings->site_favicon }}" />
                                                     @else
                                                     <img id="site_favicon_preview" name="site_favicon_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . 'default_imgs/site_logo.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                     @endif
                                                 @else
                                                     <img id="site_favicon_preview" name="site_favicon_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset($file_path . 'default_imgs/site_logo.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                 @endif
                                             </div>
                                         </div>
@@ -182,11 +182,11 @@
                                                         height="60" src="{{ request()->root() . $file_path .  $brand_settings->login_logo }}" />
                                                     @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset('default_imgs/login_logo.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/login_logo.png')}}" />
                                                     @endif
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset('default_imgs/login_logo.png')}}" />
+                                                        height="60" src="{{asset( $file_path . 'default_imgs/login_logo.png')}}" />
                                                 @endif                                        
                                             </div>
 
@@ -198,11 +198,11 @@
                                                         height="60" src="{{ request()->root() . $file_path .  $brand_settings->customer_logo }}" />
                                                     @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset('default_imgs/customer.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/customer.png')}}" />
                                                     @endif
                                                 @else
                                                 <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                        height="60" src="{{asset('default_imgs/customer.png')}}" />
+                                                        height="60" src="{{asset($file_path . 'default_imgs/customer.png')}}" />
                                                 @endif                                     
                                             </div>
                                         </div>
@@ -251,11 +251,11 @@
                                                         height="60" src="{{ request()->root() . $file_path .  $brand_settings->company_logo }}" />
                                                     @else
                                                         <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                            height="60" src="{{asset('default_imgs/company.png')}}" />
+                                                            height="60" src="{{asset($file_path . 'default_imgs/company.png')}}" />
                                                     @endif
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                            height="60" src="{{asset('default_imgs/company.png')}}" />
+                                                            height="60" src="{{asset($file_path . 'default_imgs/company.png')}}" />
                                                 @endif 
                                                 
                                             </div>
@@ -269,11 +269,11 @@
                                                         height="60" src="{{ request()->root() . $file_path . $brand_settings->user_logo }}" />
                                                     @else
                                                         <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                            height="60" src="{{asset('default_imgs/logo.png')}}" />
+                                                            height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                     @endif
                                                 @else
                                                     <img id="login_logo_preview" name="login_logo_preview" class="rounded" width="60"
-                                                                height="60" src="{{asset('default_imgs/logo.png')}}" />
+                                                                height="60" src="{{asset($file_path . 'default_imgs/logo.png')}}" />
                                                 @endif 
                                                 
                                             </div>

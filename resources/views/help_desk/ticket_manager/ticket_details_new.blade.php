@@ -1107,7 +1107,56 @@ br + br { display: none; }
                                     </div> 
                                 </div> 
                                 <div class="col-md-12 p-1 mt-1" id="ticket_follow_notes" style="display:none">
-                                    <textarea class="form-control" rows="3" id="follow_up_notes" name="follow_up_notes"></textarea>
+                                    <div class="col-12 d-flex">
+                                        <label for=""><h4>Notes:</h4></label>
+                                        <div class="" style="margin-left:6px ">
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;" onclick="followUpNoteColor('rgb(255, 230, 177)')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;" onclick="followUpNoteColor('rgb(218, 125, 179)')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;" onclick="followUpNoteColor('rgb(195, 148, 255)')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;" onclick="followUpNoteColor('rgb(151, 235, 172)')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;" onclick="followUpNoteColor('rgb(229, 143, 149)')"></span>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" name="followup_note_color" id="followup_note_color">
+                                    
+                                    <div class="col-12 mt-1">
+                                        <div class="form-group">
+                                            <textarea id="follow_up_notes" name="follow_up_notes" class="form-control" rows="5" required style="background-color: rgb(255, 230, 177); color: black;"></textarea>
+                                            <div id="menu" class="menu" role="listbox"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end mt-1" style="" >
+                                        <label style="margin-right: 6px"> Note Type: </label>
+                                        <div class="ml-auto d-flex" >
+                                            <div class="form-check mr-2" style="margin-right:12px ">
+                                                <input class="form-check-input note-type-ticket" type="radio" name="type" id="note-type-ticket" value="Ticket" checked>
+                                                <label class="form-check-label" for="note-type-ticket">
+                                                    Ticket
+                                                </label>
+                                            </div>
+                                            <div class="form-check mr-2" style="margin-right:12px ">
+                                                <input class="form-check-input note-type-user" type="radio" name="type" id="note-type-user"  value="User" >
+                                                <label class="form-check-label" for="note-type-user">
+                                                    User
+                                                </label>
+                                            </div>
+                                            @if($ticket_customer->company_id != null)
+                                                <div class="form-check">
+                                                    <input class="form-check-input note-type-user-org" type="radio" name="type" id="note-type-user-org"  value="User Organization">
+                                                    <label class="form-check-label" for="note-type-user-org">
+                                                        User Organization
+                                                    </label>
+                                                </div>
+                                            @else
+                                                <div class="form-check">
+                                                    <input class="form-check-input note-type-user-org" type="hidden" name="type" id="note-type-user-org"  value="User Organization">
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
 
