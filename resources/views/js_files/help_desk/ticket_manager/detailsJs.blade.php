@@ -2140,7 +2140,18 @@ function getClockTime(followUpDate, timediff) {
         if (rem && rem.hasOwnProperty('hours') && rem.hours > 0) remTime += rem.hours + 'h ';
         if (rem && rem.hasOwnProperty('minutes') && rem.minutes > 0) remTime += rem.minutes + 'm';
 
-        remTime = `(<span style="color: rgb(139, 180, 103)">${remTime}</span>)`;
+
+        let color = ``;
+        if(remTime.includes('d')) {
+            color = `#8BB467`;
+        }else if(remTime.includes('h')) {
+            color = `#5c83b4`;
+        }else if(remTime.includes('m')) {
+            color = `#ff8c5a`;
+        }
+
+
+        remTime = `(<span style="color: ${color}">${remTime}</span>)`;
 
         return remTime;
     }
