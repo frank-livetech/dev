@@ -1305,7 +1305,9 @@ class MailController extends Controller
                 }
                 if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
 
-                $rep = $rep->format('j F Y g:i:s A').$date_diff;
+                $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+
+                $rep = $rep->format( $fr ).$date_diff;
             }
             if(!empty($res) && $res != 'cleared') {
                 $crb = new Carbon();
@@ -1315,7 +1317,9 @@ class MailController extends Controller
                 }
                 if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
 
-                $res = $res->format('j F Y g:i:s A').$date_diff;
+                $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+
+                $res = $res->format( $fr ).$date_diff;
             }
 
             $template = str_replace('{Ticket-SLA}', $sla, $template);
