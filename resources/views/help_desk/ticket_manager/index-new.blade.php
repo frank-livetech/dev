@@ -728,7 +728,7 @@
 
 </script>
 <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
-<link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/calendar-master/css/theme2.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/extra-libs/calendar-master/css/theme2.css')}}" />
 <script src="{{asset($file_path . 'assets/extra-libs/calendar-master/js/calendar.js')}}"></script>
 <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 

@@ -987,7 +987,7 @@ br + br { display: none; }
                             <span aria-hidden="true"></span>
                         </button>
                     </div>
-                    <form id="save_ticket_follow_up" action="{{asset('save-ticket-follow-up')}}" method="post">
+                    <form id="save_ticket_follow_up" action="{{asset('save-ticket-follow-up')}}" method="post" novalidate>
                         <div class="modal-body">
                             {{-- <input value="{{$details->id}}" name="ticket_id" hidden> --}}
                             
