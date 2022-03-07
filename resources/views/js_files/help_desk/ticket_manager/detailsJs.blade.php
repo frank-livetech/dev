@@ -1583,6 +1583,10 @@ function publishReply(ele, type = 'publish') {
             if (edit_reply_mode !== false) {
                 params.id = ticketReplies[edit_reply_mode].id;
             }
+            if(updates_Arr.length > 0){
+                params.dd_Arr = updates_Arr;
+                // updateTicket();
+            }
 
             // getting response template data
             if($('#response_template').is(":checked" , true) ) {
@@ -1653,9 +1657,9 @@ function publishReply(ele, type = 'publish') {
                             setSlaPlanDeadlines();
                         }
 
-                        if(updates_Arr.length > 0){
-                            updateTicket();
-                        }
+                        // if(updates_Arr.length > 0){
+                        //     updateTicket();
+                        // }
                         // let msg = 'Added';
                         // if (edit_reply_mode !== false) msg = 'Updated';
                         // if (type != 'publish') msg = 'saved as draft';
