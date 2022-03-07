@@ -1346,8 +1346,14 @@ class MailController extends Controller
                 //     if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
                 // }
                 // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
-
-                date_default_timezone_set('UTC');
+                $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+                $tm_name = '';
+                if($timezone) {
+                    $tm_name = $timezone->sys_value != null ? $timezone->sys_value : 'America/New_York';
+                }else{
+                    $tm_name = 'America/New_York';
+                }
+                date_default_timezone_set($tm_name);
             
                 $currentDate =strtotime( date('Y-m-d H:i:s') );
                 $futureDate =strtotime( $rep );
@@ -1371,7 +1377,7 @@ class MailController extends Controller
                 // }
                 // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
 
-                date_default_timezone_set('UTC');
+                date_default_timezone_set($tm_name);
             
                 $currentDate = strtotime( date('Y-m-d H:i:s') );
                 $futureDate = strtotime( $res );
