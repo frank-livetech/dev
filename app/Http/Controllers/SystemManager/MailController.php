@@ -1294,7 +1294,12 @@ class MailController extends Controller
                 $ticket = Tickets::where('id' , $tckt[0]['values']['id'])->first();
                 if($ticket) {
                     $user = User::where('id' , $ticket->assigned_to)->first();
-                    $template = str_replace('{User-Name}', $user->name, $template);
+                    if($user){
+                        $template = str_replace('{User-Name}', $user->name, $template);
+                    }else{
+                        $template = str_replace('{User-Name}', 'Unassigned', $template);
+                    }
+                    // $template = str_replace('{User-Name}', $user->name, $template);
                 }   
             }
         }
