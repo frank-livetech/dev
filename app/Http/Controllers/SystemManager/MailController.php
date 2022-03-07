@@ -1259,9 +1259,21 @@ class MailController extends Controller
         if(str_contains($template, '{Tech-Name}')) {
             $template = str_replace('{Tech-Name}', 'Unassigned', $template);
         }
+
         if(str_contains($template, '{User-Name}')) {
-            $template = str_replace('{User-Name}', 'Unassigned', $template);
+            $tckt = array_values(array_filter($data_list, function ($var) {
+                return ($var['module'] == 'Ticket');
+            }));
+
+            if(sizeof($tckt) > 0) {
+                $ticket = Tickets::where('id' , $tckt[0]['values']['id'])->first();
+                if($ticket) {
+                    $user = User::where('id' , $ticket->assigned_to)->first();
+                    $template = str_replace('{User-Name}', $user->name, $template);
+                }   
+            }
         }
+
         
         if(str_contains($template, '{Ticket-SLA}') || str_contains($template, '{Ticket-Resolution-Due}') || str_contains($template, '{Ticket-Reply-Due}')) {
             $sla=''; $res=''; $rep = '';
@@ -1298,28 +1310,50 @@ class MailController extends Controller
             }
 
             if(!empty($rep) && $rep != 'cleared') {
-                $crb = new Carbon();
-                $date_diff = '';
-                foreach ($crb->diffAsCarbonInterval($rep, false)->toArray() as $key => $value) {
-                    if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
-                }
-                if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
+                // $crb = new Carbon();
+                // $date_diff = '';
+                // foreach ($crb->diffAsCarbonInterval($rep, false)->toArray() as $key => $value) {
+                //     if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
+                // }
+                // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
 
+                date_default_timezone_set('UTC');
+            
+                $currentDate =strtotime( date('Y-m-d H:i:s') );
+                $futureDate =strtotime( $rep );
+
+                $diff = $this->getDiff($futureDate , $currentDate);
                 $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                $rep = $rep->format( $fr ) . ' ('.$diff[0].')';
 
-                $rep = $rep->format( $fr ).$date_diff;
+                if(str_contains($template, 'Reply due:')) {
+
+                    $title = '<span style="color:'.$diff[1].' !important"> Reply due: </span>';
+                    $template = str_replace('Reply due:', $title , $template);
+                }
+                
             }
             if(!empty($res) && $res != 'cleared') {
-                $crb = new Carbon();
-                $date_diff = '';
-                foreach ($crb->diffAsCarbonInterval($res, false)->toArray() as $key => $value) {
-                    if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
-                }
-                if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
+                // $crb = new Carbon();
+                // $date_diff = '';
+                // foreach ($crb->diffAsCarbonInterval($res, false)->toArray() as $key => $value) {
+                //     if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
+                // }
+                // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
 
+                date_default_timezone_set('UTC');
+            
+                $currentDate = strtotime( date('Y-m-d H:i:s') );
+                $futureDate = strtotime( $res );
+
+                $diff = $this->getDiff($futureDate , $currentDate);
                 $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                $res = $res->format( $fr ) . ' ('.$diff[0].')';
 
-                $res = $res->format( $fr ).$date_diff;
+                if(str_contains($template, 'Resolution due:')) {
+                    $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
+                    $template = str_replace('Resolution due:', $title , $template);
+                }
             }
 
             $template = str_replace('{Ticket-SLA}', $sla, $template);
@@ -1336,6 +1370,31 @@ class MailController extends Controller
         }
 
         return html_entity_decode($template);
+    }
+
+    public function getDiff($futureDate , $currentDate) {
+
+        $difference=$futureDate- $currentDate;
+        $hours=($difference / 3600);
+        $minutes=($difference / 60 % 60);
+        $seconds=($difference % 60);
+        $days=($hours/24);
+        $hours=($hours % 24);
+        $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd '; 
+        $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
+        
+        $color = '';
+        if ( str_contains( $remainTime , 'd') ) { 
+            $color = '#8BB467';
+        }else if( str_contains( $remainTime , 'h') ) {
+            $color = '#5c83b4';
+        }else if( str_contains( $remainTime , 'm') ) {
+            $color = '#ff8c5a';
+        }
+        
+        $time[0] = '<span style="color:'. $color .'">' . $remainTime .  '</span>';
+        $time[1] = $color;
+        return $time;
     }
 
     public function replaceShortCodes($data_list, &$template) {
