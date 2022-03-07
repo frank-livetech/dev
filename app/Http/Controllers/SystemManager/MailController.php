@@ -1368,20 +1368,24 @@ class MailController extends Controller
                 $futureDate =strtotime( $rep );
 
                 $diff = $this->getDiff($futureDate , $currentDate);
-                $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
-                $rep = $rep->format( $fr ) . ' ('.$diff[0].')';
+                
+                if( str_contains($diff[0] , '-') ) {
+                    $rep = '';
+                    if(str_contains($template, 'Reply due:')) {
+                        $template = str_replace('Reply due:', '' , $template);
+                    }
+                }else{
+                          
+                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                    $rep = $rep->format( $fr ) . ' ('.$diff[0].')';
 
-                if(str_contains($template, 'Reply due:')) {
+                    if(str_contains($template, 'Reply due:')) {
 
-                    $title = '<span style="color:'.$diff[1].' !important"> Reply due: </span>';
-                    $template = str_replace('Reply due:', $title , $template);
+                        $title = '<span style="color:'.$diff[1].' !important"> Reply due: </span>';
+                        $template = str_replace('Reply due:', $title , $template);
+                    }
                 }
                 
-            }else{
-                $rep = '';
-                if(str_contains($template, 'Reply due:')) {
-                    $template = str_replace('Reply due:', '' , $template);
-                }
             }
 
 
@@ -1398,17 +1402,20 @@ class MailController extends Controller
                 $futureDate = strtotime( $res );
 
                 $diff = $this->getDiff($futureDate , $currentDate);
-                $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
-                $res = $res->format( $fr ) . ' ('.$diff[0].')';
 
-                if(str_contains($template, 'Resolution due:')) {
-                    $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
-                    $template = str_replace('Resolution due:', $title , $template);
-                }
-            }else{
-                $res = '';
-                if(str_contains($template, 'Resolution due:')) {
-                    $template = str_replace('Resolution due:', '', $template);
+                if( str_contains($diff[0] , '-') ) {
+                    $res = '';
+                    if(str_contains($template, 'Resolution due:')) {
+                        $template = str_replace('Resolution due:', '', $template);
+                    }
+                }else{
+                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                    $res = $res->format( $fr ) . ' ('.$diff[0].')';
+
+                    if(str_contains($template, 'Resolution due:')) {
+                        $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
+                        $template = str_replace('Resolution due:', $title , $template);
+                    }
                 }
             }
 
