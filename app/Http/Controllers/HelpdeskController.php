@@ -1154,7 +1154,7 @@ class HelpdeskController extends Controller
                 $action = 'ticket_reply';
                 if($request->has('dd_Arr') && sizeof($request->dd_Arr) > 0){
                     $action = 'ticket_reply_update';
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $data_id,'',$request->dd_Arr);
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                 }else{
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
                 }
