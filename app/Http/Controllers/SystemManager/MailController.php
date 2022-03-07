@@ -1377,7 +1377,14 @@ class MailController extends Controller
                     $template = str_replace('Reply due:', $title , $template);
                 }
                 
+            }else{
+                $rep = '';
+                if(str_contains($template, 'Reply due:')) {
+                    $template = str_replace('Reply due:', '' , $template);
+                }
             }
+
+
             if(!empty($res) && $res != 'cleared') {
                 // $crb = new Carbon();
                 // $date_diff = '';
@@ -1397,6 +1404,11 @@ class MailController extends Controller
                 if(str_contains($template, 'Resolution due:')) {
                     $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
                     $template = str_replace('Resolution due:', $title , $template);
+                }
+            }else{
+                $res = '';
+                if(str_contains($template, 'Resolution due:')) {
+                    $template = str_replace('Resolution due:', '', $template);
                 }
             }
 
