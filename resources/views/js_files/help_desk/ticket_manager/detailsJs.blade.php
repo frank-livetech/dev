@@ -1585,6 +1585,7 @@ function publishReply(ele, type = 'publish') {
             }
             if(updates_Arr.length > 0){
                 params.dd_Arr = updates_Arr;
+                params.data_id = '';
                 // updateTicket();
             }
 
