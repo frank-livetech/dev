@@ -1304,6 +1304,14 @@ class MailController extends Controller
             }
         }
 
+        $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+        $tm_name = '';
+        if($timezone) {
+            $tm_name = $timezone->sys_value != null ? $timezone->sys_value : 'America/New_York';
+        }else{
+            $tm_name = 'America/New_York';
+        }
+
         
         if(str_contains($template, '{Ticket-SLA}') || str_contains($template, '{Ticket-Resolution-Due}') || str_contains($template, '{Ticket-Reply-Due}')) {
             $sla=''; $res=''; $rep = '';
@@ -1326,12 +1334,20 @@ class MailController extends Controller
                         $rep = Carbon::parse($sla_from[1]);
                     } else {
                         if($tckt[0]['values']['resolution_deadline'] != 'cleared'){
-                            $res = Carbon::parse($tckt[0]['values']['created_at']);
+
+                            $date = new \DateTime($tckt[0]['values']['created_at']);
+                            $date->setTimezone(new \DateTimeZone($tm_name));                            
+                            $res = Carbon::parse( $date->format('Y-m-d H:i:s') );
+
                             $dt = explode('.', $slaPlan['due_deadline']);
                             $res->addHours($dt[0]);
                             if(array_key_exists(1, $dt)) $res->addMinutes($dt[1]);
                         }
-                        $rep = Carbon::parse($sla_from[0]);
+                        $date = new \DateTime($sla_from[0] . '+00');
+                        $date->setTimezone(new \DateTimeZone($tm_name));
+                        
+                        $rep = Carbon::parse( $date->format('Y-m-d H:i:s') );
+
                         $dt = explode('.', $slaPlan['reply_deadline']);
                         $rep->addHours($dt[0]);
                         if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
@@ -1346,14 +1362,7 @@ class MailController extends Controller
                 //     if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
                 // }
                 // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
-                $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
-                $tm_name = '';
-                if($timezone) {
-                    $tm_name = $timezone->sys_value != null ? $timezone->sys_value : 'America/New_York';
-                }else{
-                    $tm_name = 'America/New_York';
-                }
-                date_default_timezone_set($tm_name);
+
             
                 $currentDate =strtotime( date('Y-m-d H:i:s') );
                 $futureDate =strtotime( $rep );
@@ -1377,7 +1386,6 @@ class MailController extends Controller
                 // }
                 // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
 
-                date_default_timezone_set($tm_name);
             
                 $currentDate = strtotime( date('Y-m-d H:i:s') );
                 $futureDate = strtotime( $res );
