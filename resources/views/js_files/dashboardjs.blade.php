@@ -218,7 +218,7 @@
                         const element = data.logs[i];
 
                         tickets_logs_list.row.add([
-                            element.id,
+                            // element.id,
                             element.action_perform+' at '+moment(element.created_at).format($("#system_date_format").val() +' '+  'hh:mm A'),
                         ]).draw(false).node();
                     }
