@@ -604,8 +604,6 @@ function updateDeadlines() {
 
 
     console.log(formData , "formdata");
-
-    return false;
     
     $.ajax({
         type: "post",
