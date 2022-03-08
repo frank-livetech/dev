@@ -2487,7 +2487,14 @@ class HelpdeskController extends Controller
                     if($request->has('data_id')) $data_id = $request->data_id;
                     if($request->has('oldval')) $oldval = $request->oldval;
                     $email = \Auth::user()->email;
-                    $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval);
+
+                    if($request->template == 'ticket_create') {
+                        $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval , $request->auto_responder , $request->send_details );
+                    }else{
+                        $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval);
+                    }
+
+                    
                 } else {
                     $response['message'] = 'Ticket is either deleted or not exists!';
                 }
@@ -2507,7 +2514,7 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
-    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '') {
+    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '') {
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -2562,11 +2569,13 @@ class HelpdeskController extends Controller
             // dd($template_code);exit;
 
             if($template_code == 'ticket_create') {
+
                 $customer_send = true;
                 $cust_template_code = 'auto_res_ticket_create';
 
                 $attachs = $ticket['attachments'];
                 $pathTo = 'tickets/'.$ticket['id'];
+
             } else if($action_name == 'Subject updated') {
                 $attachs = $ticket['attachments'];
                 $pathTo = 'tickets/'.$ticket['id'];
@@ -2674,10 +2683,18 @@ class HelpdeskController extends Controller
 
             $message = $mail_template->template_html;
             $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
+
+
+            if($template_code == 'ticket_create' && $auto_res == 0 || $auto_res == '') {
+
+                $message = '';
+                $cust_message = '';
+
+            }else{
+                $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+            }
             
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params);
-            $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
-          
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
             if(!empty($cust_message)) {

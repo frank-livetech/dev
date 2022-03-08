@@ -185,6 +185,7 @@ class BillingController extends Controller
             throw new Exception('Template not found');
         }
 
+
         $order_input = array(
             array('module' => 'Customer', 'values' => $customer->toArray()),
             array('module' => 'Item-Name', 'values' => $line_items->toArray()),
