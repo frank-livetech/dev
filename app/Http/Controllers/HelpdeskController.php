@@ -2713,6 +2713,28 @@ class HelpdeskController extends Controller
                 }
             }
 
+            if($send_detail == 1){
+                $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
+
+                $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+
+                if(!empty($cust_message)) {
+                
+                    $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
+    
+                    if(!empty($reply_content)) {
+                        // this is a reply
+                        // $subject = 'Re: '.$subject;
+                    }
+    
+                    if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
+                        if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo);
+                    }
+                }
+
+            }
+
             if(!empty($message)) {
                 // parse template subject
                 $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $mail_template, $sendingMailServer->mail_queue_address);
