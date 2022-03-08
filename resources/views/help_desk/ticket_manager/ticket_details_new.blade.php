@@ -1808,6 +1808,7 @@ br + br { display: none; }
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.js"></script>
 
 
 @include('js_files.atwho.atwhoJs')
