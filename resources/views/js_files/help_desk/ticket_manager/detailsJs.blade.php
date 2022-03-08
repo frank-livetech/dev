@@ -584,25 +584,42 @@ function updateDeadlines() {
 
     if(ticket != null) {
         
-        let tkt_created_at = convertDate(ticket.created_at);
         var currentDate = new Date().toLocaleString('en-US', { timeZone: time_zone });
 
+        let tkt_rep_due = ``;
+        let tkt_res_due = ``;
+
+        if(ticket.reply_deadline != "cleared" || ticket.reply_deadline != "") {
+            let tkt_rep_due = ticket.reply_deadline;
+        }else{
+            tkt_rep_due = convertDate(ticket.created_at);
+        }
+
+        
         if(ticket_slaPlan.reply_deadline != null) {
 
-            let replyDueFutureDate = moment(tkt_created_at).add(ticket_slaPlan.reply_deadline, 'hours').format('YYYY-MM-DD h:mm A');
-    
+            let replyDueFutureDate = moment(tkt_rep_due).add(ticket_slaPlan.reply_deadline, 'hours').format('YYYY-MM-DD h:mm A');
+
             if( moment(currentDate).valueOf() > moment(replyDueFutureDate).valueOf()) {
                 rep_deadline = 'overdue'
             }
         }
 
+    
+        if(ticket.resolution_deadline != "cleared" || ticket.resolution_deadline != "") {
+            tkt_res_due = ticket.resolution_deadline;
+        }else{
+            tkt_res_due = convertDate(ticket.created_at);
+        }
+
         if(ticket_slaPlan.due_deadline != null) {
-            let resolutionDueFutureDate = moment(tkt_created_at).add(ticket_slaPlan.due_deadline, 'hours').format('YYYY-MM-DD h:mm A');
+            let resolutionDueFutureDate = moment(tkt_res_due).add(ticket_slaPlan.due_deadline, 'hours').format('YYYY-MM-DD h:mm A');
 
             if( moment(currentDate).valueOf() > moment(resolutionDueFutureDate).valueOf()) {
                 res_deadline = 'overdue'
             }
         }
+        
     }
 
     let formData = {
@@ -612,6 +629,7 @@ function updateDeadlines() {
     };
 
     console.log(formData , "formdata");
+    return false;
     
     $.ajax({
         type: "post",
