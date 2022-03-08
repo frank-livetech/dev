@@ -578,11 +578,6 @@ function updateDeadlines() {
 
     let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type
 
-    // if(res_date == '') {
-    //     toastr.error('Resolution Date is required!', { timeOut: 5000 });
-    //     return false;
-    // }
-
     if (!rp_date && !res_date) {
         rep_deadline = 'cleared';
         res_deadline = 'cleared';
@@ -592,13 +587,25 @@ function updateDeadlines() {
     //     res_deadline = 'cleared';
     // }
 
+    if(res_date == '') {
+        res_deadline  = 'cleared';
+    }
+
+    if(rp_date == '') {
+        rep_deadline  = 'cleared';
+    }
+
     let formData = {
         ticket_id: ticket.id,
         rep_deadline: rep_deadline,
         res_deadline: res_deadline
     };
 
+
+
     console.log(formData , "formdata");
+
+    return false;
     
     $.ajax({
         type: "post",
