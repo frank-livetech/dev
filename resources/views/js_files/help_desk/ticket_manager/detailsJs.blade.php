@@ -628,9 +628,7 @@ function updateDeadlines() {
         res_deadline: res_deadline
     };
 
-    console.log(formData , "formdata");
-    return false;
-    
+    console.log(formData , "formdata");    
     $.ajax({
         type: "post",
         url: $('#sla_plan_reset_form').attr("action"),
