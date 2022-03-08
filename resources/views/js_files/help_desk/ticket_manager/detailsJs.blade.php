@@ -415,7 +415,6 @@ function SlaPlanReset() {
                     var reply_deadline =  moment().utc(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
                     
                     $("#ticket-rep-due").val(reply_deadline);
-
                     let newDat = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
                     console.log(newDat , "newDat");
                     $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
@@ -496,7 +495,6 @@ function slaPlanDeadlines(ret = false) {
             } else {
                 rep_due = moment(moment(ticket.reply_deadline).toDate()).local();
                 $('#ticket-rep-due').val(ticket.reply_deadline);
-
                 let newDat = moment(ticket.reply_deadline);
                 $("#reply_date").val( newDat.format('YYYY-MM-DD') );
                 $("#reply_hour").val(  newDat.format('h') );
@@ -566,10 +564,6 @@ function updateDeadlines() {
 
     let rep_deadline = rp_date + ' ' +rp_hour + ':' + rp_min + ' ' + rp_type
 
-    // if(rp_date == '') {
-    //     toastr.error('Reply Date is required!', { timeOut: 5000 });
-    //     return false;
-    // }
 
     let res_date = $("#res_date").val();
     let res_hour = $("#res_hour").val();
@@ -578,14 +572,6 @@ function updateDeadlines() {
 
     let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type
 
-    if (!rp_date && !res_date) {
-        rep_deadline = 'cleared';
-        res_deadline = 'cleared';
-    }
-    // if (!rep_deadline && !res_deadline) {
-    //     rep_deadline = 'cleared';
-    //     res_deadline = 'cleared';
-    // }
 
     if(res_date == '') {
         res_deadline  = 'cleared';
@@ -595,13 +581,35 @@ function updateDeadlines() {
         rep_deadline  = 'cleared';
     }
 
+
+    if(ticket != null) {
+        
+        let tkt_created_at = convertDate(ticket.created_at);
+        var currentDate = new Date().toLocaleString('en-US', { timeZone: time_zone });
+
+        if(ticket_slaPlan.reply_deadline != null) {
+
+            let replyDueFutureDate = moment(tkt_created_at).add(ticket_slaPlan.reply_deadline, 'hours').format('YYYY-MM-DD h:mm A');
+    
+            if( moment(currentDate).valueOf() > moment(replyDueFutureDate).valueOf()) {
+                rep_deadline = 'overdue'
+            }
+        }
+
+        if(ticket_slaPlan.due_deadline != null) {
+            let resolutionDueFutureDate = moment(tkt_created_at).add(ticket_slaPlan.due_deadline, 'hours').format('YYYY-MM-DD h:mm A');
+
+            if( moment(currentDate).valueOf() > moment(resolutionDueFutureDate).valueOf()) {
+                res_deadline = 'overdue'
+            }
+        }
+    }
+
     let formData = {
         ticket_id: ticket.id,
         rep_deadline: rep_deadline,
         res_deadline: res_deadline
     };
-
-
 
     console.log(formData , "formdata");
     
