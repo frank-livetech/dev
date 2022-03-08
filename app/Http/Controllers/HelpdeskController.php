@@ -2687,12 +2687,15 @@ class HelpdeskController extends Controller
 
             if($template_code == 'ticket_create' && $auto_res == 0 || $auto_res == '') {
 
+                
                 $cust_message = '';
 
             }else{
-                $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+                
                 $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
             }
+
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params);
             
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
