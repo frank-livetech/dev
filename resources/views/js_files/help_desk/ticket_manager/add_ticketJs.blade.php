@@ -434,10 +434,12 @@
         }
 
         function ticket_notify(id, template) {
+            let auto_responder = $("#send_email").is(":checked") ? 1 : 0;
+            let send_details = $("#send_details").is(":checked") ? 1 : 0;
             $.ajax({
                 type: 'POST',
                 url: "{{url('ticket_notification')}}",
-                data: { id: id, template: template, action: 'Ticket Create' },
+                data: { id: id, template: template, action: 'Ticket Create' , auto_responder : auto_responder , send_details : send_details },
                 async:false,
                 success: function(data) {
                     if (!data.success) {
