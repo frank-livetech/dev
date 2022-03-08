@@ -381,33 +381,17 @@ function setSlaPlanDeadlines(ret = false) {
             resetable = false;
 
             let tkt_rep_due = moment(ticket.reply_deadline).format('YYYY-MM-DD hh:mm A');
-            
-            let rep_diff = moment.preciseDiff(tkt_rep_due , con_currTime);
-            rep_diff = rep_diff.replace(" hour", "h");
-            rep_diff = rep_diff.replace(" hours", "h");
-            rep_diff = rep_diff.replace(" minutes", "m");
-
+            let rep_diff = momentDiff(tkt_rep_due , con_currTime);
             if (rep_due) $('#sla-rep_due').html( rep_diff);
 
 
+            
             let tkt_res_due = moment(ticket.resolution_deadline).format('YYYY-MM-DD hh:mm A');
-            
-            let res_diff = moment.preciseDiff(tkt_res_due , con_currTime);
-            console.log(res_diff , "res_diff");
-            res_diff = res_diff.replace(" hour", "h");
-            res_diff = res_diff.replace(" hours", "h");
-            res_diff = res_diff.replace(" minutes", "m");
-
-            
+            let res_diff = momentDiff(tkt_res_due , con_currTime);            
             if (res_due) $('#sla-res_due').html(res_diff);
             
         }
     }
-
-
-
-    // if (!rep_due && !res_due) $('.sla-selc').hide();
-    // else $('.sla-selc').show();
 
     // any deadline is overdue can be reset
     let bgcolor = $("#bgcolor").val();
@@ -421,6 +405,30 @@ function setSlaPlanDeadlines(ret = false) {
     }
 }
 
+function momentDiff(end ,  start) {
+    
+    let diff = moment.preciseDiff(end , start);
+    diff = diff.replace(" days", "d");
+    diff = diff.replace(" day", "d");
+    diff = diff.replace(" hour", "h");
+    diff = diff.replace("hs", "h");
+    diff = diff.replace(" minutes", "m");
+
+    
+    let color = ``;
+    if(diff.includes('d')) {
+        color = `#8BB467`;
+    }else if(diff.includes('h')) {
+        color = `#5c83b4`;
+    }else if(diff.includes('m')) {
+        color = `#ff8c5a`;
+    }
+
+
+    let time = `(<span style="color: ${color}">${diff}</span>)`;
+    return time;
+}
+ 
 function resetSlaPlan() {
     console.log(ticket , "ticket");
     if(ticket != null) {
