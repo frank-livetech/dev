@@ -387,6 +387,7 @@
 
                                         <button type="button" class="btn btn-danger" id="btnDelete" style="display: none;"><i class="fas fa-trash-alt"></i>&nbsp;Delete Permanently</button>
 
+                                        <button type="button" class="btn btn-secondary waves-effect waves-float waves-light" > <i data-feather='refresh-ccw'></i> </button>
                                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" id="show-clndr"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp; Calender</button>
 
                                         <a href="{{url('add-ticket')}}" type="button" class="btn btn-success waves-effect waves-float waves-light">
