@@ -2236,6 +2236,67 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 });
             } else {
 
+                
+                if(ticket.dept_id != data.ticket.dept_id){
+                    var obj = {};
+                    obj = {
+                        id:1,
+                        data: ticket.dept_id, // Saving old value to show in email notification
+                        new_data:data.ticket.dept_id,
+                        new_text:data.ticket.department_name
+
+                    }
+                    updates_Arr.push(obj);
+                }
+                if(ticket.assigned_to != data.ticket.assigned_to){
+                    var obj = {};
+                    obj = {
+                        id:2,
+                        data: ticket.assigned_to, // Saving old value to show in email notification
+                        new_data:data.ticket.assigned_to,
+                        new_text:data.ticket.assignee_name
+
+                    }
+                    updates_Arr.push(obj);
+                }
+
+                if(ticket.type != data.ticket.type){
+                    var obj = {};
+                    obj = {
+                        id:3,
+                        data: ticket.type, // Saving old value to show in email notification
+                        new_data:data.ticket.type,
+                        new_text:data.ticket.type_name
+
+                    }
+                    updates_Arr.push(obj);
+                }
+
+                if(ticket.status != data.ticket.status){
+                    var obj = {};
+                    obj = {
+                        id:4,
+                        data: ticket.status, // Saving old value to show in email notification
+                        new_data:data.ticket.status,
+                        new_text:data.ticket.status_name
+
+                    }
+                    updates_Arr.push(obj);
+                }
+
+                if(ticket.priority != data.ticket.priority){
+                    var obj = {};
+                    obj = {
+                        id:5,
+                        data: ticket.priority, // Saving old value to show in email notification
+                        new_data:data.ticket.priority,
+                        new_text:data.ticket.priority_name
+
+                    }
+                    updates_Arr.push(obj);
+                }
+                
+
                 ticket.dept_id = data.ticket.dept_id;
                 ticket.assigned_to = data.ticket.assigned_to;
                 ticket.type = data.ticket.type;
@@ -2249,7 +2310,7 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 $('#priority').val(data.ticket.priority).trigger('change');
 
                 // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Follow-up updated');
+                ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
 
                 // refresh logs
                 getLatestLogs();
@@ -2699,7 +2760,7 @@ function createFollowUp(event) {
 
             if (data.success) {
                 // send mail notification regarding ticket action
-                ticket_notify('ticket_followup', 'Follow-up added');
+                // ticket_notify('ticket_followup', 'Follow-up added');
 
                 // refresh logs
                 getLatestLogs();
