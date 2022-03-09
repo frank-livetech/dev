@@ -1145,6 +1145,7 @@ class MailController extends Controller
                 $template = str_replace('{Ticket-Reply}', $reply_content, $template);
             }
         }
+        $actions = '';
         if(!empty($action_name)) {
             $user = \Auth::user();
             if(str_contains($template, '{Ticket-Action}')) {
