@@ -285,7 +285,9 @@ br + br { display: none; }
                 <div class="col-md-5">
                     <div class="card">
                         <div class="card-body" style="height:270px; overflow-y:auto; overflow-x:hidden">
-                            <h5 class="card-title mb-0">Ticket ID: <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a><a href="javascript:void(0)" onclick="copyToClipBoard()"> 
+                            <h5 class="card-title mb-0">Ticket ID: 
+                                    <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
+                                    <a href="javascript:void(0)" onclick="copyToClipBoard()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
@@ -304,15 +306,15 @@ br + br { display: none; }
                                             @if($ticket_customer != null)
                                                 @if($ticket_customer->avatar_url != null)
                                                     @if(file_exists( getcwd() .'/'. $ticket_customer->avatar_url ))
-                                                        <img src=" {{ asset( request()->root() .'/'. $ticket_customer->avatar_url)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                                                        <img src=" {{ asset( request()->root() .'/'. $ticket_customer->avatar_url)}}" class="rounded-circle" width="70" height="70" id="profile-user-img" />
                                                     @else
-                                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="70" height="70" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                     @endif
                                                 @else
-                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                    <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="70" height="70" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                 @endif
                                             @else
-                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="70" height="70" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                             @endif
                                             <!-- <span class="badge badge-secondary type_bdge">User</span> -->
                                         @else
@@ -348,36 +350,37 @@ br + br { display: none; }
                                         }
 
                                     @endphp
-                                    <div class="col-lg-9 col-md-8 innerBox" id="style-5" style="">
+                                    <div class="col-lg-9 col-md-8" id="style-5" style=" overflow-y: hidden;">
 
-                                        <p style="margin-bottom: 0.2rem; !important">Name : 
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px; ">Name : 
                                             <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
                                                 <span class="badge badge-secondary type_bdge"> {{$details->is_staff_tkt == 0 ? 'User' : 'Staff'}}  </span> </a></p>
 
-                                        <p style="margin-bottom: 0.2rem; !important" id="cst-company"></p>
-                                        <p style="margin-bottom: 0.2rem; !important">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
-                                        <p style="margin-bottom: 0.2rem; !important" id="cst-company-name"></p>
-                                        <p style="margin-bottom: 0.2rem; !important">Email : <a href="mailto:{{ $email }}" id="cst-email">{{ $email }}</a>  </p>
-                                        <p style="margin-bottom: 0.2rem; !important">Client Since : <span id="cust-creation-date"></span></p>
-                                    </div>
-                                    <hr>
-                                    <div class="row ">
-                                        <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
-                                            <h3 class="font-weight-bold" 
-                                            style="text-align:center"> 
-                                            <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
-                                            <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
-                                        </div>
-                                        <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
-                                            <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
-                                            <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
-                                        </div>
-                                        <div class="col-4" style="max-width:100% !important; padding:0px !important;font-size:12px; text-align:center">
-                                            <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
-                                            <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
-                                        </div>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company"></p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company-name"></p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Email : <a href="mailto:{{ $email }}" id="cst-email">{{ $email }}</a>  </p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Client Since : <span id="cust-creation-date"></span></p>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="d-flex justify-content-between ">
+                                    <div class="col4" style="max-width:100% !important; padding:0px !important;font-size:13px; text-align:center">
+                                        <h3 class="font-weight-bold" 
+                                        style="text-align:center"> 
+                                        <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
+                                        <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
+                                    </div>
+                                    <div class="col4" style="max-width:100% !important; padding:0px !important;font-size:13px; text-align:center">
+                                        <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
+                                        <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
+                                    </div>
+                                    <div class="col4" style="max-width:100% !important; padding:0px !important;font-size:13px; text-align:center">
+                                        <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
+                                        <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -387,7 +390,9 @@ br + br { display: none; }
                         <div class="card-header frst">
                             <div class="align-items-center ">
                                 <div class="mail-items">
-                                    <h3 class="mb-0">Initial Request&nbsp;&nbsp;
+                                    <h3 class="mb-0">
+                                        
+                                        <img src="{{asset('default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> Initial Request&nbsp;&nbsp;
                                         <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
                                         <a onClick="hung()" title="View Details" style="position:absolute;right:62px;cursor:pointer;">
                                             <i data-feather='maximize'></i>
@@ -496,7 +501,7 @@ br + br { display: none; }
                                         <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
                                                 <span style="display: flex; justify-content: center; align-items: center;">Notes</span>
-                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Notes" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="openNotesModal()"> </button>
                                             </div>
@@ -505,7 +510,7 @@ br + br { display: none; }
                                         <a class="nav-link" id="v-pills-assets-tab" data-bs-toggle="tab" href="#v-pills-assets" role="tab" aria-controls="v-pills-assets" aria-selected="false">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Asset Manager </span>
-                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Assets" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="ShowAssetModel()"> </button>
                                             </div>
@@ -521,7 +526,7 @@ br + br { display: none; }
 
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Follow Up </span>
 
-                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
 
@@ -533,7 +538,7 @@ br + br { display: none; }
 
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups </span>
 
-                                                <button class="rounded-circle btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
 
@@ -542,14 +547,14 @@ br + br { display: none; }
 
                                     </div>
                                 </div>
-                                <div class="col-md-10 p-2">
+                                <div class="col-md-10">
                                     <div class="tab-content" id="v-pills-tabContent style-5" style="overflow-y: auto; height:250px">
 
-                                        <div class="tab-pane fade show active p-2" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
+                                        <div class="tab-pane fade show active" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
                                             <!-- <div class="col-12 text-right">
                                                 <button class="btn btn-success" data-bs-toggle="modal" onclick="openNotesModal()" style="float: right; margin-bottom: 3px"><i class="fa fa-plus-circle"></i> Add Note</button>
                                             </div> -->
-                                            <div class="col-12" id="v-pills-notes-list"></div>
+                                            <div class="col-12" id="v-pills-notes-list" style="padding-right:20px"></div>
                                         </div>
                 
                                         <div class="tab-pane fade show p-2" id="v-pills-assets" role="tabpanel" aria-labelledby="v-pills-assets-tab">
@@ -1157,7 +1162,7 @@ br + br { display: none; }
                                 </div>
                             </div>
 
-                            <!-- <div class="form-row mt-1">
+                            <div class="form-row mt-1">
                                 <div class="col-md-12 form-group border p-1 bg-light rounded">
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="is_recurring">
@@ -1347,7 +1352,8 @@ br + br { display: none; }
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
+                                
+                            </div>
                         
 
                             <div class="form-row mt-1" >

@@ -1549,11 +1549,12 @@ class HelpdeskController extends Controller
                         $dept_name = DB::table("departments")->where('id', $flwup->follow_up_dept_id )->first();
                         if($dept_name) {
 
-                            $obj = new \stdClass();
-                            $obj->id = 1 ;
-                            $obj->data = $ticket->dept_id;
-                            $obj->new_data = $flwup->follow_up_dept_id ;
-                            $obj->new_text = $dept_name->name;
+                            $obj = array(
+                                "id" => 1 ,
+                                "data" => $ticket->department_name ,
+                                "new_data" => $flwup->follow_up_dept_id ,
+                                "new_text" => $dept_name->name , 
+                            );
 
                             array_push($updates_Arr, $obj);
                         }
@@ -1562,12 +1563,13 @@ class HelpdeskController extends Controller
                     if($ticket->assigned_to != $flwup->follow_up_assigned_to){
                         $user = User::where('id', $flwup->follow_up_assigned_to)->first();
                         if($user) {
-                            
-                            $obj = new \stdClass();
-                            $obj->id = 2 ;
-                            $obj->data = $ticket->assigned_to ;
-                            $obj->new_data =  $flwup->follow_up_assigned_to ;
-                            $obj->new_text = $user->name;
+
+                            $obj = array(
+                                "id" => 2 ,
+                                "data" => $ticket->assignee_name ,
+                                "new_data" => $flwup->follow_up_assigned_to ,
+                                "new_text" => $user->name , 
+                            );
 
                             array_push($updates_Arr, $obj);
                         }
@@ -1576,11 +1578,13 @@ class HelpdeskController extends Controller
                     if($ticket->type != $flwup->follow_up_type){
                         $tkt_type = TicketType::where('id', $flwup->follow_up_type )->first();
                         if($tkt_type) {
-                            $obj = new \stdClass();
-                            $obj->id = 3;
-                            $obj->data = $ticket->type ;
-                            $obj->new_data = $flwup->follow_up_type ;
-                            $obj->new_text =  $tkt_type->name;
+
+                            $obj = array(
+                                "id" => 3 ,
+                                "data" => $ticket->type_name ,
+                                "new_data" => $flwup->follow_up_type ,
+                                "new_text" =>$tkt_type->name, 
+                            );
                             
                             array_push($updates_Arr, $obj);
                         }
@@ -1590,11 +1594,12 @@ class HelpdeskController extends Controller
                         $tkt_status = TicketStatus::where('id', $flwup->follow_up_status )->first();
                         if($tkt_status) {
 
-                            $obj = new \stdClass();
-                            $obj->id = 4;
-                            $obj->data = $ticket->status ;
-                            $obj->new_data = $flwup->follow_up_status ;
-                            $obj->new_text =  $tkt_status->name;
+                            $obj = array(
+                                "id" => 4 ,
+                                "data" => $ticket->status_name ,
+                                "new_data" => $flwup->follow_up_status ,
+                                "new_text" => $tkt_status->name, 
+                            );
                             
                             array_push($updates_Arr, $obj);
                         }
@@ -1604,11 +1609,12 @@ class HelpdeskController extends Controller
                         $tkt_priority = TicketPriority::where('id' ,$flwup->follow_up_priority )->first();
                         if($tkt_priority) {
 
-                            $obj = new \stdClass();
-                            $obj->id = 5 ;
-                            $obj->data = $ticket->priority ; 
-                            $obj->new_data = $flwup->follow_up_priority ; 
-                            $obj->new_text = $tkt_priority->name; 
+                            $obj = array(
+                                "id" => 5 ,
+                                "data" => $ticket->priority_name ,
+                                "new_data" => $flwup->follow_up_priority ,
+                                "new_text" => $tkt_priority->name, 
+                            );
                             
                             array_push($updates_Arr, $obj);
                         }
@@ -1691,7 +1697,7 @@ class HelpdeskController extends Controller
                     $flwup->passed = 1;
                     $flwup->save();
                     $ticket = Tickets::findOrFail($flwup->ticket_id);
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', '', '', 'ticket_followup', '' , '' , $updates_Arr);
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', '', '', 'Ticket Updated', '' , '' , $updates_Arr);
                 }
             }
             

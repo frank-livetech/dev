@@ -2409,20 +2409,15 @@ $('#fu_post_reply').change(function() {
 });
 
 $('#is_recurring').click(function() {
+    
     if ($(this).is(":checked")) {
+        
         $('#recurrence-range').show();
-
         $('#followup-recurrence').show();
-        $('#start-range').show();
 
-        $("#schedule_type").val("time").trigger("change");
+        // $('#start-range').show();
+        // $("#schedule_type").val("time").trigger("change");
 
-        // if ($('#schedule_type').val() == 'time') {
-        //     $('#followup-recurrence').css('display', 'block');
-        // } else if ($('#schedule_type').val() == 'custom') {
-        //     // for custom no need for start date
-        //     $('#start-range').hide();
-        // }
     } else {
         $('#followup-recurrence').css('display', 'none');
 
@@ -3005,7 +3000,7 @@ function get_ticket_notes() {
 
                     }
 
-                    let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+                    let flup = `<div class="col-12 rounded p-1 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                         <div style="margin-right: 10px; margin-left: -8px;">
                             ${user_img}
                         </div>
