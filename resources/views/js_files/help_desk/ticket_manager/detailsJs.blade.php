@@ -3000,7 +3000,7 @@ function get_ticket_notes() {
 
                     }
 
-                    let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+                    let flup = `<div class="col-12 rounded p-1 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                         <div style="margin-right: 10px; margin-left: -8px;">
                             ${user_img}
                         </div>
