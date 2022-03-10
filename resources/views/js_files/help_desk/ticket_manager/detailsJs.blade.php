@@ -2182,7 +2182,7 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
-        updateFollowUp(form, ticketNotes , ticket_replies );
+        // updateFollowUp(form, ticketNotes , ticket_replies );
     }
 }
 

@@ -490,6 +490,8 @@ Route::Post('/set-dept-assignment','DepartmentsController@set_assignments');
 Route::Post('/save-ticket-follow-up','HelpdeskController@save_ticket_follow_up');
 Route::Post('/update-ticket-follow-up','HelpdeskController@update_ticket_follow_up');
 
+Route::Post('/update_ticket_followup','HelpdeskController@updateFollowupCron');
+
 Route::Post('/fetch-followups','HelpdeskController@fetch_followups');
 Route::Post('/search-ticket','HelpdeskController@search_ticket');
 Route::Post('/save-ticket-note','HelpdeskController@save_ticket_note');
