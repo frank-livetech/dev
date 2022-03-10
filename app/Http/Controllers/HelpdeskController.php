@@ -1537,8 +1537,8 @@ class HelpdeskController extends Controller
         $flwups = TicketFollowUp::where('passed',0)->get();
 
         try {
-            if($request->has('data')) {
-                $ticket = Tickets::findOrFail($request->ticket_id);
+            if($flwups) {
+                $ticket = Tickets::findOrFail($flwups->ticket_id);
 
                 $data = json_decode($request->data, true);
 
