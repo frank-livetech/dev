@@ -284,7 +284,7 @@ br + br { display: none; }
             <div class="row">
                 <div class="col-md-5">
                     <div class="card">
-                        <div class="card-body" style="height:270px; overflow-y:auto; overflow-x:hidden">
+                        <div class="card-body" style="height: 300px; overflow: hidden;">
                             <h5 class="card-title mb-0">Ticket ID: 
                                     <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
                                     <a href="javascript:void(0)" onclick="copyToClipBoard()"> 
@@ -350,7 +350,7 @@ br + br { display: none; }
                                         }
 
                                     @endphp
-                                    <div class="col-lg-9 col-md-8" id="style-5" style=" overflow-y: hidden;">
+                                    <div class="col-lg-9 col-md-8" id="style-5">
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px; ">Name : 
                                             <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
@@ -386,7 +386,8 @@ br + br { display: none; }
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <div class="card" id="style-5" style="height:270px; overflow-y:auto; overflow-x:hidden">
+                    <div class="card" id="style-5">
+                    <!-- <div class="card" id="style-5" style="height:270px; overflow-y:auto; overflow-x:hidden"> -->
                         <div class="card-header frst">
                             <div class="align-items-center ">
                                 <div class="mail-items">
@@ -466,7 +467,7 @@ br + br { display: none; }
                                 <div class="row" id="ticket_details_p2"></div>
                             </div>
                         </div> -->
-                        <div class="card-body mail-message-wrapper frst">
+                        <div class="card-body mail-message-wrapper frst" style="height: 160px; overflow: hidden;">
                             <div class="mail-message">
                                 <div class="row" id="ticket_details_p"></div>
                             </div>
