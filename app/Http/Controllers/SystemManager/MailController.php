@@ -1129,7 +1129,7 @@ class MailController extends Controller
         return $subject;
     }
 
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '') {
         if(empty($template)) {
             return '';
         }
@@ -1174,6 +1174,30 @@ class MailController extends Controller
                         }
 
                     }
+                }else if($action_name == 'Ticket Followup'){
+                    $actions = '';
+                    for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
+
+                        if($old_params[$dd]['id'] == '1'){
+                            $actions .= '<p>Department: '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                        }
+                        elseif($old_params[$dd]['id'] == '2'){
+                            $actions .= '<p>Staff: '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+
+                        }elseif($old_params[$dd]['id'] == '3'){
+                            $actions .= '<p>Type: '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+
+                        }elseif($old_params[$dd]['id'] == '4'){
+                            $actions .= '<p>Status: '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+
+                            
+                        }elseif($old_params[$dd]['id'] == '5'){
+                            $actions .= '<p>Priority: '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                          
+                        }
+                    }
+                    $template = str_replace('{Ticket-Note}', $flwup_note, $template);
+                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else if($action_name == 'ticket_reply_update'){
 
                     $actions = '';
@@ -1621,11 +1645,13 @@ class MailController extends Controller
                     // change created at and updated at according to user timezone if null then timezone will be america/newyork
 
 
+
                     date_default_timezone_set($tm_name);
                     $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
                     $date = date($fr);
                     if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
+
 
                     // if($k == 'Status-Name') {
                     //     if($data['module'] == 'Ticket') {
