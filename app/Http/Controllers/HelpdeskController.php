@@ -1538,73 +1538,166 @@ class HelpdeskController extends Controller
 
         try {
             if($flwups) {
-                $ticket = Tickets::findOrFail($flwups->ticket_id);
 
-                $data = json_decode($request->data, true);
-
-                $logData = '';
+                $updates_Arr = [];
                 
-                if(is_array($data)) {
-                    foreach ($data as $value) {
-                        $flwup = TicketFollowUp::findOrFail($value['id']);
-                        
-                        if(array_key_exists('date', $value)) {
-                            $flwup->date = $value['date'];
-                        }
-                        if(array_key_exists('recurrence_end_val', $value)) {
-                            $flwup->recurrence_end_val = $value['recurrence_end_val'];
-                        }
-                        if(array_key_exists('passed', $value)) {
-                            $flwup->passed = $value['passed'];
-                        }
-                        if(array_key_exists('recurrence_time', $value)) {
-                            $flwup->recurrence_time = $value['recurrence_time'];
-                            $flwup->recurrence_time2 = NULL;
-                        }
-                        
-                        if(array_key_exists('ticket_update', $value) || array_key_exists('passed', $value)) {
-                            try {
-                                $ticket->dept_id = $flwup->follow_up_dept_id;
-                                $ticket->priority = $flwup->follow_up_priority;
-                                $ticket->assigned_to = $flwup->follow_up_assigned_to;
-                                $ticket->status = $flwup->follow_up_status;
-                                $ticket->type = $flwup->follow_up_type;
-                                $ticket->updated_at = Carbon::now();
-                                $ticket->save();
-                                
-                                $logData = 'ticket updated';
-                            } catch (Exception $e) {
-                                //
-                            }
-                        }
-                        
-                        if(!empty($flwup['follow_up_notes'])) {
-                            TicketNote::create([
-                                'ticket_id' => $flwup->ticket_id,
-                                'followup_id' => $flwup->id,
-                                'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
-                                'type' => $flwup->follow_up_notes_type,
-                                'note' => $flwup->follow_up_notes,
-                                'visibility' => 'Everyone',
-                                'created_by' => \Auth::user()->id
-                            ]);
+                foreach($flwups as $flwup) {
+                    
+                    $ticket = Tickets::findOrFail($flwup->ticket_id);
 
-                            $logData .= (empty($logData)) ? 'added a note' : ', added a note';
+                    if($ticket->dept_id != $flwup->follow_up_dept_id){
+                        $dept_name = DB::table("departments")->where('id', $flwup->follow_up_dept_id )->first();
+                        if($dept_name) {
+
+                            $obj = new \stdClass();
+                            $obj->id = 1 ;
+                            $obj->data = $ticket->dept_id;
+                            $obj->new_data = $flwup->follow_up_dept_id ;
+                            $obj->new_text = $dept_name->name;
+
+                            array_push($updates_Arr, $obj);
                         }
-                        $flwup->updated_at = Carbon::now();
-            
-                        // $ticket = Tickets::findOrFail($flwup->ticket_id);
                     }
+
+                    if($ticket->assigned_to != $flwup->follow_up_assigned_to){
+                        $user = User::where('id', $flwup->follow_up_assigned_to)->first();
+                        if($user) {
+                            
+                            $obj = new \stdClass();
+                            $obj->id = 2 ;
+                            $obj->data = $ticket->assigned_to ;
+                            $obj->new_data =  $flwup->follow_up_assigned_to ;
+                            $obj->new_text = $user->name;
+
+                            array_push($updates_Arr, $obj);
+                        }
+                    }
+    
+                    if($ticket->type != $flwup->follow_up_type){
+                        $tkt_type = TicketType::where('id', $flwup->follow_up_type )->first();
+                        if($tkt_type) {
+                            $obj = new \stdClass();
+                            $obj->id = 3;
+                            $obj->data = $ticket->type ;
+                            $obj->new_data = $flwup->follow_up_type ;
+                            $obj->new_text =  $tkt_type->name;
+                            
+                            array_push($updates_Arr, $obj);
+                        }
+                    }
+    
+                    if($ticket->status != $flwup->follow_up_status){
+                        $tkt_status = TicketStatus::where('id', $flwup->follow_up_status )->first();
+                        if($tkt_status) {
+
+                            $obj = new \stdClass();
+                            $obj->id = 4;
+                            $obj->data = $ticket->status ;
+                            $obj->new_data = $flwup->follow_up_status ;
+                            $obj->new_text =  $tkt_status->name;
+                            
+                            array_push($updates_Arr, $obj);
+                        }
+                    }
+    
+                    if($ticket->priority != $flwup->follow_up_priority){
+                        $tkt_priority = TicketPriority::where('id' ,$flwup->follow_up_priority )->first();
+                        if($tkt_priority) {
+
+                            $obj = new \stdClass();
+                            $obj->id = 5 ;
+                            $obj->data = $ticket->priority ; 
+                            $obj->new_data = $flwup->follow_up_priority ; 
+                            $obj->new_text = $tkt_priority->name; 
+                            
+                            array_push($updates_Arr, $obj);
+                        }
+                    }
+
+
+                    // $data = json_decode($request->data, true);
+                    $logData = '';
+                    
+                    // if(is_array($data)) {
+                        // foreach ($data as $value) {
+                            // $flwup = TicketFollowUp::findOrFail($value['id']);
+                            
+                            // if(array_key_exists('date', $value)) {
+                            //     $flwup->date = $value['date'];
+                            // }
+                            // if(array_key_exists('recurrence_end_val', $value)) {
+                            //     $flwup->recurrence_end_val = $value['recurrence_end_val'];
+                            // }
+                            // if(array_key_exists('passed', $value)) {
+                            //     $flwup->passed = $value['passed'];
+                            // }
+                            // if(array_key_exists('recurrence_time', $value)) {
+                            //     $flwup->recurrence_time = $value['recurrence_time'];
+                            //     $flwup->recurrence_time2 = NULL;
+                            // }
+                            
+                            // if(array_key_exists('ticket_update', $value) || array_key_exists('passed', $value)) {
+                            //     try {
+                            $ticket->dept_id = $flwup->follow_up_dept_id;
+                            $ticket->priority = $flwup->follow_up_priority;
+                            $ticket->assigned_to = $flwup->follow_up_assigned_to;
+                            $ticket->status = $flwup->follow_up_status;
+                            $ticket->type = $flwup->follow_up_type;
+                            $ticket->updated_at = Carbon::now();
+                            $ticket->save();
+                            
+                            $logData = 'ticket updated';
+                            //     } catch (Exception $e) {
+                            //         //
+                            //     }
+                            // }
+
+                            if(!empty($flwup['follow_up_reply'])) {
+                                
+                                $bbcode = new BBCode();
+
+                                TicketReply::create([
+                                    "ticket_id" => $flwup->ticket_id,
+                                    "user_id" => $flwup->follow_up_assigned_to, 
+                                    "msgno" => null , 
+                                    "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
+                                    "cc" => null , 
+                                    "date" => date('Y-m-d H:i:s'), 
+                                    "is_published" => 1 ,
+                                    "attachments" => null ,
+                                ]);
+                            }
+                             
+                            if(!empty($flwup['follow_up_notes'])) {
+                                TicketNote::create([
+                                    'ticket_id' => $flwup->ticket_id,
+                                    'followup_id' => $flwup->id,
+                                    'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
+                                    'type' => $flwup->follow_up_notes_type,
+                                    'note' => $flwup->follow_up_notes,
+                                    'visibility' => 'Everyone',
+                                    'created_by' => \Auth::user()->id
+                                ]);
+
+                                $logData .= (empty($logData)) ? 'added a note' : ', added a note';
+                            }
+                            $flwup->updated_at = Carbon::now();
+                
+                            // $ticket = Tickets::findOrFail($flwup->ticket_id);
+                        // }
+                    // }
+
+
+                    $flwup->passed = 1;
+                    $flwup->save();
                 }
             }
+            
+            // $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+            // $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up "'.$logData.'" by ' . $name_link;
 
-            $flwup->save();
-
-            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up "'.$logData.'" by ' . $name_link;
-
-            $log = new ActivitylogController();
-            $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id, auth()->id() , $action_perform);
+            // $log = new ActivitylogController();
+            // $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id, auth()->id() , $action_perform);
 
             $response['status_code'] = 200;
             $response['success'] = true;

@@ -2033,16 +2033,16 @@ function getTicketFollowUp() {
                 g_followUps = obj;
 
 
-                if(obj.length > 0)  {
+                // if(obj.length > 0)  {
 
-                    for(var i =0 ; i < obj.length; i++) {
+                //     for(var i =0 ; i < obj.length; i++) {
 
-                        if(obj[i].follow_up_reply != null) {
-                            publishTicketReply(obj[i].follow_up_reply);
-                        }
-                    }
+                //         if(obj[i].follow_up_reply != null) {
+                //             publishTicketReply(obj[i].follow_up_reply);
+                //         }
+                //     }
 
-                }
+                // }
                 // console.log(g_followUps , "g_followUps");
 
                 // clear followups refresh timer
