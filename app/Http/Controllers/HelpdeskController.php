@@ -1551,7 +1551,7 @@ class HelpdeskController extends Controller
 
                             $obj = array(
                                 "id" => 1 ,
-                                "data" => $ticket->dept_id ,
+                                "data" => $ticket->department_name ,
                                 "new_data" => $flwup->follow_up_dept_id ,
                                 "new_text" => $dept_name->name , 
                             );
@@ -1566,7 +1566,7 @@ class HelpdeskController extends Controller
 
                             $obj = array(
                                 "id" => 2 ,
-                                "data" => $ticket->assigned_to ,
+                                "data" => $ticket->assignee_name ,
                                 "new_data" => $flwup->follow_up_assigned_to ,
                                 "new_text" => $user->name , 
                             );
@@ -1581,7 +1581,7 @@ class HelpdeskController extends Controller
 
                             $obj = array(
                                 "id" => 3 ,
-                                "data" => $ticket->type ,
+                                "data" => $ticket->type_name ,
                                 "new_data" => $flwup->follow_up_type ,
                                 "new_text" =>$tkt_type->name, 
                             );
@@ -1596,7 +1596,7 @@ class HelpdeskController extends Controller
 
                             $obj = array(
                                 "id" => 4 ,
-                                "data" => $ticket->status ,
+                                "data" => $ticket->status_name ,
                                 "new_data" => $flwup->follow_up_status ,
                                 "new_text" => $tkt_status->name, 
                             );
@@ -1611,7 +1611,7 @@ class HelpdeskController extends Controller
 
                             $obj = array(
                                 "id" => 5 ,
-                                "data" => $ticket->priority ,
+                                "data" => $ticket->priority_name ,
                                 "new_data" => $flwup->follow_up_priority ,
                                 "new_text" => $tkt_priority->name, 
                             );
