@@ -3000,7 +3000,7 @@ function get_ticket_notes() {
 
                     }
 
-                    let flup = `<div class="col-12 rounded p-1 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+                    let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                         <div style="margin-right: 10px; margin-left: -8px;">
                             ${user_img}
                         </div>
@@ -3009,7 +3009,7 @@ function get_ticket_notes() {
                                 <h5 class="note-head"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
-                            <p class="note-details text-wrap" style="width:75rem">
+                            <p class="note-details text-wrap" style="width:65rem">
                                 ${notes[i].note}
                             </p>
                         </div>
