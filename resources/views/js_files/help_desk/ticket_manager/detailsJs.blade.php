@@ -2947,7 +2947,7 @@ function get_ticket_notes() {
                     // if (notes[i].created_by == loggedInUser_id) {
                     if (loggedInUser_t == 1) {
 
-                        autho = `<div class="ml-auto">
+                        autho = `<div class="mt-2">
 
                             <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
                                 style= "float:right;cursor:pointer;position:relative;bottom:25px"
@@ -3005,11 +3005,11 @@ function get_ticket_notes() {
                             ${user_img}
                         </div>
                         <div class="w-100">
-                            <div class="col-12 p-0">
-                                <h5 class="note-head"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
-                            <p class="note-details text-wrap" style="width:40rem">
+                            <p class="col" style="margin-top:-20px; word-break:break-all">
                                 ${notes[i].note}
                             </p>
                         </div>
