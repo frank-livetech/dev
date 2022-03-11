@@ -640,9 +640,23 @@ function updateDeadlines() {
     let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type
 
 
-    let current_date = new Date().toLocaleString('en-US', { timeZone: time_zone });;
+    let current_date = new Date().toLocaleString('en-US', { timeZone: time_zone });
+    current_date = new Date(current_date);
+    
     let rep_date = new Date(rep_deadline);
-    let new_res_date = new Date(rep_deadline);
+    let rres_date = new Date(res_deadline);
+
+    if( rep_date.getTime() > current_date.getTime() ) {
+        console.log(" rep greater");
+    }else{
+        rep_deadline  = 'cleared';
+    }
+
+    if( rres_date.getTime() > current_date.getTime() ) {
+        console.log(" rep greater");
+    }else{
+        res_deadline  = 'cleared';
+    }
 
     if(res_date == '') {
         res_deadline  = 'cleared';
@@ -650,14 +664,6 @@ function updateDeadlines() {
 
     if(rp_date == '') {
         rep_deadline  = 'cleared';
-    }
-    
-    if( moment(current_date).valueOf() > moment(rep_date).valueOf() ) {
-        rep_deadline  = 'cleared';
-    }
-
-    if( moment(current_date).valueOf() > moment(new_res_date).valueOf() ) {
-        res_deadline  = 'cleared';
     }
 
     let formData = {
@@ -667,7 +673,7 @@ function updateDeadlines() {
     };
 
     console.log(formData , "formdata");
-
+    
     $.ajax({
         type: "post",
         url: $('#sla_plan_reset_form').attr("action"),
