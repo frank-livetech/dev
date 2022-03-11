@@ -1484,7 +1484,7 @@ function listReplies() {
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
                     <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
-                    <div class="media-body">
+                    <div class="">
 
                         <h5 class="mt-0"><span class="text-primary">
                             ${link}
