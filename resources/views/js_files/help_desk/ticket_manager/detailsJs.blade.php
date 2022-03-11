@@ -1484,7 +1484,7 @@ function listReplies() {
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
                     <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
-                    <div class="media-body">
+                    <div class="">
 
                         <h5 class="mt-0"><span class="text-primary">
                             ${link}
@@ -3163,8 +3163,8 @@ function setCustomerCompany() {
         $('#cst-company').html('');
         $('#cst-company-name').html('');
 
-        $('#adjustCard1Height').attr('style', 'height: 250px !important');
-        $('#adjustCard2Height').attr('style', 'height: 105px !important; overflow-y:scroll');
+        $('#adjustCard1Height').attr('style', 'height: 260px !important');
+        $('#adjustCard2Height').attr('style', 'height: 115px !important; overflow-y:scroll');
     }
 }
 

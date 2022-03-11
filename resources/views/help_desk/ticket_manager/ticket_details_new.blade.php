@@ -501,7 +501,7 @@ br + br { display: none; }
                                         <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
                                                 <span style="display: flex; justify-content: center; align-items: center;">Notes</span>
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Notes" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="openNotesModal()"> </button>
                                             </div>
@@ -510,7 +510,7 @@ br + br { display: none; }
                                         <a class="nav-link" id="v-pills-assets-tab" data-bs-toggle="tab" href="#v-pills-assets" role="tab" aria-controls="v-pills-assets" aria-selected="false">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Asset Manager </span>
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Assets" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="ShowAssetModel()"> </button>
                                             </div>
@@ -526,7 +526,7 @@ br + br { display: none; }
 
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Follow Up </span>
 
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
 
@@ -538,7 +538,7 @@ br + br { display: none; }
 
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups </span>
 
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" 
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
 

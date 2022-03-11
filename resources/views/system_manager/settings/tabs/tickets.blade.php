@@ -68,8 +68,15 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                         </div>
                         <div class="col-md-6">
                             <div class="form-group my-1">
-                                <input type="nummber" class="form-control" id="tkt_refresh" name="tkt_refresh">
+                                <input type="nummber" class="form-control" value="{{$ticket_time != 0 ? $ticket_time : ''}}" id="tkt_refresh" name="tkt_refresh">
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-icon rounded-circle mt-1 tkt_btn"  onclick="saveTicketRefreshTime()" > <i data-feather='save'></i>  </button>
+                            <button class="btn btn-primary waves-effect tkt_loader btn-icon rounded-circle mt-1" style="display:none" type="button" disabled="">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span class="visually-hidden">Loading...</span>
+                            </button>
                         </div>
                     </div>
             </div>

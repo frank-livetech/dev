@@ -689,7 +689,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1"> Calendar </h4>
+                    <h4 class="modal-title" id="myModalLabel1"> Calendar - {{$ticket_time}} </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -744,4 +744,17 @@
 <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
 @include('js_files.ticket_cmmnJs')
 @include('js_files.help_desk.ticket_manager.ticketsJs')
+<script>
+    // setting ticket table auto refresh
+    let time = "{{$ticket_time}}";
+    console.log(time , "time");
+    time = time * 60;
+    let one_seconds = 1000;
+
+    setInterval(() => {
+        get_ticket_table_list();
+    }, (time *one_seconds) );
+
+    
+</script>
 @endsection
