@@ -53,8 +53,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -168,8 +168,9 @@ class HelpdeskController extends Controller
         $sts = '';
 
 
-
-
+        // get ticket refresh time
+        $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->first();
+        $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
     }
@@ -3177,5 +3178,42 @@ class HelpdeskController extends Controller
             'message' => 'Saved Successfully!',
             'status_code' => 200,
         ]);
+    }
+
+    // ticket refresh time 
+    public function ticketRefreshTime() {
+
+        try {
+
+            $data = SystemSetting::where('sys_key','ticket_refresh_time')->first();
+
+            if($data) {
+                $data->sys_value = request()->tkt_refresh;
+                $data->save();
+                $message = 'Updated';
+            }else{
+                SystemSetting::create([
+                    "sys_key" => 'ticket_refresh_time',
+                    "sys_value" => request()->tkt_refresh,
+                ]);
+                $message = 'Saved';
+            }
+
+            return response()->json([
+                "message" => 'Setting '. $message .' Successfully', 
+                "status_code" => 200 ,
+                "success" => true ,
+            ]);
+            
+        } catch(Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage() , 
+                "status_code" => 500 ,
+                "success" => false ,
+            ]);
+        }
+
+        
+        
     }
 }

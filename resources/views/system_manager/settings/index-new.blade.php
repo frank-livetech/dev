@@ -503,7 +503,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 
     @include('js_files.system_manager.settings.indexJs')
-    @include('js_files.system_manager.settings.settingNewJs')
+@include('js_files.system_manager.settings.settingNewJs')
     @include('js_files.system_manager.feature_list.feature_listJs')
   
     

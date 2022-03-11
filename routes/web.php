@@ -492,6 +492,8 @@ Route::Post('/update-ticket-follow-up','HelpdeskController@update_ticket_follow_
 
 Route::get('/update_ticket_followup','HelpdeskController@updateFollowupCron');
 
+Route::post('/ticket_refresh','HelpdeskController@ticketRefreshTime')->name('ticketRefreshTime');
+
 Route::Post('/fetch-followups','HelpdeskController@fetch_followups');
 Route::Post('/search-ticket','HelpdeskController@search_ticket');
 Route::Post('/save-ticket-note','HelpdeskController@save_ticket_note');

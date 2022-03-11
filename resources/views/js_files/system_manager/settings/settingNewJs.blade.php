@@ -4019,4 +4019,42 @@ var radioswitch = function() {
         }
     }
 }()
+
+// ticket auto refresh code
+
+
+const saveTicketRefreshTime  = ()  => {
+    let tkt_refresh = $("#tkt_refresh").val();
+
+    if(tkt_refresh != '') {
+        $.ajax({
+            type: 'post',
+            url: "{{route('ticketRefreshTime')}}",
+            data: { tkt_refresh: tkt_refresh },
+            beforeSend: function(data ){
+                $('.tkt_btn').hide();
+                $('.tkt_loader').show();
+            },
+            success: function(data) {
+                if(data.status_code == 200 && data.success == true)  {
+                    toastr.success( data.message , { timeOut: 5000 });
+                }else{
+                    toastr.error( data.message , { timeOut: 5000 });
+                }
+            },
+            complete : function (data) {
+                $('.tkt_btn').show();
+                $('.tkt_loader').hide();
+            },
+            failure: function(errMsg) {
+                $('.tkt_btn').show();
+                $('.tkt_loader').hide();
+                toastr.error( 'Somthing went wrong' , { timeOut: 5000 });
+            }
+        });
+    }else{
+        toastr.error( 'Ticket Data Refresh field is required..' , { timeOut: 5000 });
+    }
+
+}
 </script>
