@@ -387,7 +387,14 @@
 
                                         <button type="button" class="btn btn-danger" id="btnDelete" style="display: none;"><i class="fas fa-trash-alt"></i>&nbsp;Delete Permanently</button>
 
-                                        <button type="button" class="btn btn-secondary waves-effect waves-float waves-light" > <i data-feather='refresh-ccw'></i> </button>
+                                        <button type="button" id="refreshTicket" onclick="refreshTickets()" class="btn btn-secondary waves-effect waves-float waves-light" > 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw">
+                                                <polyline points="1 4 1 10 7 10"></polyline>
+                                                <polyline points="23 20 23 14 17 14"></polyline>
+                                                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                                            </svg>
+                                        </button>
+
                                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" id="show-clndr"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp; Calender</button>
 
                                         <a href="{{url('add-ticket')}}" type="button" class="btn btn-success waves-effect waves-float waves-light">
