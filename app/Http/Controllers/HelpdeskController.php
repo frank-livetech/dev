@@ -1674,8 +1674,10 @@ class HelpdeskController extends Controller
                                     "is_published" => 1 ,
                                     "attachments" => null ,
                                 ]);
-                                
-                                $flwup_reply =  $bbcode->convertFromHtml( $flwup->follow_up_reply );
+                                if($flwup->follow_up_reply != ''){
+                                    $flwup_reply = $flwup->follow_up_reply ;
+                                }
+                            
                             }
                              
                             if(!empty($flwup['follow_up_notes'])) {
@@ -1701,7 +1703,7 @@ class HelpdeskController extends Controller
                     $flwup->passed = 1;
                     $flwup->save();
                     $ticket = Tickets::findOrFail($flwup->ticket_id);
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', '', '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note);
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note);
                 }
             }
             
@@ -2786,6 +2788,17 @@ class HelpdeskController extends Controller
                 }else{
                     $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by '. $user->name;
                     $notification_title = 'Reply Added';
+                }
+                
+            }else if($action_name == "Ticket Followup"){
+                
+                if(!empty($reply_content)){
+                    $customer_send = true;
+                    $cust_template_code = 'auto_res_ticket_reply';
+    
+                    // if(!empty($user)) $mail_from = $user->email;
+                    $attachs = $data_id;
+                    $pathTo = 'replies/'.$ticket['id'];
                 }
                 
             }else if($action_name == 'ticket_reply_update'){
