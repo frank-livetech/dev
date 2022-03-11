@@ -398,6 +398,25 @@ function redrawTicketsTable(ticket_arr) {
                 }
             }
         }
+        let new_rep_due = ``;
+        let new_res_due = ``;
+        if(val['reply_deadline'] == null) {
+            new_rep_due = rep_due;
+            new_res_due = res_due;
+        }else{
+            let currTime = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
+            let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
+
+            let tkt_rep_due = moment(val['reply_deadline']).format('YYYY-MM-DD hh:mm A');
+            let rep_diff = momentDiff(tkt_rep_due , con_currTime);
+            new_rep_due = rep_diff;
+
+
+            
+            let tkt_res_due = moment(val['resolution_deadline']).format('YYYY-MM-DD hh:mm A');
+            let res_diff = momentDiff(tkt_res_due , con_currTime);            
+            new_res_due = res_diff;
+        }
 
         // var last_act = val.lastActivity;
         // let region_current_date = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
@@ -454,8 +473,8 @@ function redrawTicketsTable(ticket_arr) {
             <td>${short_replier}</td>
             <td class='text-center'>${replies}</td>
             <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
-            <td class='text-center'>${rep_due}</td>
-            <td class='text-center'>${res_due}</td>
+            <td class='text-center'>${new_rep_due}</td>
+            <td class='text-center'>${new_res_due}</td>
             <td>${assignee}</td>
             <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
             
@@ -468,6 +487,31 @@ function redrawTicketsTable(ticket_arr) {
         var name = $(this).attr('id');
         tickets_table_list.column(13).search( name ).draw();
     });
+}
+
+function momentDiff(end ,  start) {
+    
+    let diff = moment.preciseDiff(end , start);
+    diff = diff.replace(" days", "d");
+    diff = diff.replace(" day", "d");
+    diff = diff.replace(" hour", "h");
+    diff = diff.replace("hs", "h");
+    diff = diff.replace(" minutes", "m");
+    diff = diff.replace(" minute", "m");
+
+    
+    let color = ``;
+    if(diff.includes('d')) {
+        color = `#8BB467`;
+    }else if(diff.includes('h')) {
+        color = `#5c83b4`;
+    }else if(diff.includes('m')) {
+        color = `#ff8c5a`;
+    }
+
+
+    let time = `<span style="color: ${color}">${diff}</span>`;
+    return time;
 }
 
 function jsTimeZone(date) {
