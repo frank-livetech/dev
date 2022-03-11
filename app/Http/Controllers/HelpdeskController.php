@@ -2892,7 +2892,7 @@ class HelpdeskController extends Controller
             $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
 
 
-            if($template_code == 'ticket_create' && $auto_res == 0 || $auto_res == '') {
+            if($template_code == 'ticket_create' && ($auto_res == 0 || $auto_res == '')) {
 
                 
                 $cust_message = '';
