@@ -680,4 +680,10 @@ function getTimeRemaining(endtime) {
     'seconds': d.seconds(),
   };
 }
+
+// refresh ticket page 
+function refreshTickets() {
+    get_ticket_table_list();
+}
+
 </script>

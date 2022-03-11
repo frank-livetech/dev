@@ -1173,7 +1173,7 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-                                <img src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt="">
+                                <img src="{{asset('${js_path}default_imgs/pdf.png')}}" style="width:65px; height:65px; margin-top:14px"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${item}</span>
                                 <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
@@ -3009,7 +3009,7 @@ function get_ticket_notes() {
                                 <h5 class="note-head"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
-                            <p class="note-details">
+                            <p class="note-details text-wrap" style="width:75rem">
                                 ${notes[i].note}
                             </p>
                         </div>
