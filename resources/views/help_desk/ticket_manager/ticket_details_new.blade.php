@@ -284,7 +284,7 @@ br + br { display: none; }
             <div class="row">
                 <div class="col-md-5">
                     <div class="card">
-                        <div class="card-body" style="height: 300px; overflow: hidden;">
+                        <div class="card-body" id="adjustCard1Height" style="height:250px; overflow: hidden;">
                             <h5 class="card-title mb-0">Ticket ID: 
                                     <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
                                     <a href="javascript:void(0)" onclick="copyToClipBoard()"> 
@@ -298,7 +298,7 @@ br + br { display: none; }
                             </h5>
                             <div class="profile-pic mt-2">
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-3 text-center">
+                                    <div class="col-lg-3 col-md-3 text-center align-self-center">
                                         @php
                                             $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                         @endphp
@@ -365,19 +365,18 @@ br + br { display: none; }
                                 </div>
                                 <hr>
                                 <div class="d-flex justify-content-between ">
-                                    <div class="col4" style="max-width:100% !important; padding:0px !important;font-size:13px; text-align:center">
-                                        <h3 class="font-weight-bold" 
-                                        style="text-align:center"> 
+                                    <div class="col4">
+                                        <h3 class="font-weight-bold"  style="text-align:center; font-size:14px"> 
                                         <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
-                                        <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
+                                        <h6 class="mb-0" style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
                                     </div>
-                                    <div class="col4" style="max-width:100% !important; padding:0px !important;font-size:13px; text-align:center">
-                                        <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
-                                        <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
+                                    <div class="col4">
+                                        <h3 class="font-weight-bold" style="text-align:center; font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
+                                        <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
                                     </div>
-                                    <div class="col4" style="max-width:100% !important; padding:0px !important;font-size:13px; text-align:center">
-                                        <h3 class="font-weight-bold" style="text-align:center"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
-                                        <h6 class="mb-0"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
+                                    <div class="col4">
+                                        <h3 class="font-weight-bold" style="text-align:center; font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
+                                        <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
                                     </div>
                                 </div>
 
@@ -393,7 +392,7 @@ br + br { display: none; }
                                 <div class="mail-items">
                                     <h3 class="mb-0">
                                         
-                                        <img src="{{asset('default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> Initial Request&nbsp;&nbsp;
+                                        <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> Initial Request &nbsp;&nbsp;
                                         <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
                                         <a onClick="hung()" title="View Details" style="position:absolute;right:62px;cursor:pointer;">
                                             <i data-feather='maximize'></i>
@@ -467,7 +466,7 @@ br + br { display: none; }
                                 <div class="row" id="ticket_details_p2"></div>
                             </div>
                         </div> -->
-                        <div class="card-body mail-message-wrapper frst" style="height: 160px; overflow: hidden;">
+                        <div class="card-body mail-message-wrapper frst" id="adjustCard2Height" style="height: 107px; overflow: hidden;">
                             <div class="mail-message">
                                 <div class="row" id="ticket_details_p"></div>
                             </div>
@@ -1009,7 +1008,7 @@ br + br { display: none; }
                                         <option value="months">In months</option>
                                         <option value="years">In years</option>
                                         <option value="custom">Custom</option>
-                                        <!-- <option value="time">Time (For recursive pattern)</option> -->
+                                        <option value="time"> Recursive Pattern </option>
                                     </select>
                                 </div>
                                 <div class="col-md-6" id="schedule_time_div">
