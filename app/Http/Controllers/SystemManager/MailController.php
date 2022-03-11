@@ -1196,6 +1196,7 @@ class MailController extends Controller
                           
                         }
                     }
+                    $reply_content = '<hr>'.$reply_content;
                     $template = str_replace('{Ticket-Note}', $flwup_note, $template);
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else if($action_name == 'ticket_reply_update'){
