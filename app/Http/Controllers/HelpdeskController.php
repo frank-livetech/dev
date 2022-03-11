@@ -169,7 +169,7 @@ class HelpdeskController extends Controller
 
 
         // get ticket refresh time
-        $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->first();
+        $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
         $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
@@ -3195,6 +3195,7 @@ class HelpdeskController extends Controller
                 SystemSetting::create([
                     "sys_key" => 'ticket_refresh_time',
                     "sys_value" => request()->tkt_refresh,
+                    "created_by" => auth()->id() ,
                 ]);
                 $message = 'Saved';
             }

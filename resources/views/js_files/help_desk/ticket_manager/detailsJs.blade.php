@@ -413,6 +413,7 @@ function momentDiff(end ,  start) {
     diff = diff.replace(" hour", "h");
     diff = diff.replace("hs", "h");
     diff = diff.replace(" minutes", "m");
+    diff = diff.replace(" minute", "m");
 
     
     let color = ``;
