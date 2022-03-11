@@ -747,14 +747,15 @@
 <script>
     // setting ticket table auto refresh
     let time = "{{$ticket_time}}";
-    console.log(time , "time");
-    time = time * 60;
-    let one_seconds = 1000;
+    if(time != 0) {
+        time = time * 60;
+        let one_seconds = 1000;
 
-    setInterval(() => {
-        get_ticket_table_list();
-    }, (time *one_seconds) );
+        setInterval(() => {
+            get_ticket_table_list();
+        }, (time * one_seconds) );
 
+    }
     
 </script>
 @endsection
