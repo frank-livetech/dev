@@ -754,8 +754,72 @@
         setInterval(() => {
             get_ticket_table_list();
         }, (time * one_seconds) );
+    }
 
+    let current_time = moment().format('YYYY-MM-DD hh:mm:ss');
+    let future_time = moment('2022-03-12').format('YYYY-MM-DD hh:mm:ss');
+
+    console.log(current_time , "current_time");
+    console.log(future_time , "future_time");
+    console.log( duration( current_time , future_time ) , "first");
+
+
+    function duration(t0, t1){
+        let d = (new Date(t1)) - (new Date(t0));
+        let weekdays     = Math.floor(d/1000/60/60/24/7);
+        let days         = Math.floor(d/1000/60/60/24 - weekdays*7);
+        let hours        = Math.floor(d/1000/60/60    - weekdays*7*24            - days*24);
+        let minutes      = Math.floor(d/1000/60       - weekdays*7*24*60         - days*24*60         - hours*60);
+        let seconds      = Math.floor(d/1000          - weekdays*7*24*60*60      - days*24*60*60      - hours*60*60      - minutes*60);
+        let milliseconds = Math.floor(d               - weekdays*7*24*60*60*1000 - days*24*60*60*1000 - hours*60*60*1000 - minutes*60*1000 - seconds*1000);
+        let t = { 
+          'weekdays' : weekdays ,   
+          'days' : days ,   
+          'hours' : hours ,   
+          'minutes' : minutes ,   
+          'seconds' : seconds ,   
+        };
+        // ['weekdays', 'days', 'hours', 'minutes', 'seconds', 'milliseconds'].forEach(q=>{ if (eval(q)>0) { t[q] = eval(q); } });
+        return t;
     }
     
+    function diff(future_time , current_time) {
+        
+        let future_date = new Date(future_time);
+        let current_date = new Date(current_time);
+
+        let future_data = {
+            "year"  : future_date.getFullYear() ,
+            "month" : future_date.getMonth() + 1 , 
+            "day" :  future_date.getDate() ,
+            "hour" :  future_date.getHours() ,
+            "min" :  future_date.getMinutes() ,
+            "sec" :  future_date.getSeconds() ,
+        }
+
+        let current_data = {
+            "year"  : current_date.getFullYear() ,
+            "month" : current_date.getMonth() + 1 , 
+            "day" :  current_date.getDate() ,
+            "hour" :  current_date.getHours() ,
+            "min" :  current_date.getMinutes() ,
+            "sec" :  current_date.getSeconds() ,
+        }
+
+        let remain = {
+            // "year"  :  (future_data.year - current_data.year) ,
+            // "month" : (future_data.month - current_data.month) , 
+            "day" :  (future_data.day - current_data.day) ,
+            "hour" :  (future_data.hour - current_data.hour),
+            "min" :  Math.abs( (future_data.min == 0 ? 60 : future_data.min ) - current_data.min) ,
+            "sec" :  Math.abs( (future_data.sec == 0 ? 60 : future_data.sec ) - current_data.sec) ,
+        }
+        
+        console.log(future_data , "future");
+        console.log(current_data , "current");
+        console.log(remain , "remain");
+
+    }
+
 </script>
 @endsection
