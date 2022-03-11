@@ -3164,7 +3164,7 @@ function setCustomerCompany() {
         $('#cst-company-name').html('');
 
         $('#adjustCard1Height').attr('style', 'height: 250px !important');
-        $('#adjustCard2Height').attr('style', 'height: 107px !important; overflow-y:scroll');
+        $('#adjustCard2Height').attr('style', 'height: 105px !important; overflow-y:scroll');
     }
 }
 
