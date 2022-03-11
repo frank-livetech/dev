@@ -168,8 +168,9 @@ class HelpdeskController extends Controller
         $sts = '';
 
 
-
-
+        // get ticket refresh time
+        $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
+        $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
     }
@@ -1673,8 +1674,10 @@ class HelpdeskController extends Controller
                                     "is_published" => 1 ,
                                     "attachments" => null ,
                                 ]);
-                                
-                                $flwup_reply =  $bbcode->convertFromHtml( $flwup->follow_up_reply );
+                                if($flwup->follow_up_reply != ''){
+                                    $flwup_reply = $flwup->follow_up_reply ;
+                                }
+                            
                             }
                              
                             if(!empty($flwup['follow_up_notes'])) {
@@ -1700,7 +1703,7 @@ class HelpdeskController extends Controller
                     $flwup->passed = 1;
                     $flwup->save();
                     $ticket = Tickets::findOrFail($flwup->ticket_id);
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', '', '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note);
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note);
                 }
             }
             
@@ -2707,7 +2710,7 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
-    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note) {
+    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '') {
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -2785,6 +2788,17 @@ class HelpdeskController extends Controller
                 }else{
                     $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by '. $user->name;
                     $notification_title = 'Reply Added';
+                }
+                
+            }else if($action_name == "Ticket Followup"){
+                
+                if(!empty($reply_content)){
+                    $customer_send = true;
+                    $cust_template_code = 'auto_res_ticket_reply';
+    
+                    // if(!empty($user)) $mail_from = $user->email;
+                    $attachs = $data_id;
+                    $pathTo = 'replies/'.$ticket['id'];
                 }
                 
             }else if($action_name == 'ticket_reply_update'){
@@ -3177,5 +3191,43 @@ class HelpdeskController extends Controller
             'message' => 'Saved Successfully!',
             'status_code' => 200,
         ]);
+    }
+
+    // ticket refresh time 
+    public function ticketRefreshTime() {
+
+        try {
+
+            $data = SystemSetting::where('sys_key','ticket_refresh_time')->first();
+
+            if($data) {
+                $data->sys_value = request()->tkt_refresh;
+                $data->save();
+                $message = 'Updated';
+            }else{
+                SystemSetting::create([
+                    "sys_key" => 'ticket_refresh_time',
+                    "sys_value" => request()->tkt_refresh,
+                    "created_by" => auth()->id() ,
+                ]);
+                $message = 'Saved';
+            }
+
+            return response()->json([
+                "message" => 'Setting '. $message .' Successfully', 
+                "status_code" => 200 ,
+                "success" => true ,
+            ]);
+            
+        } catch(Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage() , 
+                "status_code" => 500 ,
+                "success" => false ,
+            ]);
+        }
+
+        
+        
     }
 }
