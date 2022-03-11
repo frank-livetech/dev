@@ -3009,7 +3009,7 @@ function get_ticket_notes() {
                                 <h5 class="note-head"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
-                            <p class="note-details text-wrap" style="width:65rem">
+                            <p class="note-details text-wrap" style="width:40rem">
                                 ${notes[i].note}
                             </p>
                         </div>
