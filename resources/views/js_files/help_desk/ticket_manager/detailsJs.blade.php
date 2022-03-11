@@ -413,6 +413,7 @@ function momentDiff(end ,  start) {
     diff = diff.replace(" hour", "h");
     diff = diff.replace("hs", "h");
     diff = diff.replace(" minutes", "m");
+    diff = diff.replace(" minute", "m");
 
     
     let color = ``;
@@ -1173,7 +1174,7 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-                                <img src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt="">
+                                <img src="{{asset('${js_path}default_imgs/pdf.png')}}" style="width:65px; height:65px; margin-top:14px"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${item}</span>
                                 <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
@@ -1484,7 +1485,7 @@ function listReplies() {
             $('#ticket-replies').append(`
                 <li class="media" id="reply__${index}">
                     <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
-                    <div class="media-body">
+                    <div class="">
 
                         <h5 class="mt-0"><span class="text-primary">
                             ${link}
@@ -2416,7 +2417,7 @@ $('#is_recurring').click(function() {
         $('#followup-recurrence').show();
 
         // $('#start-range').show();
-        // $("#schedule_type").val("time").trigger("change");
+        $("#schedule_type").val("time").trigger("change");
 
     } else {
         $('#followup-recurrence').css('display', 'none');
@@ -2947,7 +2948,7 @@ function get_ticket_notes() {
                     // if (notes[i].created_by == loggedInUser_id) {
                     if (loggedInUser_t == 1) {
 
-                        autho = `<div class="ml-auto">
+                        autho = `<div class="mt-2">
 
                             <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
                                 style= "float:right;cursor:pointer;position:relative;bottom:25px"
@@ -3000,16 +3001,16 @@ function get_ticket_notes() {
 
                     }
 
-                    let flup = `<div class="col-12 rounded p-1 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+                    let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                         <div style="margin-right: 10px; margin-left: -8px;">
                             ${user_img}
                         </div>
                         <div class="w-100">
-                            <div class="col-12 p-0">
-                                <h5 class="note-head"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
-                            <p class="note-details">
+                            <p class="col" style="margin-top:-20px; word-break:break-all">
                                 ${notes[i].note}
                             </p>
                         </div>
@@ -3155,9 +3156,16 @@ function setCustomerCompany() {
         let name = `<a href="{{url('company-profile')}}/${cust_cmp[0].id}"> ${cust_cmp[0].name} </a>`;
         $('#cst-company').html('Company : ' + name);
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
+
+        $('#adjustCard1Height').attr('style', 'height: 300px !important');
+        $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
+        
     } else {
         $('#cst-company').html('');
         $('#cst-company-name').html('');
+
+        $('#adjustCard1Height').attr('style', 'height: 260px !important');
+        $('#adjustCard2Height').attr('style', 'height: 115px !important; overflow-y:scroll');
     }
 }
 

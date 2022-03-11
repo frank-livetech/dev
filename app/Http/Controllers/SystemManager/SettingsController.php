@@ -113,7 +113,10 @@ class SettingsController extends Controller
         ];
         // return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
        
-        
+        // get ticket refresh time
+        $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
+        $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
+
         // old data
         // return view('system_manager.settings.index', get_defined_vars());
         return view('system_manager.settings.index-new', get_defined_vars());
