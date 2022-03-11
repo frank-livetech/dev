@@ -53,8 +53,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -1535,7 +1535,7 @@ class HelpdeskController extends Controller
 
         $response = array();
         $flwups = TicketFollowUp::where('passed',0)->get();
-
+    
         try {
             if($flwups) {
 
@@ -1544,7 +1544,8 @@ class HelpdeskController extends Controller
                 foreach($flwups as $flwup) {
                     
                     $ticket = Tickets::findOrFail($flwup->ticket_id);
-
+                    $flwup_note = '';
+                    $flwup_reply = '';
                     if($ticket->dept_id != $flwup->follow_up_dept_id){
                         $dept_name = DB::table("departments")->where('id', $flwup->follow_up_dept_id )->first();
                         if($dept_name) {
@@ -1672,6 +1673,8 @@ class HelpdeskController extends Controller
                                     "is_published" => 1 ,
                                     "attachments" => null ,
                                 ]);
+                                
+                                $flwup_reply =  $bbcode->convertFromHtml( $flwup->follow_up_reply );
                             }
                              
                             if(!empty($flwup['follow_up_notes'])) {
@@ -1684,7 +1687,7 @@ class HelpdeskController extends Controller
                                     'visibility' => 'Everyone',
                                     'created_by' => \Auth::user()->id
                                 ]);
-
+                                $flwup_note = '<hr>'.$flwup->follow_up_notes;
                                 $logData .= (empty($logData)) ? 'added a note' : ', added a note';
                             }
                             $flwup->updated_at = Carbon::now();
@@ -1697,7 +1700,7 @@ class HelpdeskController extends Controller
                     $flwup->passed = 1;
                     $flwup->save();
                     $ticket = Tickets::findOrFail($flwup->ticket_id);
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', '', '', 'Ticket Updated', '' , '' , $updates_Arr);
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', '', '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note);
                 }
             }
             
@@ -2704,7 +2707,7 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
-    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '') {
+    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note) {
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -2885,7 +2888,7 @@ class HelpdeskController extends Controller
                 $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
             }
 
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note);
             
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
