@@ -1226,7 +1226,7 @@ class MailController extends Controller
                 }
                 $template = str_replace('{Ticket-Action}', $actions, $template);
             }
-            if($template_code == 'ticket_update'){
+            if($template_code == 'ticket_update' || $template_code == 'ticket_followup'){
                 if(str_contains($template, '{Ticket-Updated-By}')){
                     if(!empty($user)) $action_by = \Auth::user()->name;
                     $t_id = $ticket['coustom_id'];
