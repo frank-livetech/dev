@@ -2416,7 +2416,7 @@ $('#is_recurring').click(function() {
         $('#followup-recurrence').show();
 
         // $('#start-range').show();
-        // $("#schedule_type").val("time").trigger("change");
+        $("#schedule_type").val("time").trigger("change");
 
     } else {
         $('#followup-recurrence').css('display', 'none');
@@ -3155,9 +3155,16 @@ function setCustomerCompany() {
         let name = `<a href="{{url('company-profile')}}/${cust_cmp[0].id}"> ${cust_cmp[0].name} </a>`;
         $('#cst-company').html('Company : ' + name);
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
+
+        $('#adjustCard1Height').attr('style', 'height: 300px !important');
+        $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
+        
     } else {
         $('#cst-company').html('');
         $('#cst-company-name').html('');
+
+        $('#adjustCard1Height').attr('style', 'height: 250px !important');
+        $('#adjustCard2Height').attr('style', 'height: 107px !important; overflow-y:scroll');
     }
 }
 
