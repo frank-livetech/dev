@@ -373,11 +373,14 @@ function setSlaPlanDeadlines(ret = false) {
     if(ticket != null) {
 
         if(ticket.reply_deadline == null) {
-
             if (rep_due) $('#sla-rep_due').html(rep_due);
+        }
+        
+        if(ticket.resolution_deadline == null) {
             if (res_due) $('#sla-res_due').html(res_due);
+        }
 
-        }else{
+        if(ticket.reply_deadline != null && ticket.resolution_deadline != null){
             resetable = false;
 
             let tkt_rep_due = moment(ticket.reply_deadline).format('YYYY-MM-DD hh:mm A');
@@ -2204,7 +2207,7 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
-        updateFollowUp(form, ticketNotes , ticket_replies );
+        // updateFollowUp(form, ticketNotes , ticket_replies );
     }
 }
 
@@ -2240,12 +2243,12 @@ function getClockTime(followUpDate, timediff) {
 
 function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
     $.ajax({
-        type: 'post',
+        type: 'get',
         url: "{{url('update_ticket_followup')}}",
         // url: update_followup_route,
-        data: data,
-        cache: false,
-        contentType: false,
+        // data: data,
+        // cache: false,
+        // contentType: false,
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
