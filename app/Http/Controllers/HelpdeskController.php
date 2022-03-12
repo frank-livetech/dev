@@ -1532,10 +1532,10 @@ class HelpdeskController extends Controller
         }
     }
 
-    public function updateFollowupCron(){
+    public function updateFollowupCron(Request $request){
 
         $response = array();
-        $flwups = TicketFollowUp::where('passed',0)->get();
+        $flwups = TicketFollowUp::where('ticket_id', $request->ticket_id)->where('passed',0)->where('is_deleted', 0)->get();
     
         try {
             if($flwups) {
