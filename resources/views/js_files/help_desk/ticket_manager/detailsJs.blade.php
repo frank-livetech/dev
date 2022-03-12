@@ -2049,6 +2049,7 @@ function getTicketFollowUp() {
         success: function(data) {
             if (data.success == true) {
                 let obj = data.data;
+                console.log(obj , "followup obj");
                 g_followUps = obj;
 
 
@@ -2077,6 +2078,8 @@ function listFollowups() {
     $('#clockdiv').html('');
 
     if (g_followUps.length < 1) return;
+
+    console.log(g_followUps , "g_followUps");
 
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
@@ -2201,7 +2204,7 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
-        // updateFollowUp(form, ticketNotes , ticket_replies );
+        updateFollowUp(form, ticketNotes , ticket_replies );
     }
 }
 
@@ -2238,24 +2241,18 @@ function getClockTime(followUpDate, timediff) {
 function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
     $.ajax({
         type: 'post',
-        url: update_followup_route,
+        url: "{{url('update_ticket_followup')}}",
+        // url: update_followup_route,
         data: data,
         cache: false,
         contentType: false,
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            if (!data.success) {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
-            } else {
+            console.log(data);
+            if(data.status_code == 200 && data.success == true) {
+                console.log("success")
 
-                
                 if(ticket.dept_id != data.ticket.dept_id){
                     var obj = {};
                     obj = {
@@ -2335,10 +2332,15 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 getLatestLogs();
 
                 getTicketFollowUp();
+                get_ticket_notes();
+                getTicketReplies(ticket.id)
 
-                if(ticket_replies) getTicketReplies(ticket.id);
+                // if(ticket_replies) getTicketReplies(ticket.id);
             
-                if (ticketNotes) get_ticket_notes();
+                // if (ticketNotes) get_ticket_notes();
+            }else{
+                console.log("failed")
+                toastr.error(data.message, { timeOut: 5000 });
             }
         }
     });
