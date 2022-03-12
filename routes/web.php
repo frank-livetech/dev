@@ -490,7 +490,7 @@ Route::Post('/set-dept-assignment','DepartmentsController@set_assignments');
 Route::Post('/save-ticket-follow-up','HelpdeskController@save_ticket_follow_up');
 Route::Post('/update-ticket-follow-up','HelpdeskController@update_ticket_follow_up');
 
-Route::post('/update_ticket_followup','HelpdeskController@updateFollowupCron');
+Route::get('/update_ticket_followup','HelpdeskController@updateFollowupCron');
 
 Route::post('/ticket_refresh','HelpdeskController@ticketRefreshTime')->name('ticketRefreshTime');
 
