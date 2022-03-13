@@ -1783,7 +1783,7 @@ class HelpdeskController extends Controller
 
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['ticket'] = $ticket;
+            // $response['ticket'] = $ticket;
             return response()->json($response);
 
         }catch(Exception $e) {
@@ -2801,7 +2801,7 @@ class HelpdeskController extends Controller
             $customer_send = false;
             $cust_template_code = '';
             $is_cron = false;
-            if($action_name != 'cron' && $action_name != 'cust_cron'){
+            if($action_name != 'cron' && $action_name != 'cust_cron' && $action_name != 'Ticket Followup'){
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first(); 
             }
             
