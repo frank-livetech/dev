@@ -1783,7 +1783,7 @@ class HelpdeskController extends Controller
 
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['ticket'] = $ticket;
+            // $response['ticket'] = $ticket;
             return response()->json($response);
 
         }catch(Exception $e) {
