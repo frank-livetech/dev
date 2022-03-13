@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call('\App\Http\Controllers\SystemManager\MailController@save_inbox_replies')->everyMinute();
-        $schedule->call('\App\Http\Controllers\HelpdeskController@update_ticket_followup')->everyMinute();
+        $schedule->call('\App\Http\Controllers\HelpdeskController@updateFollowupCron')->everyMinute();
 
         // $schedule->call('\App\Http\Controllers\PayrollManager\PayrollController@check_clockins')->everyThirtyMinutes();
         // $schedule->call('\App\Http\Controllers\ProjectManager\ProjectManagerController@todaysTasks')->daily();
