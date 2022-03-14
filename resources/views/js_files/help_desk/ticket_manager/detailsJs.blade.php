@@ -2578,7 +2578,7 @@ function createFollowUp(event) {
         if ($('#schedule_type').val() == 'time') {
             let recurrence_pattern = '';
 
-            let recur_type = $('input[name="recur_type"]:checked').val();
+            let recur_type = $('input[name="validationRadiojq"]:checked').val();
 
             if (!$('#recurrence_time').val()) {
                 Swal.fire({
@@ -3656,5 +3656,41 @@ function getTicketReplies(id) {
             console.log(errMsg);
         }
     })
+}
+
+function checkRecurrence(type) {
+
+    if(type == 'daily_check') {
+        $("." + type + "_div").show();
+
+        $(".weekly_check_div").hide();
+        $(".monthly_check_div").hide();
+        $(".yearly_check_div").hide();
+    }
+
+    if(type == 'weekly_check') {
+        $("." + type + "_div").show();
+
+        $(".daily_check_div").hide();
+        $(".monthly_check_div").hide();
+        $(".yearly_check_div").hide();
+    }
+
+    if(type == 'monthly_check') {
+        $("." + type + "_div").show();
+
+        $(".daily_check_div").hide();
+        $(".weekly_check_div").hide();
+        $(".yearly_check_div").hide();
+    }
+
+    if(type == 'yearly_check') {
+        $("." + type + "_div").show();
+
+        $(".daily_check_div").hide();
+        $(".weekly_check_div").hide();
+        $(".monthly_div").hide();
+    }
+    
 }
 </script>
