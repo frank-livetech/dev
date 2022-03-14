@@ -1129,7 +1129,7 @@ class MailController extends Controller
         return $subject;
     }
 
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '') {
         if(empty($template)) {
             return '';
         }
@@ -1149,7 +1149,7 @@ class MailController extends Controller
         if(!empty($action_name)) {
             $user = \Auth::user();
             if(str_contains($template, '{Ticket-Action}')) {
-                $action_by = 'Cron';
+                $action_by = 'System';
                 if(!empty($user)) $action_by = \Auth::user()->name;
                 if($action_name == 'Ticket Updated'){
                     $actions = '';
@@ -1196,7 +1196,10 @@ class MailController extends Controller
                           
                         }
                     }
-                    $reply_content = '<hr>'.$reply_content;
+                    if(!empty($reply_content)){
+                        $reply_content = '<hr>'.$reply_content;
+                    }
+                    
                     $template = str_replace('{Ticket-Note}', $flwup_note, $template);
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else if($action_name == 'ticket_reply_update'){
@@ -1229,7 +1232,12 @@ class MailController extends Controller
             }
             if($template_code == 'ticket_update' || $template_code == 'ticket_followup'){
                 if(str_contains($template, '{Ticket-Updated-By}')){
-                    if(!empty($user)) $action_by = \Auth::user()->name;
+                    if(!empty($user)) {
+                        $action_by = \Auth::user()->name;
+                    }else if(!empty($flwup_updated)){
+                        $action_by = $flwup_updated;
+                    }
+                    
                     $t_id = $ticket['coustom_id'];
                     $template = str_replace('{Ticket-Updated-By}', $action_by .' Updated #'. $t_id, $template);
                 }

@@ -1761,12 +1761,13 @@ class HelpdeskController extends Controller
                                     // $ticket = Tickets::findOrFail($flwup->ticket_id);
                                 // }
                             // }
-        
+                            $created_by = User::where('id',$flwup->created_by)->first();
+                            $flwup_updated = $created_by->name;
         
                             $flwup->passed = 1;
                             $flwup->save();
                             $ticket = Tickets::findOrFail($flwup->ticket_id);
-                            $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note);
+                            $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
 
                         }
 
@@ -2778,7 +2779,7 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
-    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '') {
+    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '',$flwup_updated = '') {
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -2970,7 +2971,7 @@ class HelpdeskController extends Controller
                 $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
             }
 
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated);
             
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
