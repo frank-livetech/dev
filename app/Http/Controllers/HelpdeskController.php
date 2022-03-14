@@ -1574,8 +1574,6 @@ class HelpdeskController extends Controller
         try {
             if($flwups) {
 
-                $updates_Arr = [];
-
                 $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
                 $tm_name = '';
                 if($timezone) {
@@ -1584,194 +1582,181 @@ class HelpdeskController extends Controller
                     $tm_name = 'America/New_York';
                 }
                 
+                $add_value = 0;
+                $add_type = '';
+
                 foreach($flwups as $flwup) {
                     
                     $ticket = Tickets::findOrFail($flwup->ticket_id);
 
-                    if($flwup->schedule_time != null) {
+                    if( $flwup->is_recurring == 1 ) {
 
-                        // convert utc time into user timezone
-                        $date = new \DateTime($flwup->created_at);
-                        $date->setTimezone(new \DateTimeZone($tm_name));                            
-                        $convertedDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
+                        $date = new \DateTime($flwup->recurrence_start);
+                        $date->setTimezone(new \DateTimeZone($tm_name));
+                        $startDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
 
-                        $schedule_type = $flwup->schedule_type;
-                        $schedule_time = $flwup->schedule_time;
 
-                        // pass converted_date , 
-                        $futureDate = $this->calculateFutureDate($convertedDate , $schedule_time , $schedule_type);
+                        if($flwup->recurrence_pattern && $flwup->recurrence_time) {
 
-                        // getting region current date and time
-                        $currentDateTime = new \DateTime();
-                        $currentDateTime->setTimezone(new \DateTimeZone($tm_name));                            
-                        $currentDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
-
-                        if( strtotime($currentDate) >=  strtotime($futureDate) ) {
-
-                            $flwup_note = '';
-                            $flwup_reply = '';
-                            if($ticket->dept_id != $flwup->follow_up_dept_id){
-                                $dept_name = DB::table("departments")->where('id', $flwup->follow_up_dept_id )->first();
-                                if($dept_name) {
-        
-                                    $obj = array(
-                                        "id" => 1 ,
-                                        "data" => $ticket->department_name ,
-                                        "new_data" => $flwup->follow_up_dept_id ,
-                                        "new_text" => $dept_name->name , 
-                                    );
-        
-                                    array_push($updates_Arr, $obj);
-                                }
-                            }
-        
-                            if($ticket->assigned_to != $flwup->follow_up_assigned_to){
-                                $user = User::where('id', $flwup->follow_up_assigned_to)->first();
-                                if($user) {
-        
-                                    $obj = array(
-                                        "id" => 2 ,
-                                        "data" => $ticket->assignee_name ,
-                                        "new_data" => $flwup->follow_up_assigned_to ,
-                                        "new_text" => $user->name , 
-                                    );
-        
-                                    array_push($updates_Arr, $obj);
-                                }
-                            }
-            
-                            if($ticket->type != $flwup->follow_up_type){
-                                $tkt_type = TicketType::where('id', $flwup->follow_up_type )->first();
-                                if($tkt_type) {
-        
-                                    $obj = array(
-                                        "id" => 3 ,
-                                        "data" => $ticket->type_name ,
-                                        "new_data" => $flwup->follow_up_type ,
-                                        "new_text" =>$tkt_type->name, 
-                                    );
-                                    
-                                    array_push($updates_Arr, $obj);
-                                }
-                            }
-            
-                            if($ticket->status != $flwup->follow_up_status){
-                                $tkt_status = TicketStatus::where('id', $flwup->follow_up_status )->first();
-                                if($tkt_status) {
-        
-                                    $obj = array(
-                                        "id" => 4 ,
-                                        "data" => $ticket->status_name ,
-                                        "new_data" => $flwup->follow_up_status ,
-                                        "new_text" => $tkt_status->name, 
-                                    );
-                                    
-                                    array_push($updates_Arr, $obj);
-                                }
-                            }
-            
-                            if($ticket->priority != $flwup->follow_up_priority){
-                                $tkt_priority = TicketPriority::where('id' ,$flwup->follow_up_priority )->first();
-                                if($tkt_priority) {
-        
-                                    $obj = array(
-                                        "id" => 5 ,
-                                        "data" => $ticket->priority_name ,
-                                        "new_data" => $flwup->follow_up_priority ,
-                                        "new_text" => $tkt_priority->name, 
-                                    );
-                                    
-                                    array_push($updates_Arr, $obj);
-                                }
-                            }
-        
-        
-                            // $data = json_decode($request->data, true);
-                            $logData = '';
+                            if($flwup->date) $followUpDate = new Carbon($flwup->date);
+                            else $followUpDate = $startDate;
                             
-                            // if(is_array($data)) {
-                                // foreach ($data as $value) {
-                                    // $flwup = TicketFollowUp::findOrFail($value['id']);
+                            $rec_time = explode(':', $flwup->recurrence_time);
+            
+                            // set some timezone for proper hour and mins setting
+                            $followUpDate->timezone(Session::get('timezone'));
+            
+                            $followUpDate->hour = $rec_time[0];
+                            $followUpDate->minute = $rec_time[1];
+            
+                            // convert back to utc for further calculations
+                            $followUpDate->utcOffset(0);
+                            
+                            $pattern = explode('|', $flwup->recurrence_pattern);
+                            $pattern_type = $pattern[0];
+                            // daily|2
+                            switch($pattern_type) {
+                                case 'daily':
+                                    $d_val = $pattern[1]; // days to occur after
+                                    $add_value = $d_val;
+                                    $add_type = 'days';
+                                    break;
+                                case 'weekly':
+                                    $w_val = $pattern[1]; // weeks to occur after
+                                    $w_days = explode(',', $pattern[2]); // weekly days
+            
+                                    $today = (String) $followUpDate->day;
                                     
-                                    // if(array_key_exists('date', $value)) {
-                                    //     $flwup->date = $value['date'];
-                                    // }
-                                    // if(array_key_exists('recurrence_end_val', $value)) {
-                                    //     $flwup->recurrence_end_val = $value['recurrence_end_val'];
-                                    // }
-                                    // if(array_key_exists('passed', $value)) {
-                                    //     $flwup->passed = $value['passed'];
-                                    // }
-                                    // if(array_key_exists('recurrence_time', $value)) {
-                                    //     $flwup->recurrence_time = $value['recurrence_time'];
-                                    //     $flwup->recurrence_time2 = NULL;
-                                    // }
-                                    
-                                    // if(array_key_exists('ticket_update', $value) || array_key_exists('passed', $value)) {
-                                    //     try {
-                                    $ticket->dept_id = $flwup->follow_up_dept_id;
-                                    $ticket->priority = $flwup->follow_up_priority;
-                                    $ticket->assigned_to = $flwup->follow_up_assigned_to;
-                                    $ticket->status = $flwup->follow_up_status;
-                                    $ticket->type = $flwup->follow_up_type;
-                                    $ticket->updated_at = Carbon::now();
-                                    $ticket->save();
-                                    
-                                    $logData = 'ticket updated';
-                                    //     } catch (Exception $e) {
-                                    //         //
-                                    //     }
-                                    // }
-        
-                                    if(!empty($flwup['follow_up_reply'])) {
-                                        
-                                        $bbcode = new BBCode();
-        
-                                        TicketReply::create([
-                                            "ticket_id" => $flwup->ticket_id,
-                                            "user_id" => $flwup->follow_up_assigned_to, 
-                                            "msgno" => null , 
-                                            "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
-                                            "cc" => null , 
-                                            "date" => date('Y-m-d H:i:s'), 
-                                            "is_published" => 1 ,
-                                            "attachments" => null ,
-                                        ]);
-                                        if($flwup->follow_up_reply != ''){
-                                            $flwup_reply = $flwup->follow_up_reply ;
+                                    if(array_search($today, $w_days) == -1) $w_days[] = $today;
+            
+                                    sort($w_days);
+            
+                                    if(sizeof($w_days) == 1) {
+                                        // set follow up on current day or next week
+                                        $add_value = $w_val*7;
+                                        $add_type = 'days';
+                                    } else {
+                                        $t_ind = array_search($today, $w_days); // today date index
+                                        $daytoadd = 0;
+                                        if($t_ind == (sizeof($w_days)-1)) {
+                                            // set date to first index
+                                            $daytoadd = $w_val*((int) $w_days[0]+7-(int) $today);
+                                        } else {
+                                            // set follow up on next index
+                                            $daytoadd = $w_val*((int) $w_days[$t_ind+1] - (int) $today);
                                         }
-                                    
+                                        $add_value = $daytoadd;
+                                        $add_type = 'days';
                                     }
-                                     
-                                    if(!empty($flwup['follow_up_notes'])) {
-                                        TicketNote::create([
-                                            'ticket_id' => $flwup->ticket_id,
-                                            'followup_id' => $flwup->id,
-                                            'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
-                                            'type' => $flwup->follow_up_notes_type,
-                                            'note' => $flwup->follow_up_notes,
-                                            'visibility' => 'Everyone',
-                                            'created_by' => \Auth::user()->id
-                                        ]);
-                                        $flwup_note = '<hr>'.$flwup->follow_up_notes;
-                                        $logData .= (empty($logData)) ? 'added a note' : ', added a note';
-                                    }
-                                    $flwup->updated_at = Carbon::now();
-                        
-                                    // $ticket = Tickets::findOrFail($flwup->ticket_id);
-                                // }
-                            // }
-                            $created_by = User::where('id',$flwup->created_by)->first();
-                            $flwup_updated = $created_by->name;
-        
-                            $flwup->passed = 1;
-                            $flwup->save();
-                            $ticket = Tickets::findOrFail($flwup->ticket_id);
-                            $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+                                    break;
+                                case 'monthly':
+                                    $m_val = $pattern[1]; // month
+                                    $md_val = $pattern[2]; // month day
+            
+                                    $add_value = $m_val;
+                                    $add_type = 'months';
+            
+                                    $followUpDate->set('day', $md_val);
+                                    break;
+                                case 'yearly':
+                                    $y_val = $pattern[1];
+                                    $y_month = $pattern[2];
+                                    $y_m_day = $pattern[3];
+            
+                                    $add_value = $y_val;
+                                    $add_type = 'years';
+            
+                                    $followUpDate->month = $y_month;
+                                    $followUpDate->day = $y_m_day;
+                                    break;
+                                default:
+                                    break;
+                            }
 
+
+                            $currentDateTime = new \DateTime();
+                            $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
+                            $nowDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
+
+                            $newfollowUpDate = new \DateTime($followUpDate);
+                            $newfollowUpDate->setTimezone(new \DateTimeZone($tm_name));
+                            $followUpDate = Carbon::parse( $newfollowUpDate->format('Y-m-d H:i:s') );
+
+                            // $nowDate = Carbon::now();
+                            $timediff = $nowDate->diffInSeconds($followUpDate, false);
+                    
+                            if($timediff < 0) {
+
+                                $idata = array();
+                                // follow up time to update ticket
+                                $idata['ticket_update'] = true;
+                    
+                                // update the recurrence time for next all ocurrences
+                                if($flwup->recurrence_time2) $idata['recurrence_time'] = $flwup->recurrence_time2;
+                                
+                                if($flwup->recurrence_end_type == 'count') {
+                                    if((int) $flwup->recurrence_end_val > 0) $idata['recurrence_end_val'] = (int) $flwup->recurrence_end_val-1;
+                                    else $idata['passed'] = 1;
+                                }
+                                
+                                if(!array_key_exists('passed', $idata)) {
+                                    if($add_type == 'minutes') $followUpDate->addMinutes($add_value);
+                                    else if($add_type == 'hours') $followUpDate->addHours($add_value);
+                                    else if($add_type == 'days') $followUpDate->addDays($add_value);
+                                    else if($add_type == 'weeks') $followUpDate->addWeeks($add_value);
+                                    else if($add_type == 'months') $followUpDate->addMonths($add_value);
+                                    else if($add_type == 'years') $followUpDate->addYears($add_value);
+                    
+                                    if($flwup->recurrence_end_type == 'date') {
+                                        $endDate = new Carbon($flwup->recurrence_end_val);
+                                        if($followUpDate->isAfter($endDate)) $idata['passed'] = 1;
+                                    }
+                    
+                                    if(!array_key_exists('passed', $idata)) $idata['date'] = new Carbon($followUpDate);
+                                }
+                    
+                                if(array_key_exists('passed', $idata)) $flwup->passed = $idata['passed'];
+                                if(array_key_exists('date', $idata)) $flwup->date = $idata['date'];
+                                if(array_key_exists('recurrence_time', $idata)) $flwup->recurrence_time = $idata['recurrence_time'];
+                                if(array_key_exists('recurrence_end_val', $idata)) $flwup->recurrence_end_val = $idata['recurrence_end_val'];
+                    
+                                $flwup->save();
+                    
+                                // if(!array_key_exists('passed', $idata)) $this->follow_up_calculation($followUp);
+
+                                $this->triggerFollowUp($ticket , $flwup);
+                                
+                            }
                         }
 
-                        
+                    }else{
+
+                        if($flwup->schedule_time != null) {
+
+                            // convert utc time into user timezone
+                            $date = new \DateTime($flwup->created_at);
+                            $date->setTimezone(new \DateTimeZone($tm_name));                            
+                            $convertedDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
+
+                            $schedule_type = $flwup->schedule_type;
+                            $schedule_time = $flwup->schedule_time;
+
+                            // pass converted_date , 
+                            $futureDate = $this->calculateFutureDate($convertedDate , $schedule_time , $schedule_type);
+
+                            // getting region current date and time
+                            $currentDateTime = new \DateTime();
+                            $currentDateTime->setTimezone(new \DateTimeZone($tm_name));                            
+                            $currentDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
+
+                            if( strtotime($currentDate) >=  strtotime($futureDate) ) {
+
+                                $this->triggerFollowUp($ticket , $flwup);
+                                
+                            }
+
+                            
+                        }
                     }
                 }
             }
@@ -1794,6 +1779,144 @@ class HelpdeskController extends Controller
             return response()->json($response);
         }
 
+    }
+
+    public function triggerFollowUp($ticket, $flwup) {
+
+        $flwup_note = '';
+        $flwup_reply = '';
+
+        $updates_Arr = [];
+
+        if($ticket->dept_id != $flwup->follow_up_dept_id){
+            $dept_name = DB::table("departments")->where('id', $flwup->follow_up_dept_id )->first();
+            if($dept_name) {
+
+                $obj = array(
+                    "id" => 1 ,
+                    "data" => $ticket->department_name ,
+                    "new_data" => $flwup->follow_up_dept_id ,
+                    "new_text" => $dept_name->name , 
+                );
+
+                array_push($updates_Arr, $obj);
+            }
+        }
+
+        if($ticket->assigned_to != $flwup->follow_up_assigned_to){
+            $user = User::where('id', $flwup->follow_up_assigned_to)->first();
+            if($user) {
+
+                $obj = array(
+                    "id" => 2 ,
+                    "data" => $ticket->assignee_name ,
+                    "new_data" => $flwup->follow_up_assigned_to ,
+                    "new_text" => $user->name , 
+                );
+
+                array_push($updates_Arr, $obj);
+            }
+        }
+
+        if($ticket->type != $flwup->follow_up_type){
+            $tkt_type = TicketType::where('id', $flwup->follow_up_type )->first();
+            if($tkt_type) {
+
+                $obj = array(
+                    "id" => 3 ,
+                    "data" => $ticket->type_name ,
+                    "new_data" => $flwup->follow_up_type ,
+                    "new_text" =>$tkt_type->name, 
+                );
+                
+                array_push($updates_Arr, $obj);
+            }
+        }
+
+        if($ticket->status != $flwup->follow_up_status){
+            $tkt_status = TicketStatus::where('id', $flwup->follow_up_status )->first();
+            if($tkt_status) {
+
+                $obj = array(
+                    "id" => 4 ,
+                    "data" => $ticket->status_name ,
+                    "new_data" => $flwup->follow_up_status ,
+                    "new_text" => $tkt_status->name, 
+                );
+                
+                array_push($updates_Arr, $obj);
+            }
+        }
+
+        if($ticket->priority != $flwup->follow_up_priority){
+            $tkt_priority = TicketPriority::where('id' ,$flwup->follow_up_priority )->first();
+            if($tkt_priority) {
+
+                $obj = array(
+                    "id" => 5 ,
+                    "data" => $ticket->priority_name ,
+                    "new_data" => $flwup->follow_up_priority ,
+                    "new_text" => $tkt_priority->name, 
+                );
+                
+                array_push($updates_Arr, $obj);
+            }
+        }
+
+        $logData = '';
+        
+        $ticket->dept_id = $flwup->follow_up_dept_id;
+        $ticket->priority = $flwup->follow_up_priority;
+        $ticket->assigned_to = $flwup->follow_up_assigned_to;
+        $ticket->status = $flwup->follow_up_status;
+        $ticket->type = $flwup->follow_up_type;
+        $ticket->updated_at = Carbon::now();
+        $ticket->save();
+        
+        $logData = 'ticket updated';
+
+        if(!empty($flwup['follow_up_reply'])) {
+            
+            $bbcode = new BBCode();
+
+            TicketReply::create([
+                "ticket_id" => $flwup->ticket_id,
+                "user_id" => $flwup->follow_up_assigned_to, 
+                "msgno" => null , 
+                "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
+                "cc" => null , 
+                "date" => date('Y-m-d H:i:s'), 
+                "is_published" => 1 ,
+                "attachments" => null ,
+            ]);
+            if($flwup->follow_up_reply != ''){
+                $flwup_reply = $flwup->follow_up_reply ;
+            }
+        
+        }
+        
+        if(!empty($flwup['follow_up_notes'])) {
+            TicketNote::create([
+                'ticket_id' => $flwup->ticket_id,
+                'followup_id' => $flwup->id,
+                'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
+                'type' => $flwup->follow_up_notes_type,
+                'note' => $flwup->follow_up_notes,
+                'visibility' => 'Everyone',
+                'created_by' => \Auth::user()->id
+            ]);
+            $flwup_note = '<hr>'.$flwup->follow_up_notes;
+            $logData .= (empty($logData)) ? 'added a note' : ', added a note';
+        }
+        $flwup->updated_at = Carbon::now();
+    
+        $created_by = User::where('id',$flwup->created_by)->first();
+        $flwup_updated = $created_by->name;
+
+        $flwup->passed = 1;
+        $flwup->save();
+        $ticket = Tickets::findOrFail($flwup->ticket_id);
+        return $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
     }
 
     public function update_ticket_follow_up(Request $request) {
@@ -1950,7 +2073,7 @@ class HelpdeskController extends Controller
                 
                 $pattern = explode('|', $followUp->recurrence_pattern);
                 $pattern_type = $pattern[0];
-                
+                // daily|2
                 switch($pattern_type) {
                     case 'daily':
                         $d_val = $pattern[1]; // days to occur after
