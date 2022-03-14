@@ -1182,26 +1182,26 @@ br + br { display: none; }
                                             <div class="col-md-4">
                                                 <div class="">
                                                     <div class="form-check my-50">
-                                                        <input type="radio" id="daily_check" name="validationRadiojq" onclick="checkRecurrence('daily_check')" class="form-check-input" checked>
+                                                        <input type="radio" id="daily_check" name="recur_type" value="daily" onclick="checkRecurrence('daily_check')" class="form-check-input" checked>
                                                         <label class="form-check-label" for="daily_check"> Daily </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input type="radio" id="weekly_check" name="validationRadiojq" onclick="checkRecurrence('weekly_check')" class="form-check-input">
+                                                        <input type="radio" id="weekly_check" name="recur_type" value="weekly" onclick="checkRecurrence('weekly_check')" class="form-check-input">
                                                         <label class="form-check-label" for="weekly_check"> Weekly </label>
                                                     </div>
                                                     <div class="form-check my-50">
-                                                        <input type="radio" id="monthly_check" name="validationRadiojq" onclick="checkRecurrence('monthly_check')" class="form-check-input">
+                                                        <input type="radio" id="monthly_check" name="recur_type" value="monthly" onclick="checkRecurrence('monthly_check')" class="form-check-input">
                                                         <label class="form-check-label" for="monthly_check"> Monthly </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input type="radio" id="yearly_check" name="validationRadiojq" onclick="checkRecurrence('yearly_check')" class="form-check-input">
+                                                        <input type="radio" id="yearly_check" name="recur_type" value="yearly" onclick="checkRecurrence('yearly_check')" class="form-check-input">
                                                         <label class="form-check-label" for="yearly_check"> Yearly </label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-8">
 
-                                                <div class="daily_check_div">
+                                                <div class="daily_check_div" id="daily-container">
                                                     <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
                                                         <label for="recur_after">Every &nbsp;&nbsp;</label>
                                                         <input type="number" class="form-control" id="recur_after_d" value="1" min="1" max="7" style="width: 100px;">
@@ -1209,7 +1209,7 @@ br + br { display: none; }
                                                     </div>
                                                 </div>
 
-                                                <div class="weekly_check_div" style="display:none">
+                                                <div class="weekly_check_div" id="weekly-container" style="display:none">
 
                                                     <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
                                                         <label for="recur_after">Recur every &nbsp;&nbsp;</label>
@@ -1217,57 +1217,63 @@ br + br { display: none; }
                                                         <label for="recur_after">&nbsp;&nbsp; week(s) on:</label>
                                                     </div>
                                                     
-                                                    <div id="week-days-list" class="d-flex mt-1">
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="monday" value="1">
-                                                                <label class="form-check-label" for="monday">Monday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="tuesday" value="2">
-                                                                <label class="form-check-label" for="tuesday">Tuesday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="wednesday" value="3">
-                                                                <label class="form-check-label" for="wednesday">Wednesday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="thursday" value="4">
-                                                                <label class="form-check-label" for="thursday">Thursday</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <div id="week-days-list" >
 
-                                                    <div id="week-days-list" class="d-flex mt-1">
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="friday" value="5">
-                                                                <label class="form-check-label" for="friday">Friday</label>
+                                                        <div class="d-flex mt-1">
+
+                                                            <div class="form-group mt-1">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" class="form-check-input" id="monday" value="1">
+                                                                    <label class="form-check-label" for="monday">Monday</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mt-1">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" class="form-check-input" id="tuesday" value="2">
+                                                                    <label class="form-check-label" for="tuesday">Tuesday</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mt-1">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" class="form-check-input" id="wednesday" value="3">
+                                                                    <label class="form-check-label" for="wednesday">Wednesday</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mt-1">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" class="form-check-input" id="thursday" value="4">
+                                                                    <label class="form-check-label" for="thursday">Thursday</label>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="saturday" value="6">
-                                                                <label class="form-check-label" for="saturday">Saturday</label>
+
+                                                        <div class="d-flex mt-1">
+
+                                                            <div class="form-group mt-1">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" class="form-check-input" id="friday" value="5">
+                                                                    <label class="form-check-label" for="friday">Friday</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mt-1">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" class="form-check-input" id="saturday" value="6">
+                                                                    <label class="form-check-label" for="saturday">Saturday</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mt-1">
+                                                                <div class="form-check form-check-inline">
+                                                                    <input type="checkbox" class="form-check-input" id="sunday" value="7">
+                                                                    <label class="form-check-label" for="sunday">Sunday</label>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="sunday" value="7">
-                                                                <label class="form-check-label" for="sunday">Sunday</label>
-                                                            </div>
-                                                        </div>
+                                                        
                                                     </div>
 
                                                 </div>
 
-                                                <div class="monthly_check_div" style="display:none">
+                                                <div class="monthly_check_div" id="monthly-container" style="display:none">
                                                     <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
                                                         <label>Day &nbsp;&nbsp;</label>
                                                         <input type="number" class="form-control" id="recur_after_m" value="1" min="1" max="31" style="width: 100px;">
@@ -1277,7 +1283,7 @@ br + br { display: none; }
                                                     </div>
                                                 </div>
 
-                                                <div class="yearly_check_div" style="display:none">
+                                                <div class="yearly_check_div" id="yearly-container" style="display:none">
 
                                                     <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
                                                         <label>Recur every &nbsp;&nbsp;</label>
@@ -1310,131 +1316,6 @@ br + br { display: none; }
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!-- <div class="col-md-12 mt-1">
-                                        <div class="nav-vertical border p-1">
-                                            <ul class="nav nav-tabs nav-left flex-column border" role="tablist" style="height: 161px;">
-                                                <li class="nav-item">
-                                                    <a class="nav-link active" id="baseVerticalLeft-tab1" data-bs-toggle="tab" aria-controls="daily" href="#daily" role="tab" aria-selected="false"> Daily </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" id="baseVerticalLeft-tab2" data-bs-toggle="tab" aria-controls="weekly" href="#weekly" role="tab" aria-selected="false"> Weekly </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" id="baseVerticalLeft-tab3" data-bs-toggle="tab" aria-controls="monthly" href="#monthly" role="tab" aria-selected="true"> Monthly </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" id="baseVerticalLeft-tab4" data-bs-toggle="tab" aria-controls="yearly" href="#yearly" role="tab" aria-selected="true"> Yearly </a>
-                                                </li>
-                                            </ul>
-                                            <div class="tab-content">
-
-                                                <div class="tab-pane active" id="daily" role="tabpanel" aria-labelledby="baseVerticalLeft-tab1">
-                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                                        <label for="recur_after">Every &nbsp;&nbsp;</label>
-                                                        <input type="number" class="form-control" id="recur_after_d" value="1" min="1" max="7" style="width: 100px;">
-                                                        <label for="recur_after">&nbsp;&nbsp; day(s)</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="tab-pane" id="weekly" role="tabpanel" aria-labelledby="baseVerticalLeft-tab2">
-
-                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                                        <label for="recur_after">Recur every &nbsp;&nbsp;</label>
-                                                        <input type="number" class="form-control" id="recur_after_w" value="1" min="1" max="52" style="width: 100px;">
-                                                        <label for="recur_after">&nbsp;&nbsp; week(s) on:</label>
-                                                    </div>
-                                                    
-                                                    <div id="week-days-list" class="d-flex mt-1">
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="monday" value="1">
-                                                                <label class="form-check-label" for="monday">Monday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="tuesday" value="2">
-                                                                <label class="form-check-label" for="tuesday">Tuesday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="wednesday" value="3">
-                                                                <label class="form-check-label" for="wednesday">Wednesday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="thursday" value="4">
-                                                                <label class="form-check-label" for="thursday">Thursday</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div id="week-days-list" class="d-flex mt-1">
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="friday" value="5">
-                                                                <label class="form-check-label" for="friday">Friday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="saturday" value="6">
-                                                                <label class="form-check-label" for="saturday">Saturday</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group mt-1">
-                                                            <div class="form-check form-check-inline">
-                                                                <input type="checkbox" class="form-check-input" id="sunday" value="7">
-                                                                <label class="form-check-label" for="sunday">Sunday</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="tab-pane" id="monthly" role="tabpanel" aria-labelledby="baseVerticalLeft-tab3">
-                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                                        <label>Day &nbsp;&nbsp;</label>
-                                                        <input type="number" class="form-control" id="recur_after_m" value="1" min="1" max="31" style="width: 100px;">
-                                                        <label>&nbsp;&nbsp; of every &nbsp;&nbsp;</label>
-                                                        <input type="number" class="form-control" id="recur_after_month" value="1" min="1" max="12" style="width: 100px;">
-                                                        <label>&nbsp;&nbsp; month(s)</label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="tab-pane" id="yearly" role="tabpanel" aria-labelledby="baseVerticalLeft-tab4">
-                                                    <div class="form-group d-flex align-items-center" style="margin-left: 16px;">
-                                                        <label>Recur every &nbsp;&nbsp;</label>
-                                                        <input type="number" class="form-control" id="recur_after_y" value="1" min="1" style="width: 100px;">
-                                                        <label>&nbsp;&nbsp; year(s)</label>
-                                                    </div>
-
-                                                    <div class="d-flex justify-content-start align-items-center mt-1" style="margin-left: 16px;">
-                                                        <div class="w-50">
-                                                            <label>On</label>
-                                                            <select class="select2" id="recur-month">
-                                                                <option value="January">January</option>
-                                                                <option value="February">February</option>
-                                                                <option value="March">March</option>
-                                                                <option value="April">April</option>
-                                                                <option value="May">May</option>
-                                                                <option value="June">June</option>
-                                                                <option value="July">July</option>
-                                                                <option value="August">August</option>
-                                                                <option value="September">September</option>
-                                                                <option value="October">October</option>
-                                                                <option value="November">November</option>
-                                                                <option value="December">December</option>
-                                                            </select>
-                                                        </div>
-                                                        <input type="number" class="form-control mt-1 mx-1" id="recur_month_day" value="1" min="1" max="31" style="width: 100px;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
 
                                 <div class="row mt-1 p-1" id="recurrence-range" style="display:none">

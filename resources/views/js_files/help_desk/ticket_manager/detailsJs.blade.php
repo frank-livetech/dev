@@ -2578,7 +2578,7 @@ function createFollowUp(event) {
         if ($('#schedule_type').val() == 'time') {
             let recurrence_pattern = '';
 
-            let recur_type = $('input[name="validationRadiojq"]:checked').val();
+            let recur_type = $('input[name="recur_type"]:checked').val();
 
             if (!$('#recurrence_time').val()) {
                 Swal.fire({
@@ -2637,7 +2637,12 @@ function createFollowUp(event) {
                         let y_month = $('#recur-month').val();
                         let recur_day = $('#yearly-container').find('#recur_month_day').val();
 
+                        console.log(y_val);
+                        console.log(y_month);
+                        console.log(recur_day);
+
                         let month_days = moment().set('month', y_month).daysInMonth();
+                        console.log(month_days);
                         if (recur_day < 1 || recur_day > month_days) {
                             Swal.fire({
                                 position: 'center',
@@ -3689,7 +3694,7 @@ function checkRecurrence(type) {
 
         $(".daily_check_div").hide();
         $(".weekly_check_div").hide();
-        $(".monthly_div").hide();
+        $(".monthly_check_div").hide();
     }
     
 }
