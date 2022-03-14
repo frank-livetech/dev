@@ -37,7 +37,7 @@ $(document).ready(function() {
         let regiondate = convertDate(ticket.created_at);
         currentTime.push( regiondate );
 
-        console.log(regiondate , "regiondate");
+        // console.log(regiondate , "regiondate");
     }
     
     
@@ -360,11 +360,11 @@ function setSlaPlanDeadlines(ret = false) {
     }
     if (ret) return { rep_due: rep_due, res_due: res_due };
 
-    console.log(ticket , "thissssssssssssssssssssssssss");
+    // console.log(ticket , "thissssssssssssssssssssssssss");
 
     let currTime = new Date().toLocaleString('en-US', { timeZone: time_zone });
     let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
-    console.log(con_currTime , "con_currTime");
+    // console.log(con_currTime , "con_currTime");
 
     let endtime = moment('2022-03-08 12:23 PM').format('YYYY-MM-DD hh:mm A');
 
@@ -417,6 +417,8 @@ function momentDiff(end ,  start) {
     diff = diff.replace("hs", "h");
     diff = diff.replace(" minutes", "m");
     diff = diff.replace(" minute", "m");
+    diff = diff.replace(" seconds", "s");
+    diff = diff.replace(" second", "s");
 
     
     let color = ``;
@@ -434,7 +436,7 @@ function momentDiff(end ,  start) {
 }
  
 function resetSlaPlan() {
-    console.log(ticket , "ticket");
+    // console.log(ticket , "ticket");
     if(ticket != null) {
         if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
@@ -458,7 +460,7 @@ function resetSlaPlan() {
 
 // new function 
 function SlaPlanReset() {
-    console.log(ticket , "ticket");
+    // console.log(ticket , "ticket");
     if(ticket != null) {
         
         if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
@@ -2082,8 +2084,6 @@ function listFollowups() {
 
     if (g_followUps.length < 1) return;
 
-    console.log(g_followUps , "g_followUps");
-
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
         for (let i in g_followUp_timeouts) {
@@ -2129,16 +2129,25 @@ function listFollowups() {
         let idata = {};
 
         if (g_followUps[i].is_recurring == 1) {
-            followUpDate = moment(moment.utc(g_followUps[i].date).toDate()).local();
+
+            let currTime = new Date().toLocaleString('en-US', { timeZone: time_zone });
+            // console.log(g_followUps[i].date , "g_followUps[i].date");
+            // followUpDate = moment(moment.utc(g_followUps[i].date).toDate()).local();
+            followUpDate = moment(new Date(g_followUps[i].date).toLocaleString('en-US', { timeZone: time_zone }));
+            
+
             if (g_followUps[i].schedule_type == 'time' && g_followUps[i].recurrence_time) {
                 let rec_time = g_followUps[i].recurrence_time.split(':');
                 followUpDate.set('hour', rec_time[0]);
                 followUpDate.set('minute', rec_time[1]);
             }
-            timediff = moment(followUpDate).diff(moment(), 'seconds');
-
+            
+            timediff = followUpDate.diff( moment(currTime) , 'seconds');
+            let remainTime = momentDiff(followUpDate ,  moment(currTime));
+            
             if (timediff < 0) idata.ticket_update = true;
-            else remTime = getClockTime(followUpDate, timediff);
+            // else remTime = getClockTime(followUpDate, timediff);
+            else remTime = remainTime;
 
             if (remTime) valid_date = true;
         } else {
