@@ -302,7 +302,7 @@ function setSlaPlanDeadlines(ret = false) {
         if (ticket.hasOwnProperty('resolution_deadline') && ticket.resolution_deadline) {
             // use ticket reset deadlines
             if(ticket.resolution_deadline == 'cleared') {
-                $('#sla-res_due').parent().addClass('d-none');
+                // $('#sla-res_due').parent().addClass('d-none');
             } else {
                 res_due = moment(moment(ticket.resolution_deadline).toDate()).local();
                 $('#ticket-res-due').val(ticket.resolution_deadline);
@@ -329,10 +329,11 @@ function setSlaPlanDeadlines(ret = false) {
         }
 
         $('#sla-rep_due').parent().removeClass('d-none');
+        $('#sla-res_due').parent().removeClass('d-none');
         if (ticket.hasOwnProperty('reply_deadline') && ticket.reply_deadline) {
             // use ticket reset deadlines
             if(ticket.reply_deadline == 'cleared') {
-                $('#sla-rep_due').parent().addClass('d-none');
+                // $('#sla-rep_due').parent().addClass('d-none');
             } else {
                 rep_due = moment(moment(ticket.reply_deadline).toDate()).local();
                 $('#ticket-rep-due').val(ticket.reply_deadline);
@@ -360,11 +361,8 @@ function setSlaPlanDeadlines(ret = false) {
     }
     if (ret) return { rep_due: rep_due, res_due: res_due };
 
-    // console.log(ticket , "thissssssssssssssssssssssssss");
-
     let currTime = new Date().toLocaleString('en-US', { timeZone: time_zone });
     let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
-    // console.log(con_currTime , "con_currTime");
 
     let endtime = moment('2022-03-08 12:23 PM').format('YYYY-MM-DD hh:mm A');
 
@@ -382,16 +380,40 @@ function setSlaPlanDeadlines(ret = false) {
 
         if(ticket.reply_deadline != null && ticket.resolution_deadline != null){
             resetable = false;
+            let rep_diff = ``;
+            let res_diff = ``;
+            if(ticket.reply_deadline != "cleared") {
+                let tkt_rep_due = moment(ticket.reply_deadline).format('YYYY-MM-DD hh:mm A');
+                let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime) , 'seconds');
+                console.log(timediff_rep , "timediff_rep");
+                if(timediff_rep <= 0) {
+                    resetable = true;
+                    rep_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
+                }else{
+                    resetable = false;
+                    rep_diff = momentDiff(tkt_rep_due , con_currTime);
+                }
+                $('#sla-rep_due').html( rep_diff );
+            }else{
+                $('#sla-rep_due').parent().addClass('d-none');
+            }
 
-            let tkt_rep_due = moment(ticket.reply_deadline).format('YYYY-MM-DD hh:mm A');
-            let rep_diff = momentDiff(tkt_rep_due , con_currTime);
-            if (rep_due) $('#sla-rep_due').html( rep_diff);
-
-
-            
-            let tkt_res_due = moment(ticket.resolution_deadline).format('YYYY-MM-DD hh:mm A');
-            let res_diff = momentDiff(tkt_res_due , con_currTime);            
-            if (res_due) $('#sla-res_due').html(res_diff);
+            if(ticket.resolution_deadline != "cleared") {
+                let tkt_res_due = moment(ticket.resolution_deadline).format('YYYY-MM-DD hh:mm A');
+                let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
+                console.log(timediff_res , "timediff_res");
+                if(timediff_res <= 0) {
+                    resetable = true;
+                    res_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
+                }else{
+                    res_diff = momentDiff(tkt_res_due , con_currTime); 
+                    
+                }
+                console.log(res_diff , 'res_diff');
+                $('#sla-res_due').html(res_diff);
+            }else{
+                $('#sla-res_due').parent().addClass('d-none');
+            }
             
         }
     }
@@ -464,7 +486,6 @@ function SlaPlanReset() {
     if(ticket != null) {
         
         if(ticket.reply_deadline == null || ticket.resolution_deadline == null) {
-            console.log("if");
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
                 const today = new Date();
 
@@ -473,7 +494,6 @@ function SlaPlanReset() {
                     
                     $("#ticket-rep-due").val(reply_deadline);
                     let newDat = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
-                    console.log(newDat , "newDat");
                     $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
                     $("#reply_hour").val(  newDat.format('h') );
                     $("#reply_minute").val(  newDat.format('mm') );
@@ -643,24 +663,25 @@ function updateDeadlines() {
 
     let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type
 
+    // let current_date = new Date().toLocaleString('en-US', { timeZone: time_zone });
 
-    let current_date = new Date().toLocaleString('en-US', { timeZone: time_zone });
-    current_date = new Date(current_date);
+    // let cdate = moment(current_date).format('YYYY-MM-DD hh:mm:ss A');
+    // let mrep = moment(rep_deadline).format('YYYY-MM-DD hh:mm:ss A');
+
+    // let mres = moment(res_deadline).format('YYYY-MM-DD hh:mm:ss A');
+
+    // let timediff_rep = moment(mrep).diff( moment(cdate) , 'seconds');
+
+    // let timediff_res = moment(mres).diff( moment(cdate) , 'seconds');
+
+    // if(timediff_rep < 0) {
+    //     rep_deadline  = 'cleared';
+    // }
+
+    // if(timediff_res < 0) {
+    //     res_deadline  = 'cleared';
+    // }
     
-    let rep_date = new Date(rep_deadline);
-    let rres_date = new Date(res_deadline);
-
-    if( rep_date.getTime() > current_date.getTime() ) {
-        console.log(" rep greater");
-    }else{
-        rep_deadline  = 'cleared';
-    }
-
-    if( rres_date.getTime() > current_date.getTime() ) {
-        console.log(" rep greater");
-    }else{
-        res_deadline  = 'cleared';
-    }
 
     if(res_date == '') {
         res_deadline  = 'cleared';
@@ -677,6 +698,7 @@ function updateDeadlines() {
     };
 
     console.log(formData , "formdata");
+
     
     $.ajax({
         type: "post",
