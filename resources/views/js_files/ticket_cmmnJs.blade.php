@@ -400,6 +400,7 @@ function redrawTicketsTable(ticket_arr) {
         }
         let new_rep_due = ``;
         let new_res_due = ``;
+        
         if(val['reply_deadline'] == null) {
             new_rep_due = rep_due;
         }
