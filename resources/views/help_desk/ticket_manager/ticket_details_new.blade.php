@@ -410,7 +410,7 @@ br + br { display: none; }
                                         </span>
                                     </h3>
                                     <br>
-                                    <h4 id="ticket_subject_heading">Subject : {{$details->subject}}</h4>
+                                    <h4 id="ticket_subject_heading"> {{$details->subject}}</h4>
                                     <hr>
                                     <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">
                                         <div class="row mt-3">
@@ -1172,10 +1172,10 @@ br + br { display: none; }
 
                                 <div class="col-md-12 p-1 mt-2" id="followup-recurrence" style="display:none">
                                     <h4 >Recurrence Pattern</h4>
-                                    <div class="form-group mt-1">
+                                    <!-- <div class="form-group mt-1">
                                         <label for="new_time">New Time</label>
                                         <input type="time" class="form-control" name="recurrence_time2">
-                                    </div>
+                                    </div> -->
 
                                     <div class="col-md-12 p-1">   
                                         <div class="row">   
