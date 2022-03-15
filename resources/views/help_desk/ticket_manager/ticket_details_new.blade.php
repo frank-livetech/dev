@@ -1019,10 +1019,10 @@ br + br { display: none; }
                                     <label for="schedule_type"> Duration Length  </label>
                                     <input type="datetime-local" id="custom_date" class="form-control">
                                 </div>
-                                <div class="col-md-6 form-group" id="recurrence_time_div" style="display: none;">
+                                <!-- <div class="col-md-6 form-group" id="recurrence_time_div">
                                     <label for="schedule_type"> Duration Length  </label>
                                     <input type="time" id="recurrence_time" class="form-control">
-                                </div>
+                                </div> -->
                             </div>
                                 
                             </div>
@@ -1172,10 +1172,10 @@ br + br { display: none; }
 
                                 <div class="col-md-12 p-1 mt-2" id="followup-recurrence" style="display:none">
                                     <h4 >Recurrence Pattern</h4>
-                                    <!-- <div class="form-group mt-1">
-                                        <label for="new_time">New Time</label>
-                                        <input type="time" class="form-control" name="recurrence_time2">
-                                    </div> -->
+                                    <div class="col-md-12 form-group mt-1">
+                                        <label for="schedule_type"> Followup Time  </label>
+                                        <input type="time" id="recurrence_time" class="form-control">
+                                    </div>
 
                                     <div class="col-md-12 p-1">   
                                         <div class="row">   

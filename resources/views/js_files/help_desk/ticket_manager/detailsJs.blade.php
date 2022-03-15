@@ -2104,6 +2104,8 @@ function getTicketFollowUp() {
 }
 
 function listFollowups() {
+
+    console.log("this is the function ");
     $('#clockdiv').html('');
 
     if (g_followUps.length < 1) return;
@@ -2240,7 +2242,47 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
+        // executeFollowUps();
         // updateFollowUp(form, ticketNotes , ticket_replies );
+    }
+}
+
+function executeFollowUps() {
+    console.log(g_followUps , "g_followUps");
+    if(g_followUps.length > 0) {
+        for (var i = 0; i < g_followUps.length; i++) {
+
+            let depid = g_followUps[i].follow_up_dept_id;
+            let assgto = g_followUps[i].follow_up_assigned_to;
+            let type = g_followUps[i].follow_up_type;
+            let status = g_followUps[i].follow_up_status;
+            let prio = g_followUps[i].follow_up_priority;
+
+            ticket.dept_id = depid;
+            ticket.assigned_to = assgto;
+            ticket.type = type;
+            ticket.status = status;
+            ticket.priority = prio;
+
+            $('#dept_id').val( depid ).trigger('change');
+            $('#assigned_to').val( assgto ).trigger('change');
+            $('#type').val( type ).trigger('change');
+            $('#status').val( status ).trigger('change');
+            $('#priority').val( prio ).trigger('change');
+
+                // send mail notification regarding ticket action
+                // ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
+
+                // refresh logs
+                getLatestLogs();
+
+                getTicketFollowUp();
+                get_ticket_notes();
+        }
+
+        clearTimeout(g_listFlupsTimer);
+
+        getTicketReplies(ticket.id);
     }
 }
 
@@ -2276,12 +2318,12 @@ function getClockTime(followUpDate, timediff) {
 
 function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
     $.ajax({
-        type: 'get',
-        url: "{{url('update_ticket_followup')}}",
-        // url: update_followup_route,
-        // data: data,
-        // cache: false,
-        // contentType: false,
+        type: 'POST',
+        // url: "{{url('update_ticket_followup')}}",
+        url: update_followup_route,
+        data: data,
+        cache: false,
+        contentType: false,
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
@@ -2289,65 +2331,6 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
             if(data.status_code == 200 && data.success == true) {
                 console.log("success")
 
-                if(ticket.dept_id != data.ticket.dept_id){
-                    var obj = {};
-                    obj = {
-                        id:1,
-                        data: ticket.dept_id, // Saving old value to show in email notification
-                        new_data:data.ticket.dept_id,
-                        new_text:data.ticket.department_name
-
-                    }
-                    updates_Arr.push(obj);
-                }
-                if(ticket.assigned_to != data.ticket.assigned_to){
-                    var obj = {};
-                    obj = {
-                        id:2,
-                        data: ticket.assigned_to, // Saving old value to show in email notification
-                        new_data:data.ticket.assigned_to,
-                        new_text:data.ticket.assignee_name
-
-                    }
-                    updates_Arr.push(obj);
-                }
-
-                if(ticket.type != data.ticket.type){
-                    var obj = {};
-                    obj = {
-                        id:3,
-                        data: ticket.type, // Saving old value to show in email notification
-                        new_data:data.ticket.type,
-                        new_text:data.ticket.type_name
-
-                    }
-                    updates_Arr.push(obj);
-                }
-
-                if(ticket.status != data.ticket.status){
-                    var obj = {};
-                    obj = {
-                        id:4,
-                        data: ticket.status, // Saving old value to show in email notification
-                        new_data:data.ticket.status,
-                        new_text:data.ticket.status_name
-
-                    }
-                    updates_Arr.push(obj);
-                }
-
-                if(ticket.priority != data.ticket.priority){
-                    var obj = {};
-                    obj = {
-                        id:5,
-                        data: ticket.priority, // Saving old value to show in email notification
-                        new_data:data.ticket.priority,
-                        new_text:data.ticket.priority_name
-
-                    }
-                    updates_Arr.push(obj);
-                }
-                
 
                 ticket.dept_id = data.ticket.dept_id;
                 ticket.assigned_to = data.ticket.assigned_to;
@@ -2362,7 +2345,7 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 $('#priority').val(data.ticket.priority).trigger('change');
 
                 // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
+                // ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
 
                 // refresh logs
                 getLatestLogs();
@@ -2527,7 +2510,7 @@ $('input[name="recurrence_end"]').change(function() {
 
 function showDateTimeDiv(value) {
     document.getElementById('date_picker_div').style.display = 'none';
-    document.getElementById('recurrence_time_div').style.display = 'none';
+    // document.getElementById('recurrence_time_div').style.display = 'none';
     document.getElementById('schedule_time_div').style.display = 'none';
 
     $('#is_recurring').attr('disabled', false);
@@ -2545,7 +2528,7 @@ function showDateTimeDiv(value) {
             $('#start-range').hide();
         }
     } else if (value == 'time') {
-        document.getElementById('recurrence_time_div').style.display = 'block';
+        // document.getElementById('recurrence_time_div').style.display = 'block';
 
         $('#is_recurring').prop('checked', true);
         $('#followup-recurrence').show();
