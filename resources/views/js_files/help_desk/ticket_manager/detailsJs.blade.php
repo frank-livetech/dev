@@ -20,7 +20,7 @@ let updates_Arr = [];
 
 var ticket_attach_path = `{{asset('storage')}}`;
 var ticket_attach_path_search = 'storage';
-
+let check_followup = [];
 var time_zone = $("#usrtimeZone").val();
 var js_path = "{{Session::get('is_live')}}";
 js_path = (js_path == 1 ? 'public/' : '');
@@ -2104,12 +2104,10 @@ function getTicketFollowUp() {
 }
 
 function listFollowups() {
-
-    console.log("this is the function ");
     $('#clockdiv').html('');
 
     if (g_followUps.length < 1) return;
-
+    console.log("test");
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
         for (let i in g_followUp_timeouts) {
@@ -2223,6 +2221,7 @@ function listFollowups() {
         if (Object.keys(idata).length) {
             idata.id = g_followUps[i].id;
             formData.push(idata);
+            check_followup.push({id : g_followUps[i].id});
         }
     }
     $('#clockdiv').html(flups);
@@ -2242,47 +2241,35 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
-        // executeFollowUps();
+        executeFollowUps(check_followup);
         // updateFollowUp(form, ticketNotes , ticket_replies );
     }
 }
 
-function executeFollowUps() {
-    console.log(g_followUps , "g_followUps");
-    if(g_followUps.length > 0) {
-        for (var i = 0; i < g_followUps.length; i++) {
+function executeFollowUps(check_followup) {
+    console.log(check_followup , "adasd");
+    // if(data.length > 0) {
+    let item = g_followUps.find( item => item.id === check_followup[0].id );
+    if(item != null) {
 
-            let depid = g_followUps[i].follow_up_dept_id;
-            let assgto = g_followUps[i].follow_up_assigned_to;
-            let type = g_followUps[i].follow_up_type;
-            let status = g_followUps[i].follow_up_status;
-            let prio = g_followUps[i].follow_up_priority;
+        let depid = item.follow_up_dept_id;
+        let assgto = item.follow_up_assigned_to;
+        let type = item.follow_up_type;
+        let status = item.follow_up_status;
+        let prio = item.follow_up_priority;
 
-            ticket.dept_id = depid;
-            ticket.assigned_to = assgto;
-            ticket.type = type;
-            ticket.status = status;
-            ticket.priority = prio;
+        ticket.dept_id = depid;
+        ticket.assigned_to = assgto;
+        ticket.type = type;
+        ticket.status = status;
+        ticket.priority = prio;
 
-            $('#dept_id').val( depid ).trigger('change');
-            $('#assigned_to').val( assgto ).trigger('change');
-            $('#type').val( type ).trigger('change');
-            $('#status').val( status ).trigger('change');
-            $('#priority').val( prio ).trigger('change');
+        $('#dept_id').val( depid ).trigger('change');
+        $('#assigned_to').val( assgto ).trigger('change');
+        $('#type').val( type ).trigger('change');
+        $('#status').val( status ).trigger('change');
+        $('#priority').val( prio ).trigger('change');
 
-                // send mail notification regarding ticket action
-                // ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
-
-                // refresh logs
-                getLatestLogs();
-
-                getTicketFollowUp();
-                get_ticket_notes();
-        }
-
-        clearTimeout(g_listFlupsTimer);
-
-        getTicketReplies(ticket.id);
     }
 }
 
