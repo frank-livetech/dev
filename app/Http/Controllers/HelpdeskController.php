@@ -1591,28 +1591,25 @@ class HelpdeskController extends Controller
 
                     if( $flwup->is_recurring == 1 ) {
                         
-                        $dd = Carbon::parse($flwup->recurrence_start)->format('Y-m-d');
                         
-                        $date = new \DateTime($flwup->recurrence_start);
-                        $date->setTimezone(new \DateTimeZone($tm_name));
-                        $startDate = Carbon::parse( $date->format('Y-m-d') );
-
+                        $startDate = new Carbon( $flwup->recurrence_start , 'America/New_York');
+                        
                         if($flwup->recurrence_pattern && $flwup->recurrence_time) {
 
-                            if($flwup->date) $followUpDate = new Carbon($flwup->date);
+                            if($flwup->date) $followUpDate = new Carbon($flwup->date, 'America/New_York');
                             else $followUpDate = $startDate;
-                           
-                            $rec_time = explode(':', $flwup->recurrence_time);
+
+                            // $rec_time = explode(':', $flwup->recurrence_time);
 
                             // set some timezone for proper hour and mins setting
-                            $followUpDate->timezone(Session::get('timezone'));
+                            // $followUpDate->timezone(Session::get('timezone'));
             
-                            $followUpDate->hour = $rec_time[0];
-                            $followUpDate->minute = $rec_time[1];
-            
+                            // $followUpDate->hour = $rec_time[0];
+                            // $followUpDate->minute = $rec_time[1];
+                            
                             // convert back to utc for further calculations
-                            $followUpDate->utcOffset(0);
-                      
+                            // $followUpDate->utcOffset(0);
+                            
                             $pattern = explode('|', $flwup->recurrence_pattern);
                             $pattern_type = $pattern[0];
                             // daily|2
@@ -1676,20 +1673,20 @@ class HelpdeskController extends Controller
                             }
                           
 
-                            $currentDateTime = new \DateTime();
-                            $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
-                            $nowDate = Carbon::parse( $currentDateTime->format('Y-m-d') );
-
-                            $newfollowUpDate = new \DateTime($followUpDate);
-                            $newfollowUpDate->setTimezone(new \DateTimeZone($tm_name));
-                            $followUpDate = Carbon::parse( $newfollowUpDate->format('Y-m-d') );
+                            // $currentDateTime = new \DateTime();
+                            // $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
+                            // $nowDate = Carbon::parse( $currentDateTime->format('Y-m-d') );
+                            $nowDate = new Carbon( Carbon::now() , 'America/New_York');
                             
-                            // $nowDate = Carbon::now();
+                            // $newfollowUpDate = new \DateTime($followUpDate);
+                            // $newfollowUpDate->setTimezone(new \DateTimeZone($tm_name));
+                            // $followUpDate = Carbon::parse( $newfollowUpDate->format('Y-m-d') );
+                            $followUpDate = new Carbon( $followUpDate , 'America/New_York' );
+                            
+                            
                             $timediff = $nowDate->diffInSeconds($followUpDate, false);
-                            // echo $nowDate;
-                            // echo $followUpDate;exit;
                             if($timediff < 0) {
-
+                        
                                 $idata = array();
                                 // follow up time to update ticket
                                 $idata['ticket_update'] = true;
@@ -1710,6 +1707,8 @@ class HelpdeskController extends Controller
                                     else if($add_type == 'months') $followUpDate->addMonths($add_value);
                                     else if($add_type == 'years') $followUpDate->addYears($add_value);
                     
+                    
+                    
                                     if($flwup->recurrence_end_type == 'date') {
                                         // $endDate = new Carbon($flwup->recurrence_end_val);
                                         $endDate = new \DateTime($flwup->recurrence_end_val);
@@ -1721,10 +1720,10 @@ class HelpdeskController extends Controller
                                         
                                         // if($followUpDate->isAfter($endDate)) $idata['passed'] = 1;
                                     }
-
                                     // if(!array_key_exists('passed', $idata)) 
                                     $idata['date'] = new Carbon($followUpDate);
                                 // }
+
                     
                                 if(array_key_exists('passed', $idata)) $flwup->passed = $idata['passed'];
                                 if(array_key_exists('date', $idata)) $flwup->date = $idata['date'];
@@ -1734,8 +1733,7 @@ class HelpdeskController extends Controller
                                 $flwup->save();
                     
                                 // if(!array_key_exists('passed', $idata)) $this->follow_up_calculation($followUp);
-
-
+                                
                                 $this->triggerFollowUp($ticket , $flwup);
                                 
                             }
@@ -1793,6 +1791,7 @@ class HelpdeskController extends Controller
         }
 
     }
+
 
     public function triggerFollowUp($ticket, $flwup) {
 
