@@ -1592,11 +1592,11 @@ class HelpdeskController extends Controller
                     if( $flwup->is_recurring == 1 ) {
                         
                         
-                        $startDate = new Carbon( $flwup->recurrence_start , 'America/New_York');
+                        $startDate = new Carbon( $flwup->recurrence_start , $tm_name);
                         
                         if($flwup->recurrence_pattern && $flwup->recurrence_time) {
 
-                            if($flwup->date) $followUpDate = new Carbon($flwup->date, 'America/New_York');
+                            if($flwup->date) $followUpDate = new Carbon($flwup->date, $tm_name);
                             else $followUpDate = $startDate;
 
                             // $rec_time = explode(':', $flwup->recurrence_time);
@@ -1676,12 +1676,12 @@ class HelpdeskController extends Controller
                             // $currentDateTime = new \DateTime();
                             // $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
                             // $nowDate = Carbon::parse( $currentDateTime->format('Y-m-d') );
-                            $nowDate = new Carbon( Carbon::now() , 'America/New_York');
+                            $nowDate = new Carbon( Carbon::now() , $tm_name);
                             
                             // $newfollowUpDate = new \DateTime($followUpDate);
                             // $newfollowUpDate->setTimezone(new \DateTimeZone($tm_name));
                             // $followUpDate = Carbon::parse( $newfollowUpDate->format('Y-m-d') );
-                            $followUpDate = new Carbon( $followUpDate , 'America/New_York' );
+                            $followUpDate = new Carbon( $followUpDate , $tm_name);
                             
                             
                             $timediff = $nowDate->diffInSeconds($followUpDate, false);
