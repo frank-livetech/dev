@@ -1915,7 +1915,7 @@ class HelpdeskController extends Controller
                 'type' => $flwup->follow_up_notes_type,
                 'note' => $flwup->follow_up_notes,
                 'visibility' => 'Everyone',
-                'created_by' => \Auth::user()->id
+                'created_by' => $flwup->created_by
             ]);
             $flwup_note = '<hr>'.$flwup->follow_up_notes;
             $logData .= (empty($logData)) ? 'added a note' : ', added a note';
