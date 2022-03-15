@@ -1710,20 +1710,22 @@ function publishReply(ele, type = 'publish') {
 
                         $('#tinycontenteditor').html('');
 
-                        let draft = false;
-                        if (edit_reply_mode !== false) {
-                            // console.log("here");
-                            ticketReplies[edit_reply_mode] = data.data;
-                            ticketReplies[edit_reply_mode].reply = content;
-                            ticketReplies[edit_reply_mode].attachments = rep_attaches;
-                        } else {
-                            // console.log("here 1");
-                            data.data.reply = content;
-                            data.data.attachments = rep_attaches;
-                            draft = ticketReplies.push(data.data);
-                        }
+                        getTicketReplies(ticket.id);
 
-                        listReplies();
+                        // let draft = false;
+                        // if (edit_reply_mode !== false) {
+                        //     // console.log("here");
+                        //     ticketReplies[edit_reply_mode] = data.data;
+                        //     ticketReplies[edit_reply_mode].reply = content;
+                        //     ticketReplies[edit_reply_mode].attachments = rep_attaches;
+                        // } else {
+                        //     // console.log("here 1");
+                        //     data.data.reply = content;
+                        //     data.data.attachments = rep_attaches;
+                        //     draft = ticketReplies.push(data.data);
+                        // }
+
+                        // listReplies();
 
                         if (type == 'publish') {
                             tinyMCE.editors.mymce.setContent('');
@@ -3500,6 +3502,10 @@ function openNotesModal() {
 
 function showFollowUpModal() {
 
+    // disbled previous dates from followup calender
+    disablePreviousDates("recur-start-date");
+    disablePreviousDates("recur-end-date");
+
     $("#save_ticket_follow_up").trigger("reset");
 
     $("#follow_up").modal('show');
@@ -3706,5 +3712,12 @@ function checkRecurrence(type) {
         $(".monthly_check_div").hide();
     }
     
+}
+
+
+function disablePreviousDates(id) {
+    let region_today_date = new Date().toLocaleString("en-US" , {timeZone: time_zone});
+    let region_date = moment(region_today_date).format('YYYY-MM-DD');
+    document.getElementById(id).setAttribute("min", region_date);
 }
 </script>
