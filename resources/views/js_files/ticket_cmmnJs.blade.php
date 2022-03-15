@@ -408,8 +408,8 @@ function redrawTicketsTable(ticket_arr) {
             new_res_due = res_due;
         }
 
-        
 
+        // this is demo comment
         if(val['reply_deadline'] != null && val['resolution_deadline'] != null){
             
             let currTime = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
