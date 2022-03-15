@@ -406,20 +406,40 @@ function redrawTicketsTable(ticket_arr) {
         if(val['resolution_deadline'] == null) {
             new_res_due = res_due;
         }
+
         if(val['reply_deadline'] != null && val['resolution_deadline'] != null){
             
             let currTime = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
             let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
 
-            let tkt_rep_due = moment(val['reply_deadline']).format('YYYY-MM-DD hh:mm A');
-            let rep_diff = momentDiff(tkt_rep_due , con_currTime);
-            new_rep_due = rep_diff;
+            if(val['reply_deadline'] != "cleared") {
+                let tkt_rep_due = moment(val['reply_deadline']).format('YYYY-MM-DD hh:mm A');
+                let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime) , 'seconds');
 
+                if(timediff_rep <= 0) {
+                    new_rep_due = `<div class="text-center" title="${tkt_rep_due}">
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
+                            </div>`;
+                }else{
+                    new_rep_due = momentDiff(tkt_rep_due , con_currTime);
+                }
+            }else{
+                new_rep_due = ``;
+            }
 
-            
-            let tkt_res_due = moment(val['resolution_deadline']).format('YYYY-MM-DD hh:mm A');
-            let res_diff = momentDiff(tkt_res_due , con_currTime);            
-            new_res_due = res_diff;
+            if(val['reply_deadline'] != "cleared") {
+                let tkt_res_due = moment(val['resolution_deadline']).format('YYYY-MM-DD hh:mm A');
+                let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
+                if(timediff_res <= 0) {
+                    new_res_due = `<div class="text-center" title="${tkt_res_due}">
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
+                            </div>`;
+                }else{
+                    new_res_due = momentDiff(tkt_res_due , con_currTime);   
+                }
+            }else{
+                new_res_due = ``;
+            }
         }
 
         // var last_act = val.lastActivity;
