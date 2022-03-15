@@ -402,8 +402,12 @@ function redrawTicketsTable(ticket_arr) {
         let new_res_due = ``;
         if(val['reply_deadline'] == null) {
             new_rep_due = rep_due;
+        }
+        if(val['resolution_deadline'] == null) {
             new_res_due = res_due;
-        }else{
+        }
+        if(val['reply_deadline'] != null && val['resolution_deadline'] != null){
+            
             let currTime = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
             let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
 
