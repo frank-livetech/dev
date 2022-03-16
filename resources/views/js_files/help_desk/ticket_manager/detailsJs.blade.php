@@ -40,7 +40,6 @@ $(document).ready(function() {
         // console.log(regiondate , "regiondate");
     }
     
-    
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
@@ -2087,7 +2086,6 @@ function getTicketFollowUp() {
                 console.log(obj , "followup obj");
                 g_followUps = obj;
 
-
                 // if(obj.length > 0)  {
 
                 //     for(var i =0 ; i < obj.length; i++) {
@@ -2113,7 +2111,7 @@ function listFollowups() {
 
     $('#clockdiv').html('');
     if (g_followUps.length < 1) return;
-
+    console.log("test");
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
         for (let i in g_followUp_timeouts) {
@@ -2256,6 +2254,7 @@ function executeFollowUps(check_followup) {
     console.log(check_followup , "adasd");
     // if(data.length > 0) {
     let item = g_followUps.find( item => item.id === check_followup[0].id );
+    console.log(item , "item");
     if(item != null) {
 
         let depid = item.follow_up_dept_id;
@@ -2356,6 +2355,12 @@ function executeFollowUps(check_followup) {
         }
 
     }
+
+    setTimeout(() => {
+        console.log("chal gya");
+        get_ticket_notes();
+        getTicketReplies(ticket.id);    
+    }, 40000);
 }
 
 function getClockTime(followUpDate, timediff) {
@@ -3748,6 +3753,7 @@ function getTicketReplies(id) {
             ticketReplies = data.replies;
             listReplies();
             console.log(data , "getTicketReplies");
+            $("#ticket-replies1").remove();
         },
         failure: function(errMsg) {
             console.log(errMsg);
