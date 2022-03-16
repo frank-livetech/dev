@@ -302,7 +302,7 @@ function setSlaPlanDeadlines(ret = false) {
         if (ticket.hasOwnProperty('resolution_deadline') && ticket.resolution_deadline) {
             // use ticket reset deadlines
             if(ticket.resolution_deadline == 'cleared') {
-                // $('#sla-res_due').parent().addClass('d-none');
+                $('#sla-res_due').parent().addClass('d-none');
             } else {
                 res_due = moment(moment(ticket.resolution_deadline).toDate()).local();
                 $('#ticket-res-due').val(ticket.resolution_deadline);
@@ -333,7 +333,7 @@ function setSlaPlanDeadlines(ret = false) {
         if (ticket.hasOwnProperty('reply_deadline') && ticket.reply_deadline) {
             // use ticket reset deadlines
             if(ticket.reply_deadline == 'cleared') {
-                // $('#sla-rep_due').parent().addClass('d-none');
+                $('#sla-rep_due').parent().addClass('d-none');
             } else {
                 rep_due = moment(moment(ticket.reply_deadline).toDate()).local();
                 $('#ticket-rep-due').val(ticket.reply_deadline);
@@ -407,6 +407,7 @@ function setSlaPlanDeadlines(ret = false) {
                     res_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
                     res_diff = momentDiff(tkt_res_due , con_currTime); 
+                    console.log(res_diff , "resdiff");
                     
                 }
                 console.log(res_diff , 'res_diff');
@@ -516,19 +517,31 @@ function SlaPlanReset() {
             }
         }else{
             // slaPlanDeadlines();
-
-            let newDat2 = moment(ticket.resolution_deadline);
-            $("#res_date").val( moment(newDat2).format('YYYY-MM-DD') );
-            $("#res_hour").val(  newDat2.format('h'));
-            $("#res_minute").val(  newDat2.format('mm') );
-            $("#res_type").val(  newDat2.format('A') );
-
-
-            let newDat = moment(ticket.reply_deadline);
-            $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
-            $("#reply_hour").val(  newDat.format('h') );
-            $("#reply_minute").val(  newDat.format('mm') );
-            $("#reply_type").val(  newDat.format('A') );
+            if(ticket.resolution_deadline != 'cleared') {
+                let newDat2 = moment(ticket.resolution_deadline);
+                $("#res_date").val( moment(newDat2).format('YYYY-MM-DD') );
+                $("#res_hour").val(  newDat2.format('h'));
+                $("#res_minute").val(  newDat2.format('mm') );
+                $("#res_type").val(  newDat2.format('A') );
+            }else{
+                $("#res_date").val("");
+                $("#res_hour").val(12);
+                $("#res_minute").val('00');
+                $("#res_type").val('PM');
+            }
+            
+            if(ticket.reply_deadline != "cleared") {
+                let newDat = moment(ticket.reply_deadline);
+                $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
+                $("#reply_hour").val(  newDat.format('h') );
+                $("#reply_minute").val(  newDat.format('mm') );
+                $("#reply_type").val(  newDat.format('A') );
+            }else{
+                $("#reply_date").val("");
+                $("#reply_hour").val(12);
+                $("#reply_minute").val('00');
+                $("#reply_type").val('PM');
+            }
 
             setSlaPlanDeadlines();
         }
@@ -2108,8 +2121,6 @@ function listFollowups() {
     $('#clockdiv').html('');
     if (g_followUps.length < 1) return;
 
-    console.log(g_followUps , "g_followUps in listFollowups");
-
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
         for (let i in g_followUp_timeouts) {
@@ -2307,18 +2318,8 @@ function executeFollowUps(check_followup) {
                 <div class="w-100">
                     <div class="d-flex justify-content-between">
                         <h5 class="note-head" style="margin-top:10px"> <strong> ${item.creator_name} </strong> on <span class="small"> ${jsTimeZone(item.created_at)} </span>  ${n_type} </h5>
-                        <div class="mt-2">
-                            <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
-                                style= "float:right;cursor:pointer;position:relative;bottom:25px"
-                                onclick="deleteTicketNote(this, '` + item.id + `')" ></span>
-                        
-                            <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
-                                style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
-                                onclick="editNote(${item.id})"></span>
-
-                        </div>
                     </div>
-                    <p class="col" style="margin-top:-20px; word-break:break-all">
+                    <p class="col" style="word-break:break-all">
                         ${item.follow_up_notes}
                     </p>
                 </div>
@@ -2328,6 +2329,8 @@ function executeFollowUps(check_followup) {
         }
 
         if(item.follow_up_reply != null || item.follow_up_reply != '<p></p>') {
+
+            // $('#sla-rep_due').parent().addClass('d-none');
 
             let user_img = ``;
             if( "{{auth()->user()->profile_pic}}" != null) {
@@ -2347,8 +2350,7 @@ function executeFollowUps(check_followup) {
 
                     <h5 class="mt-0"><span class="text-primary">
                     <a href="{{url('profile')}}/{{auth()->user()->id}}"> {{auth()->user()->name}} </a>
-                        </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
-                    &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${item.id}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${item.id},${item.id})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
+                        </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp; <br>
 
                     <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span> 
                     <div class="my-1 bor-top" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
