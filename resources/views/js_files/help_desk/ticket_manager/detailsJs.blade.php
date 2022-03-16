@@ -2108,8 +2108,6 @@ function listFollowups() {
     $('#clockdiv').html('');
     if (g_followUps.length < 1) return;
 
-    console.log(g_followUps , "g_followUps in listFollowups");
-
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
         for (let i in g_followUp_timeouts) {
@@ -2307,18 +2305,8 @@ function executeFollowUps(check_followup) {
                 <div class="w-100">
                     <div class="d-flex justify-content-between">
                         <h5 class="note-head" style="margin-top:10px"> <strong> ${item.creator_name} </strong> on <span class="small"> ${jsTimeZone(item.created_at)} </span>  ${n_type} </h5>
-                        <div class="mt-2">
-                            <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
-                                style= "float:right;cursor:pointer;position:relative;bottom:25px"
-                                onclick="deleteTicketNote(this, '` + item.id + `')" ></span>
-                        
-                            <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
-                                style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
-                                onclick="editNote(${item.id})"></span>
-
-                        </div>
                     </div>
-                    <p class="col" style="margin-top:-20px; word-break:break-all">
+                    <p class="col" style="word-break:break-all">
                         ${item.follow_up_notes}
                     </p>
                 </div>
@@ -2348,7 +2336,6 @@ function executeFollowUps(check_followup) {
                     <h5 class="mt-0"><span class="text-primary">
                     <a href="{{url('profile')}}/{{auth()->user()->id}}"> {{auth()->user()->name}} </a>
                         </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
-                    &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${item.id}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${item.id},${item.id})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
 
                     <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span> 
                     <div class="my-1 bor-top" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
