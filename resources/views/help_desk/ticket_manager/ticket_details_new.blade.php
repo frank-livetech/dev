@@ -1780,7 +1780,7 @@ br + br { display: none; }
 
                     <div class="form-group text-right mt-3">
                         <button class="btn btn-rounded btn-success float-right" type="button" onclick="updateDeadlines();">Save</button>
-                        <button class="btn btn-rounded btn-danger float-right" style="margin-right: 5px" type="button" data-dismiss="modal">Close</button>
+                        <button class="btn btn-rounded btn-danger float-right" style="margin-right: 5px" type="button" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
