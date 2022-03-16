@@ -2322,7 +2322,7 @@ function executeFollowUps(check_followup) {
 
         if(item.follow_up_reply != null || item.follow_up_reply != '<p></p>') {
 
-            // $('#sla-rep_due').parent().addClass('d-none');
+            $('#sla-rep_due').parent().addClass('d-none');
 
             let user_img = ``;
             if( "{{auth()->user()->profile_pic}}" != null) {
