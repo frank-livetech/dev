@@ -371,11 +371,11 @@ function setSlaPlanDeadlines(ret = false) {
     if(ticket != null) {
 
         if(ticket.reply_deadline == null) {
-            if (rep_due) $('#sla-rep_due').html(rep_due);
+            if (rep_due) $('#sla-rep_due').html(rep_due.replace("60m", "59m"));
         }
         
         if(ticket.resolution_deadline == null) {
-            if (res_due) $('#sla-res_due').html(res_due);
+            if (res_due) $('#sla-res_due').html(res_due.replace("60m", "59m"));
         }
 
         if(ticket.reply_deadline != null && ticket.resolution_deadline != null){
@@ -391,7 +391,8 @@ function setSlaPlanDeadlines(ret = false) {
                     rep_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
                     resetable = false;
-                    rep_diff = momentDiff(tkt_rep_due , con_currTime);
+                    let cal_rep_diff = momentDiff(tkt_rep_due , con_currTime);
+                    rep_diff = cal_rep_diff.replace("60m", "59m");
                 }
                 $('#sla-rep_due').html( rep_diff );
             }else{
@@ -406,8 +407,8 @@ function setSlaPlanDeadlines(ret = false) {
                     resetable = true;
                     res_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
-                    res_diff = momentDiff(tkt_res_due , con_currTime); 
-                    console.log(res_diff , "resdiff");
+                    let cal_res_diff = momentDiff(tkt_res_due , con_currTime); 
+                    res_diff = cal_res_diff.replace("60m", "59m");
                     
                 }
                 console.log(res_diff , 'res_diff');
@@ -2312,7 +2313,7 @@ function executeFollowUps(check_followup) {
                         <h5 class="note-head" style="margin-top:10px"> <strong> ${item.creator_name} </strong> on <span class="small"> ${jsTimeZone(item.created_at)} </span>  ${n_type} </h5>
                     </div>
                     <p class="col" style="word-break:break-all">
-                        ${item.follow_up_notes}
+                        ${item.follow_up_notes != null ? item.follow_up_notes : ''}
                     </p>
                 </div>
             </div>

@@ -402,10 +402,10 @@ function redrawTicketsTable(ticket_arr) {
         let new_res_due = ``;
         
         if(val['reply_deadline'] == null) {
-            new_rep_due = rep_due;
+            new_rep_due = rep_due.replace("60m", "59m");
         }
         if(val['resolution_deadline'] == null) {
-            new_res_due = res_due;
+            new_res_due = res_due.replace("60m", "59m");
         }
 
 
@@ -424,7 +424,8 @@ function redrawTicketsTable(ticket_arr) {
                                 <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
                             </div>`;
                 }else{
-                    new_rep_due = momentDiff(tkt_rep_due , con_currTime);
+                    let cal_rep_due = momentDiff(tkt_rep_due , con_currTime);
+                    new_rep_due = cal_rep_due.replace("60m", "59m");
                 }
             }else{
                 new_rep_due = ``;
@@ -438,7 +439,8 @@ function redrawTicketsTable(ticket_arr) {
                                 <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
                             </div>`;
                 }else{
-                    new_res_due = momentDiff(tkt_res_due , con_currTime);   
+                    let cal_res_due = momentDiff(tkt_res_due , con_currTime);   
+                    new_res_due = cal_res_due.replace("60m", "59m");
                 }
             }else{
                 new_res_due = ``;
