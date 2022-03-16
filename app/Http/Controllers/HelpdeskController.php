@@ -859,6 +859,8 @@ class HelpdeskController extends Controller
         ->where('status','!=', $closed_status->id)->where('is_deleted', 0)->count();
 
         foreach($tickets as $value) {
+            $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
+            $value->tkt_follow_up = TicketFollowUp::where('ticket_id' , $value->id)->where('passed',0)->count();
             // $value->tech_name = 'Unassigned';
             // if(!empty($value->assigned_to)) {
             //     $u = User::where('id', $value->assigned_to)->first();
@@ -1599,16 +1601,16 @@ class HelpdeskController extends Controller
                             if($flwup->date) $followUpDate = new Carbon($flwup->date, $tm_name);
                             else $followUpDate = $startDate;
 
-                            // $rec_time = explode(':', $flwup->recurrence_time);
+                            $rec_time = explode(':', $flwup->recurrence_time);
 
                             // set some timezone for proper hour and mins setting
-                            // $followUpDate->timezone(Session::get('timezone'));
+                            $followUpDate->timezone(Session::get('timezone'));
             
-                            // $followUpDate->hour = $rec_time[0];
-                            // $followUpDate->minute = $rec_time[1];
+                            $followUpDate->hour = $rec_time[0];
+                            $followUpDate->minute = $rec_time[1];
                             
                             // convert back to utc for further calculations
-                            // $followUpDate->utcOffset(0);
+                            $followUpDate->utcOffset(0);
                             
                             $pattern = explode('|', $flwup->recurrence_pattern);
                             $pattern_type = $pattern[0];

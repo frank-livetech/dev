@@ -491,11 +491,29 @@ function redrawTicketsTable(ticket_arr) {
         }else if(last_activity.includes('s')) {
             la_color = `#8BB467`;
         }
+
+        let notes_icon = `<i class="fas fa-comment-alt-lines mx-1" style="margin-top:2px" title="This Ticket Has One or More Ticket Notes"></i>`;
+        let attachment_icon = `<i class="fa fa-paperclip mx-1" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i>`;
+        let follow_up_icon = `<i class="fa fa-bookmark mx-1" title="has Followup" style="margin-top:2px; color:yellow" aria-hidden="true"></i>`;
+
         let row = `<tr>
             <td><div class="text-center"><input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" class="tkt_chk" name="select_all" value="${val['id']}"></div></td>
-            <td>${restore_flag_btn}</td>
+            <td>
+                <div class="d-flex">
+                    ${restore_flag_btn} ${val['tkt_notes'] > 0 ? notes_icon : ''}
+                </div>
+            </td>
             <td class='text-center'>${status}</td>
-            <td><a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}</a></td>
+            <td>
+                <div class="d-flex">
+                    <a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">
+                        ${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}
+                    </a>
+                    <span>${val['attachments'] != null ? attachment_icon : ''} </span>
+                    <span>${val['tkt_follow_up'] > 0 ? follow_up_icon : ''}</span>
+                </div>
+                
+            </td>
             <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
             <td class='text-center'>${prior}</td>
             <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
