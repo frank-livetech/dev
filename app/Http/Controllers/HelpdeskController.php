@@ -1883,7 +1883,6 @@ class HelpdeskController extends Controller
         $ticket->status = $flwup->follow_up_status;
         $ticket->type = $flwup->follow_up_type;
         $ticket->updated_at = Carbon::now();
-        $ticket->save();
         
         $logData = 'ticket updated';
 
@@ -1904,9 +1903,12 @@ class HelpdeskController extends Controller
             if($flwup->follow_up_reply != ''){
                 $flwup_reply = $flwup->follow_up_reply ;
             }
+
+            $ticket->reply_deadline = 'cleared';
         
         }
-        
+        $ticket->save();
+
         if(!empty($flwup['follow_up_notes'])) {
             TicketNote::create([
                 'ticket_id' => $flwup->ticket_id,
