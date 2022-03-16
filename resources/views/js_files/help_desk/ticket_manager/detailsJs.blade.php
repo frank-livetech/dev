@@ -20,7 +20,7 @@ let updates_Arr = [];
 
 var ticket_attach_path = `{{asset('storage')}}`;
 var ticket_attach_path_search = 'storage';
-
+let check_followup = [];
 var time_zone = $("#usrtimeZone").val();
 var js_path = "{{Session::get('is_live')}}";
 js_path = (js_path == 1 ? 'public/' : '');
@@ -2105,10 +2105,10 @@ function getTicketFollowUp() {
 
 function listFollowups() {
 
-    console.log("this is the function ");
     $('#clockdiv').html('');
-
     if (g_followUps.length < 1) return;
+
+    console.log(g_followUps , "g_followUps in listFollowups");
 
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
@@ -2223,6 +2223,7 @@ function listFollowups() {
         if (Object.keys(idata).length) {
             idata.id = g_followUps[i].id;
             formData.push(idata);
+            check_followup.push({id : g_followUps[i].id});
         }
     }
     $('#clockdiv').html(flups);
@@ -2242,47 +2243,123 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
-        // executeFollowUps();
+        executeFollowUps(check_followup);
         // updateFollowUp(form, ticketNotes , ticket_replies );
     }
 }
 
-function executeFollowUps() {
-    console.log(g_followUps , "g_followUps");
-    if(g_followUps.length > 0) {
-        for (var i = 0; i < g_followUps.length; i++) {
+function executeFollowUps(check_followup) {
+    console.log(check_followup , "adasd");
+    // if(data.length > 0) {
+    let item = g_followUps.find( item => item.id === check_followup[0].id );
+    if(item != null) {
 
-            let depid = g_followUps[i].follow_up_dept_id;
-            let assgto = g_followUps[i].follow_up_assigned_to;
-            let type = g_followUps[i].follow_up_type;
-            let status = g_followUps[i].follow_up_status;
-            let prio = g_followUps[i].follow_up_priority;
+        let depid = item.follow_up_dept_id;
+        let assgto = item.follow_up_assigned_to;
+        let type = item.follow_up_type;
+        let status = item.follow_up_status;
+        let prio = item.follow_up_priority;
 
-            ticket.dept_id = depid;
-            ticket.assigned_to = assgto;
-            ticket.type = type;
-            ticket.status = status;
-            ticket.priority = prio;
+        ticket.dept_id = depid;
+        ticket.assigned_to = assgto;
+        ticket.type = type;
+        ticket.status = status;
+        ticket.priority = prio;
 
-            $('#dept_id').val( depid ).trigger('change');
-            $('#assigned_to').val( assgto ).trigger('change');
-            $('#type').val( type ).trigger('change');
-            $('#status').val( status ).trigger('change');
-            $('#priority').val( prio ).trigger('change');
+        $('#dept_id').val( depid ).trigger('change');
+        $('#assigned_to').val( assgto ).trigger('change');
+        $('#type').val( type ).trigger('change');
+        $('#status').val( status ).trigger('change');
+        $('#priority').val( prio ).trigger('change');
 
-                // send mail notification regarding ticket action
-                // ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
+        let is_live = "{{Session::get('is_live')}}";
+        let path = is_live == 0 ? '' : 'public/';
 
-                // refresh logs
-                getLatestLogs();
+        if(item.follow_up_notes != null) {
 
-                getTicketFollowUp();
-                get_ticket_notes();
+            let notes_html = ``;
+            let n_type = '';
+            let user_img = ``;
+            
+
+            if( "{{auth()->user()->profile_pic}}" != null) {
+                user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
+                width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+            }else{
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                        width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+            }
+
+            if(item.follow_up_notes_type == 'Ticket') {
+                n_type = '<i class="fas fa-clipboard-list"></i>';
+            }else if(item.follow_up_notes_type == 'User') {
+                n_type = '<i class="fas fa-user"></i>';
+            }else{
+                n_type = '<i class="far fa-building"></i>';
+            }
+
+
+            notes_html = `
+            <div class="col-12 rounded p-2 my-1 d-flex" id="note-div-${item.id}" style="background-color:${item.follow_up_notes_color != null ? item.follow_up_notes_color : 'rgb(255, 230, 177)'}">
+                <div style="margin-right: 10px; margin-left: -8px;">
+                    ${user_img}
+                </div>
+                <div class="w-100">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="note-head" style="margin-top:10px"> <strong> ${item.creator_name} </strong> on <span class="small"> ${jsTimeZone(item.created_at)} </span>  ${n_type} </h5>
+                        <div class="mt-2">
+                            <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+                                style= "float:right;cursor:pointer;position:relative;bottom:25px"
+                                onclick="deleteTicketNote(this, '` + item.id + `')" ></span>
+                        
+                            <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+                                style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+                                onclick="editNote(${item.id})"></span>
+
+                        </div>
+                    </div>
+                    <p class="col" style="margin-top:-20px; word-break:break-all">
+                        ${item.follow_up_notes}
+                    </p>
+                </div>
+            </div>
+            `
+            $('#v-pills-notes-list').prepend(notes_html);
         }
 
-        clearTimeout(g_listFlupsTimer);
+        if(item.follow_up_reply != null || item.follow_up_reply != '<p></p>') {
 
-        getTicketReplies(ticket.id);
+            let user_img = ``;
+            if( "{{auth()->user()->profile_pic}}" != null) {
+                user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
+                width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+            }else{
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                        width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+            }
+
+            let user_type = 'Staff';
+
+            let reply_html = `
+            <li class="media" id="reply__${item.id}">
+                <span class="mr-3">${user_img }</span>
+                <div class="">
+
+                    <h5 class="mt-0"><span class="text-primary">
+                    <a href="{{url('profile')}}/{{auth()->user()->id}}"> {{auth()->user()->name}} </a>
+                        </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
+                    &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${item.id}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${item.id},${item.id})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
+
+                    <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span> 
+                    <div class="my-1 bor-top" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
+                </div>
+            </li>
+            <hr>`;
+
+
+            $('#ticket-replies1').prepend(reply_html);
+        }
+
     }
 }
 
