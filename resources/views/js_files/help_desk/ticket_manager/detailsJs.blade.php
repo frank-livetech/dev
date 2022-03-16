@@ -2104,10 +2104,12 @@ function getTicketFollowUp() {
 }
 
 function listFollowups() {
-    $('#clockdiv').html('');
 
+    $('#clockdiv').html('');
     if (g_followUps.length < 1) return;
-    console.log("test");
+
+    console.log(g_followUps , "g_followUps in listFollowups");
+
     // clear follow up time outs
     if (g_followUp_timeouts.length) {
         for (let i in g_followUp_timeouts) {
@@ -2269,6 +2271,94 @@ function executeFollowUps(check_followup) {
         $('#type').val( type ).trigger('change');
         $('#status').val( status ).trigger('change');
         $('#priority').val( prio ).trigger('change');
+
+        let is_live = "{{Session::get('is_live')}}";
+        let path = is_live == 0 ? '' : 'public/';
+
+        if(item.follow_up_notes != null) {
+
+            let notes_html = ``;
+            let n_type = '';
+            let user_img = ``;
+            
+
+            if( "{{auth()->user()->profile_pic}}" != null) {
+                user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
+                width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+            }else{
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                        width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+            }
+
+            if(item.follow_up_notes_type == 'Ticket') {
+                n_type = '<i class="fas fa-clipboard-list"></i>';
+            }else if(item.follow_up_notes_type == 'User') {
+                n_type = '<i class="fas fa-user"></i>';
+            }else{
+                n_type = '<i class="far fa-building"></i>';
+            }
+
+
+            notes_html = `
+            <div class="col-12 rounded p-2 my-1 d-flex" id="note-div-${item.id}" style="background-color:${item.follow_up_notes_color != null ? item.follow_up_notes_color : 'rgb(255, 230, 177)'}">
+                <div style="margin-right: 10px; margin-left: -8px;">
+                    ${user_img}
+                </div>
+                <div class="w-100">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="note-head" style="margin-top:10px"> <strong> ${item.creator_name} </strong> on <span class="small"> ${jsTimeZone(item.created_at)} </span>  ${n_type} </h5>
+                        <div class="mt-2">
+                            <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+                                style= "float:right;cursor:pointer;position:relative;bottom:25px"
+                                onclick="deleteTicketNote(this, '` + item.id + `')" ></span>
+                        
+                            <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+                                style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+                                onclick="editNote(${item.id})"></span>
+
+                        </div>
+                    </div>
+                    <p class="col" style="margin-top:-20px; word-break:break-all">
+                        ${item.follow_up_notes}
+                    </p>
+                </div>
+            </div>
+            `
+            $('#v-pills-notes-list').prepend(notes_html);
+        }
+
+        if(item.follow_up_reply != null || item.follow_up_reply != '<p></p>') {
+
+            let user_img = ``;
+            if( "{{auth()->user()->profile_pic}}" != null) {
+                user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
+                width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+            }else{
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                        width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+            }
+
+            let user_type = 'Staff';
+
+            let reply_html = `
+            <li class="media" id="reply__${item.id}">
+                <span class="mr-3">${user_img }</span>
+                <div class="">
+
+                    <h5 class="mt-0"><span class="text-primary">
+                    <a href="{{url('profile')}}/{{auth()->user()->id}}"> {{auth()->user()->name}} </a>
+                        </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
+                    &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${item.id}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${item.id},${item.id})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
+
+                    <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span> 
+                    <div class="my-1 bor-top" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
+                </div>
+            </li>
+            <hr>`;
+
+
+            $('#ticket-replies1').prepend(reply_html);
+        }
 
     }
 }

@@ -891,6 +891,9 @@ br + br { display: none; }
                                 </div>
                             </div>
         
+                            <ul class="list-unstyled mt-5 replies1" id="ticket-replies1">
+                                
+                            </ul>
                             <ul class="list-unstyled mt-5 replies" id="ticket-replies">
                                 
                             </ul>
