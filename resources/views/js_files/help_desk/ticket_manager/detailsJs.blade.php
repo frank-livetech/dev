@@ -2245,8 +2245,8 @@ function listFollowups() {
         let form = new FormData();
         form.append('data', JSON.stringify(formData));
         form.append('ticket_id', ticket.id);
-        executeFollowUps(check_followup);
-        // updateFollowUp(form, ticketNotes , ticket_replies );
+        // executeFollowUps(check_followup);
+        updateFollowUp(form, ticketNotes , ticket_replies );
     }
 }
 
@@ -2396,8 +2396,7 @@ function getClockTime(followUpDate, timediff) {
 function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
     $.ajax({
         type: 'POST',
-        // url: "{{url('update_ticket_followup')}}",
-        url: update_followup_route,
+        url: "{{route('followup.logs')}}",
         data: data,
         cache: false,
         contentType: false,
@@ -2422,12 +2421,12 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 $('#priority').val(data.ticket.priority).trigger('change');
 
                 // send mail notification regarding ticket action
-                // ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
+                ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
 
                 // refresh logs
                 getLatestLogs();
 
-                getTicketFollowUp();
+                // getTicketFollowUp();
                 get_ticket_notes();
                 getTicketReplies(ticket.id)
 
