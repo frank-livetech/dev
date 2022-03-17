@@ -1774,7 +1774,9 @@ class HelpdeskController extends Controller
         
                                         if( strtotime($currentDate) >=  strtotime($futureDate) ) {
         
-                                            $this->triggerFollowUp($ticket , $flwup);
+                                            // $this->triggerFollowUp($ticket , $flwup);
+                                            $this->createFollowUpLogs($ticket , $flwup , $value = null);
+
                                             $flwup->passed = 1;
                                             $flwup->save();
                                         }
@@ -1936,105 +1938,17 @@ class HelpdeskController extends Controller
                 $flwup->recurrence_time2 = NULL;
             }
             
-            if(array_key_exists('ticket_update', $value) || array_key_exists('passed', $value)) {
-                try {
-                    $ticket->dept_id = $flwup->follow_up_dept_id;
-                    $ticket->priority = $flwup->follow_up_priority;
-                    $ticket->assigned_to = $flwup->follow_up_assigned_to;
-                    $ticket->status = $flwup->follow_up_status;
-                    $ticket->type = $flwup->follow_up_type;
-                    $ticket->updated_at = Carbon::now();
-                    $ticket->save();
-                    
-                    $logData = 'ticket updated';
-                } catch (Exception $e) {
-                    //
-                }
-            }
+            $this->triggerFollowUp($ticket , $flwup);
 
-            if(!empty($flwup['follow_up_reply'])) {
-                
-                $bbcode = new BBCode();
-
-                if($flwup->follow_up_reply != '' || $flwup->follow_up_reply != null){
-                    TicketReply::create([
-                        "ticket_id" => $ticket->id,
-                        "user_id" => $flwup->follow_up_assigned_to, 
-                        "msgno" => null , 
-                        "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
-                        "cc" => null , 
-                        "date" => date('Y-m-d H:i:s'), 
-                        "is_published" => 1 ,
-                        "attachments" => null ,
-                    ]);
-                }
-
-                $ticket->reply_deadline = 'cleared';
-            
-            }
-            
-            
-            if(!empty($flwup['follow_up_notes'])) {
-                TicketNote::create([
-                    'ticket_id' => $flwup->ticket_id,
-                    'followup_id' => $flwup->id,
-                    'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
-                    'type' => $flwup->follow_up_notes_type,
-                    'note' => $flwup->follow_up_notes,
-                    'visibility' => 'Everyone',
-                    'created_by' => $flwup->created_by,
-                ]);
-
-                $logData .= (empty($logData)) ? 'added a note' : ', added a note';
-            }
 
         }else{
-            // update ticket
-            $ticket->dept_id = $flwup->follow_up_dept_id;
-            $ticket->priority = $flwup->follow_up_priority;
-            $ticket->assigned_to = $flwup->follow_up_assigned_to;
-            $ticket->status = $flwup->follow_up_status;
-            $ticket->type = $flwup->follow_up_type;
-            $ticket->updated_at = Carbon::now();
-            $ticket->save();
-
-
-            if($flwup->follow_up_reply != '' || $flwup->follow_up_reply != null) {
-                $bbcode = new BBCode();
-
-                TicketReply::create([
-                    "ticket_id" => $ticket->id,
-                    "user_id" => $flwup->follow_up_assigned_to, 
-                    "msgno" => null , 
-                    "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
-                    "cc" => null , 
-                    "date" => date('Y-m-d H:i:s'), 
-                    "is_published" => 1 ,
-                    "attachments" => null ,
-                ]);
-                $ticket->reply_deadline = 'cleared';
-            }
-
-            if($flwup->follow_up_notes != null) {
-                TicketNote::create([
-                    'ticket_id' => $flwup->ticket_id,
-                    'followup_id' => $flwup->id,
-                    'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
-                    'type' => $flwup->follow_up_notes_type,
-                    'note' => $flwup->follow_up_notes,
-                    'visibility' => 'Everyone',
-                    'created_by' => $flwup->created_by,
-                ]);
-
-                // $logData .= (empty($logData)) ? 'added a note' : ', added a note';
-            }
-
+            $this->triggerFollowUp($ticket , $flwup);
         }
 
-        $ticket->save();
+        // $ticket->save();
 
-        $flwup->updated_at = Carbon::now();
-        $flwup->save();
+        // $flwup->updated_at = Carbon::now();
+        // $flwup->save();
         return ;
     }
 
