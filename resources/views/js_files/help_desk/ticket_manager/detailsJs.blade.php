@@ -2421,7 +2421,7 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 $('#priority').val(data.ticket.priority).trigger('change');
 
                 // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
+                // ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
 
                 // refresh logs
                 getLatestLogs();
