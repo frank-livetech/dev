@@ -1761,6 +1761,8 @@ class HelpdeskController extends Controller
                                 }
                             }
                             
+                        }else{
+                            $this->createFollowUpLogs($ticket , $flwup , $value = null);
                         }
 
                     }else{
@@ -1814,7 +1816,9 @@ class HelpdeskController extends Controller
                             }
 
                             
-                        }   
+                        } else{
+                            $this->createFollowUpLogs($ticket , $flwup , $value = null);
+                        }  
                     }
                 }
             }
@@ -1909,7 +1913,7 @@ class HelpdeskController extends Controller
         
         $fLogsData = array(
             'ticket_id' => $ticket->id,
-            'follow_up_id' => $value['id'],
+            'follow_up_id' => $flwup->id,
             'is_cron' => 0,
             'is_frontend' => 1,
             'schedule_type' =>  $flwup->schedule_type,
@@ -3617,4 +3621,5 @@ class HelpdeskController extends Controller
         
         
     }
+
 }
