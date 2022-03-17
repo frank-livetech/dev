@@ -1594,152 +1594,173 @@ class HelpdeskController extends Controller
 
                     if( $flwup->is_recurring == 1 ) {
                         
+                        $checkFollowUpLogs = TicketFollowupLogs::where('follow_up_id' , $flwup->id)->orderByDesc('id')->first();
+                        if($checkFollowUpLogs) {
+
+                            $currentDate = date('Y-m-d H:i:s');
+                            $fLogs_created_at = $checkFollowUpLogs->created_at;
+
+                            if($checkFollowUpLogs->is_cron == 1 || $checkFollowUpLogs->is_front_end == 1) {
+
+                                if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
+
+                                    $startDate = new Carbon( $flwup->recurrence_start , $tm_name);
+                            
+                                    if($flwup->recurrence_pattern && $flwup->recurrence_time) {
+        
+                                        if($flwup->date) $followUpDate = new Carbon($flwup->date, $tm_name);
+                                        else $followUpDate = $startDate;
+        
+                                        $rec_time = explode(':', $flwup->recurrence_time);
+        
+                                        // set some timezone for proper hour and mins setting
+                                        $followUpDate->timezone(Session::get('timezone'));
                         
-                        $startDate = new Carbon( $flwup->recurrence_start , $tm_name);
-                        
-                        if($flwup->recurrence_pattern && $flwup->recurrence_time) {
-
-                            if($flwup->date) $followUpDate = new Carbon($flwup->date, $tm_name);
-                            else $followUpDate = $startDate;
-
-                            $rec_time = explode(':', $flwup->recurrence_time);
-
-                            // set some timezone for proper hour and mins setting
-                            $followUpDate->timezone(Session::get('timezone'));
-            
-                            $followUpDate->hour = $rec_time[0];
-                            $followUpDate->minute = $rec_time[1];
-                            
-                            // convert back to utc for further calculations
-                            $followUpDate->utcOffset(0);
-                            
-                            $pattern = explode('|', $flwup->recurrence_pattern);
-                            $pattern_type = $pattern[0];
-                            // daily|2
-                            switch($pattern_type) {
-                                case 'daily':
-                                    $d_val = $pattern[1]; // days to occur after
-                                    $add_value = $d_val;
-                                    $add_type = 'days';
-                                    break;
-                                case 'weekly':
-                                    $w_val = $pattern[1]; // weeks to occur after
-                                    $w_days = explode(',', $pattern[2]); // weekly days
-            
-                                    $today = (String) $followUpDate->day;
-
-                                    if(array_search($today, $w_days) == -1) $w_days[] = $today;
-            
-                                    sort($w_days);
-            
-                                    if(sizeof($w_days) == 1) {
-                                        // set follow up on current day or next week
-                                        $add_value = $w_val*7;
-                                        $add_type = 'days';
-                                    } else {
-                                        $t_ind = array_search($today, $w_days); // today date index
-                                        $daytoadd = 0;
-                                        if($t_ind == (sizeof($w_days)-1)) {
-                                            // set date to first index
-                                            $daytoadd = $w_val*((int) $w_days[0]+7-(int) $today);
-                                        } else {
-                                            // set follow up on next index
-                                            $daytoadd = $w_val*((int) $w_days[$t_ind+1] - (int) $today);
-
-                                        }
-                                        $add_value = $daytoadd;
-                                        $add_type = 'days';
-                                    }
-                                    break;
-                                case 'monthly':
-                                    $m_val = $pattern[1]; // month
-                                    $md_val = $pattern[2]; // month day
-            
-                                    $add_value = $m_val;
-                                    $add_type = 'months';
-            
-                                    $followUpDate->set('day', $md_val);
-                                    break;
-                                case 'yearly':
-                                    $y_val = $pattern[1];
-                                    $y_month = $pattern[2];
-                                    $y_m_day = $pattern[3];
-            
-                                    $add_value = $y_val;
-                                    $add_type = 'years';
-            
-                                    $followUpDate->month = $y_month;
-                                    $followUpDate->day = $y_m_day;
-                                    break;
-                                default:
-                                    break;
-                            }
-                          
-
-                            // $currentDateTime = new \DateTime();
-                            // $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
-                            // $nowDate = Carbon::parse( $currentDateTime->format('Y-m-d') );
-                            $nowDate = new Carbon( Carbon::now() , $tm_name);
-                            
-                            // $newfollowUpDate = new \DateTime($followUpDate);
-                            // $newfollowUpDate->setTimezone(new \DateTimeZone($tm_name));
-                            // $followUpDate = Carbon::parse( $newfollowUpDate->format('Y-m-d') );
-                            $followUpDate = new Carbon( $followUpDate , $tm_name);
-                            
-                            
-                            $timediff = $nowDate->diffInSeconds($followUpDate, false);
-                            if($timediff < 0) {
-                        
-                                $idata = array();
-                                // follow up time to update ticket
-                                $idata['ticket_update'] = true;
-                    
-                                // update the recurrence time for next all ocurrences
-                                if($flwup->recurrence_time2) $idata['recurrence_time'] = $flwup->recurrence_time2;
-                                
-                                if($flwup->recurrence_end_type == 'count') {
-                                    if((int) $flwup->recurrence_end_val > 0) $idata['recurrence_end_val'] = (int) $flwup->recurrence_end_val-1;
-                                    else $idata['passed'] = 1;
-                                }
-                              
-                                // if(!array_key_exists('passed', $idata)) {
-                                    if($add_type == 'minutes') $followUpDate->addMinutes($add_value);
-                                    else if($add_type == 'hours') $followUpDate->addHours($add_value);
-                                    else if($add_type == 'days') $followUpDate->addDays($add_value);
-                                    else if($add_type == 'weeks') $followUpDate->addWeeks($add_value);
-                                    else if($add_type == 'months') $followUpDate->addMonths($add_value);
-                                    else if($add_type == 'years') $followUpDate->addYears($add_value);
-                    
-                    
-                    
-                                    if($flwup->recurrence_end_type == 'date') {
-                                        // $endDate = new Carbon($flwup->recurrence_end_val);
-                                        $endDate = new \DateTime($flwup->recurrence_end_val);
-                                        $endDate->setTimezone(new \DateTimeZone($tm_name));
-                                        $endDate = Carbon::parse( $endDate->format('Y-m-d') );
-                                        if( strtotime($followUpDate) >=  strtotime($endDate) ) {
-                                            $idata['passed'] = 1;
-                                        }
+                                        $followUpDate->hour = $rec_time[0];
+                                        $followUpDate->minute = $rec_time[1];
                                         
-                                        // if($followUpDate->isAfter($endDate)) $idata['passed'] = 1;
+                                        // convert back to utc for further calculations
+                                        $followUpDate->utcOffset(0);
+                                        
+                                        $pattern = explode('|', $flwup->recurrence_pattern);
+                                        $pattern_type = $pattern[0];
+                                        // daily|2
+                                        switch($pattern_type) {
+                                            case 'daily':
+                                                $d_val = $pattern[1]; // days to occur after
+                                                $add_value = $d_val;
+                                                $add_type = 'days';
+                                                break;
+                                            case 'weekly':
+                                                $w_val = $pattern[1]; // weeks to occur after
+                                                $w_days = explode(',', $pattern[2]); // weekly days
+                        
+                                                $today = (String) $followUpDate->day;
+        
+                                                if(array_search($today, $w_days) == -1) $w_days[] = $today;
+                        
+                                                sort($w_days);
+                        
+                                                if(sizeof($w_days) == 1) {
+                                                    // set follow up on current day or next week
+                                                    $add_value = $w_val*7;
+                                                    $add_type = 'days';
+                                                } else {
+                                                    $t_ind = array_search($today, $w_days); // today date index
+                                                    $daytoadd = 0;
+                                                    if($t_ind == (sizeof($w_days)-1)) {
+                                                        // set date to first index
+                                                        $daytoadd = $w_val*((int) $w_days[0]+7-(int) $today);
+                                                    } else {
+                                                        // set follow up on next index
+                                                        $daytoadd = $w_val*((int) $w_days[$t_ind+1] - (int) $today);
+        
+                                                    }
+                                                    $add_value = $daytoadd;
+                                                    $add_type = 'days';
+                                                }
+                                                break;
+                                            case 'monthly':
+                                                $m_val = $pattern[1]; // month
+                                                $md_val = $pattern[2]; // month day
+                        
+                                                $add_value = $m_val;
+                                                $add_type = 'months';
+                        
+                                                $followUpDate->set('day', $md_val);
+                                                break;
+                                            case 'yearly':
+                                                $y_val = $pattern[1];
+                                                $y_month = $pattern[2];
+                                                $y_m_day = $pattern[3];
+                        
+                                                $add_value = $y_val;
+                                                $add_type = 'years';
+                        
+                                                $followUpDate->month = $y_month;
+                                                $followUpDate->day = $y_m_day;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    
+        
+                                        // $currentDateTime = new \DateTime();
+                                        // $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
+                                        // $nowDate = Carbon::parse( $currentDateTime->format('Y-m-d') );
+                                        $nowDate = new Carbon( Carbon::now() , $tm_name);
+                                        
+                                        // $newfollowUpDate = new \DateTime($followUpDate);
+                                        // $newfollowUpDate->setTimezone(new \DateTimeZone($tm_name));
+                                        // $followUpDate = Carbon::parse( $newfollowUpDate->format('Y-m-d') );
+                                        $followUpDate = new Carbon( $followUpDate , $tm_name);
+                                        
+                                        
+                                        $timediff = $nowDate->diffInSeconds($followUpDate, false);
+                                        if($timediff < 0) {
+                                    
+                                            $idata = array();
+                                            // follow up time to update ticket
+                                            $idata['ticket_update'] = true;
+                                
+                                            // update the recurrence time for next all ocurrences
+                                            if($flwup->recurrence_time2) $idata['recurrence_time'] = $flwup->recurrence_time2;
+                                            
+                                            if($flwup->recurrence_end_type == 'count') {
+                                                if((int) $flwup->recurrence_end_val > 0) $idata['recurrence_end_val'] = (int) $flwup->recurrence_end_val-1;
+                                                else $idata['passed'] = 1;
+                                            }
+                                        
+                                            // if(!array_key_exists('passed', $idata)) {
+                                                if($add_type == 'minutes') $followUpDate->addMinutes($add_value);
+                                                else if($add_type == 'hours') $followUpDate->addHours($add_value);
+                                                else if($add_type == 'days') $followUpDate->addDays($add_value);
+                                                else if($add_type == 'weeks') $followUpDate->addWeeks($add_value);
+                                                else if($add_type == 'months') $followUpDate->addMonths($add_value);
+                                                else if($add_type == 'years') $followUpDate->addYears($add_value);
+                                
+                                
+                                
+                                                if($flwup->recurrence_end_type == 'date') {
+                                                    // $endDate = new Carbon($flwup->recurrence_end_val);
+                                                    $endDate = new \DateTime($flwup->recurrence_end_val);
+                                                    $endDate->setTimezone(new \DateTimeZone($tm_name));
+                                                    $endDate = Carbon::parse( $endDate->format('Y-m-d') );
+                                                    if( strtotime($followUpDate) >=  strtotime($endDate) ) {
+                                                        $idata['passed'] = 1;
+                                                    }
+                                                    
+                                                    // if($followUpDate->isAfter($endDate)) $idata['passed'] = 1;
+                                                }
+                                                // if(!array_key_exists('passed', $idata)) 
+                                                $idata['date'] = new Carbon($followUpDate);
+                                            // }
+        
+                                
+                                            if(array_key_exists('passed', $idata)) $flwup->passed = $idata['passed'];
+                                            if(array_key_exists('date', $idata)) $flwup->date = $idata['date'];
+                                            if(array_key_exists('recurrence_time', $idata)) $flwup->recurrence_time = $idata['recurrence_time'];
+                                            if(array_key_exists('recurrence_end_val', $idata)) $flwup->recurrence_end_val = $idata['recurrence_end_val'];
+                                
+                                            $flwup->save();
+                                
+                                            // if(!array_key_exists('passed', $idata)) $this->follow_up_calculation($followUp);
+                                            if($idata['passed'] == 1){
+                                                $this->createFollowUpLogs($ticket , $flwup , $value = null,$idata['passed']);
+                                            }else{
+                                                $this->createFollowUpLogs($ticket , $flwup , $value = null);
+                                            }
+                                            
+                                        }
                                     }
-                                    // if(!array_key_exists('passed', $idata)) 
-                                    $idata['date'] = new Carbon($followUpDate);
-                                // }
 
-                    
-                                if(array_key_exists('passed', $idata)) $flwup->passed = $idata['passed'];
-                                if(array_key_exists('date', $idata)) $flwup->date = $idata['date'];
-                                if(array_key_exists('recurrence_time', $idata)) $flwup->recurrence_time = $idata['recurrence_time'];
-                                if(array_key_exists('recurrence_end_val', $idata)) $flwup->recurrence_end_val = $idata['recurrence_end_val'];
-                    
-                                $flwup->save();
-                    
-                                // if(!array_key_exists('passed', $idata)) $this->follow_up_calculation($followUp);
-                                
-                                $this->triggerFollowUp($ticket , $flwup);
-                                
+                                }elseif(strtotime($currentDate) == strtotime($fLogs_created_at) ){
+                                    $response['status_code'] = 200;
+                                    $response['success'] = true;
+                                    return response()->json($response);
+                                }
                             }
+                            
                         }
 
                     }else{
@@ -1775,7 +1796,7 @@ class HelpdeskController extends Controller
                                         if( strtotime($currentDate) >=  strtotime($futureDate) ) {
         
                                             // $this->triggerFollowUp($ticket , $flwup);
-                                            $this->createFollowUpLogs($ticket , $flwup , $value = null);
+                                            $this->createFollowUpLogs($ticket , $flwup , $value = null );
 
                                             $flwup->passed = 1;
                                             $flwup->save();
@@ -1883,7 +1904,7 @@ class HelpdeskController extends Controller
         }  
     }
 
-    public function createFollowUpLogs($ticket , $flwup , $value) {
+    public function createFollowUpLogs($ticket , $flwup , $value , $passed = '') {
         // create ticket followup logs
         
         $fLogsData = array(
@@ -1938,11 +1959,10 @@ class HelpdeskController extends Controller
                 $flwup->recurrence_time2 = NULL;
             }
             
-            $this->triggerFollowUp($ticket , $flwup);
-
+            $this->triggerFollowUp($ticket , $flwup , $passed);
 
         }else{
-            $this->triggerFollowUp($ticket , $flwup);
+            $this->triggerFollowUp($ticket , $flwup , $passed);
         }
 
         // $ticket->save();
@@ -1952,7 +1972,7 @@ class HelpdeskController extends Controller
         return ;
     }
 
-    public function triggerFollowUp($ticket, $flwup) {
+    public function triggerFollowUp($ticket, $flwup , $passed = '') {
 
         $flwup_note = '';
         $flwup_reply = '';
@@ -2085,7 +2105,9 @@ class HelpdeskController extends Controller
     
         $created_by = User::where('id',$flwup->created_by)->first();
         $flwup_updated = $created_by->name;
-
+        if($passed == 1){
+            $flwup->passed = 1;
+        }
         // $flwup->passed = 1;
         $flwup->save();
         $ticket = Tickets::findOrFail($flwup->ticket_id);
