@@ -19,6 +19,7 @@ use App\Models\Tickets;
 use App\Models\Vendors;
 use App\Models\TicketReply;
 use App\Models\TicketFollowUp;
+use App\Models\TicketFollowupLogs;
 use App\Models\TicketNote;
 use App\Models\Assets;
 use App\Models\Project;
@@ -1743,33 +1744,56 @@ class HelpdeskController extends Controller
 
                     }else{
 
-                        if($flwup->schedule_time != null) {
+                        $checkFollowUpLogs = TicketFollowupLogs::where('follow_up_id' , $flwup->id)->orderByDesc('id')->first();
+                        if($checkFollowUpLogs) {
 
-                            // convert utc time into user timezone
-                            $date = new \DateTime($flwup->created_at);
-                            $date->setTimezone(new \DateTimeZone($tm_name));                            
-                            $convertedDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
+                            $currentDate = date('Y-m-d H:i:s');
+                            $fLogs_created_at = $checkFollowUpLogs->created_at;
 
-                            $schedule_type = $flwup->schedule_type;
-                            $schedule_time = $flwup->schedule_time;
+                            if($checkFollowUpLogs->is_cron == 1 || $checkFollowUpLogs->is_front_end == 1) {
 
-                            // pass converted_date , 
-                            $futureDate = $this->calculateFutureDate($convertedDate , $schedule_time , $schedule_type);
+                                if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
 
-                            // getting region current date and time
-                            $currentDateTime = new \DateTime();
-                            $currentDateTime->setTimezone(new \DateTimeZone($tm_name));                            
-                            $currentDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
+                                    if($flwup->schedule_time != null) {
 
-                            if( strtotime($currentDate) >=  strtotime($futureDate) ) {
+                                        // convert utc time into user timezone
+                                        $date = new \DateTime($flwup->created_at);
+                                        $date->setTimezone(new \DateTimeZone($tm_name));                            
+                                        $convertedDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
+        
+                                        $schedule_type = $flwup->schedule_type;
+                                        $schedule_time = $flwup->schedule_time;
+        
+                                        // pass converted_date , 
+                                        $futureDate = $this->calculateFutureDate($convertedDate , $schedule_time , $schedule_type);
+        
+                                        // getting region current date and time
+                                        $currentDateTime = new \DateTime();
+                                        $currentDateTime->setTimezone(new \DateTimeZone($tm_name));                            
+                                        $currentDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
+        
+                                        if( strtotime($currentDate) >=  strtotime($futureDate) ) {
+        
+                                            // $this->triggerFollowUp($ticket , $flwup);
+                                            $this->createFollowUpLogs($ticket , $flwup , $value = null);
 
-                                $this->triggerFollowUp($ticket , $flwup);
-                                $flwup->passed = 1;
-                                $flwup->save();
+                                            $flwup->passed = 1;
+                                            $flwup->save();
+                                        }
+        
+                                    }
+
+                                    $this->createFollowUpLogs($ticket , $flwup , $value = null);
+
+                                }elseif(strtotime($currentDate) == strtotime($fLogs_created_at) ){
+                                    $response['status_code'] = 200;
+                                    $response['success'] = true;
+                                    return response()->json($response);
+                                }
                             }
 
                             
-                        }
+                        }   
                     }
                 }
             }
@@ -1794,6 +1818,139 @@ class HelpdeskController extends Controller
 
     }
 
+    public function followUpLogs(Request $request) {
+        try {
+            if($request->has('data')) {
+                $ticket = Tickets::findOrFail($request->ticket_id);
+                $data = json_decode($request->data, true);
+                $logData = '';
+                
+                if(is_array($data)) {
+                    foreach ($data as $value) {
+                        $flwup = TicketFollowUp::findOrFail($value['id']);
+
+                        $checkFollowUpLogs = TicketFollowupLogs::where('follow_up_id' , $flwup->id)->orderByDesc('id')->first();
+                        if($checkFollowUpLogs) {
+                          
+                            if($checkFollowUpLogs->is_recurring == 1){
+    
+                                $currentDate = date('Y-m-d H:i:s');
+                                $fLogs_created_at = $checkFollowUpLogs->created_at;
+
+                                if($checkFollowUpLogs->is_cron == 1 || $checkFollowUpLogs->is_front_end == 1) {
+    
+                                    if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
+
+                                        $this->createFollowUpLogs($ticket , $flwup , $value );
+
+                                    }elseif(strtotime($currentDate) == strtotime($fLogs_created_at) ){
+
+                                        $response['status_code'] = 200;
+                                        $response['success'] = true;
+                                        $response['ticket'] = $ticket;
+                                        return response()->json($response);
+
+                                    }
+                                }
+    
+                            }else{
+
+                                if($checkFollowUpLogs->is_cron == 1 ||  $checkFollowUpLogs->is_front_end == 1) {
+                                    $response['status_code'] = 200;
+                                    $response['success'] = true;
+                                    $response['ticket'] = $ticket;
+                                    return response()->json($response);
+                                }
+                            }
+                        }else{
+                            $this->createFollowUpLogs($ticket , $flwup , $value);
+                        }
+
+                        // $ticket = Tickets::findOrFail($flwup->ticket_id);
+                    }
+                }
+            }
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['ticket'] = $ticket;
+            return response()->json($response);
+
+        }catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }  
+    }
+
+    public function createFollowUpLogs($ticket , $flwup , $value) {
+        // create ticket followup logs
+        
+        $fLogsData = array(
+            'ticket_id' => $ticket->id,
+            'follow_up_id' => $value['id'],
+            'is_cron' => 0,
+            'is_frontend' => 1,
+            'schedule_type' =>  $flwup->schedule_type,
+            'custom_date' => $flwup->custom_date,
+            'schedule_time' =>  $flwup->schedule_time,
+            'old_dept_id' => $ticket->dept_id,
+            'old_priority'  => $ticket->priority,
+            'old_assigned_to' => $ticket->assigned_to,
+            'old_status' => $ticket->status,
+            'old_type' => $ticket->type,
+            'new_dept_id' => $flwup->follow_up_dept_id,
+            'new_priority' => $flwup->follow_up_priority, 
+            'new_assigned_to' => $flwup->follow_up_assigned_to,
+            'new_status'=> $flwup->follow_up_status,
+            'new_type' => $flwup->follow_up_type,
+            'follow_up_project' => $flwup->follow_up_project,
+            'follow_up_notes' => $flwup->follow_up_notes,
+            'follow_up_notes_color' => $flwup->follow_up_notes_color,
+            'follow_up_notes_type' => $flwup->follow_up_notes_type,
+            'follow_up_reply' => $flwup->follow_up_reply,
+            'is_recurring' => $flwup->is_recurring,
+            'recurrence_time' => $flwup->recurrence_time,
+            'recurrence_time2' => $flwup->recurrence_time2,
+            'recurrence_pattern' => $flwup->recurrence_pattern,
+            'recurrence_start' => $flwup->recurrence_start,
+            'recurrence_end_type' => $flwup->recurrence_end_type,
+            'recurrence_end_val' => $flwup->recurrence_end_val,
+            'date' => $flwup->date,
+            'passed' => $flwup->passed,
+            'created_by' => $flwup->created_by, 
+        );
+        TicketFollowupLogs::create($fLogsData);
+        
+        if($value != null) {
+
+            if(array_key_exists('date', $value)) {
+                $flwup->date = $value['date'];
+            }
+            if(array_key_exists('recurrence_end_val', $value)) {
+                $flwup->recurrence_end_val = $value['recurrence_end_val'];
+            }
+            if(array_key_exists('passed', $value)) {
+                $flwup->passed = $value['passed'];
+            }
+            if(array_key_exists('recurrence_time', $value)) {
+                $flwup->recurrence_time = $value['recurrence_time'];
+                $flwup->recurrence_time2 = NULL;
+            }
+            
+            $this->triggerFollowUp($ticket , $flwup);
+
+
+        }else{
+            $this->triggerFollowUp($ticket , $flwup);
+        }
+
+        // $ticket->save();
+
+        // $flwup->updated_at = Carbon::now();
+        // $flwup->save();
+        return ;
+    }
 
     public function triggerFollowUp($ticket, $flwup) {
 
