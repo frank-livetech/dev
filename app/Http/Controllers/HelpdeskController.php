@@ -1744,33 +1744,54 @@ class HelpdeskController extends Controller
 
                     }else{
 
-                        if($flwup->schedule_time != null) {
+                        $checkFollowUpLogs = TicketFollowupLogs::where('follow_up_id' , $flwup->id)->orderByDesc('id')->first();
+                        if($checkFollowUpLogs) {
 
-                            // convert utc time into user timezone
-                            $date = new \DateTime($flwup->created_at);
-                            $date->setTimezone(new \DateTimeZone($tm_name));                            
-                            $convertedDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
+                            $currentDate = date('Y-m-d H:i:s');
+                            $fLogs_created_at = $checkFollowUpLogs->created_at;
 
-                            $schedule_type = $flwup->schedule_type;
-                            $schedule_time = $flwup->schedule_time;
+                            if($checkFollowUpLogs->is_cron == 1 || $checkFollowUpLogs->is_front_end == 1) {
 
-                            // pass converted_date , 
-                            $futureDate = $this->calculateFutureDate($convertedDate , $schedule_time , $schedule_type);
+                                if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
 
-                            // getting region current date and time
-                            $currentDateTime = new \DateTime();
-                            $currentDateTime->setTimezone(new \DateTimeZone($tm_name));                            
-                            $currentDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
+                                    if($flwup->schedule_time != null) {
 
-                            if( strtotime($currentDate) >=  strtotime($futureDate) ) {
+                                        // convert utc time into user timezone
+                                        $date = new \DateTime($flwup->created_at);
+                                        $date->setTimezone(new \DateTimeZone($tm_name));                            
+                                        $convertedDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
+        
+                                        $schedule_type = $flwup->schedule_type;
+                                        $schedule_time = $flwup->schedule_time;
+        
+                                        // pass converted_date , 
+                                        $futureDate = $this->calculateFutureDate($convertedDate , $schedule_time , $schedule_type);
+        
+                                        // getting region current date and time
+                                        $currentDateTime = new \DateTime();
+                                        $currentDateTime->setTimezone(new \DateTimeZone($tm_name));                            
+                                        $currentDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
+        
+                                        if( strtotime($currentDate) >=  strtotime($futureDate) ) {
+        
+                                            $this->triggerFollowUp($ticket , $flwup);
+                                            $flwup->passed = 1;
+                                            $flwup->save();
+                                        }
+        
+                                    }
 
-                                $this->triggerFollowUp($ticket , $flwup);
-                                $flwup->passed = 1;
-                                $flwup->save();
+                                    $this->createFollowUpLogs($ticket , $flwup , $value = null);
+
+                                }elseif(strtotime($currentDate) == strtotime($fLogs_created_at) ){
+                                    $response['status_code'] = 200;
+                                    $response['success'] = true;
+                                    return response()->json($response);
+                                }
                             }
 
                             
-                        }
+                        }   
                     }
                 }
             }
@@ -1808,31 +1829,41 @@ class HelpdeskController extends Controller
 
                         $checkFollowUpLogs = TicketFollowupLogs::where('follow_up_id' , $flwup->id)->orderByDesc('id')->first();
                         if($checkFollowUpLogs) {
+                          
+                            if($checkFollowUpLogs->is_recurring == 1){
+    
+                                $currentDate = date('Y-m-d H:i:s');
+                                $fLogs_created_at = $checkFollowUpLogs->created_at;
 
-                            if($checkFollowUpLogs->is_cron == 1) {
-                                $response['status_code'] = 200;
-                                $response['success'] = true;
-                                $response['ticket'] = $ticket;
-                                return response()->json($response);
-                            }
+                                if($checkFollowUpLogs->is_cron == 1 || $checkFollowUpLogs->is_front_end == 1) {
+    
+                                    if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
 
-                            $currentDate = date('Y-m-d H:i:s');
-                            $fLogs_created_at = $checkFollowUpLogs->created_at;
+                                        $this->createFollowUpLogs($ticket , $flwup , $value );
 
+                                    }elseif(strtotime($currentDate) == strtotime($fLogs_created_at) ){
 
-                            if($checkFollowUpLogs->schedule_type == 'time' && $checkFollowUpLogs->is_cron == 1) {
+                                        $response['status_code'] = 200;
+                                        $response['success'] = true;
+                                        $response['ticket'] = $ticket;
+                                        return response()->json($response);
 
-                                if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
+                                    }
+                                }
+    
+                            }else{
 
-                                    $this->createFollowUpLogs($ticket , $flwup , $value , $request );
+                                if($checkFollowUpLogs->is_cron == 1 ||  $checkFollowUpLogs->is_front_end == 1) {
+                                    $response['status_code'] = 200;
+                                    $response['success'] = true;
+                                    $response['ticket'] = $ticket;
+                                    return response()->json($response);
                                 }
                             }
-                            
-
                         }else{
-
-                            $this->createFollowUpLogs($ticket , $flwup , $value , $request );
+                            $this->createFollowUpLogs($ticket , $flwup , $value);
                         }
+
                         // $ticket = Tickets::findOrFail($flwup->ticket_id);
                     }
                 }
@@ -1850,11 +1881,11 @@ class HelpdeskController extends Controller
         }  
     }
 
-    public function createFollowUpLogs($ticket , $flwup , $value , $request ) {
+    public function createFollowUpLogs($ticket , $flwup , $value) {
         // create ticket followup logs
         
         $fLogsData = array(
-            'ticket_id' => $request->ticket_id,
+            'ticket_id' => $ticket->id,
             'follow_up_id' => $value['id'],
             'is_cron' => 0,
             'is_frontend' => 1,
@@ -1888,59 +1919,123 @@ class HelpdeskController extends Controller
             'created_by' => $flwup->created_by, 
         );
         TicketFollowupLogs::create($fLogsData);
-        if($flwup->follow_up_reply != null) {
-            TicketReply::create([
-                "ticket_id" => $request->ticket_id ,
-                "reply" => $flwup->follow_up_reply ,
-                "user_id" => $flwup->follow_up_assigned_to ,
-            ]);
-        } 
         
-        if(array_key_exists('date', $value)) {
-            $flwup->date = $value['date'];
-        }
-        if(array_key_exists('recurrence_end_val', $value)) {
-            $flwup->recurrence_end_val = $value['recurrence_end_val'];
-        }
-        if(array_key_exists('passed', $value)) {
-            $flwup->passed = $value['passed'];
-        }
-        if(array_key_exists('recurrence_time', $value)) {
-            $flwup->recurrence_time = $value['recurrence_time'];
-            $flwup->recurrence_time2 = NULL;
-        }
-        
-        if(array_key_exists('ticket_update', $value) || array_key_exists('passed', $value)) {
-            try {
-                $ticket->dept_id = $flwup->follow_up_dept_id;
-                $ticket->priority = $flwup->follow_up_priority;
-                $ticket->assigned_to = $flwup->follow_up_assigned_to;
-                $ticket->status = $flwup->follow_up_status;
-                $ticket->type = $flwup->follow_up_type;
-                $ticket->updated_at = Carbon::now();
-                $ticket->save();
-                
-                $logData = 'ticket updated';
-            } catch (Exception $e) {
-                //
-            }
-        }
-        
-        if(!empty($flwup['follow_up_notes'])) {
-            TicketNote::create([
-                'ticket_id' => $flwup->ticket_id,
-                'followup_id' => $flwup->id,
-                'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
-                'type' => $flwup->follow_up_notes_type,
-                'note' => $flwup->follow_up_notes,
-                'visibility' => 'Everyone',
-                'created_by' => \Auth::user()->id
-            ]);
+        if($value != null) {
 
-            $logData .= (empty($logData)) ? 'added a note' : ', added a note';
+            if(array_key_exists('date', $value)) {
+                $flwup->date = $value['date'];
+            }
+            if(array_key_exists('recurrence_end_val', $value)) {
+                $flwup->recurrence_end_val = $value['recurrence_end_val'];
+            }
+            if(array_key_exists('passed', $value)) {
+                $flwup->passed = $value['passed'];
+            }
+            if(array_key_exists('recurrence_time', $value)) {
+                $flwup->recurrence_time = $value['recurrence_time'];
+                $flwup->recurrence_time2 = NULL;
+            }
+            
+            if(array_key_exists('ticket_update', $value) || array_key_exists('passed', $value)) {
+                try {
+                    $ticket->dept_id = $flwup->follow_up_dept_id;
+                    $ticket->priority = $flwup->follow_up_priority;
+                    $ticket->assigned_to = $flwup->follow_up_assigned_to;
+                    $ticket->status = $flwup->follow_up_status;
+                    $ticket->type = $flwup->follow_up_type;
+                    $ticket->updated_at = Carbon::now();
+                    $ticket->save();
+                    
+                    $logData = 'ticket updated';
+                } catch (Exception $e) {
+                    //
+                }
+            }
+
+            if(!empty($flwup['follow_up_reply'])) {
+                
+                $bbcode = new BBCode();
+
+                if($flwup->follow_up_reply != '' || $flwup->follow_up_reply != null){
+                    TicketReply::create([
+                        "ticket_id" => $ticket->id,
+                        "user_id" => $flwup->follow_up_assigned_to, 
+                        "msgno" => null , 
+                        "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
+                        "cc" => null , 
+                        "date" => date('Y-m-d H:i:s'), 
+                        "is_published" => 1 ,
+                        "attachments" => null ,
+                    ]);
+                }
+
+                $ticket->reply_deadline = 'cleared';
+            
+            }
+            
+            
+            if(!empty($flwup['follow_up_notes'])) {
+                TicketNote::create([
+                    'ticket_id' => $flwup->ticket_id,
+                    'followup_id' => $flwup->id,
+                    'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
+                    'type' => $flwup->follow_up_notes_type,
+                    'note' => $flwup->follow_up_notes,
+                    'visibility' => 'Everyone',
+                    'created_by' => $flwup->created_by,
+                ]);
+
+                $logData .= (empty($logData)) ? 'added a note' : ', added a note';
+            }
+
+        }else{
+            // update ticket
+            $ticket->dept_id = $flwup->follow_up_dept_id;
+            $ticket->priority = $flwup->follow_up_priority;
+            $ticket->assigned_to = $flwup->follow_up_assigned_to;
+            $ticket->status = $flwup->follow_up_status;
+            $ticket->type = $flwup->follow_up_type;
+            $ticket->updated_at = Carbon::now();
+            $ticket->save();
+
+
+            if($flwup->follow_up_reply != '' || $flwup->follow_up_reply != null) {
+                $bbcode = new BBCode();
+
+                TicketReply::create([
+                    "ticket_id" => $ticket->id,
+                    "user_id" => $flwup->follow_up_assigned_to, 
+                    "msgno" => null , 
+                    "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
+                    "cc" => null , 
+                    "date" => date('Y-m-d H:i:s'), 
+                    "is_published" => 1 ,
+                    "attachments" => null ,
+                ]);
+                $ticket->reply_deadline = 'cleared';
+            }
+
+            if($flwup->follow_up_notes != null) {
+                TicketNote::create([
+                    'ticket_id' => $flwup->ticket_id,
+                    'followup_id' => $flwup->id,
+                    'color' => $flwup->follow_up_notes_color == null ? 'rgb(255, 230, 177)' : $flwup->follow_up_notes_color,
+                    'type' => $flwup->follow_up_notes_type,
+                    'note' => $flwup->follow_up_notes,
+                    'visibility' => 'Everyone',
+                    'created_by' => $flwup->created_by,
+                ]);
+
+                // $logData .= (empty($logData)) ? 'added a note' : ', added a note';
+            }
+
         }
+
+        $ticket->save();
+
         $flwup->updated_at = Carbon::now();
         $flwup->save();
+        return ;
     }
 
     public function triggerFollowUp($ticket, $flwup) {
