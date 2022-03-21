@@ -32,7 +32,7 @@ $(document).ready(function() {
 
     });
 
-    get_all_project_task();
+    // get_all_project_task();
 
     // notes tag dropdown
     var userlist = [];
@@ -1463,7 +1463,7 @@ function listTasks(tasks_pr=tasks_flt_list) {
     tasks_pr = tasks_pr.sort((a,b) => (a.sort_id > b.sort_id) ? 1 : ((b.sort_id > a.sort_id) ? -1 : 0));
     
     tasks_pr.forEach(full => {
-        console.log(full.id+' '+full.sort_id);
+        // console.log(full.id+' '+full.sort_id);
         let title = full.title != null ? full.title.substr(0, 50) + '...' : '---';
         title = `<a href="` + task_detail + `/` + full.id + `">` + title + `</a>`;
         if (full.is_overdue == 1 && full.task_status != "success") {

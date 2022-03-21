@@ -60,13 +60,13 @@
     $("#save_folder").submit(function (event) {
         event.preventDefault();
 
-        var formData = new FormData($(this)[0]);
+        var formData = new FormData(this);
         var action = $(this).attr('action');
         var method = $(this).attr('method');
 
-        if(acting_id != -1) {
-            formData.append('id', acting_id);
-        }
+        // if(acting_id != -1) {
+        //     formData.append('id', acting_id);
+        // }
 
         $.ajax({
             type: method,
@@ -199,13 +199,13 @@
     $("#new-project-add").submit(function (event) {
         event.preventDefault();
 
-        var formData = new FormData($(this)[0]);
+        var formData = new FormData(this);
         var action = $(this).attr('action');
         var method = $(this).attr('method');
 
-        if(acting_id != -1){
-            formData.append('id', acting_id);
-        }
+        // if(acting_id != -1){
+        //     formData.append('id', acting_id);
+        // }
 
         $.ajax({
             type: method,
@@ -368,7 +368,9 @@
                     "searching" : true,
                     dom: 'Bfrtip',
                     buttons: [
-                        'copy', 'excel', 'pdf'
+                        { extend: 'copy', className: 'btn btn-light' },
+                        { extend: 'excel', className: 'btn btn-success' },
+                        { extend: 'pdf', className: 'btn btn-danger' },
                     ],
                     columns: [
                         {
@@ -526,6 +528,7 @@
             },
             complete:function(data) {
                 $("#all_tsks").hide();
+                
             }, 
             error: function(e) {
                 console.log(e);

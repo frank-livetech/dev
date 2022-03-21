@@ -2427,12 +2427,12 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 getLatestLogs();
 
                 // getTicketFollowUp();
-                get_ticket_notes();
-                getTicketReplies(ticket.id)
+                // get_ticket_notes();
+                // getTicketReplies(ticket.id)
 
-                // if(ticket_replies) getTicketReplies(ticket.id);
-            
-                // if (ticketNotes) get_ticket_notes();
+                if(ticket_replies) getTicketReplies(ticket.id);
+                if (ticketNotes) get_ticket_notes();
+
             }else{
                 console.log("failed")
                 toastr.error(data.message, { timeOut: 5000 });
