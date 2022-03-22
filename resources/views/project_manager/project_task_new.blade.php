@@ -444,18 +444,18 @@
                                                 </div>
                                                 <div class="sidebar-menu-list">
                                                     <div class="list-group list-group-filters">
-                                                        <a href="javascript:void(0)" onclick="filterTasks('danger')" class="list-group-item list-group-item-action active">
-                                                            <i data-feather="mail" class="font-medium-3 me-50"></i>
-                                                            <span class="align-middle"> My Task</span>
+                                                        <a href="javascript:void(0)"  onclick="filterTasks('all')" class="list-group-item list-group-item-action active">
+                                                            <i data-feather="align-justify" class="font-medium-3 me-50"></i>
+                                                            <span class="align-middle"> All Task</span>
                                                         </a>
-                                                        <a href="#" class="list-group-item list-group-item-action">
-                                                            <i data-feather="star" class="font-medium-3 me-50"></i> <span class="align-middle">Important</span>
+                                                        <a href="javascript:void(0)" onclick="filterTasks('danger')" class="list-group-item list-group-item-action">
+                                                            <i data-feather="x" class="font-medium-3 me-50"></i> <span class="align-middle"> Pending </span>
+                                                        </a>
+                                                        <a href="javascript:void(0)" onclick="filterTasks('default')" class="list-group-item list-group-item-action">
+                                                            <i data-feather="trending-up" class="font-medium-3 me-50"></i> <span class="align-middle"> In Progress </span>
                                                         </a>
                                                         <a href="javascript:void(0)" onclick="filterTasks('success')" class="list-group-item list-group-item-action">
-                                                            <i data-feather="check" class="font-medium-3 me-50"></i> <span class="align-middle">Completed</span>
-                                                        </a>
-                                                        <a href="#" class="list-group-item list-group-item-action">
-                                                            <i data-feather="trash" class="font-medium-3 me-50"></i> <span class="align-middle">Deleted</span>
+                                                            <i data-feather="check" class="font-medium-3 me-50"></i> <span class="align-middle"> Completed </span>
                                                         </a>
                                                     </div>
                                                     <div class="mt-3 px-2 d-flex justify-content-between">
