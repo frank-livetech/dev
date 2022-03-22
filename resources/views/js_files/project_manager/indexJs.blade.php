@@ -5,6 +5,7 @@
     // $("#tsk_tble").DataTable();
     let users =  {!! json_encode($users) !!};
     let projects =  {!! json_encode($projects) !!};
+    let folders =  {!! json_encode($projectsfolder) !!};
     var free_staff =  {!! json_encode($free_staff) !!};
     let acting_id = -1;
     $.ajaxSetup({
@@ -44,16 +45,24 @@
     
     function showFolderModel( ) {
         $("#save_folder").trigger("reset");
-        $("#fld_id").val("");
+        $("#fld_id").attr("readonly" , true);
 
         $("#myModalLabel1").text('Add Folder');
         $('#add-folders').modal('show');
     }
 
     function editFolder(id){
+        $("#fld_id").removeAttr("readonly" , true);
         $("#fld_id").val(id);
-        
         $("#myModalLabel1").text( 'Edit Folder' );
+
+        let item = folders.find(item => item.id == id);
+        console.log(item , "item");
+        if(item != null) {
+            $("#title").val( item.name != null ? item.name : '');
+        }
+        
+        
         $('#add-folders').modal('show');
     }
 
@@ -63,10 +72,6 @@
         var formData = new FormData(this);
         var action = $(this).attr('action');
         var method = $(this).attr('method');
-
-        // if(acting_id != -1) {
-        //     formData.append('id', acting_id);
-        // }
 
         $.ajax({
             type: method,
@@ -111,7 +116,7 @@
                     $("#fldr_btn").css('display','block');
                     $("#process_btn").attr('style','display:none');    
                     $('#add-folders').modal('hide');
-                    location.reload();
+                    // location.reload();
                 },1000);
             },
             failure: function (errMsg) {
@@ -146,7 +151,7 @@
                         console.log(data)
                         if (data.success==true) {
                             toastr.success( data['message'] , { timeOut: 5000 });
-                            $("#folder_"+ id).remove();
+                            $("#main_folder_"+ id).remove();
                         } else {
                             toastr.error( data['message'] , { timeOut: 5000 });
                         }
@@ -165,19 +170,27 @@
         $('#project_type').val('').trigger("change");
         $('#new-project-add').find('h2').html('Add Project');
         $('#new-project-modal').modal('show');
+
+        $("#pro_id").val("");
     }
 
-    function editProject(ele, id){
-        acting_id = id;
-        
-        let ind = projects.map(function(item){ return item.id; }).indexOf(parseInt(acting_id));
-        
-        $("#new-project-add").find('input[name="name"]').val(projects[ind].name);
-        $("#new-project-add").find('#folder_id').val(projects[ind].folder_id).trigger("change");
-        $("#new-project-add").find('#project_type').val(projects[ind].project_type).trigger("change");
+    function editProject(id){
 
         $('#new-project-add').find('h2').html('Update Project');
+        $("#pro_id").val(id);
+        
+        let item = projects.find(item => item.id == id);
+        console.log(item , "item");
+
+        if(item != null) {
+            $("#project_name").val(item.name);
+            $("#folder_id").val(item.folder_id).trigger("change");
+            $("#project_type").val(item.project_type).trigger("change");
+        }
+        
+
         $('#new-project-modal').modal('show');
+
     }
 
     $("#new-project-add").submit(function (event) {
@@ -186,10 +199,6 @@
         var formData = new FormData(this);
         var action = $(this).attr('action');
         var method = $(this).attr('method');
-
-        // if(acting_id != -1){
-        //     formData.append('id', acting_id);
-        // }
 
         $.ajax({
             type: method,
@@ -245,7 +254,7 @@
 
     });
 
-    function removeProject(ele) {
+    function removeProject(id) {
         Swal.fire({
             title: 'Are you sure?',
             text: "All data related to this project folder will be removed!",
@@ -259,33 +268,16 @@
                 $.ajax({
                     url: "{{asset('delete-project')}}",
                     type: "POST",
-                    data: {
-                        id: $(ele).parent().parent().parent().data('id')
-                    },
-
+                    data: { id:id },
                     dataType: 'json',
                     cache: false,
-
                     success: function (data) {
                         console.log(data)
                         if (data.success==true) {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: data['message'],
-                                showConfirmButton: false,
-                                timer: 2500
-                            })
-
-                            $(ele).parent().parent().parent().addClass('d-none');
+                            toastr.success( data['message'] , { timeOut: 5000 });
+                            $("#project_"+ id).remove();
                         } else {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'error',
-                                title: data['message'],
-                                showConfirmButton: false,
-                                timer: 2500
-                            })
+                            toastr.error( data['message'] , { timeOut: 5000 });
                         }
                     },
                     failure: function (errMsg) {
