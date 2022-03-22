@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->call('\App\Http\Controllers\HelpdeskController@updateFollowupCron')->everyMinute();
 
         // $schedule->call('\App\Http\Controllers\PayrollManager\PayrollController@check_clockins')->everyThirtyMinutes();
-        $schedule->call('\App\Http\Controllers\ProjectManager\ProjectManagerController@todaysTasks')->daily();
+        // $schedule->call('\App\Http\Controllers\ProjectManager\ProjectManagerController@todaysTasks')->daily();
     }
 
     /**
