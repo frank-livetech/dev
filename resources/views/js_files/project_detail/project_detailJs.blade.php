@@ -1167,14 +1167,12 @@ function get_asset_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             return `
-                        <button title="Edit Type" class="btn btn-success btn-circle" onclick="editAsset(` + full.id + `);">
-                            <i class="mdi mdi-grease-pencil" aria-hidden="true"></i>
-                        </button>
-                    
-                        <button class="btn btn-danger btn-circle" title="Delete Asset" onclick="deleteAsset(` + full.id + `);">
-                            <i class="fas fa-trash-alt" aria-hidden="true"></i>
-                        </button>
-                        `;
+                                <div class="d-flex justify-content-center">
+                                    <button onclick="editAsset(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                    <button onclick="deleteAsset(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fa fa-trash"></i></button>
+                                </div>`;
                         }
                     },
                 ],
