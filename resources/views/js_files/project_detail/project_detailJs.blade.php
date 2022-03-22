@@ -522,8 +522,8 @@ function filterTasks(task_type) {
                                         ${status}
                                     </div>
                                     <small class="text-nowrap text-muted me-1"> ${moment(data.created_at).format('MMM DD')} </small>
-                                    <div class="avatar">
-                                        <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
+                                    <div class="">
+                                        <span class="badge bg-light-primary"> ${ data.task_assigned_to == null ? '-' : (data.task_assigned_to.name  != null ? data.task_assigned_to.name : '-') } </span>
                                     </div>
                                 </div>
                             </div>
@@ -598,8 +598,8 @@ function get_all_project_task() {
                                             ${status}
                                         </div>
                                         <small class="text-nowrap text-muted me-1"> ${moment(data.created_at).format('MMM DD')} </small>
-                                        <div class="avatar">
-                                            <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
+                                        <div class="">
+                                            <span class="badge bg-light-primary"> ${ data.task_assigned_to == null ? '-' : (data.task_assigned_to.name  != null ? data.task_assigned_to.name : '-') } </span>
                                         </div>
                                     </div>
                                 </div>
