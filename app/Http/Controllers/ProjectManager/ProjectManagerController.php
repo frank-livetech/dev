@@ -107,7 +107,9 @@ class ProjectManagerController extends Controller
           
         }
 
-        return view('project_manager.index',compact('projectsfolder','projects','free_staff','users','tasks','overdue_taks','external_project'));
+
+        return view('project_manager.index_new', get_defined_vars());
+        // return view('project_manager.index', get_defined_vars());
     }
 
     public function task_project_2($status=null, $userid=null){
@@ -616,8 +618,8 @@ class ProjectManagerController extends Controller
       $date_format = Session('system_date');
 
       $change_logs = Tasks::where('is_deleted', 0)->where('task_status', 'success')->where('project_id', $project->id)->orderBy('created_at', 'desc')->get();
-      
-      return view('project_manager.project_task',compact('change_logs','total_tasks','completed_tasks','in_progress_tasks','pending_tasks','tasks','project','customers','users','versions','settings','project_slug', 'status','date_format'));
+      return view('project_manager.project_task_new' , get_defined_vars());
+      // return view('project_manager.project_task' , get_defined_vars());
     }else{
       $filter = '';
       if(strtolower($status) == 'complete'){
@@ -634,7 +636,6 @@ class ProjectManagerController extends Controller
       $pending_tasks = 0;
       $in_progress_tasks = 0;
       $completed_tasks = 0;
-
       foreach($tasks as $task) {
         $task->created_by = User::where('id',$task->created_by)->where('is_deleted', 0)->first();
         $completed_tasks = Tasks::where('is_deleted', 0)->where('task_status', 'success')->where('project_id', $project->id)->count();
@@ -786,6 +787,7 @@ class ProjectManagerController extends Controller
     public function add_project_task(Request $request){
           
         $data = $request->all();
+        // return dd($data);
         // return $_FILES;
         unset($data['slug']);
         
@@ -820,7 +822,7 @@ class ProjectManagerController extends Controller
               'task_priority'=>$data['task_priority'],
               'start_date'=>$data['start_date'],
               'due_date'=>$data['due_date'],
-              'completed_at'=>$data['completed_at'],
+              // 'completed_at'=>$data['completed_at'],
               'completion_time'=>$data['completion_time'],
               'estimated_time'=>$data['estimated_time'],
               'assign_to' =>$data['assign_to'],
@@ -1097,8 +1099,7 @@ class ProjectManagerController extends Controller
     public function AllTaskLists($id, Request $request) {
       try{
         $data =  Tasks::with('taskCreator')
-        ->with('taskProject')
-        ->with('taskAssignedTo')
+        ->with(['taskProject' , 'taskAssignedTo' , 'taskAttachments'])
         ->where('task_status','!=','Select')
         ->where('is_deleted',0)->where('project_id',$id)->orderBy('id', 'DESC')->get();
 

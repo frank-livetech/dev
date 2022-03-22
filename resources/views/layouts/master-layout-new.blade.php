@@ -99,6 +99,23 @@
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <!-- END: Material Design CDNS-->
+    
+    <style>
+        .loading__ {
+            background: white !important;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            right: 0px;
+            position: absolute;
+            z-index: 9;
+            border-radius: 3px;
+            opacity: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 
     @stack('css')
     @yield('customtheme')
@@ -284,7 +301,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/extra-libs/countdown/countdown.css')}}" />
     <script type="text/javascript" src="{{asset($file_path . 'assets/extra-libs/countdown/countdown.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.js"></script>
-
     <script>
         const org_path = "{{Session::get('is_live')}}";
         const root = "{{request()->root()}}";

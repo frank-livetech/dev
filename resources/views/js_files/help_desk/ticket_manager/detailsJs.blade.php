@@ -2421,18 +2421,18 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 $('#priority').val(data.ticket.priority).trigger('change');
 
                 // send mail notification regarding ticket action
-                ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
+                // ticket_notify('ticket_update', 'Follow-up updated','',updates_Arr);
 
                 // refresh logs
                 getLatestLogs();
 
                 // getTicketFollowUp();
-                get_ticket_notes();
-                getTicketReplies(ticket.id)
+                // get_ticket_notes();
+                // getTicketReplies(ticket.id)
 
-                // if(ticket_replies) getTicketReplies(ticket.id);
-            
-                // if (ticketNotes) get_ticket_notes();
+                if(ticket_replies) getTicketReplies(ticket.id);
+                if (ticketNotes) get_ticket_notes();
+
             }else{
                 console.log("failed")
                 toastr.error(data.message, { timeOut: 5000 });
@@ -3082,16 +3082,16 @@ function get_ticket_notes() {
                         </div>`;
                     }
 
-                    if (notes[i].followup_id && notes[i].followUp_date) {
-                        let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
+                    // if (notes[i].followup_id && notes[i].followUp_date) {
+                    //     let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
 
-                        // set timeout for only 1 day's followups
-                        if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
+                    //     // set timeout for only 1 day's followups
+                    //     if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
 
-                        if (timeOut2 > 0) {
-                            timeOut = timeOut2 * 1000;
-                        }
-                    }
+                    //     if (timeOut2 > 0) {
+                    //         timeOut = timeOut2 * 1000;
+                    //     }
+                    // }
 
                     if(notes[i].type == 'Ticket') {
                     
@@ -3137,14 +3137,15 @@ function get_ticket_notes() {
                     </div>`;
 
                     
+                    $('#v-pills-notes-list').append(flup);
 
-                    if (timeOut) {
-                        timeouts_list.push(setTimeout(function() {
-                            $('#v-pills-notes-list').append(flup);
-                        }, timeOut));
-                    } else {
-                        $('#v-pills-notes-list').append(flup);
-                    }
+                    // if (timeOut) {
+                    //     timeouts_list.push(setTimeout(function() {
+                    //         $('#v-pills-notes-list').append(flup);
+                    //     }, timeOut));
+                    // } else {
+                    //     $('#v-pills-notes-list').append(flup);
+                    // }
                 }
             }
         },

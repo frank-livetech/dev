@@ -163,7 +163,7 @@
                         
                         <h6> 
                             <a href="mailto:{{$profile->email}}" title="{{$profile->email}}">
-                                {{ $profile->email != null ? Str::of($profile->email)->before('@') : '-'}}
+                                {{ $profile->email != null ? $profile->email : '-'}}
                             </a> 
                         </h6>
 
