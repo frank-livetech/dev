@@ -472,19 +472,22 @@ $("#todo-search").on('keyup', function() {
 
 
 function filterTasks(task_type) {
-
     $('.loading__').attr('style','display:block !important');
 
     let task_data = ``;
     let status = ``;
     if (tasks_arr.length > 0) {
 
-        let items = tasks_arr.filter( item => item.task_status == task_type);
-        console.log(items , "items");
+        let items = ``;
+        if(task_type == 'all') {
+            items = tasks_arr;
+        }else{
+            items = tasks_arr.filter( item => item.task_status == task_type);
+        }
 
-        for (const data of items) {
+        if(items.length > 0) {
 
-            if(data.task_status == task_type) {
+            for (const data of items) {
 
                 let attachment_icon = `<i onclick="openTaskAttachments(${data.id})" class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Tsak Has Attachments"></i>`;
 
@@ -502,36 +505,38 @@ function filterTasks(task_type) {
 
                 let title = `<a href="javascrip:void(0)" onclick="showTaskDetail(${data.id})"> ${data.title}  </a>`;
                 task_data += `
-                    <li class="todo-item">
-                        <div class="todo-title-wrapper">
-                            <div class="todo-title-area">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical drag-icon"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                                <div class="title-wrapper">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck1">
-                                        <label class="form-check-label" for="customCheck1"></label>
+                        <li class="todo-item">
+                            <div class="todo-title-wrapper">
+                                <div class="todo-title-area">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical drag-icon"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                    <div class="title-wrapper">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="customCheck1">
+                                            <label class="form-check-label" for="customCheck1"></label>
+                                        </div>
+                                        <span class="todo-title"> ${data.title != null ? title : '-'}  ${data.task_attachments.length > 0 ? attachment_icon : ''} </span>
                                     </div>
-                                    <span class="todo-title"> ${data.title != null ? title : '-'}  ${data.task_attachments.length > 0 ? attachment_icon : ''} </span>
+                                </div>
+                                <div class="todo-item-action">
+                                    <div class="badge-wrapper me-1">
+                                        ${status}
+                                    </div>
+                                    <small class="text-nowrap text-muted me-1"> ${moment(data.created_at).format('MMM DD')} </small>
+                                    <div class="avatar">
+                                        <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="todo-item-action">
-                                <div class="badge-wrapper me-1">
-                                    ${status}
-                                </div>
-                                <small class="text-nowrap text-muted me-1"> ${moment(data.created_at).format('MMM DD')} </small>
-                                <div class="avatar">
-                                    <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
-                                </div>
-                            </div>
-                        </div>
-                    </li>`;
+                        </li>`;
             }
+
+            $('.show_project_tasks').html(task_data);
+        }else{
+            $('.show_project_tasks').html('<li class="text-danger"> No Tasks </li>');
         }
 
-        $('.show_project_tasks').html(task_data);
-
     } else {
-        $('.show_project_tasks').html('<spa class="text-danger"> No Tasks </spa>');
+        $('.show_project_tasks').html('<li class="text-danger"> No Tasks </li>');
     }
 
     setTimeout(() => {
@@ -559,8 +564,6 @@ function get_all_project_task() {
                 if (obj.length > 0) {
 
                     for (const data of obj) {
-
-                        if(data.task_status == 'danger') {
 
                         let attachment_icon = `<i onclick="openTaskAttachments(${data.id})" class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Tsak Has Attachments"></i>`;
 
@@ -600,8 +603,7 @@ function get_all_project_task() {
                                         </div>
                                     </div>
                                 </div>
-                            </li>`
-                        }
+                            </li>`;
                     }
 
                     $('.show_project_tasks').html(task_data);

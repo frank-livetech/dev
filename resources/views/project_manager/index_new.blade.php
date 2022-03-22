@@ -400,7 +400,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1"> Add New Project123 </h4>
+                    <h4 class="modal-title" id="myModalLabel1"> Add New Project </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
