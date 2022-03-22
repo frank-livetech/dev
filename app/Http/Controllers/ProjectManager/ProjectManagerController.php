@@ -391,47 +391,55 @@ class ProjectManagerController extends Controller
                 return response()->json($response);
     
             }else{
-              if( array_key_exists('id', $data) ) {
-                $folder = Projectfolder::findOrFail($data['id']);
+
+              $data['created_by'] = auth()->id();
+              $action_perform = 'Project Folder '. $data['name'] .' ' . (request()->id == null ? 'Created By ' : 'Updated By ') . ' '. $name_link;
+              $log = new ActivitylogController();
+              $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
+
+              Projectfolder::updateOrCreate( ['id' => request()->id] , $data);
+
+              // if( $request->id == null) {
+              //   $folder = Projectfolder::findOrFail($data['id']);
                 
-                // if( is_dir('/files/Projects Folders/'.$folder->name) ) {
-                //   if( !rename('/files/Projects Folder/'.$folder->name, '/files/Projects Folder/'.$data['name']) ) {
-                //     throw new \Exception('Failed to rename directory');
-                //   }
-                // }else{
-                //   if( !mkdir('/files/Projects Folders/'.$data['name'], 0777, true) ) {
-                //     throw new \Exception('Failed to add directory');
-                //   }
-                // }
+              //   // if( is_dir('/files/Projects Folders/'.$folder->name) ) {
+              //   //   if( !rename('/files/Projects Folder/'.$folder->name, '/files/Projects Folder/'.$data['name']) ) {
+              //   //     throw new \Exception('Failed to rename directory');
+              //   //   }
+              //   // }else{
+              //   //   if( !mkdir('/files/Projects Folders/'.$data['name'], 0777, true) ) {
+              //   //     throw new \Exception('Failed to add directory');
+              //   //   }
+              //   // }
 
-                $folder->name = $data['name'];
-                $folder->updated_by = \Auth::user()->id;
-                $folder->updated_at = Carbon::now();
+              //   $folder->name = $data['name'];
+              //   $folder->updated_by = \Auth::user()->id;
+              //   $folder->updated_at = Carbon::now();
 
-                $folder->save();
+              //   $folder->save();
 
-                $action_perform = 'Project Folder '. $data['name'] .' Updated By '. $name_link;
-                $log = new ActivitylogController();
-                $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
+              //   $action_perform = 'Project Folder '. $data['name'] .' Updated By '. $name_link;
+              //   $log = new ActivitylogController();
+              //   $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
 
-              }else{
-                // if( !is_dir('/files/Projects Folders/'.$data['name']) ) {
-                //   if( !mkdir('/files/Projects Folders/'.$data['name'], 0777, true) ) {
-                //     throw new \Exception('Failed to add directory');
-                //   }
-                // }
-                $data['created_by'] = \Auth::user()->id;
-                $data = Projectfolder::create($data);
+              // }else{
+              //   // if( !is_dir('/files/Projects Folders/'.$data['name']) ) {
+              //   //   if( !mkdir('/files/Projects Folders/'.$data['name'], 0777, true) ) {
+              //   //     throw new \Exception('Failed to add directory');
+              //   //   }
+              //   // }
+              //   $data['created_by'] = \Auth::user()->id;
+              //   $data = Projectfolder::create($data);
 
-                $action_perform =  'Project Folder '. $data['name'] .' Created By '. $name_link;
-                $log = new ActivitylogController();
-                $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
+              //   $action_perform =  'Project Folder '. $data['name'] .' Created By '. $name_link;
+              //   $log = new ActivitylogController();
+              //   $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
 
-              }
+              // }
 
               
               
-              $response['message'] = 'Folder Saved Successfully!';
+              $response['message'] = 'Folder '.(request()->id == null ? 'Saved ' : 'Updated').' Successfully!';
               $response['status_code'] = 200;
               $response['success'] = true;
               $response['result'] = $data;
@@ -473,6 +481,7 @@ class ProjectManagerController extends Controller
     public function save_project(Request $request){
 
       $data = $request->all();
+      // return dd($data);
           
       $response = array();
       $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
@@ -494,36 +503,54 @@ class ProjectManagerController extends Controller
 
         }else{
             $slug = explode('.',$data['name']);
-            if(array_key_exists('id', $data)) {
-              $project = Project::findOrFail($data['id']);
+            
+            $project_data = array(
+              "name" => $data['name'] ,
+              "project_slug" => $slug[0] ,
+              "folder_id" => $data['folder_id'] ,
+              "project_type" => $data['project_type'] ,
+              "project_roadmap_table" => $slug[0] .'-prj-roadmap',
+              "updated_at" => Carbon::now() ,
+              "updated_by" => auth()->id() ,
+            );
+
+            $text = request()->id == null ? 'Created By ' : 'Updated By';
+            $action_perform = 'Project '. $text . ' ' . $name_link;
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Project' , 'project' , request()->id , auth()->id() , $action_perform);
+
+            Project::updateOrCreate( ['id' => request()->id] , $project_data);
+
+            // if(array_key_exists('id', $data)) {
+            //   $project = Project::findOrFail($data['id']);
               
-              $data['project_slug'] = $slug[0];
-              $data['project_roadmap_table'] =  $data['project_slug'].'-prj-roadmap';
+              
+            //   $data['project_roadmap_table'] =  $data['project_slug'].'-prj-roadmap';
 
-              $project->name = $data['name'];
-              $project->folder_id = $data['folder_id'];
-              $project->project_type = $data['project_type'];
-              $project->project_slug = $data['project_slug'];
-              $project->project_roadmap_table = $data['project_roadmap_table'];
-              $project->updated_at = Carbon::now();
-              $project->updated_by = \Auth::user()->id;
+            //   $project->name = $data['name'];
+            //   $project->folder_id = $data['folder_id'];
+            //   $project->project_type = $data['project_type'];
+            //   $project->project_slug = $data['project_slug'];
+            //   $project->project_roadmap_table = $data['project_roadmap_table'];
+            //   $project->updated_at = Carbon::now();
+            //   $project->updated_by = \Auth::user()->id;
 
-              $project->save();
+            //   $project->save();
 
-              $action_perform = 'Project Updated By '. $name_link;
-              $log = new ActivitylogController();
-              $log->saveActivityLogs('Project' , 'project' , $data['id'] , auth()->id() , $action_perform);
-            }else{
-                $data['project_slug'] = $slug[0];
-                $data['created_by'] = \Auth::user()->id;
-                $data['project_roadmap_table'] =  $data['project_slug'].'-prj-roadmap';
-                $data = Project::create($data);
+            //   $action_perform = 'Project Updated By '. $name_link;
+            //   $log = new ActivitylogController();
+            //   $log->saveActivityLogs('Project' , 'project' , $data['id'] , auth()->id() , $action_perform);
+            // }else{
+            //     $data['project_slug'] = $slug[0];
+            //     $data['created_by'] = \Auth::user()->id;
+            //     $data['project_roadmap_table'] =  $data['project_slug'].'-prj-roadmap';
+            //     $data = Project::create($data);
 
-                $action_perform = 'Project Created By '. $name_link;
-                $log = new ActivitylogController();
-                $log->saveActivityLogs('Project' , 'project' , $data['id'] , auth()->id() , $action_perform);
+            //     $action_perform = 'Project Created By '. $name_link;
+            //     $log = new ActivitylogController();
+            //     $log->saveActivityLogs('Project' , 'project' , $data['id'] , auth()->id() , $action_perform);
                
-            }
+            // }
 
             $response['message'] = 'Project Saved Successfully!';
             $response['status_code'] = 200;
@@ -547,11 +574,12 @@ class ProjectManagerController extends Controller
       'is_deleted' => 1,
     ]);
 
-    $project->delete();
     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
     $action_perform = 'Project Deleted '. $$project->name .'  By '. $name_link;
     $log = new ActivitylogController();
     $log->saveActivityLogs('Project Deleted' , 'project_deleted' , $request->id , auth()->id() , $action_perform);
+
+    $project->delete();
 
     $response['message'] = 'Project Deleted Successfully!';
     $response['status_code'] = 200;

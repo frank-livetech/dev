@@ -79,7 +79,7 @@
                         <div class="col-12 mt-1">
                             <ul class="list-group">
                                 @foreach($projectsfolder as $folder)
-                                    <li class="list-group-item" id="folder_{{$folder->id}}">
+                                    <li class="list-group-item" id="main_folder_{{$folder->id}}">
                                         <div class="d-flex justify-content-between">
                                             <div class="icon_text">
                                                 <svg data-bs-toggle="collapse" href="#folder_{{$folder->id}}" role="button" aria-expanded="false" aria-controls="folder_{{$folder->id}}" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
@@ -101,20 +101,20 @@
                                         </div>
                                     </li>
 
-                                    <div class="collapse mb-1" id="folder_{{$folder->id}}" style="">
+                                    <div class="collapse mb-1" id="folder_{{$folder->id}}">
                                         @foreach($projects as $project)
                                             @if($folder->id == $project->folder_id)
-                                                <div class="mt-1 ms-2">
+                                                <div class="mt-1 ms-2" id="project_{{$project->id}}">
                                                     <li class="list-group-item bg-light">
                                                         <div class="d-flex justify-content-between">
                                                             <div class="name">
                                                                 <a href="{{asset('roadmap')}}/{{$project->project_slug}}"> {{$project->name }} </a>
                                                             </div>
                                                             <div class="action_btn">
-                                                                <svg onclick="editProject(this, '{{$project->id}}');" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
+                                                                <svg onclick="editProject({{$project->id}});" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
                                                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                                                 </svg>
-                                                                <svg onclick="removeProject(this)" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
+                                                                <svg onclick="removeProject({{$project->id}})" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
                                                                     <polyline points="3 6 5 6 21 6"></polyline>
                                                                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                                                                 </svg>
@@ -350,72 +350,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="blue bigger" Style="color:#009efb">Add New Project <span class="bulk_loader"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12">
-
-                            <form id="new-project-add" action="{{asset('save-project')}}" method="Post">
-                                <!-- <legend>Form</legend> -->
-                                <fieldset>
-                                    <div class="form-group">
-
-                                        <div class="col-sm-12">
-                                            <label class="control-label ">Project Name</label>
-                                            <input type="text" class="form-control" id="project_name" name="name" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <label class="control-label ">Select Project
-                                                Folder</label>
-                                            <select id="folder_id" name="folder_id" class="select2 form-control custom-select" style="width: 100%; height:56px;" required>
-                                                <option value="">Select</option>
-                                                @foreach($projectsfolder as $projectfolder)
-                                                <option value="{{$projectfolder->id}}">{{$projectfolder->name}}</option>
-                                                @endforeach
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="col-sm-12">
-                                            <label class="control-label ">Select Project
-                                                Type<span id="save-type" style="display :none; color:red;">Title cannot
-                                                    be
-                                                    empty </span></label>
-                                            <select id="project_type" name="project_type" class="select2 form-control custom-select" style="width: 100%; height:56px;" required>
-                                                <option value="">Select</option>
-                                                <option value="external">External</option>
-                                                <option value="internal">Internal</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <div class="text-right col-md-12">
-                                    <button class="btn btn-sm btn-success rounded ml-3" id="done_btn" type="submit"> <i class="mdi mdi-check-circle"></i> Save</button>
-                                    <button id="proces_btn" type="button" style="display:none" class="btn btn-sm rounded btn-success ml-3" disabled> <i class="fas fa-circle-notch fa-spin"></i> Processing</button>
-
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="addTaskModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -466,12 +400,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1"> Add New Project </h4>
+                    <h4 class="modal-title" id="myModalLabel1"> Add New Project123 </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="new-project-add" action="{{asset('save-project')}}" method="Post">
                         <!-- <legend>Form</legend> -->
+                        <input type="hidden" name="id" id="pro_id">
                         <fieldset>
                             <div class="form-group">
 
@@ -517,31 +452,32 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- folder modal -->
-        <div class="modal fade text-start" id="add-folders" tabindex="-1" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel1"> Add Folder </h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="save_folder" action="{{asset('save-folder')}}" method="Post">
-                            <input type="hidden" name="id" id="fld_id">
-                            <div class="form-group">
-                                <label for="emailaddress1">Title</label>
-                                <input class="form-control" type="text" name="name" id="title" required>
-                            </div>
+    <!-- folder modal -->
+    <div class="modal fade text-start" id="add-folders" tabindex="-1" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel1"> Add Folder </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="save_folder" action="{{asset('save-folder')}}" method="Post">
+                        <input type="hidden" name="id" id="fld_id">
+                        <div class="form-group">
+                            <label for="emailaddress1">Title</label>
+                            <input class="form-control" type="text" name="name" id="title" required>
+                        </div>
 
-                            <button class="btn btn-primary waves-effect mt-1" id="fldr_btn" type="submit"> <i class="mdi mdi-check-circle"></i> Save</button>
-                            <button id="process_btn" type="button" style="display:none" class="btn btn-primary mt-1" disabled> <i class="fas fa-circle-notch fa-spin"></i> Processing</button>
+                        <button class="btn btn-primary waves-effect mt-1" id="fldr_btn" type="submit"> <i class="mdi mdi-check-circle"></i> Save</button>
+                        <button id="process_btn" type="button" style="display:none" class="btn btn-primary mt-1" disabled> <i class="fas fa-circle-notch fa-spin"></i> Processing</button>
 
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
 @endsection
 @section('scripts')
