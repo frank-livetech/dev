@@ -42,18 +42,18 @@
         getAllTasks(from,to,user_id);
     });
     
-    function showFolderModel(update=false) {
+    function showFolderModel( ) {
         $("#save_folder").trigger("reset");
-        acting_id = -1;
-        $('#add-folders').find('h2').html('Add Folder');
+        $("#fld_id").val("");
+
+        $("#myModalLabel1").text('Add Folder');
         $('#add-folders').modal('show');
     }
 
-    function editFolder(ele){
-        acting_id = $(ele).parent().parent().parent().data('id');
+    function editFolder(id){
+        $("#fld_id").val(id);
         
-        $("#save_folder").find("#title").val($(ele).parent().parent().find('label').html());
-        $('#add-folders').find('h2').html('Update Folder');
+        $("#myModalLabel1").text( 'Edit Folder' );
         $('#add-folders').modal('show');
     }
 
@@ -97,7 +97,7 @@
                                 <label class="m-0">`+data.result.name+`</label>
                                 <div class="float-right">
                                     <i class="fas fa-edit" onclick="editFolder(this);"></i>
-                                    <i class="fas fa-trash text-danger" onclick="removeFolder(this)"></i>
+                                    <i class="fas fa-trash text-danger" onclick="removeFolder(${data.result.id})"></i>
                                 </div>
                             </a>
                         </li>`);
@@ -125,7 +125,7 @@
 
     });
 
-    function removeFolder(ele) {
+    function removeFolder(id) {
         Swal.fire({
             title: 'Are you sure?',
             text: "All data related to this project folder will be removed!",
@@ -139,32 +139,16 @@
                 $.ajax({
                     url: "{{asset('delete-folder')}}",
                     type: "POST",
-                    data: {
-                        id: $(ele).parent().parent().parent().data('id')
-                    },
-
+                    data: { id:id},
                     dataType: 'json',
                     cache: false,
                     success: function (data) {
                         console.log(data)
                         if (data.success==true) {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: data['message'],
-                                showConfirmButton: false,
-                                timer: 2500
-                            })
-
-                            $(ele).parent().parent().parent().addClass('d-none');
+                            toastr.success( data['message'] , { timeOut: 5000 });
+                            $("#folder_"+ id).remove();
                         } else {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'error',
-                                title: data['message'],
-                                showConfirmButton: false,
-                                timer: 2500
-                            })
+                            toastr.error( data['message'] , { timeOut: 5000 });
                         }
                     },
                     failure: function (errMsg) {

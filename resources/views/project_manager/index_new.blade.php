@@ -79,7 +79,7 @@
                         <div class="col-12 mt-1">
                             <ul class="list-group">
                                 @foreach($projectsfolder as $folder)
-                                    <li class="list-group-item">
+                                    <li class="list-group-item" id="folder_{{$folder->id}}">
                                         <div class="d-flex justify-content-between">
                                             <div class="icon_text">
                                                 <svg data-bs-toggle="collapse" href="#folder_{{$folder->id}}" role="button" aria-expanded="false" aria-controls="folder_{{$folder->id}}" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
@@ -90,10 +90,10 @@
                                                 {{$folder->name}}
                                             </div>
                                             <div class="action_btn">
-                                                <svg onclick="editFolder(this);" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
+                                                <svg onclick="editFolder({{$folder->id}});" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
                                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                                 </svg>
-                                                <svg onclick="removeFolder(this)" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
+                                                <svg onclick="removeFolder({{$folder->id}})" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash">
                                                     <polyline points="3 6 5 6 21 6"></polyline>
                                                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                                                 </svg>
@@ -528,7 +528,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="save_folder" action="{{asset('save-folder')}}" method="Post">
-
+                            <input type="hidden" name="id" id="fld_id">
                             <div class="form-group">
                                 <label for="emailaddress1">Title</label>
                                 <input class="form-control" type="text" name="name" id="title" required>
@@ -541,18 +541,19 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            @endsection
-            @section('scripts')
-            <script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
+@endsection
+@section('scripts')
+<script src="{{asset('https://cdn.jsdelivr.net/npm/sweetalert2@9')}}"></script>
 
-            <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-            <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
-            @include('js_files.project_manager.indexJs')
-            <script>
-                $('.buttons-copy').addClass('btn btn-light');
-            </script>
-            @endsection
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+@include('js_files.project_manager.indexJs')
+<script>
+    $('.buttons-copy').addClass('btn btn-light');
+</script>
+@endsection
