@@ -68,7 +68,7 @@
                                             <div class="badge-wrapper me-1">
                                                 ${status}
                                             </div>
-                                            <small class="text-nowrap text-muted me-1">Aug 08</small>
+                                            <small class="text-nowrap text-muted me-1"> ${moment(data.created_at).format('MMM DD')}</small>
                                             <div class="avatar">
                                                 <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32" />
                                             </div>

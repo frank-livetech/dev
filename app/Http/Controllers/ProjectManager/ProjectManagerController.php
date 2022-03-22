@@ -787,7 +787,7 @@ class ProjectManagerController extends Controller
     public function add_project_task(Request $request){
           
         $data = $request->all();
-        return dd($data);
+        // return dd($data);
         // return $_FILES;
         unset($data['slug']);
         
@@ -1099,8 +1099,7 @@ class ProjectManagerController extends Controller
     public function AllTaskLists($id, Request $request) {
       try{
         $data =  Tasks::with('taskCreator')
-        ->with('taskProject')
-        ->with('taskAssignedTo')
+        ->with(['taskProject' , 'taskAssignedTo' , 'taskAttachments'])
         ->where('task_status','!=','Select')
         ->where('is_deleted',0)->where('project_id',$id)->orderBy('id', 'DESC')->get();
 

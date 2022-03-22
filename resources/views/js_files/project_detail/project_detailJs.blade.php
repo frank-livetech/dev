@@ -7,10 +7,15 @@ var system_date_format = $("#system_date_format").val();
 let tasks_list = [];
 let tasks_flt_list = [];
 let tasks_table_list = null;
+let tasks_arr = [];
 var data_editor; // use a global for the submit and return data rendering in the examples
 
 $(document).ready(function() {
-
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
         
     if(localStorage.getItem('df_task_version')) {
         $('#selc-ver').val(localStorage.getItem('df_task_version'));
@@ -32,7 +37,7 @@ $(document).ready(function() {
 
     });
 
-    // get_all_project_task();
+    get_all_project_task();
 
     // notes tag dropdown
     var userlist = [];
@@ -128,7 +133,8 @@ $(document).ready(function() {
         let form_data = new FormData(this);
         let url = $(this).attr('action');
         let method = $(this).attr('method');
-        var tsk_desc = tinymce.get('tsk_desc').getContent();
+        // var tsk_desc = tinymce.get('tsk_desc').getContent();
+        var tsk_desc = $('#tsk_desc').val();
 
         var estimated_time_hours = $("#estimated_time_hours").val();
         var estimated_time_mins = $("#estimated_time_mins").val();
@@ -163,23 +169,31 @@ $(document).ready(function() {
             contentType: false,
             cache: false,
             processData: false,
-            beforeSend: function(data) {},
+            beforeSend: function(data) {
+                $('.project_btn').hide();
+                $('.project_loader').show();
+            },
             success: function(data) {
-                console.log(data);
-                $("#save-task")[0].reset();
+                
                 if (data.status_code == 200 && data.success == true) {
                     toastr.success(data.message, { timeOut: 5000 });
-                    $('.newTask').hide('1000');
-                    getAllProjectTasks();
+                    $("#new-task-modal").modal('hide');
+                    $("#save-task")[0].reset();
+
+                    get_all_project_task();
+
                 } else {
                     toastr.error(data.message, { timeOut: 5000 });
                 }
-                // g_attachments = [];
-                // g_attachments_delete = [];
             },
-            complete: function(data) {},
+            complete: function(data) {
+                $('.project_btn').show();
+                $('.project_loader').hide();
+            },
             error: function(e) {
-                console.log(e)
+                console.log(e);
+                $('.project_btn').show();
+                $('.project_loader').hide();
             }
 
         });
@@ -387,7 +401,317 @@ function saveManager() {
 
 }
 
+function openTaskModal() {
+    $("#new-task-modal").modal('show');
+    $("#task_id").val("");
+    $(".project_btn").text("Save");
+    $("#task_att_type").val("open");
+}
+
+// search template
+$("#todo-search").on('keyup', function() {
+    let value = $(this).val().toLowerCase();
+
+    var filtertext = $.grep(tasks_arr , function(object) {
+        let re_title = object.title.toLowerCase();
+        if(re_title != null) {
+            return re_title.includes(value);
+        }
+    });
+
+    let html = ``;
+    let status = ``;
+
+    if(filtertext.length > 0) {
+        for (var i = 0; i < filtertext.length; i++) {
+            
+            if (filtertext[i].task_status == 'success') {
+                status = `<span class="badge rounded-pill badge-light-success"> Completed </span>`;
+            }
+
+            if (filtertext[i].task_status == 'danger') {
+                status = `<span class="badge rounded-pill badge-light-danger"> Pending </span>`;
+            }
+
+            if (filtertext[i].task_status == 'default') {
+                status = `<span class="badge rounded-pill badge-light-warning"> Working </span>`;
+            }
+
+            html += `
+                <li class="todo-item" onclick="showTaskDetail(${filtertext[i].id})">
+                    <div class="todo-title-wrapper">
+                        <div class="todo-title-area">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical drag-icon"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                            <div class="title-wrapper">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="customCheck1">
+                                    <label class="form-check-label" for="customCheck1"></label>
+                                </div>
+                                <span class="todo-title"> ${filtertext[i].title != null ? filtertext[i].title : '-'}  </span>
+                            </div>
+                        </div>
+                        <div class="todo-item-action">
+                            <div class="badge-wrapper me-1">
+                                ${status}
+                            </div>
+                            <small class="text-nowrap text-muted me-1"> ${moment(filtertext[i].created_at).format('MMM DD')} </small>
+                            <div class="avatar">
+                                <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
+                            </div>
+                        </div>
+                    </div>
+                </li>`;
+        }
+    }else{
+        html += `<div class="d-flex justify-content-between border-bottom p-1 text-danger" id="resTemp_">
+                No task found
+            </div>`;
+    }
+    $('.show_project_tasks').html(html);
+});
+
+
+function filterTasks(task_type) {
+
+    $('.loading__').attr('style','display:block !important');
+
+    let task_data = ``;
+    let status = ``;
+    if (tasks_arr.length > 0) {
+
+        let items = tasks_arr.filter( item => item.task_status == task_type);
+        console.log(items , "items");
+
+        for (const data of items) {
+
+            if(data.task_status == task_type) {
+
+                let attachment_icon = `<i onclick="openTaskAttachments(${data.id})" class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Tsak Has Attachments"></i>`;
+
+                if (data.task_status == 'success') {
+                    status = `<span class="badge rounded-pill badge-light-success"> Completed </span>`;
+                }
+
+                if (data.task_status == 'danger') {
+                    status = `<span class="badge rounded-pill badge-light-danger"> Pending </span>`;
+                }
+
+                if (data.task_status == 'default') {
+                    status = `<span class="badge rounded-pill badge-light-warning"> Working </span>`;
+                }
+
+                let title = `<a href="javascrip:void(0)" onclick="showTaskDetail(${data.id})"> ${data.title}  </a>`;
+                task_data += `
+                    <li class="todo-item">
+                        <div class="todo-title-wrapper">
+                            <div class="todo-title-area">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical drag-icon"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                <div class="title-wrapper">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="customCheck1">
+                                        <label class="form-check-label" for="customCheck1"></label>
+                                    </div>
+                                    <span class="todo-title"> ${data.title != null ? title : '-'}  ${data.task_attachments.length > 0 ? attachment_icon : ''} </span>
+                                </div>
+                            </div>
+                            <div class="todo-item-action">
+                                <div class="badge-wrapper me-1">
+                                    ${status}
+                                </div>
+                                <small class="text-nowrap text-muted me-1"> ${moment(data.created_at).format('MMM DD')} </small>
+                                <div class="avatar">
+                                    <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
+                                </div>
+                            </div>
+                        </div>
+                    </li>`;
+            }
+        }
+
+        $('.show_project_tasks').html(task_data);
+
+    } else {
+        $('.show_project_tasks').html('<spa class="text-danger"> No Tasks </spa>');
+    }
+
+    setTimeout(() => {
+        $('.loading__').attr('style','display:none !important');
+    }, 1000);
+}
+
+
 function get_all_project_task() {
+    var project_id = $("#project_id").val();
+
+    $.ajax({
+        type: "GET",
+        url: get_all_tasks + '/' + project_id,
+        beforeSend:function(data) {
+            $('.loading__').attr('style','display:block !important');
+        },
+        success: function(result) {
+            if(result.success) {
+                let obj = result.data;
+                console.log(obj , "obj");
+                tasks_arr = result.data;
+                let task_data = ``;
+                let status = ``;
+                if (obj.length > 0) {
+
+                    for (const data of obj) {
+
+                        if(data.task_status == 'danger') {
+
+                        let attachment_icon = `<i onclick="openTaskAttachments(${data.id})" class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Tsak Has Attachments"></i>`;
+
+                        if (data.task_status == 'success') {
+                            status = `<span class="badge rounded-pill badge-light-success"> Completed </span>`;
+                        }
+
+                        if (data.task_status == 'danger') {
+                            status = `<span class="badge rounded-pill badge-light-danger"> Pending </span>`;
+                        }
+
+                        if (data.task_status == 'default') {
+                            status = `<span class="badge rounded-pill badge-light-warning"> Working </span>`;
+                        }
+
+                        let title = `<a href="javascrip:void(0)" onclick="showTaskDetail(${data.id})"> ${data.title}  </a>`;
+                        task_data += `
+                            <li class="todo-item">
+                                <div class="todo-title-wrapper">
+                                    <div class="todo-title-area">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical drag-icon"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                        <div class="title-wrapper">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="customCheck1">
+                                                <label class="form-check-label" for="customCheck1"></label>
+                                            </div>
+                                            <span class="todo-title"> ${data.title != null ? title : '-'}  ${data.task_attachments.length > 0 ? attachment_icon : ''} </span>
+                                        </div>
+                                    </div>
+                                    <div class="todo-item-action">
+                                        <div class="badge-wrapper me-1">
+                                            ${status}
+                                        </div>
+                                        <small class="text-nowrap text-muted me-1"> ${moment(data.created_at).format('MMM DD')} </small>
+                                        <div class="avatar">
+                                            <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>`
+                        }
+                    }
+
+                    $('.show_project_tasks').html(task_data);
+
+
+                } else {
+                    $('.show_project_tasks').html('<spa class="text-danger"> No Tasks </spa>');
+                }
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: result.message,
+                    showConfirmButton: false,
+                    timer: swal_message_time
+                });
+            }
+        },
+        complete: function(data) {
+            $('.loading__').attr('style','display:none !important');
+            console.log('Success', data);
+        },
+        error: function(data) {
+            console.log('Error', data);
+        }
+    });
+}
+
+function openTaskAttachments(id) {
+    loadAttachments(id);
+    $('#attachmentsModal').modal('show');
+}
+
+function showTaskDetail(id) {
+
+    $("#task_id").val(id);
+    $("#new-task-modal").modal('show');
+    $(".project_btn").text("Update");
+
+    $("#task_att_type").val("edit");
+
+    let item = tasks_arr.find( item => item.id == id);
+    
+    if(item != null) {
+
+        $("input[name='version']").val( item.version != null ? item.version : '' );
+        $("#title").val( item.title != null ? item.title : '' );
+
+        if(item.task_status != null) {
+            $("#selc-st").val( item.task_status ).trigger("change");
+        }
+        
+        if(item.task_priority != null) {
+            $("#task_priority").val( item.task_priority ).trigger("change");
+        }
+        
+        if(item.start_date != null) {
+            $("input[name='start_date']").val( item.start_date );
+        }
+
+        if(item.due_date != null) {
+            $("input[name='due_date']").val( item.due_date );
+        }
+
+        if(item.estimated_time != null) {
+            let time = item.estimated_time.split(':');
+            $("#estimated_time_hours").val(time[0]);
+            $("#estimated_time_mins").val(time[1]);
+        }
+
+        $("#assign_to").val(item.assign_to).trigger("change");
+        
+        if(item.work_tech != null) {
+            $("#work_tech").val(item.work_tech).trigger("change");
+        }
+
+        if(item.task_type != null) {
+            $("#task_type").val(item.task_type).trigger("change");
+        }
+
+        $("#tsk_desc").val(item.task_description != null ? item.task_description : '');
+
+        let files_html = ``;
+        // reInitailizeAttachmentsDialog();
+        if(item.task_attachments.length > 0) {
+
+
+            // loadAttachments(item.id);
+
+            // for (let i = 0; i < item.task_attachments.length; i++) {
+            //     files_html += `
+            //         <div class="col-4 mb-3 -${i}" name="${item.task_attachments[i].attachment}">
+            //             <input type="file" id="dropi-${g_dropi_index}" class="task_attachments" data-show-errors="true" onchange="loadFile(this);" data-max-file-size="2M"/>
+            //         </div>`;
+
+            //         reDropify(g_dropi_index, true);
+            //         // $('#dropi-'+g_dropi_index).attr('disabled', 'true');
+            //         g_dropi_index++;
+            // }
+        }else{
+            files_html = ``
+        }
+
+        
+        // $("#showUploadedAttachments").html(files_html);
+
+    }
+}
+
+function get_all_project_taskold() {
     var project_id = $("#project_id").val();
 
     $("#project_all_tasks").DataTable().destroy();

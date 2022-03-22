@@ -46,7 +46,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <ul class="nav nav-pills bg-nav-pills nav-justified mb-3">
+                        <ul class="nav nav-pills bg-nav-pills nav-justified m-0">
                             <li class="nav-item">
                                     <a href="#projectOverview" data-bs-toggle="tab" aria-expanded="false"
                                         class="nav-link rounded-0 active">
@@ -444,14 +444,14 @@
                                                 </div>
                                                 <div class="sidebar-menu-list">
                                                     <div class="list-group list-group-filters">
-                                                        <a href="#" class="list-group-item list-group-item-action active">
+                                                        <a href="javascript:void(0)" onclick="filterTasks('danger')" class="list-group-item list-group-item-action active">
                                                             <i data-feather="mail" class="font-medium-3 me-50"></i>
                                                             <span class="align-middle"> My Task</span>
                                                         </a>
                                                         <a href="#" class="list-group-item list-group-item-action">
                                                             <i data-feather="star" class="font-medium-3 me-50"></i> <span class="align-middle">Important</span>
                                                         </a>
-                                                        <a href="#" class="list-group-item list-group-item-action">
+                                                        <a href="javascript:void(0)" onclick="filterTasks('success')" class="list-group-item list-group-item-action">
                                                             <i data-feather="check" class="font-medium-3 me-50"></i> <span class="align-middle">Completed</span>
                                                         </a>
                                                         <a href="#" class="list-group-item list-group-item-action">
@@ -524,377 +524,12 @@
                                                 <div class="todo-task-list-wrapper list-group">
                                                     <ul class="todo-task-list media-list show_project_tasks" id="todo-task-list">
                                                         
-                                                        <!-- <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck1" />
-                                                                            <label class="form-check-label" for="customCheck1"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">1213123</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-primary">Team</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 08</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li> -->
                                                         
-                                                        {{-- <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck2" />
-                                                                            <label class="form-check-label" for="customCheck2"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Plan a party for development team 🎁</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-primary">Team</span>
-                                                                        <span class="badge rounded-pill badge-light-danger">High</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 30</small>
-                                                                    <div class="avatar bg-light-warning">
-                                                                        <div class="avatar-content">MB</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck3" />
-                                                                            <label class="form-check-label" for="customCheck3"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Hire 5 new Fresher or Experienced, frontend and backend developers </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-info">Update</span>
-                                                                        <span class="badge rounded-pill badge-light-warning">Medium</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 28</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-5.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item completed">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck4" checked />
-                                                                            <label class="form-check-label" for="customCheck4"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Skype Tommy for project status & report</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-danger">High</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 18</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-8.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck5" />
-                                                                            <label class="form-check-label" for="customCheck5"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Send PPT with real-time reports</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-warning">Medium</span>
-                                                                        <span class="badge rounded-pill badge-light-success">Low</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 22</small>
-                                                                    <div class="avatar bg-light-danger">
-                                                                        <div class="avatar-content">LM</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck6" />
-                                                                            <label class="form-check-label" for="customCheck6"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Submit quotation for Abid's ecommerce website and admin project </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-primary">Team</span>
-                                                                        <span class="badge rounded-pill badge-light-success">Low</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 24</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item completed">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck7" checked />
-                                                                            <label class="form-check-label" for="customCheck7"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Reminder to mail clients for holidays</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-primary">Team</span>
-                                                                        <span class="badge rounded-pill badge-light-warning">Medium</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 27</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck8" />
-                                                                            <label class="form-check-label" for="customCheck8"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Refactor Code and fix the bugs and test it on server </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-success">Low</span>
-                                                                        <span class="badge rounded-pill badge-light-warning">Medium</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 27</small>
-                                                                    <div class="avatar bg-light-success">
-                                                                        <div class="avatar-content">KL</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck9" />
-                                                                            <label class="form-check-label" for="customCheck9"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">List out all the SEO resources and send it to new SEO team. </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <small class="text-nowrap text-muted me-1">Sept 15</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck10" />
-                                                                            <label class="form-check-label" for="customCheck10"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Finish documentation and make it live</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-success">Low</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 28</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item completed">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck11" checked />
-                                                                            <label class="form-check-label" for="customCheck11"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Pick up Nats from her school and drop at dance class😁 </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <small class="text-nowrap text-muted me-1">Aug 17</small>
-                                                                    <div class="avatar bg-light-primary">
-                                                                        <div class="avatar-content">PK</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck12" />
-                                                                            <label class="form-check-label" for="customCheck12"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Plan new dashboard design with design team for Google app store. </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-info">Update</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Sept 02</small>
-                                                                    <div class="avatar bg-light-danger">
-                                                                        <div class="avatar-content">LO</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck13" />
-                                                                            <label class="form-check-label" for="customCheck13"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Conduct a mini awareness meeting regarding health care. </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <small class="text-nowrap text-muted me-1">Sept 05</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-17.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item completed">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck14" checked />
-                                                                            <label class="form-check-label" for="customCheck14"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Test functionality of apps developed by dev team for enhancements. </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-danger">High</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Sept 07</small>
-                                                                    <div class="avatar bg-light-info">
-                                                                        <div class="avatar-content">VB</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck15" />
-                                                                            <label class="form-check-label" for="customCheck15"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Answer the support tickets and close completed tickets. </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-primary">Frontend</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Sept 12</small>
-                                                                    <div class="avatar bg-light-success">
-                                                                        <div class="avatar-content">SW</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="todo-item">
-                                                            <div class="todo-title-wrapper">
-                                                                <div class="todo-title-area">
-                                                                    <i data-feather="more-vertical" class="drag-icon"></i>
-                                                                    <div class="title-wrapper">
-                                                                        <div class="form-check">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheck16" />
-                                                                            <label class="form-check-label" for="customCheck16"></label>
-                                                                        </div>
-                                                                        <span class="todo-title">Meet Jane and ask for coffee ❤️</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="todo-item-action">
-                                                                    <div class="badge-wrapper me-1">
-                                                                        <span class="badge rounded-pill badge-light-info">Update</span>
-                                                                        <span class="badge rounded-pill badge-light-warning">Medium</span>
-                                                                        <span class="badge rounded-pill badge-light-success">Low</span>
-                                                                    </div>
-                                                                    <small class="text-nowrap text-muted me-1">Aug 10</small>
-                                                                    <div class="avatar">
-                                                                        <img src="../../../app-assets/images/portrait/small/avatar-s-2.jpg" alt="user-avatar" height="32" width="32" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li> --}}
                                                     </ul>
-                                                    <div class="no-results">
-                                                        <h5>No Items Found</h5>
+                                                    <div class="loading__" style="display: none;">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                            <span class="visually-hidden">Loading...</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!-- Todo List ends -->
@@ -917,6 +552,7 @@
                                                                     <form class="row road-map-form" id="save-task"
                                                                      action="{{asset('save-project-task')}}" method="POST">
                                                                      <input type="hidden" name="id" id="task_id">
+                                                                     <input type="hidden" id="task_att_type" value="open">
                                                                     <div class="mb-1">
                                                                         <label for="selc-ver">Version</label>
                                                                         <input name="version" class="form-control" type="text"
@@ -1005,7 +641,7 @@
                                                                     <div class="mb-1">
                                                                         <label class="control-label col-sm-12">Attachment:</label> 
                                                         
-                                                                        <button onclick="listAttachments()" class="btn btn-block btn-warning text-white" type="button">Attachments</button>
+                                                                        <button onclick="listAttachments(this)" data-type="open" class="btn btn-block btn-warning text-white" type="button">Attachments</button>
                                                                         <div class="myattachments">
 
                                                                     </div>
@@ -1351,18 +987,10 @@
                     </button>
                 </div>
                 <div class="modal-body row">
-                    {{-- <div class="col-4 mb-3">
+                    <div id="showUploadedAttachments" class="row showUploadedAttachments"></div>
+                    <div class="col-4 mb-3">
                         <input type="file" id="dropi-0" data-show-errors="true" onchange="loadFile(this);" data-max-file-size="2M"/>
-                    </div> --}}
-                    <div class="col-md-12 text-center">
-                        <button id="select-files" class="btn btn-outline-primary mb-1">
-                            <i data-feather="file"></i> Click me to select files
-                        </button>
                     </div>
-                    
-                    <form action="#" class="dropzone dropzone-area" id="dpz-btn-select-files">
-                        <div class="dz-message">Drop files here or click button to upload.</div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" data-bs-dismiss="modal"> Done</button>
@@ -1463,8 +1091,8 @@
 <script src="{{asset('assets/libs/moment/moment.js')}}"></script>
 
 <!-- <script src="{{asset('public/js/project_detail/project_detail.js').'?ver='.rand()}}"></script> -->
-<!-- @include('js_files.project_detail.project_detailJs') -->
-@include('js_files.project_detail.projectDetailJS')
+@include('js_files.project_detail.project_detailJs')
+<!-- @include('js_files.project_detail.projectDetailJS') -->
 
 
 <!-- for textarea @ dropdown  -->
@@ -1490,25 +1118,27 @@
             $("#name13").addClass("badge-success");
             console.log("success", clr);
         }
+
+
+
+        $('#dropi-0').dropify();
     });
 
-    $(function () {
-        if ($(".tinymce").length > 0) {
-            tinymce.init({
-                selector: ".tinymce",
-                theme: "modern",
-                height: 300,
-                plugins: [
-                    "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-                    "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                    "save table contextmenu directionality emoticons template paste textcolor"
-                ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
-            });
-        }
-    });
-</script>
-<script>
+    // $(function () {
+    //     if ($(".tinymce").length > 0) {
+    //         tinymce.init({
+    //             selector: ".tinymce",
+    //             theme: "modern",
+    //             height: 300,
+    //             plugins: [
+    //                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+    //                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+    //                 "save table contextmenu directionality emoticons template paste textcolor"
+    //             ],
+    //             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
+    //         });
+    //     }
+    // });
 
     $('.daterange').daterangepicker();
     
@@ -1526,16 +1156,131 @@
         $('.taskHeader').css('height','auto');
     });
 
-   $('#dropi-0').dropify();
-</script>
-<script>
-    $(window).on('load', function() {
-        if (feather) {
-            feather.replace({
-                width: 14,
-                height: 14
-            });
+
+
+    // *********************************    Dropify     *********************************************** //
+
+    function reInitailizeAttachmentsDialog() {
+        g_attachments = [];
+        g_attachments_delete = [];
+        $('#attachmentsModal').find('.modal-body').html('');
+        $('#attachmentsModal').find('.modal-body').html(`<div class="col-4 mb-3">
+            <input type="file" id="dropi-0" data-show-errors="true" onchange="loadFile(this);" data-max-file-size="2M"/>
+        </div>`);
+
+        reDropify(0);
+    }
+
+    function reDropify(indx, editingTask) {
+        $('#dropi-'+indx).dropify().on('dropify.beforeClear', function(event, element){
+            if(editingTask){
+                console.log("here");
+                g_attachments_delete.push(tasks[g_clickedTask].task_attachments[indx-1].attachment);
+                console.log(g_attachments_delete);
+                $('#dropi-'+indx).closest('.col-4').remove();
+            }else{
+                for(let i in g_attachments){
+                    if(g_attachments[i].name == event.target.files[0].name){
+                        g_attachments.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    function loadFile(ele){
+        $(ele).attr('onchange', 'replaceFile(\''+ele.id+'\', '+(g_dropi_index-1)+')');
+
+        $('#attachmentsModal').find('.modal-body').append(`<div class="col-4 mb-3">
+            <input type="file" id="dropi-`+g_dropi_index+`" data-show-errors="true" onchange="loadFile(this);" data-max-file-size="2M"/>
+        </div>`);
+
+        reDropify(g_dropi_index);
+
+        g_dropi_index++;
+
+        let files = $(ele).prop('files');
+
+        g_attachments.push(files[0]);
+    }
+
+    function replaceFile(eleId, ind){
+        let files = $('#'+eleId).prop('files');
+
+        g_attachments[ind] = files[0];
+    }
+
+    function listAttachments(ele){
+        let type = $("#task_att_type").val();
+        if(type == 'open') {
+            // reInitailizeAttachmentsDialog();
+            $('.showUploadedAttachments').empty();
         }
-    })
+        if(type == 'edit') {
+            let id = $("#task_id").val();
+            loadAttachments(id);
+        }
+        $('#attachmentsModal').modal('show');
+    }
+
+    // *********************************    Dropify End     *********************************************** //
+
+    function loadAttachments(id) {
+        let task = tasks_arr.find( item => item.id == id);
+        console.log(task);
+        let divData = '';
+        if(task.task_attachments.length > 0) {
+
+
+        for(let i =0; i < task.task_attachments.length; i++){
+
+            let ext = task.task_attachments[i].attachment.substring(task.task_attachments[i].attachment.lastIndexOf('.') + 1).toLowerCase();
+            let name = task.task_attachments[i].attachment.substring(task.task_attachments[i].attachment.indexOf('_')+1, task.task_attachments[i].attachment.length);
+            
+            if(ext == 'png' || ext == 'jpg' || ext == 'jpeg' || ext == 'webp' || ext == 'svg' || ext == 'tiff'){
+                divData += `<div class="col-4 pb-2 pt-0 pl-2 pr-0" style="height: 150px !important;">
+                    <div class="dropify-wrapper h-100">
+                        <div class="dropify-preview" style="display: block;">
+                            <span class="dropify-render">
+                                <img src="{{asset('files/Projects/`+project_slug+`/`+task.id+`/`+task.task_attachments[i].attachment+`')}}">
+                            </span>
+                            <div class="dropify-infos">
+                                <div class="dropify-infos-inner">
+                                    <p class="dropify-filename">
+                                        <span class="dropify-filename-inner">`+name+`</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }else{
+                divData += `<div class="col-4 pb-2 pt-0 pl-2 pr-0" style="height: 150px !important;">
+                    <div class="dropify-wrapper col-4 h-100">
+                        <div class="dropify-preview" style="display: block;">
+                            <span class="dropify-render">
+                                <i class="dropify-font-file"></i>
+                                <span class="dropify-extension">`+ext+`</span>
+                            </span>
+                            <div class="dropify-infos">
+                                <div class="dropify-infos-inner">
+                                    <p class="dropify-filename">
+                                        <span class="dropify-filename-inner">`+name+`</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            $(".showUploadedAttachments").html(divData);
+        }
+        }else{
+            $(".showUploadedAttachments").html('');
+        }
+        $('#attachmentsModal').modal('show');
+    }
 </script>
 @endsection
