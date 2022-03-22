@@ -455,8 +455,8 @@ $("#todo-search").on('keyup', function() {
                                 ${status}
                             </div>
                             <small class="text-nowrap text-muted me-1"> ${moment(filtertext[i].created_at).format('MMM DD')} </small>
-                            <div class="avatar">
-                                <img src="../../../app-assets/images/portrait/small/avatar-s-4.jpg" alt="user-avatar" height="32" width="32">
+                            <div class="">
+                                <span class="badge bg-light-primary"> ${ filtertext[i].task_assigned_to == null ? '-' : (filtertext[i].task_assigned_to.name  != null ? filtertext[i].task_assigned_to.name : '-') } </span>
                             </div>
                         </div>
                     </div>
