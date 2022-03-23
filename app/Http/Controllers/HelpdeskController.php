@@ -1281,6 +1281,9 @@ class HelpdeskController extends Controller
             $details->ticket_detail = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($details->ticket_detail));
         
         foreach ($details->ticketReplies as $key => $rep) {
+            if($rep){
+
+            
             $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
 
             if( empty($rep['user_id']) ){
@@ -1292,6 +1295,7 @@ class HelpdeskController extends Controller
                 $rep['name'] = $user['name'];
                 $rep['user_type'] = $user['user_type'];
             }
+        }
         }
 
         $sla_plans = SlaPlan::where('sla_status', 1)->where('is_deleted',0)->get();
