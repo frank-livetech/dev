@@ -2082,7 +2082,7 @@ class HelpdeskController extends Controller
 
             TicketReply::create([
                 "ticket_id" => $flwup->ticket_id,
-                "user_id" => $flwup->follow_up_assigned_to, 
+                "user_id" => $flwup->created_by, 
                 "msgno" => null , 
                 "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
                 "cc" => null , 
