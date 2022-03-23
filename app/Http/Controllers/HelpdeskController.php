@@ -2916,12 +2916,20 @@ class HelpdeskController extends Controller
             // if (!File::isDirectory($target_dir)) {
             //     mkdir($target_dir, 0777, true);
             // }
-
-            $target_dir = 'storage/tickets-replies/'.$request->ticket_id;
+            if($request->module == 'tickets'){
+                $target_dir = 'storage/tickets/'.$request->ticket_id;
                     
-            if (!File::isDirectory($target_dir)) {
-                mkdir($target_dir, 0777, true);
+                if (!File::isDirectory($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
+            }else if($request->module == 'replies'){
+                $target_dir = 'storage/tickets-replies/'.$request->ticket_id;
+                    
+                if (!File::isDirectory($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
             }
+            
 
             $file = $request->file('attachment');
 
@@ -3168,18 +3176,18 @@ class HelpdeskController extends Controller
                 $cust_template_code = 'auto_res_ticket_create';
 
                 $attachs = $ticket['attachments'];
-                $pathTo = 'tickets/'.$ticket['id'];
+                $pathTo = 'storage/tickets/'.$ticket['id'];
 
             } else if($action_name == 'Subject updated') {
                 $attachs = $ticket['attachments'];
-                $pathTo = 'tickets/'.$ticket['id'];
+                $pathTo = 'storage/tickets/'.$ticket['id'];
             } else if($action_name == "ticket_reply") {
                 $customer_send = true;
                 $cust_template_code = 'auto_res_ticket_reply';
 
                 // if(!empty($user)) $mail_from = $user->email;
                 $attachs = $data_id;
-                $pathTo = 'replies/'.$ticket['id'];
+                $pathTo = 'storage/tickets-replies/'.$ticket['id'];
                 if($is_cron){
                     $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by System';
                     $notification_title = 'Reply Added';
@@ -3196,7 +3204,7 @@ class HelpdeskController extends Controller
     
                     // if(!empty($user)) $mail_from = $user->email;
                     $attachs = $data_id;
-                    $pathTo = 'replies/'.$ticket['id'];
+                    $pathTo = 'storage/tickets-replies/'.$ticket['id'];
                 }
                 
             }else if($action_name == 'ticket_reply_update'){
@@ -3206,14 +3214,14 @@ class HelpdeskController extends Controller
 
                 // if(!empty($user)) $mail_from = $user->email;
                 $attachs = $data_id;
-                $pathTo = 'replies/'.$ticket['id'];
+                $pathTo = 'storage/tickets-replies/'.$ticket['id'];
 
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' } Updated by '. $user->name;
                 $notification_title = 'Ticket # { ' . $ticket['coustom_id']. ' } Updated';
 
             }else if($action_name == 'ticket_cus_reply'){
                 $attachs = $data_id;
-                $pathTo = 'replies/'.$ticket['id'];
+                $pathTo = 'storage/tickets-replies/'.$ticket['id'];
 
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by System';
                 $notification_title = 'Reply Added';
