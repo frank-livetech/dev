@@ -122,6 +122,7 @@ class HelpdeskController extends Controller
         $projects = Project::all();
 
         $staffs = User::where('user_type','!=',5)->where('user_type','!=',4)->get();
+        $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
 
