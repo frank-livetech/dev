@@ -1281,7 +1281,7 @@ class HelpdeskController extends Controller
             $details->ticket_detail = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($details->ticket_detail));
         
         foreach ($details->ticketReplies as $key => $rep) {
-            if($rep){
+            if($rep !=null){
 
             
             $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
