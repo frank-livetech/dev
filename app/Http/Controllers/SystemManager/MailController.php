@@ -1148,6 +1148,11 @@ class MailController extends Controller
                 }else if($action_name == 'Ticket Updated'){
                     $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                }else if($action_name == 'ticket_reply_update'){
+                    if(!empty($reply_content)){
+                        $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                    }
+                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else{
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }
@@ -1232,10 +1237,7 @@ class MailController extends Controller
                         }
 
                     }
-                    if(!empty($reply_content)){
-                        $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
-                    }
-                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                    
                 }
                 if(!empty($actions)){
                     $actions = '<hr>'.$actions;
