@@ -1214,23 +1214,26 @@ class MailController extends Controller
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == '1'){
-                            $actions .= '<p>Department: '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
                         }
                         elseif($old_params[$dd]['id'] == '2'){
-                            $actions .= '<p>Staff: '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Staff:</strong> '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
 
                         }elseif($old_params[$dd]['id'] == '3'){
-                            $actions .= '<p>Type: '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
 
                         }elseif($old_params[$dd]['id'] == '4'){
-                            $actions .= '<p>Status: '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Status:</strong> '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
 
                             
                         }elseif($old_params[$dd]['id'] == '5'){
-                            $actions .= '<p>Priority: '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Priority:</strong> '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
                           
                         }
 
+                    }
+                    if(!empty($reply_content)){
+                        $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
                     }
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }
