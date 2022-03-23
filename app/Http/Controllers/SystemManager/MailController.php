@@ -1041,14 +1041,18 @@ class MailController extends Controller
             //Attachments
             if(!empty($attachments) && !empty($path)) {
                 $attachments = explode(',', $attachments);
+              
                 foreach ($attachments as $key => $value) {
-                    $path_tmp = __DIR__."/../../../../public/files/$path/$value";
+                    $path_tmp =  __DIR__."/../../../../$path/$value";
+                    
                     if(is_readable($path_tmp)) {
+                        // echo $path_tmp;
                         if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
                     }
                 }
             }
-
+//             dd($mail);
+// exit;
             //Content
             $mail->isHTML(true);
             $mail->Subject = $subject;
