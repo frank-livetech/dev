@@ -1145,6 +1145,9 @@ class MailController extends Controller
                 if($action_name == 'Ticket Followup'){
                     $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                }else if($action_name == 'Ticket Updated'){
+                    $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else{
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }
@@ -1163,20 +1166,14 @@ class MailController extends Controller
 
                         if($old_params[$dd]['id'] == '1'){
                             $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
-                        }
-                        elseif($old_params[$dd]['id'] == '2'){
+                        }elseif($old_params[$dd]['id'] == '2'){
                             $actions .= '<p><strong>Staff:</strong> '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
-
                         }elseif($old_params[$dd]['id'] == '3'){
                             $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
-
                         }elseif($old_params[$dd]['id'] == '4'){
                             $actions .= '<p><strong>Status:</strong> '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
-
-                            
                         }elseif($old_params[$dd]['id'] == '5'){
                             $actions .= '<p><strong>Priority:</strong> '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
-                          
                         }
 
                     }
@@ -1206,7 +1203,7 @@ class MailController extends Controller
                         $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
                     }
                     if(!empty($flwup_note)){
-                        $flwup_note = '<hr>'.'<strong>Reply: </strong>'.$flwup_note;
+                        $flwup_note = '<hr>'.'<strong>Note: </strong>'.$flwup_note;
                     }
                     
                     $template = str_replace('{Ticket-Note}', $flwup_note, $template);
