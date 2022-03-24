@@ -496,7 +496,7 @@
                 cache: false,
                 async:false,
                 success: function(data) {
-                    // console.log(data , "notification");
+                    console.log(data , "notification");
                     var noti_div = ``;
                     var sender = data.data;
 
@@ -506,9 +506,9 @@
 
                     if(data){
                         notifications = data.data;
-                        console.log(notifications , "notifications");
+                        console.log(notifications.length , "notifications");
 
-                        $("#noti_count").text(notifications.length);
+                        $("#noti_count").text(notifications.total_notification);
 
                         if(notifications.length > 0){
                             for(var i = 0 ; i < notifications.length ; i++){

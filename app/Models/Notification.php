@@ -137,4 +137,13 @@ class Notification extends Model
         
         return Notification::where('read_at',NULL)->where('receiver_id',$user_id)->count();
     }
+
+    public function sender() {
+        return $this->hasOne(User::class , 'id' , 'sender_id');
+    }
+
+    public function user() {
+        return $this->hasOne(User::class , 'id' , 'receiver_id');
+    }
+
 }

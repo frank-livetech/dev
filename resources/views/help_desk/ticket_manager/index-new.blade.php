@@ -307,7 +307,7 @@
                                         <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5"></h5>
                                         <select class="select2 form-control  " id="dept_id" name="dept_id" style="width: 100%; height:36px;">
-                                            
+                                            <option value="nochange"> -- no change -- </option>
                                             @foreach($departments as $department)
                                                 <option  value="{{$department->id}}"  >{{$department->name}}</option>
                                             @endforeach
@@ -317,6 +317,7 @@
                                         <label class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5"></h5>
                                         <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
+                                            <option value="nochange"> -- no change -- </option>
                                             <option value="">Unassigned</option>
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
@@ -327,6 +328,7 @@
                                         <label class="control-label col-sm-12 end_padding text-white "><strong>Type</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="type-h5"></h5>
                                         <select class="select2 form-control " id="type" name="type" style="width: 100%; height:36px;">
+                                            <option value="nochange"> -- no change -- </option>
                                             @foreach($types as $type)
                                                 <option value="{{$type->id}}" >{{$type->name}}</option>
                                             @endforeach
@@ -336,6 +338,7 @@
                                         <label class="control-label col-sm-12 end_padding text-white "><strong>Status</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="status-h5"></h5>
                                         <select class="select2 form-control " id="status" name="status" style="width: 100%; height:36px;">
+                                            <option value="nochange"> -- no change -- </option>
                                             @foreach($statuses as $status)
                                                 <option value="{{$status->id}}" data-color="{{$status->color}}" >{{$status->name}}</option>
                                             @endforeach
@@ -345,6 +348,7 @@
                                         <label class="control-label col-sm-12 end_padding text-white " ><strong>Priority</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="prio-h5"></h5>
                                         <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
+                                            <option value="nochange"> -- no change -- </option>
                                             @foreach($priorities as $priority)
                                                 <option value="{{$priority->id}}" data-color="{{$priority->priority_color}}" >{{$priority->name}}</option>
                                             @endforeach

@@ -382,16 +382,18 @@ function setSlaPlanDeadlines(ret = false) {
             let rep_diff = ``;
             let res_diff = ``;
             if(ticket.reply_deadline != "cleared") {
-                let tkt_rep_due = moment(ticket.reply_deadline).format('YYYY-MM-DD hh:mm A');
-                let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime) , 'seconds');
+                let tkt_rep_due = moment(ticket.reply_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
+                // let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime , "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A") , 'seconds');
+                let timediff_rep = getDatesSeconds( ticket.reply_deadline  , con_currTime  );
                 console.log(timediff_rep , "timediff_rep");
                 if(timediff_rep <= 0) {
                     resetable = true;
                     rep_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
                     resetable = false;
-                    let cal_rep_diff = momentDiff(tkt_rep_due , con_currTime);
-                    rep_diff = cal_rep_diff.replace("60m", "59m");
+                    // let cal_rep_diff = momentDiff(tkt_rep_due , con_currTime);
+                    // rep_diff = cal_rep_diff.replace("60m", "59m");
+                    rep_diff = getHoursMinutesAndSeconds( ticket.reply_deadline, con_currTime);
                 }
                 $('#sla-rep_due').html( rep_diff );
             }else{
@@ -399,15 +401,21 @@ function setSlaPlanDeadlines(ret = false) {
             }
 
             if(ticket.resolution_deadline != "cleared") {
-                let tkt_res_due = moment(ticket.resolution_deadline).format('YYYY-MM-DD hh:mm A');
-                let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
+
+                let timediff_res = getDatesSeconds( ticket.resolution_deadline , con_currTime  );
+                // console.log(check , "total seconds");
+
+                let tkt_res_due = moment(ticket.resolution_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
+                // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime , "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A") , 'seconds');
                 console.log(timediff_res , "timediff_res");
                 if(timediff_res <= 0) {
                     resetable = true;
                     res_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
-                    let cal_res_diff = momentDiff(tkt_res_due , con_currTime); 
-                    res_diff = cal_res_diff.replace("60m", "59m");
+                    res_diff = getHoursMinutesAndSeconds( ticket.resolution_deadline , con_currTime);
+                    // let cal_res_diff = momentDiff(tkt_res_due , con_currTime); 
+                    // console.log(cal_res_diff , "cal_res_diff");
+                    // res_diff = cal_res_diff.replace("60m", "59m");
                     
                 }
                 console.log(res_diff , 'res_diff');
@@ -429,6 +437,41 @@ function setSlaPlanDeadlines(ret = false) {
         $("#card-sla").css('background-color', 'white');
         $("#card-sla").css('color', '#000');
     }
+}
+
+function getHoursMinutesAndSeconds(date_one , date_two) {
+    let greater = moment(date_one , "YYYY-MM-DD hh:mm A").valueOf();
+    let smaller = moment(date_two , "YYYY-MM-DD hh:mm A").valueOf();
+
+    let diff = ((greater - smaller) / 1000).toFixed(2) ;
+    let days = Math.floor(diff / 86400);
+    let hours = Math.floor(diff / 3600) % 24;
+    let minutes = Math.floor(diff / 60) % 60;
+    let seconds = diff % 60;
+
+
+    let remainTime =  (days > 0 ? days +  'd ' : '') + (hours > 0 ? hours +  'h ' : '') + minutes + 'm ' + (seconds > 0 ? seconds +  's ' : '');
+
+    let color = ``;
+    if(remainTime.includes('d')) {
+        color = `#8BB467`;
+    }else if(remainTime.includes('h')) {
+        color = `#5c83b4`;
+    }else if(remainTime.includes('m')) {
+        color = `#ff8c5a`;
+    }
+
+
+    return `(<span style="color: ${color}">${remainTime}</span>)`;
+}
+
+function getDatesSeconds(greater_date , smaller_date) {
+    let greater = moment(greater_date , "YYYY-MM-DD hh:mm A").valueOf();
+    let smaller = moment(smaller_date , "YYYY-MM-DD hh:mm A").valueOf();
+    let time = greater - smaller;
+
+    let sec = 1000;
+    return (time / sec);
 }
 
 function momentDiff(end ,  start) {
@@ -483,7 +526,7 @@ function resetSlaPlan() {
 
 // new function 
 function SlaPlanReset() {
-    // console.log(ticket , "ticket");
+    console.log(ticket , "ticket");
     if(ticket != null) {
 
         if(ticket.reply_deadline == null ) {
@@ -498,6 +541,7 @@ function SlaPlanReset() {
 
         if(ticket.resolution_deadline == null ) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
+                console.log(ticket_slaPlan , "ticket_slaPlan");
                 let due_deadline = moment(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h');
                 $("#res_date").val( moment(due_deadline).format('YYYY-MM-DD') );
                 $("#res_hour").val(  due_deadline.format('h'));
@@ -939,108 +983,6 @@ async function tinyContentEditor(content, action) {
             attachments_src.push([name, src]);
         }
     });
-    // $('#tinycontenteditor').find('source').each(function(index) {
-    //     let src = $(this).attr('src');
-    //     let ext = 'mp4';
-
-    //     let validVid = true;
-
-    //     let marker = '.';
-
-    //     if (src.includes('base64')) marker = '/';
-
-    //     if (src.includes(marker + 'mp4') || src.includes(marker + 'MP4')) {
-    //         ext = "mp4";
-    //     } else if (src.includes(marker + 'mpeg4') || src.includes(marker + 'MPEG4')) {
-    //         ext = "mpeg4";
-    //     } else if (src.includes(marker + 'mov') || src.includes(marker + 'MOV')) {
-    //         ext = "mov";
-    //     } else if (src.includes(marker + 'avi') || src.includes(marker + 'AVI')) {
-    //         ext = "avi";
-    //     } else if (src.includes(marker + 'wmv') || src.includes(marker + 'WMV')) {
-    //         ext = "wmv";
-    //     } else if (src.includes(marker + 'flv') || src.includes(marker + 'FLV')) {
-    //         ext = "flv";
-    //     } else if (src.includes(marker + 'mp3') || src.includes(marker + 'MP3')) {
-    //         ext = "mp3";
-    //     } else if (src.includes(marker + 'mpeg') || src.includes(marker + 'MPEG')) {
-    //         ext = "mpeg";
-    //     } else {
-    //         $(this).remove();
-    //         validVid = false;
-    //     }
-
-    //     if (src.includes('base64')) {
-    //         src = src.replace(/^data:.+;base64,/, '');
-    //     }
-
-    //     if (validVid) {
-    //         let name = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index + '.' + ext;
-
-    //         if (src.includes(ticket_attach_path_search + '/' + action + '/' + ticket.id)) {
-    //             name = baseName(src) + '.' + ext;
-    //         } else {
-    //             $(this).attr('src', ticket_attach_path + `/${action}/${ticket.id}/${name}`);
-    //         }
-    //         attachments_src.push([name, src]);
-    //     }
-    // });
-    // $('#tinycontenteditor').find('a').each(function(index) {
-    //     let href = $(this).attr('href');
-    //     if (href.includes('blob:')) {
-    //         res = getBlobFromUrl(href).then(fromBlobToBase64).then(src => {
-    //             // result will contain file encoded in base64
-    //             console.log(src);
-    //             let ext = 'txt';
-    //             let validFile = true;
-    //             let marker = '.';
-    //             if (src.includes('base64')) marker = '/';
-
-    //             if (src.includes(marker + 'plain') || src.includes(marker + 'PLAIN')) {
-    //                 ext = "txt";
-    //             } else if (src.includes(marker + 'octet-stream') || src.includes(marker + 'OCTET-STREAM')) {
-    //                 ext = "sql";
-    //             } else if (src.includes(marker + 'pdf') || src.includes(marker + 'PDF')) {
-    //                 ext = "pdf";
-    //             } else if (src.includes(marker + 'vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-    //                 ext = "docx";
-    //             } else if (src.includes(marker + 'vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
-    //                 ext = "xlsx";
-    //             } else if (src.includes(marker + 'x-zip-compressed')) {
-    //                 ext = "zip";
-    //             } else if (src.includes(marker + 'x-msdownload')) {
-    //                 ext = "exe";
-    //             } else if (src.includes(marker + 'x-gzip')) {
-    //                 ext = "tar.gz";
-    //             } else if (src.includes(marker + 'msaccess')) {
-    //                 ext = "accdb";
-    //             } else if (src.includes(marker + 'vnd.ms-publisher')) {
-    //                 ext = "pub";
-    //             } else if (src.includes(marker + 'msword')) {
-    //                 ext = "rtf";
-    //             } else {
-    //                 $(this).remove();
-    //                 validFile = false;
-    //             }
-
-    //             if (src.includes('base64')) {
-    //                 src = src.replace(/^data:.+;base64,/, '');
-    //             }
-
-    //             if (validFile) {
-    //                 let name = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index + '.' + ext;
-
-    //                 if (src.includes(ticket_attach_path_search + '/' + action + '/' + ticket.id)) {
-    //                     name = baseName(src) + '.' + ext;
-    //                 } else {
-    //                     $(this).attr('href', ticket_attach_path + `/${action}/${ticket.id}/${name}`);
-    //                 }
-    //                 attachments_src.push([name, src]);
-    //             }
-    //         })
-    //     }
-    // });
-
     return await res;
 }
 
@@ -1869,8 +1811,17 @@ $('#dept_id').change(function() {
         new_data:dept_id,
         new_text:$("#dept_id option:selected").text()
     }
-    updates_Arr.push(obj);
-    // console.log(updates_Arr);
+    
+    let item = updates_Arr.find(item => item.id == 1);
+    if(item != null || item != undefined || item != '' || item != "") {
+        updates_Arr.id = 1;
+        updates_Arr.data = ticket.department_name ; 
+        updates_Arr.new_data = dept_id ;
+        updates_Arr.new_text = $("#dept_id option:selected").text();
+    }else{
+        updates_Arr.push(obj);
+    }
+
     $("#update_ticket").css("display", "block");
   
     showDepartStatus(dept_id);
@@ -1901,8 +1852,17 @@ $('#assigned_to').change(function() {
         new_data:assigned_to,
         new_text:$("#assigned_to option:selected").text()
     }
-    updates_Arr.push(obj);
-    // console.log(updates_Arr);
+
+    let item = updates_Arr.find(item => item.id == 2);
+    if(item != null || item != undefined || item != '' || item != "") {
+        updates_Arr.id = 2;
+        updates_Arr.data = ticket.assignee_name ; 
+        updates_Arr.new_data = assigned_to ;
+        updates_Arr.new_text = $("#assigned_to option:selected").text();
+    }else{
+        updates_Arr.push(obj);
+    }
+
     $("#update_ticket").css("display", "block");
    
 });
@@ -1933,8 +1893,18 @@ $('#type').change(function() {
         new_text:$("#type option:selected").text()
 
     }
-    updates_Arr.push(obj);
-    // console.log(updates_Arr);
+    
+    
+    let item = updates_Arr.find(item => item.id == 3);
+    if(item != null || item != undefined || item != '' || item != "") {
+        updates_Arr.id = 2;
+        updates_Arr.data = ticket.type_name ; 
+        updates_Arr.new_data = type ;
+        updates_Arr.new_text = $("#type option:selected").text();
+    }else{
+        updates_Arr.push(obj);
+    }
+
     $("#update_ticket").css("display", "block");
     
 });
@@ -1967,8 +1937,17 @@ $('#status').change(function() {
         new_text:$("#status option:selected").text()
 
     }
-    updates_Arr.push(obj);
-    // console.log(updates_Arr+'askdkaskjd');
+    
+    let item = updates_Arr.find(item => item.id == 4);
+    if(item != null || item != undefined || item != '' || item != "") {
+        updates_Arr.id = 2;
+        updates_Arr.data = ticket.status_name ; 
+        updates_Arr.new_data = status ;
+        updates_Arr.new_text = $("#status option:selected").text();
+    }else{
+        updates_Arr.push(obj);
+    }
+
     $("#update_ticket").css("display", "block");
 
 });
@@ -2000,11 +1979,18 @@ $('#priority').change(function() {
         new_text:$("#priority option:selected").text()
 
     }
-    updates_Arr.push(obj);
-    $("#update_ticket").css("display", "block");
 
-    // console.log(updates_Arr);
-    
+    let item = updates_Arr.find(item => item.id == 5);
+    if(item != null || item != undefined || item != '' || item != "") {
+        updates_Arr.id = 2;
+        updates_Arr.data = ticket.priority_name ; 
+        updates_Arr.new_data = priority ;
+        updates_Arr.new_text = $("#priority option:selected").text();
+    }else{
+        updates_Arr.push(obj);
+    }
+
+    $("#update_ticket").css("display", "block");    
 });
 
 function updateTicket(){
@@ -2083,6 +2069,7 @@ function getTicketFollowUp() {
         success: function(data) {
             if (data.success == true) {
                 let obj = data.data;
+                $('.followup_count').text(obj.length);
                 console.log(obj , "followup obj");
                 g_followUps = obj;
 
@@ -2171,6 +2158,7 @@ function listFollowups() {
             }
             
             timediff = followUpDate.diff( moment(currTime) , 'seconds');
+            console.log(timediff , "timediff");
             let remainTime = momentDiff(followUpDate ,  moment(currTime));
             
             if (timediff < 0) idata.ticket_update = true;
@@ -2190,7 +2178,6 @@ function listFollowups() {
                 }
 
                 let timediff = moment(followUpDate).diff(moment(), 'seconds');
-
                 if (timediff < 0) idata.passed = 1;
                 else remTime = getClockTime(followUpDate, timediff);
 
@@ -3049,6 +3036,7 @@ function get_ticket_notes() {
         data: { id: ticket_details.id },
         success: function(data) {
             if (data.success) {
+                $('.notes_count').text(data.notes.length);
                 notes = data.notes;
                 // console.log(notes , "notes");
                 var type = '';

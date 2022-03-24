@@ -629,5 +629,14 @@ function HmsToSeconds(hms) {
     var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
     return seconds;
 }
+
+let date1 = moment('2022-03-24 10:12 AM');
+let date2 = moment('2022-03-24 9:37 PM');
+let time = date1.valueOf() - date2.valueOf();
+
+let sec = 1000;
+
+console.log(time / sec , "time");
+
 </script>
 @endsection

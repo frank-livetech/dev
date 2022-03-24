@@ -1319,6 +1319,82 @@ class ProjectManagerController extends Controller
 
   public function todaysTasks() {
     try{
+     
+     $tasks = DB::Table('tasks')
+     ->select('tasks.*','users.name as dev','projects.name as project')
+     ->leftjoin('projects','projects.id','=','tasks.project_id')
+     ->leftjoin('users','users.id', 'tasks.assign_to')
+     ->where('tasks.is_deleted', 0)->where('tasks.created_at', '>', Carbon::now()->subDay()->format('Y-m-d'))->get();
+     
+     
+      $temp = DB::table("templates")->where('id' , 79)->first();
+      $task_data = '';
+
+      if( count($tasks) > 0 ) {
+
+        for($i =0; $i < count($tasks); $i++) {
+          
+          $task_data .='
+              <tr>
+                  <td class="x_planyourdaysubheader x_meetingsubheader" colspan="6" 
+                      style="padding: 0px; padding-top: 7px; padding-bottom: 7px; padding-left: 15px; padding-right: 16px; text-align: left;">
+                      
+                      <p class="x_font x_bold-text" style="margin: 0px; font-weight: 600; font-size: 15px; width: 223px; "> 
+                          '. ($i+1) .'-  '. $tasks[$i]->title .'
+                      </p>
+                  </td>
+                  <td class="x_planyourdaysubheader x_meetingsubheader" colspan="2" 
+                      style="padding: 0px; padding-top: 7px; padding-bottom:7px; padding-left: 5px; padding-right: 16px; text-align: left;">
+                      <p class="x_font x_bold-text" style=" margin: 0px; font-weight: 600; font-size: 15px; "> '. $tasks[$i]->dev .'  </p>
+                  </td>
+              </tr>';
+        }
+       
+      }else{
+        $task_data = '
+            <tr>
+                <td class="x_planyourdaysubheader x_meetingsubheader" colspan="6" 
+                    style="padding: 0px; padding-top: 7px; padding-bottom: 7px; padding-left: 15px; padding-right: 16px; text-align: left;">
+                    
+                    <p class="x_font x_bold-text" style="margin: 0px; font-weight: 600; font-size: 15px; width: 223px; color:yellow !important"> 
+                        No Tasks for today .. discuss with team what happening
+                    </p>
+                </td>
+            </tr>';
+      }
+
+      $template = $temp->template_html;
+        
+      $date = Carbon::now();
+      $template = str_replace('{day}',  $date->format('l'),  $template);
+      $template = str_replace('{TASKS}',  $task_data ,  $template);       
+       
+       $admins = User::where('user_type', 1)->where('status', 1)->where('is_deleted', 0)->get()->toArray();
+       
+       $admin_name = '';
+       foreach($admins as $admin) {
+           $admin_name .= '<span> '. $admin['name'] .' </span>';
+       }
+       
+       $template = str_replace('{Staff-name}',  $admin_name ,  $template);
+
+      if(!empty($admins)) {
+        $ml = new MailController();
+        $ml->sendMail('Work Day Tasks List',  $template , 'dev_testing@mylive-tech.com', $admins, '', '', '', '');
+      }
+       
+      return response()->json([
+        "message" => "Task Email send Successfully"
+      ]);
+
+    } catch(Exception $e) {
+      // unlink($target_dir);
+      echo $e->getMessage();
+    }
+  }
+
+  public function todaysTasksold() {
+    try{
       // $tasks = Tasks::where('created_at', '>', Carbon::now()->subDay()->format('Y-m-d'))->where('is_deleted', 0)->get()->toArray();
       $tasks = DB::Table('tasks')
       ->select('tasks.*','users.name as dev','projects.name as project')
