@@ -110,13 +110,34 @@ function updateTickets() {
         let priority = $("#priority").val();
 
         let form_data = new FormData();
-        form_data.append('dept_id' , dept_id)
-        form_data.append('assigned_to' , assigned_to)
-        form_data.append('type' , type)
-        form_data.append('status' , status)
-        form_data.append('priority' , priority)
-        form_data.append('tkt_id' , tkt_id)
-        
+
+        if(dept_id != 'nochange') {
+            form_data.append('dept_id' , dept_id)
+        }
+
+        if(assigned_to != 'nochange') {
+            form_data.append('assigned_to' , assigned_to)
+        }
+
+        if(type != 'nochange') {
+            form_data.append('type' , type)
+        }
+
+
+        if(status != 'nochange') {
+            form_data.append('status' , status)
+        }
+
+        if(priority != 'nochange') {
+            form_data.append('priority' , priority)
+        }
+
+        if(dept_id == 'nochange' && assigned_to == 'nochange' && type == 'nochange' && dept_id == 'nochange' && status == 'nochange' && priority == 'nochange') {
+            toastr.error( 'select action to perform' , { timeOut: 5000});
+            return false;
+        }
+
+        form_data.append('tkt_id' , tkt_id);
 
         $.ajax({
             headers: {
@@ -417,15 +438,18 @@ function redrawTicketsTable(ticket_arr) {
 
             if(val['reply_deadline'] != "cleared") {
                 let tkt_rep_due = moment(val['reply_deadline']).format('YYYY-MM-DD hh:mm A');
-                let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime) , 'seconds');
+                // let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime) , 'seconds');
+
+                let timediff_rep = getDatesSeconds( val['reply_deadline'] , con_currTime  );
 
                 if(timediff_rep <= 0) {
                     new_rep_due = `<div class="text-center" title="${tkt_rep_due}">
                                 <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
                             </div>`;
                 }else{
-                    let cal_rep_due = momentDiff(tkt_rep_due , con_currTime);
-                    new_rep_due = cal_rep_due.replace("60m", "59m");
+                    new_rep_due = getHoursMinutesAndSeconds( val['reply_deadline'], con_currTime);
+                    // let cal_rep_due = momentDiff(tkt_rep_due , con_currTime);
+                    // new_rep_due = cal_rep_due.replace("60m", "59m");
                 }
             }else{
                 new_rep_due = ``;
@@ -433,14 +457,16 @@ function redrawTicketsTable(ticket_arr) {
 
             if(val['reply_deadline'] != "cleared") {
                 let tkt_res_due = moment(val['resolution_deadline']).format('YYYY-MM-DD hh:mm A');
-                let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
+                // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
+                let timediff_res = getDatesSeconds( val['resolution_deadline'] , con_currTime  );
                 if(timediff_res <= 0) {
                     new_res_due = `<div class="text-center" title="${tkt_res_due}">
                                 <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
                             </div>`;
                 }else{
-                    let cal_res_due = momentDiff(tkt_res_due , con_currTime);   
-                    new_res_due = cal_res_due.replace("60m", "59m");
+                    new_res_due = getHoursMinutesAndSeconds( val['resolution_deadline'] , con_currTime);
+                    // let cal_res_due = momentDiff(tkt_res_due , con_currTime);   
+                    // new_res_due = cal_res_due.replace("60m", "59m");
                 }
             }else{
                 new_res_due = ``;
@@ -494,7 +520,7 @@ function redrawTicketsTable(ticket_arr) {
 
         let notes_icon = `<i class="fas fa-comment-alt-lines mx-1" style="margin-top:2px" title="This Ticket Has One or More Ticket Notes"></i>`;
         let attachment_icon = `<i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Has Attachments"></i>`;
-        let follow_up_icon = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="yellow" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
+        let follow_up_icon = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f7b51b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`;
 
         let row = `<tr>
             <td><div class="text-center"><input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" class="tkt_chk" name="select_all" value="${val['id']}"></div></td>
@@ -537,6 +563,39 @@ function redrawTicketsTable(ticket_arr) {
         var name = $(this).attr('id');
         tickets_table_list.column(13).search( name ).draw();
     });
+}
+
+function getHoursMinutesAndSeconds(date_one , date_two) {
+    let greater = moment(date_one , "YYYY-MM-DD hh:mm A").valueOf();
+    let smaller = moment(date_two , "YYYY-MM-DD hh:mm A").valueOf();
+
+    let diff = ((greater - smaller) / 1000).toFixed(2) ;
+    let days = Math.floor(diff / 86400);
+    let hours = Math.floor(diff / 3600) % 24;
+    let minutes = Math.floor(diff / 60) % 60;
+    let seconds = diff % 60;
+
+
+    let remainTime =  (days > 0 ? days +  'd ' : '') + (hours > 0 ? hours +  'h ' : '') + minutes + 'm ' + (seconds > 0 ? seconds +  's ' : '');
+
+    let color = ``;
+    if(remainTime.includes('d')) {
+        color = `#8BB467`;
+    }else if(remainTime.includes('h')) {
+        color = `#5c83b4`;
+    }else if(remainTime.includes('m')) {
+        color = `#ff8c5a`;
+    }
+    return `<span style="color: ${color}">${remainTime}</span>`;
+}
+
+function getDatesSeconds(greater_date , smaller_date) {
+    let greater = moment(greater_date , "YYYY-MM-DD hh:mm A").valueOf();
+    let smaller = moment(smaller_date , "YYYY-MM-DD hh:mm A").valueOf();
+    let time = greater - smaller;
+
+    let sec = 1000;
+    return (time / sec);
 }
 
 function momentDiff(end ,  start) {

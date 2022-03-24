@@ -111,6 +111,7 @@ class HomeController extends Controller {
         $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
 
         $followUps = TicketFollowUp::where('is_deleted', 0)->where('passed', 0)->with('ticket')->get();
+
         return view('dashboard-new', get_defined_vars());
     }
 
@@ -142,16 +143,19 @@ class HomeController extends Controller {
     }
     public function getNotifications(){
                 
-        $notifications = Notification::orderBy('id','desc')->where('receiver_id',\Auth::user()->id)->where('read_at',NULL)->limit(10)->get();
-        foreach($notifications as $notification) {
-            $notification->user = User::where('id',$notification->receiver_id)->first();
-            $notification->sender = User::where('id',$notification->sender_id)->first();
-        }
-
+        $notifications = Notification::with(['sender','user'])
+                ->orderBy('id','desc')->where('receiver_id',\Auth::user()->id)
+                ->where('read_at',NULL)->limit(10)->get();
+        // foreach($notifications as $notification) {
+            // $notification->user = User::where('id',$notification->receiver_id)->first();
+            // $notification->sender = User::where('id',$notification->sender_id)->first();
+        // }
+        $count = Notification::with(['sender','user'])->orderBy('id','desc')->where('receiver_id',\Auth::user()->id)->where('read_at',NULL)->count();
         $response['message'] = 'Notification List';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['data'] = $notifications;
+        $response['total_notification'] = $count;
         return response()->json($response);
 
     }
