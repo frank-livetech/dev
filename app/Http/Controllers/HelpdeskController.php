@@ -122,6 +122,9 @@ class HelpdeskController extends Controller
         $projects = Project::all();
 
         $staffs = User::where('user_type','!=',5)->where('user_type','!=',4)->get();
+        $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
+
+        $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
 
@@ -1278,6 +1281,9 @@ class HelpdeskController extends Controller
             $details->ticket_detail = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($details->ticket_detail));
         
         foreach ($details->ticketReplies as $key => $rep) {
+            if($rep !=null){
+
+            
             $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
 
             if( empty($rep['user_id']) ){
@@ -1289,6 +1295,7 @@ class HelpdeskController extends Controller
                 $rep['name'] = $user['name'];
                 $rep['user_type'] = $user['user_type'];
             }
+        }
         }
 
         $sla_plans = SlaPlan::where('sla_status', 1)->where('is_deleted',0)->get();
@@ -2075,7 +2082,7 @@ class HelpdeskController extends Controller
 
             TicketReply::create([
                 "ticket_id" => $flwup->ticket_id,
-                "user_id" => $flwup->follow_up_assigned_to, 
+                "user_id" => $flwup->created_by, 
                 "msgno" => null , 
                 "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
                 "cc" => null , 
@@ -2102,7 +2109,7 @@ class HelpdeskController extends Controller
                 'visibility' => 'Everyone',
                 'created_by' => $flwup->created_by
             ]);
-            $flwup_note = '<hr>'.$flwup->follow_up_notes;
+            $flwup_note = $flwup->follow_up_notes;
             $logData .= (empty($logData)) ? 'added a note' : ', added a note';
         }
         $flwup->updated_at = Carbon::now();
@@ -2909,12 +2916,20 @@ class HelpdeskController extends Controller
             // if (!File::isDirectory($target_dir)) {
             //     mkdir($target_dir, 0777, true);
             // }
-
-            $target_dir = 'storage/tickets-replies/'.$request->ticket_id;
+            if($request->module == 'tickets'){
+                $target_dir = 'storage/tickets/'.$request->ticket_id;
                     
-            if (!File::isDirectory($target_dir)) {
-                mkdir($target_dir, 0777, true);
+                if (!File::isDirectory($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
+            }else if($request->module == 'replies'){
+                $target_dir = 'storage/tickets-replies/'.$request->ticket_id;
+                    
+                if (!File::isDirectory($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
             }
+            
 
             $file = $request->file('attachment');
 
@@ -3161,18 +3176,18 @@ class HelpdeskController extends Controller
                 $cust_template_code = 'auto_res_ticket_create';
 
                 $attachs = $ticket['attachments'];
-                $pathTo = 'tickets/'.$ticket['id'];
+                $pathTo = 'storage/tickets/'.$ticket['id'];
 
             } else if($action_name == 'Subject updated') {
                 $attachs = $ticket['attachments'];
-                $pathTo = 'tickets/'.$ticket['id'];
+                $pathTo = 'storage/tickets/'.$ticket['id'];
             } else if($action_name == "ticket_reply") {
                 $customer_send = true;
                 $cust_template_code = 'auto_res_ticket_reply';
 
                 // if(!empty($user)) $mail_from = $user->email;
                 $attachs = $data_id;
-                $pathTo = 'replies/'.$ticket['id'];
+                $pathTo = 'storage/tickets-replies/'.$ticket['id'];
                 if($is_cron){
                     $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by System';
                     $notification_title = 'Reply Added';
@@ -3189,7 +3204,7 @@ class HelpdeskController extends Controller
     
                     // if(!empty($user)) $mail_from = $user->email;
                     $attachs = $data_id;
-                    $pathTo = 'replies/'.$ticket['id'];
+                    $pathTo = 'storage/tickets-replies/'.$ticket['id'];
                 }
                 
             }else if($action_name == 'ticket_reply_update'){
@@ -3199,14 +3214,14 @@ class HelpdeskController extends Controller
 
                 // if(!empty($user)) $mail_from = $user->email;
                 $attachs = $data_id;
-                $pathTo = 'replies/'.$ticket['id'];
+                $pathTo = 'storage/tickets-replies/'.$ticket['id'];
 
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' } Updated by '. $user->name;
                 $notification_title = 'Ticket # { ' . $ticket['coustom_id']. ' } Updated';
 
             }else if($action_name == 'ticket_cus_reply'){
                 $attachs = $data_id;
-                $pathTo = 'replies/'.$ticket['id'];
+                $pathTo = 'storage/tickets-replies/'.$ticket['id'];
 
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by System';
                 $notification_title = 'Reply Added';
