@@ -1562,14 +1562,14 @@ class MailController extends Controller
 
                 // if module is ticket then replace url to according to customer && user ticket detail urls.
                 if(str_contains($template, '{URL}')) {
-                    $url = request()->root() . '/ticket-details' . '/' . $data['values']['coustom_id'];
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{URL}', $url , $template);
                 }
                 // ends here
 
                 // customer ticket url
                 if(str_contains($template, '{Customer-URL}')) {
-                    $url = request()->root() . '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{Customer-URL}', $url , $template);
                 }
 
