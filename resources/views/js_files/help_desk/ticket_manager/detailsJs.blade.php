@@ -2071,8 +2071,27 @@ function getTicketFollowUp() {
         success: function(data) {
             if (data.success == true) {
                 let obj = data.data;
-                $('.followup_count').text(obj.length);
-                console.log(obj , "followup obj");
+                let follow_up_count  = 0;
+
+                for(let i = 0; i < obj.length; i++) {
+
+                    if(obj[i].passed == 0) {
+                        if(obj[i].follow_up_logs != null) {
+                            if(obj[i].follow_up_logs.passed == 1) {
+                                follow_up_count += 0;
+                            }else{
+                                follow_up_count  += 1;
+                            }
+                        }else{
+                            follow_up_count += 1;
+                        }
+                    }else{
+                        follow_up_count = obj.length;
+                    }
+                }
+
+                $('.followup_count').text(follow_up_count);
+
                 g_followUps = obj;
 
                 // if(obj.length > 0)  {
@@ -2180,7 +2199,10 @@ function listFollowups() {
                 }
 
                 let timediff = moment(followUpDate).diff(moment(), 'seconds');
-                if (timediff < 0) idata.passed = 1;
+                if (timediff < 0) {
+                    idata.passed = 1;
+                    idata.is_recurring = g_followUps[i].is_recurring;
+                }
                 else remTime = getClockTime(followUpDate, timediff);
 
                 if (remTime) valid_date = true;
@@ -2394,8 +2416,10 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
         success: function(data) {
             console.log(data);
             if(data.status_code == 200 && data.success == true) {
-                console.log("success")
+                console.log("success");
 
+                let fw_cout = $('.followup_count').text();
+                $('.followup_count').text( (fw_cout - 1) );
 
                 ticket.dept_id = data.ticket.dept_id;
                 ticket.assigned_to = data.ticket.assigned_to;

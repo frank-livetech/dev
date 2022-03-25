@@ -1916,7 +1916,6 @@ class HelpdeskController extends Controller
     }
 
     public function createFollowUpLogs($ticket , $flwup , $value , $passed = '') {
-        // create ticket followup logs
         
         $fLogsData = array(
             'ticket_id' => $ticket->id,
@@ -1949,9 +1948,15 @@ class HelpdeskController extends Controller
             'recurrence_end_type' => $flwup->recurrence_end_type,
             'recurrence_end_val' => $flwup->recurrence_end_val,
             'date' => $flwup->date,
-            'passed' => $flwup->passed,
             'created_by' => $flwup->created_by, 
         );
+
+        if(array_key_exists('is_recurring' , $value)) {
+            if($value['is_recurring'] == 0) {
+                $fLogsData['passed'] = array_key_exists('passed' , $value) ?? $value['passed'];
+            }
+        }
+
         TicketFollowupLogs::create($fLogsData);
         
         if($value != null) {
@@ -2212,7 +2217,8 @@ class HelpdeskController extends Controller
     }
 
     public function get_ticket_follow_up($tkt_id) {
-        $followUps = TicketFollowUp::where('ticket_id',$tkt_id)->where('is_deleted', 0)->where('passed', 0)->get();
+        $followUps = TicketFollowUp::where('ticket_id',$tkt_id)->where('is_deleted', 0)->where('passed', 0)->with('followUpLogs')->get();
+        // TicketFollowupLogs
 
         foreach ($followUps as $key => $value) {
             if($value->is_recurring == 1) {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use App\Models\TicketFollowupLogs;
 
 class TicketFollowUp extends Model
 {
@@ -99,5 +100,11 @@ class TicketFollowUp extends Model
         }
 
         return null;
+    }
+
+
+    // followup logs
+    public function followUpLogs() {
+        return $this->hasOne(TicketFollowupLogs::class , 'follow_up_id' ,'id');
     }
 }
