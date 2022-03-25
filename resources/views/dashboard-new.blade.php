@@ -568,8 +568,8 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script>
-<script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
+<!-- <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
+<!-- <script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script> -->
 
 
 @include('js_files.dashboardjs')

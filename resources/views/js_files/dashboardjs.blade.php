@@ -148,7 +148,7 @@
 
         });
 
-        document.getElementById('startDate').valueAsDate = new Date();
+        // document.getElementById('startDate').valueAsDate = new Date();
         // get_all_followups();
         searchFollowUps(true);
 

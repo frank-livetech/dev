@@ -2396,7 +2396,10 @@ background-color:rgba(218,165,32,0.3);
                 fields: ["address_components", "geometry"],
                 types: ["address"],
             });
-            address11Field.focus();
+            if(address11Field != null) {
+                address11Field.focus();
+            }
+            
         }
 
         autocomplete1.addListener("place_changed", fillInAddress1);

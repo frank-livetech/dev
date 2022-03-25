@@ -1079,7 +1079,7 @@
     let asset_project_id = $('#project_id').val();
 </script>
 
-<script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-todo.js')}}"></script>
+<!-- <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-todo.js')}}"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="{{asset( $file_path .  'assets/extra-libs/dropify-master/dist/js/dropify.js')}}"></script>
 
@@ -1141,7 +1141,7 @@
     //     }
     // });
 
-    $('.daterange').daterangepicker();
+    // $('.daterange').daterangepicker();
     
     $('.newTask').hide();
     

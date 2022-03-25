@@ -24,31 +24,31 @@ $(document).ready(function () {
     } );
 
 
-    $('#as_select').multipleSelect({
-        width:300,
-        onClick:function(view) {
-            var selectedItems = $('#as_select').multipleSelect("getSelects");
-            for(var i =0; i < 10; i++) {
-                columns = assets_table_list.column(i).visible(0);
-            }
-            for(var i = 0; i < selectedItems.length; i++) {
-                var s = selectedItems[i];
-                assets_table_list.column(s).visible(1);
-            }
-            $('#asset-table-list').css('width','100%');
-        },
-        onCheckAll:function() {
-            for(var i =0; i < 10; i++) {
-                columns = assets_table_list.column(i).visible(1);
-            }
-        },
-        onUncheckAll:function() {
-            for(var i =0; i < 10; i++) {
-                columns = assets_table_list.column(i).visible(0);
-            }
-            $('#asset-table-list').css('width','100%');
-        }
-    });
+    // $('#as_select').multipleSelect({
+    //     width:300,
+    //     onClick:function(view) {
+    //         var selectedItems = $('#as_select').multipleSelect("getSelects");
+    //         for(var i =0; i < 10; i++) {
+    //             columns = assets_table_list.column(i).visible(0);
+    //         }
+    //         for(var i = 0; i < selectedItems.length; i++) {
+    //             var s = selectedItems[i];
+    //             assets_table_list.column(s).visible(1);
+    //         }
+    //         $('#asset-table-list').css('width','100%');
+    //     },
+    //     onCheckAll:function() {
+    //         for(var i =0; i < 10; i++) {
+    //             columns = assets_table_list.column(i).visible(1);
+    //         }
+    //     },
+    //     onUncheckAll:function() {
+    //         for(var i =0; i < 10; i++) {
+    //             columns = assets_table_list.column(i).visible(0);
+    //         }
+    //         $('#asset-table-list').css('width','100%');
+    //     }
+    // });
 
     get_asset_table_list();
     $("#checkAll").click(function(){

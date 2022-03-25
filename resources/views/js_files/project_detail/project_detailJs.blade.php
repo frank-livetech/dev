@@ -208,12 +208,12 @@ $(document).ready(function() {
             $('#changeLog_table_filter').hide();
             $('#changeLog_table_paginate').hide();
         },
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5',
-        ],
+        // buttons: [
+        //     'copyHtml5',
+        //     'excelHtml5',
+        //     'csvHtml5',
+        //     'pdfHtml5',
+        // ],
         columns: [
             {"data": "id"},
             {"data": "version"},
