@@ -532,7 +532,7 @@ function SlaPlanReset() {
         if(ticket.reply_deadline == null ) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
                 let reply_date = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
-                $("#reply_date").val( moment(reply_date).format('YYYY-MM-DD') );
+                $("#reply_date").val( moment(reply_date , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#reply_hour").val(  reply_date.format('h') );
                 $("#reply_minute").val(  reply_date.format('mm') );
                 $("#reply_type").val(  reply_date.format('A') );
@@ -543,7 +543,7 @@ function SlaPlanReset() {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
                 console.log(ticket_slaPlan , "ticket_slaPlan");
                 let due_deadline = moment(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h');
-                $("#res_date").val( moment(due_deadline).format('YYYY-MM-DD') );
+                $("#res_date").val( moment(due_deadline , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#res_hour").val(  due_deadline.format('h'));
                 $("#res_minute").val(  due_deadline.format('mm') );
                 $("#res_type").val(  due_deadline.format('A') );
@@ -554,7 +554,8 @@ function SlaPlanReset() {
 
             if(ticket.resolution_deadline != 'cleared') {
                 let newDat2 = moment(ticket.resolution_deadline);
-                $("#res_date").val( moment(newDat2).format('YYYY-MM-DD') );
+                console.log(newDat2 , "newDat2");
+                $("#res_date").val( moment(newDat2 , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#res_hour").val(  newDat2.format('h'));
                 $("#res_minute").val(  newDat2.format('mm') );
                 $("#res_type").val(  newDat2.format('A') );
@@ -567,7 +568,8 @@ function SlaPlanReset() {
 
             if(ticket.reply_deadline != "cleared") {
                 let newDat = moment(ticket.reply_deadline);
-                $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
+                console.log(newDat , "newDat");
+                $("#reply_date").val( moment(newDat , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#reply_hour").val(  newDat.format('h') );
                 $("#reply_minute").val(  newDat.format('mm') );
                 $("#reply_type").val(  newDat.format('A') );

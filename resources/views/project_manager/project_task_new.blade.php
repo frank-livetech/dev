@@ -1081,7 +1081,8 @@
 
 <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-todo.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script src="{{asset('assets/extra-libs/dropify-master/dist/js/dropify.js')}}"></script>
+<script src="{{asset( $file_path .  'assets/extra-libs/dropify-master/dist/js/dropify.js')}}"></script>
+
 {{-- <link href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.css" rel="stylesheet"/> --}}
 {{-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css"> --}}
 {{-- <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script> --}}
@@ -1214,7 +1215,6 @@
     function listAttachments(ele){
         let type = $("#task_att_type").val();
         if(type == 'open') {
-            // reInitailizeAttachmentsDialog();
             $('.showUploadedAttachments').empty();
         }
         if(type == 'edit') {
