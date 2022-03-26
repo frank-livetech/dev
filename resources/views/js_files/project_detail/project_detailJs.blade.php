@@ -208,12 +208,12 @@ $(document).ready(function() {
             $('#changeLog_table_filter').hide();
             $('#changeLog_table_paginate').hide();
         },
-        buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5',
-        ],
+        // buttons: [
+        //     'copyHtml5',
+        //     'excelHtml5',
+        //     'csvHtml5',
+        //     'pdfHtml5',
+        // ],
         columns: [
             {"data": "id"},
             {"data": "version"},
@@ -406,6 +406,12 @@ function openTaskModal() {
     $("#task_id").val("");
     $(".project_btn").text("Save");
     $("#task_att_type").val("open");
+    $("#save-task").trigger("reset");
+    $("#selc-st").val("").trigger("change");
+    $("#task_priority").val("").trigger("change");
+    $("#assign_to").val("").trigger("change");
+    $("#work_tech").val("").trigger("change");
+    $("#task_type").val("").trigger("change");
 }
 
 // search template

@@ -532,7 +532,7 @@ function SlaPlanReset() {
         if(ticket.reply_deadline == null ) {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
                 let reply_date = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
-                $("#reply_date").val( moment(reply_date).format('YYYY-MM-DD') );
+                $("#reply_date").val( moment(reply_date , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#reply_hour").val(  reply_date.format('h') );
                 $("#reply_minute").val(  reply_date.format('mm') );
                 $("#reply_type").val(  reply_date.format('A') );
@@ -543,7 +543,7 @@ function SlaPlanReset() {
             if(ticket_slaPlan != null && ticket_slaPlan != "") {
                 console.log(ticket_slaPlan , "ticket_slaPlan");
                 let due_deadline = moment(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h');
-                $("#res_date").val( moment(due_deadline).format('YYYY-MM-DD') );
+                $("#res_date").val( moment(due_deadline , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#res_hour").val(  due_deadline.format('h'));
                 $("#res_minute").val(  due_deadline.format('mm') );
                 $("#res_type").val(  due_deadline.format('A') );
@@ -554,7 +554,8 @@ function SlaPlanReset() {
 
             if(ticket.resolution_deadline != 'cleared') {
                 let newDat2 = moment(ticket.resolution_deadline);
-                $("#res_date").val( moment(newDat2).format('YYYY-MM-DD') );
+                console.log(newDat2 , "newDat2");
+                $("#res_date").val( moment(newDat2 , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#res_hour").val(  newDat2.format('h'));
                 $("#res_minute").val(  newDat2.format('mm') );
                 $("#res_type").val(  newDat2.format('A') );
@@ -567,7 +568,8 @@ function SlaPlanReset() {
 
             if(ticket.reply_deadline != "cleared") {
                 let newDat = moment(ticket.reply_deadline);
-                $("#reply_date").val( moment(newDat).format('YYYY-MM-DD') );
+                console.log(newDat , "newDat");
+                $("#reply_date").val( moment(newDat , "YYYY-MM-DD").format('YYYY-MM-DD') );
                 $("#reply_hour").val(  newDat.format('h') );
                 $("#reply_minute").val(  newDat.format('mm') );
                 $("#reply_type").val(  newDat.format('A') );
@@ -2069,8 +2071,27 @@ function getTicketFollowUp() {
         success: function(data) {
             if (data.success == true) {
                 let obj = data.data;
-                $('.followup_count').text(obj.length);
-                console.log(obj , "followup obj");
+                let follow_up_count  = 0;
+
+                for(let i = 0; i < obj.length; i++) {
+
+                    if(obj[i].passed == 0) {
+                        if(obj[i].follow_up_logs != null) {
+                            if(obj[i].follow_up_logs.passed == 1) {
+                                follow_up_count += 0;
+                            }else{
+                                follow_up_count  += 1;
+                            }
+                        }else{
+                            follow_up_count += 1;
+                        }
+                    }else{
+                        follow_up_count = obj.length;
+                    }
+                }
+
+                $('.followup_count').text(follow_up_count);
+
                 g_followUps = obj;
 
                 // if(obj.length > 0)  {
@@ -2178,7 +2199,10 @@ function listFollowups() {
                 }
 
                 let timediff = moment(followUpDate).diff(moment(), 'seconds');
-                if (timediff < 0) idata.passed = 1;
+                if (timediff < 0) {
+                    idata.passed = 1;
+                    idata.is_recurring = g_followUps[i].is_recurring;
+                }
                 else remTime = getClockTime(followUpDate, timediff);
 
                 if (remTime) valid_date = true;
@@ -2392,8 +2416,10 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
         success: function(data) {
             console.log(data);
             if(data.status_code == 200 && data.success == true) {
-                console.log("success")
+                console.log("success");
 
+                let fw_cout = $('.followup_count').text();
+                $('.followup_count').text( (fw_cout - 1) );
 
                 ticket.dept_id = data.ticket.dept_id;
                 ticket.assigned_to = data.ticket.assigned_to;

@@ -294,7 +294,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/form-select2.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-navs.js')}}"></script>
-    <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script>
+    <!-- <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script> -->
     <!-- END: Page JS-->
 
     <script type="text/javascript" src="{{asset($file_path . 'assets/dist/js/flashy.min.js')}}"></script>
@@ -368,16 +368,18 @@
                 success: function(data) {
                     // console.log(data , 'data counts');
                     let counts = data.counts;
-                    for(var i = 0 ; i < counts.length ; i++){
-                        // console.log(counts[i].dept_counter)
-                        if(counts[i].dept_counter == 1){
-                            if(counts[i].tkt_dept_count > 0){
-                                $('#dept_cnt_'+counts[i].id).html(counts[i].tkt_dept_count);
+                    if(counts != undefined) {
+                        for(var i = 0 ; i < counts.length ; i++){
+                            // console.log(counts[i].dept_counter)
+                            if(counts[i].dept_counter == 1){
+                                if(counts[i].tkt_dept_count > 0){
+                                    $('#dept_cnt_'+counts[i].id).html(counts[i].tkt_dept_count);
+                                }
                             }
-                        }
-                        if(counts[i].status_counter == 1){
-                            if(counts[i].tkt_sts_count > 0 && counts[i].sts_name != 'Closed'){
-                                $('#sts_cnt_'+counts[i].id+'_'+counts[i].sts_id).html(counts[i].tkt_sts_count);
+                            if(counts[i].status_counter == 1){
+                                if(counts[i].tkt_sts_count > 0 && counts[i].sts_name != 'Closed'){
+                                    $('#sts_cnt_'+counts[i].id+'_'+counts[i].sts_id).html(counts[i].tkt_sts_count);
+                                }
                             }
                         }
                     }

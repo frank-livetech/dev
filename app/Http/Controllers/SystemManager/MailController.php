@@ -1520,14 +1520,15 @@ class MailController extends Controller
             $template = str_replace('{Company-Logo}', $img, $template);
         }
 
+        // checking whole template having {Ticket-Manager} short code
+        if(str_contains($template, '{Ticket-Manager}')) {
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-manager';
+            $template = str_replace('{Ticket-Manager}', $url , $template);
+        }
+            
+                    
         foreach ($data_list as $key => $data) {
 
-            // checking whole template having {Ticket-Manager} short code
-            if(str_contains($template, '{Ticket-Manager}')) {
-                $url = request()->root() . '/ticket-manager';
-                $template = str_replace('{Ticket-Manager}', $url , $template);
-            }
-            
             if($data['module'] == 'Customer') {
 
                 if(str_contains($template, '{Customer-ID}')) {
@@ -1561,14 +1562,14 @@ class MailController extends Controller
 
                 // if module is ticket then replace url to according to customer && user ticket detail urls.
                 if(str_contains($template, '{URL}')) {
-                    $url = request()->root() . '/ticket-details' . '/' . $data['values']['coustom_id'];
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{URL}', $url , $template);
                 }
                 // ends here
 
                 // customer ticket url
                 if(str_contains($template, '{Customer-URL}')) {
-                    $url = request()->root() . '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{Customer-URL}', $url , $template);
                 }
 

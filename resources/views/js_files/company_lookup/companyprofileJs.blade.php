@@ -21,6 +21,7 @@
     let date_format =  "{{Session::get('system_date')}}";
 
     let autocomplete;
+    let autocomplete1;
     let address1Field;
     let address2Field;
     let postalField;
@@ -61,8 +62,7 @@
     // When the user selects an address from the drop-down, populate the
     // address fields in the form.
     autocomplete.addListener("place_changed", fillInAddress);
-
-    autocomplete1.addListener("place_changed", fillPaymentBillingFIelds);
+    // autocomplete1.addListener("place_changed", fillPaymentBillingFIelds);
     }
  
     function fillInAddress() {

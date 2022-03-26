@@ -1417,7 +1417,7 @@ h6 {
 </script>
 <script>
 
-    $('.daterange').daterangepicker();
+    // $('.daterange').daterangepicker();
     
     $('.newTask').hide();
     

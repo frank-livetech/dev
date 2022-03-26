@@ -225,31 +225,31 @@ function get_all_companies() {
             $('#companyTBody').html(row);
             var company_table = $('#companyTable').DataTable();
 
-            $('#select_column').multipleSelect({
-                width: 300,
-                onClick: function(view) {
-                    var selectedItems = $('#select_column').multipleSelect("getSelects");
-                    for (var i = 0; i < 11; i++) {
-                        columns = company_table.column(i).visible(0);
-                    }
-                    for (var i = 0; i < selectedItems.length; i++) {
-                        var s = selectedItems[i];
-                        company_table.column(s).visible(1);
-                    }
+            // $('#select_column').multipleSelect({
+            //     width: 300,
+            //     onClick: function(view) {
+            //         var selectedItems = $('#select_column').multipleSelect("getSelects");
+            //         for (var i = 0; i < 11; i++) {
+            //             columns = company_table.column(i).visible(0);
+            //         }
+            //         for (var i = 0; i < selectedItems.length; i++) {
+            //             var s = selectedItems[i];
+            //             company_table.column(s).visible(1);
+            //         }
 
-                },
-                onCheckAll: function() {
-                    for (var i = 0; i < 11; i++) {
-                        columns = company_table.column(i).visible(1);
-                    }
-                },
-                onUncheckAll: function() {
-                    for (var i = 0; i < 11; i++) {
-                        columns = company_table.column(i).visible(0);
-                    }
+            //     },
+            //     onCheckAll: function() {
+            //         for (var i = 0; i < 11; i++) {
+            //             columns = company_table.column(i).visible(1);
+            //         }
+            //     },
+            //     onUncheckAll: function() {
+            //         for (var i = 0; i < 11; i++) {
+            //             columns = company_table.column(i).visible(0);
+            //         }
 
-                }
-            });
+            //     }
+            // });
         },
         complete: function(data) {
             $('.loader_container').hide();

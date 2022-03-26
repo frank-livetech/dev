@@ -245,7 +245,9 @@
             fields: ["address_components", "geometry"],
             types: ["address"],
         });
-        address11Field.focus();
+        if(address11Field != null) {
+            address11Field.focus();
+        }        
         // When the user selects an address from the drop-down, populate the
         // address fields in the form.
         // $("#map_2").html('');
