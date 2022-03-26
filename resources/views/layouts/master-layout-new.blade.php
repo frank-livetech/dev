@@ -498,7 +498,7 @@
                 cache: false,
                 async:false,
                 success: function(data) {
-                    console.log(data , "notification");
+                    // console.log(data , "notification");
                     var noti_div = ``;
                     var sender = data.data;
 
@@ -506,13 +506,13 @@
                     var user_image = ``;
                     var default_icon = ``;
 
-                    if(data){
+                    if(data.status_code == 200 && data.success == true){
                         notifications = data.data;
-                        console.log(notifications.length , "notifications");
+                        // console.log(notifications.length , "notifications");
 
                         $("#noti_count").text(notifications.total_notification);
 
-                        if(notifications.length > 0){
+                        if(notifications.length > 0) {
                             for(var i = 0 ; i < notifications.length ; i++){
 
                                 if(notifications[i].sender != null) {
@@ -532,24 +532,22 @@
                                 default_icon = `<span class="`+notifications[i].btn_class+` rounded-circle btn-circle"" style="padding:8px 12px">
                                                 <i class="`+notifications[i].noti_icon+`"></i></span>`;
 
-                                var title = notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification';
-                                var desc = notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc';
-
                                 var icon = 'fa fa-link';
                                 noti_div += ` <a class="d-flex"href="#" onclick="markRead(`+notifications[i].id+`)" style="cursor: pointer;">
-                                                <div class="list-item d-flex align-items-start">
-                                                    <div class="me-1">
-                                                        <div class="avatar">
-                                                            `+ (notifications[i].noti_type == "attendance" ? user_image : default_icon) +`
-                                                        </div>
-                                                    </div>
-                                                    <div class="list-item-body flex-grow-1">
-                                                        <p class="media-heading">
-                                                        <span class="fw-bolder">`+title+`</span> <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
-                                                        <small class="notification-text"> `+desc+`</small>
-                                                    </div>
+                                        <div class="list-item d-flex align-items-start">
+                                            <div class="me-1">
+                                                <div class="avatar">
+                                                    ${notifications[i].noti_type == "attendance" ? user_image : default_icon}
                                                 </div>
-                                            </a>`;
+                                            </div>
+                                            <div class="list-item-body flex-grow-1">
+                                                <p class="media-heading">
+                                                <span class="fw-bolder">${notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification'}</span> 
+                                                <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
+                                                <small class="notification-text">${notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc'}</small>
+                                            </div>
+                                        </div>
+                                    </a>`;
                                         
                             }
                             $('.notifications').append(noti_div)
