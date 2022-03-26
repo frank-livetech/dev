@@ -142,10 +142,9 @@ class HomeController extends Controller {
 
     }
     public function getNotifications(){
-                
-        $notifications = Notification::with(['sender','user'])
-                ->orderBy('id','desc')->where('receiver_id',\Auth::user()->id)
-                ->where('read_at',NULL)->limit(10)->get();
+
+        $notifications = Notification::orderBy('id','desc')->where('receiver_id',\Auth::user()->id)
+                ->where([['read_at',NULL] , ['sender_id' ,'!=',0]])->with(['sender','user'])->limit(10)->get();
         // foreach($notifications as $notification) {
             // $notification->user = User::where('id',$notification->receiver_id)->first();
             // $notification->sender = User::where('id',$notification->sender_id)->first();
