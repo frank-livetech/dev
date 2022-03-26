@@ -357,7 +357,7 @@
             // console.log($.now() + 506800000)
             var defaultEvents = [];
             
-            get_all_schedules(defaultEvents);
+            // get_all_schedules(defaultEvents);
 
             // console.log( defaultEvents , "default" );
 

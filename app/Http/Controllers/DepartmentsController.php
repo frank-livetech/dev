@@ -120,15 +120,75 @@ class DepartmentsController extends Controller
 
     public function set_assignments(Request $request) {
         $data = $request->all();
-
+        // return dd($data);
         try {
-            if($request->assignment == 'set') {
-                $data['updated_by'] = \Auth::user()->id;
-                DepartmentAssignments::create($data);
-            } else {
-                DepartmentAssignments::where([
-                    ['user_id', $request->user_id], ['dept_id', $request->dept_id]
-                ])->delete();
+
+            $dep = DepartmentAssignments::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->first();
+
+            $permission_arr = array(
+                array( "user_id" => $request->user_id ,  "dept_id" => $request->dept_id , "permitted" => 1 , "name" => "d_t_canreply" , "created_at" => now() , "updated_at" => now()),
+                array( "user_id" => $request->user_id ,  "dept_id" => $request->dept_id , "permitted" => 1 , "name" => "d_t_canforward" , "created_at" => now() , "updated_at" => now()),
+                array( "user_id" => $request->user_id ,  "dept_id" => $request->dept_id , "permitted" => 1 , "name" => "d_t_canfollowup" , "created_at" => now() , "updated_at" => now()),
+                array( "user_id" => $request->user_id ,  "dept_id" => $request->dept_id , "permitted" => 1 , "name" => "d_t_canbilling" , "created_at" => now() , "updated_at" => now()),
+                array( "user_id" => $request->user_id ,  "dept_id" => $request->dept_id , "permitted" => 1 , "name" => "d_t_canassignment" , "created_at" => now() , "updated_at" => now()),
+                array( "user_id" => $request->user_id ,  "dept_id" => $request->dept_id , "permitted" => 1 , "name" => "d_t_cantktfollowalerts" , "created_at" => now() , "updated_at" => now()),
+                array( "user_id" => $request->user_id ,  "dept_id" => $request->dept_id , "permitted" => 1 , "name" => "d_t_cannotealerts" , "created_at" => now() , "updated_at" => now()),
+            );
+
+            $dep_arr = array(
+                "user_id" => $request->user_id , 
+                "dept_id" => $request->dept_id ,
+            );
+
+            $permission = DepartmentPermissions::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->get();
+
+            if($dep) {
+
+                if($request->assignment == 'set') {
+
+                    $dep_arr['updated_by'] = auth()->id();
+                    DepartmentAssignments::where([ ['user_id', $request->user_id], ['dept_id', $request->dept_id] ])->update($dep_arr);
+        
+                    if(count($permission) > 0) {
+                        DepartmentPermissions::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->delete();
+                    }
+    
+                    foreach($permission_arr as $key => $value) {
+                        DB::table("department_permissions")->insert([
+                            $key => $value,
+                        ]);
+                    }
+                    
+                } else {
+                    DepartmentAssignments::where([ ['user_id', $request->user_id], ['dept_id', $request->dept_id] ])->delete();
+                    if(count($permission) > 0) {
+                        DepartmentPermissions::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->delete();
+                    }
+                }
+
+            }else{
+
+                if($request->assignment == 'set') {
+
+                    DepartmentAssignments::create($dep_arr);
+        
+                    if(count($permission) > 0) {
+                        DepartmentPermissions::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->delete();
+                    }
+    
+                    foreach($permission_arr as $key => $value) {
+                        DB::table("department_permissions")->insert([
+                            $key => $value,
+                        ]);
+                    }
+                    
+                } else {
+                    DepartmentAssignments::where([ ['user_id', $request->user_id], ['dept_id', $request->dept_id] ])->delete();
+                    if(count($permission) > 0) {
+                        DepartmentPermissions::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->delete();
+                    }
+                }
+
             }
 
             $response['message'] = 'Assignment updated successfully!';
@@ -142,4 +202,5 @@ class DepartmentsController extends Controller
             return response()->json($response);
         }
     }
+    
 }

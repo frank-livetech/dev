@@ -960,11 +960,11 @@
                                 <div>
                                     @foreach ($departments as $obj)
                                     <div id="accordion" class="custom-accordion">
-                                        <div class="card mb-0 card_shadow">
+                                        <div class="card mb-0 card_shadow my-2">
                                             <div class="" id="headingOne">
                                                 <div class="demo-inline-spacing">
                                                     <h5 class="m-0">
-                                                        <a class="custom-accordion-title d-flex align-items-center pt-2 pb-2 {{($obj['assignment'] == 1) ? '' : 'collapsed'}}" data-bs-toggle="collapse" aria-expanded="{{($obj['assignment'] == 1) ? 'true' : 'false'}}" aria-controls="collapseOne">
+                                                        <a class="custom-accordion-title d-flex align-items-center{{($obj['assignment'] == 1) ? '' : 'collapsed'}}" data-bs-toggle="collapse" style="paddi" aria-expanded="{{($obj['assignment'] == 1) ? 'true' : 'false'}}" aria-controls="collapseOne">
                                                         {{$obj['name']}}<span class="ml-auto"></span>
                                                         </a>
                                                     </h5>
@@ -1563,7 +1563,6 @@
             }
         };
 </script>
-
 
 @include('js_files.ticket_cmmnJs')
 @include('js_files.system_manager.staff_management.user_profileJs')
