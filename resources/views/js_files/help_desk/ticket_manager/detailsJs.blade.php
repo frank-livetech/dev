@@ -571,9 +571,9 @@ function SlaPlanReset() {
             }
 
             if(ticket.reply_deadline != "cleared") {
-                let rep_deadline = moment(ticket.resolution_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
+                let rep_deadline = moment(ticket.reply_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
                 console.log(rep_deadline , "reply deadline");
-                let time  = res_deadline.split(' ');
+                let time  = rep_deadline.split(' ');
                 let split_hours = time[1].split(':');
 
                 $("#reply_date").val( time[0] );
@@ -3375,11 +3375,11 @@ function getLatestLogs() {
                     "paging": true,
                     "searching": true,
                     columns: [
-                        {
-                            "render": function(data, type, full, meta) {
-                                return full.id != null ? full.id : '-';
-                            }
-                        },
+                        // {
+                        //     "render": function(data, type, full, meta) {
+                        //         return full.id != null ? full.id : '-';
+                        //     }
+                        // },
                         {
                             "render": function(data, type, full, meta) {
                                 return full.action_perform != null ? full.action_perform+' at '+ moment(full.created_at).format($('#sys_date_format').val() + ' ' + 'hh:mm A') : '-';
