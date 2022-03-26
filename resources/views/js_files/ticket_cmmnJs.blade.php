@@ -89,6 +89,17 @@ function selectSingle(id) {
     if(checked_tkt == 0) {
         $('.show_tkt_btns').hide()
     }
+
+    $("#dept_id").val("nochange").trigger("change");
+    $("#assigned_to").val("nochange").trigger("change");
+    $("#type").val("nochange").trigger("change");
+    $("#status").val("nochange").trigger("change");
+    $("#priority").val("nochange").trigger("change");
+
+    $("#prio-label").removeAttr('style',true);
+    $("#prio-label").attr('style','border-right: 1px solid white; padding: 12px;');
+
+    $('.drop-dpt').attr('style','background-color:#b0bec5;border-radius:9px;');
 }
 
 function updateTickets() {
@@ -157,6 +168,18 @@ function updateTickets() {
 
                     get_ticket_table_list();
                     $('.show_tkt_btns').hide();
+
+
+                    $("#dept_id").val("nochange").trigger("change");
+                    $("#assigned_to").val("nochange").trigger("change");
+                    $("#type").val("nochange").trigger("change");
+                    $("#status").val("nochange").trigger("change");
+                    $("#priority").val("nochange").trigger("change");
+                    $("#prio-label").removeAttr('style',true);
+                    $("#prio-label").attr('style','border-right: 1px solid white; padding: 12px;');
+
+                    $('.drop-dpt').attr('style','background-color:#b0bec5;border-radius:9px;');
+
                 } else {
                     toastr.error(data.message, { timeOut: 5000});
                 }
@@ -226,7 +249,7 @@ function get_ticket_table_list() {
 }
 
 function getCounterTickets(key){
-    
+    in_recycle_mode = false;
     let dept_id = $('#dept').val();
     if(dept_id != '' && key == 'total'){
         let ret = $.ajax({
@@ -273,7 +296,7 @@ function listTickets(f_key = '') {
     }
     
     in_recycle_mode = false;
-    $('#btnDelete').hide();
+
     $('#btnMovetotrash').show();
     if (f_key == 'closed' || f_key == 'trash') {
         getClosedOrTrashedTickets(f_key);
@@ -363,11 +386,13 @@ function redrawTicketsTable(ticket_arr) {
         }
 
         let restore_flag_btn = '';
+        console.log(in_recycle_mode , "in_recycle_mode");
         if (in_recycle_mode) {
             restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-trash-restore text-primary" title="Restore" style="cursor:pointer;" onclick="restoreTicket(' + val['id'] + ');"></span></div>';
             $('#btnMovetotrash').hide();
             $('#btnDelete').show();
         } else {
+            $('#btnDelete').hide();
             restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-flag" title="Flag" style="cursor:pointer;" onclick="flagTicket(this, ' + val['id'] + ');"></span></div>';
         }
         let res_due = '';

@@ -1820,13 +1820,13 @@ $('#dept_id').change(function() {
         new_data:dept_id,
         new_text:$("#dept_id option:selected").text()
     }
-    
-    let item = updates_Arr.find(item => item.id == 1);
-    if(item != null || item != undefined || item != '' || item != "") {
-        updates_Arr.id = 1;
-        updates_Arr.data = ticket.department_name ; 
-        updates_Arr.new_data = dept_id ;
-        updates_Arr.new_text = $("#dept_id option:selected").text();
+      
+    let item = updates_Arr.filter(item => item.id == 1);
+    if(item.length > 0) {
+        updates_Arr[0].id = 1;
+        updates_Arr[0].data = ticket.department_name ; 
+        updates_Arr[0].new_data = dept_id ;
+        updates_Arr[0].new_text = $("#dept_id option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -1862,12 +1862,12 @@ $('#assigned_to').change(function() {
         new_text:$("#assigned_to option:selected").text()
     }
 
-    let item = updates_Arr.find(item => item.id == 2);
-    if(item != null || item != undefined || item != '' || item != "") {
-        updates_Arr.id = 2;
-        updates_Arr.data = ticket.assignee_name ; 
-        updates_Arr.new_data = assigned_to ;
-        updates_Arr.new_text = $("#assigned_to option:selected").text();
+    let item = updates_Arr.filter(item => item.id == 2);
+    if(item.length > 0) {
+        updates_Arr[0].id = 1;
+        updates_Arr[0].data = ticket.assignee_name ; 
+        updates_Arr[0].new_data = assigned_to ;
+        updates_Arr[0].new_text = $("#assigned_to option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -1902,14 +1902,13 @@ $('#type').change(function() {
         new_text:$("#type option:selected").text()
 
     }
-    
-    
-    let item = updates_Arr.find(item => item.id == 3);
-    if(item != null || item != undefined || item != '' || item != "") {
-        updates_Arr.id = 2;
-        updates_Arr.data = ticket.type_name ; 
-        updates_Arr.new_data = type ;
-        updates_Arr.new_text = $("#type option:selected").text();
+
+    let item = updates_Arr.filter(item => item.id == 3);
+    if(item.length > 0) {
+        updates_Arr[0].id = 1;
+        updates_Arr[0].data = ticket.type_name ; 
+        updates_Arr[0].new_data = type ;
+        updates_Arr[0].new_text = $("#type option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -1946,13 +1945,13 @@ $('#status').change(function() {
         new_text:$("#status option:selected").text()
 
     }
-    
-    let item = updates_Arr.find(item => item.id == 4);
-    if(item != null || item != undefined || item != '' || item != "") {
-        updates_Arr.id = 2;
-        updates_Arr.data = ticket.status_name ; 
-        updates_Arr.new_data = status ;
-        updates_Arr.new_text = $("#status option:selected").text();
+
+    let item = updates_Arr.filter(item => item.id == 4);
+    if(item.length > 0) {
+        updates_Arr[0].id = 1;
+        updates_Arr[0].data = ticket.status_name ; 
+        updates_Arr[0].new_data = status ;
+        updates_Arr[0].new_text = $("#status option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -1989,12 +1988,12 @@ $('#priority').change(function() {
 
     }
 
-    let item = updates_Arr.find(item => item.id == 5);
-    if(item != null || item != undefined || item != '' || item != "") {
-        updates_Arr.id = 2;
-        updates_Arr.data = ticket.priority_name ; 
-        updates_Arr.new_data = priority ;
-        updates_Arr.new_text = $("#priority option:selected").text();
+    let item = updates_Arr.filter(item => item.id == 5);
+    if(item.length > 0) {
+        updates_Arr[0].id = 1;
+        updates_Arr[0].data = ticket.priority_name ; 
+        updates_Arr[0].new_data = priority ;
+        updates_Arr[0].new_text = $("#priority option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -2003,7 +2002,8 @@ $('#priority').change(function() {
 });
 
 function updateTicket(){
-
+    console.log(updates_Arr , "updates_Arr");
+    console.log(updates_Arr.length , "updates_Arr");
     if(updates_Arr.length == 0){
         toastr.warning( 'There is nothing to update.' , { timeOut: 5000 });
         return false;

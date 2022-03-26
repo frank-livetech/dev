@@ -347,7 +347,7 @@
                                     <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white; padding: 12px;">
                                         <label class="control-label col-sm-12 end_padding text-white " ><strong>Priority</strong></label>
                                         <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="prio-h5"></h5>
-                                        <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
+                                        <select class="select2 form-control priority_dropdown" id="priority" name="priority" style="width: 100%; height:36px;">
                                             <option value="nochange"> -- no change -- </option>
                                             @foreach($priorities as $priority)
                                                 <option value="{{$priority->id}}" data-color="{{$priority->priority_color}}" >{{$priority->name}}</option>
@@ -389,7 +389,8 @@
                                             <button type="button" class="btn btn-info waves-effect waves-float waves-light" id="btnMerge" onclick="merge_tickets()"><i class="fas fa-random" aria-hidden="true"></i>&nbsp; Merge</button>
                                         </span>
 
-                                        <button type="button" class="btn btn-danger" id="btnDelete" style="display: none;"><i class="fas fa-trash-alt"></i>&nbsp;Delete Permanently</button>
+                                        <button type="button" class="btn btn-danger btnDelete" id="btnDelete" style="display: none;">
+                                        <i class="fas fa-trash-alt"></i>&nbsp;Delete Permanently</button>
 
                                         <button type="button" id="refreshTicket" onclick="refreshTickets()" class="btn btn-secondary waves-effect waves-float waves-light" > 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw">
@@ -526,7 +527,7 @@
                                                 <label class="control-label">Select Priority<span
                                                         style="color:red !important;">*</span></label><span id="select-priority"
                                                     style="display :none; color:red !important;">Please Select Priority</span>
-                                                <select class="select2 form-control " id="priority" name="priority"
+                                                <select class="select2 form-control" id="priority" name="priority"
                                                     style="width: 100%; height:36px;">
                                                     <option value="">Select </option>
                                                     @foreach($priorities as $priority)

@@ -192,6 +192,8 @@ function moveToTrash() {
                         showConfirmButton: false,
                         timer: swal_message_time
                     });
+
+                    $('.show_tkt_btns').hide();
                 },
                 failure: function(errMsg) {
                     console.log(errMsg);
