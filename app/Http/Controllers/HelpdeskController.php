@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -374,16 +374,16 @@ class HelpdeskController extends Controller
     // updated selected ticket
     public function update_selected_ticket(Request $request) {
 
+        // return dd($request->all());
         $tkt_id = explode(',', $request->tkt_id);
-        
         for($i = 0; $i < count($tkt_id); $i++) {
 
             $tk = Tickets::where('id' , $tkt_id[$i])->first();
-            $tk->assigned_to = $request->assigned_to;
-            $tk->type = $request->type;
-            $tk->status = $request->status;
-            $tk->priority = $request->priority;
-            $tk->dept_id = $request->dept_id;
+            $tk->assigned_to = $request->assigned_to != null ? $request->assigned_to : $tk->assigned_to;
+            $tk->type = $request->type != null ? $request->type : $tk->type;
+            $tk->status = $request->status != null ? $request->status : $tk->status;
+            $tk->priority = $request->priority != null ? $request->priority : $tk->priority;
+            $tk->dept_id = $request->dept_id != null ? $request->dept_id : $tk->dept_id;
             $tk->updated_at = Carbon::now();
             $tk->save();
             

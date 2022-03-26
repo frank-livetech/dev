@@ -257,9 +257,14 @@
     }
 
     function copyToClipBoard() {
-        
-        $("#current_url").select();
+
+        let url = window.location.href;
+        let $input = $("<input>");
+        $('body').append($input);
+
+        $input.val(url).select();
         document.execCommand('copy');
+        $input.remove();
 
         $("#c_url").fadeIn();
 

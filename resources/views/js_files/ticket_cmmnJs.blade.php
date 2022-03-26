@@ -308,9 +308,11 @@ function listTickets(f_key = '') {
     }
     redrawTicketsTable(ticket_arr);
 }
+
 function redrawTicketsTable(ticket_arr) {
     var la_color = ``;
     tickets_table_list.clear().draw();
+    console.log(ticket_arr , "ticket_arr");
     $.each(ticket_arr, function(key, val) {
         let prior = '<div class="text-center">' + val['priority_name'] + '</div>';
         if (val['priority_color']) {
@@ -425,6 +427,7 @@ function redrawTicketsTable(ticket_arr) {
         if(val['reply_deadline'] == null) {
             new_rep_due = rep_due.replace("60m", "59m");
         }
+
         if(val['resolution_deadline'] == null) {
             new_res_due = res_due.replace("60m", "59m");
         }
@@ -455,7 +458,8 @@ function redrawTicketsTable(ticket_arr) {
                 new_rep_due = ``;
             }
 
-            if(val['reply_deadline'] != "cleared") {
+            if(val['resolution_deadline'] != "cleared") {
+                console.log("")
                 let tkt_res_due = moment(val['resolution_deadline']).format('YYYY-MM-DD hh:mm A');
                 // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
                 let timediff_res = getDatesSeconds( val['resolution_deadline'] , con_currTime  );

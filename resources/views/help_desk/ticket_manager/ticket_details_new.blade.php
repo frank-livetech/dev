@@ -596,7 +596,7 @@ br + br { display: none; }
                                                         class="table table-striped table-bordered no-wrap ticket-table-list w-100">
                                                         <thead>
                                                             <tr>
-                                                                <th width='20'>ID</th>
+                                                                <!-- <th width='20'>ID</th> -->
                                                                 <th>Activity</th>
                                                             </tr>
                                                         </thead>

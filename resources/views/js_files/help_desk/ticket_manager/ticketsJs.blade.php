@@ -459,10 +459,11 @@ function getLatestLogs() {
                     "bInfo": false,
                     "paging": true,
                     "searching": true,
-                    columns: [{
-                            "data": null,
-                            "defaultContent": ""
-                        },
+                    columns: [
+                        // {
+                        //     "data": null,
+                        //     "defaultContent": ""
+                        // },
                         {
                             "render": function(data, type, full, meta) {
                                 return full.action_perform+' at '+moment(full.created_at).parseZone(usrtimeZone).format($('#system_date_format').val() + ' ' + 'hh:mm A');
@@ -471,16 +472,16 @@ function getLatestLogs() {
                     ],
                 });
                 
-                tbl.on("order.dt search.dt", function() {
-                    tbl.column(0, {
-                            search: "applied",
-                            order: "applied"
-                        })
-                        .nodes()
-                        .each(function(cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
-                }).draw();
+                // tbl.on("order.dt search.dt", function() {
+                //     tbl.column(0, {
+                //             search: "applied",
+                //             order: "applied"
+                //         })
+                //         .nodes()
+                //         .each(function(cell, i) {
+                //             cell.innerHTML = i + 1;
+                //         });
+                // }).draw();
             } else {
                 console.log(data.message);
             }

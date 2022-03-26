@@ -452,7 +452,6 @@
                                                             <table id="ticket-logs-list" class="table table-striped table-bordered ticket-table-list">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>ID</th>
                                                                         <th>Activity</th>
                                                                     </tr>
                                                                 </thead>
@@ -693,7 +692,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1"> Calendar - {{$ticket_time}} </h4>
+                    <h4 class="modal-title" id="myModalLabel1"> Calendar </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -763,9 +762,9 @@
     let current_time = moment().format('YYYY-MM-DD hh:mm:ss');
     let future_time = moment('2022-03-14').format('YYYY-MM-DD hh:mm:ss');
 
-    console.log(current_time , "current_time");
-    console.log(future_time , "future_time");
-    console.log( duration( current_time , future_time ) , "first");
+    // console.log(current_time , "current_time");
+    // console.log(future_time , "future_time");
+    // console.log( duration( current_time , future_time ) , "first");
 
 
     function duration(t0, t1){

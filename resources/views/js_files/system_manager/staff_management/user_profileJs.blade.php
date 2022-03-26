@@ -156,9 +156,6 @@
         }
         initializeTicketTable();
 
-        // get all leaves
-        get_all_leaves();
-
         $("#twt_link").click(function(e) {
             e.preventDefault();
             var value = $(this).attr('href');
@@ -323,13 +320,6 @@
 
         });
 
-        let date = new Date();
-        let start = moment(date).startOf('month').format('YYYY-MM-DD');
-        let end = moment(date).endOf('month').format('YYYY-MM-DD');
-        let user_id = $("#user_id").val();
-
-        getStaffWorkDetail(start, end, user_id);
-        // showDeptrtmentPermission();
 
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -413,27 +403,6 @@
             });
         });
         
-        // $("#customFilePP").change(function() {
-        //     // alert("Bingo");
-        //     var ter = $("#customFilePP").val();
-        //     // // alert(ter);
-        //     // var terun = ter.replace(/^.*\\/, "");
-        //     // $(".custom-file-label").text(terun);
-        //     // // if (ter) {
-        //     // //         .src = URL.createObjectURL(ter)
-        //     // //     }
-        //     // $("#profile-user-img").attr('src',URL.createObjectURL(terun));
-            
-        //             var output = document.getElementById('customFilePP');
-        //             output.src = URL.createObjectURL($(this).target.files[0]);
-        //             output.onload = function() {
-        //             URL.revokeObjectURL(output.src) // free memory
-          
-        //     readURL(this);
-        //     alert(ter)
-        // });
-
-
         // save work hours
         $("#workHoursForm").submit(function(event) {
             event.preventDefault();
@@ -620,10 +589,12 @@
         
         updateAssignment(formData);
 
-        $('.yes_sub_check_'+dept_id).each(function () {
-            let name = $(this).attr('dep');
-            saveNotificationPermission(1 , dept_id , name);
-        });
+        // $('.yes_sub_check_'+dept_id).each(function () {
+        //     let name = $(this).attr('dep');
+        //     saveNotificationPermission(1 , dept_id , name);
+        // });
+
+        console.log("openThisAccordin function");
     }
 
     function closeThisAccordin(dept_id) {
@@ -646,6 +617,7 @@
     }
 
     function updateAssignment(formData) {
+        console.log("updateAssignment function");
         $.ajax({
             type: "POST",
             url: "{{asset('/set-dept-assignment')}}",
@@ -656,14 +628,7 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data) {
-                // console.log(data);
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: data['message'],
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
+                toastr.success( data['message'] , { timeOut: 5000 });
             }
         });
     }
@@ -718,6 +683,7 @@
 
 
     function saveNotificationPermission(val, dept_id, perm) {
+        console.log("saveNotificationPermission function");
         var formData = new FormData();
 
         formData.append('user_id', $("#user_id").val());
@@ -735,15 +701,7 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data) {
-                // console.log(data);
-
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: data['message'],
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
+                toastr.success( data['message'] , { timeOut: 5000 });
             }
         });
     }
@@ -891,9 +849,29 @@
         });
     }
 
-    get_all_certificates(user_id);
-    get_all_documents(user_id);
+    $("#pills-documents-tab").click(function() {
+        get_all_documents(staff_id);
+    });
+    $("#my-certifications-tab").click(function() {
+        get_all_certificates(staff_id);
+    });
+    $("#my-schedule-tab").click(function() {
+        get_all_leaves();
+        var defaultEvents = [];
+            
+        get_all_schedules(defaultEvents);
+    });
 
+    $("#payroll-tab").click(function() {
+        
+        let date = new Date();
+        let start = moment(date).startOf('month').format('YYYY-MM-DD');
+        let end = moment(date).endOf('month').format('YYYY-MM-DD');
+        let user_id = $("#user_id").val();
+
+        getStaffWorkDetail(start, end, user_id);
+
+    });
 
     function get_all_certificates(id) {
         $.ajax({

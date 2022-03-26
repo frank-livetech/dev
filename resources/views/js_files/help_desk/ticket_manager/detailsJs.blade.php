@@ -385,7 +385,7 @@ function setSlaPlanDeadlines(ret = false) {
                 let tkt_rep_due = moment(ticket.reply_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
                 // let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime , "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A") , 'seconds');
                 let timediff_rep = getDatesSeconds( ticket.reply_deadline  , con_currTime  );
-                console.log(timediff_rep , "timediff_rep");
+                // console.log(timediff_rep , "timediff_rep");
                 if(timediff_rep <= 0) {
                     resetable = true;
                     rep_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
@@ -407,7 +407,7 @@ function setSlaPlanDeadlines(ret = false) {
 
                 let tkt_res_due = moment(ticket.resolution_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
                 // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime , "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A") , 'seconds');
-                console.log(timediff_res , "timediff_res");
+                // console.log(timediff_res , "timediff_res");
                 if(timediff_res <= 0) {
                     resetable = true;
                     res_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
@@ -418,7 +418,7 @@ function setSlaPlanDeadlines(ret = false) {
                     // res_diff = cal_res_diff.replace("60m", "59m");
                     
                 }
-                console.log(res_diff , 'res_diff');
+                // console.log(res_diff , 'res_diff');
                 $('#sla-res_due').html(res_diff);
             }else{
                 $('#sla-res_due').parent().addClass('d-none');
@@ -553,12 +553,16 @@ function SlaPlanReset() {
         if(ticket.reply_deadline != null &&  ticket.resolution_deadline != null) {
 
             if(ticket.resolution_deadline != 'cleared') {
-                let newDat2 = moment(ticket.resolution_deadline);
-                console.log(newDat2 , "newDat2");
-                $("#res_date").val( moment(newDat2 , "YYYY-MM-DD").format('YYYY-MM-DD') );
-                $("#res_hour").val(  newDat2.format('h'));
-                $("#res_minute").val(  newDat2.format('mm') );
-                $("#res_type").val(  newDat2.format('A') );
+
+                let res_deadline = moment(ticket.resolution_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
+                console.log(res_deadline , "resolution deadline");
+                let time  = res_deadline.split(' ');
+                let split_hours = time[1].split(':');
+
+                $("#res_date").val(time[0] );
+                $("#res_hour").val( split_hours[0] );
+                $("#res_minute").val(  split_hours[1] );
+                $("#res_type").val( time[2] );
             }else{
                 $("#res_date").val("");
                 $("#res_hour").val(12);
@@ -567,12 +571,15 @@ function SlaPlanReset() {
             }
 
             if(ticket.reply_deadline != "cleared") {
-                let newDat = moment(ticket.reply_deadline);
-                console.log(newDat , "newDat");
-                $("#reply_date").val( moment(newDat , "YYYY-MM-DD").format('YYYY-MM-DD') );
-                $("#reply_hour").val(  newDat.format('h') );
-                $("#reply_minute").val(  newDat.format('mm') );
-                $("#reply_type").val(  newDat.format('A') );
+                let rep_deadline = moment(ticket.reply_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
+                console.log(rep_deadline , "reply deadline");
+                let time  = rep_deadline.split(' ');
+                let split_hours = time[1].split(':');
+
+                $("#reply_date").val( time[0] );
+                $("#reply_hour").val(  split_hours[0] );
+                $("#reply_minute").val( split_hours[1] );
+                $("#reply_type").val(  time[2] );
             }else{
                 $("#reply_date").val("");
                 $("#reply_hour").val(12);
@@ -3368,11 +3375,11 @@ function getLatestLogs() {
                     "paging": true,
                     "searching": true,
                     columns: [
-                        {
-                            "render": function(data, type, full, meta) {
-                                return full.id != null ? full.id : '-';
-                            }
-                        },
+                        // {
+                        //     "render": function(data, type, full, meta) {
+                        //         return full.id != null ? full.id : '-';
+                        //     }
+                        // },
                         {
                             "render": function(data, type, full, meta) {
                                 return full.action_perform != null ? full.action_perform+' at '+ moment(full.created_at).format($('#sys_date_format').val() + ' ' + 'hh:mm A') : '-';
