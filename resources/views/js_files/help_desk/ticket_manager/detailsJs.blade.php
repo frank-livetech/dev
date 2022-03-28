@@ -1286,229 +1286,237 @@ function listReplies() {
         if (keyA > keyB) return -1;
         return 0;
     });
-    ticketReplies.forEach(function(reply, index) {
-        if (reply.is_published === 0) {
-            editReply(index);
-            $('#draft-rply').show();
-        } else {
-            let tdet = '';
-            if(reply.attachments) {
-                let attchs = reply.attachments.split(',');
-                tdet += '';
-                attchs.forEach(item => {
-                    var tech =  `{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}`;
-                    var ter = getExt(tech);
 
-                    
-                    // return ter;
-                    if(ter == "pdf" ){
-                        tdet+= `<div class="col-md-4 mt-1">
-                                        <div class="card__corner">
-                                            <div class="card__corner-triangle"></div>
-                                        </div>
-                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
-                                    <span class="overlayAttach"></span>
+    let replies_html = ``;
+    if(ticketReplies.length > 0) {
 
-                                        <img src="{{asset('${js_path}default_imgs/pdf.png')}}" alt="">
-                                        <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                                    </div>
-                                </div>` 
-                    }
-                    else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter =="sql"){
-                        tdet+= `<div class="col-md-4 mt-1">
-                                        <div class="card__corner">
-                                            <div class="card__corner-triangle"></div>
-                                        </div>
-                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+        ticketReplies.forEach(function(reply, index) {
+            if (reply.is_published === 0) {
+                editReply(index);
+                $('#draft-rply').show();
+            } else {
+                let tdet = '';
+                if(reply.attachments) {
+                    let attchs = reply.attachments.split(',');
+                    tdet += '';
+                    attchs.forEach(item => {
+                        var tech =  `{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}`;
+                        var ter = getExt(tech);
+
+                        
+                        // return ter;
+                        if(ter == "pdf" ){
+                            tdet+= `<div class="col-md-4 mt-1">
+                                            <div class="card__corner">
+                                                <div class="card__corner-triangle"></div>
+                                            </div>
+                                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
                                         <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/xlx.png')}}" alt="">
-                                        <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.png')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                                    </div>
-                                </div>` 
-                    }
-                    else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                        tdet+= `<div class="col-md-4 mt-1">
-                                        <div class="card__corner">
-                                            <div class="card__corner-triangle"></div>
+                                            <img src="{{asset('${js_path}default_imgs/pdf.png')}}" alt="">
+                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${item}</span>
+                                            <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                         </div>
-                                    <div class="borderOne">
-                                        <span class="overlayAttach"></span>
-                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
-                                        <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                                    </div>
-                                </div>` 
-                    }
-                    else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                        tdet+= `<div class="col-md-4 mt-1">
-                                        <div class="card__corner">
-                                            <div class="card__corner-triangle"></div>
+                                    </div>` 
+                        }
+                        else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter =="sql"){
+                            tdet+= `<div class="col-md-4 mt-1">
+                                            <div class="card__corner">
+                                                <div class="card__corner-triangle"></div>
+                                            </div>
+                                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+                                            <span class="overlayAttach"></span>
+
+                                            <img src="{{asset('${js_path}default_imgs/xlx.png')}}" alt="">
+                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.png')}}"  alt=""> ${item}</span>
+                                            <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                         </div>
-                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
-                                        <span class="overlayAttach"></span>
-
-                                        <img src="{{asset('${js_path}default_imgs/word.png')}}" alt="">
-                                        <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.png')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                                    </div>
-                                </div>` 
-                    }
-                    else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                        tdet+= `<div class="col-md-4 mt-1">
-                                        <div class="card__corner">
-                                            <div class="card__corner-triangle"></div>
+                                    </div>` 
+                        }
+                        else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
+                            tdet+= `<div class="col-md-4 mt-1">
+                                            <div class="card__corner">
+                                                <div class="card__corner-triangle"></div>
+                                            </div>
+                                        <div class="borderOne">
+                                            <span class="overlayAttach"></span>
+                                            <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}"  alt=""> ${item}</span>
+                                            <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                         </div>
-                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
-                                        <span class="overlayAttach"></span>
+                                    </div>` 
+                        }
+                        else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
+                            tdet+= `<div class="col-md-4 mt-1">
+                                            <div class="card__corner">
+                                                <div class="card__corner-triangle"></div>
+                                            </div>
+                                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+                                            <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/pptx.png')}}" alt="">
-                                        <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pptx.png')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                                    </div>
-                                </div>` 
-                    }
-                    else if(ter == "zip"){
-                        tdet+= `<div class="col-md-4 mt-1">
-                                        <div class="card__corner">
-                                            <div class="card__corner-triangle"></div>
+                                            <img src="{{asset('${js_path}default_imgs/word.png')}}" alt="">
+                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.png')}}"  alt=""> ${item}</span>
+                                            <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                         </div>
-                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
-                                        <span class="overlayAttach"></span>
+                                    </div>` 
+                        }
+                        else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
+                            tdet+= `<div class="col-md-4 mt-1">
+                                            <div class="card__corner">
+                                                <div class="card__corner-triangle"></div>
+                                            </div>
+                                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+                                            <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" alt="">
-                                        <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/zip.jpeg')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                                    </div>
-                                </div>` 
-                    }
-                    else{
-                        tdet+= `<div class="col-md-4 mt-1">
-                                        <div class="card__corner">
-                                            <div class="card__corner-triangle"></div>
+                                            <img src="{{asset('${js_path}default_imgs/pptx.png')}}" alt="">
+                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pptx.png')}}"  alt=""> ${item}</span>
+                                            <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                                         </div>
-                                    <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
-                                        <span class="overlayAttach"></span>
+                                    </div>` 
+                        }
+                        else if(ter == "zip"){
+                            tdet+= `<div class="col-md-4 mt-1">
+                                            <div class="card__corner">
+                                                <div class="card__corner-triangle"></div>
+                                            </div>
+                                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+                                            <span class="overlayAttach"></span>
 
-                                        <img src="{{asset('${js_path}default_imgs/txt.png')}}" alt="">
-                                        <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.png')}}"  alt=""> ${item}</span>
-                                        <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                                    </div>
-                                </div>` 
-                    }
-                    // tdet += `<p><a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
-                });
+                                            <img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" alt="">
+                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/zip.jpeg')}}"  alt=""> ${item}</span>
+                                            <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        </div>
+                                    </div>` 
+                        }
+                        else{
+                            tdet+= `<div class="col-md-4 mt-1">
+                                            <div class="card__corner">
+                                                <div class="card__corner-triangle"></div>
+                                            </div>
+                                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
+                                            <span class="overlayAttach"></span>
 
-                tdet += '';
-            }
+                                            <img src="{{asset('${js_path}default_imgs/txt.png')}}" alt="">
+                                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.png')}}"  alt=""> ${item}</span>
+                                            <a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                        </div>
+                                    </div>` 
+                        }
+                        // tdet += `<p><a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
+                    });
 
-            let user_type = 'Staff';
-            
-            if(reply.user_type == 5){
-                user_type = 'User'
-            }
+                    tdet += '';
+                }
 
-            let new_tag = '' ;
-            var now = moment( new Date().toLocaleString('en-US', { timeZone: time_zone }));
-            // console.log(now)
-            var d = new Date(reply.created_at);
-            
-            var min = d.getMinutes();
-            var dt = d.getDate();
-            var d_utc = d.getUTCHours();
-            
-            d.setMinutes(min);
-            d.setDate(dt);
-            d.setUTCHours(d_utc);
-            
-            let a = d.toLocaleString("en-US" , {timeZone: time_zone});
+                let user_type = 'Staff';
+                
+                if(reply.user_type == 5){
+                    user_type = 'User'
+                }
 
-            var end = moment(a); // another date
-            var duration = moment.duration(now.diff(end));
-            var days = duration.asHours();
+                let new_tag = '' ;
+                var now = moment( new Date().toLocaleString('en-US', { timeZone: time_zone }));
+                // console.log(now)
+                var d = new Date(reply.created_at);
+                
+                var min = d.getMinutes();
+                var dt = d.getDate();
+                var d_utc = d.getUTCHours();
+                
+                d.setMinutes(min);
+                d.setDate(dt);
+                d.setUTCHours(d_utc);
+                
+                let a = d.toLocaleString("en-US" , {timeZone: time_zone});
 
-            // console.log(days + ' sadasdasd' + a)
-            
-            if(days <= 1){
-                new_tag = `<span class="badge badge-primary" style="background-color:#4eafcb">New</span>`;
-            }
+                var end = moment(a); // another date
+                var duration = moment.duration(now.diff(end));
+                var days = duration.asHours();
 
-            var replier_img = ``;
+                // console.log(days + ' sadasdasd' + a)
+                
+                if(days <= 1){
+                    new_tag = `<span class="badge badge-primary" style="background-color:#4eafcb">New</span>`;
+                }
 
-            var customer_img = ``;
-            var user_img = ``;
+                var replier_img = ``;
 
-            if(reply.customer_replies != null) {
-                if(reply.customer_replies.avatar_url != null) {
-                    let path = root +'/'+ reply.customer_replies.avatar_url;
-                    customer_img += `<img src="${path}"  width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
+                var customer_img = ``;
+                var user_img = ``;
+
+                if(reply.customer_replies != null) {
+                    if(reply.customer_replies.avatar_url != null) {
+                        let path = root +'/'+ reply.customer_replies.avatar_url;
+                        customer_img += `<img src="${path}"  width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
+                    }else{
+                        customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    }                
                 }else{
                     customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-                }                
-            }else{
-                customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-            }
+                }
 
-            if(reply.reply_user != null) {
-                if(reply.reply_user.profile_pic != null) {
-                    let path = root + '/' + reply.reply_user.profile_pic;
-                    user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                if(reply.reply_user != null) {
+                    if(reply.reply_user.profile_pic != null) {
+                        let path = root + '/' + reply.reply_user.profile_pic;
+                        user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                    }else{
+                        user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    }                
                 }else{
                     user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-                }                
-            }else{
-                user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-            }
-            var content = '';
-            if(reply.type == 'cron'){
-                content = reply.reply.replace(/<img[^>]*>/g,"");
-            }else{
-                content = reply.reply;
-            }
-
-            let link = ``;
-
-
-            if(reply.hasOwnProperty("user_type")) {
-                if(reply.user_type == 5) {
-                    link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
-                }else{
-                    link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
                 }
-            }else{
-                link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
-            }
-            
+                var content = '';
+                if(reply.type == 'cron'){
+                    content = reply.reply.replace(/<img[^>]*>/g,"");
+                }else{
+                    content = reply.reply;
+                }
 
-            
-            $('#ticket-replies').append(`
-                <li class="media" id="reply__${index}">
-                    <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
-                    <div class="">
+                let link = ``;
 
-                        <h5 class="mt-0"><span class="text-primary">
-                            ${link}
-                            </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
-                        &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
 
-                        <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
-                        <div class="my-1 bor-top" id="reply-html-` + reply.id + `"> ${content} </div>
-                        <div class="row mt-1">
-                            ${tdet}
+                if(reply.hasOwnProperty("user_type")) {
+                    if(reply.user_type == 5) {
+                        link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
+                    }else{
+                        link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
+                    }
+                }else{
+                    link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                }
+                
+
+                
+                replies_html +=`
+                    <li class="media" id="reply__${index}">
+                        <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
+                        <div class="">
+
+                            <h5 class="mt-0"><span class="text-primary">
+                                ${link}
+                                </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
+                            &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
+
+                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
+                            <div class="my-1 bor-top" id="reply-html-` + reply.id + `"> ${content} </div>
+                            <div class="row mt-1" style="word-break: break-all;">
+                                ${tdet}
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <hr>`);
+                    </li>
+                    <hr>`;
 
-            if (reply.hasOwnProperty('msgno') && reply.msgno) {
-                $('#reply-html-' + reply.id).find('img').attr('width', 120);
-                $('#reply-html-' + reply.id).find('img').attr('height', 120);
-                $('#reply-html-' + reply.id).find('img').css('margin', '0 8px 8px 0');
+                if (reply.hasOwnProperty('msgno') && reply.msgno) {
+                    $('#reply-html-' + reply.id).find('img').attr('width', 120);
+                    $('#reply-html-' + reply.id).find('img').attr('height', 120);
+                    $('#reply-html-' + reply.id).find('img').css('margin', '0 8px 8px 0');
+                }
             }
-        }
-    });
+        });
+        $("#ticket-replies").append(replies_html);
+    }else{
+        $("#ticket-replies").html("");
+    }
 }
 
 function deleteReply(id , index) {
@@ -3081,11 +3089,12 @@ function get_ticket_notes() {
 
                 timeouts_list = [];
 
+                let notes_html = ``;
+
                 for (let i in notes) {
 
                     let timeOut = '';
                     let autho = '';
-                    // if (notes[i].created_by == loggedInUser_id) {
                     if (loggedInUser_t == 1) {
 
                         autho = `<div class="mt-2">
@@ -3101,17 +3110,6 @@ function get_ticket_notes() {
                         
                         </div>`;
                     }
-
-                    // if (notes[i].followup_id && notes[i].followUp_date) {
-                    //     let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
-
-                    //     // set timeout for only 1 day's followups
-                    //     if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
-
-                    //     if (timeOut2 > 0) {
-                    //         timeOut = timeOut2 * 1000;
-                    //     }
-                    // }
 
                     if(notes[i].type == 'Ticket') {
                     
@@ -3140,7 +3138,7 @@ function get_ticket_notes() {
                                 width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
                     }
-
+                    
                     let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                         <div style="margin-right: 10px; margin-left: -8px;">
                             ${user_img}
@@ -3152,7 +3150,7 @@ function get_ticket_notes() {
                             </div>
                             <blockquote>
                             <p class="col" style="margin-top:-20px; word-break:break-all">
-                                ${notes[i].note}
+                                ${notes[i].note.replace(/\r\n|\n|\r/g, '<br />')}
                             </p>
                             </blockquote>
                         </div>
@@ -3160,15 +3158,8 @@ function get_ticket_notes() {
 
                     
                     $('#v-pills-notes-list').append(flup);
-
-                    // if (timeOut) {
-                    //     timeouts_list.push(setTimeout(function() {
-                    //         $('#v-pills-notes-list').append(flup);
-                    //     }, timeOut));
-                    // } else {
-                    //     $('#v-pills-notes-list').append(flup);
-                    // }
                 }
+                // $('#v-pills-notes-list').html(notes_html);
             }
         },
         failure: function(errMsg) {

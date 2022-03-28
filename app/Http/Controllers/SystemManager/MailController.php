@@ -1146,21 +1146,39 @@ class MailController extends Controller
 
         if(!empty($reply_content)) {
             if(str_contains($template, '{Ticket-Reply}')) {
-                if($action_name == 'Ticket Followup'){
-                    $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
-                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                }else if($action_name == 'Ticket Updated'){
-                    $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
-                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                }else if($action_name == 'ticket_reply_update'){
-                    if(!empty($reply_content)){
-                        $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
-                    }
-                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                }else{
-                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                }
+                // if($action_name == 'Ticket Followup'){
+                //     $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                // }else if($action_name == 'Ticket Updated'){
+                //     $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                // }else if($action_name == 'ticket_reply_update'){
+                //     if(!empty($reply_content)){
+                //         $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                //     }
+                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                // }else{
+                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                // }
                 
+                if($template_code == 'auto_res_ticket_reply'){
+                    $reply_content = $reply_content;
+                }else{
+                    if($action_name == 'Ticket Followup'){
+                        $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                        $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                    }else if($action_name == 'Ticket Updated'){
+                        $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                        $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                    }else if($action_name == 'ticket_reply_update'){
+                        if(!empty($reply_content)){
+                            $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                        }
+                        $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                    }else{
+                        $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                    }
+                }
             }
         }
         $actions = '';

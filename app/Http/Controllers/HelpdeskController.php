@@ -1089,8 +1089,9 @@ class HelpdeskController extends Controller
 
             //converting html to secure bbcode
             $mail_reply = $data['reply'];
-            $bbcode = new BBCode();
-            $data['reply'] = $bbcode->convertFromHtml($data['reply']);
+            // $bbcode = new BBCode();
+            $data['reply'] = $data['reply'];
+            // $data['reply'] = $bbcode->convertFromHtml($data['reply']);
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
 
