@@ -1212,7 +1212,7 @@ class MailController extends Controller
                         $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
                     }
                     if(!empty($flwup_note)){
-                        $flwup_note = '<hr>'.'<strong>Note: </strong>'.$flwup_note;
+                        $flwup_note = '<hr>'.'<strong>Note: </strong> <br>'.$flwup_note;
                     }
                     
                     $template = str_replace('{Ticket-Note}', $flwup_note, $template);
