@@ -2436,13 +2436,15 @@ class HelpdeskController extends Controller
     public function save_ticket_note(Request $request) {       
         $data = $request->all();
         $response = array();
+        // return dd($data);
         try{
             $action_performed = '';
             $ticket = Tickets::findOrFail($data['ticket_id']);
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
             
-            if(array_key_exists('id', $data)){
+            if( $request->id != null ){
+
                 $note = TicketNote::findOrFail($data['id']);
 
                 $note->color = $data['color'];
@@ -2492,20 +2494,22 @@ class HelpdeskController extends Controller
                 for( $i = 0; $i < sizeof($emails); $i++ ) {
                     
                     $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
-                    $ticket = Tickets::where('is_deleted', 0)->where('id',$request->ticket_id)->first();
+                    if($user) {
+                        $ticket = Tickets::where('is_deleted', 0)->where('id',$request->ticket_id)->first();
         
-                    $notify = new NotifyController();
-                    $sender_id = \Auth::user()->id;
-                    $receiver_id = $user->id;
-                    $slug = url('ticket-details') .'/'.$ticket->coustom_id;
-                    $type = 'ticket_notes';
-                    $data = 'data';
-                    $title = 'Ticket Tag Notification';
-                    $icon = 'fas fa-tag';
-                    $class = 'btn-success';
-                    $desc = 'You were tagged by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
-        
-                    $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $notify = new NotifyController();
+                        $sender_id = \Auth::user()->id;
+                        $receiver_id = $user->id;
+                        $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                        $type = 'ticket_notes';
+                        $data = 'data';
+                        $title = 'Ticket Tag Notification';
+                        $icon = 'fas fa-tag';
+                        $class = 'btn-success';
+                        $desc = 'You were tagged by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
+            
+                        $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                    }
                 }
         
             }
