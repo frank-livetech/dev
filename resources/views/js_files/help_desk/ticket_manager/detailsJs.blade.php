@@ -1177,7 +1177,7 @@ function getTicketDetailsContent() {
                                 <span class="overlayAttach"></span>
                                 <img src="{{asset('${js_path}default_imgs/pdf.png')}}" style="width:65px; height:65px; margin-top:14px"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${item}</span>
-                                <a href="{{asset('files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1191,7 +1191,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/xlx.png')}}" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.png')}}"  alt=""> ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1203,9 +1203,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
  
-                                <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}" alt="">  ${item}</span>
-                                <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1219,7 +1219,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/word.png')}}" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.png')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1233,7 +1233,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/pptx.png')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pptx.png')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1247,7 +1247,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/zip.jpeg')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1261,7 +1261,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.gif')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -2985,14 +2985,13 @@ $("#save_ticket_note").submit(function(event) {
         if (vis.indexOf('Everyone') > -1) vis = all_staff_ids;
     }
 
-    console.log(vis.toString() , "vis.toString()");
     var formData = new FormData(this);
     formData.append('ticket_id', ticket.id);
     formData.append('color', gl_color_notes);
     formData.append('visibility', vis.toString());
-    if ($('#note-id').val()) {
-        formData.append('id', $('#note-id').val());
-    }
+    // if ($('#note-id').val()) {
+    //     formData.append('id', $('#note-id').val());
+    // }
 
     if (extract_notes_email != null && extract_notes_email != '') {
         formData.append('tag_emails', extract_notes_email.join(','));
@@ -3151,9 +3150,11 @@ function get_ticket_notes() {
                                 <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
+                            <blockquote>
                             <p class="col" style="margin-top:-20px; word-break:break-all">
                                 ${notes[i].note}
                             </p>
+                            </blockquote>
                         </div>
                     </div>`;
 
@@ -3257,6 +3258,10 @@ function deleteTicketNote(ele, id) {
                         $(ele).closest('#note-div-' + id).remove();
 
                         toastr.success( data.message , { timeOut: 5000 });
+
+
+                        let no_counts = $('.notes_count').text();
+                        $('.notes_count').text( (no_counts - 1) );
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -3601,6 +3606,7 @@ function openNotesModal() {
     $("#note-type-ticket").prop('checked',true);
     $('#note-visibilty').prop('disabled', false);
     $("#note-visibilty").val("Everyone").trigger('change');
+    $("#note-id").val("");
 }
 
 function showFollowUpModal() {
