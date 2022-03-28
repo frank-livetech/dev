@@ -1177,7 +1177,7 @@ function getTicketDetailsContent() {
                                 <span class="overlayAttach"></span>
                                 <img src="{{asset('${js_path}default_imgs/pdf.png')}}" style="width:65px; height:65px; margin-top:14px"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${item}</span>
-                                <a href="{{asset('files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1191,7 +1191,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/xlx.png')}}" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.png')}}"  alt=""> ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1203,9 +1203,9 @@ function getTicketDetailsContent() {
                             <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
  
-                                <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
+                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}" alt="">  ${item}</span>
-                                <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1219,7 +1219,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/word.png')}}" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.png')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1233,7 +1233,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/pptx.png')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pptx.png')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1247,7 +1247,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/zip.jpeg')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
@@ -1261,7 +1261,7 @@ function getTicketDetailsContent() {
 
                                 <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon" width="38" alt="">
                                 <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.gif')}}"  alt="">  ${item}</span>
-                                <a href="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
             }
