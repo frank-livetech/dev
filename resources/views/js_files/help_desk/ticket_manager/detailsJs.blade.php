@@ -2985,14 +2985,13 @@ $("#save_ticket_note").submit(function(event) {
         if (vis.indexOf('Everyone') > -1) vis = all_staff_ids;
     }
 
-    console.log(vis.toString() , "vis.toString()");
     var formData = new FormData(this);
     formData.append('ticket_id', ticket.id);
     formData.append('color', gl_color_notes);
     formData.append('visibility', vis.toString());
-    if ($('#note-id').val()) {
-        formData.append('id', $('#note-id').val());
-    }
+    // if ($('#note-id').val()) {
+    //     formData.append('id', $('#note-id').val());
+    // }
 
     if (extract_notes_email != null && extract_notes_email != '') {
         formData.append('tag_emails', extract_notes_email.join(','));
@@ -3151,9 +3150,11 @@ function get_ticket_notes() {
                                 <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
+                            <blockquote>
                             <p class="col" style="margin-top:-20px; word-break:break-all">
                                 ${notes[i].note}
                             </p>
+                            </blockquote>
                         </div>
                     </div>`;
 
@@ -3257,6 +3258,10 @@ function deleteTicketNote(ele, id) {
                         $(ele).closest('#note-div-' + id).remove();
 
                         toastr.success( data.message , { timeOut: 5000 });
+
+
+                        let no_counts = $('.notes_count').text();
+                        $('.notes_count').text( (no_counts - 1) );
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -3601,6 +3606,7 @@ function openNotesModal() {
     $("#note-type-ticket").prop('checked',true);
     $('#note-visibilty').prop('disabled', false);
     $("#note-visibilty").val("Everyone").trigger('change');
+    $("#note-id").val("");
 }
 
 function showFollowUpModal() {
