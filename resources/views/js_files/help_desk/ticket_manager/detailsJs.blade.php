@@ -1864,7 +1864,7 @@ $('#assigned_to').change(function() {
 
     let item = updates_Arr.filter(item => item.id == 2);
     if(item.length > 0) {
-        updates_Arr[0].id = 1;
+        updates_Arr[0].id = 2;
         updates_Arr[0].data = ticket.assignee_name ; 
         updates_Arr[0].new_data = assigned_to ;
         updates_Arr[0].new_text = $("#assigned_to option:selected").text();
@@ -1905,7 +1905,7 @@ $('#type').change(function() {
 
     let item = updates_Arr.filter(item => item.id == 3);
     if(item.length > 0) {
-        updates_Arr[0].id = 1;
+        updates_Arr[0].id = 3;
         updates_Arr[0].data = ticket.type_name ; 
         updates_Arr[0].new_data = type ;
         updates_Arr[0].new_text = $("#type option:selected").text();
@@ -1948,7 +1948,7 @@ $('#status').change(function() {
 
     let item = updates_Arr.filter(item => item.id == 4);
     if(item.length > 0) {
-        updates_Arr[0].id = 1;
+        updates_Arr[0].id = 4;
         updates_Arr[0].data = ticket.status_name ; 
         updates_Arr[0].new_data = status ;
         updates_Arr[0].new_text = $("#status option:selected").text();
@@ -1990,7 +1990,7 @@ $('#priority').change(function() {
 
     let item = updates_Arr.filter(item => item.id == 5);
     if(item.length > 0) {
-        updates_Arr[0].id = 1;
+        updates_Arr[0].id = 5;
         updates_Arr[0].data = ticket.priority_name ; 
         updates_Arr[0].new_data = priority ;
         updates_Arr[0].new_text = $("#priority option:selected").text();
