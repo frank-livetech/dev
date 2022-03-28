@@ -1525,7 +1525,7 @@ br + br { display: none; }
                             <div class="form-group form-group-default required">
                                 <label>CC</label>
                                 <input class="tagsinput custom-tag-input" type="text" style="display: none;">
-                                <div class="bootstrap-tagsinput" style="display:flex !important">
+                                <div class="" style="display:flex !important">
                                     @if( array_key_exists(0 , $shared_emails) )
                                         <input id="tkt_cc" class="meta_tags" size="2" type="text" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : ''}}">
                                     @else
@@ -1539,7 +1539,7 @@ br + br { display: none; }
                             <div class="form-group form-group-default required">
                                 <label>BCC</label>
                                 <input class="tagsinput custom-tag-input" type="text" style="display: none;">
-                                <div class="bootstrap-tagsinput" style="display:flex !important">
+                                <div class="" style="display:flex !important">
                                     @if( array_key_exists(1 , $shared_emails) )
                                         <input id="tkt_bcc" class="meta_tags" size="2" type="text" value="{{$shared_emails[1]['mail_type'] == 2 ? $shared_emails[1]['email'] : ''}}">
                                     @else

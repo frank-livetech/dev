@@ -403,6 +403,10 @@ class HomeController
                 $content = $data['reply'];
                 $action = 'ticket_cus_reply';
 
+                $open_status = TicketStatus::where('name','Open')->first();
+                $ticket->status = $open_status->id;
+                $ticket->save;
+
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
 
                 return response()->json([

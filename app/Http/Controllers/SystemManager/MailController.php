@@ -1541,7 +1541,8 @@ class MailController extends Controller
         // checking whole template having {Ticket-Manager} short code
         if(str_contains($template, '{Ticket-Manager}')) {
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-manager';
-            $template = str_replace('{Ticket-Manager}', $url , $template);
+            $link = '<a href="'.$url.'"> '. $url .'  </a>';
+            $template = str_replace('{Ticket-Manager}', $link , $template);
         }
             
                     
@@ -1555,6 +1556,25 @@ class MailController extends Controller
 
                 if(str_contains($template, '{Customer-Name}')) {
                     $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
+                }
+
+                if(str_contains($template, '{Company-Name}')) {
+                    
+                    if($data['values']['company_id'] != null){
+                        
+                        $company = DB::table("companies")->where('id' , $data['values']['company_id'])->first();
+                        
+                        if($company) {
+                            $template = str_replace('{Company-Name}', $company->name , $template);
+                        }else{
+                           $template = str_replace('Company Name: ', '' , $template); 
+                           $template = str_replace('{Company-Name}', '' , $template); 
+                        }
+                        
+                    }else{
+                        $template = str_replace('Company Name: ', '' , $template);
+                        $template = str_replace('{Company-Name}', '' , $template); 
+                    }
                 }
 
                 if(str_contains($template, '{Site-Link}')) {
