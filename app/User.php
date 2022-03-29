@@ -36,7 +36,7 @@ class User extends Authenticatable implements JWTSubject
         'bg-dark','text-light','bg-light','created_by','updated_by','is_deleted','deleted_by',
         'sms','whatsapp','address','apt_address','phone_number','country','state','city','twitter',
         'pinterest','fb','insta','job_title','zip','notes','alt_pwd','website','is_support_staff',
-        'created_at','updated_at','device_token',
+        'created_at','updated_at','device_token', 'signature',
     'linkedin','google_id','company_id','privacy_policy',
     ];
 
