@@ -612,7 +612,8 @@ class HelpdeskController extends Controller
             ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.updated_at', 'desc')->get();
         }
 
-        $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        // $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
         $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
@@ -701,7 +702,6 @@ class HelpdeskController extends Controller
             if($statusOrUser == 'customer') $cid = $id;
             else if($statusOrUser == 'staff') $sid = $id;
         }
-
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
@@ -2090,7 +2090,8 @@ class HelpdeskController extends Controller
                 "ticket_id" => $flwup->ticket_id,
                 "user_id" => $flwup->created_by, 
                 "msgno" => null , 
-                "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
+                "reply" => $flwup->follow_up_reply , 
+                // "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
                 "cc" => null , 
                 "date" => date('Y-m-d H:i:s'), 
                 "is_published" => 1 ,
