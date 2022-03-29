@@ -1839,6 +1839,8 @@ $('#dept_id').change(function() {
         updates_Arr.push(obj);
     }
 
+    console.log(updates_Arr , "updates_Arr department_name");
+
     $("#update_ticket").css("display", "block");
   
     showDepartStatus(dept_id);
@@ -1880,6 +1882,7 @@ $('#assigned_to').change(function() {
         updates_Arr.push(obj);
     }
 
+    console.log(updates_Arr , "updates_Arr assignee_name");
     $("#update_ticket").css("display", "block");
    
 });
@@ -1921,6 +1924,7 @@ $('#type').change(function() {
         updates_Arr.push(obj);
     }
 
+    console.log(updates_Arr , "updates_Arr type");
     $("#update_ticket").css("display", "block");
     
 });
@@ -1963,7 +1967,7 @@ $('#status').change(function() {
     }else{
         updates_Arr.push(obj);
     }
-
+    console.log(updates_Arr , "updates_Arr status");
     $("#update_ticket").css("display", "block");
 
 });
@@ -2005,7 +2009,7 @@ $('#priority').change(function() {
     }else{
         updates_Arr.push(obj);
     }
-
+    console.log(updates_Arr , "updates_Arr priority");
     $("#update_ticket").css("display", "block");    
 });
 
@@ -3437,9 +3441,34 @@ function showDepartStatus(value) {
             
             
             select = `<option value="">Unassigned</option>`;
+            $('#tech-h5').text('Unassigned');
+            $("#update_ticket").show();
+
+            let assigned_to = $('#assigned_to').val();
+            let ass_obj = {};
+
+            ass_obj = {
+                id:2,
+                data: ticket.assignee_name, // Saving old value to show in email notification
+                new_data: null,
+                new_text: "Unassigned" ,
+            }
+
+            let item = updates_Arr.filter(item => item.id == 2);
+            if(item.length > 0) {
+                updates_Arr[0].id = 2;
+                updates_Arr[0].data = ticket.assignee_name ; 
+                updates_Arr[0].new_data = null ;
+                updates_Arr[0].new_text = "Unassigned";
+            }else{
+                updates_Arr.push(ass_obj);
+            }
+
             for(var i =0; i < obj_user.length; i++) {
                 select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
             }
+
+            console.log(select , "select");
             $("#assigned_to").html(select);
         },
         complete: function(data) {
