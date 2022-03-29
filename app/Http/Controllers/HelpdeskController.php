@@ -713,8 +713,8 @@ class HelpdeskController extends Controller
         if(\Auth::user()->user_type == 1) {
 
             $tickets = Tickets::select("*")
-            ->when($statusOrUser == 'self', function($q) use($id) {
-                return $q->where('tickets.assigned_to', \Auth::user()->id);
+            ->when($statusOrUser == 'self', function($q) use($closed_status_id) {
+                return $q->where('tickets.assigned_to', \Auth::user()->id)->where('tickets.status','!=',$closed_status_id);
             })
             ->when($statusOrUser == 'customer', function($q) use ($cid) {
                 return $q->where('tickets.customer_id',$cid);
@@ -726,6 +726,9 @@ class HelpdeskController extends Controller
             })
             ->when($statusOrUser == 'unassigned', function($q) use($id) {
                 return $q->whereNull('tickets.assigned_to');
+            })
+            ->when($statusOrUser == 'overdue', function($q) use($id) {
+                return $q->where('tickets.is_overdue', 1);
             })
             ->when($statusOrUser == 'flagged', function($q) use($id) {
                 return $q->where('tickets.is_flagged',1);
@@ -2890,7 +2893,6 @@ class HelpdeskController extends Controller
 
     public function updateTicketDeadlines(Request $request) {
         try {
-
             $current_date = Carbon::now();
 
             $ticket = Tickets::findOrFail($request->ticket_id);
@@ -2898,6 +2900,7 @@ class HelpdeskController extends Controller
             $ticket->reply_deadline = $request->rep_deadline;
             $ticket->resolution_deadline = $request->res_deadline;
             $ticket->updated_at = $current_date;
+            $ticket->is_overdue = $request->overdue;
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
@@ -2905,7 +2908,6 @@ class HelpdeskController extends Controller
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $request->ticket_id , auth()->id() , $action_perform);
 
-            
             $response['message'] = 'Deadlines reset successfully';
             $response['status_code'] = 200;
             $response['success'] = true;

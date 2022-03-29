@@ -377,11 +377,21 @@
 
         // tickets
         var url  = window.location.href;
+        console.log(url , "url");
+
         if(url.includes('#tickets')) {
+
             $("#pills-tickets-tab").click();
+            $("#pills-setting-tab").removeClass("active")
+            $("#previous-month").removeClass("show active");
+            $("#pills-tickets-tab").addClass('active');
+            $("#tickets").addClass("show active");
+
         }else if(url.includes('##ticket-open')) {
+            
             $("#pills-tickets-tab").click();
             listTickets('open');
+
         }
 
         try {

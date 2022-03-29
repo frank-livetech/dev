@@ -866,7 +866,7 @@ br + br { display: none; }
                                         <div class="" style="margin-top: 10px;">
                                             <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
                                             @if( array_key_exists(0 , $shared_emails) )
-                                                    <input type="text" id="to_mails" name="to_mails"
+                                                <input type="text" id="to_mails" name="to_mails"
                                                  class="form-control" placeholder="Email" 
                                                  data-role="tagsinput" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}" required>                                                
                                             @else
@@ -1815,7 +1815,9 @@ br + br { display: none; }
                                     <option value="PM">PM</option>
                                 </select>
                                 <button onclick="resetSLA('reply_due')" class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
-                                title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
+                                title="Reset resolution due" style="padding: 10px 23px 4px 14px;"> 
+                                    <i class="fas fa-brush"></i>
+                                 </button>
                             </div>
                         </div>
 
@@ -1847,7 +1849,9 @@ br + br { display: none; }
                                     <option value="PM">PM</option>
                                 </select>
                                 <button onclick="resetSLA('resolution_due')" class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-float waves-light ms-1"
-                                    title="Reset resolution due" style="padding:4px 16px"> <i style="margin-right:35px;" data-feather='refresh-cw' area-hidden="true"></i> </button>
+                                    title="Reset resolution due" style="padding: 10px 23px 4px 14px;"> 
+                                    <i class="fas fa-brush"></i>
+                                </button>
                             </div>
                         </div>
 
