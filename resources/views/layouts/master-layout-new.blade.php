@@ -516,6 +516,7 @@
                         
                         let count = data.total_notification;
 
+                        $(".noti_count").addClass('badge rounded-pill bg-danger badge-up ');
                         $(".noti_count").text( count );
 
                         if(notifications.length > 0) {
@@ -560,11 +561,12 @@
 
                         }
                         else{
-                            
+                            $(".noti_count").removeClass('badge rounded-pill bg-danger badge-up ');
+                            $(".noti_count").text('');
                             noti_div = `<li>
                                             <span class="font-12 text-nowrap d-block text-muted text-truncate p-2" style="text-align:center">No Unread Notifications.</span> 
                                         </li>`;
-                            $('.notifications').append(noti_div)
+                            $('.notifications').html(noti_div)
                             
                         }
                     }
