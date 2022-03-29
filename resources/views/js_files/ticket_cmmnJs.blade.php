@@ -259,7 +259,7 @@
                 if (data.hasOwnProperty('my_tickets_count')) $('#my_tickets_count').html(data.my_tickets_count);
                 if (data.hasOwnProperty('flagged_tickets_count')) $('#flagged_tickets_count').html(data.flagged_tickets_count);
                 if (data.hasOwnProperty('unassigned_tickets_count')) $('#unassigned_tickets_count').html(data.unassigned_tickets_count);
-                if (data.hasOwnProperty('late_tickets_count')) $('#closed_tickets_count').html(data.late_tickets_count);
+                if (data.hasOwnProperty('late_tickets_count')) $('#late_tickets_count').html(data.late_tickets_count);
                 if (data.hasOwnProperty('closed_tickets_count')) $('#closed_tickets_count').html(data.closed_tickets_count);
                 if (data.hasOwnProperty('trashed_tickets_count')) $('#trashed_tickets_count').html(data.trashed_tickets_count);
 
