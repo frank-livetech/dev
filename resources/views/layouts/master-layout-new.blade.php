@@ -510,6 +510,8 @@
                     var curr_user_image = $("#curr_user_image").val();
                     var user_image = ``;
                     var default_icon = ``;
+                    
+                    $('.version_title').text(data.system_version);
 
                     if(data.status_code == 200 && data.success == true){
                         notifications = data.data;

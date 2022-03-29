@@ -149,12 +149,22 @@ class HomeController extends Controller {
             // $notification->user = User::where('id',$notification->receiver_id)->first();
             // $notification->sender = User::where('id',$notification->sender_id)->first();
         // }
+
+        $settings = BrandSettings::first();
+        $version = '';
+        if($settings) {
+            $version =  $settings->site_logo_title;
+        }else{
+            $version = 'Dashboard';
+        }
+
         $count = Notification::with(['sender','user'])->orderBy('id','desc')->where('receiver_id',\Auth::user()->id)->where('read_at',NULL)->count();
         $response['message'] = 'Notification List';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['data'] = $notifications;
         $response['total_notification'] = $count;
+        $response['system_version'] = $version;
         return response()->json($response);
 
     }
