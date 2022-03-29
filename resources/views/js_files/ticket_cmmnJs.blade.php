@@ -249,12 +249,13 @@ function get_ticket_table_list() {
 }
 
 function getCounterTickets(key){
+    console.log(key , "key");
     in_recycle_mode = false;
     let dept_id = $('#dept').val();
     if(dept_id != '' && key == 'total'){
         let ret = $.ajax({
             type: "get",
-            url: get_filteredtkt_route + '/' + dept_id,
+            url: get_filteredtkt_route + '/' + key,
             async: false,
             data: "",
             dataType: 'json',
