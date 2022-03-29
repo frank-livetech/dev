@@ -831,8 +831,6 @@ class HelpdeskController extends Controller
             // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.id', 'desc')->get();
         }
 
-        return $tickets;
-
         $total_tickets_count = Tickets::
         when($statusOrUser == 'customer', function($q) use ($cid) {
             return $q->where('tickets.customer_id', $cid);
