@@ -375,7 +375,7 @@
     function redrawTicketsTable(ticket_arr) {
         var la_color = ``;
         tickets_table_list.clear().draw();
-        console.log(ticket_arr, "ticket_arr");
+        // console.log(ticket_arr, "ticket_arr");
         $.each(ticket_arr, function(key, val) {
             let prior = '<div class="text-center">' + val['priority_name'] + '</div>';
             if (val['priority_color']) {
@@ -426,7 +426,7 @@
             }
 
             let restore_flag_btn = '';
-            console.log(in_recycle_mode, "in_recycle_mode");
+            // console.log(in_recycle_mode, "in_recycle_mode");
             if (in_recycle_mode) {
                 restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-trash-restore text-primary" title="Restore" style="cursor:pointer;" onclick="restoreTicket(' + val['id'] + ');"></span></div>';
                 $('#btnMovetotrash').hide();
@@ -526,7 +526,7 @@
                 }
 
                 if (val['resolution_deadline'] != "cleared") {
-                    console.log("")
+                    // console.log("")
                     let tkt_res_due = moment(val['resolution_deadline']).format('YYYY-MM-DD hh:mm A');
                     // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
                     let timediff_res = getDatesSeconds(val['resolution_deadline'], con_currTime);
@@ -790,7 +790,7 @@
             let remTime = '';
             followUpDate = new Date(Date.parse(new Date()) + (followUpDate - today));
             let rem = getTimeRemaining(followUpDate);
-            console.log(rem, "rem");
+            // console.log(rem, "rem");
             var color = ``;
             if (rem && rem.hasOwnProperty('years') && rem.years > 0) remTime += rem.years + 'y ';
             if (rem && rem.hasOwnProperty('months') && rem.months > 0) remTime += rem.months + 'm ';

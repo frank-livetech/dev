@@ -714,24 +714,24 @@ class HelpdeskController extends Controller
 
             $tickets = Tickets::select("*")
             ->when($statusOrUser == 'self', function($q) use($closed_status_id) {
-                return $q->where('tickets.assigned_to', \Auth::user()->id)->where('tickets.status','!=',$closed_status_id);
+                return $q->where('tickets.assigned_to', \Auth::user()->id)->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
             ->when($statusOrUser == 'customer', function($q) use ($cid) {
-                return $q->where('tickets.customer_id',$cid);
+                return $q->where('tickets.customer_id',$cid)->where('tickets.trashed', 0);
                 // get ticket according to customers
             })
             ->when($statusOrUser == 'staff', function($q) use ($sid) {
-                return $q->where('tickets.assigned_to',$sid);
+                return $q->where('tickets.assigned_to',$sid)->where('tickets.trashed', 0);
                 // get ticket according to customers
             })
             ->when($statusOrUser == 'unassigned', function($q) use($closed_status_id) {
-                return $q->whereNull('tickets.assigned_to')->where('tickets.status','!=',$closed_status_id);
+                return $q->whereNull('tickets.assigned_to')->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
             ->when($statusOrUser == 'overdue', function($q) use($closed_status_id) {
-                return $q->where('tickets.is_overdue', 1)->where('tickets.status','!=',$closed_status_id);
+                return $q->where('tickets.is_overdue', 1)->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
             ->when($statusOrUser == 'flagged', function($q) use($closed_status_id) {
-                return $q->where('tickets.is_flagged',1)->where('tickets.status','!=',$closed_status_id);
+                return $q->where('tickets.is_flagged',1)->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
             ->when($statusOrUser == 'closed', function($q) use($closed_status_id) {
                 return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
@@ -744,9 +744,9 @@ class HelpdeskController extends Controller
             })
             ->when($statusOrUser == 'total', function($q) use($closed_status_id) {
                 
-                return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
+                return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->where('tickets.trashed', 0);
             })
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
             ->get();
             // return $tickets;
             // $tickets = DB::Table('tickets')
