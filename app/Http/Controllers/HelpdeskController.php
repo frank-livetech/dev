@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -593,7 +593,7 @@ class HelpdeskController extends Controller
                 return $q->where('tickets.dept_id', $dept);
             })
           
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->get();
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
         
         } else {
             $aid = \Auth::user()->id;
@@ -609,7 +609,7 @@ class HelpdeskController extends Controller
             ->when($dept != '', function($q) use($dept) {
                 return $q->where('tickets.dept_id', $dept);
             })
-            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.updated_at', 'desc')->get();
+            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
         }
 
         $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
@@ -746,7 +746,7 @@ class HelpdeskController extends Controller
                 
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
             })
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)
             ->get();
             // return $tickets;
             // $tickets = DB::Table('tickets')
