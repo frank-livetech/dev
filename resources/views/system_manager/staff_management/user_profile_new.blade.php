@@ -437,6 +437,15 @@
     
                                         </div>
                                     </div>
+
+                                    <div class="row mt-1">
+                                        <div class="col-md-12 form-group">
+                                            <label>Signature</label> <br>
+                                            <small>Your Signature will be attached to all outgoing correspondence (ticket replies and email)</small>
+    
+                                            <textarea class="form-control" name="signature" id="signature" cols="5" rows="5"> {{$profile->signature}} </textarea>
+                                        </div>
+                                    </div>
     
                                     <div class="row mt-2">
                                         <div class="col-sm-12 text-right">
