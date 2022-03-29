@@ -865,6 +865,14 @@ class HelpdeskController extends Controller
         })
         ->where('status','!=', $closed_status->id)->where('is_deleted', 0)->count();
 
+        $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+        $tm_name = '';
+        if($timezone) {
+            $tm_name = $timezone->sys_value != null ? $timezone->sys_value : 'America/New_York';
+        }else{
+            $tm_name = 'America/New_York';
+        }
+
         foreach($tickets as $value) {
             $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
             $value->tkt_follow_up = TicketFollowUp::where('ticket_id' , $value->id)->where('passed',0)->count();
@@ -905,7 +913,10 @@ class HelpdeskController extends Controller
     
                 if($value->sla_plan['title'] != self::NOSLAPLAN) {
                     if($value->reply_deadline != 'cleared') {
-                        $nowDate = Carbon::now();
+                        
+                        $date = new Carbon( Carbon::now() , $tm_name);
+                        $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
+
                         if(!empty($value->reply_deadline)) {
                             $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
                             if($timediff < 0) $lcnt = true;
@@ -934,7 +945,9 @@ class HelpdeskController extends Controller
         
                     if(!$lcnt) {
                         if($value->resolution_deadline != 'cleared') {
-                            $nowDate = Carbon::now();
+                            $date = new Carbon( Carbon::now() , $tm_name);
+                            $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
+
                             if(!empty($value->resolution_deadline)) {
                                 $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
                                 if($timediff < 0) $lcnt = true;
