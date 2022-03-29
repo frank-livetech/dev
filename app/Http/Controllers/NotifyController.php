@@ -22,9 +22,7 @@ class NotifyController extends Controller
 
         if($notify->save()){
 
-          $notify->scopeToMultiDevice();
-
-            $notify->scopeToMultiDevice();
+        //   $notify->scopeToMultiDevice();
 
         }
     }

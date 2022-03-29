@@ -157,9 +157,9 @@
                         <i class="ficon" data-feather="bell"></i>
                    
                         @if($numberAlerts > 0)
-                            <span class="badge rounded-pill bg-danger badge-up" id="noti_count" >{{$numberAlerts}}</span> 
+                            <span class="badge rounded-pill bg-danger badge-up noti_count" id="noti_count" >{{$numberAlerts}}</span> 
                         @else    
-                            <span class="badge rounded-pill bg-danger badge-up" id="noti_count" style="display:none"></span>
+                            <span class="badge rounded-pill bg-danger badge-up noti_count" id="noti_count"></span>
                         @endif
                     </a>
                     <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end notif_div_ul">
@@ -324,6 +324,11 @@
                     height: 14
                 });
             }
+        });
+        $(document).ready(function (){
+            setInterval(() => {
+                getNotifications()    
+            }, 10000);
         });
         var user_photo_url = "{{asset('files/user_photos')}}";
         var url = "{{asset('/get_all_counts')}}";
@@ -508,9 +513,10 @@
 
                     if(data.status_code == 200 && data.success == true){
                         notifications = data.data;
-                        // console.log(notifications.length , "notifications");
+                        
+                        let count = data.total_notification;
 
-                        $("#noti_count").text(notifications.total_notification);
+                        $(".noti_count").text( count );
 
                         if(notifications.length > 0) {
                             for(var i = 0 ; i < notifications.length ; i++){
