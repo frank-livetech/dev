@@ -704,59 +704,61 @@ $("#response_template").click(function() {
 });
 
 function updateDeadlines() {
-    // let rep_deadline = $('#ticket-rep-due').val();
-    // let res_deadline = $('#ticket-res-due').val();
 
+    let currdate = new Date().toLocaleString('en-US', { timeZone: time_zone });
+    currdate = moment(currdate).format("YYYY-MM-DD h:mm A");
+    
     let rp_date = $("#reply_date").val();
     let rp_hour = $("#reply_hour").val();
     let rp_min = $("#reply_minute").val();
     let rp_type = $("#reply_type").val();
 
-    let rep_deadline = rp_date + ' ' +rp_hour + ':' + rp_min + ' ' + rp_type
+    let rep_deadline = rp_date + ' ' +rp_hour + ':' + rp_min + ' ' + rp_type;
 
     let res_date = $("#res_date").val();
     let res_hour = $("#res_hour").val();
     let res_min = $("#res_minute").val();
     let res_type = $("#res_type").val();
 
-    let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type
-
-    // let current_date = new Date().toLocaleString('en-US', { timeZone: time_zone });
-
-    // let cdate = moment(current_date).format('YYYY-MM-DD hh:mm:ss A');
-    // let mrep = moment(rep_deadline).format('YYYY-MM-DD hh:mm:ss A');
-
-    // let mres = moment(res_deadline).format('YYYY-MM-DD hh:mm:ss A');
-
-    // let timediff_rep = moment(mrep).diff( moment(cdate) , 'seconds');
-
-    // let timediff_res = moment(mres).diff( moment(cdate) , 'seconds');
-
-    // if(timediff_rep < 0) {
-    //     rep_deadline  = 'cleared';
-    // }
-
-    // if(timediff_res < 0) {
-    //     res_deadline  = 'cleared';
-    // }
+    let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type;
     
+    let overdue = '';
+
+    let timediff_rep = getDatesSeconds( rep_deadline  , currdate  );
+    let timediff_res = getDatesSeconds( res_deadline  , currdate  );
+
+    if(timediff_rep < 0) {
+        overdue = 1;
+    }else{
+        overdue = 0;
+    }
+
+    if(overdue == 0) {
+        if(timediff_res <= 0) {
+            overdue = 1;
+        }else{
+            overdue = 0;
+        }
+    }
 
     if(res_date == '') {
         res_deadline  = 'cleared';
+        overdue = 0;
     }
 
     if(rp_date == '') {
         rep_deadline  = 'cleared';
+        overdue = 0;
     }
 
     let formData = {
         ticket_id: ticket.id,
         rep_deadline: rep_deadline,
-        res_deadline: res_deadline
+        res_deadline: res_deadline,
+        overdue : overdue,
     };
 
     console.log(formData , "formdata");
-
     
     $.ajax({
         type: "post",
