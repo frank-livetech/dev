@@ -1558,8 +1558,7 @@ class MailController extends Controller
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-manager';
             $link = '<a href="'.$url.'"> '. $url .'  </a>';
             $template = str_replace('{Ticket-Manager}', $link , $template);
-        }
-            
+        }            
                     
         foreach ($data_list as $key => $data) {
 
@@ -1697,6 +1696,17 @@ class MailController extends Controller
                 if(str_contains($template, '{Site-Link}')) {
                     $val = 'https://mylive-tech.com/dev';
                     $template = str_replace('{Site-Link}', $val , $template);
+                }
+
+                if(str_contains($template, '{Staff-Signature}')) {
+
+                    if($data['values']['signature'] != null) {
+                        $link = '<a href="'.$url.'"> '. $url .'  </a>';
+                        $template = str_replace('{Staff-Signature}', $data['values']['signature'] , $template);
+                    }else{
+                        $template = str_replace('{Staff-Signature}', '' , $template);
+                    }
+                    
                 }
 
             }

@@ -58,6 +58,7 @@ class CreateUsersTable extends Migration
             $table->double('zip')->nullable();
 
             $table->text('notes')->nullable();
+            $table->text('signature')->nullable();
             $table->text('device_token')->nullable();
             $table->mediumText('alt_pwd')->nullable();
             $table->string('website')->nullable();
