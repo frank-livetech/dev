@@ -724,14 +724,14 @@ class HelpdeskController extends Controller
                 return $q->where('tickets.assigned_to',$sid);
                 // get ticket according to customers
             })
-            ->when($statusOrUser == 'unassigned', function($q) use($id) {
-                return $q->whereNull('tickets.assigned_to');
+            ->when($statusOrUser == 'unassigned', function($q) use($closed_status_id) {
+                return $q->whereNull('tickets.assigned_to')->where('tickets.status','!=',$closed_status_id);
             })
-            ->when($statusOrUser == 'overdue', function($q) use($id) {
-                return $q->where('tickets.is_overdue', 1);
+            ->when($statusOrUser == 'overdue', function($q) use($closed_status_id) {
+                return $q->where('tickets.is_overdue', 1)->where('tickets.status','!=',$closed_status_id);
             })
-            ->when($statusOrUser == 'flagged', function($q) use($id) {
-                return $q->where('tickets.is_flagged',1);
+            ->when($statusOrUser == 'flagged', function($q) use($closed_status_id) {
+                return $q->where('tickets.is_flagged',1)->where('tickets.status','!=',$closed_status_id);
             })
             ->when($statusOrUser == 'closed', function($q) use($closed_status_id) {
                 return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
