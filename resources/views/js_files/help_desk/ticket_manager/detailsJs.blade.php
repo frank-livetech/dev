@@ -1829,12 +1829,13 @@ $('#dept_id').change(function() {
         new_text:$("#dept_id option:selected").text()
     }
       
-    let item = updates_Arr.filter(item => item.id == 1);
+    let item = updates_Arr.filter(item => item.id === 1);
+    let index = updates_Arr.map(function (item) { return item.id; }).indexOf(1);
     if(item.length > 0) {
-        updates_Arr[0].id = 1;
-        updates_Arr[0].data = ticket.department_name ; 
-        updates_Arr[0].new_data = dept_id ;
-        updates_Arr[0].new_text = $("#dept_id option:selected").text();
+        updates_Arr[index].id = 1;
+        updates_Arr[index].data = ticket.department_name ; 
+        updates_Arr[index].new_data = dept_id ;
+        updates_Arr[index].new_text = $("#dept_id option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -1872,12 +1873,13 @@ $('#assigned_to').change(function() {
         new_text:$("#assigned_to option:selected").text()
     }
 
-    let item = updates_Arr.filter(item => item.id == 2);
+    let item = updates_Arr.filter(item => item.id === 2);
+    let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
     if(item.length > 0) {
-        updates_Arr[0].id = 2;
-        updates_Arr[0].data = ticket.assignee_name ; 
-        updates_Arr[0].new_data = assigned_to ;
-        updates_Arr[0].new_text = $("#assigned_to option:selected").text();
+        updates_Arr[index].id = 2;
+        updates_Arr[index].data = ticket.assignee_name ; 
+        updates_Arr[index].new_data = assigned_to ;
+        updates_Arr[index].new_text = $("#assigned_to option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -1914,12 +1916,13 @@ $('#type').change(function() {
 
     }
 
-    let item = updates_Arr.filter(item => item.id == 3);
+    let item = updates_Arr.filter(item => item.id === 3);
+    let index = updates_Arr.map(function (item) { return item.id; }).indexOf(3);
     if(item.length > 0) {
-        updates_Arr[0].id = 3;
-        updates_Arr[0].data = ticket.type_name ; 
-        updates_Arr[0].new_data = type ;
-        updates_Arr[0].new_text = $("#type option:selected").text();
+        updates_Arr[index].id = 3;
+        updates_Arr[index].data = ticket.type_name ; 
+        updates_Arr[index].new_data = type ;
+        updates_Arr[index].new_text = $("#type option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -1958,12 +1961,13 @@ $('#status').change(function() {
 
     }
 
-    let item = updates_Arr.filter(item => item.id == 4);
+    let item = updates_Arr.filter(item => item.id === 4);
+    let index = updates_Arr.map(function (item) { return item.id; }).indexOf(4);
     if(item.length > 0) {
-        updates_Arr[0].id = 4;
-        updates_Arr[0].data = ticket.status_name ; 
-        updates_Arr[0].new_data = status ;
-        updates_Arr[0].new_text = $("#status option:selected").text();
+        updates_Arr[index].id = 4;
+        updates_Arr[index].data = ticket.status_name ; 
+        updates_Arr[index].new_data = status ;
+        updates_Arr[index].new_text = $("#status option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -2000,12 +2004,13 @@ $('#priority').change(function() {
 
     }
 
-    let item = updates_Arr.filter(item => item.id == 5);
+    let item = updates_Arr.filter(item => item.id === 5);
+    let index = updates_Arr.map(function (item) { return item.id; }).indexOf(5);
     if(item.length > 0) {
-        updates_Arr[0].id = 5;
-        updates_Arr[0].data = ticket.priority_name ; 
-        updates_Arr[0].new_data = priority ;
-        updates_Arr[0].new_text = $("#priority option:selected").text();
+        updates_Arr[index].id = 5;
+        updates_Arr[index].data = ticket.priority_name ; 
+        updates_Arr[index].new_data = priority ;
+        updates_Arr[index].new_text = $("#priority option:selected").text();
     }else{
         updates_Arr.push(obj);
     }
@@ -3410,7 +3415,6 @@ function showDepartStatus(value) {
             // console.log(data , "assignee");
             let obj = data.status;
             let obj_user = data.users;
-
             let option = ``;
             let select = ``;
             let open_sts = '';
@@ -3421,6 +3425,7 @@ function showDepartStatus(value) {
                 option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
             }
             $("#status").html(select + option);
+
             if (dept_id == ticket.dept_id){
                 updates_Arr = $.grep(updates_Arr, function(e){ 
                     return e.id != 1; 
@@ -3446,20 +3451,20 @@ function showDepartStatus(value) {
 
             let assigned_to = $('#assigned_to').val();
             let ass_obj = {};
-
             ass_obj = {
                 id:2,
-                data: ticket.assignee_name, // Saving old value to show in email notification
+                data: ticket.assignee_name,
                 new_data: null,
                 new_text: "Unassigned" ,
             }
 
             let item = updates_Arr.filter(item => item.id == 2);
+            let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
             if(item.length > 0) {
-                updates_Arr[0].id = 2;
-                updates_Arr[0].data = ticket.assignee_name ; 
-                updates_Arr[0].new_data = null ;
-                updates_Arr[0].new_text = "Unassigned";
+                updates_Arr[index].id = 2;
+                updates_Arr[index].data = ticket.assignee_name ; 
+                updates_Arr[index].new_data = null ;
+                updates_Arr[index].new_text = "Unassigned";
             }else{
                 updates_Arr.push(ass_obj);
             }
@@ -3468,7 +3473,6 @@ function showDepartStatus(value) {
                 select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
             }
 
-            console.log(select , "select");
             $("#assigned_to").html(select);
         },
         complete: function(data) {
