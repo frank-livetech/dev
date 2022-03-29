@@ -402,6 +402,8 @@ class MailController extends Controller
                                         $attaches = $this->mail_parse_attachments($mail, $ticket->id);
                                         $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
                                         $html_reply = $bbcode->convertFromHtml($reply);
+
+
                                         
                                         //converting html to secure bbcode
                                         
@@ -482,6 +484,10 @@ class MailController extends Controller
                                         
                                         if(!empty($cid)) {
                                             $data["customer_id"] = $cid;
+
+                                            $open_status = TicketStatus::where('name','Open')->first();
+                                            $ticket->status = $open_status->id;
+
                                         }
                                       
                                         $rep = TicketReply::create($data);
@@ -493,6 +499,8 @@ class MailController extends Controller
                                                 $ticket->save();
                                             }
                                         }
+
+
                                         $ticket->updated_at = Carbon::now();
                                         $ticket->save();
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
