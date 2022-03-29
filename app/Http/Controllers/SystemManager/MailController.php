@@ -1033,7 +1033,14 @@ class MailController extends Controller
             // ];
             // $mail->setFrom(self::$mailserver_username);
 
-            $mail->setFrom($from);
+            $from_name = '';
+            if (\Auth::user())  {
+                $from_name = auth()->user()->name;
+            }else{
+                $from_name = 'Live-Tech System ';
+            }
+
+            $mail->setFrom($from , $from_name);
             
             //Recipients
             if(!empty($this->cc_string)) {
