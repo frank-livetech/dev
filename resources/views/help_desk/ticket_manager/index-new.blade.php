@@ -257,7 +257,7 @@
                                     <div class="flex-row">
                                         <div class="my-auto" style="text-align: center">
                                             <a href="javascript:getCounterTickets('overdue')">
-                                                <h2 class="fw-bolder mb-0" id="closed_tickets_count"></h2>
+                                                <h2 class="fw-bolder mb-0" id="late_tickets_count"></h2>
                                                 <h5 class="card-text font-small-10 mb-0 mt-1 text-danger">Overdue</h5>
                                             </a>
                                         </div>
