@@ -1315,7 +1315,7 @@ class MailController extends Controller
                 return ($var['module'] == 'Tech');
             }));
 
-            $signature = $staff_data[0]['values']->signature;
+            $signature = $staff_data[0]['values']['signature'];
             
             if($signature != null) {
                 
