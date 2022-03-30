@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -856,9 +856,10 @@ class HelpdeskController extends Controller
         ->where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
         $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+
         $open_ticket_count = Tickets::
-        when($statusOrUser == 'customer', function($q) use ($cid) {
-            return $q->where('tickets.customer_id', $cid);
+        when($statusOrUser == 'customer', function($q) use ($cid , $open_status) {
+            return $q->where('tickets.customer_id', $cid)->where('status' , $open_status->id);;
         })
         ->when($statusOrUser == 'staff', function($q) use ($sid) {
             return $q->where('tickets.assigned_to', $sid);
