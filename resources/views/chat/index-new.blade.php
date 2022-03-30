@@ -479,13 +479,13 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                             <form class="chat-app-form" action="javascript:void(0);" onsubmit="enterChat();">
                                 <div class="input-group input-group-merge me-1 form-send-message">
                                     <span class="speech-to-text input-group-text"><i data-feather="mic" class="cursor-pointer"></i></span>
-                                    <input type="text" class="form-control message" placeholder="Type your message or use speech to text" />
+                                    <input type="text" id="message" class="form-control message" placeholder="Type your message or use speech to text" />
                                     <span class="input-group-text">
                                         <label for="attach-doc" class="attachment-icon form-label mb-0">
                                             <i data-feather="image" class="cursor-pointer text-secondary"></i>
                                             <input type="file" id="attach-doc" hidden /> </label></span>
                                 </div>
-                                <button type="button" class="btn btn-primary send" onclick="enterChat();">
+                                <button type="button" class="btn btn-primary send" onclick="sendMessage();">
                                     <i data-feather="send" class="d-lg-none"></i>
                                     <span class="d-none d-lg-block">Send</span>
                                 </button>
@@ -574,4 +574,29 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+
+<script>
+    function sendMessage() {
+        let msg = $("#message").val();
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            type: 'POST',
+            url: "{{route('message.index')}}",
+            data: {message: msg},
+            success: function (data) {
+                console.log(data , "response");
+            }, 
+            error: function (e) {
+                
+            }
+        });
+    }
+</script>
+
 @endsection
