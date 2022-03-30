@@ -36,6 +36,7 @@ use PhpParser\Node\Stmt\Continue_;
 use Illuminate\Support\Facades\URL;
 
 require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -1308,6 +1309,24 @@ class MailController extends Controller
             }
         }
 
+        
+        if(str_contains($template, '{Staff-Signature}')) {
+            $staff_data = array_values(array_filter($data_list, function ($var) {
+                return ($var['module'] == 'Creator');
+            }));
+
+            $signature = $staff_data[0]['values']->signature;
+            
+            if($signature != null) {
+                
+                $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
+                
+                $template = str_replace('{Staff-Signature}', $signture, $template);
+            }else{
+                $template = str_replace('{Staff-Signature}', '' , $template);
+            }
+        }
+
         if(str_contains($template, '{Our-Company-Details}')) {
             $content = DB::table('templates')->where('code', 'company_details')->first();
 
@@ -1696,17 +1715,6 @@ class MailController extends Controller
                 if(str_contains($template, '{Site-Link}')) {
                     $val = 'https://mylive-tech.com/dev';
                     $template = str_replace('{Site-Link}', $val , $template);
-                }
-
-                if(str_contains($template, '{Staff-Signature}')) {
-
-                    if($data['values']['signature'] != null) {
-                        $link = '<a href="'.$url.'"> '. $url .'  </a>';
-                        $template = str_replace('{Staff-Signature}', $data['values']['signature'] , $template);
-                    }else{
-                        $template = str_replace('{Staff-Signature}', '' , $template);
-                    }
-                    
                 }
 
             }
