@@ -702,6 +702,7 @@ class HelpdeskController extends Controller
             if($statusOrUser == 'customer') $cid = $id;
             else if($statusOrUser == 'staff') $sid = $id;
         }
+        
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
@@ -748,7 +749,6 @@ class HelpdeskController extends Controller
             })
             ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
             ->get();
-            // return $tickets;
             // $tickets = DB::Table('tickets')
             // ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
             // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -863,7 +863,7 @@ class HelpdeskController extends Controller
         ->when($statusOrUser == 'staff', function($q) use ($sid) {
             return $q->where('tickets.assigned_to', $sid);
         })
-        ->where('status','!=', $closed_status->id)->where('is_deleted', 0)->count();
+        ->where('status','!=', $closed_status->id)->where('is_deleted', 0)->where('trashed', 0)->count();
 
         $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
         $tm_name = '';
@@ -2422,11 +2422,7 @@ class HelpdeskController extends Controller
         try{
             $ticket = Tickets::findOrFail($followUp->ticket_id);
 
-            $followUp->is_deleted = 1;
-            $followUp->deleted_by = \Auth::user()->id;
-            $followUp->deleted_at = Carbon::now();
-
-            $followUp->save();
+            $followUp->delete();
 
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;

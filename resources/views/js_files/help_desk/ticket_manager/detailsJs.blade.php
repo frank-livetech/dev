@@ -1770,16 +1770,16 @@ function composeReply() {
 function editReply(rindex) {publishReply(this)
     tinyMCE.editors.mymce.setContent(ticketReplies[rindex].reply);
 
-    if(ticketReplies[rindex].attachments) {
-        let attchs = ticketReplies[rindex].attachments.split(',');
+    // if(ticketReplies[rindex].attachments) {
+    //     let attchs = ticketReplies[rindex].attachments.split(',');
         
-        $('#replies_attachments').html('');
-        ticket_attachments_count = 0;
+    //     $('#replies_attachments').html('');
+    //     ticket_attachments_count = 0;
 
-        attchs.forEach(item => {
-            addAttachment('replies', item);
-        });
-    }
+    //     attchs.forEach(item => {
+    //         addAttachment('replies', item);
+    //     });
+    // }
 
     $('#draft-rply').hide();
     if(ticketReplies[rindex].is_published == 1) $('#cancel-rply').show();
@@ -2242,12 +2242,16 @@ function listFollowups() {
 
             flups += `<div class="card-header mb-1" id="followup-${g_followUps[i].id}" style="color:black;background-color: rgba(0, 0, 0, .113);">
                 <h5 class="m-0">
+                <div class="d-flex justify-content-between">
                     <a class="custom-accordion-title d-flex align-items-center ${clsp}" data-bs-toggle="collapse" href="#collapse-${g_followUps[i].id}" aria-expanded="${clsp ? false : true}" aria-controls="collapseThree" style="color: inherit;">
-                    ${countFlups+1}. Will run a follow-up at ${moment(followUpDate).format(date_format)} created by ${g_followUps[i].creator_name} ${remTime}</strong>&nbsp;
-                    ` + autho + `
-                        <span class="ml-auto"><i class="fas fa-chevron-down accordion-arrow"></i></span>
+                        ${countFlups+1}. Will run a follow-up at ${moment(followUpDate).format(date_format)} created by ${g_followUps[i].creator_name} ${remTime}</strong>&nbsp;
+                        ` + autho + `
+                            <span class="ml-auto"><i class="fas fa-chevron-down accordion-arrow"></i></span>
                         
                     </a>
+                    <button onclick="deleteFollowup(${g_followUps[i].id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                    <i class="fa fa-trash"></i></button>
+                </div>
                 </h5>
             </div>
             <div id="collapse-${g_followUps[i].id}" class="${clsp ? 'collapse' : 'show'}  flpcollapse" aria-labelledby="followup-${g_followUps[i].id}" data-bs-parent="#accordion">
@@ -2500,6 +2504,10 @@ function deleteFollowup(id) {
                 url: delete_followup_route + "/" + id,
                 success: function(data) {
                     if (data.success) {
+
+                        toastr.success( data.message , { timeOut: 5000 });
+
+                        // $("#followup-"+id).remove();
                         // send mail notification regarding ticket action
                         ticket_notify('ticket_update', 'Follow-up removed');
 
@@ -2508,14 +2516,6 @@ function deleteFollowup(id) {
 
                         getTicketFollowUp();
                     }
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: (data.success) ? 'success' : 'error',
-                        title: data.message,
-                        showConfirmButton: false,
-                        timer: swal_message_time
-                    });
                 }
             });
         }
