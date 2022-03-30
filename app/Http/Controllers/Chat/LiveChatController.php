@@ -50,9 +50,5 @@ class LiveChatController extends Controller
 
         print $message->sid;
     }
-
-    public function getWhatsAppMessages(Request $request) {
-        \Log::debug($request);
-    }
 }
 
