@@ -41,14 +41,18 @@ class LiveChatController extends Controller
         $token = "9a2bf65f24c24a161bee9671a43949a8";
 
         $client = new Client($sid, $token);
-        $message = $client->messages->create('+92 303 0560951', // Text this number
+        $message = $client->messages->create('whatsapp:+923030560951', // Text this number
         [
-            'from' => '+14155238886', // From a valid Twilio number
-            'body' => 'Hello from Laravel!'
+            'from' => 'whatsapp:+14155238886', // From a valid Twilio number
+            'body' => request()->message ,
         ]
         );
 
         print $message->sid;
+    }
+
+    public function getWhatsAppMessages(Request $request) {
+        \Log::debug($request);
     }
 }
 
