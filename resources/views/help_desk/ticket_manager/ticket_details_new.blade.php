@@ -447,11 +447,11 @@ br + br { display: none; }
                                     </div>
                                     <div class="col4">
                                         <h3 class="font-weight-bold" style="text-align:center; font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
-                                        <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">Open</a></h6>
+                                        <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Open</a></h6>
                                     </div>
                                     <div class="col4">
                                         <h3 class="font-weight-bold" style="text-align:center; font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
-                                        <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">Closed</a></h6>
+                                        <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Closed</a></h6>
                                     </div>
                                 </div>
 
