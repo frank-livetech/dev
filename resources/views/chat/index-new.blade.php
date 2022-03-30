@@ -2,9 +2,9 @@
 @section('Live Support Chat','active')
 @section('body')
 @php
-        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
-        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
-    @endphp
+$file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+$path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+@endphp
 <div class="app-content content chat-application">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -23,14 +23,13 @@
                                 <!-- <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="user_avatar" />
                                 <span class="avatar-status-online avatar-status-xl"></span> -->
                                 @if(auth()->user()->profile_pic != null)
-                                    @if(file_exists( getcwd(). '/' . auth()->user()->profile_pic))
-                                        <img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
-                                            alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
-                                    @else
-                                        <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
-                                    @endif
+                                @if(file_exists( getcwd(). '/' . auth()->user()->profile_pic))
+                                <img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}" alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
                                 @else
-                                    <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" alt="'s Photo" height="50px"  width="50px" class="rounded-circle">
+                                <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
+                                @endif
+                                @else
+                                <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" alt="'s Photo" height="50px" width="50px" class="rounded-circle">
                                 @endif
                             </div>
                             <h4 class="chat-user-name">{{Auth::user()->name}}</h4>
@@ -136,13 +135,12 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                     <span class="avatar-status-online"></span> -->
                                     @if(auth()->user()->profile_pic != null)
                                         @if(file_exists( getcwd(). '/' . auth()->user()->profile_pic))
-                                            <img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
-                                                alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
+                                            <img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}" alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
+                                            @else
+                                                <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
+                                            @endif
                                         @else
-                                            <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" width="50px" height="50px" alt="'s Photo" class="rounded-circle">
-                                        @endif
-                                    @else
-                                        <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" alt="'s Photo" height="50px"  width="50px" class="rounded-circle">
+                                        <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" alt="'s Photo" height="50px" width="50px" class="rounded-circle">
                                     @endif
                                 </div>
                             </div>
@@ -159,143 +157,29 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                         <h4 class="chat-list-title">Chats</h4>
                         <ul class="chat-users-list chat-list media-list">
                             @foreach($users as $user)
-                                <li data_uid="{{$user->id}}" data_nm="{{$user->name}}" data_pc="{{$user->profile_pic}}">
-                                    <!-- <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                    </span> -->
-                                    @if($user->profile_pic != null)
-                                        @if(file_exists( getcwd(). '/' . $user->profile_pic))
+                            <li data-id="{{$user->id}}" onclick="showActiveUserChat(this)" data_nm="{{$user->name}}" data_pc="{{$user->profile_pic}}">
+                                @if($user->profile_pic != null)
+                                    @if(file_exists( getcwd(). '/' . $user->profile_pic))
                                         <span class="avatar"><img height="42" width="42" src="{{ asset( request()->root() .'/'. $user->profile_pic)}}" height="42" width="42"></span>
-                                        @else
-                                        <span class="avatar"> <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
-                                        @endif
                                     @else
-                                    
-                                    <span class="avatar"> <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" height="42" width="42" ></span>
+                                        <span class="avatar"> <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
                                     @endif
-                                    <div class="chat-info">
-                                        <h5 class="mb-0">{{$user->name}}</h5>
-                                        <span class="badge badge-light-success rounded-pill ms-auto me-1">{{$user->role}}</span>
-                                        <!-- <span class="user-post">{{$user->role}}</span> -->
-                                    </div>
-                                </li>
-                            @endforeach
+                                @else
 
-                            <!-- <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                    <span class="avatar-status-busy"></span>
-                                </span>
-                                <div class="chat-info flex-grow-1">
-                                    <h5 class="mb-0">Kristopher Candy</h5>
-                                    <p class="card-text text-truncate">
-                                        Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing
-                                    </p>
-                                </div>
-                                <div class="chat-meta text-nowrap">
-                                    <small class="float-end mb-25 chat-time">9:09 AM</small>
+                                <span class="avatar"> <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
+                                @endif
+                                <div class="chat-info">
+                                    <h5 class="mb-0">{{$user->name}}</h5>
+                                    <span class="badge badge-light-success rounded-pill ms-auto me-1">{{$user->role}}</span>
                                 </div>
                             </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-8.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                    <span class="avatar-status-away"></span>
-                                </span>
-                                <div class="chat-info flex-grow-1">
-                                    <h5 class="mb-0">Sarah Woods</h5>
-                                    <p class="card-text text-truncate">
-                                        Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing.
-                                    </p>
-                                </div>
-                                <div class="chat-meta text-nowrap">
-                                    <small class="float-end mb-25 chat-time">5:48 PM</small>
-                                </div>
-                            </li> -->
+                            @endforeach
                             <li class="no-results">
                                 <h6 class="mb-0">No Chats Found</h6>
                             </li>
                         </ul>
                         <h4 class="chat-list-title">Contacts</h4>
                         <ul class="chat-users-list contact-list media-list">
-                            
-                            <!-- <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-5.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Sarah Montgomery</h5>
-                                    <p class="card-text text-truncate">
-                                        Tootsie roll sesame snaps biscuit icing jelly-o biscuit chupa chups powder.
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-9.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Heather Howell</h5>
-                                    <p class="card-text text-truncate">
-                                        Tart cookie dragée sesame snaps halvah. Fruitcake sugar plum gummies cheesecake toffee.
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Kelly Reyes</h5>
-                                    <p class="card-text text-truncate">
-                                        Wafer toffee tart jelly cake croissant chocolate bar cupcake donut. Fruitcake gingerbread tiramisu sweet
-                                        jelly-o.
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-15.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Kristopher Candy</h5>
-                                    <p class="card-text text-truncate">
-                                        Marzipan bonbon chocolate bar biscuit lemon drops muffin jelly-o sweet jujubes.
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-14.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Vincent Nelson</h5>
-                                    <p class="card-text text-truncate">
-                                        Toffee gummi bears sugar plum gummi bears chocolate bar donut. Pudding cookie lemon drops icing
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-17.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Jimmy Parker</h5>
-                                    <p class="card-text text-truncate">
-                                        Powder halvah jelly beans topping caramels muffin dragée lollipop oat cake.
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-3.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Elizabeth Elliott</h5>
-                                    <p class="card-text text-truncate">
-                                        Candy canes ice cream jelly beans carrot cake chocolate bar pastry candy jelly-o.
-                                    </p>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="avatar"><img src="../../../app-assets/images/portrait/small/avatar-s-13.jpg" height="42" width="42" alt="Generic placeholder image" />
-                                </span>
-                                <div class="chat-info">
-                                    <h5 class="mb-0">Nelson D'souza</h5>
-                                    <p class="card-text text-truncate">
-                                        Macaroon candy canes apple pie soufflé lemon drops chocolate cake chocolate sweet roll.
-                                    </p>
-                                </div>
-                            </li> -->
                             <li class="no-results">
                                 <h6 class="mb-0">No Contacts Found</h6>
                             </li>
@@ -336,7 +220,7 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                         <div class="avatar avatar-border user-profile-toggle m-0 me-1" id="active_user_pic">
                                             <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" id="active_user_img" alt="avatar" height="36" width="36" />
                                             <!-- <span class="avatar-status-busy"></span> -->
-                                           
+
                                         </div>
                                         <h6 class="mb-0" id="active_user_name"></h6>
                                     </div>
@@ -369,7 +253,7 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                             <span class="avatar box-shadow-1 cursor-pointer">
                                                 <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36" />
                                             </span>
-                                           
+
                                         </div>
                                         <div class="chat-body">
                                             <div class="chat-content">
@@ -476,16 +360,17 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                             <!-- User Chat messages -->
 
                             <!-- Submit Chat form -->
-                            <form class="chat-app-form" action="javascript:void(0);" onsubmit="enterChat();">
+                            <form class="chat-app-form" id="chat_form">
+                                <input type="hidden" name="user_to" id="user_to">
                                 <div class="input-group input-group-merge me-1 form-send-message">
                                     <span class="speech-to-text input-group-text"><i data-feather="mic" class="cursor-pointer"></i></span>
-                                    <input type="text" id="message" class="form-control message" placeholder="Type your message or use speech to text" />
+                                    <input type="text" id="message" name="message" class="form-control message" placeholder="Type your message or use speech to text" />
                                     <span class="input-group-text">
                                         <label for="attach-doc" class="attachment-icon form-label mb-0">
                                             <i data-feather="image" class="cursor-pointer text-secondary"></i>
                                             <input type="file" id="attach-doc" hidden /> </label></span>
                                 </div>
-                                <button type="button" class="btn btn-primary send" onclick="sendMessage();">
+                                <button type="submit" class="btn btn-primary send">
                                     <i data-feather="send" class="d-lg-none"></i>
                                     <span class="d-none d-lg-block">Send</span>
                                 </button>
@@ -579,24 +464,38 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
 @section('scripts')
 
 <script>
-    function sendMessage() {
-        let msg = $("#message").val();
 
+    function showActiveUserChat(tag) {
+
+        let user_id  = $(tag).data("id");
+        $("#user_to").val(user_id);
+        
+    }
+
+    $('#chat_form').submit(function(e) {
+        e.preventDefault();
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             },
-            type: 'POST',
+            type: "POST",
             url: "{{route('message.index')}}",
-            data: {message: msg},
-            success: function (data) {
-                console.log(data , "response");
-            }, 
-            error: function (e) {
-                
-            }
+            data: new FormData(this),
+            async: false,
+            processData: false,
+            contentType: false,
+            beforeSend: function(data) {},
+            success: function(data) {
+                console.log(data, "response");
+            },
+            complete: function(data) {},
+            failure: function(errMsg) {}
         });
-    }
+    });
+
+    // $a = 'whatsapp:+923030560951';
+    //     $b = explode( ':' , $a);
+    //     dd($b[1]);
 </script>
 
 @endsection

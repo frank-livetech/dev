@@ -1744,6 +1744,14 @@ function publishReply(ele, type = 'publish') {
                             timer: swal_message_time
                         });
                     }
+                },
+                complete:function (data) {
+                    $(ele).attr('disabled', false);
+                    $(ele).find('.spinner-border').hide();
+                },
+                error:function(e) {
+                    $(ele).attr('disabled', false);
+                    $(ele).find('.spinner-border').hide();
                 }
             });
         }
@@ -1752,6 +1760,8 @@ function publishReply(ele, type = 'publish') {
 
 function composeReply() {
     
+    $("#update_ticket").hide();
+
     $('.reply_btns').attr('style', 'display: block !important');
     $("#compose_btn").hide();
     document.getElementById('compose-reply').classList.toggle('d-none');
@@ -1790,6 +1800,28 @@ function editReply(rindex) {publishReply(this)
 }
 
 function cancelReply() {
+
+    var priority =  $("#prio-label").find(".select2 option:selected").text();
+    var dep =  $("#dep-label").find(".select2 option:selected").text();
+    var tech =  $("#tech-label").find(".select2 option:selected").text();
+    var status =  $("#status-label").find(".select2 option:selected").text();
+    var type =  $("#type-label").find(".select2 option:selected").text();
+
+    let obj = {
+        "pro" : priority ,
+        "dep" : dep ,
+        "tech" : tech ,
+        "status" : status ,
+        "type" : type ,
+    }
+    console.log(obj , "obj");
+
+    if(updates_Arr.length != 0) {
+        $("#update_ticket").show();
+    }else{
+        $("#update_ticket").hide();
+    }
+
     edit_reply_mode = false;
     
     document.getElementById('compose-reply').classList.add('d-none');
