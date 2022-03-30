@@ -26,7 +26,7 @@ Route::group(['middleware' => 'api','namespace' => 'API'], function () {
     Route::post('signup', 'AuthController@register');
     
     // get whatsapp 
-    Route::get('/whatsap-msg-hook','ChatController@getWhatsAppMessages');
+    Route::post('/whatsap-msg-hook','ChatController@getWhatsAppMessages');
     
     // wp_customers
     Route::post('/customer_create','wooCommerceController@wp_customer_create');
