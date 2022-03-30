@@ -192,6 +192,8 @@
                             timeOut: 5000
                         });
 
+                        getLatestLogs();
+
                         get_ticket_table_list();
                         $('.show_tkt_btns').hide();
 
