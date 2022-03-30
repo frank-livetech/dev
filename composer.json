@@ -30,6 +30,7 @@
         "spatie/laravel-permission": "^3.16",
         "srmklive/paypal": "^3.0",
         "symfony/psr-http-message-bridge": "^2.1",
+        "twilio/sdk": "^6.36",
         "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables-oracle": "~9.0",
         "zircote/swagger-php": "^3.1"

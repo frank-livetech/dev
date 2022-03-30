@@ -1241,7 +1241,7 @@ class MailController extends Controller
                             $actions .= '<p><strong>Priority: </strong>'.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
                           
                         }
-                    }
+                    }                    
                     if(!empty($reply_content)){
                         $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
                     }
@@ -1312,10 +1312,10 @@ class MailController extends Controller
         
         if(str_contains($template, '{Staff-Signature}')) {
             $staff_data = array_values(array_filter($data_list, function ($var) {
-                return ($var['module'] == 'Creator');
+                return ($var['module'] == 'Tech');
             }));
 
-            $signature = $staff_data[0]['values']->signature;
+            $signature = $staff_data[0]['values']['signature'];
             
             if($signature != null) {
                 
