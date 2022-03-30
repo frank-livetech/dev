@@ -1094,7 +1094,7 @@ function saveRequest() {
                     $('#save_request_btn').css('display', 'none');
                     $('#cancel_request_btn').css('display', 'none');
 
-                    $('#ticket_subject_heading').text('Subject : ' + $('#ticket_subject_edit').val());
+                    $('#ticket_subject_heading').text($('#ticket_subject_edit').val());
                     $('#ticket_details_p').html(getTicketDetailsContent());
                     // $('#ticket_details_p2').html(getTicketDetailsContent());
                     $('#ticket_details_p3').html(getTicketDetailsContent());
