@@ -17,11 +17,8 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                         <span class="close-icon">
                             <i data-feather="x"></i>
                         </span>
-                        <!-- User Information -->
                         <div class="header-profile-sidebar">
                             <div class="avatar box-shadow-1 avatar-xl avatar-border">
-                                <!-- <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="user_avatar" />
-                                <span class="avatar-status-online avatar-status-xl"></span> -->
                                 @if(auth()->user()->profile_pic != null)
                                 @if(file_exists( getcwd(). '/' . auth()->user()->profile_pic))
                                 <img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}" alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">
@@ -41,81 +38,9 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                     <div class="profile-sidebar-area">
                         <h6 class="section-label mb-1">About</h6>
                         <div class="about-user">
-                            <textarea data-length="120" class="form-control char-textarea" id="textarea-counter" rows="5" placeholder="About User">
-Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.</textarea>
+                            <textarea data-length="120" class="form-control char-textarea" id="textarea-counter" rows="5" placeholder="About User"> {{auth()->user()->notes}} </textarea>
                             <small class="counter-value float-end"><span class="char-count">108</span> / 120 </small>
                         </div>
-                        <!-- To set user status -->
-                        <h6 class="section-label mb-1 mt-3">Status</h6>
-                        <ul class="list-unstyled user-status">
-                            <li class="pb-1">
-                                <div class="form-check form-check-success">
-                                    <input type="radio" id="activeStatusRadio" name="userStatus" class="form-check-input" value="online" checked />
-                                    <label class="form-check-label ms-25" for="activeStatusRadio">Active</label>
-                                </div>
-                            </li>
-                            <li class="pb-1">
-                                <div class="form-check form-check-danger">
-                                    <input type="radio" id="dndStatusRadio" name="userStatus" class="form-check-input" value="busy" />
-                                    <label class="form-check-label ms-25" for="dndStatusRadio">Do Not Disturb</label>
-                                </div>
-                            </li>
-                            <li class="pb-1">
-                                <div class="form-check form-check-warning">
-                                    <input type="radio" id="awayStatusRadio" name="userStatus" class="form-check-input" value="away" />
-                                    <label class="form-check-label ms-25" for="awayStatusRadio">Away</label>
-                                </div>
-                            </li>
-                            <li class="pb-1">
-                                <div class="form-check form-check-secondary">
-                                    <input type="radio" id="offlineStatusRadio" name="userStatus" class="form-check-input" value="offline" />
-                                    <label class="form-check-label ms-25" for="offlineStatusRadio">Offline</label>
-                                </div>
-                            </li>
-                        </ul>
-                        <!--/ To set user status -->
-
-                        <!-- User settings -->
-                        <h6 class="section-label mb-1 mt-2">Settings</h6>
-                        <ul class="list-unstyled">
-                            <li class="d-flex justify-content-between align-items-center mb-1">
-                                <div class="d-flex align-items-center">
-                                    <i data-feather="check-square" class="me-75 font-medium-3"></i>
-                                    <span class="align-middle">Two-step Verification</span>
-                                </div>
-                                <div class="form-check form-switch me-0">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch1" checked />
-                                    <label class="form-check-label" for="customSwitch1"></label>
-                                </div>
-                            </li>
-                            <li class="d-flex justify-content-between align-items-center mb-1">
-                                <div class="d-flex align-items-center">
-                                    <i data-feather="bell" class="me-75 font-medium-3"></i>
-                                    <span class="align-middle">Notification</span>
-                                </div>
-                                <div class="form-check form-switch me-0">
-                                    <input type="checkbox" class="form-check-input" id="customSwitch2" />
-                                    <label class="form-check-label" for="customSwitch2"></label>
-                                </div>
-                            </li>
-                            <li class="mb-1 d-flex align-items-center cursor-pointer">
-                                <i data-feather="user" class="me-75 font-medium-3"></i>
-                                <span class="align-middle">Invite Friends</span>
-                            </li>
-                            <li class="d-flex align-items-center cursor-pointer">
-                                <i data-feather="trash" class="me-75 font-medium-3"></i>
-                                <span class="align-middle">Delete Account</span>
-                            </li>
-                        </ul>
-                        <!--/ User settings -->
-
-                        <!-- Logout Button -->
-                        <div class="mt-3">
-                            <button class="btn btn-primary">
-                                <span>Logout</span>
-                            </button>
-                        </div>
-                        <!--/ Logout Button -->
                     </div>
                     <!-- User Details end -->
                 </div>
@@ -225,10 +150,17 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                         <h6 class="mb-0" id="active_user_name"></h6>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <i data-feather="phone-call" class="cursor-pointer d-sm-block d-none font-medium-2 me-1"></i>
-                                        <i data-feather="video" class="cursor-pointer d-sm-block d-none font-medium-2 me-1"></i>
+                                        <div class="refresh_btn">
+                                            <button onclick="getAllMessages()" class="btn btn-primary btn-sm mx-1"> refresh chat </button>
+                                        </div>
+                                        <div class="whatsapp_icon">
+                                            <i class="fab fa-whatsapp cursor-pointer d-sm-block d-none font-medium-2 me-1"  style=" font-size: 18px; margin-right: 10px;"></i>
+                                        </div>
                                         <i data-feather="search" class="cursor-pointer d-sm-block d-none font-medium-2"></i>
-                                        <div class="dropdown">
+                                        <!-- <i data-feather="phone-call" class="cursor-pointer d-sm-block d-none font-medium-2 me-1"></i>
+                                        <i data-feather="video" class="cursor-pointer d-sm-block d-none font-medium-2 me-1"></i> -->
+                                        
+                                        <!-- <div class="dropdown">
                                             <button class="btn-icon btn btn-transparent hide-arrow btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i data-feather="more-vertical" id="chat-header-actions" class="font-medium-2"></i>
                                             </button>
@@ -239,7 +171,7 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                                                 <a class="dropdown-item" href="#">Clear Chat</a>
                                                 <a class="dropdown-item" href="#">Report</a>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </header>
                             </div>
@@ -247,114 +179,8 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
 
                             <!-- User Chat messages -->
                             <div class="user-chats">
-                                <div class="chats">
-                                    <div class="chat">
-                                        <div class="chat-avatar">
-                                            <span class="avatar box-shadow-1 cursor-pointer">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36" />
-                                            </span>
+                                <div class="chats show_chat_messages">
 
-                                        </div>
-                                        <div class="chat-body">
-                                            <div class="chat-content">
-                                                <p>How can we help? We're here for you! 😄</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="chat chat-left">
-                                        <div class="chat-avatar">
-                                            <span class="avatar box-shadow-1 cursor-pointer">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36" />
-                                            </span>
-                                        </div>
-                                        <div class="chat-body">
-                                            <div class="chat-content">
-                                                <p>Hey John, I am looking for the best admin template.</p>
-                                                <p>Could you please help me to find it out? 🤔</p>
-                                            </div>
-                                            <div class="chat-content">
-                                                <p>It should be Bootstrap 4 compatible.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="divider">
-                                        <div class="divider-text">Yesterday</div>
-                                    </div>
-                                    <div class="chat">
-                                        <div class="chat-avatar">
-                                            <span class="avatar box-shadow-1 cursor-pointer">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36" />
-                                            </span>
-                                        </div>
-                                        <div class="chat-body">
-                                            <div class="chat-content">
-                                                <p>Absolutely!</p>
-                                            </div>
-                                            <div class="chat-content">
-                                                <p>Vuexy admin is the responsive bootstrap 4 admin template.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="chat chat-left">
-                                        <div class="chat-avatar">
-                                            <span class="avatar box-shadow-1 cursor-pointer">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36" />
-                                            </span>
-                                        </div>
-                                        <div class="chat-body">
-                                            <div class="chat-content">
-                                                <p>Looks clean and fresh UI. 😃</p>
-                                            </div>
-                                            <div class="chat-content">
-                                                <p>It's perfect for my next project.</p>
-                                            </div>
-                                            <div class="chat-content">
-                                                <p>How can I purchase it?</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="chat">
-                                        <div class="chat-avatar">
-                                            <span class="avatar box-shadow-1 cursor-pointer">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36" />
-                                            </span>
-                                        </div>
-                                        <div class="chat-body">
-                                            <div class="chat-content">
-                                                <p>Thanks, from ThemeForest.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="chat chat-left">
-                                        <div class="chat-avatar">
-                                            <span class="avatar box-shadow-1 cursor-pointer">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36" />
-                                            </span>
-                                        </div>
-                                        <div class="chat-body">
-                                            <div class="chat-content">
-                                                <p>I will purchase it for sure. 👍</p>
-                                            </div>
-                                            <div class="chat-content">
-                                                <p>Thanks.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="chat">
-                                        <div class="chat-avatar">
-                                            <span class="avatar box-shadow-1 cursor-pointer">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36" />
-                                            </span>
-                                        </div>
-                                        <div class="chat-body">
-                                            <div class="chat-content">
-                                                <p>Great, Feel free to get in touch on</p>
-                                            </div>
-                                            <div class="chat-content">
-                                                <p>https://pixinvent.ticksy.com/</p>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <!-- User Chat messages -->
@@ -403,56 +229,8 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
                             <h6 class="section-label mb-1">About</h6>
                             <p>Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop.</p>
                             <!-- About User -->
-                            <!-- User's personal information -->
-                            <div class="personal-info">
-                                <h6 class="section-label mb-1 mt-3">Personal Information</h6>
-                                <ul class="list-unstyled">
-                                    <li class="mb-1">
-                                        <i data-feather="mail" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">kristycandy@email.com</span>
-                                    </li>
-                                    <li class="mb-1">
-                                        <i data-feather="phone-call" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">+1(123) 456 - 7890</span>
-                                    </li>
-                                    <li>
-                                        <i data-feather="clock" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">Mon - Fri 10AM - 8PM</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--/ User's personal information -->
-
-                            <!-- User's Links -->
-                            <div class="more-options">
-                                <h6 class="section-label mb-1 mt-3">Options</h6>
-                                <ul class="list-unstyled">
-                                    <li class="cursor-pointer mb-1">
-                                        <i data-feather="tag" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">Add Tag</span>
-                                    </li>
-                                    <li class="cursor-pointer mb-1">
-                                        <i data-feather="star" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">Important Contact</span>
-                                    </li>
-                                    <li class="cursor-pointer mb-1">
-                                        <i data-feather="image" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">Shared Media</span>
-                                    </li>
-                                    <li class="cursor-pointer mb-1">
-                                        <i data-feather="trash" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">Delete Contact</span>
-                                    </li>
-                                    <li class="cursor-pointer">
-                                        <i data-feather="slash" class="font-medium-2 me-50"></i>
-                                        <span class="align-middle">Block Contact</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--/ User's Links -->
                         </div>
                     </div>
-                    <!--/ User Chat profile right area -->
 
                 </div>
             </div>
@@ -469,11 +247,93 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
 
         let user_id  = $(tag).data("id");
         $("#user_to").val(user_id);
-        
+
+        getAllMessages();
+    }
+
+    function getAllMessages() {
+        let user_id = $("#user_to").val();
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            type: "POST",
+            url: "{{route('whatapp.get')}}",
+            data : {id:user_id},
+            dataType: 'json',
+            beforeSend:function(data) {
+
+            },
+            success: function(data) {
+                let obj = data.data;
+                renderMessages(obj , data.number);
+            },
+            complete:function(data) {
+
+            },
+            error:function(e) {
+
+            }
+        });
+    }
+
+    function renderMessages(obj , number) {
+        console.log(obj , "obj");
+        console.log(number , "number");
+        let msgs_html = ``;
+        $('.show_chat_messages').html('');
+
+        if(obj.length > 0) {
+
+            for(let i =0; i < obj.length; i++) {
+
+
+                if(obj[i].to == number) {
+                    msgs_html +=`
+                    <div class="chat">
+                        <div class="chat-avatar">
+                            <span class="avatar box-shadow-1 cursor-pointer">
+                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36" />
+                            </span>
+
+                        </div>
+                        <div class="chat-body">
+                            <div class="chat-content">
+                                <p> ${obj[i].body != null ? obj[i].body : ''} </p>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+
+                if(obj[i].from == number) {
+                    msgs_html += `
+                    <div class="chat chat-left">
+                        <div class="chat-avatar">
+                            <span class="avatar box-shadow-1 cursor-pointer">
+                                <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36" />
+                            </span>
+                        </div>
+                        <div class="chat-body">
+                            <div class="chat-content">
+                                <p> ${obj[i].body != null ? obj[i].body : ''} </p>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+
+                
+            }
+
+            $('.show_chat_messages').html(msgs_html);
+        }else{
+            $('.show_chat_messages').html('');
+        }
     }
 
     $('#chat_form').submit(function(e) {
         e.preventDefault();
+        
+        let message = $("#message").val();
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -486,16 +346,33 @@ Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw 
             contentType: false,
             beforeSend: function(data) {},
             success: function(data) {
-                console.log(data, "response");
+                toastr.success( data.message , { timeOut: 5000 });
+                $("#message").val("");
+
+                let msg = `
+                    <div class="chat">
+                        <div class="chat-avatar">
+                            <span class="avatar box-shadow-1 cursor-pointer">
+                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
+                            </span>
+
+                        </div>
+                        <div class="chat-body">
+                            <div class="chat-content">
+                                <p> ${message} </p>
+                            </div>
+                        </div>
+                    </div>`;
+                $('.show_chat_messages').append(msg);
+
+                $('.user-chats').scrollTop($('.user-chats > .chats').height());
+
             },
             complete: function(data) {},
             failure: function(errMsg) {}
         });
     });
 
-    // $a = 'whatsapp:+923030560951';
-    //     $b = explode( ':' , $a);
-    //     dd($b[1]);
 </script>
 
 @endsection

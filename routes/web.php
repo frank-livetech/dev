@@ -60,6 +60,7 @@ Route::get('/wizard', 'HomeController@wizard');
 Route::group ( ['namespace' => 'Chat','middleware' => ['auth','admin']], function () {
     Route::get('/chat', 'LiveChatController@index')->name('chats.index');
     Route::post('/send_messages', 'LiveChatController@sendMessage')->name('message.index');    
+    Route::post('/get_whatapp_messages', 'LiveChatController@getWhatsAppMessage')->name('whatapp.get');    
 });
 // new routes
 
