@@ -89,8 +89,7 @@ class LiveChatController extends Controller
 
 
         $from_number = '+14155238886';
-
-        $from = 'whatsapp:+'.$from_number;
+        $from = 'whatsapp:'.$from_number;
 
         $data = array(
             "from" => $from_number ,
