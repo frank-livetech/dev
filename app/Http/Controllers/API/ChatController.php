@@ -21,8 +21,8 @@ class ChatController extends Controller
 
 
         $data = array(
-            "from" => $to[1] ,
-            "to" => $from[1] ,
+            "from" => $from[1] ,
+            "to" => $to[1] ,
             "body" => $request->Body ,
             "num_media" => $request->NumMedia ,
             "media_url" => $request->MediaUrl0 ,
