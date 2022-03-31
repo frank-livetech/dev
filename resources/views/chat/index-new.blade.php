@@ -151,7 +151,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <div class="refresh_btn">
-                                            <button onclick="getAllMessages()" class="btn btn-primary btn-sm mx-1"> refresh chat </button>
+                                            <button onclick="getAllMessages()" class="btn btn-primary btn-sm mx-1"> Refresh Chat </button>
                                         </div>
                                         <div class="whatsapp_icon">
                                             <i class="fab fa-whatsapp cursor-pointer d-sm-block d-none font-medium-2 me-1"  style=" font-size: 18px; margin-right: 10px;"></i>

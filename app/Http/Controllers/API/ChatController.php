@@ -12,17 +12,15 @@ class ChatController extends Controller
     public function getWhatsAppMessages(Request $request) {
         \Log::debug($request);
 
-        $fromNumber = $request->from;
+        $fromNumber = $request->From;
         $from = explode(':', $fromNumber);
 
 
-        $toNumber = $request->to;
+        $toNumber = $request->To;
         $to = explode(':', $toNumber);
 
 
         $data = array(
-            // "from" => $request->from ,
-            // "to" => $request->to ,
             "from" => $to[1] ,
             "to" => $from[1] ,
             "body" => $request->body ,
