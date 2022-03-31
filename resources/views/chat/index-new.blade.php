@@ -84,7 +84,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                         <h4 class="chat-list-title">Chats</h4>
                         <ul class="chat-users-list chat-list media-list">
                             @foreach($users as $user)
-                            <li data-id="{{$user->id}}" onclick="showActiveUserChat(this)" data_nm="{{$user->name}}" data_pc="{{$user->profile_pic}}">
+                            <li data-id="{{$user->id}}" onclick="showActiveUserChat(this)" data_nm="{{$user->name}}" data-wp="{{$user->whatsapp}}" data_pc="{{$user->profile_pic}}">
                                 @if($user->profile_pic != null)
                                     @if(file_exists( getcwd(). '/' . $user->profile_pic))
                                         <span class="avatar"><img height="42" class="user_image_{{$user->id}}" width="42" src="{{ asset( request()->root() .'/'. $user->profile_pic)}}" height="42" width="42"></span>
@@ -235,9 +235,15 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
         let user_id  = $(tag).data("id");
         $("#user_to").val(user_id);
+
         let src = $('.user_image_'+ user_id).attr('src');
         $("#image_url").val(src);
-        console.log(src);
+
+        let whatsapp  = $(tag).data("wp");
+        console.log(whatsapp , "whatsapp");
+
+        whatsapp == null || whatsapp == '' ? $('.whatsapp_icon').hide() : $('.whatsapp_icon').show();
+
         getAllMessages();
     }
 
@@ -256,7 +262,12 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
             },
             success: function(data) {
                 let obj = data.data;
-                renderMessages(obj , data.number);
+                if(data.status == 200 && data.success == true) {
+                    renderMessages(obj , data.number);
+                }else{
+                    $('.show_chat_messages').html('');
+                }
+                
             },
             complete:function(data) {
 
@@ -270,7 +281,8 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     function renderMessages(obj , number) {
 
         let img_src = $("#image_url").val();
-        console.log(img_src , "img_src");
+        let login_user_image_url = $('#login_usr_logo').attr('src');
+
         let msgs_html = ``;
         $('.show_chat_messages').html('');
 
@@ -280,11 +292,12 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
 
                 if(obj[i].to == number) {
+
                     msgs_html +=`
                     <div class="chat">
                         <div class="chat-avatar">
                             <span class="avatar box-shadow-1 cursor-pointer">
-                                <img src="${img_src}" alt="avatar" height="36" width="36" />
+                                <img src="${login_user_image_url}" alt="avatar" height="36" width="36" />
                             </span>
 
                         </div>
@@ -297,16 +310,28 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                 }
 
                 if(obj[i].from == number) {
+                    let attachment = ``;
+                    if(obj[i].num_media == 1) {
+
+                        if(obj[i].media_url != null) {
+                            attachment = `<img src="${obj[i].media_url}" width="250px" height="250px"/>`;
+                        }
+                       
+                    }
+
                     msgs_html += `
                     <div class="chat chat-left">
                         <div class="chat-avatar">
                             <span class="avatar box-shadow-1 cursor-pointer">
-                                <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" alt="avatar" height="36" width="36" />
+                                <img src="${img_src}" alt="avatar" height="36" width="36" />
                             </span>
                         </div>
                         <div class="chat-body">
                             <div class="chat-content">
                                 <p> ${obj[i].body != null ? obj[i].body : ''} </p>
+                            </div>
+                            <div  class="chat-content">
+                                ${attachment}
                             </div>
                         </div>
                     </div>`;
@@ -325,43 +350,49 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
         e.preventDefault();
         
         let message = $("#message").val();
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            },
-            type: "POST",
-            url: "{{route('message.index')}}",
-            data: new FormData(this),
-            async: false,
-            processData: false,
-            contentType: false,
-            beforeSend: function(data) {},
-            success: function(data) {
-                toastr.success( data.message , { timeOut: 5000 });
-                $("#message").val("");
 
-                let msg = `
-                    <div class="chat">
-                        <div class="chat-avatar">
-                            <span class="avatar box-shadow-1 cursor-pointer">
-                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
-                            </span>
+        if(message == '') {
+            toastr.error( ' Type your message' , { timeOut: 5000 });
+        }else{
 
-                        </div>
-                        <div class="chat-body">
-                            <div class="chat-content">
-                                <p> ${message} </p>
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                },
+                type: "POST",
+                url: "{{route('message.index')}}",
+                data: new FormData(this),
+                async: false,
+                processData: false,
+                contentType: false,
+                beforeSend: function(data) {},
+                success: function(data) {
+                    toastr.success( data.message , { timeOut: 5000 });
+                    $("#message").val("");
+
+                    let msg = `
+                        <div class="chat">
+                            <div class="chat-avatar">
+                                <span class="avatar box-shadow-1 cursor-pointer">
+                                    <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
+                                </span>
+
                             </div>
-                        </div>
-                    </div>`;
-                $('.show_chat_messages').append(msg);
+                            <div class="chat-body">
+                                <div class="chat-content">
+                                    <p> ${message} </p>
+                                </div>
+                            </div>
+                        </div>`;
+                    $('.show_chat_messages').append(msg);
 
-                $('.user-chats').scrollTop($('.user-chats > .chats').height());
+                    $('.user-chats').scrollTop($('.user-chats > .chats').height());
 
-            },
-            complete: function(data) {},
-            failure: function(errMsg) {}
-        });
+                },
+                complete: function(data) {},
+                failure: function(errMsg) {}
+            });
+        }
     });
 
 </script>
