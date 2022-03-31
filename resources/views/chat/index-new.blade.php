@@ -5,6 +5,8 @@
 $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 @endphp
+
+<input type="hidden" id="image_url">
 <div class="app-content content chat-application">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -85,13 +87,13 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             <li data-id="{{$user->id}}" onclick="showActiveUserChat(this)" data_nm="{{$user->name}}" data_pc="{{$user->profile_pic}}">
                                 @if($user->profile_pic != null)
                                     @if(file_exists( getcwd(). '/' . $user->profile_pic))
-                                        <span class="avatar"><img height="42" width="42" src="{{ asset( request()->root() .'/'. $user->profile_pic)}}" height="42" width="42"></span>
+                                        <span class="avatar"><img height="42" class="user_image_{{$user->id}}" width="42" src="{{ asset( request()->root() .'/'. $user->profile_pic)}}" height="42" width="42"></span>
                                     @else
-                                        <span class="avatar"> <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
+                                        <span class="avatar"> <img  class="user_image_{{$user->id}}" src="{{asset(  $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
                                     @endif
                                 @else
 
-                                <span class="avatar"> <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
+                                <span class="avatar"> <img class="user_image_{{$user->id}}" src="{{asset( $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
                                 @endif
                                 <div class="chat-info">
                                     <h5 class="mb-0">{{$user->name}}</h5>
@@ -233,7 +235,9 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
         let user_id  = $(tag).data("id");
         $("#user_to").val(user_id);
-
+        let src = $('.user_image_'+ user_id).attr('src');
+        $("#image_url").val(src);
+        console.log(src);
         getAllMessages();
     }
 
@@ -264,8 +268,9 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     }
 
     function renderMessages(obj , number) {
-        console.log(obj , "obj");
-        console.log(number , "number");
+
+        let img_src = $("#image_url").val();
+        console.log(img_src , "img_src");
         let msgs_html = ``;
         $('.show_chat_messages').html('');
 
@@ -279,7 +284,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                     <div class="chat">
                         <div class="chat-avatar">
                             <span class="avatar box-shadow-1 cursor-pointer">
-                                <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36" />
+                                <img src="${img_src}" alt="avatar" height="36" width="36" />
                             </span>
 
                         </div>
@@ -296,7 +301,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                     <div class="chat chat-left">
                         <div class="chat-avatar">
                             <span class="avatar box-shadow-1 cursor-pointer">
-                                <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="avatar" height="36" width="36" />
+                                <img src="{{asset(  $file_path . 'default_imgs/customer.png')}}" alt="avatar" height="36" width="36" />
                             </span>
                         </div>
                         <div class="chat-body">
