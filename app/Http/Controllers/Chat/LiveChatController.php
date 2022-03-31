@@ -103,27 +103,27 @@ class LiveChatController extends Controller
         WhatsAppChat::create($data);
 
 
-        return response()->json([
-            "message" => "Message Sent" ,
-            "status" => 200 ,
-            "success" => true ,
-        ]); 
+        // return response()->json([
+        //     "message" => "Message Sent" ,
+        //     "status" => 200 ,
+        //     "success" => true ,
+        // ]); 
 
-        // $client = new Client($sid, $token);
-        // $message = $client->messages->create( $to , 
-        // [
-        //     'from' => $from ,
-        //     'body' => $request->message ,
-        // ]
-        // );
+        $client = new Client($sid, $token);
+        $message = $client->messages->create( $to , 
+        [
+            'from' => $from ,
+            'body' => $request->message ,
+        ]
+        );
         
-        // if($message->sid){
-        //     return response()->json([
-        //         "message" => "Message Sent" ,
-        //         "status" => 200 ,
-        //         "success" => true ,
-        //     ]); 
-        // }
+        if($message->sid){
+            return response()->json([
+                "message" => "Message Sent" ,
+                "status" => 200 ,
+                "success" => true ,
+            ]); 
+        }
     }
 }
 

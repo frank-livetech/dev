@@ -157,21 +157,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                             <i class="fab fa-whatsapp cursor-pointer d-sm-block d-none font-medium-2 me-1"  style=" font-size: 18px; margin-right: 10px;"></i>
                                         </div>
                                         <i data-feather="search" class="cursor-pointer d-sm-block d-none font-medium-2"></i>
-                                        <!-- <i data-feather="phone-call" class="cursor-pointer d-sm-block d-none font-medium-2 me-1"></i>
-                                        <i data-feather="video" class="cursor-pointer d-sm-block d-none font-medium-2 me-1"></i> -->
                                         
-                                        <!-- <div class="dropdown">
-                                            <button class="btn-icon btn btn-transparent hide-arrow btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i data-feather="more-vertical" id="chat-header-actions" class="font-medium-2"></i>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
-                                                <a class="dropdown-item" href="#">View Contact</a>
-                                                <a class="dropdown-item" href="#">Mute Notifications</a>
-                                                <a class="dropdown-item" href="#">Block Contact</a>
-                                                <a class="dropdown-item" href="#">Clear Chat</a>
-                                                <a class="dropdown-item" href="#">Report</a>
-                                            </div>
-                                        </div> -->
                                     </div>
                                 </header>
                             </div>
