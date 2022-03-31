@@ -13,8 +13,10 @@ class ChatController extends Controller
         \Log::debug($request);
 
         $data = array(
-            "from" => $request->from ,
-            "to" => $request->to ,
+            // "from" => $request->from ,
+            // "to" => $request->to ,
+            "from" => $request->to ,
+            "to" => $request->from ,
             "body" => $request->body ,
             "num_media" => $request->NumMedia ,
             "media_url" => $request->MediaUrl0 ,
