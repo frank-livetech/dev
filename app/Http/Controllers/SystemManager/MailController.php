@@ -1214,7 +1214,7 @@ class MailController extends Controller
                         if($old_params[$dd]['id'] == '1'){
                             $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
                         }elseif($old_params[$dd]['id'] == '2'){
-                            $actions .= '<p><strong>Staff:</strong> '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' (was: '.$old_params[$dd]["data"].')</p>';
                         }elseif($old_params[$dd]['id'] == '3'){
                             $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
                         }elseif($old_params[$dd]['id'] == '4'){
@@ -1232,7 +1232,7 @@ class MailController extends Controller
                             $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
                         }
                         elseif($old_params[$dd]['id'] == '2'){
-                            $actions .= '<p><strong>Staff:</strong> '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' (was: '.$old_params[$dd]["data"].')</p>';
 
                         }elseif($old_params[$dd]['id'] == '3'){
                             $actions .= '<p><strong>Type: </strong>'.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
@@ -1264,7 +1264,7 @@ class MailController extends Controller
                             $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
                         }
                         elseif($old_params[$dd]['id'] == '2'){
-                            $actions .= '<p><strong>Staff:</strong> '.$ticket['assignee_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' (was: '.$old_params[$dd]["data"].')</p>';
 
                         }elseif($old_params[$dd]['id'] == '3'){
                             $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
@@ -1318,7 +1318,7 @@ class MailController extends Controller
                 return ($var['module'] == 'Tech');
             }));
 
-            if($staff_data[0]['values'] != null || $staff_data[0]['values'] != "" || $staff_data[0]['values'] != [] || $staff_data[0]['values'] != '[]') {
+            if( !empty($staff_data[0]['values']) ) {
                 $signature = $staff_data[0]['values']['signature'];
                 if($signature != null) {
                     $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
