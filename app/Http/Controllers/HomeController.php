@@ -112,14 +112,6 @@ class HomeController extends Controller {
 
         $followUps = TicketFollowUp::where('is_deleted', 0)->where('passed', 0)->with('ticket')->get();
 
-
-        $from_number = '+14155238886';
-
-        $from = 'whatsapp:'.$from_number;
-
-        $a = explode(':', $from);
-        dd($a[1]);
-
         return view('dashboard-new', get_defined_vars());
     }
 
