@@ -3345,7 +3345,7 @@ class HelpdeskController extends Controller
                 }
 
                 if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                    if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo);
+                    if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
                 }
             }
 
@@ -3365,7 +3365,7 @@ class HelpdeskController extends Controller
                     }
     
                     if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                        if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo);
+                        if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
                     }
                 }
 

@@ -35,8 +35,8 @@ use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 use Illuminate\Support\Facades\URL;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -994,24 +994,24 @@ class MailController extends Controller
             // echo $attachment['data'];
             // dd($attachment['data']);exit;
         }
-        
-    //     if ($part->type==0 && $attachment['data']) {
-    //     // Messages may be split in different parts because of inline attachments,
-    //     // so append parts together with blank row.
-    //     if (strtolower($part->subtype)=='plain'){
-    //         $plainmsg .= trim($attachment['data']) ."\n\n";
-    //         return $plainmsg;
-    //     }
-    //     else{
-    //         $htmlmsg .= $attachment['data'] ."<br><br>";
-    //     $charset = $params['charset'];  // assume all parts are same charset
-    //     }
-    // }
+            
+        //     if ($part->type==0 && $attachment['data']) {
+        //     // Messages may be split in different parts because of inline attachments,
+        //     // so append parts together with blank row.
+        //     if (strtolower($part->subtype)=='plain'){
+        //         $plainmsg .= trim($attachment['data']) ."\n\n";
+        //         return $plainmsg;
+        //     }
+        //     else{
+        //         $htmlmsg .= $attachment['data'] ."<br><br>";
+        //     $charset = $params['charset'];  // assume all parts are same charset
+        //     }
+        // }
         
         return($attachment);
     }
 
-    public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='') {
+    public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '') {
         try {
             // $mail = new PHPMailer(true);
             $mail = new PHPMailer();
@@ -1038,7 +1038,11 @@ class MailController extends Controller
             if (\Auth::user())  {
                 $from_name = auth()->user()->name;
             }else{
-                $from_name = 'Live-Tech System ';
+                if($from_email != null && $from_email != '') {
+                    $user = User::where('email', $from_email)->first();
+                    $from_name = $user->name;
+                }
+                
             }
 
             $mail->setFrom($from , $from_name);
@@ -1067,8 +1071,8 @@ class MailController extends Controller
                     }
                 }
             }
-//             dd($mail);
-// exit;
+            // dd($mail);
+            // exit;
             //Content
             $mail->isHTML(true);
             $mail->Subject = $subject;
@@ -1308,20 +1312,20 @@ class MailController extends Controller
                 $template = str_replace('{Ticket-Content}', $content, $template);
             }
         }
-
         
         if(str_contains($template, '{Staff-Signature}')) {
             $staff_data = array_values(array_filter($data_list, function ($var) {
                 return ($var['module'] == 'Tech');
             }));
 
-            $signature = $staff_data[0]['values']['signature'];
-            
-            if($signature != null) {
-                
-                $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
-                
-                $template = str_replace('{Staff-Signature}', $signture, $template);
+            if($staff_data[0]['values'] != null || $staff_data[0]['values'] != "" || $staff_data[0]['values'] != [] || $staff_data[0]['values'] != '[]') {
+                $signature = $staff_data[0]['values']['signature'];
+                if($signature != null) {
+                    $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
+                    $template = str_replace('{Staff-Signature}', $signture, $template);    
+                }else{
+                    $template = str_replace('{Staff-Signature}', '' , $template);
+                }
             }else{
                 $template = str_replace('{Staff-Signature}', '' , $template);
             }
