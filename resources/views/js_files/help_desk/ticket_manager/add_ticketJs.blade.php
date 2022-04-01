@@ -320,6 +320,9 @@
 
                                         toastr.success(data.message, { timeOut: 5000 });
                                         // var preivous_url = $("#previous_url").val();
+
+
+                                        
                                         window.location.href = "{{route('ticket_management.index')}}";
                                         
                                     }
