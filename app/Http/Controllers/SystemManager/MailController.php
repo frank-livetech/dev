@@ -1397,8 +1397,14 @@ class MailController extends Controller
         $this->replaceShortCodes($data_list, $template);
 
         if(str_contains($template, '{Creator-Name}')) {
-            $template = str_replace('{Creator-Name}', 'User', $template);
+
+            $user = User::where('id' , $ticket['created_by'])->first();
+
+            if(!empty($user)) {
+                $template = str_replace('{Creator-Name}', $user->name, $template);
+            }
         }
+
         if(str_contains($template, '{Tech-Name}')) {
             $template = str_replace('{Tech-Name}', 'Unassigned', $template);
         }
