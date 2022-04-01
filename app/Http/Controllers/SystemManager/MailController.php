@@ -1586,7 +1586,7 @@ class MailController extends Controller
 
         if($action_name == 'Subject updated') {
             if( str_contains($template, '{Initial-Request-Updated}') ) {
-                $template = str_replace('{Initial-Request-Updated}', 'Ticket Subject Updated' , $template);    
+                $template = str_replace('{Initial-Request-Updated}', '<hr>' . 'Ticket Subject Updated' , $template);    
             }
         }else{
             $template = str_replace('{Initial-Request-Updated}', '' , $template);
