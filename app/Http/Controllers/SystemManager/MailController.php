@@ -1265,7 +1265,7 @@ class MailController extends Controller
                 }else if($action_name == 'ticket_reply_update'){
 
                     $actions = '';
-                    for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
+                    for($dd = 0 ; $dd <hr sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == '1'){
                             $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
@@ -1479,7 +1479,7 @@ class MailController extends Controller
                 }
             }
 
-            if(!empty($rep) && $rep != 'cleared') {
+            if($tckt[0]['values']['reply_deadline'] != 'cleared') {
                 // $crb = new Carbon();
                 // $date_diff = '';
                 // foreach ($crb->diffAsCarbonInterval($rep, false)->toArray() as $key => $value) {
@@ -1510,10 +1510,13 @@ class MailController extends Controller
                     }
                 }
                 
+            }else{
+                $rep = '';
+                $template = str_replace('Reply due:', $rep, $template);
             }
 
 
-            if(!empty($res) && $res != 'cleared') {
+            if($tckt[0]['values']['resolution_deadline'] != 'cleared') {
                 // $crb = new Carbon();
                 // $date_diff = '';
                 // foreach ($crb->diffAsCarbonInterval($res, false)->toArray() as $key => $value) {
@@ -1541,11 +1544,14 @@ class MailController extends Controller
                         $template = str_replace('Resolution due:', $title , $template);
                     }
                 }
+            }else{
+                $res = '';
+                $template = str_replace('Resolution due:', $rep, $template);
             }
 
             $template = str_replace('{Ticket-SLA}', $sla, $template);
             $template = str_replace('{Ticket-Reply-Due}', $rep, $template);
-            $template = str_replace('{Ticket-Resolution-Due}', $res, $template);
+            $template = str_replace('{Ticket-Resolution-Due}', ($res != '' ? $res . '<hr>' : '') , $template);
         }
         
         $sc_vars = DB::table('sc_variables')->get();
