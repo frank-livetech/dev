@@ -1537,7 +1537,7 @@ class MailController extends Controller
                     $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['reply_deadline']);
                     $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
         
-                    $rep = '<span style="color:'.$diff[1].' !important">' . $rep_date->format( $fr ) . ' ('.$diff[0].')' . '</span>';
+                    $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
                     
                     if(str_contains($template, 'Reply due:')) {
 
@@ -1559,7 +1559,7 @@ class MailController extends Controller
                     $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['resolution_deadline']);
                     $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
         
-                    $res = '<span style="color:'.$diff[1].' !important">' . $res_date->format( $fr ) . ' ('.$diff[0].')' . '</span>';
+                    $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
                     
                     if(str_contains($template, 'Resolution due:')) {
                         $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
@@ -1583,6 +1583,14 @@ class MailController extends Controller
         
         
         $sc_vars = DB::table('sc_variables')->get();
+
+        if($action_name == 'Subject updated') {
+            if( str_contains($template, '{Initial-Request-Updated}') ) {
+                $template = str_replace('{Initial-Request-Updated}', 'Ticket Subject Updated' , $template);    
+            }
+        }else{
+            $template = str_replace('{Initial-Request-Updated}', '' , $template);
+        }
 
         foreach ($sc_vars as $key => $value) {
             if(str_contains($template, $value->code)) {
