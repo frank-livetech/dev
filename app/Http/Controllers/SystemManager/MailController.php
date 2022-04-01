@@ -1265,7 +1265,7 @@ class MailController extends Controller
                 }else if($action_name == 'ticket_reply_update'){
 
                     $actions = '';
-                    for($dd = 0 ; $dd <hr sizeof($old_params) ; $dd++){
+                    for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == '1'){
                             $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
@@ -1478,16 +1478,9 @@ class MailController extends Controller
                     }
                 }
             }
-
-            if($tckt[0]['values']['reply_deadline'] != 'cleared') {
-                // $crb = new Carbon();
-                // $date_diff = '';
-                // foreach ($crb->diffAsCarbonInterval($rep, false)->toArray() as $key => $value) {
-                //     if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
-                // }
-                // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
-
             
+            if($tckt[0]['values']['reply_deadline'] == null) {
+                
                 $currentDate =strtotime( date('Y-m-d H:i:s') );
                 $futureDate =strtotime( $rep );
 
@@ -1509,22 +1502,10 @@ class MailController extends Controller
                         $template = str_replace('Reply due:', $title , $template);
                     }
                 }
-                
-            }else{
-                $rep = '';
-                $template = str_replace('Reply due:', $rep, $template);
             }
-
-
-            if($tckt[0]['values']['resolution_deadline'] != 'cleared') {
-                // $crb = new Carbon();
-                // $date_diff = '';
-                // foreach ($crb->diffAsCarbonInterval($res, false)->toArray() as $key => $value) {
-                //     if($value > 0 && $key != 'microseconds') $date_diff .= $value.$key[0].' ';
-                // }
-                // if(!empty($date_diff)) $date_diff = ' ('.$date_diff.')';
-
             
+            if($tckt[0]['values']['resolution_deadline'] == null) {
+                
                 $currentDate = strtotime( date('Y-m-d H:i:s') );
                 $futureDate = strtotime( $res );
 
@@ -1544,15 +1525,62 @@ class MailController extends Controller
                         $template = str_replace('Resolution due:', $title , $template);
                     }
                 }
-            }else{
-                $res = '';
-                $template = str_replace('Resolution due:', $rep, $template);
             }
+            
+        
+            if($tckt[0]['values']['reply_deadline'] != null && $tckt[0]['values']['resolution_deadline'] != null) {
+                
+                // reply due calcualtion
+                if($tckt[0]['values']['reply_deadline'] != 'cleared') {
+                    
+                    $rep_date = Carbon::parse($tckt[0]['values']['reply_deadline']);
+                    $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['reply_deadline']);
+                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+        
+                    $rep = '<span style="color:'.$diff[1].' !important">' . $rep_date->format( $fr ) . ' ('.$diff[0].')' . '</span>';
+                    
+                    if(str_contains($template, 'Reply due:')) {
 
+                        $title = '<span style="color:'.$diff[1].' !important"> Reply due: </span>';
+                        $template = str_replace('Reply due:', $title , $template);
+                    }
+                    
+                }else{
+                    $rep = '';
+                    $template = str_replace('Reply due:', $rep, $template);
+                }
+                
+                
+                // resolution deadline calculation
+                if($tckt[0]['values']['resolution_deadline'] != 'cleared') {
+                    
+                    $res_date = Carbon::parse($tckt[0]['values']['resolution_deadline']);
+                    
+                    $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['resolution_deadline']);
+                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+        
+                    $res = '<span style="color:'.$diff[1].' !important">' . $res_date->format( $fr ) . ' ('.$diff[0].')' . '</span>';
+                    
+                    if(str_contains($template, 'Resolution due:')) {
+                        $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
+                        $template = str_replace('Resolution due:', $title , $template);
+                    }
+                    
+                }else{
+                    $res = '';
+                    $template = str_replace('Resolution due:', $rep, $template); 
+                }
+                
+                
+                
+                
+            }
+    
             $template = str_replace('{Ticket-SLA}', $sla, $template);
             $template = str_replace('{Ticket-Reply-Due}', $rep, $template);
             $template = str_replace('{Ticket-Resolution-Due}', ($res != '' ? $res . '<hr>' : '') , $template);
         }
+        
         
         $sc_vars = DB::table('sc_variables')->get();
 
@@ -1564,6 +1592,41 @@ class MailController extends Controller
 
         return html_entity_decode($template);
     }
+
+    public function formatDateTime($date1 , $date2) {
+        $start  = new Carbon($date1);
+        $end    = new Carbon($date2);
+
+        $days = (int) $start->diff($end)->format('%D');
+        
+        if($days == 0  || $days < 0) {
+            $days = '';
+        }else{
+            $days = $days . 'd ';
+        }
+
+        $hours = (int) $start->diff($end)->format('%H');
+        $minutes = (int) $start->diff($end)->format('%I');
+        $seconds = (int) $start->diff($end)->format('%S');
+
+
+        $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
+
+
+        $color = '';
+        if ( str_contains( $remainTime , 'd') ) { 
+            $color = '#8BB467';
+        }else if( str_contains( $remainTime , 'h') ) {
+            $color = '#5c83b4';
+        }else if( str_contains( $remainTime , 'm') ) {
+            $color = '#ff8c5a';
+        }
+
+        $time[0] = '<span style="color:'. $color .'">' . $remainTime .  '</span>';
+        $time[1] = $color;
+        return $time;
+    }
+
 
     public function getDiff($futureDate , $currentDate) {
 
