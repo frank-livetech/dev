@@ -1528,10 +1528,17 @@ class MailController extends Controller
             }
             
         
-            if($tckt[0]['values']['reply_deadline'] != null && $tckt[0]['values']['resolution_deadline'] != null) {
+            if($tckt[0]['values']['reply_deadline'] != null) {
                 
                 // reply due calcualtion
                 if($tckt[0]['values']['reply_deadline'] != 'cleared') {
+
+
+                    // $a = strtotime(date('Y-m-d H:i:s'));
+                    // $b = strtotime($rep_date);
+                    
+                    // return dd($b - $a);
+                    // return dd( $a . '=====' . $b .'=====' . ($a -$b) . '===========' . $rep_date . '----' . date('Y-m-d H:i A') );
                     
                     $rep_date = Carbon::parse($tckt[0]['values']['reply_deadline']);
                     $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['reply_deadline']);
@@ -1548,9 +1555,11 @@ class MailController extends Controller
                 }else{
                     $rep = '';
                     $template = str_replace('Reply due:', $rep, $template);
-                }
-                
-                
+                }                
+            }
+
+            if( $tckt[0]['values']['resolution_deadline'] != null) {
+                               
                 // resolution deadline calculation
                 if($tckt[0]['values']['resolution_deadline'] != 'cleared') {
                     
@@ -1570,10 +1579,6 @@ class MailController extends Controller
                     $res = '';
                     $template = str_replace('Resolution due:', $rep, $template); 
                 }
-                
-                
-                
-                
             }
     
             $template = str_replace('{Ticket-SLA}', $sla, $template);
