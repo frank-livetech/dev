@@ -1532,25 +1532,43 @@ class MailController extends Controller
                 
                 // reply due calcualtion
                 if($tckt[0]['values']['reply_deadline'] != 'cleared') {
-
-
-                    // $a = strtotime(date('Y-m-d H:i:s'));
-                    // $b = strtotime($rep_date);
-                    
-                    // return dd($b - $a);
-                    // return dd( $a . '=====' . $b .'=====' . ($a -$b) . '===========' . $rep_date . '----' . date('Y-m-d H:i A') );
                     
                     $rep_date = Carbon::parse($tckt[0]['values']['reply_deadline']);
-                    $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['reply_deadline']);
-                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
-        
-                    $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
-                    
-                    if(str_contains($template, 'Reply due:')) {
 
-                        $title = '<span style="color:'.$diff[1].' !important"> Reply due: </span>';
-                        $template = str_replace('Reply due:', $title , $template);
+
+                    $a = strtotime(date('Y-m-d H:i:s'));
+                    $b = strtotime($rep_date);
+                    $res = $b - $a;
+                    
+                    if(str_contains($res, '-')) {
+                        
+                        $rpd = Carbon::parse($tckt[0]['values']['reply_deadline']);
+                        $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                        $rep = '<span style="color:red !important">'. $rpd->format( $fr ) .'</span>';
+                        
+                        if(str_contains($template, 'Reply due:')) {
+    
+                            $title = '<span style="color: red !important"> Reply due: </span>';
+                            $template = str_replace('Reply due:', $title , $template);
+                        }
+                        
+                        
+                    }else{
+                        
+                        $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['reply_deadline']);
+                        $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+            
+                        $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
+                        
+                        if(str_contains($template, 'Reply due:')) {
+    
+                            $title = '<span style="color:'.$diff[1].' !important"> Reply due: </span>';
+                            $template = str_replace('Reply due:', $title , $template);
+                        }
                     }
+
+                    
+
                     
                 }else{
                     $rep = '';
@@ -1565,14 +1583,32 @@ class MailController extends Controller
                     
                     $res_date = Carbon::parse($tckt[0]['values']['resolution_deadline']);
                     
-                    $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['resolution_deadline']);
-                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
-        
-                    $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
                     
-                    if(str_contains($template, 'Resolution due:')) {
-                        $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
-                        $template = str_replace('Resolution due:', $title , $template);
+                    $a = strtotime(date('Y-m-d H:i:s'));
+                    $b = strtotime($res_date);
+                    $res = $b - $a;
+                    
+                    if(str_contains($res, '-')) {
+                        
+                        $rd = Carbon::parse($tckt[0]['values']['resolution_deadline']);
+                        $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                        $res = '<span style="color:red !important">'. $rd->format( $fr ) .'</span>';
+                        
+                        if(str_contains($template, 'Resolution due:')) {
+                            $title = '<span style="color:red !important"> Resolution due: </span>';
+                            $template = str_replace('Resolution due:', $title , $template);
+                        } 
+                        
+                    }else{
+                        $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $tckt[0]['values']['resolution_deadline']);
+                        $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+            
+                        $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
+                        
+                        if(str_contains($template, 'Resolution due:')) {
+                            $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
+                            $template = str_replace('Resolution due:', $title , $template);
+                        }    
                     }
                     
                 }else{
