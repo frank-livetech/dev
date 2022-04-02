@@ -3410,7 +3410,7 @@ class HelpdeskController extends Controller
                     // if(!empty($tech)) $users_list[] = $tech->attributesToArray();
                     // echyo "dfs";
                     // dd($users_list);exit;
-                    if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo);
+                    if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param);
                 }
                 // dd($users_list);exit;
                 $allwd_users = [];
