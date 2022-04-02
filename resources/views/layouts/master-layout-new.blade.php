@@ -328,7 +328,7 @@
         $(document).ready(function (){
             setInterval(() => {
                 getNotifications()    
-            }, 10000);
+            }, 60000);
         });
         var user_photo_url = "{{asset('files/user_photos')}}";
         var url = "{{asset('/get_all_counts')}}";
