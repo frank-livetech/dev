@@ -1566,6 +1566,7 @@ function deleteReply(id , index) {
 }
 
 function publishReply(ele, type = 'publish') {
+
     var content = tinyMCE.editors.mymce.getContent();
     tinyContentEditor(content, 'tickets-replies').then(function() {
         content = $('#tinycontenteditor').html();
@@ -1700,7 +1701,19 @@ function publishReply(ele, type = 'publish') {
                         $("#dropD ").find(".select2").hide();
                         $("#dropD ").find("h5").show();
 
-                        
+
+                        let item = updates_Arr.find(item => item.id == 4);
+                        if(item != null) {
+                            if(item.new_text == 'Closed') {
+                                $("#sla_reply_due").hide();
+                                $("#sla_res_due").hide();
+                            }
+
+                            if(ticket != null) {
+                                ticket.reply_deadline = 'cleared';
+                                ticket.resolution_deadline = 'cleared';
+                            }
+                        }
 
                         $('#tinycontenteditor').html('');
 
@@ -2059,8 +2072,6 @@ $('#priority').change(function() {
 });
 
 function updateTicket(){
-    console.log(updates_Arr , "updates_Arr");
-    console.log(updates_Arr.length , "updates_Arr");
     if(updates_Arr.length == 0){
         toastr.warning( 'There is nothing to update.' , { timeOut: 5000 });
         return false;
@@ -2100,6 +2111,12 @@ function updateTicket(){
                         if(updates_Arr[i]['new_text'] == 'Closed') {
                             $("#sla_reply_due").hide();
                             $("#sla_res_due").hide();
+
+                            if(ticket != null) {
+                                ticket.reply_deadline = 'cleared';
+                                ticket.resolution_deadline = 'cleared';
+                            }
+                           
                         }
  
                         ticket.status = updates_Arr[i]['new_data'];
