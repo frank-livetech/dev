@@ -1454,7 +1454,7 @@ function listReplies() {
                         customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     } 
                     
-                    link = `<a href="{{url('customer-profile')}}/${reply.customer_replies.customer_id}"> ${reply.customer_replies.name} </a>`;
+                    // link = `<a href="{{url('customer-profile')}}/${reply.customer_replies.customer_id}"> ${reply.customer_replies.name} </a>`;
 
                 }else{
                     customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
@@ -1468,7 +1468,7 @@ function listReplies() {
                         user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
                     
-                    link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                    // link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
 
                 }else{
                     user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
@@ -1481,15 +1481,27 @@ function listReplies() {
                     content = reply.reply;
                 }
 
-                // if(reply.hasOwnProperty("user_type")) {
-                //     if(reply.user_type == 5) {
-                //         link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
-                //     }else{
-                //         link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
-                //     }
-                // }else{
-                //     link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
-                // }
+                if(reply.hasOwnProperty("user_type")) {
+                    if(reply.user_type == 5) {
+                        if(reply.customer_replies != null) {
+                            link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name} ${reply.customer_replies.last_name} </a>`;
+                        }
+                    }else{
+                        if(reply.reply_user != null) {
+                            link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                        }
+                        
+                    }
+                }else{
+
+                    if(reply.customer_replies != null) {
+                        link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name} ${reply.customer_replies.last_name} </a>`;
+                    }
+                        
+                    if(reply.reply_user != null) {
+                        link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                    }
+                }
                                 
                 replies_html +=`
                     <li class="media" id="reply__${index}">
@@ -1566,6 +1578,7 @@ function deleteReply(id , index) {
 }
 
 function publishReply(ele, type = 'publish') {
+
     var content = tinyMCE.editors.mymce.getContent();
     tinyContentEditor(content, 'tickets-replies').then(function() {
         content = $('#tinycontenteditor').html();
@@ -1700,7 +1713,19 @@ function publishReply(ele, type = 'publish') {
                         $("#dropD ").find(".select2").hide();
                         $("#dropD ").find("h5").show();
 
-                        
+
+                        let item = updates_Arr.find(item => item.id == 4);
+                        if(item != null) {
+                            if(item.new_text == 'Closed') {
+                                $("#sla_reply_due").hide();
+                                $("#sla_res_due").hide();
+                            }
+
+                            if(ticket != null) {
+                                ticket.reply_deadline = 'cleared';
+                                ticket.resolution_deadline = 'cleared';
+                            }
+                        }
 
                         $('#tinycontenteditor').html('');
 
@@ -1844,6 +1869,12 @@ function cancelReply() {
     listReplies();
 }
 
+function getDeptStatuses(value) {
+
+    showDepartStatus(value , 'followup');
+}
+
+
 $('#dept_id').change(function() {
     var dept_id = $(this).val();
 
@@ -1884,7 +1915,7 @@ $('#dept_id').change(function() {
 
     $("#update_ticket").css("display", "block");
   
-    showDepartStatus(dept_id);
+    showDepartStatus(dept_id , 'nochange');
 });
 
 $('#assigned_to').change(function() {
@@ -2059,8 +2090,6 @@ $('#priority').change(function() {
 });
 
 function updateTicket(){
-    console.log(updates_Arr , "updates_Arr");
-    console.log(updates_Arr.length , "updates_Arr");
     if(updates_Arr.length == 0){
         toastr.warning( 'There is nothing to update.' , { timeOut: 5000 });
         return false;
@@ -2100,6 +2129,12 @@ function updateTicket(){
                         if(updates_Arr[i]['new_text'] == 'Closed') {
                             $("#sla_reply_due").hide();
                             $("#sla_res_due").hide();
+
+                            if(ticket != null) {
+                                ticket.reply_deadline = 'cleared';
+                                ticket.resolution_deadline = 'cleared';
+                            }
+                           
                         }
  
                         ticket.status = updates_Arr[i]['new_data'];
@@ -3449,7 +3484,7 @@ function getLatestLogs() {
     });
 }
 
-function showDepartStatus(value) {
+function showDepartStatus(value , type) {
     $.ajax({
         type: "POST",
         url: "{{url('get_department_status')}}",
@@ -3471,56 +3506,63 @@ function showDepartStatus(value) {
                 }
                 option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
             }
-            $("#status").html(select + option);
+            if(type == 'followup') {
 
-            if (dept_id == ticket.dept_id){
-                updates_Arr = $.grep(updates_Arr, function(e){ 
-                    return e.id != 1; 
-                });
-                if(update_flag > 0){
-                    update_flag--;
-                    if(update_flag == 0){
-                        $("#update_ticket").css("display", "none");
+                $("#follow_up_status").html(option);
+                
+            }else{
+
+                $("#status").html(select + option);
+
+                if (dept_id == ticket.dept_id){
+                    updates_Arr = $.grep(updates_Arr, function(e){ 
+                        return e.id != 1; 
+                    });
+                    if(update_flag > 0){
+                        update_flag--;
+                        if(update_flag == 0){
+                            $("#update_ticket").css("display", "none");
+                        }
                     }
+                    $('#status').val(ticket.status); // Select the option with a value of '1'
+                    $('#status').trigger('change');
+                    // return false;
+                }else{
+                    $('#status').val(open_sts); // Select the option with a value of '1'
+                    $('#status').trigger('change');
                 }
-                $('#status').val(ticket.status); // Select the option with a value of '1'
-                $('#status').trigger('change');
-                // return false;
-            }else{
-                $('#status').val(open_sts); // Select the option with a value of '1'
-                $('#status').trigger('change');
-            }
-            
-            
-            select = `<option value="">Unassigned</option>`;
-            $('#tech-h5').text('Unassigned');
-            $("#update_ticket").show();
+                
+                
+                select = `<option value="">Unassigned</option>`;
+                $('#tech-h5').text('Unassigned');
+                $("#update_ticket").show();
 
-            let assigned_to = $('#assigned_to').val();
-            let ass_obj = {};
-            ass_obj = {
-                id:2,
-                data: ticket.assignee_name,
-                new_data: null,
-                new_text: "Unassigned" ,
-            }
+                let assigned_to = $('#assigned_to').val();
+                let ass_obj = {};
+                ass_obj = {
+                    id:2,
+                    data: ticket.assignee_name,
+                    new_data: null,
+                    new_text: "Unassigned" ,
+                }
 
-            let item = updates_Arr.filter(item => item.id == 2);
-            let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
-            if(item.length > 0) {
-                updates_Arr[index].id = 2;
-                updates_Arr[index].data = ticket.assignee_name ; 
-                updates_Arr[index].new_data = null ;
-                updates_Arr[index].new_text = "Unassigned";
-            }else{
-                updates_Arr.push(ass_obj);
-            }
+                let item = updates_Arr.filter(item => item.id == 2);
+                let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
+                if(item.length > 0) {
+                    updates_Arr[index].id = 2;
+                    updates_Arr[index].data = ticket.assignee_name ; 
+                    updates_Arr[index].new_data = null ;
+                    updates_Arr[index].new_text = "Unassigned";
+                }else{
+                    updates_Arr.push(ass_obj);
+                }
 
-            for(var i =0; i < obj_user.length; i++) {
-                select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
-            }
+                for(var i =0; i < obj_user.length; i++) {
+                    select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
+                }
 
-            $("#assigned_to").html(select);
+                $("#assigned_to").html(select);
+            }
         },
         complete: function(data) {
             $("#dropdown_loader").hide();

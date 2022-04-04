@@ -265,8 +265,6 @@ class HelpdeskController extends Controller
                 unset($data['id']);
                 unset($data['attachments']);
 
-                $closeStatus = TicketStatus::where('slug','open')->first();
-
                 if($request->has('dd_Arr')){
                     $dd_values = $request->dd_Arr;
                     for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
@@ -281,11 +279,6 @@ class HelpdeskController extends Controller
                             $data['type'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Type Updated';
                         }elseif($dd_values[$dd]['id'] == 4){
-
-                            if($closeStatus->id == $dd_values[$dd]['id']) {
-                                $data['reply_deadline'] = 'cleared';
-                                $data['resolution_deadline'] = 'cleared';
-                            }
 
                             $data['status'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Status Updated';
@@ -1032,7 +1025,6 @@ class HelpdeskController extends Controller
 
     public function save_ticket_reply(Request $request) {
         $data = $request->all();
-        
         $response = array();
         
         try {
@@ -1158,6 +1150,9 @@ class HelpdeskController extends Controller
                         if($os && $os->name == 'Closed'){
                             $data['reply_deadline'] = 'cleared';
                             $data['resolution_deadline'] = 'cleared';
+
+                            $ticket->reply_deadline = 'cleared';
+                            $ticket->resolution_deadline = 'cleared';
                         }
                     }elseif($dd_values[$dd]['id'] == 5){
                         $ticket->priority = $dd_values[$dd]['new_data'] ;
@@ -1276,7 +1271,8 @@ class HelpdeskController extends Controller
         $responseTemplates = ResponseTemplate::get();
         $vendors = Vendors::all();
         $types = TicketType::all();
-        $statuses = TicketStatus::orderBy('seq_no', 'asc')->get();
+        $statuses = TicketStatus::whereRaw("find_in_set( $details->dept_id ,department_id)")->orderBy('seq_no', 'asc')->get();
+
         $priorities = TicketPriority::all();
 
         $assigned_users = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();

@@ -1000,17 +1000,17 @@ br + br { display: none; }
                                 <div class="col-12 d-flex py-2">
                                     <label for=""><h4>Notes:</h4></label>
                                     <div class="" style="margin-left:6px ">
-                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;" onclick="selectColor('rgb(255, 230, 177)')"></span>
-                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;" onclick="selectColor('rgb(218, 125, 179)')"></span>
-                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;" onclick="selectColor('rgb(195, 148, 255)')"></span>
-                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;" onclick="selectColor('rgb(151, 235, 172)')"></span>
-                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;" onclick="selectColor('rgb(229, 143, 149)')"></span>
+                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: #FFEFBB; cursor: pointer;" onclick="selectColor('#FFEFBB')"></span>
+                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: #e5c7ec; cursor: pointer;" onclick="selectColor('#e5c7ec')"></span>
+                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: #C7D6EC; cursor: pointer;" onclick="selectColor('#C7D6EC')"></span>
+                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: #E5ECC7; cursor: pointer;" onclick="selectColor('#E5ECC7')"></span>
+                                        <span class="fas fa-square mr-2" style="font-size: 26px; color: #ECC9C9; cursor: pointer;" onclick="selectColor('#ECC9C9')"></span>
                                     </div>
                                 </div>
 
                                 <div class="col-12 py-2">
                                     <div class="form-group">
-                                        <textarea name="note" id="note" class="form-control" rows="5" required style="background-color: rgb(255, 230, 177); color: black;"></textarea>
+                                        <textarea name="note" id="note" class="form-control" rows="5" required style="background-color: #FFEFBB; color: black;"></textarea>
                                         <div id="menu" class="menu" role="listbox"></div>
                                     </div>
                                 </div>
@@ -1126,7 +1126,7 @@ br + br { display: none; }
                                     <div class="row">
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Department</label>
-                                            <select class="select2" id="follow_up_dept_id" name="follow_up_dept_id" style="width: 100%; height:36px;">
+                                            <select class="select2" onchange="getDeptStatuses(this.value)" id="follow_up_dept_id" name="follow_up_dept_id" style="width: 100%; height:36px;">
                                                 
                                                 @foreach($departments as $department)
                                                     <option value="{{$department->id}}" {{ $department->id == $details->dept_id ? 'selected' : '' }}>{{$department->name}}</option>
@@ -1156,7 +1156,7 @@ br + br { display: none; }
                                         <div class="col-md-6 form-group">
                                             <label class="dorpdown_font">Status</label>
                                             <select class="select2" id="follow_up_status" name="follow_up_status" style="width: 100%; height:36px;">
-                                                
+
                                                 @foreach($statuses as $status)
                                                     <option value="{{$status->id}}" {{ $status->id == $details->status ? 'selected' : '' }}>{{$status->name}}</option>
                                                 @endforeach
@@ -1199,11 +1199,11 @@ br + br { display: none; }
                                     <div class="col-12 d-flex">
                                         <label for=""><h4>Notes:</h4></label>
                                         <div class="" style="margin-left:6px ">
-                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;" onclick="followUpNoteColor('rgb(255, 230, 177)')"></span>
-                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;" onclick="followUpNoteColor('rgb(218, 125, 179)')"></span>
-                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;" onclick="followUpNoteColor('rgb(195, 148, 255)')"></span>
-                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;" onclick="followUpNoteColor('rgb(151, 235, 172)')"></span>
-                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;" onclick="followUpNoteColor('rgb(229, 143, 149)')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: #FFEFBB; cursor: pointer;" onclick="followUpNoteColor('#FFEFBB')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: #e5c7ec; cursor: pointer;" onclick="followUpNoteColor('#e5c7ec')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: #C7D6EC; cursor: pointer;" onclick="followUpNoteColor('#C7D6EC')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: #E5ECC7; cursor: pointer;" onclick="followUpNoteColor('#E5ECC7')"></span>
+                                            <span class="fas fa-square mr-2" style="font-size: 26px; color: #ECC9C9; cursor: pointer;" onclick="followUpNoteColor('#ECC9C9')"></span>
                                         </div>
                                     </div>
 
