@@ -1872,6 +1872,8 @@ class MailController extends Controller
 
             $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
             $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
+
+            
             
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
