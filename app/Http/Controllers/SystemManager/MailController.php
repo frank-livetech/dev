@@ -1866,6 +1866,14 @@ class MailController extends Controller
             }else{
                 $tm_name = 'America/New_York';
             }
+
+
+
+            $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
+            $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
+
+            
+
             
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
@@ -1882,7 +1890,7 @@ class MailController extends Controller
 
 
                     date_default_timezone_set($tm_name);
-                    $fr = $this->convertFormat(\Session::get('system_date')) . ' h:i:s a';
+                    $fr = $this->convertFormat($date_format) . ' h:i:s a';
                     $date = date($fr);
                     if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);

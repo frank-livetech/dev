@@ -1271,7 +1271,8 @@ class HelpdeskController extends Controller
         $responseTemplates = ResponseTemplate::get();
         $vendors = Vendors::all();
         $types = TicketType::all();
-        $statuses = TicketStatus::orderBy('seq_no', 'asc')->get();
+        $statuses = TicketStatus::whereRaw("find_in_set( $details->dept_id ,department_id)")->orderBy('seq_no', 'asc')->get();
+
         $priorities = TicketPriority::all();
 
         $assigned_users = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
