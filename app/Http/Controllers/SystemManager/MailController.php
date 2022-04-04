@@ -501,6 +501,9 @@ class MailController extends Controller
 
 
                                         $ticket->updated_at = Carbon::now();
+                                        $open_status = TicketStatus::where('name','Open')->first();
+                                        $ticket->status = $open_status->id;
+                                        $ticket->save;
                                         $ticket->save();
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
 
