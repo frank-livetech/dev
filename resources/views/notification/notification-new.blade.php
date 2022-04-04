@@ -74,36 +74,38 @@
                 <div class="tab-content mt-2">
                     <div class="tab-pane active" id="home" aria-labelledby="home-tab" role="tabpanel">
                         @foreach($notifications as $noti)
-                            @if($noti->read_at == NULL)
-                                <div class="row">
-                                    <div class="col-1 text-center" style="display: flex; justify-content: center; align-items: center;">
-                                        <span class="btn btn-success rounded-circle btn-circle "><i class="{{$noti->noti_icon}}"></i></span>
-                                    </div>
-                                    <div class="col-11">
-                                        <h5 class="message-title mb-0 mt-1"> {{$noti->noti_title != null ? $noti->noti_title : "" }} </h5>
-                                        <span class="font-12 d-block text-muted"> {{$noti->noti_desc != null ? $noti->noti_desc : ""}} </span>
-                                        <span class="font-12 text-nowrap d-block text-muted"> {{$noti->created_at}} </span>
-                                    </div>
-                                </div>
-                                <hr>
-                            @endif
+                        @if($noti->read_at == NULL)
+                        <div class="d-flex">
+                            <div class="-center" style="display: flex; justify-content: center; align-items: center;">
+                                <span class="btn btn-success rounded-circle btn-circle"><i class="{{$noti->noti_icon}}"></i></span>
+                            </div>
+
+                            <div class="transaction-percentage mx-2">
+                                <h5 class="message-title mb-0 mt-1"> {{$noti->noti_title != null ? $noti->noti_title : "" }} </h5>
+                                <span class="font-12 d-block text-muted"> {{$noti->noti_desc != null ? $noti->noti_desc : ""}} </span>
+                                <span class="font-12 text-nowrap d-block text-muted"> {{$noti->created_at}} </span>
+                            </div>
+                        </div>
+                        <hr>
+                        @endif
                         @endforeach
                     </div>
                     <div class="tab-pane" id="profile" aria-labelledby="profile-tab" role="tabpanel">
                         @foreach($notifications as $noti)
-                            @if($noti->read_at != null)
-                                <div class="row">
-                                    <div class="col-1 text-center" style="display: flex; justify-content: center; align-items: center;">
-                                        <span class="btn btn-success rounded-circle btn-circle"><i class="{{$noti->noti_icon}}"></i></span>
-                                    </div>
-                                    <div class="col-11">
-                                        <h5 class="message-title mb-0 mt-1"> {{$noti->noti_title != null ? $noti->noti_title : "" }} </h5>
-                                        <span class="font-12 d-block text-muted">  {{$noti->noti_desc != null ? $noti->noti_desc : ""}} </span>
-                                        <span class="font-12 text-nowrap d-block text-muted"> {{$noti->created_at}} </span>
-                                    </div>
-                                </div>
-                                <hr>
-                            @endif
+                        @if($noti->read_at != null)
+                        <div class="d-flex">
+                            <div class=" text-center" style="display: flex; justify-content: center; align-items: center;">
+                                <span class="btn btn-success rounded-circle btn-circle"><i class="{{$noti->noti_icon}}"></i></span>
+                            </div>
+
+                            <div class="transaction-percentage mx-2">
+                                <h5 class="message-title mb-0 mt-1"> {{$noti->noti_title != null ? $noti->noti_title : "" }} </h5>
+                                <span class="font-12 d-block text-muted"> {{$noti->noti_desc != null ? $noti->noti_desc : ""}} </span>
+                                <span class="font-12 text-nowrap d-block text-muted"> {{$noti->created_at}} </span>
+                            </div>
+                        </div>
+                        <hr>
+                        @endif
                         @endforeach
                     </div>
                 </div>

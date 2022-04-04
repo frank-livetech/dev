@@ -1291,7 +1291,6 @@ function listReplies() {
 
     let replies_html = ``;
     if(ticketReplies.length > 0) {
-
         ticketReplies.forEach(function(reply, index) {
             if (reply.is_published === 0) {
                 editReply(index);
@@ -1445,6 +1444,7 @@ function listReplies() {
 
                 var customer_img = ``;
                 var user_img = ``;
+                let link = ``;
 
                 if(reply.customer_replies != null) {
                     if(reply.customer_replies.avatar_url != null) {
@@ -1452,7 +1452,10 @@ function listReplies() {
                         customer_img += `<img src="${path}"  width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
                     }else{
                         customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-                    }                
+                    } 
+                    
+                    link = `<a href="{{url('customer-profile')}}/${reply.customer_replies.customer_id}"> ${reply.customer_replies.name} </a>`;
+
                 }else{
                     customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }
@@ -1463,10 +1466,14 @@ function listReplies() {
                         user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                     }else{
                         user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-                    }                
+                    }
+                    
+                    link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+
                 }else{
                     user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }
+
                 var content = '';
                 if(reply.type == 'cron'){
                     content = reply.reply.replace(/<img[^>]*>/g,"");
@@ -1474,21 +1481,16 @@ function listReplies() {
                     content = reply.reply;
                 }
 
-                let link = ``;
-
-
-                if(reply.hasOwnProperty("user_type")) {
-                    if(reply.user_type == 5) {
-                        link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
-                    }else{
-                        link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
-                    }
-                }else{
-                    link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
-                }
-                
-
-                
+                // if(reply.hasOwnProperty("user_type")) {
+                //     if(reply.user_type == 5) {
+                //         link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
+                //     }else{
+                //         link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
+                //     }
+                // }else{
+                //     link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                // }
+                                
                 replies_html +=`
                     <li class="media" id="reply__${index}">
                         <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
