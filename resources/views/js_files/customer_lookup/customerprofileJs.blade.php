@@ -1735,7 +1735,12 @@
 
                     notes = data.notes;
 
-                    render_notes(notes)
+                    render_notes(notes);
+
+                    if(data.notes.length != 0) {
+                        $("#notes_count").addClass("badge bg-light-warning mx-1");
+                        $("#notes_count").text(notes.length)
+                    }  
 
                 }
             },
