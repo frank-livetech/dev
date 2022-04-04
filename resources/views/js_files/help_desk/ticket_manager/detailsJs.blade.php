@@ -1454,7 +1454,7 @@ function listReplies() {
                         customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     } 
                     
-                    link = `<a href="{{url('customer-profile')}}/${reply.customer_replies.customer_id}"> ${reply.customer_replies.name} </a>`;
+                    // link = `<a href="{{url('customer-profile')}}/${reply.customer_replies.customer_id}"> ${reply.customer_replies.name} </a>`;
 
                 }else{
                     customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
@@ -1468,7 +1468,7 @@ function listReplies() {
                         user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
                     
-                    link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                    // link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
 
                 }else{
                     user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
@@ -1481,15 +1481,27 @@ function listReplies() {
                     content = reply.reply;
                 }
 
-                // if(reply.hasOwnProperty("user_type")) {
-                //     if(reply.user_type == 5) {
-                //         link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.name} </a>`;
-                //     }else{
-                //         link = `<a href="{{url('profile')}}/${reply.id}"> ${reply.name} </a>`;
-                //     }
-                // }else{
-                //     link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
-                // }
+                if(reply.hasOwnProperty("user_type")) {
+                    if(reply.user_type == 5) {
+                        if(reply.customer_replies != null) {
+                            link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name} ${reply.customer_replies.last_name} </a>`;
+                        }
+                    }else{
+                        if(reply.reply_user != null) {
+                            link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                        }
+                        
+                    }
+                }else{
+                    
+                    if(reply.customer_replies != null) {
+                        link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name} ${reply.customer_replies.last_name} </a>`;
+                    }
+                        
+                    if(reply.reply_user != null) {
+                        link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                    }
+                }
                                 
                 replies_html +=`
                     <li class="media" id="reply__${index}">
