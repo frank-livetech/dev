@@ -1493,7 +1493,7 @@ function listReplies() {
                         
                     }
                 }else{
-                    
+
                     if(reply.customer_replies != null) {
                         link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name} ${reply.customer_replies.last_name} </a>`;
                     }
@@ -1869,6 +1869,12 @@ function cancelReply() {
     listReplies();
 }
 
+function getDeptStatuses(value) {
+
+    showDepartStatus(value , 'followup');
+}
+
+
 $('#dept_id').change(function() {
     var dept_id = $(this).val();
 
@@ -1909,7 +1915,7 @@ $('#dept_id').change(function() {
 
     $("#update_ticket").css("display", "block");
   
-    showDepartStatus(dept_id);
+    showDepartStatus(dept_id , 'nochange');
 });
 
 $('#assigned_to').change(function() {
@@ -3478,7 +3484,7 @@ function getLatestLogs() {
     });
 }
 
-function showDepartStatus(value) {
+function showDepartStatus(value , type) {
     $.ajax({
         type: "POST",
         url: "{{url('get_department_status')}}",
@@ -3500,56 +3506,63 @@ function showDepartStatus(value) {
                 }
                 option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
             }
-            $("#status").html(select + option);
+            if(type == 'followup') {
 
-            if (dept_id == ticket.dept_id){
-                updates_Arr = $.grep(updates_Arr, function(e){ 
-                    return e.id != 1; 
-                });
-                if(update_flag > 0){
-                    update_flag--;
-                    if(update_flag == 0){
-                        $("#update_ticket").css("display", "none");
+                $("#follow_up_status").html(option);
+                
+            }else{
+
+                $("#status").html(select + option);
+
+                if (dept_id == ticket.dept_id){
+                    updates_Arr = $.grep(updates_Arr, function(e){ 
+                        return e.id != 1; 
+                    });
+                    if(update_flag > 0){
+                        update_flag--;
+                        if(update_flag == 0){
+                            $("#update_ticket").css("display", "none");
+                        }
                     }
+                    $('#status').val(ticket.status); // Select the option with a value of '1'
+                    $('#status').trigger('change');
+                    // return false;
+                }else{
+                    $('#status').val(open_sts); // Select the option with a value of '1'
+                    $('#status').trigger('change');
                 }
-                $('#status').val(ticket.status); // Select the option with a value of '1'
-                $('#status').trigger('change');
-                // return false;
-            }else{
-                $('#status').val(open_sts); // Select the option with a value of '1'
-                $('#status').trigger('change');
-            }
-            
-            
-            select = `<option value="">Unassigned</option>`;
-            $('#tech-h5').text('Unassigned');
-            $("#update_ticket").show();
+                
+                
+                select = `<option value="">Unassigned</option>`;
+                $('#tech-h5').text('Unassigned');
+                $("#update_ticket").show();
 
-            let assigned_to = $('#assigned_to').val();
-            let ass_obj = {};
-            ass_obj = {
-                id:2,
-                data: ticket.assignee_name,
-                new_data: null,
-                new_text: "Unassigned" ,
-            }
+                let assigned_to = $('#assigned_to').val();
+                let ass_obj = {};
+                ass_obj = {
+                    id:2,
+                    data: ticket.assignee_name,
+                    new_data: null,
+                    new_text: "Unassigned" ,
+                }
 
-            let item = updates_Arr.filter(item => item.id == 2);
-            let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
-            if(item.length > 0) {
-                updates_Arr[index].id = 2;
-                updates_Arr[index].data = ticket.assignee_name ; 
-                updates_Arr[index].new_data = null ;
-                updates_Arr[index].new_text = "Unassigned";
-            }else{
-                updates_Arr.push(ass_obj);
-            }
+                let item = updates_Arr.filter(item => item.id == 2);
+                let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
+                if(item.length > 0) {
+                    updates_Arr[index].id = 2;
+                    updates_Arr[index].data = ticket.assignee_name ; 
+                    updates_Arr[index].new_data = null ;
+                    updates_Arr[index].new_text = "Unassigned";
+                }else{
+                    updates_Arr.push(ass_obj);
+                }
 
-            for(var i =0; i < obj_user.length; i++) {
-                select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
-            }
+                for(var i =0; i < obj_user.length; i++) {
+                    select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
+                }
 
-            $("#assigned_to").html(select);
+                $("#assigned_to").html(select);
+            }
         },
         complete: function(data) {
             $("#dropdown_loader").hide();

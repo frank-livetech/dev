@@ -1709,6 +1709,10 @@
         tkts_ids = ticketsList.map(a => a.id);
         cust_tkt_ids = tkts_ids;
         notes.length == 0 ? get_ticket_notes(tkts_ids) : render_notes(notes);
+        if(notes.length != 0) {
+            $("#notes_count").addClass("badge bg-light-warning mx-1");
+            $("#notes_count").text(notes.length)
+        }        
     }
 
     function get_ticket_notes(tkts_ids) {
