@@ -35,8 +35,8 @@ use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 use Illuminate\Support\Facades\URL;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -405,10 +405,7 @@ class MailController extends Controller
                                         $html_reply = $bbcode->convertFromHtml($reply);
 
 
-                                        
-                                        //converting html to secure bbcode
-                                        
-                                        // dd($reply);exit;
+                                      
                                         
                                         $gmail_str = $eq_value->mailserver_username;
                                         $tkt_str = '['.$eq_value->mail_queue_address.' !'.$ticket->coustom_id.']:';
@@ -461,12 +458,13 @@ class MailController extends Controller
                                             }   
                                             
                                         }
-                                        
-                                        // dd($html_reply);exit;
-                                        // $content = explode($reply,'<div class="gmail_quote">');
-                                        // echo nl2br($html_reply);exit;
-                                        // dd(nl2br($html_reply));exit;
-                                        
+                                         
+                                        $html_reply = str_replace("[img]","<img",$html_reply);
+                                        $html_reply = str_replace("[/img]"," \>",$html_reply);
+                                        $html_reply = str_replace('\r\n', "", $html_reply);
+                                        $html_reply = str_replace('/', "", $html_reply);
+                                        $email_reply =  $bbcode->convertToHtml($html_reply);   
+                                        $email_reply = nl2br($email_reply);
                                         
                                         $data = array(
                                             "ticket_id" => $ticket->id,
@@ -514,7 +512,7 @@ class MailController extends Controller
                                             $ticket->save();
                                             try {
 
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $reply, '', 'cron', $attaches, $staff->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email);
 
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
@@ -526,7 +524,7 @@ class MailController extends Controller
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $reply, '', 'cust_cron', $attaches, $customer->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
@@ -1078,7 +1076,7 @@ class MailController extends Controller
             $mail->Subject = $subject;
             $mail->Body    = $body;
             $mail->AltBody = '';
-
+            
             if(is_array($recipient)) {
                 foreach ($recipient as $key => $value) {
                     $mail->clearAllRecipients();
@@ -1870,10 +1868,12 @@ class MailController extends Controller
             }
 
 
+
             $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
             $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
 
             
+
             
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
@@ -1890,7 +1890,7 @@ class MailController extends Controller
 
 
                     date_default_timezone_set($tm_name);
-                    $fr = $this->convertFormat( $date_format ) . ' h:i:s a';
+                    $fr = $this->convertFormat($date_format) . ' h:i:s a';
                     $date = date($fr);
                     if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
