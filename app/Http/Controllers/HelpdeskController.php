@@ -265,6 +265,8 @@ class HelpdeskController extends Controller
                 unset($data['id']);
                 unset($data['attachments']);
 
+                $closeStatus = TicketStatus::where('slug','open')->first();
+
                 if($request->has('dd_Arr')){
                     $dd_values = $request->dd_Arr;
                     for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
@@ -279,6 +281,12 @@ class HelpdeskController extends Controller
                             $data['type'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Type Updated';
                         }elseif($dd_values[$dd]['id'] == 4){
+
+                            if($closeStatus->id == $dd_values[$dd]['id']) {
+                                $data['reply_deadline'] = 'cleared';
+                                $data['resolution_deadline'] = 'cleared';
+                            }
+
                             $data['status'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Status Updated';
                             $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();

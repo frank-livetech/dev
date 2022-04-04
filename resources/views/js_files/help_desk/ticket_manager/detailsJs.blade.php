@@ -1696,6 +1696,10 @@ function publishReply(ele, type = 'publish') {
 
                     if (data.success == true) {
 
+
+                        $("#dropD ").find(".select2").hide();
+                        $("#dropD ").find("h5").show();
+
                         
 
                         $('#tinycontenteditor').html('');
@@ -2093,6 +2097,11 @@ function updateTicket(){
 
                     }else if(updates_Arr[i]['id'] == 4){
 
+                        if(updates_Arr[i]['new_text'] == 'Closed') {
+                            $("#sla_reply_due").hide();
+                            $("#sla_res_due").hide();
+                        }
+ 
                         ticket.status = updates_Arr[i]['new_data'];
                         // $("#dropD").css('background-color' ,color + ' !important');
                         $('#follow_up_status').val(ticket.status).trigger("change");
@@ -2105,6 +2114,8 @@ function updateTicket(){
 
                     }
 
+                    console.log(updates_Arr , "updates_Arr");
+
                 }
                 updateTicketDate();
                 // // send mail notification regarding ticket action
@@ -2114,7 +2125,7 @@ function updateTicket(){
                 // // refresh logs
                 getLatestLogs();
                 $("#dropD ").find(".select2").hide();
-                    $("#dropD ").find("h5").show();
+                $("#dropD ").find("h5").show();
                 selectD();
                 $("#update_ticket").hide();
                 toastr.success( 'Ticket Updated Successfully!' , { timeOut: 5000 });
