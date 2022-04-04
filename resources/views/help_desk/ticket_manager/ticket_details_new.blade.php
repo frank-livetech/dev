@@ -711,10 +711,16 @@ br + br { display: none; }
 
                                     <div class="col-md-9">
                                         <p style="font-size: 13px;margin-bottom: unset !important"">
-                                            <span class="sla-selc"><strong>Reply due: </strong> <span class="text-red mr-2" id="sla-rep_due"></span></span>
-                                            <span class="sla-selc px-1"><strong>Resolution due: </strong><span class="text-blue mr-2" id="sla-res_due"></span></span>
-                                            <strong>SLA plan: </strong><span class="text-red mr-2" id="sla-title">{{$ticket_slaPlan->title}}</span>  
-                                            <!-- <span class="sla-selc"><Strong>Created: </Strong><span class="text-red mr-2" id="creation-date"></span></span> -->
+                                            
+                                        <span class="sla-selc" id="sla_reply_due">
+                                                    <strong>Reply due: </strong> <span class="text-red mr-2" id="sla-rep_due"></span>
+                                            </span>
+
+                                            <span class="sla-selc px-1" id="sla_res_due">
+                                                <strong>Resolution due: </strong><span class="text-blue mr-2" id="sla-res_due"></span>
+                                            </span>
+
+                                            <strong>SLA plan: </strong><span class="text-red mr-2" id="sla-title">{{$ticket_slaPlan->title}}</span> 
                                             <span class="sla-selc px-1"><strong>Updated: </strong><span class="text-red mr-2" id="updation-date"></span></span>
                                         </p>
                                     </div>
