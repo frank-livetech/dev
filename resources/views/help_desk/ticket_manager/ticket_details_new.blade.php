@@ -1126,7 +1126,7 @@ br + br { display: none; }
                                     <div class="row">
                                         <div class="col-md-4 form-group">
                                             <label class="dorpdown_font">Department</label>
-                                            <select class="select2" id="follow_up_dept_id" name="follow_up_dept_id" style="width: 100%; height:36px;">
+                                            <select class="select2" onchange="getDeptStatuses(this.value)" id="follow_up_dept_id" name="follow_up_dept_id" style="width: 100%; height:36px;">
                                                 
                                                 @foreach($departments as $department)
                                                     <option value="{{$department->id}}" {{ $department->id == $details->dept_id ? 'selected' : '' }}>{{$department->name}}</option>
@@ -1156,7 +1156,7 @@ br + br { display: none; }
                                         <div class="col-md-6 form-group">
                                             <label class="dorpdown_font">Status</label>
                                             <select class="select2" id="follow_up_status" name="follow_up_status" style="width: 100%; height:36px;">
-                                                
+
                                                 @foreach($statuses as $status)
                                                     <option value="{{$status->id}}" {{ $status->id == $details->status ? 'selected' : '' }}>{{$status->name}}</option>
                                                 @endforeach
