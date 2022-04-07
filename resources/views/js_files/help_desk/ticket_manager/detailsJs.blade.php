@@ -377,10 +377,10 @@ function setSlaPlanDeadlines(ret = false) {
             if (res_due) $('#sla-res_due').html(res_due.replace("60m", "59m"));
         }
 
-        if(ticket.reply_deadline != null && ticket.resolution_deadline != null){
-            resetable = false;
+        resetable = false;
+        if(ticket.reply_deadline != null){
+            
             let rep_diff = ``;
-            let res_diff = ``;
             if(ticket.reply_deadline != "cleared") {
                 let tkt_rep_due = moment(ticket.reply_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
                 // let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime , "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A") , 'seconds');
@@ -399,6 +399,12 @@ function setSlaPlanDeadlines(ret = false) {
             }else{
                 $('#sla-rep_due').parent().addClass('d-none');
             }
+            
+        }
+
+        if(ticket.resolution_deadline != null){
+            
+            let res_diff = ``;
 
             if(ticket.resolution_deadline != "cleared") {
 
@@ -2196,7 +2202,10 @@ function getTicketFollowUp() {
                     }
                 }
 
-                $('.followup_count').text(follow_up_count);
+                if(follow_up_count  != 0) {
+                    $('.followup_count').text(follow_up_count);
+                }
+                
 
                 g_followUps = obj;
 
@@ -3167,7 +3176,11 @@ function get_ticket_notes() {
         data: { id: ticket_details.id },
         success: function(data) {
             if (data.success) {
-                $('.notes_count').text(data.notes.length);
+                if(data.notes.length  != 0) {
+                    $('.notes_count').addClass('badge badge-light-danger rounded-pill ms-1');
+                    $('.notes_count').text(data.notes.length);
+                }
+                
                 notes = data.notes;
                 // console.log(notes , "notes");
                 var type = '';

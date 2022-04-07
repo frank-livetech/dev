@@ -575,7 +575,7 @@ br + br { display: none; }
 
                                         <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
-                                                <span style="display: flex; justify-content: center; align-items: center;">Notes <span class="badge badge-light-danger rounded-pill ms-1 notes_count">0</span> </span>
+                                                <span style="display: flex; justify-content: center; align-items: center;">Notes <span class="notes_count"> </span> </span>
                                                 <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Notes" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="openNotesModal()"> </button>
@@ -611,7 +611,7 @@ br + br { display: none; }
                                         <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
 
-                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups <span class="badge badge-light-danger rounded-pill ms-1 followup_count">0</span></span>
+                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups <span class="badge badge-light-danger rounded-pill ms-1 followup_count"></span></span>
 
                                                 <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
