@@ -260,7 +260,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     }
 
     function webChat() {
-        var imageUrl = '{{asset("default_imgs/webchat_bg.jpg")}}';
+        var imageUrl = '{{asset("public/default_imgs/webchat_bg.jpg")}}';
         $(".user-chats").css("background-image", "url(" + imageUrl + ")");
         $(".user-chats").css("background-size", "530px");
 
@@ -269,7 +269,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
     function whatsAppChat() {
 
-        var imageUrl = '{{asset("default_imgs/whatsapp_bg.jpg")}}';
+        var imageUrl = '{{asset("public/default_imgs/whatsapp_bg.jpg")}}';
         $(".user-chats").css("background-image", "url(" + imageUrl + ")");
         $(".user-chats").css("background-size", "900px");
         getAllMessages();
