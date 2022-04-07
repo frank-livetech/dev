@@ -458,12 +458,15 @@ class MailController extends Controller
                                             }   
                                             
                                         }
-                                         
+
                                         $html_reply = str_replace("[img]","<img",$html_reply);
                                         $html_reply = str_replace("[/img]"," \>",$html_reply);
-                                        $html_reply = str_replace('\r\n', "", $html_reply);
-                                        $html_reply = str_replace('/', "", $html_reply);
-                                        $email_reply =  $bbcode->convertToHtml($html_reply);   
+                                        $html_reply = str_replace(array("\n", "\r"), '', $html_reply);
+                                        $email_reply = str_replace('\r\n', "", $html_reply);
+                                        $email_reply = str_replace('//', "", $email_reply);
+                                        
+                                        $email_reply = str_replace('<br />', "", $email_reply);
+                                        $email_reply =  $bbcode->convertToHtml($email_reply);   
                                         $email_reply = nl2br($email_reply);
                                         
                                         $data = array(
@@ -553,6 +556,7 @@ class MailController extends Controller
                                     $is_staff_tkt = 0;
                                     $name = '';
                                     $email = '';
+                                    $created_by = '';
                                     if(empty($customer)) {
                                         
                                         $staff = User::where('email', trim($emailFrom))->first();
@@ -561,14 +565,18 @@ class MailController extends Controller
                                             imap_delete($imap, $message);
                                             continue;
                                         }
+                                        $created_by = $staff->id;
                                         $customer_id = $staff->id;
                                         $name = $staff->name;
                                         $email = $staff->email;
                                         $is_staff_tkt = 1;
                                     }else{
+                                        
                                         $name = $customer->first_name.' '.$customer->last_name;
                                         $email = $customer->email;
                                         $customer_id = $customer->id;
+                                        $creator_idd = User::where('email', trim($emailFrom))->first();
+                                        $created_by = $creator_idd->id;
                                     }
                                 //  if(!empty($customer)) {
                                     // $ticket = Tickets::where('customer_id', $customer->id)->where('subject', trim($email_subject))->first();
@@ -586,7 +594,8 @@ class MailController extends Controller
                                             'status' => $eq_value->mail_status_id,
                                             'type' => $eq_value->mail_type_id,
                                             'is_staff_tkt' => $is_staff_tkt,
-                                            'tkt_crt_type' => 'cron'
+                                            'tkt_crt_type' => 'cron',
+                                            'created_by' => $created_by
                                         ]);
                                         
                                         // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
@@ -643,7 +652,7 @@ class MailController extends Controller
                                         
                                         try {
                                             $ticket = Tickets::where('id',$ticket->id)->first();
-                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron');
+                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email);
                                         } catch(Throwable $e) {
                                             echo $e->getMessage();
                                         }
@@ -1154,6 +1163,7 @@ class MailController extends Controller
         return $subject;
     }
 
+    
     public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '') {
         if(empty($template)) {
             return '';
@@ -1686,6 +1696,7 @@ class MailController extends Controller
         return html_entity_decode($template);
     }
 
+
     public function formatDateTime($date1 , $date2) {
         $start  = new Carbon($date1);
         $end    = new Carbon($date2);
@@ -1804,7 +1815,11 @@ class MailController extends Controller
                 }
                 if(str_contains($template, '{Initial-Request}')) {
                     if(array_key_exists('ticket_detail', $data['values'])) {
-                        $template = str_replace('{Initial-Request}', $data['values']['ticket_detail'], $template);
+                        
+                        $content = preg_replace("/<img[^>]+\>/i", " ", $data['values']['ticket_detail']); 
+                        $content = nl2br($content);
+                        
+                        $template = str_replace('{Initial-Request}', $content, $template);
                     }
                 }
 
