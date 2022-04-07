@@ -13,6 +13,8 @@ let edit_reply_mode = false;
 let attachments_src = [];
 let ticket_attachments_count = 1;
 let date_format = {!! json_encode($date_format) !!};
+let cust_notes = {!! json_encode($cust_notes) !!};
+console.log(cust_notes, "cust_notes");
 let update_flag = 0;
 let updates_Arr = [];
 // var ticket_attach_path = `{{asset('public/files')}}`;
@@ -3182,7 +3184,6 @@ function get_ticket_notes() {
                 }
                 
                 notes = data.notes;
-                // console.log(notes , "notes");
                 var type = '';
 
                 if (timeouts_list.length) {
@@ -3263,7 +3264,6 @@ function get_ticket_notes() {
                     
                     $('#v-pills-notes-list').append(flup);
                 }
-                // $('#v-pills-notes-list').html(notes_html);
             }
         },
         failure: function(errMsg) {
