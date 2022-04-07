@@ -1176,6 +1176,7 @@ class MailController extends Controller
 
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
+        
 
         $template = htmlentities($template);
 
