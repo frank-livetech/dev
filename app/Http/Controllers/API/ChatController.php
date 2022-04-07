@@ -28,7 +28,31 @@ class ChatController extends Controller
             "media_url" => $request->MediaUrl0 ,
         );
 
-        WhatsAppChat::create($data);
+        // WhatsAppChat::create($data);
+
+        // for audio
+        // if( str_contains($request->MediaContentType0 , 'audio') ) {
+            // $url = $request->MediaUrl0 ;
+            // $contents = file_get_contents($url);
+            // $name = (time() + 2) . '.mp3';
+            // Storage::put('public/whatsapp_chat/video/' . $name, $contents);
+        // }
+        
+        // for image
+        // if( str_contains($request->MediaContentType0 , 'image') ) {
+        //     if($request->MediaUrl0) {
+        //         $url = $request->MediaUrl0 ;
+        //         $contents = file_get_contents($url);
+        //         $name = time() . '.png';
+                
+        //         Storage::put('public/whatsapp_chat/' . $name, $contents);
+                
+        //         $data['media_url'] = 'storage/whatsapp_chat/images/' . $name;
+        //     }
+        // }
+
+        
+        // WhatsAppChat::create($data);
     }
 
 }
