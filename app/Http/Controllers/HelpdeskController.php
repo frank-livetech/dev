@@ -1350,14 +1350,6 @@ class HelpdeskController extends Controller
 
         $response_categories = RestemplateCat::where("is_deleted","=",0)->get();
 
-
-        $cust_notes = [];
-        $customernotes = TicketNote::where('type','User')->get()->toArray();
-        foreach($customernotes as $note) {
-            $data = Tickets::where([['id', $note['ticket_id']] , ['customer_id',$details->customer_id],['is_deleted', 0]])->first();
-            array_push($cust_notes , $data);
-        }
-
         if(Auth::user()->user_type == 5) {
             return view('help_desk.ticket_manager.cust_ticket_details', get_defined_vars());
         }else{
