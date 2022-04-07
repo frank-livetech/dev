@@ -284,9 +284,11 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
         let login_user_image_url = $('#login_usr_logo').attr('src');
 
         let msgs_html = ``;
-        $('.show_chat_messages').html('');
+        // $('.show_chat_messages').html('');
 
         if(obj.length > 0) {
+            
+            console.log(root , "root");
 
             for(let i =0; i < obj.length; i++) {
 
@@ -311,13 +313,39 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
                 if(obj[i].from == number) {
                     let attachment = ``;
-                    if(obj[i].num_media == 1) {
+                    if(obj[i].media_type == 'jpeg' || obj[i].media_type == 'png' || obj[i].media_type == 'jpg') {
 
                         if(obj[i].media_url != null) {
-                            attachment = `<img src="${obj[i].media_url}" width="250px" height="250px"/>`;
+                            attachment = `<img src="${root}/public/${obj[i].media_url}" width="250px" height="250px"/>`;
                         }
-                       
                     }
+                    
+                    
+                    if(obj[i].media_type == 'ogg' || obj[i].media_type == 'mp3' || obj[i].media_type == 'wave') {
+
+                        if(obj[i].media_url != null) {
+                            attachment = `
+                                <audio controls>
+                                    <source src="${root}/public/${obj[i].media_url}" type="audio/${obj[i].media_type}" />
+                                </audio>
+                            `;
+                        }
+                    }
+                    
+                    if(obj[i].media_type == 'mp4' || obj[i].media_type == 'mkv' || obj[i].media_type == 'webm' || obj[i].media_type == 'mov') {
+
+                        if(obj[i].media_url != null) {
+                            attachment = `
+                                <video width="320" height="240" controls>
+                                <source src="${root}/public/${obj[i].media_url}" type="video/${obj[i].media_type}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            `;
+                        }
+                    }
+
+                    let attch = `<div  class="chat-content"> ${attachment} </div>`;
+                    let msgbody = `<div class="chat-content"> <p> ${obj[i].body != null ? obj[i].body : ''} </p> </div>`;
 
                     msgs_html += `
                     <div class="chat chat-left">
@@ -327,12 +355,11 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             </span>
                         </div>
                         <div class="chat-body">
-                            <div class="chat-content">
-                                <p> ${obj[i].body != null ? obj[i].body : ''} </p>
-                            </div>
-                            <div  class="chat-content">
-                                ${attachment}
-                            </div>
+                            
+                            ${obj[i].body != null ? msgbody : ''}
+
+                            ${obj[i].media_url != null ? attch : ''}
+                            
                         </div>
                     </div>`;
                 }

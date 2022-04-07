@@ -28,31 +28,48 @@ class ChatController extends Controller
             "media_url" => $request->MediaUrl0 ,
         );
 
-        // WhatsAppChat::create($data);
-
-        // for audio
-        // if( str_contains($request->MediaContentType0 , 'audio') ) {
-            // $url = $request->MediaUrl0 ;
-            // $contents = file_get_contents($url);
-            // $name = (time() + 2) . '.mp3';
-            // Storage::put('public/whatsapp_chat/video/' . $name, $contents);
-        // }
         
-        // for image
-        // if( str_contains($request->MediaContentType0 , 'image') ) {
-        //     if($request->MediaUrl0) {
-        //         $url = $request->MediaUrl0 ;
-        //         $contents = file_get_contents($url);
-        //         $name = time() . '.png';
+        if( $request->MediaContentType0 ) {
+            
+            $type = explode( '/' , $request->MediaContentType0 );
+            
+            // if type is image
+            if($type[0] == 'image') {
                 
-        //         Storage::put('public/whatsapp_chat/' . $name, $contents);
+                $url = $request->MediaUrl0 ;
+                $contents = file_get_contents($url);
+                $name = (time() + 1) .'.'. $type[1];
                 
-        //         $data['media_url'] = 'storage/whatsapp_chat/images/' . $name;
-        //     }
-        // }
-
+                Storage::put( 'public/whatsapp_chat/images/' . $name, $contents);
+                $data['media_url'] = 'public/whatsapp_chat/images/' . $name;
+            }
+            
+            if($type[0] == 'audio') {
+             
+                $url = $request->MediaUrl0 ;
+                $contents = file_get_contents($url);
+                $name = (time() + 2) .'.'. $type[1];
+                Storage::put( 'public/whatsapp_chat/audio/' . $name, $contents);
+                $data['media_url'] = 'public/whatsapp_chat/images/' . $name;
+            
+            }
+            
+            if($type[0] == 'video') {
+                
+                $url = $request->MediaUrl0 ;
+                $contents = file_get_contents($url);
+                $name = (time() + 5) .'.'. $type[1];
+                Storage::put( 'public/whatsapp_chat/video/' . $name, $contents);
+                $data['media_url'] = 'public/whatsapp_chat/images/' . $name;
+                
+            }
+            
+            
+            
+        }
         
-        // WhatsAppChat::create($data);
+        
+        WhatsAppChat::create($data);
     }
 
 }
