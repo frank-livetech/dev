@@ -27,7 +27,8 @@ class LiveChatController extends Controller
     }
     public function index(){
 
-        $users = User::where('is_deleted',0)->where('id','!=', auth()->id())->where('user_type','!=',5)->get();
+        $users = User::where('is_deleted',0)->where('user_type','!=',5)->get();
+        // $users = User::where('is_deleted',0)->where('id','!=', auth()->id())->where('user_type','!=',5)->get();
         $whatsapp_chat = WhatsAppChat::all();
 
         return view('chat.index-new', get_defined_vars() );

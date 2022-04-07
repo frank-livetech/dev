@@ -6,11 +6,20 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 @endphp
 
+<style>
+    .whatsapp_chat {
+        background-image: url('{{asset("default_imgs/whatsapp_bg.jpg")}} !important');
+        background-color: #f2f0f7;
+        background-repeat: repeat;
+        background-size: 210px;
+    }
+</style>
+
 <input type="hidden" id="image_url">
 <div class="app-content content chat-application">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
-    <div class="content-area-wrapper container-fluid p-0">
+    <div class="content-area-wrapper container-fluid p-0 ">
         <div class="sidebar-left">
             <div class="sidebar">
                 <!-- Admin user profile area -->
@@ -155,8 +164,11 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                         <div class="refresh_btn">
                                             <button onclick="getAllMessages()" class="btn btn-primary btn-sm mx-1"> Refresh Chat </button>
                                         </div>
-                                        <div class="whatsapp_icon">
-                                            <i class="fab fa-whatsapp cursor-pointer d-sm-block d-none font-medium-2 me-1"  style=" font-size: 18px; margin-right: 10px;"></i>
+                                        <div class="web_chat" title="web chat" onclick="webChat()">
+                                            <i class="far fa-comment-alt cursor-pointer d-sm-block d-none font-medium-2 me-1" style="font-size: 18px; margin-right: 10px;"></i>
+                                        </div>
+                                        <div class="whatsapp_icon" title="whatsapp chat" onclick="whatsAppChat()">
+                                            <i class="fab fa-whatsapp cursor-pointer d-sm-block d-none font-medium-2 me-1"  style="font-size: 18px; margin-right: 10px;"></i>
                                         </div>
                                         <i data-feather="search" class="cursor-pointer d-sm-block d-none font-medium-2"></i>
                                         
@@ -235,15 +247,30 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
         let user_id  = $(tag).data("id");
         $("#user_to").val(user_id);
-
         let src = $('.user_image_'+ user_id).attr('src');
         $("#image_url").val(src);
-
         let whatsapp  = $(tag).data("wp");
-        console.log(whatsapp , "whatsapp");
 
         whatsapp == null || whatsapp == '' ? $('.whatsapp_icon').hide() : $('.whatsapp_icon').show();
 
+        var imageUrl = '{{asset("default_imgs/webchat_bg.jpg")}}';
+        $(".user-chats").css("background-image", "url(" + imageUrl + ")");
+        $(".user-chats").css("background-size", "530px");
+    }
+
+    function webChat() {
+        var imageUrl = '{{asset("default_imgs/webchat_bg.jpg")}}';
+        $(".user-chats").css("background-image", "url(" + imageUrl + ")");
+        $(".user-chats").css("background-size", "530px");
+
+        $('.show_chat_messages').html('');
+    }
+
+    function whatsAppChat() {
+
+        var imageUrl = '{{asset("default_imgs/whatsapp_bg.jpg")}}';
+        $(".user-chats").css("background-image", "url(" + imageUrl + ")");
+        $(".user-chats").css("background-size", "900px");
         getAllMessages();
     }
 
