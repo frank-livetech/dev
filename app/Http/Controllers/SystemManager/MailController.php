@@ -1579,37 +1579,8 @@ class MailController extends Controller
                         $template = str_replace('Reply due:', $title , $template);
                     }
                 }
-            }
+            }else{
 
-
-            if($ticket_resolution_deadline == null) {
-                $dd = new Carbon( now(), $tm_name);
-                
-                $currentDate = strtotime( $dd );
-                $futureDate = strtotime( $res );
-                
-                $diff = $this->getDiff($futureDate , $currentDate);
-                
-                if( str_contains($diff[0] , '-') ) {
-                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
-                    $res = '<span style="color: red  !important">' . $res->format( $fr ) . ' (Overdue)' . '</span>';
-                }else{
-                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
-                    $res = $res->format( $fr ) . ' ('.$diff[0].')';
-
-                    if(str_contains($template, 'Resolution due:')) {
-                        $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
-                        $template = str_replace('Resolution due:', $title , $template);
-                    }
-                }
-            }
-
-
-            
-        
-            if($ticket_reply_deadline != null) {
-                
-                // reply due calcualtion
                 if($ticket_reply_deadline != 'cleared') {
                     
                     $rep_date = Carbon::parse($ticket_reply_deadline);
@@ -1617,10 +1588,10 @@ class MailController extends Controller
 
                     $a = strtotime( new Carbon( now(), $tm_name) );
                     $b = strtotime($rep_date);
-                    $res = $b - $a;
+                    $remain = $b - $a;
                     
                     
-                    if(str_contains($res, '-')) {
+                    if(str_contains($remain, '-')) {
                         
 
                         $rpd = Carbon::parse($ticket_reply_deadline);
@@ -1658,13 +1629,32 @@ class MailController extends Controller
                 }else{
                     $rep = '';
                     $template = str_replace('Reply due:', $rep, $template);
-                }                
+                } 
             }
-            
 
-            if( $ticket_resolution_deadline != null) {
+
+            if($ticket_resolution_deadline == null) {
+                $dd = new Carbon( now(), $tm_name);
                 
+                $currentDate = strtotime( $dd );
+                $futureDate = strtotime( $res );
                 
+                $diff = $this->getDiff($futureDate , $currentDate);
+                
+                if( str_contains($diff[0] , '-') ) {
+                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
+                    $res = '<span style="color: red  !important">' . $res->format( $fr ) . ' (Overdue)' . '</span>';
+                }else{
+                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
+                    $res = $res->format( $fr ) . ' ('.$diff[0].')';
+
+                    if(str_contains($template, 'Resolution due:')) {
+                        $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
+                        $template = str_replace('Resolution due:', $title , $template);
+                    }
+                }
+            }else{
+
                 if( $ticket_resolution_deadline != 'cleared') {
                     
                     $res_date = Carbon::parse( $ticket_resolution_deadline );
@@ -1672,9 +1662,9 @@ class MailController extends Controller
                     
                     $a = strtotime( new Carbon( now(), $tm_name) );
                     $b = strtotime($res_date);
-                    $res = $b - $a;
+                    $remain = $b - $a;
                     
-                    if(str_contains($res, '-')) {
+                    if(str_contains($remain, '-')) {
                         
 
                         $rd = Carbon::parse( $ticket_resolution_deadline );
