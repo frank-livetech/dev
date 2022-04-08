@@ -3155,6 +3155,7 @@ class HelpdeskController extends Controller
                     throw new Exception('Ticket department email not found!');
                 }
             }
+            
 
             $mail_from = $sendingMailServer->mailserver_username;
 
@@ -3324,7 +3325,8 @@ class HelpdeskController extends Controller
             $message = $mail_template->template_html;
             $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
 
-
+            
+            // return dd($is_closed);
             if($template_code == 'ticket_create' && ($auto_res == 0 || $auto_res == '')) {
 
                 
@@ -3357,7 +3359,7 @@ class HelpdeskController extends Controller
                 $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
                 $reply_content= $ticket['ticket_detail'];
                 $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', $is_closed);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '');
 
                 if(!empty($cust_message)) {
                 
