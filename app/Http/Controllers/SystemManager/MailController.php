@@ -1776,6 +1776,7 @@ class MailController extends Controller
             $template = str_replace('{Company-Logo}', $img, $template);
         }
 
+
         // checking whole template having {Ticket-Manager} short code
         if(str_contains($template, '{Ticket-Manager}')) {
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-manager';
@@ -1939,14 +1940,10 @@ class MailController extends Controller
                 $tm_name = 'America/New_York';
             }
 
-
-
             $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
             $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
 
-            
-
-            
+           
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
                 $k = str_replace('_', ' ', $key);
@@ -1954,38 +1951,32 @@ class MailController extends Controller
                 $k = str_replace(' ', '-', $k);
     
                 if(!is_array($value) && !is_object($value) && !empty($value)) {
-                    // if($data['module'] == 'Ticket')
-                    // echo '{'.$data['module'].'-'.$k.'}\n';
-                    // echo str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
-                    // change created at and updated at according to user timezone if null then timezone will be america/newyork
 
-
-
-                    date_default_timezone_set($tm_name);
-                    $fr = $this->convertFormat($date_format) . ' h:i:s a';
-                    $date = date($fr);
-                    if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
-                    $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
-
-
-                    // if($k == 'Status-Name') {
-                    //     if($data['module'] == 'Ticket') {
-                    //         $name = '{'.$data['module'].'-'.$k.'}';
-                    //         $status = TicketStatus::where('id' , $data['values'][$key]['status'])->first();
+                    if($data['module'] == 'Ticket') {
+                        $tkt =Tickets::where('id' , $data['values']['id'] )->first();
                         
-                    //         $value = '<span class="badge" style="background-color='.$status['color'].'"> '. $status['name'] .'</span>';
-                    //         $template = str_replace( $name , $value, $template);
-                    //     }
-                    // }
+                        // date_default_timezone_set($tm_name);
+                        $fr = $this->convertFormat($date_format) . ' h:i:s a';
+                        
+                        
+                        $tkt_created_at = new \DateTime( $tkt->created_at );
+                        $tkt_created_at->setTimezone(new \DateTimeZone($tm_name));                            
+                        $create_date = Carbon::parse( $tkt_created_at->format( $fr ) );
+                        
+                        
+                        $tkt_updated_at = new \DateTime( $tkt->cupdated_at );
+                        $tkt_updated_at->setTimezone(new \DateTimeZone($tm_name));                            
+                        $update_date = Carbon::parse( $tkt_updated_at->format( $fr ) );
+                        
+                        
+                        if($k == 'Created-At') {
+                            $template = str_replace('{'.$data['module'].'-'.$k.'}', $create_date, $template);
+                        }
+                        if($k == 'Updated-At') {
+                            $template = str_replace('{'.$data['module'].'-'.$k.'}', $update_date, $template);
+                        }
+                    }
 
-
-                    // if($data['module'] == 'Ticket') {
-                    //     $name = '{'.$data['module'].'-'.$k.'}';
-                    //     $priority = TicketPriority::where('id' , $data['values'][$key]['priority'])->first();
-                    
-                    //     $value = '<span class="badge" style="background-color='.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
-                    //     $template = str_replace( $name , $value, $template);
-                    // }
                 }
             }
         }
