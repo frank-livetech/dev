@@ -487,10 +487,14 @@ class MailController extends Controller
                                         
                                         if(!empty($cid)) {
                                             $data["customer_id"] = $cid;
+                                            
+                                            $close_status = TicketStatus::where('name','Closed')->first();
+                                            if($ticket->status == $close_status->id) {
+                                                $is_closed = 1 ;    
+                                            }
 
                                             $open_status = TicketStatus::where('name','Open')->first();
                                             $ticket->status = $open_status->id;
-                                            $is_closed = 1 ;
 
                                         }
                                       
@@ -521,7 +525,7 @@ class MailController extends Controller
                                             $ticket->save();
                                             try {
 
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', '');
 
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
@@ -1171,11 +1175,10 @@ class MailController extends Controller
         if(empty($template)) {
             return '';
         }
-
+ 
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
         }
-
 
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
@@ -1455,7 +1458,6 @@ class MailController extends Controller
             $tm_name = 'America/New_York';
         }
 
-        
         if($action_name == 'ticket_cus_reply' || $action_name == 'cust_cron') {
             
             $tckt = array_values(array_filter($data_list, function ($var) {
@@ -1485,18 +1487,13 @@ class MailController extends Controller
 
                 $update_arr = array();                
                 $update_arr['reply_deadline'] = $currentDate_rep->format('Y-m-d g:i A');
-                
+
                 if($is_closed == 1) {
                     $update_arr['resolution_deadline'] = $currentDate_res->format('Y-m-d g:i A');
                 }
                                 
                 Tickets::where('id' , $tckt[0]['values']['id'])->update($update_arr);
                 
-                // Tickets::where('id' , $tckt[0]['values']['id'])->update([
-                //     'reply_deadline' => $currentDate_rep->format('Y-m-d H:i a'),
-                //     'resolution_deadline' => $currentDate_res->format('Y-m-d H:i a') ,
-                // ]);
-
             }
         }
     
@@ -1509,10 +1506,12 @@ class MailController extends Controller
 
             $ticket = Tickets::where('id' , $tckt[0]['values']['id'])->first()->toArray();
                         
+            
+            
             $ticket_reply_deadline = empty($ticket['reply_deadline']) ? null : $ticket['reply_deadline'];
             $ticket_resolution_deadline = empty($ticket['resolution_deadline']) ? null : $ticket['resolution_deadline'];
+    
 
-            
             if(sizeof($tckt) > 0) {
                 $helpd = new HelpdeskController();
                 $slaPlan = $helpd->getTicketSlaPlan($tckt[0]['values']['id']);
@@ -1531,7 +1530,8 @@ class MailController extends Controller
                         
                         if($ticket_resolution_deadline != 'cleared'){
 
-                            $date = new \DateTime($tckt[0]['values']['created_at']);
+                            $date = new \DateTime($sla_from[0] . '+00');
+                            // $date = new \DateTime($tckt[0]['values']['created_at']);
                             $date->setTimezone(new \DateTimeZone($tm_name));                            
                             $res = Carbon::parse( $date->format('Y-m-d H:i:s') );
 
@@ -1551,9 +1551,12 @@ class MailController extends Controller
             }
             
             
+
             if($ticket_reply_deadline == null) {
                 
-                $currentDate =strtotime( date('Y-m-d H:i:s') );
+                $dd = new Carbon( now(), $tm_name);
+                
+                $currentDate =strtotime( $dd );
                 $futureDate =strtotime( $rep );
 
                 $diff = $this->getDiff($futureDate , $currentDate);
@@ -1577,14 +1580,16 @@ class MailController extends Controller
                     }
                 }
             }
-            
+
+
             if($ticket_resolution_deadline == null) {
+                $dd = new Carbon( now(), $tm_name);
                 
-                $currentDate = strtotime( date('Y-m-d H:i:s') );
+                $currentDate = strtotime( $dd );
                 $futureDate = strtotime( $res );
-
+                
                 $diff = $this->getDiff($futureDate , $currentDate);
-
+                
                 if( str_contains($diff[0] , '-') ) {
                     $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                     $res = '<span style="color: red  !important">' . $res->format( $fr ) . ' (Overdue)' . '</span>';
@@ -1598,6 +1603,8 @@ class MailController extends Controller
                     }
                 }
             }
+
+
             
         
             if($ticket_reply_deadline != null) {
@@ -1605,17 +1612,18 @@ class MailController extends Controller
                 // reply due calcualtion
                 if($ticket_reply_deadline != 'cleared') {
                     
-                    $rep_date = Carbon::parse( $ticket_reply_deadline );
+                    $rep_date = Carbon::parse($ticket_reply_deadline);
 
 
-                    $a = strtotime(date('Y-m-d H:i:s'));
+                    $a = strtotime( new Carbon( now(), $tm_name) );
                     $b = strtotime($rep_date);
                     $res = $b - $a;
+                    
                     
                     if(str_contains($res, '-')) {
                         
 
-                        $rpd = Carbon::parse( $ticket_reply_deadline );
+                        $rpd = Carbon::parse($ticket_reply_deadline);
 
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                         $rep = '<span style="color:red !important">'. $rpd->format( $fr ) .' (Overdue) </span>';
@@ -1629,8 +1637,13 @@ class MailController extends Controller
                         
                     }else{
                         
-
-                        $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $ticket_reply_deadline );
+                        
+                        $dd = new Carbon( now() , $tm_name);
+                        $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
+                        
+                        $diff = $this->formatDateTime( $ab , new Carbon( Carbon::parse($ticket_reply_deadline) ) );
+                        
+                        
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
             
                         $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
@@ -1642,24 +1655,22 @@ class MailController extends Controller
                         }
                     }
 
-                    
-
-                    
                 }else{
                     $rep = '';
                     $template = str_replace('Reply due:', $rep, $template);
                 }                
             }
+            
 
             if( $ticket_resolution_deadline != null) {
-                               
-                // resolution deadline calculation
+                
+                
                 if( $ticket_resolution_deadline != 'cleared') {
                     
                     $res_date = Carbon::parse( $ticket_resolution_deadline );
                     
                     
-                    $a = strtotime(date('Y-m-d H:i:s'));
+                    $a = strtotime( new Carbon( now(), $tm_name) );
                     $b = strtotime($res_date);
                     $res = $b - $a;
                     
@@ -1676,8 +1687,11 @@ class MailController extends Controller
                         } 
                         
                     }else{
+                        
+                        $dd = new Carbon( now() , $tm_name);
+                        $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
-                        $diff = $this->formatDateTime( date('Y-m-d H:i A')  , $ticket_resolution_deadline );
+                        $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
             
                         $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
