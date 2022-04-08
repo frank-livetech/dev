@@ -480,6 +480,7 @@ class MailController extends Controller
     
                                         $fullname = '';
                                         $user = null;
+                                        $is_closed = 0;
                                         if(!empty($sid)) {
                                             $data["user_id"] = $sid;
                                         }
@@ -489,6 +490,7 @@ class MailController extends Controller
 
                                             $open_status = TicketStatus::where('name','Open')->first();
                                             $ticket->status = $open_status->id;
+                                            $is_closed = 1 ;
 
                                         }
                                       
@@ -508,6 +510,9 @@ class MailController extends Controller
                                         $ticket->status = $open_status->id;
                                         $ticket->save;
                                         $ticket->save();
+
+                                        $is_closed = 1 ;
+
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
 
                                         if(!empty($sid)) {
@@ -518,7 +523,7 @@ class MailController extends Controller
                                             $ticket->save();
                                             try {
 
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,$is_closed);
 
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
@@ -530,7 +535,7 @@ class MailController extends Controller
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,$is_closed);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
@@ -1164,7 +1169,7 @@ class MailController extends Controller
     }
 
     
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='') {
         if(empty($template)) {
             return '';
         }
@@ -1477,11 +1482,20 @@ class MailController extends Controller
                 $currentDate_rep->addHours($dt[0]);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
                 
+
+                $update_arr = array();                
+                $update_arr['reply_deadline'] = $currentDate_rep->format('Y-m-d g:i A');
                 
-                Tickets::where('id' , $tckt[0]['values']['id'])->update([
-                    'reply_deadline' => $currentDate_rep->format('Y-m-d H:i a'),
-                    'resolution_deadline' => $currentDate_res->format('Y-m-d H:i a') ,
-                ]);
+                if($is_closed == 1) {
+                    $update_arr['resolution_deadline'] = $currentDate_res->format('Y-m-d g:i A');
+                }
+                                
+                Tickets::where('id' , $tckt[0]['values']['id'])->update($update_arr);
+                
+                // Tickets::where('id' , $tckt[0]['values']['id'])->update([
+                //     'reply_deadline' => $currentDate_rep->format('Y-m-d H:i a'),
+                //     'resolution_deadline' => $currentDate_res->format('Y-m-d H:i a') ,
+                // ]);
 
             }
         }
