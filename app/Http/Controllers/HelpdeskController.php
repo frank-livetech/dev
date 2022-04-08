@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -3332,7 +3332,7 @@ class HelpdeskController extends Controller
 
             }else{
                 
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , $is_closed);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params, '','', $is_closed);
             }
 
             $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed);
@@ -3357,7 +3357,7 @@ class HelpdeskController extends Controller
                 $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
                 $reply_content= $ticket['ticket_detail'];
                 $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', $is_closed);
 
                 if(!empty($cust_message)) {
                 
