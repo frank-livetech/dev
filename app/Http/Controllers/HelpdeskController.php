@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -3143,7 +3143,7 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
-    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '',$flwup_updated = '') {
+    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '',$flwup_updated = '' , $is_closed = '') {
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -3332,10 +3332,10 @@ class HelpdeskController extends Controller
 
             }else{
                 
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , $is_closed);
             }
 
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed);
             
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 

@@ -104,7 +104,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
                                 <span class="avatar"> <img class="user_image_{{$user->id}}" src="{{asset( $file_path . 'default_imgs/customer.png')}}" height="42" width="42"></span>
                                 @endif
-                                <div class="chat-info">
+                                <div class="chat-info" >
                                     <h5 class="mb-0">{{$user->name}}</h5>
                                     <span class="badge badge-light-success rounded-pill ms-auto me-1">{{$user->role}}</span>
                                 </div>
@@ -246,6 +246,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     function showActiveUserChat(tag) {
 
         let user_id  = $(tag).data("id");
+        
         $("#user_to").val(user_id);
         let src = $('.user_image_'+ user_id).attr('src');
         $("#image_url").val(src);
@@ -259,7 +260,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     }
 
     function webChat() {
-        var imageUrl = '{{asset("default_imgs/webchat_bg.jpg")}}';
+        var imageUrl = '{{asset("public/default_imgs/webchat_bg.jpg")}}';
         $(".user-chats").css("background-image", "url(" + imageUrl + ")");
         $(".user-chats").css("background-size", "530px");
 
@@ -268,7 +269,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
     function whatsAppChat() {
 
-        var imageUrl = '{{asset("default_imgs/whatsapp_bg.jpg")}}';
+        var imageUrl = '{{asset("public/default_imgs/whatsapp_bg.jpg")}}';
         $(".user-chats").css("background-image", "url(" + imageUrl + ")");
         $(".user-chats").css("background-size", "900px");
         getAllMessages();

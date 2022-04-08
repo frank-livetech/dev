@@ -480,6 +480,7 @@ class MailController extends Controller
     
                                         $fullname = '';
                                         $user = null;
+                                        $is_closed = 0;
                                         if(!empty($sid)) {
                                             $data["user_id"] = $sid;
                                         }
@@ -489,6 +490,7 @@ class MailController extends Controller
 
                                             $open_status = TicketStatus::where('name','Open')->first();
                                             $ticket->status = $open_status->id;
+                                            $is_closed = 1 ;
 
                                         }
                                       
@@ -508,6 +510,9 @@ class MailController extends Controller
                                         $ticket->status = $open_status->id;
                                         $ticket->save;
                                         $ticket->save();
+
+                                        $is_closed = 1 ;
+
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
 
                                         if(!empty($sid)) {
@@ -518,7 +523,7 @@ class MailController extends Controller
                                             $ticket->save();
                                             try {
 
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,$is_closed);
 
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
@@ -530,7 +535,7 @@ class MailController extends Controller
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,$is_closed);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
@@ -1164,7 +1169,7 @@ class MailController extends Controller
     }
 
     
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='') {
         if(empty($template)) {
             return '';
         }
@@ -1477,11 +1482,20 @@ class MailController extends Controller
                 $currentDate_rep->addHours($dt[0]);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
                 
+
+                $update_arr = array();                
+                $update_arr['reply_deadline'] = $currentDate_rep->format('Y-m-d g:i A');
                 
-                Tickets::where('id' , $tckt[0]['values']['id'])->update([
-                    'reply_deadline' => $currentDate_rep->format('Y-m-d H:i a'),
-                    'resolution_deadline' => $currentDate_res->format('Y-m-d H:i a') ,
-                ]);
+                if($is_closed == 1) {
+                    $update_arr['resolution_deadline'] = $currentDate_res->format('Y-m-d g:i A');
+                }
+                                
+                Tickets::where('id' , $tckt[0]['values']['id'])->update($update_arr);
+                
+                // Tickets::where('id' , $tckt[0]['values']['id'])->update([
+                //     'reply_deadline' => $currentDate_rep->format('Y-m-d H:i a'),
+                //     'resolution_deadline' => $currentDate_res->format('Y-m-d H:i a') ,
+                // ]);
 
             }
         }
@@ -1776,6 +1790,7 @@ class MailController extends Controller
             $template = str_replace('{Company-Logo}', $img, $template);
         }
 
+
         // checking whole template having {Ticket-Manager} short code
         if(str_contains($template, '{Ticket-Manager}')) {
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-manager';
@@ -1939,14 +1954,10 @@ class MailController extends Controller
                 $tm_name = 'America/New_York';
             }
 
-
-
             $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
             $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
 
-            
-
-            
+           
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
                 $k = str_replace('_', ' ', $key);
@@ -1954,38 +1965,32 @@ class MailController extends Controller
                 $k = str_replace(' ', '-', $k);
     
                 if(!is_array($value) && !is_object($value) && !empty($value)) {
-                    // if($data['module'] == 'Ticket')
-                    // echo '{'.$data['module'].'-'.$k.'}\n';
-                    // echo str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
-                    // change created at and updated at according to user timezone if null then timezone will be america/newyork
 
-
-
-                    date_default_timezone_set($tm_name);
-                    $fr = $this->convertFormat($date_format) . ' h:i:s a';
-                    $date = date($fr);
-                    if($k == 'Created-At' || $k == 'Updated-At') $value = $date;
-                    $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
-
-
-                    // if($k == 'Status-Name') {
-                    //     if($data['module'] == 'Ticket') {
-                    //         $name = '{'.$data['module'].'-'.$k.'}';
-                    //         $status = TicketStatus::where('id' , $data['values'][$key]['status'])->first();
+                    if($data['module'] == 'Ticket') {
+                        $tkt =Tickets::where('id' , $data['values']['id'] )->first();
                         
-                    //         $value = '<span class="badge" style="background-color='.$status['color'].'"> '. $status['name'] .'</span>';
-                    //         $template = str_replace( $name , $value, $template);
-                    //     }
-                    // }
+                        // date_default_timezone_set($tm_name);
+                        $fr = $this->convertFormat($date_format) . ' h:i:s a';
+                        
+                        
+                        $tkt_created_at = new \DateTime( $tkt->created_at );
+                        $tkt_created_at->setTimezone(new \DateTimeZone($tm_name));                            
+                        $create_date = Carbon::parse( $tkt_created_at->format( $fr ) );
+                        
+                        
+                        $tkt_updated_at = new \DateTime( $tkt->cupdated_at );
+                        $tkt_updated_at->setTimezone(new \DateTimeZone($tm_name));                            
+                        $update_date = Carbon::parse( $tkt_updated_at->format( $fr ) );
+                        
+                        
+                        if($k == 'Created-At') {
+                            $template = str_replace('{'.$data['module'].'-'.$k.'}', $create_date, $template);
+                        }
+                        if($k == 'Updated-At') {
+                            $template = str_replace('{'.$data['module'].'-'.$k.'}', $update_date, $template);
+                        }
+                    }
 
-
-                    // if($data['module'] == 'Ticket') {
-                    //     $name = '{'.$data['module'].'-'.$k.'}';
-                    //     $priority = TicketPriority::where('id' , $data['values'][$key]['priority'])->first();
-                    
-                    //     $value = '<span class="badge" style="background-color='.$priority['priority_color'].'"> '. $priority['name'] .'</span>';
-                    //     $template = str_replace( $name , $value, $template);
-                    // }
                 }
             }
         }

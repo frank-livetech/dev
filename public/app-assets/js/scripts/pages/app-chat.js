@@ -151,7 +151,7 @@ $(function () {
       }
 
       $this.addClass('active');
-      $this.find('.badge').remove();
+      // $this.find('.badge').remove();
 
       if (chatUsersListWrapper.find('ul li').hasClass('active')) {
         startArea.addClass('d-none');
