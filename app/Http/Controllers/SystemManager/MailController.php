@@ -511,8 +511,6 @@ class MailController extends Controller
                                         $ticket->save;
                                         $ticket->save();
 
-                                        $is_closed = 1 ;
-
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
 
                                         if(!empty($sid)) {
@@ -1456,7 +1454,7 @@ class MailController extends Controller
         }else{
             $tm_name = 'America/New_York';
         }
-        
+
         
         if($action_name == 'ticket_cus_reply' || $action_name == 'cust_cron') {
             
@@ -1473,6 +1471,7 @@ class MailController extends Controller
                 
                 $dt = explode('.', $slaPlan['due_deadline']);
                 $currentDate_res->addHours($dt[0]);
+                $currentDate_res->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_res->addMinutes($dt[1]);
                 
                 
@@ -1480,6 +1479,7 @@ class MailController extends Controller
                 $currentDate_rep = new Carbon( now() , $tm_name);
                 $dt = explode('.', $slaPlan['reply_deadline']);
                 $currentDate_rep->addHours($dt[0]);
+                $currentDate_rep->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
                 
 
@@ -1700,8 +1700,6 @@ class MailController extends Controller
             $template = str_replace('{Ticket-Resolution-Due}', ($res != '' ? $res . '<hr>' : '') , $template);
         }
 
-
-                
         $sc_vars = DB::table('sc_variables')->get();
 
         if($action_name == 'Subject updated') {
@@ -1801,6 +1799,7 @@ class MailController extends Controller
         foreach ($data_list as $key => $data) {
 
             if($data['module'] == 'Customer') {
+                
 
                 if(str_contains($template, '{Customer-ID}')) {
                     $template = str_replace('{Customer-ID}', $data['values']['id'], $template);
@@ -1808,6 +1807,13 @@ class MailController extends Controller
 
                 if(str_contains($template, '{Customer-Name}')) {
                     $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
+                }
+                if(str_contains($template, '{Customer-Email}')) {
+                    $template = str_replace('{Customer-Email}', $data['values']['email'] , $template);
+                }
+                
+                if(str_contains($template, '{Customer-Phone}')) {
+                    $template = str_replace('{Customer-Phone}', $data['values']['phone'] , $template);
                 }
 
                 if(str_contains($template, '{Company-Name}')) {
@@ -1956,6 +1962,7 @@ class MailController extends Controller
 
             $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
             $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
+            
 
            
             foreach ($data['values'] as $key => $value) {
@@ -1970,7 +1977,7 @@ class MailController extends Controller
                         $tkt =Tickets::where('id' , $data['values']['id'] )->first();
                         
                         // date_default_timezone_set($tm_name);
-                        $fr = $this->convertFormat($date_format) . ' h:i:s a';
+                        $fr = $this->convertFormat($date_format) . ' g:i a';
                         
                         
                         $tkt_created_at = new \DateTime( $tkt->created_at );
@@ -1984,11 +1991,13 @@ class MailController extends Controller
                         
                         
                         if($k == 'Created-At') {
-                            $template = str_replace('{'.$data['module'].'-'.$k.'}', $create_date, $template);
+                            $value = $create_date->format( $fr );
                         }
                         if($k == 'Updated-At') {
-                            $template = str_replace('{'.$data['module'].'-'.$k.'}', $update_date, $template);
+                            $value = $update_date->format( $fr );
                         }
+                        
+                        $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
                     }
 
                 }
