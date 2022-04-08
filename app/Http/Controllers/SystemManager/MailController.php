@@ -521,7 +521,7 @@ class MailController extends Controller
                                             $ticket->save();
                                             try {
 
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,$is_closed);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed);
 
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
@@ -533,7 +533,7 @@ class MailController extends Controller
                                             $fullname = $customer->first_name.' '.$customer->last_name;
                                             $user = $customer;
                                             try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,$is_closed);
+                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed);
                                             } catch(Throwable $e) {
                                                 echo 'Reply Notification! '. $e->getMessage();
                                             }
