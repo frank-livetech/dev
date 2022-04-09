@@ -1175,19 +1175,6 @@ class HelpdeskController extends Controller
             $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
 
-            if($type == 'publish') {
-                $content = $mail_reply;
-                $ticket = Tickets::where('id', $data['ticket_id'])->where('trashed', 0)->where('is_deleted', 0)->first();
-
-                $action = 'ticket_reply';
-                if($request->has('dd_Arr') && sizeof($request->dd_Arr) > 0){
-                    $action = 'ticket_reply_update';
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
-                }else{
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
-                }
-            }
-
             $sla_updated = false;
 
             if($data['is_published'] == 1) {
@@ -1208,6 +1195,20 @@ class HelpdeskController extends Controller
                         $log = new ActivitylogController();
                         $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $ticket->id , auth()->id() , $action_perf);
                     }
+                }
+            }
+
+
+            if($type == 'publish') {
+                $content = $mail_reply;
+                $ticket = Tickets::where('id', $data['ticket_id'])->where('trashed', 0)->where('is_deleted', 0)->first();
+
+                $action = 'ticket_reply';
+                if($request->has('dd_Arr') && sizeof($request->dd_Arr) > 0){
+                    $action = 'ticket_reply_update';
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
+                }else{
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
                 }
             }
 

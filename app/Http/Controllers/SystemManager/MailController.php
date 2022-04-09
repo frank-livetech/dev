@@ -1532,8 +1532,8 @@ class MailController extends Controller
                         
                         if($ticket_resolution_deadline != 'cleared'){
 
-                            $date = new \DateTime($sla_from[0] . '+00');
-                            // $date = new \DateTime($tckt[0]['values']['created_at']);
+                            // $date = new \DateTime($sla_from[0] . '+00');
+                            $date = new \DateTime($tckt[0]['values']['created_at']);
                             $date->setTimezone(new \DateTimeZone($tm_name));                            
                             $res = Carbon::parse( $date->format('Y-m-d H:i:s') );
 
