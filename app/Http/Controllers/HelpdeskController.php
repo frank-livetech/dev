@@ -2615,6 +2615,9 @@ class HelpdeskController extends Controller
         }
     }
 
+
+    
+
     public function update_ticket_customer(Request $request) {
         try {
             $data = $request->all();
