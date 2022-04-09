@@ -60,6 +60,8 @@ class MailController extends Controller
         $this->middleware('auth');
     }
 
+
+    
     public function get_mails(Request $request){
         $mails = Mail::orderBy('id','desc')->where('is_deleted', 0)->get();
 
