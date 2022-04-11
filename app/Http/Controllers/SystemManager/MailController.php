@@ -1615,8 +1615,6 @@ class MailController extends Controller
                 $currentDate =strtotime( $dd );
                 $futureDate =strtotime( $rep );
 
-                // $diff = $this->Difference($tm_name , $futureDate);
-
                 $diff = $this->getDiff($futureDate , $currentDate);
                 
                 if( str_contains($diff[0] , '-') ) {
@@ -1670,7 +1668,6 @@ class MailController extends Controller
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
-                        // $diff = $this->Difference($tm_name , strtotime($ab) );
                         $diff = $this->formatDateTime( $ab , new Carbon( Carbon::parse($ticket_reply_deadline) ) );
 
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
@@ -1697,7 +1694,6 @@ class MailController extends Controller
                 $futureDate = strtotime( $res );
                 
                 $diff = $this->getDiff($futureDate , $currentDate);
-                // $diff = $this->Difference($tm_name , $futureDate);
                 
                 if( str_contains($diff[0] , '-') ) {
                     $fr = $this->convertFormat($tp_date_format) . ' h:i a';
@@ -1739,8 +1735,6 @@ class MailController extends Controller
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
-                        // $diff = $this->Difference($tm_name ,  strtotime($ab) );
-
                         $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
             
@@ -1781,6 +1775,8 @@ class MailController extends Controller
         }
 
         return html_entity_decode($template);
+
+        
     }
 
 
@@ -1818,40 +1814,6 @@ class MailController extends Controller
         return $time;
     }
 
-    public function Difference($userTimezone , $futureDate) {
-        $timezone = new \DateTimeZone( $userTimezone );
-        
-        $crrentSysDate = new \DateTime(date('m/d/y h:i:s a'),$timezone);
-        $userDefineDate = $crrentSysDate->format('m/d/y h:i:s a');
-        
-        $start = date_create($userDefineDate,$timezone);
-        $end = date_create(date('m/d/y h:i:s a', $futureDate ),$timezone);
-        // $end = date_create(date('m/d/y h:i:s a', strtotime( $futureDate )),$timezone);
-        
-        $diff=date_diff($start,$end);
-        $days = '';
-
-        if($diff->d == 0  || $diff->d < 0) {
-            $days = '';
-        }else{
-            $days = $diff->d . 'd ';
-        }
-        
-        $remainTime =  $days . $diff->h .'h ' . $diff->i."m " . $diff->s .'s';
-
-        $color = '';
-        if ( str_contains( $remainTime , 'd') ) { 
-            $color = '#8BB467';
-        }else if( str_contains( $remainTime , 'h') ) {
-            $color = '#5c83b4';
-        }else if( str_contains( $remainTime , 'm') ) {
-            $color = '#ff8c5a';
-        }
-        
-        $time[0] = '<span style="color:'. $color .'">' . $remainTime .  '</span>';
-        $time[1] = $color;
-        return $time;
-    }
 
     public function getDiff($futureDate , $currentDate) {
 
