@@ -496,12 +496,13 @@ class MailController extends Controller
                                                 $is_closed = 1 ;    
                                             }
 
-                                            $open_status = TicketStatus::where('name','Open')->first();
-                                            $ticket->status = $open_status->id;
-
                                             if($ticket->reply_deadline == 'cleared' && $ticket->resolution_deadline == 'cleared' && $ticket->status != $close_status->id) {
                                                 $reset_tkt = 1;
                                             }
+
+                                            $open_status = TicketStatus::where('name','Open')->first();
+                                            $ticket->status = $open_status->id;
+
                                         }
                                       
                                         $rep = TicketReply::create($data);
