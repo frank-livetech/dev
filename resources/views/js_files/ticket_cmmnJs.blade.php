@@ -501,7 +501,7 @@
 
 
             // this is demo comment
-            if (val['reply_deadline'] != null && val['resolution_deadline'] != null) {
+            if (val['reply_deadline'] != null ) {
 
                 let currTime = new Date().toLocaleString('en-US', {
                     timeZone: usrtimeZone
@@ -526,6 +526,14 @@
                 } else {
                     new_rep_due = ``;
                 }
+            }
+
+            if ( val['resolution_deadline'] != null) {
+
+                let currTime = new Date().toLocaleString('en-US', {
+                    timeZone: usrtimeZone
+                });
+                let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
 
                 if (val['resolution_deadline'] != "cleared") {
                     // console.log("")
