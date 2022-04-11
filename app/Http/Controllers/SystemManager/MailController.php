@@ -508,6 +508,10 @@ class MailController extends Controller
                                             if( ( $ticket->resolution_deadline == 'cleared' && $ticket->reply_deadline == 'cleared' ) && $ticket->status != $close_status->id) {
                                                 $reset_tkt = 3;
                                             }
+
+                                            if( ( $ticket->resolution_deadline != 'cleared' && $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                $reset_tkt = 1;
+                                            }
                                             
 
                                             $open_status = TicketStatus::where('name','Open')->first();
@@ -1530,13 +1534,13 @@ class MailController extends Controller
                 
                 $dt = explode('.', $slaPlan['due_deadline']);
                 $currentDate_res->addHours($dt[0]);
-                $currentDate_res->addMinutes(-1);
+                $currentDate_res->addSeconds(-10);
                 if(array_key_exists(1, $dt)) $currentDate_res->addMinutes($dt[1]);
                 
                 $currentDate_rep = new Carbon( now() , $tm_name);
                 $dt = explode('.', $slaPlan['reply_deadline']);
                 $currentDate_rep->addHours($dt[0]);
-                $currentDate_rep->addMinutes(-1);
+                $currentDate_rep->addSeconds(-10);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
                 
                 $update_arr = array();                
@@ -1611,7 +1615,9 @@ class MailController extends Controller
                 $currentDate =strtotime( $dd );
                 $futureDate =strtotime( $rep );
 
-                $diff = $this->getDiff($futureDate , $currentDate);
+                $diff = $this->Difference($tm_name , $futureDate);
+
+                // $diff = $this->getDiff($futureDate , $currentDate);
                 
                 if( str_contains($diff[0] , '-') ) {
                     // $rep = '';
@@ -1663,12 +1669,11 @@ class MailController extends Controller
                         
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
-                        
-                        $diff = $this->formatDateTime( $ab , new Carbon( Carbon::parse($ticket_reply_deadline) ) );
-                        
-                        
+
+                        $diff = $this->Difference($tm_name , strtotime($ab) );
+                        // $diff = $this->formatDateTime( $ab , new Carbon( Carbon::parse($ticket_reply_deadline) ) );
+
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
-            
                         $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
                         
                         if(str_contains($template, 'Reply due:')) {
@@ -1691,13 +1696,14 @@ class MailController extends Controller
                 $currentDate = strtotime( $dd );
                 $futureDate = strtotime( $res );
                 
-                $diff = $this->getDiff($futureDate , $currentDate);
+                // $diff = $this->getDiff($futureDate , $currentDate);
+                $diff = $this->Difference($tm_name , $futureDate);
                 
                 if( str_contains($diff[0] , '-') ) {
-                    $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
+                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                     $res = '<span style="color: red  !important">' . $res->format( $fr ) . ' (Overdue)' . '</span>';
                 }else{
-                    $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
+                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                     $res = $res->format( $fr ) . ' ('.$diff[0].')';
 
                     if(str_contains($template, 'Resolution due:')) {
@@ -1720,7 +1726,7 @@ class MailController extends Controller
                         
 
                         $rd = Carbon::parse( $ticket_resolution_deadline );
-                        $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
+                        $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                         $res = '<span style="color:red !important">'. $rd->format( $fr ) .' (Overdue) </span>';
                         
                         if(str_contains($template, 'Resolution due:')) {
@@ -1731,10 +1737,12 @@ class MailController extends Controller
                     }else{
                         
                         $dd = new Carbon( now() , $tm_name);
-                        $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i:s a');
+                        $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
-                        $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
-                        $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
+                        $diff = $this->Difference($tm_name ,  strtotime($ab) );
+
+                        // $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
+                        $fr = $this->convertFormat($tp_date_format) . ' h:i a';
             
                         $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
                         
@@ -1805,6 +1813,41 @@ class MailController extends Controller
             $color = '#ff8c5a';
         }
 
+        $time[0] = '<span style="color:'. $color .'">' . $remainTime .  '</span>';
+        $time[1] = $color;
+        return $time;
+    }
+
+    public function Difference($userTimezone , $futureDate) {
+        $timezone = new \DateTimeZone( $userTimezone );
+        
+        $crrentSysDate = new \DateTime(date('m/d/y h:i:s a'),$timezone);
+        $userDefineDate = $crrentSysDate->format('m/d/y h:i:s a');
+        
+        $start = date_create($userDefineDate,$timezone);
+        $end = date_create(date('m/d/y h:i:s a', $futureDate ),$timezone);
+        // $end = date_create(date('m/d/y h:i:s a', strtotime( $futureDate )),$timezone);
+        
+        $diff=date_diff($start,$end);
+        $days = '';
+
+        if($diff->d == 0  || $diff->d < 0) {
+            $days = '';
+        }else{
+            $days = $diff->d . 'd ';
+        }
+        
+        $remainTime =  $days . $diff->h .'h ' . $diff->i."m " . $diff->s .'s';
+
+        $color = '';
+        if ( str_contains( $remainTime , 'd') ) { 
+            $color = '#8BB467';
+        }else if( str_contains( $remainTime , 'h') ) {
+            $color = '#5c83b4';
+        }else if( str_contains( $remainTime , 'm') ) {
+            $color = '#ff8c5a';
+        }
+        
         $time[0] = '<span style="color:'. $color .'">' . $remainTime .  '</span>';
         $time[1] = $color;
         return $time;
