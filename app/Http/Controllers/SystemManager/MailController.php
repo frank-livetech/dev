@@ -1694,10 +1694,10 @@ class MailController extends Controller
                 $diff = $this->getDiff($futureDate , $currentDate);
                 
                 if( str_contains($diff[0] , '-') ) {
-                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
+                    $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
                     $res = '<span style="color: red  !important">' . $res->format( $fr ) . ' (Overdue)' . '</span>';
                 }else{
-                    $fr = $this->convertFormat($tp_date_format) . ' h:i a';
+                    $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
                     $res = $res->format( $fr ) . ' ('.$diff[0].')';
 
                     if(str_contains($template, 'Resolution due:')) {
@@ -1720,7 +1720,7 @@ class MailController extends Controller
                         
 
                         $rd = Carbon::parse( $ticket_resolution_deadline );
-                        $fr = $this->convertFormat($tp_date_format) . ' h:i a';
+                        $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
                         $res = '<span style="color:red !important">'. $rd->format( $fr ) .' (Overdue) </span>';
                         
                         if(str_contains($template, 'Resolution due:')) {
@@ -1731,10 +1731,10 @@ class MailController extends Controller
                     }else{
                         
                         $dd = new Carbon( now() , $tm_name);
-                        $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
+                        $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i:s a');
 
                         $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
-                        $fr = $this->convertFormat($tp_date_format) . ' h:i a';
+                        $fr = $this->convertFormat($tp_date_format) . ' h:i:s a';
             
                         $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
                         
