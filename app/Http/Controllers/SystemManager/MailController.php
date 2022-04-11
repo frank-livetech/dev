@@ -496,9 +496,19 @@ class MailController extends Controller
                                                 $is_closed = 1 ;    
                                             }
 
-                                            if( ($ticket->reply_deadline == 'cleared' && $ticket->resolution_deadline == 'cleared') && $ticket->status != $close_status->id) {
+
+                                            if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
                                                 $reset_tkt = 1;
                                             }
+
+                                            if( ( $ticket->resolution_deadline == 'cleared' || $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                $reset_tkt = 2;
+                                            }
+
+                                            if( ( $ticket->resolution_deadline == 'cleared' && $ticket->reply_deadline == 'cleared' ) && $ticket->status != $close_status->id) {
+                                                $reset_tkt = 3;
+                                            }
+                                            
 
                                             $open_status = TicketStatus::where('name','Open')->first();
                                             $ticket->status = $open_status->id;
@@ -1465,7 +1475,7 @@ class MailController extends Controller
             $tm_name = 'America/New_York';
         }
 
-        if($reset_tkt == 1) {
+        if($reset_tkt != '') {
             $tckt = array_values(array_filter($data_list, function ($var) {
                 return ($var['module'] == 'Ticket');
             }));
@@ -1487,9 +1497,21 @@ class MailController extends Controller
                 $currentDate_rep->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
                 
-                $update_arr = array();                
-                $update_arr['reply_deadline'] = $currentDate_rep->format('Y-m-d g:i A');
-                $update_arr['resolution_deadline'] = $currentDate_res->format('Y-m-d g:i A');
+                $update_arr = array();
+
+                if($reset_tkt == 1) {
+                    $update_arr['reply_deadline'] = $currentDate_rep->format('Y-m-d g:i A');
+                }
+                if($reset_tkt == 2) {
+                    $update_arr['resolution_deadline'] = $currentDate_res->format('Y-m-d g:i A');
+                }
+
+                if($reset_tkt == 3) {
+                    $update_arr['reply_deadline'] = $currentDate_rep->format('Y-m-d g:i A');
+                    $update_arr['resolution_deadline'] = $currentDate_res->format('Y-m-d g:i A');
+                }
+
+                
                 Tickets::where('id' , $tckt[0]['values']['id'])->update($update_arr);
             }
         }
