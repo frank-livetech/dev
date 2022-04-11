@@ -1251,19 +1251,19 @@ class MailController extends Controller
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == '1'){
-                            $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].'<span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].')</span> </p>';
                         }elseif($old_params[$dd]['id'] == '2'){
                             if($ticket['assignee_name'] == null && $old_params[$dd]["data"] == null) {
                                 $actions .= '<p><strong>Staff:</strong> Unassigned';
                             }else{
-                                $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' (was: '.($old_params[$dd]["data"] == null ? 'Unassigned' : $old_params[$dd]["data"]).')</p>';
+                                $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).'<span style="color:#A5A5A5"> (was: '.($old_params[$dd]["data"] == null ? 'Unassigned' : $old_params[$dd]["data"]).') </span> </p>';
                             }
                         }elseif($old_params[$dd]['id'] == '3'){
-                            $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span></p>';
                         }elseif($old_params[$dd]['id'] == '4'){
-                            $actions .= '<p><strong>Status:</strong> '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Status:</strong> '.$ticket['status_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span></p>';
                         }elseif($old_params[$dd]['id'] == '5'){
-                            $actions .= '<p><strong>Priority:</strong> '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Priority:</strong> '.$ticket['priority_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span></p>';
                         }
 
                     }
@@ -1272,23 +1272,23 @@ class MailController extends Controller
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == '1'){
-                            $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
                         }
                         elseif($old_params[$dd]['id'] == '2'){
                             if($ticket['assignee_name'] == null && $old_params[$dd]["data"] == null) {
                                 $actions .= '<p><strong>Staff:</strong> Unassigned';
                             }else{
-                                $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' (was: '.($old_params[$dd]["data"] == null ? 'Unassigned' : $old_params[$dd]["data"]).')</p>';
+                                $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' <span style="color:#A5A5A5"> (was: '.($old_params[$dd]["data"] == null ? 'Unassigned' : $old_params[$dd]["data"]).') </span></p>';
                             }
                         }elseif($old_params[$dd]['id'] == '3'){
-                            $actions .= '<p><strong>Type: </strong>'.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Type: </strong>'.$ticket['type_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
 
                         }elseif($old_params[$dd]['id'] == '4'){
-                            $actions .= '<p><strong>Status: </strong>'.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Status: </strong>'.$ticket['status_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span></p>';
 
                             
                         }elseif($old_params[$dd]['id'] == '5'){
-                            $actions .= '<p><strong>Priority: </strong>'.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Priority: </strong>'.$ticket['priority_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
                           
                         }
                     }                    
@@ -1307,23 +1307,23 @@ class MailController extends Controller
                     for($dd = 0 ; $dd < sizeof($old_params) ; $dd++){
 
                         if($old_params[$dd]['id'] == '1'){
-                            $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Department:</strong> '.$ticket['department_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
                         }
                         elseif($old_params[$dd]['id'] == '2'){
                             if($ticket['assignee_name'] == null && $old_params[$dd]["data"] == null) {
                                 $actions .= '<p><strong>Staff:</strong> Unassigned';
                             }else{
-                                $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' (was: '.($old_params[$dd]["data"] == null ? 'Unassigned' : $old_params[$dd]["data"]).')</p>';
+                                $actions .= '<p><strong>Staff:</strong> '.($ticket['assignee_name'] == null ? 'Unassigned' : $ticket['assignee_name']).' <span style="color:#A5A5A5"> (was: '.($old_params[$dd]["data"] == null ? 'Unassigned' : $old_params[$dd]["data"]).') </span> </p>';
                             }
                         }elseif($old_params[$dd]['id'] == '3'){
-                            $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Type:</strong> '.$ticket['type_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
 
                         }elseif($old_params[$dd]['id'] == '4'){
-                            $actions .= '<p><strong>Status:</strong> '.$ticket['status_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Status:</strong> '.$ticket['status_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
 
                             
                         }elseif($old_params[$dd]['id'] == '5'){
-                            $actions .= '<p><strong>Priority:</strong> '.$ticket['priority_name'].' (was: '.$old_params[$dd]["data"].')</p>';
+                            $actions .= '<p><strong>Priority:</strong> '.$ticket['priority_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
                           
                         }
 
