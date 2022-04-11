@@ -1534,13 +1534,13 @@ class MailController extends Controller
                 
                 $dt = explode('.', $slaPlan['due_deadline']);
                 $currentDate_res->addHours($dt[0]);
-                $currentDate_res->addSeconds(-10);
+                $currentDate_res->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_res->addMinutes($dt[1]);
                 
                 $currentDate_rep = new Carbon( now() , $tm_name);
                 $dt = explode('.', $slaPlan['reply_deadline']);
                 $currentDate_rep->addHours($dt[0]);
-                $currentDate_rep->addSeconds(-10);
+                $currentDate_rep->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
                 
                 $update_arr = array();                
