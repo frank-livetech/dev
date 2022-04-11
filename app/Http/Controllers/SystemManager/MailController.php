@@ -496,7 +496,7 @@ class MailController extends Controller
                                                 $is_closed = 1 ;    
                                             }
 
-                                            if($ticket->reply_deadline == 'cleared' && $ticket->resolution_deadline == 'cleared' && $ticket->status != $close_status->id) {
+                                            if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline == 'cleared') && $ticket->status != $close_status->id) {
                                                 $reset_tkt = 1;
                                             }
 
@@ -1724,7 +1724,7 @@ class MailController extends Controller
                     
                 }else{
                     $res = '';
-                    $template = str_replace('Resolution due:', $rep, $template); 
+                    $template = str_replace('Resolution due:', $res, $template); 
                 }
             }
             
