@@ -1196,7 +1196,7 @@ class MailController extends Controller
         if(empty($template)) {
             return '';
         }
- 
+
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
         }
@@ -1479,7 +1479,9 @@ class MailController extends Controller
             $tm_name = 'America/New_York';
         }
 
+
         if($reset_tkt != '') {
+
             $tckt = array_values(array_filter($data_list, function ($var) {
                 return ($var['module'] == 'Ticket');
             }));
@@ -1519,6 +1521,7 @@ class MailController extends Controller
                 Tickets::where('id' , $tckt[0]['values']['id'])->update($update_arr);
             }
         }
+
 
         if($action_name == 'ticket_cus_reply' || $action_name == 'cust_cron') {
             
@@ -1646,10 +1649,10 @@ class MailController extends Controller
                     $b = strtotime($rep_date);
                     $remain = $b - $a;
                     
-                    
-                    if(str_contains($remain, '-')) {
-                        
+                    $diff = $this->getDiff($b , $a);
 
+                    if(str_contains($diff[0], '-')) {
+                        
                         $rpd = Carbon::parse($ticket_reply_deadline);
 
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
@@ -1667,8 +1670,6 @@ class MailController extends Controller
                         
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
-
-                        $diff = $this->formatDateTime( $ab , new Carbon( Carbon::parse($ticket_reply_deadline) ) );
 
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                         $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
@@ -1718,7 +1719,10 @@ class MailController extends Controller
                     $b = strtotime($res_date);
                     $remain = $b - $a;
                     
-                    if(str_contains($remain, '-')) {
+                    $diff = $this->getDiff($b , $a);
+                    
+                    
+                    if(str_contains($diff[0], '-')) {
                         
 
                         $rd = Carbon::parse( $ticket_resolution_deadline );
@@ -1731,11 +1735,11 @@ class MailController extends Controller
                         } 
                         
                     }else{
-                        
+
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
-                        $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
+                        // $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
             
                         $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
@@ -1815,16 +1819,48 @@ class MailController extends Controller
     }
 
 
-    public function getDiff($futureDate , $currentDate) {
+       public function getDiff($futureDate , $currentDate) {
 
-        $difference=$futureDate- $currentDate;
-        $hours=($difference / 3600);
-        $minutes=($difference / 60 % 60);
-        $seconds=($difference % 60);
-        $days=($hours/24);
-        $hours=($hours % 24);
-        $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd '; 
-        $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
+        // $difference=$futureDate- $currentDate;
+        // $hours=($difference / 3600);
+        // $minutes=($difference / 60 % 60);
+        // $seconds=($difference % 60);
+        // $days=($hours/24);
+        // $hours=($hours % 24);
+        // $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd '; 
+        // $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
+    $diff=$futureDate- $currentDate;
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+        $hours = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24) / (60*60));
+        $minutes = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ 60);
+        $seconds = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60 - $minutes*60));
+
+        if($days == 0) {
+            $days = '';
+        }else{
+            $days = $days .'d ';
+        }
+
+        if($hours == 0) {
+            $hours = '';
+        }else{
+            $hours = $hours .'h ';
+        }
+
+        if($minutes == 0) {
+            $minutes = '';
+        }else{
+            $minutes = $minutes .'m ';
+        }
+
+
+        $remainTime = $days . $hours . $minutes . $seconds . 's';
+        
+        if($futureDate < $currentDate) {
+            $remainTime = '-';
+        }
         
         $color = '';
         if ( str_contains( $remainTime , 'd') ) { 
