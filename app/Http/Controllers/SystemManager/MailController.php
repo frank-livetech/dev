@@ -35,8 +35,8 @@ use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 use Illuminate\Support\Facades\URL;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -1817,15 +1817,48 @@ class MailController extends Controller
 
     public function getDiff($futureDate , $currentDate) {
 
-        $difference=$futureDate- $currentDate;
-        $hours=($difference / 3600);
-        $minutes=($difference / 60 % 60);
-        $seconds=($difference % 60);
-        $days=($hours/24);
-        $hours=($hours % 24);
-        $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd '; 
-        $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
+        // $hours=($difference / 3600);
+        // $minutes=($difference / 60 % 60);
+        // $seconds=($difference % 60);
+        // $days=($hours/24);
+        // $hours=($hours % 24);
+        // $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd '; 
+        // $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
+
+        $diff=$futureDate - $currentDate;
+       
+        $years = floor($diff / (365*60*60*24));
+        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+        $hours = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24) / (60*60));
+        $minutes = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ 60);
+        $seconds = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60 - $minutes*60));
+
+        if($days == 0) {
+            $days = '';
+        }else{
+            $days = $days .'d ';
+        }
+
+        if($hours == 0) {
+            $hours = '';
+        }else{
+            $hours = $hours .'h ';
+        }
+
+        if($minutes == 0) {
+            $minutes = '';
+        }else{
+            $minutes = $minutes .'m ';
+        }
+
+
+        $remainTime = $days . $hours . $minutes . $seconds . 's';
         
+        if($date2 < $date1) {
+            $remainTime = '-';
+        }
+
         $color = '';
         if ( str_contains( $remainTime , 'd') ) { 
             $color = '#8BB467';
