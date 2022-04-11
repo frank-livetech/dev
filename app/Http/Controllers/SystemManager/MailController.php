@@ -1781,6 +1781,8 @@ class MailController extends Controller
         }
 
         return html_entity_decode($template);
+
+        
     }
 
 
