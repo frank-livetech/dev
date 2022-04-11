@@ -1615,9 +1615,9 @@ class MailController extends Controller
                 $currentDate =strtotime( $dd );
                 $futureDate =strtotime( $rep );
 
-                $diff = $this->Difference($tm_name , $futureDate);
+                // $diff = $this->Difference($tm_name , $futureDate);
 
-                // $diff = $this->getDiff($futureDate , $currentDate);
+                $diff = $this->getDiff($futureDate , $currentDate);
                 
                 if( str_contains($diff[0] , '-') ) {
                     // $rep = '';
@@ -1670,8 +1670,8 @@ class MailController extends Controller
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
-                        $diff = $this->Difference($tm_name , strtotime($ab) );
-                        // $diff = $this->formatDateTime( $ab , new Carbon( Carbon::parse($ticket_reply_deadline) ) );
+                        // $diff = $this->Difference($tm_name , strtotime($ab) );
+                        $diff = $this->formatDateTime( $ab , new Carbon( Carbon::parse($ticket_reply_deadline) ) );
 
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                         $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
@@ -1696,8 +1696,8 @@ class MailController extends Controller
                 $currentDate = strtotime( $dd );
                 $futureDate = strtotime( $res );
                 
-                // $diff = $this->getDiff($futureDate , $currentDate);
-                $diff = $this->Difference($tm_name , $futureDate);
+                $diff = $this->getDiff($futureDate , $currentDate);
+                // $diff = $this->Difference($tm_name , $futureDate);
                 
                 if( str_contains($diff[0] , '-') ) {
                     $fr = $this->convertFormat($tp_date_format) . ' h:i a';
@@ -1739,9 +1739,9 @@ class MailController extends Controller
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
-                        $diff = $this->Difference($tm_name ,  strtotime($ab) );
+                        // $diff = $this->Difference($tm_name ,  strtotime($ab) );
 
-                        // $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
+                        $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
             
                         $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
