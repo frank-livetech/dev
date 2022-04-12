@@ -9,9 +9,10 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Company;
 use App\Models\Integrations;
+use App\Models\TicketNote;
+use App\Models\Tickets;
 use App\Models\TicketSettings;
 use App\Models\Tags;
-use App\Models\Tickets;
 use Illuminate\Support\Facades\File;
 use App\Models\SlaPlan;
 use Illuminate\Support\Facades\Hash;
@@ -440,10 +441,20 @@ class CompanyController extends Controller
         if($google_key === 0) $countries = DB::Table('countries')->get();
 
         $sla_plans = SlaPlan::where('sla_status',1)->where('is_deleted',0)->get(); 
-        
         $date_format = Session('system_date');
 
-        return view('customer_manager.company_lookup.companyprofile-new',compact('google','company','customer','tags','activity_logs', 'countries', 'is_default', 'google_key','sla_plans','company_staff', 'date_format'));
+
+        $notesCount = 0;
+        $customers = Customer::where('company_id', $id)->get();
+        foreach($customers as $customer) {
+            $customer_tickets = Tickets::where('customer_id' , $customer->id)->get();
+
+            foreach($customer_tickets as $ticket) {
+                $notesCount += TicketNote::where('ticket_id', $ticket->id)->where('type','User Organization')->count();
+            }
+        }
+
+        return view('customer_manager.company_lookup.companyprofile-new', get_defined_vars());
     }
 
     public function uploadCompanyImage(Request $request) {

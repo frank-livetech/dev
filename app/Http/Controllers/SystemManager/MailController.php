@@ -680,7 +680,7 @@ class MailController extends Controller
                                         
                                         try {
                                             $ticket = Tickets::where('id',$ticket->id)->first();
-                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email);
+                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email ,'','','','','','','');
                                         } catch(Throwable $e) {
                                             echo $e->getMessage();
                                         }

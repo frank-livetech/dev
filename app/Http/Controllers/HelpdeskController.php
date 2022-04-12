@@ -2699,25 +2699,51 @@ class HelpdeskController extends Controller
             $id = $request->id;
             $type = $request->type;
             if(!is_array($id)) $id = [$id];
+            
+            if($request->page) {
 
-            $notes = json_decode(DB::table('users')
-            ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
-            ->select('ticket_notes.*', 'users.name', 'users.profile_pic')
-            ->where('ticket_notes.is_deleted', 0)->whereIn('ticket_notes.ticket_id', $id)
-            ->where(function($q) {
-                return $q->where('ticket_notes.visibility', 'like', '%'.\Auth::user()->id.'%')->orWhere('ticket_notes.created_by', \Auth::user()->id);
-            })
-            ->when($request->has('type'), function($q) use($type) {
-                return $q->where('ticket_notes.type', $type);
-            })->orderBy('created_at', 'desc')
-            ->get(), true);
-    
-            foreach ($notes as $key => $value) {
-                $fwps = TicketFollowUp::where('is_deleted', 0)->where('id', $value['followup_id'])->first();
+                $customers = Customer::where('company_id', $request->company_id)->pluck('id');
+                if( count($customers) > 0) {
+
+                    $list = implode(',', $customers->toArray());
+                    $tk = Tickets::whereIn('customer_id' , explode(',',$list))->where('is_deleted',0)->pluck('id');
+                    
+                    if(count($tk) > 0) {
+
+                        $tk_id = implode(',', $tk->toArray());
+                        $notes = TicketNote::whereIn('ticket_id', explode(',',$tk_id) )->where('type','User Organization')->get();
+                        foreach($notes as $note) {
+                            $user = User::where('id',$note->created_by)->first();
+                            $note->name = $user->name;
+                            $note->profile_pic = $user->profile_pic;
+                        }
+
+                    }
+                }else{
+                    $notes = [];
+                }
+
+            }else{
+
+                $notes = json_decode(DB::table('users')
+                ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
+                ->select('ticket_notes.*', 'users.name', 'users.profile_pic')
+                ->where('ticket_notes.is_deleted', 0)->whereIn('ticket_notes.ticket_id', $id)
+                ->where(function($q) {
+                    return $q->where('ticket_notes.visibility', 'like', '%'.\Auth::user()->id.'%')->orWhere('ticket_notes.created_by', \Auth::user()->id);
+                })
+                ->when($request->has('type'), function($q) use($type) {
+                    return $q->where('ticket_notes.type', $type);
+                })->orderBy('created_at', 'desc')
+                ->get(), true);
         
-                $notes[$key]['followUp_date'] = null;
-                if(!empty($fwps)) {
-                    $notes[$key]['followUp_date'] = $fwps->date;
+                foreach ($notes as $key => $value) {
+                    $fwps = TicketFollowUp::where('is_deleted', 0)->where('id', $value['followup_id'])->first();
+            
+                    $notes[$key]['followUp_date'] = null;
+                    if(!empty($fwps)) {
+                        $notes[$key]['followUp_date'] = $fwps->date;
+                    }
                 }
             }
                

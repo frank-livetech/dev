@@ -61,7 +61,7 @@
 
     // When the user selects an address from the drop-down, populate the
     // address fields in the form.
-    autocomplete.addListener("place_changed", fillInAddress);
+    // autocomplete.addListener("place_changed", fillInAddress);
     // autocomplete1.addListener("place_changed", fillPaymentBillingFIelds);
     }
  
@@ -297,18 +297,19 @@
     }
 
     function get_ticket_notes() {
+        let company_id = $("#company_id").val();
         $.ajax({
             type: 'GET',
             url: "{{asset('/get-ticket-notes')}}",
             data: {
                 id: tkts_ids,
-                type: 'User Organization'
+                type: 'User Organization',
+                page :'companyprofile',
+                company_id : company_id,
             },
             success: function(data) {
                 if (data.success) {
-                    // $('#ticket_notes .card-body').html(`<div class="col-12 px-0 text-right">
-                    //     <button class="btn btn-success" data-target="#notes_manager_modal" data-toggle="modal"><i class="mdi mdi-plus-circle"></i> Add Note</button>
-                    // </div>`);
+
                     $('#ticket_notes .card-body').html('');
 
                     notes = data.notes;
@@ -369,8 +370,9 @@
 
                         }
 
-                        let flup = `<div class="col-12 p-2 my-2 d-flex" id="note-div-${notes[i].id}" style="background-color: ${notes[i].color}">
-                            <div class="pr-2">
+                        let flup = `
+                        <div class="col-12 rounded p-2 my-1 d-flex" id="note-div-${notes[i].id}" style="background-color:${notes[i].color != null ? notes[i].color : 'rgb(255, 230, 177)'}">
+                            <div style="margin-right: 10px; margin-left: -8px;">
                                 ${user_img}
                             </div>
                             <div class="w-100">
@@ -378,7 +380,9 @@
                                     <h5 class="note-head">Original Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span> </h5>
                                     ${autho}
                                 </div>
-                                <p class="note-details">${notes[i].note}</p>
+                                <p class="col" style="word-break:break-all">
+                                    ${notes[i].note != null ? notes[i].note : ''}
+                                </p>
                             </div>
                         </div>`;
 
@@ -482,7 +486,6 @@
                 ticketsList = data.tickets;
 
                 tkts_ids = ticketsList.map(a => a.id);
-                get_ticket_notes();
             }
         });
     }
@@ -887,7 +890,7 @@
         orders_table_list = $('#customer_order_table').DataTable();
         $('#customer_subscription').DataTable();
         users_table_list = $('#user-table-list').DataTable();
-        get_users_table_list();
+        // get_users_table_list();
         assets_table_list = $('#assets_table_list').DataTable();
         //get_assets_table_list();
             
