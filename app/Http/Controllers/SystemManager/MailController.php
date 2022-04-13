@@ -566,10 +566,11 @@ class MailController extends Controller
     
                                         $repliesSaved = true;
                                         // echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT "Re: '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
-                                         echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
-        
+                                        echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
+                                        
+                                        $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $fullname;
 
-                                        $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
+                                        // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
                                         $log = new ActivitylogController();
                                         // $log->saveActivityLogs('Tickets' , 'ticket_replies' , $rep->id , auth()->id() , $action_perform);
                                         $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $rep->id , 0 , $action_perform);
