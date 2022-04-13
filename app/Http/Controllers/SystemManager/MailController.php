@@ -1565,11 +1565,8 @@ class MailController extends Controller
 
             $ticket = Tickets::where('id' , $tckt[0]['values']['id'])->first()->toArray();
                         
-            
-            
             $ticket_reply_deadline = empty($ticket['reply_deadline']) ? null : $ticket['reply_deadline'];
             $ticket_resolution_deadline = empty($ticket['resolution_deadline']) ? null : $ticket['resolution_deadline'];
-    
 
             if(sizeof($tckt) > 0) {
                 $helpd = new HelpdeskController();
@@ -1621,10 +1618,6 @@ class MailController extends Controller
                 $diff = $this->getDiff($futureDate , $currentDate);
                 
                 if( str_contains($diff[0] , '-') ) {
-                    // $rep = '';
-                    // if(str_contains($template, 'Reply due:')) {
-                    //     $template = str_replace('Reply due:', '' , $template);
-                    // }
                     $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                     $rep = '<span style="color: red  !important">' . $rep->format( $fr ) . ' (Overdue)' . '</span>';
                 }else{
@@ -1756,7 +1749,6 @@ class MailController extends Controller
                 }
             }
             
-            
             $template = str_replace('{Ticket-SLA}', $sla, $template);
             $template = str_replace('{Ticket-Reply-Due}', $rep, $template);
             $template = str_replace('{Ticket-Resolution-Due}', ($res != '' ? $res . '<hr>' : '') , $template);
@@ -1819,7 +1811,7 @@ class MailController extends Controller
     }
 
 
-       public function getDiff($futureDate , $currentDate) {
+    public function getDiff($futureDate , $currentDate) {
 
         // $difference=$futureDate- $currentDate;
         // $hours=($difference / 3600);
@@ -1829,7 +1821,8 @@ class MailController extends Controller
         // $hours=($hours % 24);
         // $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd '; 
         // $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
-    $diff=$futureDate- $currentDate;
+        $diff = ($futureDate- $currentDate)  - 1;
+        // return dd($diff);
         $years = floor($diff / (365*60*60*24));
         $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
         $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
@@ -1854,7 +1847,6 @@ class MailController extends Controller
         }else{
             $minutes = $minutes .'m ';
         }
-
 
         $remainTime = $days . $hours . $minutes . $seconds . 's';
         
