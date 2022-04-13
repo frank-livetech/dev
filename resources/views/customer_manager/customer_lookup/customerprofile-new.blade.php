@@ -292,7 +292,7 @@
                         </li>
     
                         <li class="nav-item">
-                            <a class="nav-link" id="pills-tickets-tab" data-bs-toggle="pill" href="#tickets" role="tab"
+                            <a class="nav-link loadTickets" id="pills-tickets-tab" data-bs-toggle="pill" href="#tickets" role="tab"
                                 aria-controls="pills-tickets" aria-selected="false">Tickets</a>
                         </li>
     
@@ -307,7 +307,7 @@
                         </li> -->
     
                         <li class="nav-item">
-                            <a class="nav-link" id="pills-assets-tab" data-bs-toggle="pill" href="#assets" role="tab"
+                            <a class="nav-link loadAssets" id="pills-assets-tab" data-bs-toggle="pill" href="#assets" role="tab"
                                 aria-controls="pills-assets" aria-selected="false">Assets</a>
                         </li>
     
@@ -330,7 +330,11 @@
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" onclick="getNotes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes <span id="notes_count"> </span> </a>
+                            <a class="nav-link" onclick="getNotes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes 
+                            @if($notesCount != 0)
+                            <span id="notes_count" class="badge bg-light-danger bg-light-warning mx-1"> {{$notesCount}} </span> 
+                            @endif
+                        </a>
                         </li>
     
                         <li class="nav-item">
@@ -2342,15 +2346,13 @@
 <!-- jQuery ui files-->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-<!-- <script src="{{asset('public/js/help_desk/asset_manager/template.js').'?ver='.rand()}}"></script> -->
+
 @include('js_files.help_desk.asset_manager.templateJs')
 @include('js_files.help_desk.asset_manager.actionsJs')
 @include('js_files.help_desk.asset_manager.assetJs')
-<!-- <script src="{{asset('public/js/help_desk/asset_manager/actions.js').'?ver='.rand()}}"></script> -->
-<!-- <script src="{{asset('public/js/help_desk/asset_manager/asset.js').'?ver='.rand()}}"></script> -->
-<!-- <script src="{{asset('public/js/customer_manager/customer_lookup/customerCard.js').'?ver='.rand()}}"></script> -->
-<link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/countdown/countdown.css')}}" />
-<script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
+
+<!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/countdown/countdown.css')}}" />
+<script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script> -->
 
 @include('js_files.customer_lookup.customerprofileJs')
 
@@ -2365,9 +2367,9 @@
         }
     };
 
-    // let ticketsList = [];
-    // let get_tickets_route = "{{asset('/get-tickets')}}";
-    // let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
-    // let ticket_details_route = "{{asset('/ticket-details')}}";
+    $('.loadAssets').click(function() {
+        getFormsTemplates();
+        get_asset_table_list();
+    });
 </script>
 @endsection

@@ -427,20 +427,20 @@ window.colors = {
       $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
     }
   } else {
-    i18next.use(window.i18nextXHRBackend).init(
-      {
-        debug: false,
-        fallbackLng: 'en',
-        backend: {
-          loadPath: assetPath + 'data/locales/{{lng}}.json'
-        },
-        returnObjects: true
-      },
-      function (err, t) {
-        // resources have been loaded
-        jqueryI18next.init(i18next, $);
-      }
-    );
+    // i18next.use(window.i18nextXHRBackend).init(
+    //   {
+    //     debug: false,
+    //     fallbackLng: 'en',
+    //     backend: {
+    //       loadPath: assetPath + 'data/locales/{{lng}}.json'
+    //     },
+    //     returnObjects: true
+    //   },
+    //   function (err, t) {
+    //     // resources have been loaded
+    //     jqueryI18next.init(i18next, $);
+    //   }
+    // );
 
     // change language according to data-language of dropdown item
     $('.dropdown-language .dropdown-item').on('click', function () {

@@ -3147,9 +3147,11 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
+
     // is_closed for when ticket is closed and customer reply from third party.... then its store today datetime to reply_due & resolution_due
     // reset_tkt for when reply_due & resolution_due is cleared and customer reply from third party... then its store today datetime to reply_due & resolution_due
     public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '',$flwup_updated = '' , $is_closed = '' , $reset_tkt = '') {
+
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -3340,7 +3342,9 @@ class HelpdeskController extends Controller
 
             }else{
                 
+
                 $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt);
+
             }
 
             $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt);
@@ -3355,12 +3359,11 @@ class HelpdeskController extends Controller
                     // this is a reply
                     // $subject = 'Re: '.$subject;
                 }
-
+                
                 if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
                     if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
                 }
             }
-
             if($send_detail == 1){
                 $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
                 $reply_content= $ticket['ticket_detail'];
@@ -3421,10 +3424,9 @@ class HelpdeskController extends Controller
                 if($sendingMailServer->outbound == 'yes' || $action_name == "ticket_reply") {
                     // if(!empty($tech)) $users_list[] = $tech->attributesToArray();
                     // echyo "dfs";
-                    // dd($users_list);exit;
+                     
                     if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param);
                 }
-                // dd($users_list);exit;
                 $allwd_users = [];
 
                 try {

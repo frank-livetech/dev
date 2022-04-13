@@ -12,6 +12,7 @@ use App\Models\TicketType;
 use App\Models\CustomerType;
 use App\Models\TicketStatus;
 use App\Models\TicketSettings;
+use App\Models\TicketNote;
 use App\Models\Customer;
 use App\Models\Company;
 use App\CompanyActivityLog;
@@ -494,6 +495,12 @@ class CustomerlookupController extends Controller
         $date_format = Session('system_date');
 
         $customers = Customer::where('id','!=', $customer_id)->select('email')->get()->toArray();
+
+        $notesCount = 0;
+        $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0]])->get();
+        foreach($tickets as $ticket) {
+            $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User']])->count();
+        }
 
         return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
     }

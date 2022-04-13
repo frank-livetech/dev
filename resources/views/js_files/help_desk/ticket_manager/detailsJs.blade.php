@@ -1719,17 +1719,19 @@ function publishReply(ele, type = 'publish') {
                         $("#dropD ").find(".select2").hide();
                         $("#dropD ").find("h5").show();
 
+                        let item = updates_Arr.filter(item => item.id === 4);
+                        if(item.length != 0) {
 
-                        let item = updates_Arr.find(item => item.id == 4);
-                        if(item != null) {
-                            if(item.new_text == 'Closed') {
+                            let close = 'Closed';
+                            let result = item[0].new_text.localeCompare(close);
+                            if(result == 0) {
                                 $("#sla_reply_due").hide();
                                 $("#sla_res_due").hide();
-                            }
 
-                            if(ticket != null) {
-                                ticket.reply_deadline = 'cleared';
-                                ticket.resolution_deadline = 'cleared';
+                                if(ticket != null) {
+                                    ticket.reply_deadline = 'cleared';
+                                    ticket.resolution_deadline = 'cleared';  
+                                }
                             }
                         }
 
