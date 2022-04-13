@@ -2205,6 +2205,10 @@ function getTicketFollowUp() {
 
                 if(follow_up_count  != 0) {
                     $('.followup_count').text(follow_up_count);
+                    $('.followup_count').addClass('badge badge-light-danger rounded-pill ms-1');
+                }else{
+                    $('.followup_count').text('');
+                    $('.followup_count').removeClass('badge badge-light-danger rounded-pill ms-1');
                 }
                 
 
@@ -2559,7 +2563,7 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
                 // refresh logs
                 getLatestLogs();
 
-                // getTicketFollowUp();
+                getTicketFollowUp();
                 // get_ticket_notes();
                 // getTicketReplies(ticket.id)
 
