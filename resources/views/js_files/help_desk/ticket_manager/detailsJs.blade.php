@@ -18,6 +18,8 @@ let updates_Arr = [];
 // var ticket_attach_path = `{{asset('public/files')}}`;
 // var ticket_attach_path_search = 'public/files';
 
+let reply_flag = 0;
+
 var ticket_attach_path = `{{asset('storage')}}`;
 var ticket_attach_path_search = 'storage';
 let check_followup = [];
@@ -1797,7 +1799,8 @@ function publishReply(ele, type = 'publish') {
 }
 
 function composeReply() {
-    
+
+    reply_flag = 1;
     $("#update_ticket").hide();
 
     $('.reply_btns').attr('style', 'display: block !important');
@@ -1838,6 +1841,8 @@ function editReply(rindex) {publishReply(this)
 }
 
 function cancelReply() {
+
+    reply_flag = 0;
 
     var priority =  $("#prio-label").find(".select2 option:selected").text();
     var dep =  $("#dep-label").find(".select2 option:selected").text();
@@ -1898,6 +1903,7 @@ $('#dept_id').change(function() {
         }
         return false;
     }
+    console.log(update_flag , "update_flag");
     update_flag++;
     var obj = {};
     obj = {
@@ -1920,7 +1926,9 @@ $('#dept_id').change(function() {
 
     console.log(updates_Arr , "updates_Arr department_name");
 
-    $("#update_ticket").css("display", "block");
+    if(reply_flag == 0) {
+        $("#update_ticket").css("display", "block");
+    }
   
     showDepartStatus(dept_id , 'nochange');
 });
@@ -1941,6 +1949,7 @@ $('#assigned_to').change(function() {
         }
         return false;
     }
+    console.log(update_flag , "update_flag");
 
     update_flag++;
     var obj = {};
@@ -1963,13 +1972,14 @@ $('#assigned_to').change(function() {
     }
 
     console.log(updates_Arr , "updates_Arr assignee_name");
-    $("#update_ticket").css("display", "block");
+    if(reply_flag == 0) {
+        $("#update_ticket").css("display", "block");
+    }
    
 });
 
 $('#type').change(function() {
     var type = $(this).val();
-
     // no change to do update
     if (type == ticket.type){
         updates_Arr = $.grep(updates_Arr, function(e){ 
@@ -1983,7 +1993,7 @@ $('#type').change(function() {
         }
         return false;
     }
-
+    console.log(update_flag , "update_flag");
     update_flag++;
     var obj = {};
     obj = {
@@ -2006,7 +2016,10 @@ $('#type').change(function() {
     }
 
     console.log(updates_Arr , "updates_Arr type");
-    $("#update_ticket").css("display", "block");
+    if(reply_flag == 0) {
+        $("#update_ticket").css("display", "block");
+    }
+    
     
 });
 
@@ -2028,7 +2041,7 @@ $('#status').change(function() {
         }
         return false;
     }
-
+    console.log(update_flag , "update_flag");
     update_flag++;
     var obj = {};
     obj = {
@@ -2050,7 +2063,9 @@ $('#status').change(function() {
         updates_Arr.push(obj);
     }
     console.log(updates_Arr , "updates_Arr status");
-    $("#update_ticket").css("display", "block");
+    if(reply_flag == 0) {
+        $("#update_ticket").css("display", "block");
+    }
 
 });
 
@@ -2071,6 +2086,8 @@ $('#priority').change(function() {
         }
         return false;
     }
+    
+    console.log(update_flag , "update_flag");
 
     update_flag++;
     var obj = {};
@@ -2093,7 +2110,9 @@ $('#priority').change(function() {
         updates_Arr.push(obj);
     }
     console.log(updates_Arr , "updates_Arr priority");
-    $("#update_ticket").css("display", "block");    
+    if(reply_flag == 0) {
+        $("#update_ticket").css("display", "block");
+    }    
 });
 
 function updateTicket(){
@@ -3530,7 +3549,8 @@ function showDepartStatus(value , type) {
 
                 $("#status").html(select + option);
 
-                if (dept_id == ticket.dept_id){
+                console.log(value +'========'+ticket.dept_id)
+                if (value == ticket.dept_id){
                     updates_Arr = $.grep(updates_Arr, function(e){ 
                         return e.id != 1; 
                     });
@@ -3551,7 +3571,10 @@ function showDepartStatus(value , type) {
                 
                 select = `<option value="">Unassigned</option>`;
                 $('#tech-h5').text('Unassigned');
-                $("#update_ticket").show();
+                if(reply_flag == 0) {
+                    $("#update_ticket").css("display", "block");
+                }
+                
 
                 let assigned_to = $('#assigned_to').val();
                 let ass_obj = {};
