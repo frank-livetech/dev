@@ -2887,8 +2887,32 @@ class HelpdeskController extends Controller
                 $assoc_plan->save();
             }
 
-            $ticket->reply_deadline = null;
-            $ticket->resolution_deadline = null;
+            $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+            $tm_name = '';
+            if($timezone) {
+                $tm_name = $timezone->sys_value != null ? $timezone->sys_value : 'America/New_York';
+            }else{
+                $tm_name = 'America/New_York';
+            }
+
+            $rep_date = new Carbon( now() , $tm_name);
+            $res_date = new Carbon( now() , $tm_name);
+
+
+            if($sla_plan->reply_deadline == null && $sla_plan->due_deadline == null) {
+
+                $rep = TicketSettings::where('tkt_key','default_reply_time_deadline')->first();
+                $res = TicketSettings::where('tkt_key','default_resolution_deadline')->first();
+
+                $ticket->reply_deadline = $rep_date->addHours($rep->tkt_value)->addSeconds(-20)->format('Y-m-d g:i A');
+                $ticket->resolution_deadline = $res_date->addHours($res->tkt_value)->addSeconds(-20)->format('Y-m-d g:i A');
+
+            }else{
+                $ticket->reply_deadline = $rep_date->addHours($sla_plan->reply_deadline)->addSeconds(-20)->format('Y-m-d g:i A');
+                $ticket->resolution_deadline = $res_date->addHours($sla_plan->due_deadline)->addSeconds(-20)->format('Y-m-d g:i A');
+
+            }
+
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
