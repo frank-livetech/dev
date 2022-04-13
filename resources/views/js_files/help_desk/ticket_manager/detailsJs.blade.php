@@ -366,7 +366,6 @@ function setSlaPlanDeadlines(ret = false) {
     let endtime = moment('2022-03-08 12:23 PM').format('YYYY-MM-DD hh:mm A');
 
 
-
     if(ticket != null) {
 
         if(ticket.reply_deadline == null) {
@@ -377,7 +376,7 @@ function setSlaPlanDeadlines(ret = false) {
             if (res_due) $('#sla-res_due').html(res_due.replace("60m", "59m"));
         }
 
-        resetable = false;
+        // resetable = false;
         if(ticket.reply_deadline != null){
             
             let rep_diff = ``;
