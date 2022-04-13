@@ -541,6 +541,8 @@ class MailController extends Controller
                                         if(!empty($sid)) {
                                           
                                             $fullname = $staff->name;
+                                            $name_link = '<a href="'.url('profile').'/' . $staff->id .'">'. $fullname .'</a>';
+
                                             $user = $staff;
                                             $ticket->assigned_to = $sid;
                                             $ticket->save();
@@ -556,6 +558,7 @@ class MailController extends Controller
                                         if(!empty($cid)) {
                                             
                                             $fullname = $customer->first_name.' '.$customer->last_name;
+                                            $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
                                             $user = $customer;
                                             try {
                                                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt );
@@ -568,7 +571,7 @@ class MailController extends Controller
                                         // echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT "Re: '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
                                         echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
                                         
-                                        $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $fullname;
+                                        $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
 
                                         // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
                                         $log = new ActivitylogController();
