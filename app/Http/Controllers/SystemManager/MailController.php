@@ -680,7 +680,7 @@ class MailController extends Controller
                                         
                                         try {
                                             $ticket = Tickets::where('id',$ticket->id)->first();
-                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1);
+                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1,'','','','','');
                                         } catch(Throwable $e) {
                                             echo $e->getMessage();
                                         }
@@ -1750,7 +1750,7 @@ class MailController extends Controller
             }
             
 
-            
+
             $template = str_replace('{Ticket-SLA}', $sla, $template);
             $template = str_replace('{Ticket-Reply-Due}', $rep, $template);
             $template = str_replace('{Ticket-Resolution-Due}', ($res != '' ? $res . '<hr>' : '') , $template);
