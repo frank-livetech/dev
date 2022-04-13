@@ -2699,51 +2699,25 @@ class HelpdeskController extends Controller
             $id = $request->id;
             $type = $request->type;
             if(!is_array($id)) $id = [$id];
-            
-            if($request->page) {
 
-                $customers = Customer::where('company_id', $request->company_id)->pluck('id');
-                if( count($customers) > 0) {
-
-                    $list = implode(',', $customers->toArray());
-                    $tk = Tickets::whereIn('customer_id' , explode(',',$list))->where('is_deleted',0)->pluck('id');
-                    
-                    if(count($tk) > 0) {
-
-                        $tk_id = implode(',', $tk->toArray());
-                        $notes = TicketNote::whereIn('ticket_id', explode(',',$tk_id) )->where('type','User Organization')->get();
-                        foreach($notes as $note) {
-                            $user = User::where('id',$note->created_by)->first();
-                            $note->name = $user->name;
-                            $note->profile_pic = $user->profile_pic;
-                        }
-
-                    }
-                }else{
-                    $notes = [];
-                }
-
-            }else{
-
-                $notes = json_decode(DB::table('users')
-                ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
-                ->select('ticket_notes.*', 'users.name', 'users.profile_pic')
-                ->where('ticket_notes.is_deleted', 0)->whereIn('ticket_notes.ticket_id', $id)
-                ->where(function($q) {
-                    return $q->where('ticket_notes.visibility', 'like', '%'.\Auth::user()->id.'%')->orWhere('ticket_notes.created_by', \Auth::user()->id);
-                })
-                ->when($request->has('type'), function($q) use($type) {
-                    return $q->where('ticket_notes.type', $type);
-                })->orderBy('created_at', 'desc')
-                ->get(), true);
+            $notes = json_decode(DB::table('users')
+            ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
+            ->select('ticket_notes.*', 'users.name', 'users.profile_pic')
+            ->where('ticket_notes.is_deleted', 0)->whereIn('ticket_notes.ticket_id', $id)
+            ->where(function($q) {
+                return $q->where('ticket_notes.visibility', 'like', '%'.\Auth::user()->id.'%')->orWhere('ticket_notes.created_by', \Auth::user()->id);
+            })
+            ->when($request->has('type'), function($q) use($type) {
+                return $q->where('ticket_notes.type', $type);
+            })->orderBy('created_at', 'desc')
+            ->get(), true);
+    
+            foreach ($notes as $key => $value) {
+                $fwps = TicketFollowUp::where('is_deleted', 0)->where('id', $value['followup_id'])->first();
         
-                foreach ($notes as $key => $value) {
-                    $fwps = TicketFollowUp::where('is_deleted', 0)->where('id', $value['followup_id'])->first();
-            
-                    $notes[$key]['followUp_date'] = null;
-                    if(!empty($fwps)) {
-                        $notes[$key]['followUp_date'] = $fwps->date;
-                    }
+                $notes[$key]['followUp_date'] = null;
+                if(!empty($fwps)) {
+                    $notes[$key]['followUp_date'] = $fwps->date;
                 }
             }
                
@@ -3173,9 +3147,11 @@ class HelpdeskController extends Controller
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
+
     // is_closed for when ticket is closed and customer reply from third party.... then its store today datetime to reply_due & resolution_due
     // reset_tkt for when reply_due & resolution_due is cleared and customer reply from third party... then its store today datetime to reply_due & resolution_due
     public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '',$flwup_updated = '' , $is_closed = '' , $reset_tkt = '') {
+
         try {
             /*********** dept mail for email notification ***************/
             $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -3366,7 +3342,9 @@ class HelpdeskController extends Controller
 
             }else{
                 
+
                 $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt);
+
             }
 
             $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt);
@@ -3381,12 +3359,11 @@ class HelpdeskController extends Controller
                     // this is a reply
                     // $subject = 'Re: '.$subject;
                 }
-
+                
                 if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
                     if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
                 }
             }
-
             if($send_detail == 1){
                 $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
                 $reply_content= $ticket['ticket_detail'];
@@ -3447,10 +3424,9 @@ class HelpdeskController extends Controller
                 if($sendingMailServer->outbound == 'yes' || $action_name == "ticket_reply") {
                     // if(!empty($tech)) $users_list[] = $tech->attributesToArray();
                     // echyo "dfs";
-                    // dd($users_list);exit;
+                     
                     if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param);
                 }
-                // dd($users_list);exit;
                 $allwd_users = [];
 
                 try {

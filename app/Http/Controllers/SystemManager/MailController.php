@@ -290,7 +290,7 @@ class MailController extends Controller
                     imap_alerts();
                     continue;
                 }
-
+                
                 $helpDesk = new HelpdeskController();
 
                 foreach ($mails as $key => $message) {
@@ -465,10 +465,10 @@ class MailController extends Controller
                                         $html_reply = str_replace("[/img]"," \>",$html_reply);
                                         $html_reply = str_replace(array("\n", "\r"), '', $html_reply);
                                         $email_reply = str_replace('\r\n', "", $html_reply);
-                                        $email_reply = str_replace('//', "", $email_reply);
+                                        $email_reply = str_replace('//', "<br />", $email_reply);
                                         
-                                        $email_reply = str_replace('<br />', "", $email_reply);
-                                        $email_reply =  $bbcode->convertToHtml($email_reply);   
+                                        // $email_reply = str_replace('<br />', "", $email_reply);
+                                        $email_reply =  $bbcode->convertToHtml($html_reply);   
                                         $email_reply = nl2br($email_reply);
                                         
                                         $data = array(
@@ -680,7 +680,7 @@ class MailController extends Controller
                                         
                                         try {
                                             $ticket = Tickets::where('id',$ticket->id)->first();
-                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email ,'','','','','','','');
+                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1);
                                         } catch(Throwable $e) {
                                             echo $e->getMessage();
                                         }
@@ -691,7 +691,6 @@ class MailController extends Controller
                              
                         }
                     }
-                    //  dd('before delete');exit;
                     imap_delete($imap, $message);
                 }
 
@@ -1225,7 +1224,8 @@ class MailController extends Controller
                 // }
                 
                 if($template_code == 'auto_res_ticket_reply'){
-                    $reply_content = $reply_content;
+                    // $reply_content = $reply_content;
+                    $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else{
                     if($action_name == 'Ticket Followup'){
                         $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
@@ -1943,10 +1943,13 @@ class MailController extends Controller
                 }
                 if(str_contains($template, '{Initial-Request}')) {
                     if(array_key_exists('ticket_detail', $data['values'])) {
+                        $bbcode = new BBCode();
                         
                         $content = preg_replace("/<img[^>]+\>/i", " ", $data['values']['ticket_detail']); 
-                        $content = nl2br($content);
+                        $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
+                        $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
                         
+                        $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
                     }
                 }
