@@ -1749,7 +1749,6 @@ class MailController extends Controller
                 }
             }
             
-            return dd($rep);
             $template = str_replace('{Ticket-SLA}', $sla, $template);
             $template = str_replace('{Ticket-Reply-Due}', $rep, $template);
             $template = str_replace('{Ticket-Resolution-Due}', ($res != '' ? $res . '<hr>' : '') , $template);
