@@ -1505,7 +1505,7 @@ br + br { display: none; }
                             <div class="col-md-12">
                                 <label class="form-label" for="select2-basic">Select Customer</label>
                                 <select class="select2 form-select" id="tkt_all_customers" onchange="ticketCustomer.select_customer(this.value)">
-                                    <option value ="">Select Cusotmer</option>
+                                    <option value ="">Select Customer</option>
                                     @foreach($all_customers as $customer)
                                         @php
                                             $company_name = $customer->company == null ? 'Company not provided' : ($customer->company->name != null ? $customer->company->name : 'Company not provided');

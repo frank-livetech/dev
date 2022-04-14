@@ -378,7 +378,7 @@ function setSlaPlanDeadlines(ret = false) {
             if (res_due) $('#sla-res_due').html(res_due.replace("60m", "59m"));
         }
 
-        // resetable = false;
+        resetable = false;
         if(ticket.reply_deadline != null){
             
             let rep_diff = ``;
@@ -1705,6 +1705,9 @@ function publishReply(ele, type = 'publish') {
                 enctype: 'multipart/form-data',
                 cache: false,
                 success: function(data) {
+
+                    reply_flag = 0;
+
                     var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
                     new_date =  moment(new_date).format(date_format + ' ' +'hh:mm A');
                     $("#updation-date").html(new_date);
@@ -3488,10 +3491,20 @@ function getLatestLogs() {
                 
                 var obj = data.logs;
 
+                let id = "{{$details->coustom_id}}";
+
+                let newLogs = $.grep(obj , function(item , index) {
+                    if(item.action_perform != null || item.action_perform != '') {
+                        if(item.action_perform.includes(id)) {
+                            return item;
+                        }
+                    }
+                });
+
                 $('#ticket-logs-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#ticket-logs-list').DataTable({
-                    data: obj,
+                    data: newLogs,
                     "pageLength": 10,
                     "bInfo": false,
                     "paging": true,
