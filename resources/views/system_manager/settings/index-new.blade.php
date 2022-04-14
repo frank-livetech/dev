@@ -300,13 +300,13 @@
                                     <label class="custom-control-label" for="email_outbound">Email Outbound</label>
                                 </div>
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-6 form-group mt-1">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="form-check-input" id="autosend_ticket">
                                     <label class="custom-control-label" for="autosend_ticket">Do not send new ticket autoresponder</label>
                                 </div>
                             </div>
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-6 form-group mt-1">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="form-check-input" id="is_dept_default">
                                     <label class="custom-control-label" for="is_dept_default">Set as default</label>
