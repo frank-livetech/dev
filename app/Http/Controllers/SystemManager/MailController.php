@@ -486,6 +486,22 @@ class MailController extends Controller
                                         $reset_tkt = 0;
                                         if(!empty($sid)) {
                                             $data["user_id"] = $sid;
+
+                                            if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
+                                                $reset_tkt = 1;
+                                            }
+
+                                            if( ( $ticket->resolution_deadline == 'cleared' || $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                $reset_tkt = 2;
+                                            }
+
+                                            if( ( $ticket->resolution_deadline == 'cleared' && $ticket->reply_deadline == 'cleared' ) && $ticket->status != $close_status->id) {
+                                                $reset_tkt = 3;
+                                            }
+
+                                            if( ( $ticket->resolution_deadline != 'cleared' && $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                $reset_tkt = 1;
+                                            }
                                         }
                                         
                                         if(!empty($cid)) {
@@ -495,7 +511,6 @@ class MailController extends Controller
                                             if($ticket->status == $close_status->id) {
                                                 $is_closed = 1 ;    
                                             }
-
 
                                             if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
                                                 $reset_tkt = 1;

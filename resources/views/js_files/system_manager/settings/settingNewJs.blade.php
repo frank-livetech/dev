@@ -3296,7 +3296,7 @@ function save_pop3_mail() {
 
     $.ajax({
         type: "POST",
-        url: save_mail_route,
+        url: "{{url('save-mail')}}",
         data: form_data,
         beforeSend: function() {
             $('#mail-form').closest('.modal-body').find('.btn').attr('disabled', true);
@@ -3443,7 +3443,7 @@ function verify_save_pop3_mail() {
     $.ajax({
 
         type: "POST",
-        url: save_mail_route,
+        url: "{{url('save-mail')}}",
         data: {
             verify: 'yes',
             mail_queue_address: mail_queue_address,
