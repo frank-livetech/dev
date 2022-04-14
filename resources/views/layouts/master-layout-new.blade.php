@@ -115,6 +115,9 @@
             justify-content: center;
             align-items: center;
         }
+        a {
+            text-decoration: none !important;
+        }
     </style>
 
     @stack('css')
