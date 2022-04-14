@@ -2806,8 +2806,10 @@ function getEmailByID(id) {
 
             if (data.is_enabled == "yes") {
                 $("#edit_is_enabled").prop("checked", true);
+                $("#edit_is_enabled_text").html("<span class='text-success'>enabled</span>");
             } else {
                 $("#edit_is_enabled").prop("checked", false);
+                $("#edit_is_enabled_text").html("<span class='text-danger'>disabled</span>");
             }
 
 
