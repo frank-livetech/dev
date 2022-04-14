@@ -3032,7 +3032,7 @@ function updateEmailQueue() {
 
     $.ajax({
         type: "POST",
-        url: update_email,
+        url: "{{url('update_email')}}",
         data: form_data,
         success: function(data) {
             console.log(data);

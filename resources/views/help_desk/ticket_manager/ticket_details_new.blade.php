@@ -467,8 +467,8 @@ br + br { display: none; }
                                 <div class="mail-items">
                                     <h3 class="mb-0">
                                         
-                                    <h4><img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> Initial Request </h4> &nbsp;&nbsp;
-                                        <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
+                                    <h4><img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> Initial Request &nbsp;&nbsp;
+                                        <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span></h4> 
                                         <a onClick="hung()" title="View Details" style="position:absolute;right:62px;cursor:pointer;">
                                             <i data-feather='maximize'></i>
                                         </a>
