@@ -1,5 +1,6 @@
 @extends('layouts.master-layout-new')
 @section('Help Desk','open')
+@section('title', 'Ticket-Manager')
 @section('body')
 <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 <style>
@@ -53,40 +54,9 @@
     table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
         display:none;
     }
-    /* table th, td{
-        padding-top: 5px !important; 
-        padding-bottom: 5px !important; 
-    }
-    table td{
-        padding-top: 0px !important; 
-        padding-bottom: 0px !important; 
-    } */
-    /* #ticket-table-list td {
-        min-width: 60px;
-        padding-right:0;
-    } */
-    
-    /* #ticket-table-list td:nth-child(1), td:nth-child(2) {
-        min-width: 20px !important;
-        max-width: 20px !important;
-    } */
-    /* .row-flex-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        align-items: center;
-        width: 100%;
-        margin-top: 1.5rem;
-    } */
-    /* #ticket-table-list_length label, #ticket-table-list_filter label {
-        display:inline-flex;
-    } */
     .select2-container .select2-selection--single .select2-selection__rendered {
         padding-right: 60px !important;
     }
-
-
-
 
     #dropD {
     padding-left: 15px;

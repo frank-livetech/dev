@@ -1,5 +1,6 @@
 @extends('layouts.master-layout-new')
 @section('Live Support Chat','active')
+@section('title', 'Chat')
 @section('body')
 @php
 $file_path = Session::get('is_live') == 1 ? 'public/' : '/';

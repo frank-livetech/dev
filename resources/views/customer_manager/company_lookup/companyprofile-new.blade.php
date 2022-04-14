@@ -1,5 +1,7 @@
 @extends('layouts.master-layout-new')
 
+@section('title', 'Company Profile | ' . $company->name)
+
 @section('customtheme')
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap" rel="stylesheet">
 
