@@ -487,6 +487,8 @@ class MailController extends Controller
                                         if(!empty($sid)) {
                                             $data["user_id"] = $sid;
 
+                                            $close_status = TicketStatus::where('name','Closed')->first();
+
                                             if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
                                                 $reset_tkt = 1;
                                             }

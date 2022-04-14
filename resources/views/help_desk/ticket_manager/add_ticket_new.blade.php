@@ -1,4 +1,5 @@
 @extends('layouts.master-layout-new')
+@section('title', 'Add Ticket')
 @section('body')
 <div class="app-content content">
     <div class="content-overlay"></div>

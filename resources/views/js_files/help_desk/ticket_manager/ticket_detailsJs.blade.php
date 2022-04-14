@@ -419,9 +419,6 @@
         }
     }
     
-
-
-
     const ticketCustomer = {
 
         select_customer : (value) => {
@@ -510,5 +507,51 @@
             $("#exists_comp").hide();
         }
 
+    }
+
+    function restoreTicket(id) {
+        let tickets = [id];
+        Swal.fire({
+            title: 'Restore this ticket?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: 'post',
+                    url: "{{url('recycle_tickets')}}",
+                    data: {
+                        tickets
+                    },
+                    success: function(data) {
+
+                        if (data.success) {
+
+                            // send mail notification regarding ticket action
+                            ticket_notify(tickets[tickets.length - 1], 'ticket_update', 'Restored');
+
+                            toastr.success( 'Recycled Successfully!' , { timeOut: 5000 });
+                            window.location.href = "{{route('ticket_management.index')}}";
+
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Something went wrong!',
+                                showConfirmButton: false,
+                                timer: swal_message_time
+                            })
+                        }
+                    },
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                    }
+
+                })
+            }
+        });
     }
 </script>

@@ -1,4 +1,5 @@
 @extends('layouts.master-layout-new')
+@section('title', 'Customer Profile | ' . $customer->first_name . ' ' . $customer->last_name)
 
 <style>
     .float-right{

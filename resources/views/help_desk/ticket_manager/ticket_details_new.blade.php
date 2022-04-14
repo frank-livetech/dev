@@ -1,7 +1,9 @@
 @extends('layouts.master-layout-new')
 @section('Help Desk','open')
+@section('title', 'Ticket-' . $details->coustom_id)
 @section('Ticket Manager','active')
 @section('body')
+@section('customtheme')
 <style>
     #dropD {
         padding-left: 15px;
@@ -68,261 +70,224 @@
                         color-stop(.5, rgba(255, 255, 255, .2)),
                         color-stop(.5, transparent), to(transparent));
     }
-/* .card__corner {
-    position: absolute;
-    bottom: 0;
-    right: 15px;
-    z-index: 2;
-    width: 1.5em;
-    height: 1.5em;
-    background-color: #e6e7e8;
-}
-.card .card__corner .card__corner-triangle {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 1.5em 1.5em 0 0;
-    border-color: #e6e7e8 #fff #fff #fff;
-} */
-.reply-btns .btn {
-    margin-left:5px; width: 165px;
-}
 
-#current_url {
-    background: transparent !important;
-    border: transparent !important;
+    .reply-btns .btn {
+        margin-left:5px; width: 165px;
+    }
+
+    #current_url {
+        background: transparent !important;
+        border: transparent !important;
+        color: transparent !important;
+    }
+    #current_url::selection {
     color: transparent !important;
-}
-#current_url::selection {
-  color: transparent !important;
-  background: transparent !important;
-}
+    background: transparent !important;
+    }
 
-.badge-light {
-    position: relative; 
-    top: 5px;
-     right: 0;
-     float: right !important;
-}
-.dropify-wrapper{
-    width:124px;
-    margin-left:15px;
-    margin-top:10px;
-}
-.dropify-clear{
-    display: none !important;
-}
-.fileName{
-    position: absolute;
-    padding-left:9px;
-    padding-right:9px;
-    top: 7px;
-    font-size: 11px;
-    display:none;
-    color:#777;
-    text-align:left;
-    word-break: break-all;
-}
-.downFile{
-    position: absolute;
-    bottom: 4px;
-    right:55px;
-    border-radius: 4px;
-    color: #fff;
-    padding: 2px 10px;
-    background: rgba(0,0,0,0.6);
-    border: 1px solid #777;
-    display:none;
-}
-.downFile:hover{
-    background:rgba(0,0,0,0.7);
-    border: 1px solid #777;
+    .badge-light {
+        position: relative; 
+        top: 5px;
+        right: 0;
+        float: right !important;
+    }
+    .dropify-wrapper{
+        width:124px;
+        margin-left:15px;
+        margin-top:10px;
+    }
+    .dropify-clear{
+        display: none !important;
+    }
+    .fileName{
+        position: absolute;
+        padding-left:9px;
+        padding-right:9px;
+        top: 7px;
+        font-size: 11px;
+        display:none;
+        color:#777;
+        text-align:left;
+        word-break: break-all;
+    }
+    .downFile{
+        position: absolute;
+        bottom: 4px;
+        right:55px;
+        border-radius: 4px;
+        color: #fff;
+        padding: 2px 10px;
+        background: rgba(0,0,0,0.6);
+        border: 1px solid #777;
+        display:none;
+    }
+    .downFile:hover{
+        background:rgba(0,0,0,0.7);
+        border: 1px solid #777;
 
-}
-.downFile:hover i{
-    color: #fff;
-}
-.borderOne{
-    border: 1px solid #e6e7e8;
-    text-align: center;
-    width: 100%;
-    min-height: 94px;
-    /* padding: 29px 12px; */
-    /* padding-top: 21%; */
-    transition: 0.3s ease;
-    position: relative;
-}
-.borderOne:hover .downFile
-{
-   display:block;
-}
-.borderOne:hover .fileName,
-.borderOne:hover .overlayAttach
-{
-   display:block;
-}
-.borderOne img{
-    width: 100%;
-    /* max-width:89px; */
-}
-.xlIcon{
-    width: 41px !important;
-    padding-top: 20px;
-}
-.imgIcon{
-    width: 48px !important;
-    padding-top: 24px;
-}
-.overlayAttach{
-    position: absolute;
-    background: #f5f5f5;
-    top: 0;
-    left: 0;
-    width:100%;
-    height:100%;
-    display:none;
-}
-/* .card__corner {
-    position: absolute;
-    bottom: 0;
-    right: 15px;
-    z-index: 2;
-    width: 1.5em;
-    height: 1.5em;
-    background-color: #e6e7e8;
-}
+    }
+    .downFile:hover i{
+        color: #fff;
+    }
+    .borderOne{
+        border: 1px solid #e6e7e8;
+        text-align: center;
+        width: 100%;
+        min-height: 94px;
+        /* padding: 29px 12px; */
+        /* padding-top: 21%; */
+        transition: 0.3s ease;
+        position: relative;
+    }
+    .borderOne:hover .downFile
+    {
+    display:block;
+    }
+    .borderOne:hover .fileName,
+    .borderOne:hover .overlayAttach
+    {
+    display:block;
+    }
+    .borderOne img{
+        width: 100%;
+        /* max-width:89px; */
+    }
+    .xlIcon{
+        width: 41px !important;
+        padding-top: 20px;
+    }
+    .imgIcon{
+        width: 48px !important;
+        padding-top: 24px;
+    }
+    .overlayAttach{
+        position: absolute;
+        background: #f5f5f5;
+        top: 0;
+        left: 0;
+        width:100%;
+        height:100%;
+        display:none;
+    }
+    .nav-tabs{
+        margin-bottom: unset !important
+    }
+    .flagSpot{
+        border-right:5px solid red;
+    }
+    .flagSpot i{
+        color:red;
+    }
+    .float-right{
+        float: right
+    }
+    .attImg{
+        height:100px;
+        /* width:auto !important; */
+    }
+    .modal-slide-in .modal-dialog.sidebar-lg {
+        width: 55rem;
+    }
+    br + br { display: none; }
+    .tag {
+        width: fit-content !important;
+        padding: 0.25rem;
+        border-radius: 4px;
+        margin-left: 4px;
+        margin-top: 4px;
+    }
+    .bootstrap-tagsinput {
+        width: 100% !important;
+        border: 1px solid #ccc !important;
+    }
+    .bootstrap-tagsinput {
+        display: flex !important;
+        margin-top: 5px !important;
+        box-shadow: none !important;
+        flex-wrap: wrap !important;
+        border:0px;
+    }
+    .label-info {
+        background-color: #6d5eac !important;
+    }
 
-.card .card__corner .card__corner-triangle {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 1.5em 1.5em 0 0;
-    border-color: #e6e7e8 #fff #fff #fff;
-} */
-.nav-tabs{
-    margin-bottom: unset !important
-}
-.flagSpot{
-    border-right:5px solid red;
-}
-.flagSpot i{
-    color:red;
-}
-.float-right{
-    float: right
-}
-.attImg{
-    height:100px;
-    /* width:auto !important; */
-}
-.modal-slide-in .modal-dialog.sidebar-lg {
-    width: 55rem;
-}
-br + br { display: none; }
-.tag {
-    width: fit-content !important;
-    padding: 0.25rem;
-    border-radius: 4px;
-    margin-left: 4px;
-    margin-top: 4px;
-}
-.bootstrap-tagsinput {
-    width: 100% !important;
-    border: 1px solid #ccc !important;
-}
-.bootstrap-tagsinput {
-    display: flex !important;
-    margin-top: 5px !important;
-    box-shadow: none !important;
-    flex-wrap: wrap !important;
-    border:0px;
-}
-.label-info {
-    background-color: #6d5eac !important;
-}
-
-.nav-pills .nav-link, .nav-tabs .nav-link {
-    /* display: flex;
-    align-items: center; */
-    justify-content: left !important;
-}
+    .nav-pills .nav-link, .nav-tabs .nav-link {
+        justify-content: left !important;
+    }
 
 
-.atwho-view {
-    position:absolute;
-    top: 0;
-    left: 0;
-    display: none;
-    margin-top: 18px;
-    background: white;
-    color: black;
-    border: 1px solid #DDD;
-    border-radius: 3px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    min-width: 120px;
-    z-index: 11110 !important;
-}
+    .atwho-view {
+        position:absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        margin-top: 18px;
+        background: white;
+        color: black;
+        border: 1px solid #DDD;
+        border-radius: 3px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        min-width: 120px;
+        z-index: 11110 !important;
+    }
 
-.atwho-view .atwho-header {
-    padding: 5px;
-    margin: 5px;
-    cursor: pointer;
-    border-bottom: solid 1px #eaeff1;
-    color: #6f8092;
-    font-size: 11px;
-    font-weight: bold;
-}
+    .atwho-view .atwho-header {
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+        border-bottom: solid 1px #eaeff1;
+        color: #6f8092;
+        font-size: 11px;
+        font-weight: bold;
+    }
 
-.atwho-view .atwho-header .small {
-    color: #6f8092;
-    float: right;
-    padding-top: 2px;
-    margin-right: -5px;
-    font-size: 12px;
-    font-weight: normal;
-}
+    .atwho-view .atwho-header .small {
+        color: #6f8092;
+        float: right;
+        padding-top: 2px;
+        margin-right: -5px;
+        font-size: 12px;
+        font-weight: normal;
+    }
 
-.atwho-view .atwho-header:hover {
-    cursor: default;
-}
+    .atwho-view .atwho-header:hover {
+        cursor: default;
+    }
 
-.atwho-view .cur {
-    background: #3366FF;
-    color: white;
-}
-.atwho-view .cur small {
-    color: white;
-}
-.atwho-view strong {
-    color: #3366FF;
-}
-.atwho-view .cur strong {
-    color: white;
-    font:bold;
-}
-.atwho-view ul {
-    /* width: 100px; */
-    list-style:none;
-    padding:0;
-    margin:auto;
-    max-height: 200px;
-    overflow-y: auto;
-}
-.atwho-view ul li {
-    display: block;
-    padding: 5px 10px;
-    border-bottom: 1px solid #DDD;
-    cursor: pointer;
-    /* border-top: 1px solid #C8C8C8; */
-}
-.atwho-view small {
-    font-size: smaller;
-    color: #777;
-    font-weight: normal;
-}
+    .atwho-view .cur {
+        background: #3366FF;
+        color: white;
+    }
+    .atwho-view .cur small {
+        color: white;
+    }
+    .atwho-view strong {
+        color: #3366FF;
+    }
+    .atwho-view .cur strong {
+        color: white;
+        font:bold;
+    }
+    .atwho-view ul {
+        list-style:none;
+        padding:0;
+        margin:auto;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .atwho-view ul li {
+        display: block;
+        padding: 5px 10px;
+        border-bottom: 1px solid #DDD;
+        cursor: pointer;
+    }
+    .atwho-view small {
+        font-size: smaller;
+        color: #777;
+        font-weight: normal;
+    }
 </style>
+@endsection
 
 <input type="hidden" id="bgcolor" value="{{$ticket_overdue_bg_color}}">
 <input type="hidden" id="textcolor" value="{{$ticket_overdue_txt_color}}">
@@ -367,8 +332,12 @@ br + br { display: none; }
                                 
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
                                 <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i>
+                                @if($details->trashed == 0)
                                 <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="trashTicket({{$details->id}})"><i data-feather='trash-2'></i> Trash</button>
-                                <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:130px;position: absolute" onclick=""><i data-feather='alert-triangle'></i> Spam</button>
+                                @else
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="restoreTicket({{$details->id}})"> <i data-feather='refresh-ccw'></i> Restore</button>
+                                @endif
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:145px;position: absolute" onclick=""><i data-feather='alert-triangle'></i> Spam</button>
                             
                             </h5>
                             <div class="profile-pic mt-2">
