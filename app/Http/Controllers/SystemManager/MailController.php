@@ -1294,7 +1294,7 @@ class MailController extends Controller
             array('module' => 'User', 'values' => $user->toArray()),
         );
 
-        $template = $this->template_parser($order_input, $mail_template->template_html);
+        $template = $this->template_parser($order_input, $mail_template->template_html ,'','','','','','','','','');
 
         $this->sendMail($subject, $template, 'accounts@mylive-tech.com', $user->email, $user->name);
     }
