@@ -270,6 +270,80 @@ class MailController extends Controller
         }
     }
 
+    public function removeExtraThreads($html_reply){
+
+        // // echo $gmail_str;exit;
+        if (str_contains($html_reply, '<div id="appendonsend"></div>')){
+            // echo "yes";
+            $content =  explode('<div id="appendonsend"></div>',$html_reply);
+            $html_reply = $content[0].'</div></body></html>';
+            // dd($html_reply);exit;
+            
+        }else if(str_contains($html_reply, '<div id="divRplyFwdMsg"></div>')){
+            echo "yes";
+            $content =  explode('<div class="divRplyFwdMsg">',$html_reply);
+            $html_reply = $content[0].'</div></body></html>';
+            
+        }else if(str_contains($html_reply, '<div class="gmail_quote">')){
+            
+            // echo "yes";exit;
+            $content =  explode('<div class="gmail_quote">',$html_reply);
+            $html_reply = $content[0];
+            // dd($html_reply);exit;
+            
+        }else if(str_contains($html_reply,$tkt_str)){
+            
+            if(str_contains($html_reply,'From:')){
+                if(str_contains($html_reply,'<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">')){
+                    
+                    $content =  explode('<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">',$html_reply);
+                    $html_reply = $content[0].'</div></body></html>';
+                }else{
+                    // dd($reply);exit;
+                    if(str_contains($html_reply,'From: '.$eq_value->mailserver_username)){
+                        // echo "sdfsdf";
+                    }else{
+                        $content =  explode('From:',$html_reply);
+                        $html_reply = $content[0].'</b></p></div></body></html>';
+                    }
+                    
+                }
+                
+            }
+            
+        }else if(str_contains($html_reply,'On') && str_contains($html_reply,'wrote') && str_contains($html_reply,$eq_value->mail_queue_address) && str_contains($html_reply,'<blockquote type="cite">On')){
+            $content =  explode('<blockquote type="cite">On',$html_reply);
+            $html_reply = $content[0];
+        }  
+
+        return $html_reply;
+
+    }
+
+    public function verifyCustomer($emailFrom , $queue){
+     
+        $customer = '';
+        if($eq_value->registration_required == 'yes') {
+            // email is from our customer
+            $customer = Customer::where('email', trim($emailFrom))->first();
+        } else {
+            $customer = Customer::where('email', trim($emailFrom))->first();
+            
+            if(empty($customer)) {
+                $name = $strFromName;
+                $customer = Customer::create([
+                    'username' => trim($emailFrom),
+                    'first_name' => array_key_exists(0, $name) ? $name[0] : '',
+                    'last_name' => array_key_exists(1, $name) ? $name[1] : '',
+                    'email' => trim($emailFrom)
+                ]);
+            }
+        }  
+
+        return $customer;
+        
+    }
+
     public function save_inbox_replies() {
         try {
             $repliesSaved = false;
@@ -312,291 +386,342 @@ class MailController extends Controller
                     $mail = $this->mail_get_parts($imap, $message, $mail, 0);
                     $mail[0]["parsed"] = $this->mail_parse_headers($mail[0]["data"]);
                   
-                    // dd($date);exit;
                     if(!empty($email_subject)) {
-                    // if(array_key_exists('Authentication-Results', $mail[0]["parsed"]) && !empty($mail[0]["parsed"]['Subject'])) {
-                        // get the sender email from headers
-                        // dd($email_subject);exit;
-                        // $emailFrom =  $this->getCustomerEmailParser($mail[0]["parsed"]['Authentication-Results']);
+                   
                         $emailFrom =  $strAddress_Sender;
                         
                         if(!empty($emailFrom)) {
-                            if($eq_value->registration_required == 'yes') {
-                                // email is from our customer
-                                $customer = Customer::where('email', trim($emailFrom))->first();
-                            } else {
-                                $customer = Customer::where('email', trim($emailFrom))->first();
-                                
-                                if(empty($customer)) {
-                                    $name = $strFromName;
-                                    $customer = Customer::create([
-                                        'username' => trim($emailFrom),
-                                        'first_name' => array_key_exists(0, $name) ? $name[0] : '',
-                                        'last_name' => array_key_exists(1, $name) ? $name[1] : '',
-                                        'email' => trim($emailFrom)
-                                    ]);
-                                }
-                            }  
+
+                            $customer = $this->verifyCustomer($emailFrom , $eq_value->registration_required);
                             
-                            if(strpos($email_subject, '[') !== false && strpos($email_subject, ']:') !== false && strpos($email_subject, '!') !== false){
-                                $id = '';
-                                if(strpos($email_subject, $eq_value->mail_queue_address) !== false){
-                                    
-                                    $pos = strpos($email_subject, '!');
-                                    $sub = substr($email_subject,$pos+1);
-                                    $pos1 = strpos($sub,']:');
-                                    $id = substr($sub,0,$pos1);
-                                    
-                                    $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
-                                    if(preg_match($pattern, $id, $array)) {
-                                        $id = $array[0];
-                                    }
-                                    
-                                }else{
-                                    $pos = strpos($email_subject, '!');
-                                    $sub = substr($email_subject,$pos+1);
-                                    $pos1 = strpos($sub,']:');
-                                    $id = substr($sub,0,$pos1);
-                                    
-                                    $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
-                                    if(preg_match($pattern, $id, $array)) {
-                                        $id = $array[0];
-                                    }
-                                }
-                                if($id != ''){
-                                    // get ticket custom id from mail body
-                                    $ticketID = $id;
-                                    // echo $ticketID;exit;
-                                    if(empty($ticketID)) {
-                                        echo 'Ticket with subject "'.$email_subject. '" not found!<br>';
-                                        continue;
-                                    }
-                                    // save ticket reply
-                                    // $sbj = str_replace('Re: ', '', $email_subject);
-                                    $sbj = str_replace('Re: ', '', $email_subject);
-                                    $cid = (!empty($customer)) ? $customer->id : '';
-                                    $sid = '';
-                                    
-                                    // echo $ticketID;exit;
-                                    if(empty($customer)) {
-                                        $staff = User::where('email', trim($emailFrom))->first();
-                                        if(empty($staff)) {
-                                            // reply is not from our system user
-                                            
-                                            continue;
-                                        }
-                                        $sid = $staff->id;
-                                    }
-                                    
-    
-                                    // $ticket = Tickets::where(DB::raw('concat(coustom_id, " ", subject)'), trim($sbj))->first();
-                                    $ticket = Tickets::where('coustom_id', $ticketID)->first();
-    
-                                    // check for the ticket without coustom id appended in subject
-                                    // if(empty($ticket)) {
-                                    //     $ticket = Tickets::where('subject', trim($sbj))->where(function($query) use($cid, $sid) {
-                                    //         $query->where('customer_id', $cid)->orWhere('assigned_to', $sid);
-                                    //     })->first();
-                                    // }
-                                    $bbcode = new BBCode();
-                                    if(!empty($ticket)) {
-                                        // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
-                                        $all_parsed = $mail;
-                                        $attaches = $this->mail_parse_attachments($mail, $ticket->id);
-                                        $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
-                                        $html_reply = $bbcode->convertFromHtml($reply);
+                            if(empty($customer)){
 
+                                $this->handleUnregisteredCustomers($emailFrom);
 
-                                      
+                            }else{
+
+                                if(strpos($email_subject, '[') !== false && strpos($email_subject, ']:') !== false && strpos($email_subject, '!') !== false){
+                                    $id = '';
+                                    if(strpos($email_subject, $eq_value->mail_queue_address) !== false){
                                         
-                                        $gmail_str = $eq_value->mailserver_username;
-                                        $tkt_str = '['.$eq_value->mail_queue_address.' !'.$ticket->coustom_id.']:';
-                                        if($type == 'PLAIN'){
-                                            $html_reply = nl2br($html_reply);
-                                        }else{
-                                         
-                                            // // echo $gmail_str;exit;
-                                            if (str_contains($html_reply, '<div id="appendonsend"></div>')){
-                                                // echo "yes";
-                                                $content =  explode('<div id="appendonsend"></div>',$html_reply);
-                                                $html_reply = $content[0].'</div></body></html>';
-                                                // dd($html_reply);exit;
-                                                
-                                            }else if(str_contains($html_reply, '<div id="divRplyFwdMsg"></div>')){
-                                                echo "yes";
-                                                $content =  explode('<div class="divRplyFwdMsg">',$html_reply);
-                                                $html_reply = $content[0].'</div></body></html>';
-                                                
-                                            }else if(str_contains($html_reply, '<div class="gmail_quote">')){
-                                                
-                                                // echo "yes";exit;
-                                                $content =  explode('<div class="gmail_quote">',$html_reply);
-                                                $html_reply = $content[0];
-                                                // dd($html_reply);exit;
-                                                
-                                            }else if(str_contains($html_reply,$tkt_str)){
-                                                
-                                                if(str_contains($html_reply,'From:')){
-                                                    if(str_contains($html_reply,'<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">')){
-                                                        
-                                                        $content =  explode('<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">',$html_reply);
-                                                        $html_reply = $content[0].'</div></body></html>';
-                                                    }else{
-                                                        // dd($reply);exit;
-                                                        if(str_contains($html_reply,'From: '.$eq_value->mailserver_username)){
-                                                            // echo "sdfsdf";
-                                                        }else{
-                                                            $content =  explode('From:',$html_reply);
-                                                            $html_reply = $content[0].'</b></p></div></body></html>';
-                                                        }
-                                                        
-                                                    }
-                                                    
-                                                }
-                                                
-                                            }else if(str_contains($html_reply,'On') && str_contains($html_reply,'wrote') && str_contains($html_reply,$eq_value->mail_queue_address) && str_contains($html_reply,'<blockquote type="cite">On')){
-                                                $content =  explode('<blockquote type="cite">On',$html_reply);
-                                                $html_reply = $content[0];
-                                            }   
-                                            
-                                        }
-
-                                        $html_reply = str_replace("[img]","<img",$html_reply);
-                                        $html_reply = str_replace("[/img]"," \>",$html_reply);
-                                        $html_reply = str_replace(array("\n", "\r"), '', $html_reply);
-                                        $email_reply = str_replace('\r\n', "", $html_reply);
-                                        $email_reply = str_replace('//', "<br />", $email_reply);
+                                        $pos = strpos($email_subject, '!');
+                                        $sub = substr($email_subject,$pos+1);
+                                        $pos1 = strpos($sub,']:');
+                                        $id = substr($sub,0,$pos1);
                                         
-                                        // $email_reply = str_replace('<br />', "", $email_reply);
-                                        $email_reply =  $bbcode->convertToHtml($html_reply);   
-                                        $email_reply = nl2br($email_reply);
-                                        
-                                        $data = array(
-                                            "ticket_id" => $ticket->id,
-                                            "type" => 'cron',
-                                            "msgno" => $message,
-                                            "reply" => nl2br($html_reply),
-                                            "date" => new Carbon($date),
-                                            "attachments" => $attaches
-                                        );
-    
-                                        $fullname = '';
-                                        $user = null;
-                                        $is_closed = 0;
-                                        $reset_tkt = 0;
-                                        if(!empty($sid)) {
-                                            $data["user_id"] = $sid;
-
-                                            $close_status = TicketStatus::where('name','Closed')->first();
-
-                                            if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 1;
-                                            }
-
-                                            if( ( $ticket->resolution_deadline == 'cleared' || $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 2;
-                                            }
-
-                                            if( ( $ticket->resolution_deadline == 'cleared' && $ticket->reply_deadline == 'cleared' ) && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 3;
-                                            }
-
-                                            if( ( $ticket->resolution_deadline != 'cleared' && $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 1;
-                                            }
+                                        $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
+                                        if(preg_match($pattern, $id, $array)) {
+                                            $id = $array[0];
                                         }
-                                        
-                                        if(!empty($cid)) {
-                                            $data["customer_id"] = $cid;
-                                            
-                                            $close_status = TicketStatus::where('name','Closed')->first();
-                                            if($ticket->status == $close_status->id) {
-                                                $is_closed = 1 ;    
-                                            }
-
-                                            if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 1;
-                                            }
-
-                                            if( ( $ticket->resolution_deadline == 'cleared' || $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 2;
-                                            }
-
-                                            if( ( $ticket->resolution_deadline == 'cleared' && $ticket->reply_deadline == 'cleared' ) && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 3;
-                                            }
-
-                                            if( ( $ticket->resolution_deadline != 'cleared' && $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
-                                                $reset_tkt = 1;
-                                            }
-                                            
-
-                                            $open_status = TicketStatus::where('name','Open')->first();
-                                            $ticket->status = $open_status->id;
-
-                                        }
-                                      
-                                        $rep = TicketReply::create($data);
-    
-                                        $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
-                                        if(isset($sett->tkt_value)) {
-                                            if($sett->tkt_value === 1) {
-                                                $ticket->reply_deadline = null;
-                                                $ticket->save();
-                                            }
-                                        }
-
-
-                                        $ticket->updated_at = Carbon::now();
-                                        $open_status = TicketStatus::where('name','Open')->first();
-                                        $ticket->status = $open_status->id;
-                                        $ticket->save;
-                                        $ticket->save();
-
-                                        $ticket = Tickets::where('coustom_id', $ticketID)->first();
-
-                                        if(!empty($sid)) {
-                                          
-                                            $fullname = $staff->name;
-                                            $name_link = '<a href="'.url('profile').'/' . $staff->id .'">'. $fullname .'</a>';
-
-                                            $user = $staff;
-                                            $ticket->assigned_to = $sid;
-                                            $ticket->save();
-                                            try {
-
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', '' ,'');
-
-                                            } catch(Throwable $e) {
-                                                echo 'Reply Notification! '. $e->getMessage();
-                                            }
-                                        }
-                                        
-                                        if(!empty($cid)) {
-                                            
-                                            $fullname = $customer->first_name.' '.$customer->last_name;
-                                            $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
-                                            $user = $customer;
-                                            try {
-                                                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt );
-                                            } catch(Throwable $e) {
-                                                echo 'Reply Notification! '. $e->getMessage();
-                                            }
-                                        }
-    
-                                        $repliesSaved = true;
-                                        // echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT "Re: '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
-                                        echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
-                                        
-                                        $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
-
-                                        // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
-                                        $log = new ActivitylogController();
-                                        // $log->saveActivityLogs('Tickets' , 'ticket_replies' , $rep->id , auth()->id() , $action_perform);
-                                        $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $rep->id , 0 , $action_perform);
                                         
                                     }else{
+                                        $pos = strpos($email_subject, '!');
+                                        $sub = substr($email_subject,$pos+1);
+                                        $pos1 = strpos($sub,']:');
+                                        $id = substr($sub,0,$pos1);
                                         
+                                        $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
+                                        if(preg_match($pattern, $id, $array)) {
+                                            $id = $array[0];
+                                        }
+                                    }
+                                    if($id != ''){
+                                        // get ticket custom id from mail body
+                                        $ticketID = $id;
+                                        // echo $ticketID;exit;
+                                        if(empty($ticketID)) {
+                                            echo 'Ticket with subject "'.$email_subject. '" not found!<br>';
+                                            continue;
+                                        }
+                                        // save ticket reply
+                                        // $sbj = str_replace('Re: ', '', $email_subject);
+                                        $sbj = str_replace('Re: ', '', $email_subject);
+                                        $cid = (!empty($customer)) ? $customer->id : '';
+                                        $sid = '';
+                                        
+                                        // echo $ticketID;exit;
+                                        if(empty($customer)) {
+                                            $staff = User::where('email', trim($emailFrom))->first();
+                                            if(empty($staff)) {
+                                                // reply is not from our system user
+                                                
+                                                continue;
+                                            }
+                                            $sid = $staff->id;
+                                        }
+                                        
+        
+                                        // $ticket = Tickets::where(DB::raw('concat(coustom_id, " ", subject)'), trim($sbj))->first();
+                                        $ticket = Tickets::where('coustom_id', $ticketID)->first();
+        
+                                        $bbcode = new BBCode();
+                                        if(!empty($ticket)) {
+                                            // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
+                                            $all_parsed = $mail;
+                                            $attaches = $this->mail_parse_attachments($mail, $ticket->id);
+                                            $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
+                                            $html_reply = $bbcode->convertFromHtml($reply);
+    
+                                            $gmail_str = $eq_value->mailserver_username;
+                                            $tkt_str = '['.$eq_value->mail_queue_address.' !'.$ticket->coustom_id.']:';
+                                            if($type == 'PLAIN'){
+                                                $html_reply = nl2br($html_reply);
+                                            }else{
+                                             
+                                                $html_reply = $this->removeExtraThreads($html_reply);
+                                           
+                                            }
+    
+                                            $html_reply = str_replace("[img]","<img",$html_reply);
+                                            $html_reply = str_replace("[/img]"," \>",$html_reply);
+                                            $html_reply = str_replace(array("\n", "\r"), '', $html_reply);
+                                            $email_reply = str_replace('\r\n', "", $html_reply);
+                                            $email_reply = str_replace('//', "<br />", $email_reply);
+                                            
+                                            // $email_reply = str_replace('<br />', "", $email_reply);
+                                            $email_reply =  $bbcode->convertToHtml($html_reply);   
+                                            $email_reply = nl2br($email_reply);
+                                            
+                                            $data = array(
+                                                "ticket_id" => $ticket->id,
+                                                "type" => 'cron',
+                                                "msgno" => $message,
+                                                "reply" => nl2br($html_reply),
+                                                "date" => new Carbon($date),
+                                                "attachments" => $attaches
+                                            );
+        
+                                            $fullname = '';
+                                            $user = null;
+                                            $is_closed = 0;
+                                            $reset_tkt = 0;
+                                            if(!empty($sid)) {
+                                                $data["user_id"] = $sid;
+    
+                                                $close_status = TicketStatus::where('name','Closed')->first();
+    
+                                                if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 1;
+                                                }
+    
+                                                if( ( $ticket->resolution_deadline == 'cleared' || $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 2;
+                                                }
+    
+                                                if( ( $ticket->resolution_deadline == 'cleared' && $ticket->reply_deadline == 'cleared' ) && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 3;
+                                                }
+    
+                                                if( ( $ticket->resolution_deadline != 'cleared' && $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 1;
+                                                }
+                                            }
+                                            
+                                            if(!empty($cid)) {
+                                                $data["customer_id"] = $cid;
+                                                
+                                                $close_status = TicketStatus::where('name','Closed')->first();
+                                                if($ticket->status == $close_status->id) {
+                                                    $is_closed = 1 ;    
+                                                }
+    
+                                                if( ($ticket->reply_deadline == 'cleared' || $ticket->resolution_deadline != 'cleared') && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 1;
+                                                }
+    
+                                                if( ( $ticket->resolution_deadline == 'cleared' || $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 2;
+                                                }
+    
+                                                if( ( $ticket->resolution_deadline == 'cleared' && $ticket->reply_deadline == 'cleared' ) && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 3;
+                                                }
+    
+                                                if( ( $ticket->resolution_deadline != 'cleared' && $ticket->reply_deadline != 'cleared' ) && $ticket->status != $close_status->id) {
+                                                    $reset_tkt = 1;
+                                                }
+                                                
+    
+                                                $open_status = TicketStatus::where('name','Open')->first();
+                                                $ticket->status = $open_status->id;
+    
+                                            }
+                                          
+                                            $rep = TicketReply::create($data);
+        
+                                            $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
+                                            if(isset($sett->tkt_value)) {
+                                                if($sett->tkt_value === 1) {
+                                                    $ticket->reply_deadline = null;
+                                                    $ticket->save();
+                                                }
+                                            }
+    
+    
+                                            $ticket->updated_at = Carbon::now();
+                                            $open_status = TicketStatus::where('name','Open')->first();
+                                            $ticket->status = $open_status->id;
+                                            $ticket->save;
+                                            $ticket->save();
+    
+                                            $ticket = Tickets::where('coustom_id', $ticketID)->first();
+    
+                                            if(!empty($sid)) {
+                                              
+                                                $fullname = $staff->name;
+                                                $name_link = '<a href="'.url('profile').'/' . $staff->id .'">'. $fullname .'</a>';
+    
+                                                $user = $staff;
+                                                $ticket->assigned_to = $sid;
+                                                $ticket->save();
+                                                try {
+    
+                                                    $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt );
+    
+                                                } catch(Throwable $e) {
+                                                    echo 'Reply Notification! '. $e->getMessage();
+                                                }
+                                            }
+                                            
+                                            if(!empty($cid)) {
+                                                
+                                                $fullname = $customer->first_name.' '.$customer->last_name;
+                                                $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
+                                                $user = $customer;
+                                                try {
+                                                    $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt );
+                                                } catch(Throwable $e) {
+                                                    echo 'Reply Notification! '. $e->getMessage();
+                                                }
+                                            }
+        
+                                            $repliesSaved = true;
+                                            // echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT "Re: '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
+                                            echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
+                                            
+                                            $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
+    
+                                            // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
+                                            $log = new ActivitylogController();
+                                            // $log->saveActivityLogs('Tickets' , 'ticket_replies' , $rep->id , auth()->id() , $action_perform);
+                                            $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $rep->id , 0 , $action_perform);
+                                            
+                                        }else{
+                                            
+                                            $customer_id = '';
+                                            $is_staff_tkt = 0;
+                                            $name = '';
+                                            $email = '';
+                                            $created_by = '';
+                                            if(empty($customer)) {
+                                                
+                                                $staff = User::where('email', trim($emailFrom))->first();
+                                                if(empty($staff)) {
+                                                    // reply is not from our system user
+                                                    imap_delete($imap, $message);
+                                                    continue;
+                                                }
+                                                $created_by = $staff->id;
+                                                $customer_id = $staff->id;
+                                                $name = $staff->name;
+                                                $email = $staff->email;
+                                                $is_staff_tkt = 1;
+                                            }else{
+                                                
+                                                $name = $customer->first_name.' '.$customer->last_name;
+                                                $email = $customer->email;
+                                                $customer_id = $customer->id;
+                                                $creator_idd = User::where('email', trim($emailFrom))->first();
+                                                $created_by = $creator_idd->id;
+                                            }
+                                        //  if(!empty($customer)) {
+                                            // $ticket = Tickets::where('customer_id', $customer->id)->where('subject', trim($email_subject))->first();
+                                            $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $email_subject)->first();
+                                            
+                                            if(empty($ticket)) {
+                                                $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
+                                                
+                                                // create new ticket
+                                                $ticket = Tickets::create([
+                                                    'dept_id' => $eq_value->mail_dept_id,
+                                                    'priority' => $eq_value->mail_priority_id,
+                                                    'subject' => trim($email_subject),
+                                                    'customer_id' => $customer_id,
+                                                    'status' => $eq_value->mail_status_id,
+                                                    'type' => $eq_value->mail_type_id,
+                                                    'is_staff_tkt' => $is_staff_tkt,
+                                                    'tkt_crt_type' => 'cron',
+                                                    'created_by' => $created_by
+                                                ]);
+                                                
+                                                // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
+                                                $all_parsed = $mail;
+                                                $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id);
+                                                $body = $this->email_body_parser($all_parsed, 'ticket');
+                                                
+                                                $tickets_count = Tickets::all()->count();
+                                                
+                                                $lt = Tickets::orderBy('created_at', 'desc')->first();
+        
+                                                $ticket->ticket_detail = $body;
+                                                $ticket->attachments = $attaches;
+                                                
+                                                $newG = new GeneralController();
+                                                $ticket->coustom_id = $newG->randomStringFormat($helpDesk::CUSTOMID_FORMAT);
+                                                if(!empty($lt)) {
+                                                    $ticket->seq_custom_id = 'T-'.strval($lt->id + 1);
+                                                }else{
+                                                    $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
+                                                }
+                                                $ticket->save();
+                                                
+                                                // ticket assoc with sla plan
+                                                $settings = $helpDesk->getTicketSettings(['default_reply_and_resolution_deadline']);
+                                                if(isset($settings['default_reply_and_resolution_deadline'])) {
+                                                    if($settings['default_reply_and_resolution_deadline'] == 1) {
+                                                        $sla_plan = SlaPlan::where('title', self::DEFAULTSLA_TITLE)->first();
+                                                        if(empty($sla_plan)) {
+                                                            $sla_plan = SlaPlan::create([
+                                                                'title' => self::DEFAULTSLA_TITLE,
+                                                                'sla_status' => 1
+                                                            ]);
+                                                        }
+                                                        SlaPlanAssoc::create([
+                                                            'sla_plan_id' => $sla_plan->id,
+                                                            'ticket_id' => $ticket->id
+                                                        ]);
+                                                    }
+                                                }
+                                                
+                                                $repliesSaved = true;
+                                                
+                                                echo 'Created Ticket By "'.$name.' ('.$email.')" with SUBJECT "'.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
+        
+                                                self::$mailserver_hostname = $eq_value->mailserver_hostname;
+                                                self::$mailserver_username = $eq_value->mailserver_username;
+                                                self::$mailserver_password = $eq_value->mailserver_password;
+                    
+        
+                                                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By CRON';
+                                                $log = new ActivitylogController();
+                                                $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
+                                                
+                                                try {
+                                                    $ticket = Tickets::where('id',$ticket->id)->first();
+                                                    $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1,'','','','','');
+                                                } catch(Throwable $e) {
+                                                    echo $e->getMessage();
+                                                }
+                                                // dd('sent');exit;
+                                            }
+                                            
+                                        }
+                                        
+                                    }
+                                   
+                                   
+                                }else{
+                                    
                                         $customer_id = '';
                                         $is_staff_tkt = 0;
                                         $name = '';
@@ -703,123 +828,11 @@ class MailController extends Controller
                                             }
                                             // dd('sent');exit;
                                         }
-                                        
-                                    }
-                                    
+                                    // }
                                 }
-                               
-                               
-                            }else{
-                                
-                                    $customer_id = '';
-                                    $is_staff_tkt = 0;
-                                    $name = '';
-                                    $email = '';
-                                    $created_by = '';
-                                    if(empty($customer)) {
-                                        
-                                        $staff = User::where('email', trim($emailFrom))->first();
-                                        if(empty($staff)) {
-                                            // reply is not from our system user
-                                            imap_delete($imap, $message);
-                                            continue;
-                                        }
-                                        $created_by = $staff->id;
-                                        $customer_id = $staff->id;
-                                        $name = $staff->name;
-                                        $email = $staff->email;
-                                        $is_staff_tkt = 1;
-                                    }else{
-                                        
-                                        $name = $customer->first_name.' '.$customer->last_name;
-                                        $email = $customer->email;
-                                        $customer_id = $customer->id;
-                                        $creator_idd = User::where('email', trim($emailFrom))->first();
-                                        $created_by = $creator_idd->id;
-                                    }
-                                //  if(!empty($customer)) {
-                                    // $ticket = Tickets::where('customer_id', $customer->id)->where('subject', trim($email_subject))->first();
-                                    $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $email_subject)->first();
-                                    
-                                    if(empty($ticket)) {
-                                        $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
-                                        
-                                        // create new ticket
-                                        $ticket = Tickets::create([
-                                            'dept_id' => $eq_value->mail_dept_id,
-                                            'priority' => $eq_value->mail_priority_id,
-                                            'subject' => trim($email_subject),
-                                            'customer_id' => $customer_id,
-                                            'status' => $eq_value->mail_status_id,
-                                            'type' => $eq_value->mail_type_id,
-                                            'is_staff_tkt' => $is_staff_tkt,
-                                            'tkt_crt_type' => 'cron',
-                                            'created_by' => $created_by
-                                        ]);
-                                        
-                                        // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
-                                        $all_parsed = $mail;
-                                        $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id);
-                                        $body = $this->email_body_parser($all_parsed, 'ticket');
-                                        
-                                        $tickets_count = Tickets::all()->count();
-                                        
-                                        $lt = Tickets::orderBy('created_at', 'desc')->first();
 
-                                        $ticket->ticket_detail = $body;
-                                        $ticket->attachments = $attaches;
-                                        
-                                        $newG = new GeneralController();
-                                        $ticket->coustom_id = $newG->randomStringFormat($helpDesk::CUSTOMID_FORMAT);
-                                        if(!empty($lt)) {
-                                            $ticket->seq_custom_id = 'T-'.strval($lt->id + 1);
-                                        }else{
-                                            $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
-                                        }
-                                        $ticket->save();
-                                        
-                                        // ticket assoc with sla plan
-                                        $settings = $helpDesk->getTicketSettings(['default_reply_and_resolution_deadline']);
-                                        if(isset($settings['default_reply_and_resolution_deadline'])) {
-                                            if($settings['default_reply_and_resolution_deadline'] == 1) {
-                                                $sla_plan = SlaPlan::where('title', self::DEFAULTSLA_TITLE)->first();
-                                                if(empty($sla_plan)) {
-                                                    $sla_plan = SlaPlan::create([
-                                                        'title' => self::DEFAULTSLA_TITLE,
-                                                        'sla_status' => 1
-                                                    ]);
-                                                }
-                                                SlaPlanAssoc::create([
-                                                    'sla_plan_id' => $sla_plan->id,
-                                                    'ticket_id' => $ticket->id
-                                                ]);
-                                            }
-                                        }
-                                        
-                                        $repliesSaved = true;
-                                        
-                                        echo 'Created Ticket By "'.$name.' ('.$email.')" with SUBJECT "'.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
-
-                                        self::$mailserver_hostname = $eq_value->mailserver_hostname;
-                                        self::$mailserver_username = $eq_value->mailserver_username;
-                                        self::$mailserver_password = $eq_value->mailserver_password;
-            
-
-                                        $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By CRON';
-                                        $log = new ActivitylogController();
-                                        $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
-                                        
-                                        try {
-                                            $ticket = Tickets::where('id',$ticket->id)->first();
-                                            $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1,'','','','','');
-                                        } catch(Throwable $e) {
-                                            echo $e->getMessage();
-                                        }
-                                        // dd('sent');exit;
-                                    }
-                                // }
                             }
-                             
+ 
                         }
                     }
                     imap_delete($imap, $message);
@@ -850,6 +863,28 @@ class MailController extends Controller
                 return response()->json($response);
             echo $e->getMessage();
         }
+    }
+
+    public function handleUnregisteredCustomers($emailFrom){
+
+        $mail_template = '';
+        $subject = "Mail Processing Issue";
+
+        if(!empty($mail_template->subject)) {
+            $subject = $mail_template->subject;
+            if(str_contains($subject, '{Alert-Prefix}')) {
+                $subject = str_replace('{Alert-Prefix}', $mail_template->alert_prefix, $subject);
+            }
+        }
+
+        $order_input = array(
+            array('module' => 'User', 'values' => $user->toArray()),
+        );
+
+        $template = $this->template_parser($order_input, $mail_template->template_html ,'','','','','','','','','');
+
+        $this->sendMail($subject, $template, 'accounts@mylive-tech.com', $user->email, $user->name);
+
     }
 
     public function getTicketCustomID($body) {
