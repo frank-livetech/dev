@@ -43,7 +43,7 @@ class MailController extends Controller
     // *************   PROPERTIES   ****************
 
     // public static $imap = null;
-    public static $connection = '{mylive-tech.com:995/pop3/ssl}';
+    public static $connection = '{mylive-tech.com:995/pop3/ssl}INBOX';
     public static $mailserver_hostname = 'mylive-tech.com';
     public static $mailserver_username = 'dev_testing@mylive-tech.com';
     public static $mailserver_password = '0C,AQxp,x%%X';
@@ -365,7 +365,7 @@ class MailController extends Controller
                 if($eq_value->is_enabled == 'no') continue;
 
                 $conn = sprintf('{%s:%s/%s/%s}', $eq_value->mailserver_hostname, $eq_value->mailserver_port, $eq_value->queue_type, $eq_value->protocol);
-
+                // dd($conn);
                 $imap = imap_open($conn, $eq_value->mailserver_username, $eq_value->mailserver_password) or die('Cannot connect to email: ' . imap_last_error());
 
                 $mails = imap_search($imap, 'ALL', SE_UID);
@@ -471,6 +471,7 @@ class MailController extends Controller
                                             $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
                                             $html_reply = $bbcode->convertFromHtml($reply);
                                             // Remove extra threads
+                                            dd($html_reply);exit;
                                             $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
                                             
                                             
@@ -497,7 +498,6 @@ class MailController extends Controller
  
                         }
                     }
-                    dd('sent');exit;
                     imap_delete($imap, $message);
                 }
 
@@ -1998,7 +1998,7 @@ class MailController extends Controller
                     if(array_key_exists('ticket_detail', $data['values'])) {
                         $bbcode = new BBCode();
                         
-                        // $content = preg_replace("/<img[^>]+\>/i", " ", $data['values']['ticket_detail']); 
+                        $content = $data['values']['ticket_detail']; 
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
                         
