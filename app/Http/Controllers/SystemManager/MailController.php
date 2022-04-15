@@ -270,7 +270,7 @@ class MailController extends Controller
         }
     }
 
-    public function removeExtraThreads($html_reply,$eq_value){
+    public function removeExtraThreads($html_reply,$eq_value,$ticket,$type){
 
         $gmail_str = $eq_value->mailserver_username;
         $tkt_str = '['.$eq_value->mail_queue_address.' !'.$ticket->coustom_id.']:';
@@ -449,7 +449,7 @@ class MailController extends Controller
                                         $sbj = str_replace('Re: ', '', $email_subject);
                                         $cid = (!empty($customer)) ? $customer->id : '';
                                         $sid = '';
-                                        
+                                        $staff = '';
                                         // echo $ticketID;exit;
                                         if(empty($customer)) {
                                             $staff = User::where('email', trim($emailFrom))->first();
@@ -462,7 +462,7 @@ class MailController extends Controller
                                         }
                                         // $ticket = Tickets::where(DB::raw('concat(coustom_id, " ", subject)'), trim($sbj))->first();
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
-        
+    
                                         $bbcode = new BBCode();
                                         if(!empty($ticket)) {
                                             // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
@@ -471,14 +471,15 @@ class MailController extends Controller
                                             $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
                                             $html_reply = $bbcode->convertFromHtml($reply);
                                             // Remove extra threads
-                                            $html_reply = $this->removeExtraThreads($html_reply,$eq_value);
+                                            $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
                                             
-                                            $email_reply = str_replace('\r\n', "", $html_reply);
-                                            $email_reply = str_replace('//', "<br />", $email_reply);
+                                            
+                                            $email_reply = str_replace('/\r\n/', "<br>", $html_reply);
+                                            // $email_reply = str_replace('//', "<br />", $email_reply);
                                             $email_reply =  $bbcode->convertToHtml($html_reply);   
                                             $email_reply = nl2br($email_reply);
                                             
-                                            $this->createParserNewReply($ticket , $html_reply , $date , $attaches , $message , $sid , $cid);
+                                            $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer , $ticketID);
 
 
                                             
@@ -497,7 +498,6 @@ class MailController extends Controller
                         }
                     }
                     dd('sent');exit;
-
                     imap_delete($imap, $message);
                 }
 
@@ -549,8 +549,8 @@ class MailController extends Controller
         return $reset_tkt;
     }
 
-    public function createParserNewReply($ticket , $html_reply , $date , $attaches , $message , $sid , $cid){
-
+    public function createParserNewReply($ticket , $html_reply ,$email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer ,$ticketID){
+       
         $data = array(
             "ticket_id" => $ticket->id,
             "type" => 'cron',
@@ -601,6 +601,7 @@ class MailController extends Controller
 
         $ticket = Tickets::where('coustom_id', $ticketID)->first();
 
+        $helpDesk = new HelpdeskController();
         if(!empty($sid)) {
           
             $fullname = $staff->name;
