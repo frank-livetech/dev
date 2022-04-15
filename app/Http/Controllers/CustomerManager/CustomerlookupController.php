@@ -501,7 +501,7 @@ class CustomerlookupController extends Controller
         foreach($tickets as $ticket) {
             $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User']])->count();
         }
-
+        $ticketsCount = $tickets->count();
         return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
     }
 

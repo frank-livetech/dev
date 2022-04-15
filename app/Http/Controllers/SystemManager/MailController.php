@@ -1998,7 +1998,7 @@ class MailController extends Controller
                     if(array_key_exists('ticket_detail', $data['values'])) {
                         $bbcode = new BBCode();
                         
-                        $content = preg_replace("/<img[^>]+\>/i", " ", $data['values']['ticket_detail']); 
+                        // $content = preg_replace("/<img[^>]+\>/i", " ", $data['values']['ticket_detail']); 
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
                         
