@@ -32,6 +32,8 @@
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
     $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 @endphp
+
+
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
