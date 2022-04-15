@@ -474,9 +474,9 @@ class MailController extends Controller
                                             $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
                                             
                                             
-                                            $email_reply = str_replace('/\r\n/', "<br>", $html_reply);
-                                            // $email_reply = str_replace('//', "<br />", $email_reply);
-                                            $email_reply =  $bbcode->convertToHtml($html_reply);   
+                                            $email_reply = str_replace('\r\n', "", $html_reply);
+                                            $email_reply = str_replace('//', "<br />", $email_reply);
+                                            $email_reply =  $bbcode->convertToHtml($email_reply);   
                                             $email_reply = nl2br($email_reply);
                                             
                                             $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer , $ticketID);
