@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -15,4 +16,10 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('test-pusher', function ($user) {
+    if(Auth::check()){
+        return $user;
+    }
 });

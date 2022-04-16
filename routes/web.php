@@ -15,7 +15,7 @@ Route::get('/', function () {
         return redirect()->intended('/login');
     }
 });
-
+Route::get('/pusher', 'HomeController@pusher');
 Route::get('/', 'InstallationController@index');
 Route::post('/installation-data', 'InstallationController@saveInstallation');
 Route::get('/user-login', 'AuthController@userLogin')->name('user-login');
@@ -28,7 +28,7 @@ Route::post('/save-user-register', 'AuthController@saveUserDetails')->name('user
 
 //Auth::routes();
 Route::get('/login', 'AuthController@index')->name('login');
-Route::post('/login', 'AuthController@postLogin'); 
+Route::post('/login', 'AuthController@postLogin');
 
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
@@ -44,7 +44,7 @@ Route::get('checkActiveTasksWithClockIn', 'PayrollManager\PayrollController@chec
 
 
 Route::group(['middleware' => ['auth']], function() {
-    
+
 
 //
 });
@@ -59,8 +59,8 @@ Route::get('/wizard', 'HomeController@wizard');
 
 Route::group ( ['namespace' => 'Chat','middleware' => ['auth','admin']], function () {
     Route::get('/chat', 'LiveChatController@index')->name('chats.index');
-    Route::post('/send_messages', 'LiveChatController@sendMessage')->name('message.index');    
-    Route::post('/get_whatapp_messages', 'LiveChatController@getWhatsAppMessage')->name('whatapp.get');    
+    Route::post('/send_messages', 'LiveChatController@sendMessage')->name('message.index');
+    Route::post('/get_whatapp_messages', 'LiveChatController@getWhatsAppMessage')->name('whatapp.get');
 });
 // new routes
 
@@ -82,7 +82,7 @@ Route::get('/staff_list','ReportsController@staffData');
 Route::post('/get_staff_attendance','ReportsController@getStaffAttendance');
 
 Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']], function () {
-    
+
     //Roles Resource Route
     Route::get('roles','RoleController@index')->name('roles.index');
     Route::post('add_roles','RoleController@store');
@@ -92,7 +92,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::get('test','RoleController@test')->name('test.index');
     // features
     Route::get('/features','FeatureController@index')->name('features.index');
-    
+
     Route::post('/add_features','FeatureController@store');
     Route::get('/features_list','FeatureController@get_all_features');
     Route::get('/get_features_by_id/{id}','FeatureController@get_feature_by_id');
@@ -156,7 +156,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
     Route::post('/dept_permission','UserController@departmentPermission');
 
-    
+
     Route::get('/get_staff_tasks','UserController@getStaffTasks');
     Route::get('/my-profile','UserController@my_profile');
     Route::get('/customer_profile','UserController@customer_profile')->name('customer_profile');
@@ -169,7 +169,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/ticket-format','SettingsController@ticket_format');
     Route::get('/get-color','UserController@get_color');
     Route::Post('/delete-user','UserController@delete_user');
-    
+
     // leaves
     Route::post('/add-leaves','UserController@addLeaves');
     Route::get('/get-leaves','UserController@get_all_leaves');
@@ -183,7 +183,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
     Route::get('/leave-management','UserController@leave_index')->name('leave_management.index');
 
-    
+
 });
 
 Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], function () {
@@ -203,11 +203,11 @@ Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], func
     Route::get('/get-categories','BillingController@getCategories');
     Route::get('/get-notes','BillingController@getNotes');
     Route::Post('/delete-vendor','BillingController@delete_vendor');
-    
+
     Route::get('/invoice-maker/{id?}','BillingController@invoice_maker')->name('invoice_maker.index');
     Route::get('/create_pdf_invoice/{id}','BillingController@createPDFInvoice');
 
-    
+
     Route::post('/billing/published','BillingController@billing_home');
     Route::get('/billing/home','BillingController@billingHomePage')->name('billing.home');
     Route::get('/billing/home-new','BillingController@billingHomePageNew')->name('billing.home-new');
@@ -216,7 +216,7 @@ Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], func
 
 
     Route::post('/create_invoice','BillingController@createInvoice');
-    
+
     Route::post('/update_order/{id}','BillingController@updateOrder');
 
     Route::get('/get_customer_by_id/{id}','BillingController@getCustomerById');
@@ -238,7 +238,7 @@ Route::group ( ['namespace' => 'ProjectManager','middleware' => ['auth','admin']
 
     Route::get('/task_lists/{id}','ProjectManagerController@AllTaskLists');
 
-    
+
     Route::post('/get_tasks_by_date','ProjectManagerController@getAllTasksByDates');
     Route::post('/get_overdue_tasks','ProjectManagerController@getAllOverDueTasks');
 
@@ -258,7 +258,7 @@ Route::group ( ['namespace' => 'ProjectManager','middleware' => ['auth','admin']
     Route::Post('/delete-project','ProjectManagerController@delete_project');
     Route::Post('/delete-task','ProjectManagerController@delete_task');
     Route::Post('/get-task-byid','ProjectManagerController@getTaskById');
-    
+
     Route::get('/task_project_2','ProjectManagerController@task_project_2');
     Route::Post('/save_project_desc','ProjectManagerController@saveProjectDescription');
 
@@ -281,7 +281,7 @@ Route::group ( ['namespace' => 'ProjectManager','middleware' => ['auth','admin']
     Route::Post('/save-project-task','ProjectManagerController@add_project_task');
     Route::Post('/update-tasks-order','ProjectManagerController@updateTasksOrder');
     Route::get('/read_notification/{id}','ProjectManagerController@readNotification');
-     
+
     Route::get('/todays_tasks','ProjectManagerController@todaysTasks');
 });
 
@@ -318,7 +318,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::Post('/delete-customer-type','SettingsController@delete_customer_type');
     Route::Post('/delete-dispatch-status','SettingsController@delete_dispatch_status');
     Route::Post('/delete-project-type','SettingsController@delete_project_type');
-    
+
     Route::get('/integrations','IntegrationController@integration');
     Route::post('/integrations','IntegrationController@save_details')->name('integrations.index');
     Route::post('/IntegrationsVerify','IntegrationController@IntegrationsVerify')->name('IntegrationsVerify');
@@ -357,7 +357,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
         Route::get('/', 'TemplatesController@index')->name('templateList');
         Route::get('getTemplates', 'TemplatesController@getTemplates')->name('getTemplates');
-        
+
         Route::get('createTemplate/{id}', 'TemplatesController@createTemplate')->name('createTemplate');
         Route::get('viewTemplate/{id}', 'TemplatesController@viewTemplate')->name('view.Template');
 
@@ -396,7 +396,7 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], functi
     // save ticket
     Route::post('/save-tkt','HomeController@saveTicket')->name('customer.saveTicket');
     Route::post('/update-tkt','HomeController@cstUpdateTicket')->name('customer.cstUpdateTicket');
-    
+
     Route::post('/get-tkt-replies','HomeController@getTktReplies')->name('customer.getTktReplies');
 
     Route::post('/save_tkt_attachments','HomeController@saveTicketAttachments')->name('customer.saveTicketAttachments');
@@ -416,13 +416,13 @@ Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin'
     Route::post('/save-cust-card','CustomerlookupController@save_cust_card');
     Route::get('/get-customer-card','CustomerlookupController@get_customer_card');
     Route::get('/customer-profile/{id}/{type?}','CustomerlookupController@customer_profile');
-    
+
     // Route::get('/myprofile/{slug}/{type?}','CustomerlookupController@test');
 
     Route::get('/checkout/{customerId}/{orderId}','CustomerlookupController@checkout');
     Route::post('/update-customer','CustomerlookupController@update_customer');
     Route::post('/update_customer_profile','CustomerlookupController@update_customer_profile');
-    Route::post('/update-user','CustomerlookupController@update_user'); 
+    Route::post('/update-user','CustomerlookupController@update_user');
     Route::post('/search-customer','CustomerlookupController@search_customer');
     Route::get('/company-lookup','CompanyController@index')->name('company.lookup');
     Route::get('/company-get-staffs/{id}','CompanyController@get_staffs');
