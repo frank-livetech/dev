@@ -51,7 +51,7 @@ class HomeController extends Controller {
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
 
-        
+
         $open_tickets_count = Tickets::where('status', $open_status->id)
                                 ->where('is_deleted', 0)
                                 ->where('tickets.trashed', 0)
@@ -92,11 +92,11 @@ class HomeController extends Controller {
         $staff_att_data = StaffAttendance::with('user_clocked')
                             ->where('date',date_format(Carbon::now(),"Y-m-d"))
                             ->limit(15)->get();
-        
-        
+
+
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
         $staff_inactive_count = $staff_count - $staff_active_count;
-        
+
 
         $users = User::where('is_deleted',0)->where('user_type','!=',5)->where('is_support_staff','!=',1)->get();
 
@@ -132,7 +132,7 @@ class HomeController extends Controller {
     }
 
     public function markAllRead(){
-                
+
         Notification::where('receiver_id', auth()->id())->update(['read_at' => Carbon::now()]);
 
         $response['message'] = "Success Message";
@@ -174,5 +174,8 @@ class HomeController extends Controller {
 
     public function unauth() {
         return view('unauth');
+    }
+    public function pusher() {
+        return view('pusher');
     }
 }
