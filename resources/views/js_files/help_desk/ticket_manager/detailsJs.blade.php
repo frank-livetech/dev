@@ -437,7 +437,7 @@ function setSlaPlanDeadlines(ret = false) {
     // any deadline is overdue can be reset
     let bgcolor = $("#bgcolor").val();
     let textcolor = $("#textcolor").val();
-    if (resetable) {
+    if (res_diff.includes('Overdue') || rep_diff.includes('Overdue')) {
         $('#card-sla').attr('style', `background-color: ${bgcolor} !important; color : ${textcolor} !important`);
         $('#card-sla a').attr('style', `color : ${textcolor} !important`);
     } else {
@@ -1312,7 +1312,7 @@ function listReplies() {
                         
                         // return ter;
                         if(ter == "pdf" ){
-                            tdet+= `<div class="col-md-4 mt-1">
+                            tdet+= `<div class="col-md-2 mt-1">
                                             <div class="card__corner">
                                                 <div class="card__corner-triangle"></div>
                                             </div>
@@ -1326,7 +1326,7 @@ function listReplies() {
                                     </div>` 
                         }
                         else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter =="sql"){
-                            tdet+= `<div class="col-md-4 mt-1">
+                            tdet+= `<div class="col-md-2 mt-1">
                                             <div class="card__corner">
                                                 <div class="card__corner-triangle"></div>
                                             </div>
@@ -1340,7 +1340,7 @@ function listReplies() {
                                     </div>` 
                         }
                         else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                            tdet+= `<div class="col-md-4 mt-1">
+                            tdet+= `<div class="col-md-2 mt-1">
                                             <div class="card__corner">
                                                 <div class="card__corner-triangle"></div>
                                             </div>
@@ -1353,7 +1353,7 @@ function listReplies() {
                                     </div>` 
                         }
                         else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                            tdet+= `<div class="col-md-4 mt-1">
+                            tdet+= `<div class="col-md-2 mt-1">
                                             <div class="card__corner">
                                                 <div class="card__corner-triangle"></div>
                                             </div>
@@ -1367,7 +1367,7 @@ function listReplies() {
                                     </div>` 
                         }
                         else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                            tdet+= `<div class="col-md-4 mt-1">
+                            tdet+= `<div class="col-md-2 mt-1">
                                             <div class="card__corner">
                                                 <div class="card__corner-triangle"></div>
                                             </div>
@@ -1381,7 +1381,7 @@ function listReplies() {
                                     </div>` 
                         }
                         else if(ter == "zip"){
-                            tdet+= `<div class="col-md-4 mt-1">
+                            tdet+= `<div class="col-md-2 mt-1">
                                             <div class="card__corner">
                                                 <div class="card__corner-triangle"></div>
                                             </div>
@@ -1395,7 +1395,7 @@ function listReplies() {
                                     </div>` 
                         }
                         else{
-                            tdet+= `<div class="col-md-4 mt-1">
+                            tdet+= `<div class="col-md-2 mt-1">
                                             <div class="card__corner">
                                                 <div class="card__corner-triangle"></div>
                                             </div>
@@ -1511,20 +1511,25 @@ function listReplies() {
                 replies_html +=`
                     <li class="media" id="reply__${index}">
                         <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
-                        <div class="">
+                        <div class="row">
 
+                            <div class="col-md-12">
                             <h5 class="mt-0"><span class="text-primary">
                                 ${link}
                                 </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
                             &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
+                            
 
                             <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
                             <div class="my-1 bor-top" id="reply-html-` + reply.id + `"> ${content} </div>
-                            <div class="row mt-1" style="word-break: break-all;">
-                                ${tdet}
                             </div>
+                            
                         </div>
+                        
                     </li>
+                    <div class="row mt-1" style="word-break: break-all;">
+                            ${tdet}
+                        </div>
                     <hr>`;
 
                 if (reply.hasOwnProperty('msgno') && reply.msgno) {
