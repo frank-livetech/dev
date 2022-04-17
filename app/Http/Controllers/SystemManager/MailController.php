@@ -471,12 +471,15 @@ class MailController extends Controller
                                             $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
                                             $html_reply = $bbcode->convertFromHtml($reply);
                                             // Remove extra threads
-                                            dd($html_reply);exit;
                                             $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
                                             
-                                            
+                                             $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply); 
+                                             $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
                                             $email_reply = str_replace('\r\n', "", $html_reply);
-                                            $email_reply = str_replace('//', "<br />", $email_reply);
+                                           
+                                            $email_reply = str_replace('//', "", $email_reply);
+                                            $email_reply = str_replace('[url=', "<a href=", $html_reply);
+                                            $email_reply = str_replace('[\url]', "</a>", $html_reply);
                                             $email_reply =  $bbcode->convertToHtml($email_reply);   
                                             $email_reply = nl2br($email_reply);
                                             
@@ -550,7 +553,8 @@ class MailController extends Controller
     }
 
     public function createParserNewReply($ticket , $html_reply ,$email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer ,$ticketID){
-       
+       $html_reply = mb_convert_encoding($html_reply, 'UTF-8', 'UTF-8');
+       $email_reply = mb_convert_encoding($email_reply, 'UTF-8', 'UTF-8');
         $data = array(
             "ticket_id" => $ticket->id,
             "type" => 'cron',
@@ -584,7 +588,7 @@ class MailController extends Controller
         }
       
         $rep = TicketReply::create($data);
-
+// dd($email_reply);
         $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
         if(isset($sett->tkt_value)) {
             if($sett->tkt_value === 1) {
@@ -600,7 +604,9 @@ class MailController extends Controller
         $ticket->save();
 
         $ticket = Tickets::where('coustom_id', $ticketID)->first();
-
+$body = $rep->reply;
+                $body = str_replace('\r\n', "", $body);
+                $body = str_replace('//', "", $body);
         $helpDesk = new HelpdeskController();
         if(!empty($sid)) {
           
@@ -611,7 +617,10 @@ class MailController extends Controller
             $ticket->assigned_to = $sid;
             $ticket->save();
             try {
-
+                $body = $rep->reply;
+                $body = str_replace('\r\n', "", $body);
+                $body = str_replace('//', "", $body);
+                
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt );
 
             } catch(Throwable $e) {
@@ -625,6 +634,11 @@ class MailController extends Controller
             $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
             $user = $customer;
             try {
+                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                $email_reply = str_replace('/\r\n/', "", $email_reply);
+                // $email_reply = str_replace('//', "<br>", $email_reply);
+                // dd($email_reply);
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt );
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
