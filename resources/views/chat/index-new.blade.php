@@ -172,7 +172,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                             <i class="fab fa-whatsapp cursor-pointer d-sm-block d-none font-medium-2 me-1"  style="font-size: 18px; margin-right: 10px;"></i>
                                         </div>
                                         <i data-feather="search" class="cursor-pointer d-sm-block d-none font-medium-2"></i>
-                                        
+
                                     </div>
                                 </header>
                             </div>
@@ -241,13 +241,83 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 @endsection
 
 @section('scripts')
+<script type="module">
+    import Echo from '{{ asset('js/echo.js') }}'
+    import { Pusher } from '{{ asset('js/pusher.js') }}'
+
+    window.Pusher = Pusher
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: "{{ env('PUSHER_APP_KEY') }}",
+        cluster: "{{ env('PUSHER_APP_CLUSTER') }}",
+        encrypted: true,
+    });
+
+    window.Echo.private('support-messages.' + `{{ Auth::id() }}`)
+        .listen('\\App\\Events\\SupportChat', (e) => {
+            let message = e.message;
+            let sender = e.sender;
+
+            if (message.type == 'file') {
+                let html = `<div class="col-md-12 ">
+                                <div class="sender">
+                                    <small>From ` + sender.fullname + `</small>
+                                    <p class="mb-0 text-center">
+                                        <img src="{{ asset('storage/` + message.text + `') }}" alt="" class="img-style">
+                                    </p>
+                                    <small class="dull pull-right">
+                                        ` + getTimeInterval(new Date(message.created_at)) + `
+                                    </small>
+                                </div>
+                        </div>`;
+                $(".ticketChat").append(html);
+
+            } else {
+                let html = `<div class="col-md-12">
+                    <div class="sender">
+                        <small>From ` + sender.fullname + `</small>
+                        <p class="mb-0">
+                            ` + message.text + `
+                        </p>
+                        <small class="dull pull-right">
+                            ` + getTimeInterval(new Date(message.created_at)) + `
+                        </small>
+                    </div>
+
+                </div>`;
+                $(".ticketChat").append(html);
+
+            }
+
+    });
+
+    window.Echo.join(`chat`)
+        .listenForWhisper("typing", (e) => {
+            if (e) {
+                let typingClock = null;
+                let typing = '';
+                typing = e + " is typing...";
+                $("#user_typing").html(typing)
+                if (typingClock) clearTimeout();
+                    typingClock = setTimeout(() => {
+                        typing = '';
+                        $("#user_typing").html('')
+                    }, 2000);
+            }
+    });
+
+    $("#message").on('keydown', function(){
+        window.Echo.join(`chat`).whisper("typing", "{{Auth::user()->fullname}}");
+    })
+
+</script>
 
 <script>
-
+    //Message Types  1 = Whatsapp,2 = Webchat
     function showActiveUserChat(tag) {
 
         let user_id  = $(tag).data("id");
-        
+
         $("#user_to").val(user_id);
         let src = $('.user_image_'+ user_id).attr('src');
         $("#image_url").val(src);
@@ -261,29 +331,37 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     }
 
     function webChat() {
-        var imageUrl = '{{asset("public/default_imgs/webchat_bg.jpg")}}';
+        var imageUrl = '{{asset("default_imgs/webchat_bg.jpg")}}';
         $(".user-chats").css("background-image", "url(" + imageUrl + ")");
         $(".user-chats").css("background-size", "530px");
-
         $('.show_chat_messages').html('');
+        //Message Types  1 = Whatsapp,2 = Webchat
+        getAllMessages(2);
     }
 
     function whatsAppChat() {
-
-        var imageUrl = '{{asset("public/default_imgs/whatsapp_bg.jpg")}}';
+        var imageUrl = '{{asset("default_imgs/whatsapp_bg.jpg")}}';
         $(".user-chats").css("background-image", "url(" + imageUrl + ")");
         $(".user-chats").css("background-size", "900px");
-        getAllMessages();
+        //Message Types  1 = Whatsapp,2 = Webchat
+        getAllMessages(1);
     }
 
-    function getAllMessages() {
+
+    function getAllMessages(type) {
+        let url = '';
         let user_id = $("#user_to").val();
+        if(type == 1){
+            url = "{{route('whatapp.get')}}";
+        }else if(type == 2){
+            url = "{{route('webchat.get')}}";
+        }
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             },
             type: "POST",
-            url: "{{route('whatapp.get')}}",
+            url: url,
             data : {id:user_id},
             dataType: 'json',
             beforeSend:function(data) {
@@ -292,11 +370,15 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
             success: function(data) {
                 let obj = data.data;
                 if(data.status == 200 && data.success == true) {
-                    renderMessages(obj , data.number);
+                    if(data.type == 'whatsapp'){
+                        renderMessages(obj , data.number);
+                    }else{
+                        renderMessages(obj , data.number);
+                    }
                 }else{
                     $('.show_chat_messages').html('');
                 }
-                
+
             },
             complete:function(data) {
 
@@ -307,21 +389,15 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
         });
     }
 
-    function renderMessages(obj , number) {
+    function renderMessages(obj , number=null) {
 
         let img_src = $("#image_url").val();
         let login_user_image_url = $('#login_usr_logo').attr('src');
 
         let msgs_html = ``;
-        // $('.show_chat_messages').html('');
 
         if(obj.length > 0) {
-            
-            console.log(root , "root");
-
             for(let i =0; i < obj.length; i++) {
-
-
                 if(obj[i].to == number) {
 
                     msgs_html +=`
@@ -348,8 +424,8 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             attachment = `<img src="${root}/public/${obj[i].media_url}" width="250px" height="250px"/>`;
                         }
                     }
-                    
-                    
+
+
                     if(obj[i].media_type == 'ogg' || obj[i].media_type == 'mp3' || obj[i].media_type == 'wave') {
 
                         if(obj[i].media_url != null) {
@@ -360,7 +436,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             `;
                         }
                     }
-                    
+
                     if(obj[i].media_type == 'mp4' || obj[i].media_type == 'mkv' || obj[i].media_type == 'webm' || obj[i].media_type == 'mov') {
 
                         if(obj[i].media_url != null) {
@@ -384,16 +460,13 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             </span>
                         </div>
                         <div class="chat-body">
-                            
-                            ${obj[i].body != null ? msgbody : ''}
 
+                            ${obj[i].body != null ? msgbody : ''}
                             ${obj[i].media_url != null ? attch : ''}
-                            
+
                         </div>
                     </div>`;
                 }
-
-                
             }
 
             $('.show_chat_messages').html(msgs_html);
@@ -404,7 +477,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
     $('#chat_form').submit(function(e) {
         e.preventDefault();
-        
+
         let message = $("#message").val();
 
         if(message == '') {
