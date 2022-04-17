@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SupportMessage extends Model
 {
     protected $table = 'web_chats';
+
     protected $fillable = [
                 'sender_id',
                 'reciever_id',
