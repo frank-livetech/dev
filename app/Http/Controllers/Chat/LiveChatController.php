@@ -215,6 +215,7 @@ class LiveChatController extends Controller
 
         $pusher->trigger('support-chat.'.(int) $message->reciever_id, 'support-chat-event', $data);
 
+
         return response()->json([
             'data' => $message,
             'status_code' => 200,

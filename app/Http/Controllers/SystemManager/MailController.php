@@ -405,99 +405,104 @@ class MailController extends Controller
 
                             $customer = $this->verifyCustomer($emailFrom , $eq_value->registration_required);
                             
-                            if(empty($customer)){
+                            // if(empty($customer)){
 
-                                $this->handleUnregisteredCustomers($emailFrom);
+                            //     $this->handleUnregisteredCustomers($emailFrom);
 
-                            }else{
+                            // }else{
 
-                                if(strpos($email_subject, '[') !== false && strpos($email_subject, ']:') !== false && strpos($email_subject, '!') !== false){
-                                    $id = '';
-                                    if(strpos($email_subject, $eq_value->mail_queue_address) !== false){
-                                        
-                                        $pos = strpos($email_subject, '!');
-                                        $sub = substr($email_subject,$pos+1);
-                                        $pos1 = strpos($sub,']:');
-                                        $id = substr($sub,0,$pos1);
-                                        
-                                        $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
-                                        if(preg_match($pattern, $id, $array)) {
-                                            $id = $array[0];
-                                        }
-                                        
-                                    }else{
-                                        $pos = strpos($email_subject, '!');
-                                        $sub = substr($email_subject,$pos+1);
-                                        $pos1 = strpos($sub,']:');
-                                        $id = substr($sub,0,$pos1);
-                                        
-                                        $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
-                                        if(preg_match($pattern, $id, $array)) {
-                                            $id = $array[0];
-                                        }
+                            if(strpos($email_subject, '[') !== false && strpos($email_subject, ']:') !== false && strpos($email_subject, '!') !== false){
+                                $id = '';
+                                if(strpos($email_subject, $eq_value->mail_queue_address) !== false){
+                                    
+                                    $pos = strpos($email_subject, '!');
+                                    $sub = substr($email_subject,$pos+1);
+                                    $pos1 = strpos($sub,']:');
+                                    $id = substr($sub,0,$pos1);
+                                    
+                                    $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
+                                    if(preg_match($pattern, $id, $array)) {
+                                        $id = $array[0];
                                     }
-                                    if($id != ''){
-                                        // get ticket custom id from mail body
-                                        $ticketID = $id;
-                                        // echo $ticketID;exit;
-                                        if(empty($ticketID)) {
-                                            echo 'Ticket with subject "'.$email_subject. '" not found!<br>';
+                                    
+                                }else{
+                                    $pos = strpos($email_subject, '!');
+                                    $sub = substr($email_subject,$pos+1);
+                                    $pos1 = strpos($sub,']:');
+                                    $id = substr($sub,0,$pos1);
+                                    
+                                    $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
+                                    if(preg_match($pattern, $id, $array)) {
+                                        $id = $array[0];
+                                    }
+                                }
+                                if($id != ''){
+                                    // get ticket custom id from mail body
+                                    $ticketID = $id;
+                                    // echo $ticketID;exit;
+                                    if(empty($ticketID)) {
+                                        echo 'Ticket with subject "'.$email_subject. '" not found!<br>';
+                                        continue;
+                                    }
+                                    // save ticket reply
+                                    // $sbj = str_replace('Re: ', '', $email_subject);
+                                    $sbj = str_replace('Re: ', '', $email_subject);
+                                    $cid = (!empty($customer)) ? $customer->id : '';
+                                    $sid = '';
+                                    $staff = '';
+                                    // echo $ticketID;exit;
+                                    if(empty($customer)) {
+                                        $staff = User::where('email', trim($emailFrom))->first();
+                                        if(empty($staff)) {
+                                            // reply is not from our system user
+                                            $this->handleUnregisteredCustomers($emailFrom);
                                             continue;
                                         }
-                                        // save ticket reply
-                                        // $sbj = str_replace('Re: ', '', $email_subject);
-                                        $sbj = str_replace('Re: ', '', $email_subject);
-                                        $cid = (!empty($customer)) ? $customer->id : '';
-                                        $sid = '';
-                                        $staff = '';
-                                        // echo $ticketID;exit;
-                                        if(empty($customer)) {
-                                            $staff = User::where('email', trim($emailFrom))->first();
-                                            if(empty($staff)) {
-                                                // reply is not from our system user
-                                                
-                                                continue;
-                                            }
-                                            $sid = $staff->id;
-                                        }
-                                        // $ticket = Tickets::where(DB::raw('concat(coustom_id, " ", subject)'), trim($sbj))->first();
-                                        $ticket = Tickets::where('coustom_id', $ticketID)->first();
-    
-                                        $bbcode = new BBCode();
-                                        if(!empty($ticket)) {
-                                            // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
-                                            $all_parsed = $mail;
-                                            $attaches = $this->mail_parse_attachments($mail, $ticket->id);
-                                            $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
-                                            $html_reply = $bbcode->convertFromHtml($reply);
-                                            // Remove extra threads
-                                            dd($html_reply);exit;
-                                            $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
-                                            
-                                            
-                                            $email_reply = str_replace('\r\n', "", $html_reply);
-                                            $email_reply = str_replace('//', "<br />", $email_reply);
-                                            $email_reply =  $bbcode->convertToHtml($email_reply);   
-                                            $email_reply = nl2br($email_reply);
-                                            
-                                            $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer , $ticketID);
+                                        $sid = $staff->id;
+                                    }
+                                    
+                                    
+                                    
+                                    // $ticket = Tickets::where(DB::raw('concat(coustom_id, " ", subject)'), trim($sbj))->first();
+                                    $ticket = Tickets::where('coustom_id', $ticketID)->first();
 
-
-                                            
-                                        }else{
-                                            $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);  
-                                        }
+                                    $bbcode = new BBCode();
+                                    if(!empty($ticket)) {
+                                        // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
+                                        $all_parsed = $mail;
+                                        $attaches = $this->mail_parse_attachments($mail, $ticket->id);
+                                        $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
+                                        $html_reply = $bbcode->convertFromHtml($reply);
+                                        // Remove extra threads
+                                        $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
+                                        
+                                         $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply); 
+                                         $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
+                                        $email_reply = str_replace('\r\n', "", $html_reply);
+                                       
+                                        $email_reply = str_replace('//', "", $email_reply);
+                                        $email_reply = str_replace('[url=', "<a href=", $html_reply);
+                                        $email_reply = str_replace('[\url]', "</a>", $html_reply);
+                                        $email_reply =  $bbcode->convertToHtml($email_reply);   
+                                        $email_reply = nl2br($email_reply);
+                                        
+                                        $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer , $ticketID);
+  
                                     }else{
                                         $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);  
                                     }
                                 }else{
-                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);
+                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);  
                                 }
-
+                            }else{
+                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);
                             }
+
+                            
  
                         }
                     }
+                    // dd('not deleted');
                     imap_delete($imap, $message);
                 }
 
@@ -550,7 +555,8 @@ class MailController extends Controller
     }
 
     public function createParserNewReply($ticket , $html_reply ,$email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer ,$ticketID){
-       
+       $html_reply = mb_convert_encoding($html_reply, 'UTF-8', 'UTF-8');
+       $email_reply = mb_convert_encoding($email_reply, 'UTF-8', 'UTF-8');
         $data = array(
             "ticket_id" => $ticket->id,
             "type" => 'cron',
@@ -584,7 +590,7 @@ class MailController extends Controller
         }
       
         $rep = TicketReply::create($data);
-
+// dd($email_reply);
         $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
         if(isset($sett->tkt_value)) {
             if($sett->tkt_value === 1) {
@@ -600,7 +606,9 @@ class MailController extends Controller
         $ticket->save();
 
         $ticket = Tickets::where('coustom_id', $ticketID)->first();
-
+$body = $rep->reply;
+                $body = str_replace('\r\n', "", $body);
+                $body = str_replace('//', "", $body);
         $helpDesk = new HelpdeskController();
         if(!empty($sid)) {
           
@@ -611,7 +619,10 @@ class MailController extends Controller
             $ticket->assigned_to = $sid;
             $ticket->save();
             try {
-
+                $body = $rep->reply;
+                $body = str_replace('\r\n', "", $body);
+                $body = str_replace('//', "", $body);
+                
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt );
 
             } catch(Throwable $e) {
@@ -625,6 +636,11 @@ class MailController extends Controller
             $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
             $user = $customer;
             try {
+                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                $email_reply = str_replace('/\r\n/', "", $email_reply);
+                // $email_reply = str_replace('//', "<br>", $email_reply);
+                // dd($email_reply);
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt );
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
@@ -1264,23 +1280,9 @@ class MailController extends Controller
         
 
         $template = htmlentities($template);
-
         if(!empty($reply_content)) {
             if(str_contains($template, '{Ticket-Reply}')) {
-                // if($action_name == 'Ticket Followup'){
-                //     $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
-                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                // }else if($action_name == 'Ticket Updated'){
-                //     $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
-                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                // }else if($action_name == 'ticket_reply_update'){
-                //     if(!empty($reply_content)){
-                //         $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
-                //     }
-                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                // }else{
-                //     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
-                // }
+              
                 
                 if($template_code == 'auto_res_ticket_reply'){
                     // $reply_content = $reply_content;
@@ -1356,7 +1358,13 @@ class MailController extends Controller
                         }
                     }                    
                     if(!empty($reply_content)){
-                        $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                        if($template_code == 'auto_res_ticket_reply'){
+                            // $reply_content = $reply_content;
+                            $template = str_replace('{Ticket-Reply}', $reply_content, $template);
+                        }else{
+                            $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                        }
+                        
                     }
                     if(!empty($flwup_note)){
                         $flwup_note = '<hr>'.'<strong>Note: </strong> <br>'.$flwup_note;
