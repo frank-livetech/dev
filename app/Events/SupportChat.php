@@ -35,6 +35,6 @@ class SupportChat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('support-messages.'. $this->reciever);
+        return new PrivateChannel('support-messages.'. $this->reciever);
     }
 }

@@ -279,111 +279,27 @@
     @endsection
 
     @section('scripts')
-    <script type="module">
-        import Echo from '{{ asset("js/echo.js") }}'
-        import { Pusher } from '{{ asset("js/pusher.js") }}'
 
-        window.Pusher = Pusher;
-
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key: "{{ env('PUSHER_APP_KEY') }}",
-            cluster: "{{ env('PUSHER_APP_CLUSTER') }}",
-        });
-
-        window.Echo.private('support-messages.' + `{{ Auth::id() }}`)
-            .listen('\\App\\Events\\SupportChat', (e) => {
-                console.log(e)
-                let message = e.message;
-                let sender = e.sender;
-
-                if (message.type == 'file') {
-                    let html = `<div class="col-md-12 ">
-                                    <div class="sender">
-                                        <small>From ` + sender.fullname + `</small>
-                                        <p class="mb-0 text-center">
-                                            <img src="{{ asset('storage/` + message.text + `') }}" alt="" class="img-style">
-                                        </p>
-                                        <small class="dull pull-right">
-                                            ` + getTimeInterval(new Date(message.created_at)) + `
-                                        </small>
-                                    </div>
-                            </div>`;
-                    $(".ticketChat").append(html);
-
-                } else {
-                    let html = `<div class="col-md-12">
-                        <div class="sender">
-                            <small>From ` + sender.fullname + `</small>
-                            <p class="mb-0">
-                                ` + message.text + `
-                            </p>
-                            <small class="dull pull-right">
-                                ` + getTimeInterval(new Date(message.created_at)) + `
-                            </small>
-                        </div>
-
-                    </div>`;
-                    $(".ticketChat").append(html);
-
-                }
-
-        });
-
-        window.Echo.join(`chat`)
-            .listenForWhisper("typing", (e) => {
-                if (e) {
-                    let typingClock = null;
-                    let typing = '';
-                    typing = e + " is typing...";
-                    $("#user_typing").html(typing)
-                    if (typingClock) clearTimeout();
-                        typingClock = setTimeout(() => {
-                            typing = '';
-                            $("#user_typing").html('')
-                        }, 2000);
-                }
-        });
-
-        $("#message").on('keydown', function(){
-            window.Echo.join(`chat`).whisper("typing", "{{Auth::user()->fullname}}");
-        })
-
-    </script>
-
-    {{-- <script type="module" src="https://cdn.jsdelivr.net/npm/laravel-echo@1.6.1/dist/echo.common.min.js"></script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
     <script>
-
         // Add API Key & cluster here to make the connection
         var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
             cluster: "{{ env('PUSHER_APP_CLUSTER') }}",
-            encrypted: false
         });
 
         // Enter a unique channel you wish your users to be subscribed in.
-        var channel = pusher.subscribe('support-messages.' + `{{ Auth::id() }}`);
+        var channel = pusher.subscribe('support-chat.'+`{{Auth::id()}}`);
         // bind the server event to get the response data and append it to the message div
-        channel.bind("App\\Events\\SupportChat", (data) => {
-            console.log(data)
+        channel.bind("support-chat-event", (data) => {
+            renderPusherMessages(data.message,data.sender)
         });
 
-        channel.bind('chat', function(members) {
-            console.log(members);
-        });
-        channel.bind('pusher:chat', function(member) {
-            console.log(channel.members);
-        });
-
-    </script> --}}
-    <script>
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 0;
 
         function showActiveUserChat(tag) {
 
             let user_id = $(tag).data("id");
-
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
             $("#image_url").val(src);
@@ -414,7 +330,6 @@
             message_type = 1;
             getAllMessages(message_type);
         }
-
 
         function getAllMessages(type) {
             let user_id = $("#user_to").val();
@@ -574,7 +489,6 @@
                     }
                     if (obj[i].reciever_id == auth) {
                         let message = ``;
-
                         if(obj[i].msg_type == 'file'){
                             message = `<div  class="chat-content"> ${obj[i].msg_body} </div>`;
                         }else{
@@ -600,6 +514,30 @@
             } else {
                 $('.show_chat_messages').html('');
             }
+        }
+
+        function renderPusherMessages(message,sender)
+        {
+            let msg = ``;
+            if(message.msg_type == 'file'){
+                msg = `<div  class="chat-content"> ${message.msg_body} </div>`;
+            }else{
+                msg = `<div class="chat-content"> <p> ${message.msg_body != null ? message.msg_body : ''} </p> </div>`;
+            }
+
+            var  msgs_html = `
+                <div class="chat chat-left">
+                    <div class="chat-avatar">
+                        <span class="avatar box-shadow-1 cursor-pointer">
+                            <img src="${sender.profile_pic}" alt="avatar" height="36" width="36" />
+                        </span>
+                    </div>
+                    <div class="chat-body">
+                        ${msg}
+                    </div>
+                </div>`;
+
+            $('.show_chat_messages').append(msgs_html);
         }
 
         $('#chat_form').submit(function(e) {
