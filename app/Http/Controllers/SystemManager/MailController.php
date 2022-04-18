@@ -60,8 +60,6 @@ class MailController extends Controller
         $this->middleware('auth');
     }
 
-
-    
     public function get_mails(Request $request){
         $mails = Mail::orderBy('id','desc')->where('is_deleted', 0)->get();
 
@@ -489,13 +487,13 @@ class MailController extends Controller
                                         $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer , $ticketID);
   
                                     }else{
-                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);  
+                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);  
                                     }
                                 }else{
-                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);  
+                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);  
                                 }
                             }else{
-                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message);
+                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);
                             }
 
                             
@@ -590,7 +588,7 @@ class MailController extends Controller
         }
       
         $rep = TicketReply::create($data);
-// dd($email_reply);
+        // dd($email_reply);
         $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
         if(isset($sett->tkt_value)) {
             if($sett->tkt_value === 1) {
@@ -606,9 +604,9 @@ class MailController extends Controller
         $ticket->save();
 
         $ticket = Tickets::where('coustom_id', $ticketID)->first();
-$body = $rep->reply;
-                $body = str_replace('\r\n', "", $body);
-                $body = str_replace('//', "", $body);
+        $body = $rep->reply;
+        $body = str_replace('\r\n', "", $body);
+        $body = str_replace('//', "", $body);
         $helpDesk = new HelpdeskController();
         if(!empty($sid)) {
           
@@ -662,7 +660,7 @@ $body = $rep->reply;
 
     }
 
-    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message){
+    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap){
 
         $customer_id = '';
         $is_staff_tkt = 0;
@@ -775,6 +773,52 @@ $body = $rep->reply;
     }
 
     public function handleUnregisteredCustomers($emailFrom){
+
+        $cust_template = DB::table("templates")->where('code','auto_res_cust_not_reg')->first();
+        $admin_template = DB::table("templates")->where('code','auto_res_admin_cust_not_reg')->first();
+
+        if(!empty($cust_template)) {
+
+            $template = htmlentities($cust_template->template_html);
+
+            $subject = 'Unable to process your email (registration required)';
+
+            if(str_contains($template, '{Subject}')) {
+                $template = str_replace('{Subject}', $subject , $template);
+            }
+
+            if(str_contains($template, '{Customer-Email}')) {
+                $template = str_replace('{Customer-Email}', $subject , $template);
+            }
+
+            $cust_temp = html_entity_decode($template);
+
+            $this->sendMail($subject, $cust_temp, 'accounts@mylive-tech.com', $emailFrom, '');
+
+        }
+
+        if(!empty($admin_template)) {
+
+            $template = htmlentities($admin_template->template_html);
+
+            $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+            $tm_name = empty($timezone) ? 'America/New_York' : ($timezone->sys_value != null ? $timezone->sys_value : 'America/New_York');
+
+            $current_date = new Carbon( now() , $tm_name);
+            $subject = 'Mail Processing Error at ' . $current_date->format('F d, Y, g:i A');
+
+
+            $admin_temp = html_entity_decode($template);
+
+
+            $users = User::where('user_type', 1)->get();
+
+            foreach($users as $user) {
+                $this->sendMail($subject, $admin_temp, 'accounts@mylive-tech.com', $user->email, $user->name);
+            }
+        }
+
+        
 
         // $mail_template = '';
         // $subject = "Mail Processing Error LTCMS";
