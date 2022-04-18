@@ -134,17 +134,23 @@ class LiveChatController extends Controller
     {
         $id = $request->id;
         // mark all messages with the selected contact as read
-        SupportMessage::where('sender_id', $id)->where('receiver_id', auth()->id())->update(['is_seen' => true]);
+        $support = SupportMessage::where('sender_id', $id)->where('reciever_id', auth()->id())
+                                    ->orWhere('sender_id', Auth::id())->orWhere('reciever_id',$id);
+        if($support->get() != null){
+            $support->update(['read_at' => Carbon::now()]);
+            // get all messages between the authenticated user and the selected user
+            $messages = SupportMessage::where(function($q) use ($id) {
+                $q->where('sender_id', auth()->id());
+                $q->where('reciever_id', $id);
+            })->orWhere(function($q) use ($id) {
+                $q->where('sender_id', $id);
+                $q->where('reciever_id', auth()->id());
+            })
+            ->get();
+        }else{
+            $messages = null;
+        }
 
-        // get all messages between the authenticated user and the selected user
-        $messages = SupportMessage::where(function($q) use ($id) {
-            $q->where('sender_id', auth()->id());
-            $q->where('receiver_id', $id);
-        })->orWhere(function($q) use ($id) {
-            $q->where('sender_id', $id);
-            $q->where('receiver_id', auth()->id());
-        })
-        ->get();
 
         return response()->json([
             "data" => $messages,
@@ -163,38 +169,38 @@ class LiveChatController extends Controller
      * ==========================================
      *
      */
-    public function webMessages(Request $request)
+    public function sendWebMessages(Request $request)
     {
         if(request()->has('file')){
             $filename = request('file')->store('support','public');
-            $message = SupportMessage::create([
-                'sender_id' => auth()->id(),
-                'reciever_id' => $request->reciever_id,
-                'msg_body' => $filename,
-                'msg_type '=> 'file',
-                'read_at'=> Carbon::now(),
-            ]);
             $msg_type="file";
-        }else{
             $message = SupportMessage::create([
                 'sender_id' => auth()->id(),
-                'reciever_id' => $request->reciever_id,
-                'msg_body' => $request->text,
-                'msg_type '=> 'text',
-                'read_at'=> Carbon::now(),
+                'reciever_id' => $request->user_to,
+                'msg_body' => $filename,
+                'msg_type '=> $msg_type,
             ]);
+
+        }else{
             $msg_type = 'text';
+            $message = SupportMessage::create([
+                'sender_id' => auth()->id(),
+                'reciever_id' => $request->user_to,
+                'msg_body' => $request->message,
+                'msg_type '=> $msg_type,
+            ]);
+
         }
 
         $user = User::find($message->sender_id);
 
-        event(new SupportChat($message,$message->reciever_id,$user));
+        event(new SupportChat($message,$user));
 
         return response()->json([
             'data' => $message,
             'status_code' => 200,
             'message_type' => $msg_type,
-            'message' => 'Message Sent Successfully',
+            'message' => 'Message Sent',
             'success' => true
         ]);
     }
