@@ -15,6 +15,7 @@ use App\Models\WhatsAppChat;
 use App\Models\SupportMessage;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
+use Pusher\Pusher;
 
 class LiveChatController extends Controller
 {
@@ -194,7 +195,26 @@ class LiveChatController extends Controller
 
         $user = User::find($message->sender_id);
 
-        event(new SupportChat($message,$user));
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'useTLS' => true
+        );
+
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+
+        $data = [
+            "message" => $message,
+            "reciever_id" => (int) $message->reciever_id,
+            "sender" => $user,
+        ];
+
+        $pusher->trigger('support-chat.'.(int) $message->reciever_id, 'support-chat-event', $data);
+
 
         return response()->json([
             'data' => $message,

@@ -26,7 +26,9 @@
         "maatwebsite/excel": "^3.1",
         "phpmailer/phpmailer": "^6.1",
         "phpoffice/phpspreadsheet": "^1.19",
-        "pusher/pusher-php-server": "^5.0",
+
+        "pusher/pusher-php-server": "^4.0",
+
         "spatie/laravel-permission": "^3.16",
         "srmklive/paypal": "^3.0",
         "symfony/psr-http-message-bridge": "^2.1",
