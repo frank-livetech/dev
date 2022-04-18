@@ -378,7 +378,6 @@ function setSlaPlanDeadlines(ret = false) {
             if (res_due) $('#sla-res_due').html(res_due.replace("60m", "59m"));
         }
 
-        resetable = false;
         if(ticket.reply_deadline != null){
             
             let rep_diff = ``;
@@ -391,7 +390,6 @@ function setSlaPlanDeadlines(ret = false) {
                     resetable = true;
                     rep_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
-                    resetable = false;
                     // let cal_rep_diff = momentDiff(tkt_rep_due , con_currTime);
                     // rep_diff = cal_rep_diff.replace("60m", "59m");
                     rep_diff = getHoursMinutesAndSeconds( ticket.reply_deadline, con_currTime);
@@ -437,7 +435,7 @@ function setSlaPlanDeadlines(ret = false) {
     // any deadline is overdue can be reset
     let bgcolor = $("#bgcolor").val();
     let textcolor = $("#textcolor").val();
-    if (res_diff.includes('Overdue') || rep_diff.includes('Overdue')) {
+    if (resetable) {
         $('#card-sla').attr('style', `background-color: ${bgcolor} !important; color : ${textcolor} !important`);
         $('#card-sla a').attr('style', `color : ${textcolor} !important`);
     } else {
