@@ -23,3 +23,15 @@ Broadcast::channel('test-pusher', function ($user) {
         return $user;
     }
 });
+
+Broadcast::channel('support-messages.{id}', function ($user) {
+    if (auth()->check()) {
+        return $user;
+    }
+});
+
+Broadcast::channel('chat', function ($user) {
+    if (auth()->check()) {
+        return $user;
+    }
+});

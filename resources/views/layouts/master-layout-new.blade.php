@@ -21,7 +21,7 @@
     @endphp
 
     <!-- Favicon icon -->
-    
+
         {{-- @if( Session::get('site_favicon') != null)
             @if(file_exists( public_path(). $file_path . Session::get('site_favicon') ) )
                 <link rel="icon" type="image/png" sizes="16x16"
@@ -47,8 +47,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/pickers/pickadate/pickadate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/file-uploaders/dropzone.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/js/scripts/components/components-tooltips.js')}}">
-    
- 
+
+
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
     <!-- END: Vendor CSS-->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -72,11 +72,11 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-invoice-list.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
-    
+
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/calendars/fullcalendar.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-calendar.css')}}">
 
-    
+
 
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/form-validation.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-chat.css')}}">
@@ -87,7 +87,7 @@
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/pages/ui-feather.css')}}">
      <!-- End dashboard css-->
-     
+
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -99,7 +99,7 @@
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <!-- END: Material Design CDNS-->
-    
+
     <style>
         .loading__ {
             background: white !important;
@@ -154,14 +154,14 @@
                         <a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i>
                     </a></li>
                 @endif
-            
+
                 <li class="nav-item dropdown dropdown-notification me-25">
                     <a class="nav-link" href="#" data-bs-toggle="dropdown">
                         <i class="ficon" data-feather="bell"></i>
-                   
+
                         @if($numberAlerts > 0)
-                            <span class="badge rounded-pill bg-danger badge-up noti_count" id="noti_count" >{{$numberAlerts}}</span> 
-                        @else    
+                            <span class="badge rounded-pill bg-danger badge-up noti_count" id="noti_count" >{{$numberAlerts}}</span>
+                        @else
                             <span class="badge rounded-pill bg-danger badge-up noti_count" id="noti_count"></span>
                         @endif
                     </a>
@@ -169,12 +169,12 @@
                         <li class="dropdown-menu-header">
                             <div class="dropdown-header d-flex">
                                 <h4 class="notification-title mb-0 me-auto">Notifications</h4>
-                              
+
                                 <div class="badge rounded-pill badge-light-primary bg-primary"><a href="{{url('all-notifications')}}" class="small p-2">view all</a></div>
                             </div>
                         </li>
                         <li class="scrollable-container media-list ps notifications list_all_notifications">
-                            
+
                         </li>
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()"> Mark all as read </a></li>
                     </ul>
@@ -209,7 +209,7 @@
                                 <i i class="me-50" data-feather="credit-card"></i> Company Profile </a>
                         @endif
                         <a class="dropdown-item" onclick="run_parser()"><i class="me-50" data-feather="refresh-ccw"></i> Run Parser</a>
-                        
+
                         <a class="dropdown-item" type="button" href="{{ route('logout') }}">
                             <i class="me-50" data-feather="power"></i>  Logout
                         </a>
@@ -220,13 +220,13 @@
         </div>
     </nav>
     <!-- END: Header-->
-    
+
     @include('layouts.new-sidebar')
 
     <!-- BEGIN: Content-->
-      
+
            @yield('body')
-      
+
     <!-- END: Content-->
 
     <div class="sidenav-overlay"></div>
@@ -240,8 +240,10 @@
     <!-- END: Footer-->
 
 
+
     <!-- BEGIN: Vendor JS-->
     <script src="{{asset($file_path . 'app-assets/vendors/js/vendors.min.js')}}"></script>
+
     <!-- BEGIN Vendor JS-->
     <script>
         const colorUrl = "{{asset('get-color')}}";
@@ -330,7 +332,7 @@
         });
         $(document).ready(function (){
             setInterval(() => {
-                getNotifications()    
+                getNotifications()
             }, 60000);
         });
         var user_photo_url = "{{asset('files/user_photos')}}";
@@ -342,11 +344,11 @@
             $.ajax({
                 type: 'POST',
                 url: "{{url('send_notification')}}",
-                data: { 
+                data: {
                     type:type,
                     slug:slug,
                     icon:icon,
-                    title: title, 
+                    title: title,
                     description: description},
                 success: function(data) {
                     // console.log(data);
@@ -391,14 +393,14 @@
                             }
                         }
                     }
-                    
+
 
                 },
                 failure: function(errMsg) {
                     console.log(errMsg);
                 }
             });
-            
+
         }
 
         function run_parser(){
@@ -438,11 +440,11 @@
                     console.log(errMsg);
                 }
             });
-            
+
         }
-        
+
         $('.sidebar-link').click(function(){
-           
+
             if($(this).parent().hasClass('open')){
                 $(".slogan_i_minus").hide()
                 $(".slogan_i_plus").show()
@@ -454,7 +456,7 @@
                 $(".slogan_i_plus").show()
                 $(this).find(".slogan_i_plus").hide();
                 $(this).find(".slogan_i_minus").show();
-              
+
             }
         });
 
@@ -513,12 +515,12 @@
                     var curr_user_image = $("#curr_user_image").val();
                     var user_image = ``;
                     var default_icon = ``;
-                    
+
                     $('.version_title').text(data.system_version);
 
                     if(data.status_code == 200 && data.success == true){
                         notifications = data.data;
-                        
+
                         let count = data.total_notification;
 
                         $(".noti_count").addClass('badge rounded-pill bg-danger badge-up ');
@@ -528,7 +530,7 @@
                             for(var i = 0 ; i < notifications.length ; i++){
 
                                 if(notifications[i].sender != null) {
-                                    
+
                                     if(notifications[i].sender.profile_pic != null ) {
                                         user_image = `<img src="${root}/${notifications[i].sender.profile_pic}" alt="avatar" width="32" height="32">`;
                                     }else{
@@ -540,7 +542,7 @@
                                 }
 
                                 var date = new Date(notifications[i].created_at);
-                                
+
                                 default_icon = `<span class="`+notifications[i].btn_class+` rounded-circle btn-circle"" style="padding:8px 12px">
                                                 <i class="`+notifications[i].noti_icon+`"></i></span>`;
 
@@ -554,13 +556,13 @@
                                             </div>
                                             <div class="list-item-body flex-grow-1">
                                                 <p class="media-heading">
-                                                <span class="fw-bolder">${notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification'}</span> 
+                                                <span class="fw-bolder">${notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification'}</span>
                                                 <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
                                                 <small class="notification-text">${notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc'}</small>
                                             </div>
                                         </div>
                                     </a>`;
-                                        
+
                             }
                             $('.notifications').append(noti_div)
 
@@ -569,13 +571,13 @@
                             $(".noti_count").removeClass('badge rounded-pill bg-danger badge-up ');
                             $(".noti_count").text('');
                             noti_div = `<li>
-                                            <span class="font-12 text-nowrap d-block text-muted text-truncate p-2" style="text-align:center">No Unread Notifications.</span> 
+                                            <span class="font-12 text-nowrap d-block text-muted text-truncate p-2" style="text-align:center">No Unread Notifications.</span>
                                         </li>`;
                             $('.notifications').html(noti_div)
-                            
+
                         }
                     }
-                    
+
 
                 },
                 failure: function(errMsg) {

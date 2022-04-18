@@ -29,13 +29,39 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo';
+ import Echo from 'laravel-echo';
 
-// window.Pusher = require('pusher-js');
+ window.Pusher = require('pusher-js');
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     forceTLS: true
-// });
+ window.Echo = new Echo({
+     broadcaster: 'pusher',
+     key: process.env.MIX_PUSHER_APP_KEY,
+     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+     encrypted:false
+ });
+
+
+ window.Echo.private('support-messages.' + `{{ Auth::id() }}`)
+     .listen('\\App\\Events\\SupportChat', (e) => {
+         console.log(e)
+
+     });
+
+ window.Echo.join(`chat`)
+     .listenForWhisper("typing", (e) => {
+         if (e) {
+             let typingClock = null;
+             let typing = '';
+             typing = e + " is typing...";
+             $("#user_typing").html(typing)
+             if (typingClock) clearTimeout();
+             typingClock = setTimeout(() => {
+                 typing = '';
+                 $("#user_typing").html('')
+             }, 2000);
+         }
+     });
+
+ $("#message").on('keydown', function () {
+     window.Echo.join(`chat`).whisper("typing", "{{Auth::user()->fullname}}");
+ })
