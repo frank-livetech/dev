@@ -1027,7 +1027,7 @@ class HelpdeskController extends Controller
         $data = $request->all();
         $response = array();
         
-        try {
+        // try {
             $ticket = Tickets::findOrFail($data['ticket_id']);
             $customer_role_id = DB::table('roles')->where('name', 'Customer')->value('id');
             $vendor_role_id = DB::table('roles')->where('name', 'Vendor')->value('id');
@@ -1200,14 +1200,17 @@ class HelpdeskController extends Controller
 
 
             if($type == 'publish') {
-                $content = $mail_reply;
+            
+                
                 $ticket = Tickets::where('id', $data['ticket_id'])->where('trashed', 0)->where('is_deleted', 0)->first();
 
                 $action = 'ticket_reply';
                 if($request->has('dd_Arr') && sizeof($request->dd_Arr) > 0){
                     $action = 'ticket_reply_update';
+                    $content = $mail_reply;
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                 }else{
+                    $content = $mail_reply;
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
                 }
             }
@@ -1230,12 +1233,12 @@ class HelpdeskController extends Controller
             $response['tkt_updated_at'] =  $up_tkt->updated_at;
             return response()->json($response);
     
-        }catch(Exception $e) {
-            $response['message'] = $e->getMessage();
-            $response['status_code'] = 500;
-            $response['success'] = false;
-            return response()->json($response);
-        }
+        // }catch(Exception $e) {
+        //     $response['message'] = $e->getMessage();
+        //     $response['status_code'] = 500;
+        //     $response['success'] = false;
+        //     return response()->json($response);
+        // }
     }
 
     public function get_details($id) {
@@ -3365,10 +3368,7 @@ class HelpdeskController extends Controller
                 $cust_message = '';
 
             }else{
-                
-
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt);
-
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt);
             }
 
             $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt);
