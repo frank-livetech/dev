@@ -80,9 +80,7 @@
                 $.ajax({
                     type: 'post',
                     url: move_to_trash_route,
-                    data: {
-                        tickets
-                    },
+                    data: { tickets , tkt_del : 1},
                     success: function(data) {
 
                         if (data.success) {
