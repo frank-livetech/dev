@@ -430,12 +430,19 @@
                     $("#ticket-logs-list").DataTable().destroy();
                     $.fn.dataTable.ext.errMode = "none";
                     var tbl = $("#ticket-logs-list").DataTable({
+                        "order": [[ 1, "desc" ]],
                         data: obj,
                         "pageLength": 10,
                         "bInfo": false,
                         "paging": true,
                         "searching": true,
                         columns: [
+                            {
+                                className : 'd-none',
+                                "render": function(data, type, full, meta) {
+                                    return full.id;
+                                }
+                            },
                             {
                                 "render": function(data, type, full, meta) {
                                     return full.action_perform + ' at ' + convertDate(full.created_at);

@@ -1006,9 +1006,9 @@ class HelpdeskController extends Controller
         try {
             // $logs =  DB::table('activity_log')->select('activity_log.*')->join('tickets', 'tickets.id', '=', 'activity_log.ref_id')->where('activity_log.module', 'Tickets')->where('tickets.is_deleted', 0)->orderBy('created_at', 'desc')->get();
             if($request->has('id')) {
-                $logs =  Activitylog::where('ref_id', $request->id)->orderByDesc('created_at')->get();
+                $logs =  Activitylog::where('ref_id', $request->id)->orderByDesc('id')->get();
             } else {
-                $logs =  Activitylog::where('module', 'Tickets')->orderByDesc('created_at')->limit(150)->get();
+                $logs =  Activitylog::where('module', 'Tickets')->orderByDesc('id')->limit(150)->get();
             }
 
             $response['status_code'] = 200;
@@ -2458,7 +2458,6 @@ class HelpdeskController extends Controller
     public function save_ticket_note(Request $request) {       
         $data = $request->all();
         $response = array();
-        // return dd($data);
         try{
             $action_performed = '';
             $ticket = Tickets::findOrFail($data['ticket_id']);
