@@ -10,10 +10,10 @@ use App\User;
 use Validator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
-use DB;
 use App\Models\WhatsAppChat;
 use App\Models\SupportMessage;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Twilio\Rest\Client;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\File;
@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\File;
 
 class LiveChatController extends Controller
 {
+
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -36,6 +38,21 @@ class LiveChatController extends Controller
 
         $users = User::where('is_deleted',0)->where('user_type','!=',5)->get();
         $whatsapp_chat = WhatsAppChat::all();
+
+
+        $unreadIds = SupportMessage::select(DB::raw('sender_id, count(`sender_id`) as messages_count'))
+            ->where('reciever_id', auth()->id())
+            ->where('read_at', null)
+            ->groupBy('sender_id')
+            ->get();
+
+        // add an unread key to each contact with the count of unread messages
+        $users = $users->map(function($user) use ($unreadIds) {
+            $contactUnread = $unreadIds->where('sender_id', $user->id)->first();
+            $user->unread = $contactUnread ? $contactUnread->messages_count : 0;
+            return $user;
+        });
+
         return view('chat.index-new', get_defined_vars() );
     }
 
@@ -138,7 +155,8 @@ class LiveChatController extends Controller
         $id = $request->id;
         // mark all messages with the selected contact as read
         $support = SupportMessage::where('sender_id', $id)->where('reciever_id', auth()->id())
-                                    ->orWhere('sender_id', Auth::id())->orWhere('reciever_id',$id);
+                                    ->orWhere('sender_id', Auth::id())
+                                    ->orWhere('reciever_id',$id);
         if($support->get() != null){
             $support->update(['read_at' => Carbon::now()]);
             // get all messages between the authenticated user and the selected user
@@ -157,6 +175,7 @@ class LiveChatController extends Controller
 
         return response()->json([
             "data" => $messages,
+            "unread" => $support->where('read_at',null)->count(),
             "type" => 'web',
             "status" => 200 ,
             "success" => true ,
@@ -220,6 +239,27 @@ class LiveChatController extends Controller
             'message_type' => $msg_type,
             'message' => 'Message Sent',
             'success' => true
+        ]);
+    }
+
+    /**
+     * @param null
+     * @return integer
+     *
+     * ==========================================
+     * Support Chat message unread count
+     * ==========================================
+     *
+     */
+    public function unreadMessages()
+    {
+        $support = SupportMessage::where('read_at',null)->where('reciever_id',Auth::id())->get();
+
+        return response()->json([
+            'data' =>$support,
+            'counts' =>$support->count(),
+            'status' => 200,
+            'success' => true,
         ]);
     }
 }

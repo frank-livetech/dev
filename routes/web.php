@@ -64,6 +64,7 @@ Route::group ( ['namespace' => 'Chat','middleware' => ['auth','admin']], functio
     Route::post('/get_whatapp_messages', 'LiveChatController@getWhatsAppMessage')->name('whatapp.get');
     Route::post('/get_web_messages', 'LiveChatController@getWebMessage')->name('webchat.get');
     Route::post('/send_web_messages', 'LiveChatController@sendWebMessages')->name('send.webchat');
+    Route::get('/get_unread_message', 'LiveChatController@unreadMessages')->name('unread.message');
 });
 // new routes
 

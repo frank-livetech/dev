@@ -3,6 +3,20 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
+
+if(!function_exists('pusherCredentials')){
+    function pusherCredentials($key){
+        $pusher = [
+                'id' => '1387883',
+                'key' => 'e73e6b100edacfb69dc4',
+                'secret' => '0b750d9e56ccc50e28cd',
+                'cluster' => 'mt1',
+        ];
+
+        return $pusher[$key];
+    }
+}
+
 if(!function_exists('file_path')){
     function file_path(){
        return Session::get('is_live') == 1 ? 'public/' : '/';

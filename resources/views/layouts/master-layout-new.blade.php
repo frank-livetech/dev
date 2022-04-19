@@ -142,9 +142,6 @@
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
-                    {{-- <li class="nav-item mr-3">
-                        <button class="btn btn-primary" onclick="run_parser()"> Run Parser </button>
-                    </li> --}}
                 @if(\Auth::user()->theme == "dark")
                     <li class="nav-item d-none d-lg-block">
                         <a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a>
@@ -158,7 +155,6 @@
                 <li class="nav-item dropdown dropdown-notification me-25">
                     <a class="nav-link" href="#" data-bs-toggle="dropdown">
                         <i class="ficon" data-feather="bell"></i>
-
                         @if($numberAlerts > 0)
                             <span class="badge rounded-pill bg-danger badge-up noti_count" id="noti_count" >{{$numberAlerts}}</span>
                         @else
@@ -169,7 +165,6 @@
                         <li class="dropdown-menu-header">
                             <div class="dropdown-header d-flex">
                                 <h4 class="notification-title mb-0 me-auto">Notifications</h4>
-
                                 <div class="badge rounded-pill badge-light-primary bg-primary"><a href="{{url('all-notifications')}}" class="small p-2">view all</a></div>
                             </div>
                         </li>
@@ -178,6 +173,12 @@
                         </li>
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()"> Mark all as read </a></li>
                     </ul>
+                </li>
+                <li class="nav-item dropdown dropdown-notification">
+                    <a class="nav-link" href="{{route('chats.index')}}" >
+                        <i class="ficon" data-feather="message-square"></i>
+                        <span class="badge rounded-pill bg-danger badge-up" id="unread_msgs"></span>
+                    </a>
                 </li>
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -314,6 +315,7 @@
         $(document).ready(function() {
             getAllCounts();
             getNotifications();
+            getUnreadMessages();
             $(this).find(".slogan_i_minus").hide();
             if (feather) {
                 feather.replace({
@@ -337,6 +339,7 @@
         });
         var user_photo_url = "{{asset('files/user_photos')}}";
         var url = "{{asset('/get_all_counts')}}";
+        var unreadMsg = "{{route('unread.message')}}";
         var get_notifications = "{{url('getNotifications')}}";
         var parser_url = "{{url('save-inbox-replies')}}";
 
@@ -395,6 +398,31 @@
                     }
 
 
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            });
+
+        }
+
+        function getUnreadMessages(){
+            $.ajax({
+                url: unreadMsg,
+                type: "get",
+                dataType: 'json',
+                cache: false,
+                async:false,
+                success: function(data) {
+                    let counts = data.counts;
+                    if(counts != undefined) {
+                        if(counts > 0){
+                            $("#unread_msgs").text(counts);
+                            $("#unread_msgs").removeClass('d-none');
+                        }else{
+                            $("#unread_msgs").addClass('d-none');
+                        }
+                    }
                 },
                 failure: function(errMsg) {
                     console.log(errMsg);
@@ -587,6 +615,7 @@
             });
         }
     </script>
+    @include('js_files.chat.pusher')
     @yield('scripts')
 </body>
 <!-- END: Body-->

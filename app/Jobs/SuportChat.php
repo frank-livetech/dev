@@ -35,11 +35,11 @@ class SuportChat implements ShouldQueue
     public function handle()
     {
         $pusher = new Pusher(
-            env('PUSHER_APP_KEY'),
-            env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_ID'),
+            pusherCredentials('key'),
+            pusherCredentials('secret'),
+            pusherCredentials('id'),
             [
-            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'cluster' => pusherCredentials('cluster'),
             'useTLS' => true
             ]
         );
