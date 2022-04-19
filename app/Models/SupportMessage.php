@@ -12,7 +12,7 @@ class SupportMessage extends Model
                 'sender_id',
                 'reciever_id',
                 'msg_body',
-                'msg_type',
+                'type',
                 'read_at'
             ];
 }

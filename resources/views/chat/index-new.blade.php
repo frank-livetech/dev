@@ -2,11 +2,7 @@
 @section('Live Support Chat', 'active')
 @section('title', 'Chat')
 @section('body')
-    @php
-    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
-    $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
-    @endphp
-    {{-- <script src="{{asset('js/app.js')}}"></script> --}}
+
     <style>
         .whatsapp_chat {
             background-image: url('{{ asset('default_imgs/whatsapp_bg.jpg') }} !important');
@@ -32,21 +28,10 @@
                             </span>
                             <div class="header-profile-sidebar">
                                 <div class="avatar box-shadow-1 avatar-xl avatar-border">
-                                    @if (auth()->user()->profile_pic != null)
-                                        @if (file_exists(getcwd() . '/' . auth()->user()->profile_pic))
-                                            <img src="{{ asset(request()->root() . '/' . auth()->user()->profile_pic) }}"
-                                                alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px"
-                                                height="50px">
-                                        @else
-                                            <img src="{{ asset($file_path . 'default_imgs/customer.png') }}"
-                                                id="login_usr_logo" width="50px" height="50px" alt="'s Photo"
-                                                class="rounded-circle">
-                                        @endif
-                                    @else
-                                        <img src="{{ asset($file_path . 'default_imgs/customer.png') }}"
-                                            id="login_usr_logo" alt="'s Photo" height="50px" width="50px"
-                                            class="rounded-circle">
-                                    @endif
+                                    <img src="{{ asset(getDefaultProfilePic(Auth::user()->profile_pic)) }}"
+                                        id="login_usr_logo" width="50px" height="50px" alt="'s Photo"
+                                        class="rounded-circle">
+
                                 </div>
                                 <h4 class="chat-user-name">{{ Auth::user()->name }}</h4>
                                 <span class="user-post">Admin</span>
@@ -77,23 +62,10 @@
                             <div class="d-flex align-items-center w-100">
                                 <div class="sidebar-profile-toggle">
                                     <div class="avatar avatar-border">
-                                        <!-- <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="user_avatar" height="42" width="42" />
-                                        <span class="avatar-status-online"></span> -->
-                                        @if (auth()->user()->profile_pic != null)
-                                            @if (file_exists(getcwd() . '/' . auth()->user()->profile_pic))
-                                                <img src="{{ asset(request()->root() . '/' . auth()->user()->profile_pic) }}"
-                                                    alt="'s Photo" class="rounded-circle" id="login_usr_logo" width="50px"
-                                                    height="50px">
-                                            @else
-                                                <img src="{{ asset($file_path . 'default_imgs/customer.png') }}"
-                                                    id="login_usr_logo" width="50px" height="50px" alt="'s Photo"
-                                                    class="rounded-circle">
-                                            @endif
-                                        @else
-                                            <img src="{{ asset($file_path . 'default_imgs/customer.png') }}"
-                                                id="login_usr_logo" alt="'s Photo" height="50px" width="50px"
-                                                class="rounded-circle">
-                                        @endif
+                                        <img src="{{ asset(getDefaultProfilePic(Auth::user()->profile_pic)) }}"
+                                            id="login_usr_logo" width="50px" height="50px" alt="'s Photo"
+                                            class="rounded-circle">
+
                                     </div>
                                 </div>
                                 <div class="input-group input-group-merge ms-1 w-100">
@@ -112,31 +84,27 @@
                             <h4 class="chat-list-title">Chats</h4>
                             <ul class="chat-users-list chat-list media-list">
                                 @foreach ($users as $user)
+                                    @if (Auth::id() != $user->id)
                                     <li data-id="{{ $user->id }}" onclick="showActiveUserChat(this)"
                                         data_nm="{{ $user->name }}" data-wp="{{ $user->whatsapp }}"
-                                        data_pc="{{ $user->profile_pic }}">
-                                        @if ($user->profile_pic != null)
-                                            @if (file_exists(getcwd() . '/' . $user->profile_pic))
-                                                <span class="avatar"><img height="42"
-                                                        class="user_image_{{ $user->id }}" width="42"
-                                                        src="{{ asset(request()->root() . '/' . $user->profile_pic) }}"
-                                                        height="42" width="42"></span>
-                                            @else
-                                                <span class="avatar"> <img class="user_image_{{ $user->id }}"
-                                                        src="{{ asset($file_path . 'default_imgs/customer.png') }}"
-                                                        height="42" width="42"></span>
-                                            @endif
-                                        @else
-                                            <span class="avatar"> <img class="user_image_{{ $user->id }}"
-                                                    src="{{ asset($file_path . 'default_imgs/customer.png') }}"
-                                                    height="42" width="42"></span>
-                                        @endif
+                                        data_pc="{{ getDefaultProfilePic($user->profile_pic) }}"
+                                        data-job="{{ $user->job_title }}"
+                                        data-about="{{ $user->notes }}"
+                                        />
+
+                                        <span class="avatar">
+                                            <img class="user_image_{{ $user->id }}"
+                                                src="{{ asset(getDefaultProfilePic($user->profile_pic)) }}"
+                                                height="42" width="42">
+                                        </span>
+
                                         <div class="chat-info">
                                             <h5 class="mb-0">{{ $user->name }}</h5>
                                             <span
                                                 class="badge badge-light-success rounded-pill ms-auto me-1">{{ $user->role }}</span>
                                         </div>
                                     </li>
+                                    @endif
                                 @endforeach
                                 <li class="no-results">
                                     <h6 class="mb-0">No Chats Found</h6>
@@ -183,7 +151,7 @@
                                             </div>
                                             <div class="avatar avatar-border user-profile-toggle m-0 me-1"
                                                 id="active_user_pic">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg"
+                                                <img src="{{asset(getDefaultProfilePic(Auth::user()->profile_pic))}}"
                                                     id="active_user_img" alt="avatar" height="36" width="36" />
                                                 <!-- <span class="avatar-status-busy"></span> -->
 
@@ -230,7 +198,7 @@
                                         <span class="input-group-text">
                                             <label for="attach-doc" class="attachment-icon form-label mb-0">
                                                 <i data-feather="image" class="cursor-pointer text-secondary"></i>
-                                                <input type="file" id="attach-doc" hidden /> </label></span>
+                                                <input type="file" name="file" id="attach-doc" hidden /> </label></span>
                                     </div>
                                     <button type="submit" class="btn btn-primary send">
                                         <i data-feather="send" class="d-lg-none"></i>
@@ -294,10 +262,9 @@
         });
 
         //Message Types  1 = Whatsapp,2 = Webchat
-        var message_type = 0;
+        var message_type = 2;
 
         function showActiveUserChat(tag) {
-
             let user_id = $(tag).data("id");
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
@@ -306,19 +273,26 @@
 
             whatsapp == null || whatsapp == '' ? $('.whatsapp_icon').hide() : $('.whatsapp_icon').show();
 
-            var imageUrl = '{{ asset('default_imgs/webchat_bg.jpg') }}';
+            var imageUrl = '{{ asset("default_imgs/webchat_bg.jpg") }}';
             $(".user-chats").css("background-image", "url(" + imageUrl + ")");
             $(".user-chats").css("background-size", "530px");
+            webChat();
+
+            $(".header-profile-sidebar .avatar img").attr('src',src)
+            $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .chat-user-name").text($(tag).attr("data_nm"))
+            $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .user-post").text($(tag).data("job"))
+            $(".user-profile-sidebar .user-profile-sidebar-area p").text($(tag).data("about"))
+
         }
 
         function webChat() {
-            var imageUrl = '{{ asset('default_imgs/webchat_bg.jpg') }}';
+            var imageUrl = '{{ asset("default_imgs/webchat_bg.jpg") }}';
             $(".user-chats").css("background-image", "url(" + imageUrl + ")");
             $(".user-chats").css("background-size", "530px");
             $('.show_chat_messages').html('');
             //Message Types  1 = Whatsapp,2 = Webchat
             message_type = 2;
-            getAllMessages(message_type);
+            getAllMessages();
         }
 
         function whatsAppChat() {
@@ -327,15 +301,16 @@
             $(".user-chats").css("background-size", "900px");
             //Message Types  1 = Whatsapp,2 = Webchat
             message_type = 1;
-            getAllMessages(message_type);
+            getAllMessages();
         }
 
-        function getAllMessages(type) {
+        function getAllMessages() {
+            console.log(message_type)
             let user_id = $("#user_to").val();
             let url = '';
-            if (type == 1) {
+            if (message_type == 1) {
                 url = "{{ route('whatapp.get') }}";
-            } else if (type == 2) {
+            } else if (message_type == 2) {
                 url = "{{ route('webchat.get') }}";
             }
             $.ajax({
@@ -385,19 +360,19 @@
                     if (obj[i].to == number) {
 
                         msgs_html += `
-                    <div class="chat">
-                        <div class="chat-avatar">
-                            <span class="avatar box-shadow-1 cursor-pointer">
-                                <img src="${login_user_image_url}" alt="avatar" height="36" width="36" />
-                            </span>
+                                <div class="chat">
+                                    <div class="chat-avatar">
+                                        <span class="avatar box-shadow-1 cursor-pointer">
+                                            <img src="${login_user_image_url}" alt="avatar" height="36" width="36" />
+                                        </span>
 
-                        </div>
-                        <div class="chat-body">
-                            <div class="chat-content">
-                                <p> ${obj[i].body != null ? obj[i].body : ''} </p>
-                            </div>
-                        </div>
-                    </div>`;
+                                    </div>
+                                    <div class="chat-body">
+                                        <div class="chat-content">
+                                            <p> ${obj[i].body != null ? obj[i].body : ''} </p>
+                                        </div>
+                                    </div>
+                                </div>`;
                     }
                     if (obj[i].from == number) {
                         let attachment = ``;
@@ -469,6 +444,13 @@
             if (obj.length > 0) {
                 for (let i = 0; i < obj.length; i++) {
                     if (obj[i].sender_id == auth) {
+                        let message = ``;
+                        let message_type = obj[i].type;
+                        if(obj[i].type == 'file'){
+                            message = `<img src="{{asset('`+obj[i].msg_body+`')}}" alt="file"  width="150px"/>`;
+                        }else{
+                            message = `<p> ${obj[i].msg_body != null ? obj[i].msg_body : ''} </p>`;
+                        }
 
                         msgs_html += `
                                 <div class="chat">
@@ -479,20 +461,21 @@
 
                                     </div>
                                     <div class="chat-body">
-                                        <div class="chat-content">
-                                            <p> ${obj[i].msg_body != null ? obj[i].msg_body : ''} </p>
+                                        <div class="chat-content ${message_type == 'file' ? 'p-0' : ''}">
+                                            ${message}
                                         </div>
                                     </div>
                                 </div>`;
                     }
                     if (obj[i].reciever_id == auth) {
                         let message = ``;
-                        if(obj[i].msg_type == 'file'){
-                            message = `<div  class="chat-content"> ${obj[i].msg_body} </div>`;
+                        let message_type = obj[i].type;
+
+                        if(obj[i].type == 'file'){
+                            message = `<div  class="chat-content ${message_type == 'file' ? 'p-0' : ''}"><img src="{{asset('`+obj[i].msg_body+`')}}" width="150px" alt="file" /> </div>`;
                         }else{
                             message = `<div class="chat-content"> <p> ${obj[i].msg_body != null ? obj[i].msg_body : ''} </p> </div>`;
                         }
-
 
                         msgs_html += `
                             <div class="chat chat-left">
@@ -517,8 +500,8 @@
         function renderPusherMessages(message,sender)
         {
             let msg = ``;
-            if(message.msg_type == 'file'){
-                msg = `<div  class="chat-content"> ${message.msg_body} </div>`;
+            if(message.type == 'file'){
+                msg = `<div  class="chat-content ${message.type == 'file' ? 'p-0' : ''}"> ${message.msg_body} </div>`;
             }else{
                 msg = `<div class="chat-content"> <p> ${message.msg_body != null ? message.msg_body : ''} </p> </div>`;
             }
@@ -542,6 +525,16 @@
             e.preventDefault();
 
             let message = $("#message").val();
+
+            if(message != ''){
+                message = 'true';
+            }else if($("#attach-doc").val() != ''){
+                message = 'true';
+            } else if( $("#message").val() != '' && $("#attach-doc").val() != ''){
+                message = 'true';
+            }
+
+
             let url = '';
             if (message_type == 1) {
                 url = "{{ route('message.index') }}";
@@ -570,25 +563,30 @@
                             timeOut: 5000
                         });
                         $("#message").val("");
+                        let output_message = '';
+                        if(data.message_type == 'file'){
+                            output_message = `<img src="{{asset('${data.data.msg_body}')}}" width="150px" alt="file" />`;
+                        }else{
+                            output_message = `<p> ${data.data.msg_body != null ? data.data.msg_body : ''} </p>`;
+                        }
 
                         let msg = `
                         <div class="chat">
                             <div class="chat-avatar">
                                 <span class="avatar box-shadow-1 cursor-pointer">
-                                    <img src="../../../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="36" width="36">
+                                    <img src="{{asset(getDefaultProfilePic(Auth::user()->profile_pic))}}" alt="avatar" height="36" width="36">
                                 </span>
 
                             </div>
                             <div class="chat-body">
-                                <div class="chat-content">
-                                    <p> ${message} </p>
+                                <div class="chat-content ${data.message_type == 'file' ? 'p-0' : ''} ">
+                                    ${output_message}
                                 </div>
                             </div>
                         </div>`;
                         $('.show_chat_messages').append(msg);
-
                         $('.user-chats').scrollTop($('.user-chats > .chats').height());
-
+                        $('#chat_form').trigger("reset");
                     },
                     complete: function(data) {},
                     failure: function(errMsg) {}
