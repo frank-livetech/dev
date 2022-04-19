@@ -213,6 +213,7 @@ class LiveChatController extends Controller
         $supportJob = (new SuportChat($message,$message->reciever_id,$user));
         dispatch($supportJob);
 
+
         return response()->json([
             'data' => $message,
             'status_code' => 200,

@@ -243,7 +243,6 @@
         </div>
     </div>
 
-
     @endsection
 
     @section('scripts')
@@ -428,7 +427,6 @@
                     </div>`;
                     }
                 }
-
                 $('.show_chat_messages').html(msgs_html);
             } else {
                 $('.show_chat_messages').html('');
