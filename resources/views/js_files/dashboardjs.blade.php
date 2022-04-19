@@ -219,7 +219,7 @@
 
                         tickets_logs_list.row.add([
                             // element.id,
-                            element.action_perform+' at '+moment(element.created_at).format($("#system_date_format").val() +' '+  'hh:mm A'),
+                            element.action_perform+' at '+convertDate(element.created_at),
                         ]).draw(false).node();
                     }
                 } else {
@@ -335,7 +335,7 @@
         d.setUTCHours(d_utc);
 
         let a = d.toLocaleString("en-US" , {timeZone: time_zone});
-        // return a;
+        let  date_format = $("#system_date_format").val();
         var converted_date = moment(a).format(date_format + ' ' +'hh:mm A');
         return converted_date;
     }

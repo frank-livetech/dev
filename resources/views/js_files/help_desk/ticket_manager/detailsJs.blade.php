@@ -3511,14 +3511,9 @@ function getLatestLogs() {
                     "paging": true,
                     "searching": true,
                     columns: [
-                        // {
-                        //     "render": function(data, type, full, meta) {
-                        //         return full.id != null ? full.id : '-';
-                        //     }
-                        // },
                         {
                             "render": function(data, type, full, meta) {
-                                return full.action_perform != null ? full.action_perform+' at '+ moment(full.created_at).format($('#sys_date_format').val() + ' ' + 'hh:mm A') : '-';
+                                return full.action_perform != null ? full.action_perform+' at '+ convertDate(full.created_at) : '-';
                             }
                         },
                     ],
