@@ -392,6 +392,7 @@ function setSlaPlanDeadlines(ret = false) {
                 }else{
                     // let cal_rep_diff = momentDiff(tkt_rep_due , con_currTime);
                     // rep_diff = cal_rep_diff.replace("60m", "59m");
+                    resetable = false;
                     rep_diff = getHoursMinutesAndSeconds( ticket.reply_deadline, con_currTime);
                 }
                 $('#sla-rep_due').html( rep_diff );
@@ -417,6 +418,7 @@ function setSlaPlanDeadlines(ret = false) {
                     resetable = true;
                     res_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
+                    resetable = false;
                     res_diff = getHoursMinutesAndSeconds( ticket.resolution_deadline , con_currTime);
                     // let cal_res_diff = momentDiff(tkt_res_due , con_currTime); 
                     // console.log(cal_res_diff , "cal_res_diff");
@@ -3511,14 +3513,9 @@ function getLatestLogs() {
                     "paging": true,
                     "searching": true,
                     columns: [
-                        // {
-                        //     "render": function(data, type, full, meta) {
-                        //         return full.id != null ? full.id : '-';
-                        //     }
-                        // },
                         {
                             "render": function(data, type, full, meta) {
-                                return full.action_perform != null ? full.action_perform+' at '+ moment(full.created_at).format($('#sys_date_format').val() + ' ' + 'hh:mm A') : '-';
+                                return full.action_perform != null ? full.action_perform+' at '+ convertDate(full.created_at) : '-';
                             }
                         },
                     ],

@@ -7,7 +7,6 @@
     });
 
     var usrtimeZone = $("#usrtimeZone").val();
-
     let modalCal = document.getElementById('calendarModal');
     var settings = {
         Color: '',
@@ -437,28 +436,13 @@
                         "paging": true,
                         "searching": true,
                         columns: [
-                            // {
-                            //     "data": null,
-                            //     "defaultContent": ""
-                            // },
                             {
                                 "render": function(data, type, full, meta) {
-                                    return full.action_perform + ' at ' + moment(full.created_at).parseZone(usrtimeZone).format($('#system_date_format').val() + ' ' + 'hh:mm A');
+                                    return full.action_perform + ' at ' + convertDate(full.created_at);
                                 }
                             },
                         ],
                     });
-
-                    // tbl.on("order.dt search.dt", function() {
-                    //     tbl.column(0, {
-                    //             search: "applied",
-                    //             order: "applied"
-                    //         })
-                    //         .nodes()
-                    //         .each(function(cell, i) {
-                    //             cell.innerHTML = i + 1;
-                    //         });
-                    // }).draw();
                 } else {
                     console.log(data.message);
                 }
@@ -467,6 +451,23 @@
                 console.log(errMsg);
             }
         });
+    }
+
+    function convertDate(date) {
+        var d = new Date(date);
+
+        var min = d.getMinutes();
+        var dt = d.getDate();
+        var d_utc = d.getUTCHours();
+
+        d.setMinutes(min);
+        d.setDate(dt);
+        d.setUTCHours(d_utc);
+
+        let a = d.toLocaleString("en-US" , {timeZone: usrtimeZone});
+        let format = $('#system_date_format').val();
+        var converted_date = moment(a).format(format + ' ' +'hh:mm A');
+        return converted_date;
     }
 
     function merge_tickets() {
