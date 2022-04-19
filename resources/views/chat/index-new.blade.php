@@ -100,8 +100,16 @@
 
                                         <div class="chat-info">
                                             <h5 class="mb-0">{{ $user->name }}</h5>
-                                            <span
-                                                class="badge badge-light-success rounded-pill ms-auto me-1">{{ $user->role }}</span>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ $user->role }}</span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    @if ($user->unread > 0)
+                                                    <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $user->unread }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </li>
                                     @endif
@@ -246,21 +254,7 @@
     @endsection
 
     @section('scripts')
-
-    <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
     <script>
-        // Add API Key & cluster here to make the connection
-        var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
-            cluster: "{{ env('PUSHER_APP_CLUSTER') }}",
-        });
-
-        // Enter a unique channel you wish your users to be subscribed in.
-        var channel = pusher.subscribe('support-chat.'+`{{Auth::id()}}`);
-        // bind the server event to get the response data and append it to the message div
-        channel.bind("support-chat-event", (data) => {
-            renderPusherMessages(data.message,data.sender)
-        });
-
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 2;
 
@@ -305,7 +299,6 @@
         }
 
         function getAllMessages() {
-            console.log(message_type)
             let user_id = $("#user_to").val();
             let url = '';
             if (message_type == 1) {
@@ -313,6 +306,7 @@
             } else if (message_type == 2) {
                 url = "{{ route('webchat.get') }}";
             }
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -333,6 +327,8 @@
                             renderWhatsappMessages(obj, data.number);
                         } else {
                             renderWebMessages(obj);
+                            $("#unread_msgs").text(data.unread)
+                            $("#unread_msgs").addClass('d-none')
                         }
                     } else {
                         $('.show_chat_messages').html('');
