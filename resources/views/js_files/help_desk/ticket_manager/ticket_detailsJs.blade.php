@@ -335,13 +335,7 @@
                         newCustomer('cancel');
                         $('#save_newtickcust_form').trigger('reset');
                     } else {
-                        Swal.fire({
-                            position: 'center',
-                            icon: data.success ? 'success' : 'error',
-                            title: data.message,
-                            showConfirmButton: false,
-                            timer: swal_message_time
-                        });
+                        toastr.success(data.message, { timeOut: 5000 });
                     }
                 },
                 failure: function(errMsg) {

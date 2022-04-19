@@ -375,7 +375,7 @@ class MailController extends Controller
                 }
                 
                 $helpDesk = new HelpdeskController();
-
+                    
                 foreach ($mails as $key => $message) {
                     
                     $mail = imap_fetchstructure($imap, $message);
@@ -487,6 +487,7 @@ class MailController extends Controller
                                         $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer , $ticketID);
   
                                     }else{
+
                                         $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);  
                                     }
                                 }else{
@@ -494,13 +495,13 @@ class MailController extends Controller
                                 }
                             }else{
                                 $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);
+
                             }
 
-                            
- 
                         }
                     }
                     // dd('not deleted');
+                    
                     imap_delete($imap, $message);
                 }
 
@@ -660,7 +661,9 @@ class MailController extends Controller
 
     }
 
+
     public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap){
+
 
         $customer_id = '';
         $is_staff_tkt = 0;
@@ -672,6 +675,7 @@ class MailController extends Controller
             $staff = User::where('email', trim($emailFrom))->first();
             if(empty($staff)) {
                 // reply is not from our system user
+                
                 imap_delete($imap, $message);
                 return ;
             }
@@ -793,7 +797,7 @@ class MailController extends Controller
 
             $cust_temp = html_entity_decode($template);
 
-            $this->sendMail($subject, $cust_temp, 'accounts@mylive-tech.com', $emailFrom, '');
+            $this->sendMail($subject, $cust_temp, 'mailto:accounts@mylive-tech.com', $emailFrom, '');
 
         }
 
@@ -814,29 +818,9 @@ class MailController extends Controller
             $users = User::where('user_type', 1)->get();
 
             foreach($users as $user) {
-                $this->sendMail($subject, $admin_temp, 'accounts@mylive-tech.com', $user->email, $user->name);
+                $this->sendMail($subject, $admin_temp, 'mailto:accounts@mylive-tech.com', $user->email, $user->name);
             }
         }
-
-        
-
-        // $mail_template = '';
-        // $subject = "Mail Processing Error LTCMS";
-
-        // if(!empty($mail_template->subject)) {
-        //     $subject = $mail_template->subject;
-        //     if(str_contains($subject, '{Alert-Prefix}')) {
-        //         $subject = str_replace('{Alert-Prefix}', $mail_template->alert_prefix, $subject);
-        //     }
-        // }
-
-        // $order_input = array(
-        //     array('module' => 'User', 'values' => $user->toArray()),
-        // );
-
-        // $template = $this->template_parser($order_input, $mail_template->template_html ,'','','','','','','','','');
-
-        // $this->sendMail($subject, $template, 'accounts@mylive-tech.com', $user->email, $user->name);
 
     }
 
@@ -1546,10 +1530,9 @@ class MailController extends Controller
             //     $template = str_replace('{Show-System-Errors}', $cm[0], $template);
             // }
         }
-
+        
         // replace the generic array modules data
         $this->replaceShortCodes($data_list, $template);
-
         if(str_contains($template, '{Creator-Name}')) {
 
             $user = User::where('id' , $ticket['created_by'])->first();
@@ -2179,17 +2162,18 @@ class MailController extends Controller
 
                     if($data['module'] == 'Ticket') {
                         $tkt =Tickets::where('id' , $data['values']['id'] )->first();
-                        
+                     
                         // date_default_timezone_set($tm_name);
                         $fr = $this->convertFormat($date_format) . ' g:i a';
                         
                         
-                        $tkt_created_at = new \DateTime( $tkt->created_at );
+                        $tkt_created_at = new \DateTime( $data['values']['created_at'] );
                         $tkt_created_at->setTimezone(new \DateTimeZone($tm_name));                            
                         $create_date = Carbon::parse( $tkt_created_at->format( $fr ) );
                         
+
                         
-                        $tkt_updated_at = new \DateTime( $tkt->cupdated_at );
+                        $tkt_updated_at = new \DateTime( $data['values']['updated_at'] );
                         $tkt_updated_at->setTimezone(new \DateTimeZone($tm_name));                            
                         $update_date = Carbon::parse( $tkt_updated_at->format( $fr ) );
                         

@@ -1417,6 +1417,12 @@ class HelpdeskController extends Controller
 
                 $del_tkt->trashed = 1;
                 $del_tkt->updated_at = $current_date;
+
+                if($request->tkt_del) {
+                    $del_tkt->is_deleted = 1;
+                }
+
+
                 $del_tkt->save();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
@@ -2561,7 +2567,7 @@ class HelpdeskController extends Controller
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'email' => 'required|email',
-                'phone' => 'required'
+                // 'phone' => 'required'
             ]);
 
             $data = $request->all();
@@ -2575,7 +2581,7 @@ class HelpdeskController extends Controller
                 "last_name" => $data['last_name'],
                 "email" => $data['email'],
                 "username" => $data['email'],
-                "phone" => $data['phone']
+                // "phone" => $data['phone']
             );
 
             // $last = Customer::orderBy('id', 'desc')->first();
