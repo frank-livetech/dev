@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Chat;
 
 use App\Events\SupportChat;
 use App\Http\Controllers\Controller;
-
+use App\Jobs\SuportChat;
 use Illuminate\Http\Request;
 use App\User;
 use Validator;
@@ -16,6 +16,8 @@ use App\Models\SupportMessage;
 use Carbon\Carbon;
 use Twilio\Rest\Client;
 use Pusher\Pusher;
+use Illuminate\Support\Facades\File;
+
 
 class LiveChatController extends Controller
 {
@@ -173,13 +175,26 @@ class LiveChatController extends Controller
     public function sendWebMessages(Request $request)
     {
         if(request()->has('file')){
-            $filename = request('file')->store('support','public');
+            $file = request('file');
+            $fileName = $file->getClientOriginalName();
+            $fileName = strtolower($fileName);
+            $fileName = str_replace(" ","_",$fileName);
+
+            $target_dir = 'storage/support';
+
+            if (!File::isDirectory($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+
+            $file->move($target_dir, $fileName);
+            $file_path = $target_dir.'/'.$fileName;
+
             $msg_type="file";
             $message = SupportMessage::create([
                 'sender_id' => auth()->id(),
                 'reciever_id' => $request->user_to,
-                'msg_body' => $filename,
-                'msg_type '=> $msg_type,
+                'msg_body' => $file_path,
+                'type '=> 'file',
             ]);
 
         }else{
@@ -188,32 +203,15 @@ class LiveChatController extends Controller
                 'sender_id' => auth()->id(),
                 'reciever_id' => $request->user_to,
                 'msg_body' => $request->message,
-                'msg_type '=> $msg_type,
+                'type '=> $msg_type,
             ]);
 
         }
 
         $user = User::find($message->sender_id);
 
-        $options = array(
-            'cluster' => env('PUSHER_APP_CLUSTER'),
-            'useTLS' => true
-        );
-
-        $pusher = new Pusher(
-            env('PUSHER_APP_KEY'),
-            env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_ID'),
-            $options
-        );
-
-        $data = [
-            "message" => $message,
-            "reciever_id" => (int) $message->reciever_id,
-            "sender" => $user,
-        ];
-
-        $pusher->trigger('support-chat.'.(int) $message->reciever_id, 'support-chat-event', $data);
+        $supportJob = (new SuportChat($message,$message->reciever_id,$user));
+        dispatch($supportJob);
 
 
         return response()->json([
