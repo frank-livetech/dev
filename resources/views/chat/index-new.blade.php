@@ -87,7 +87,7 @@
                                     @if (Auth::id() != $user->id)
                                     <li data-id="{{ $user->id }}" onclick="showActiveUserChat(this)"
                                         data_nm="{{ $user->name }}" data-wp="{{ $user->whatsapp }}"
-                                        data_pc="{{ $user->profile_pic }}"
+                                        data_pc="{{ getDefaultProfilePic($user->profile_pic) }}"
                                         data-job="{{ $user->job_title }}"
                                         data-about="{{ $user->notes }}"
                                         />
@@ -262,7 +262,7 @@
         });
 
         //Message Types  1 = Whatsapp,2 = Webchat
-        var message_type = 0;
+        var message_type = 2;
 
         function showActiveUserChat(tag) {
             let user_id = $(tag).data("id");
@@ -286,13 +286,13 @@
         }
 
         function webChat() {
-            var imageUrl = '{{ asset('default_imgs/webchat_bg.jpg') }}';
+            var imageUrl = '{{ asset("default_imgs/webchat_bg.jpg") }}';
             $(".user-chats").css("background-image", "url(" + imageUrl + ")");
             $(".user-chats").css("background-size", "530px");
             $('.show_chat_messages').html('');
             //Message Types  1 = Whatsapp,2 = Webchat
             message_type = 2;
-            getAllMessages(message_type);
+            getAllMessages();
         }
 
         function whatsAppChat() {
@@ -301,15 +301,16 @@
             $(".user-chats").css("background-size", "900px");
             //Message Types  1 = Whatsapp,2 = Webchat
             message_type = 1;
-            getAllMessages(message_type);
+            getAllMessages();
         }
 
-        function getAllMessages(type) {
+        function getAllMessages() {
+            console.log(message_type)
             let user_id = $("#user_to").val();
             let url = '';
-            if (type == 1) {
+            if (message_type == 1) {
                 url = "{{ route('whatapp.get') }}";
-            } else if (type == 2) {
+            } else if (message_type == 2) {
                 url = "{{ route('webchat.get') }}";
             }
             $.ajax({
