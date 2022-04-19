@@ -640,8 +640,8 @@
                                                         class="table table-striped table-bordered no-wrap ticket-table-list w-100">
                                                         <thead>
                                                             <tr>
-                                                                <!-- <th width='20'>ID</th> -->
-                                                                <th>Activity</th>
+                                                                <th class="d-none">ID</th>
+                                                                <th style="height:35px;">Activity</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody></tbody>
@@ -1008,7 +1008,7 @@
                                             </div>
                                         @else
                                             <div class="form-check">
-                                                <input class="form-check-input note-type-user-org" type="hidden" name="type" id="note-type-user-org"  value="User Organization">
+                                                <input class="form-check-input note-type-user-org" type="hidden" id="note-type-user-org"  value="User Organization">
                                             </div>
                                         @endif
                                     </div>
