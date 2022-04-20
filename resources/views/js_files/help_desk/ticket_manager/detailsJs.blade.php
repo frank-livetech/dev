@@ -1120,7 +1120,7 @@ function getTicketDetailsContent() {
             content = content;
         }
       
-        tdet = `<div class="col-12">${content}</div>`;
+        tdet = `<div class="col-12" id="editor_div">${content}</div>`;
         // if(ticket_details.attachments != null || ticket_details.attachments != ""){
 
         //     let files = ticket_details.attachments.split(',');
@@ -1540,6 +1540,9 @@ function listReplies() {
             }
         });
         $("#ticket-replies").append(replies_html);
+
+        $('.bor-top').find(' p img').css('width','200px !important');
+ 
     }else{
         $("#ticket-replies").html("");
     }

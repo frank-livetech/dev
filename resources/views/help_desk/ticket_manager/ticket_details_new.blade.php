@@ -5,6 +5,16 @@
 @section('body')
 @section('customtheme')
 <style>
+    .bor-top img {
+        height: auto !important;
+        width: auto !important;
+        max-width: 640px !important;
+    }
+    #editor_div img {
+        height: auto !important;
+        width: auto !important;
+        max-width: 340px !important;
+    }
     #dropD {
         padding-left: 15px;
     }
@@ -414,7 +424,7 @@
                                         <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
                                         <h6 class="mb-0" style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
                                     </div>
-                                    <div class="col4">
+                                    <div class="col4" style="    border-left: 1px solid #ebe9f1; padding-left: 80px; padding-right: 80px; border-right: 1px solid #ebe9f1;">
                                         <h3 class="font-weight-bold" style="text-align:center; font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
                                         <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Open</a></h6>
                                     </div>
@@ -437,13 +447,12 @@
                                     <h3 class="mb-0">
                                         
                                     <h4><img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> Initial Request &nbsp;&nbsp;
-                                        <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span></h4> 
+                                        <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
                                         <a onClick="hung()" title="View Details" style="position:absolute;right:62px;cursor:pointer;">
                                             <i data-feather='maximize'></i>
                                         </a>
-                                        <!-- <a class=" " style="position:absolute;right:50px;cursor:pointer;"  data-bs-toggle="modal" data-bs-target="#viewFullDetails" data-bs-toggle="tooltip" data-bs-placement="top" title="View Details" data-bs-original-title="View Details"><i data-feather='maximize'></i></a> -->
                                         <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
-                                        <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span>
+                                        <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span> </h4> 
                                         <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
                                         <a onclick="cancelEditRequest()">
                                             <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span>
