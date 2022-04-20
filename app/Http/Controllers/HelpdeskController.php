@@ -404,8 +404,7 @@ class HelpdeskController extends Controller
         ]);
     }
 
-    public function save_tickets(Request $request){   
-        // return dd($request->all()); 
+    public function save_tickets(Request $request){ 
         $current_date = Carbon::now();
 
         $data = $request->all();
@@ -2705,8 +2704,12 @@ class HelpdeskController extends Controller
             if(!$request->has('id')) throw new Exception('Ticket id missing');
 
             $id = $request->id;
+
             $type = $request->type;
             if(!is_array($id)) $id = [$id];
+
+            $ticket = Tickets::select('customer_id')->where('id', $id)->first();
+            $ticketid = Tickets::where('customer_id', $ticket->customer_id)->pluck('id');
 
             $notes = json_decode(DB::table('users')
             ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
@@ -2720,14 +2723,6 @@ class HelpdeskController extends Controller
             })->orderBy('created_at', 'desc')
             ->get(), true);
     
-            foreach ($notes as $key => $value) {
-                $fwps = TicketFollowUp::where('is_deleted', 0)->where('id', $value['followup_id'])->first();
-        
-                $notes[$key]['followUp_date'] = null;
-                if(!empty($fwps)) {
-                    $notes[$key]['followUp_date'] = $fwps->date;
-                }
-            }
                
             $response['message'] = 'Success';
             $response['status_code'] = 200;
