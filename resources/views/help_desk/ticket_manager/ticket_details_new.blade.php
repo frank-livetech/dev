@@ -418,7 +418,7 @@
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="d-flex justify-content-between ">
+                                <div class="d-flex justify-content-evenly ">
                                     <div class="col4">
                                         <h3 class="font-weight-bold"  style="text-align:center; font-size:14px"> 
                                         <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
@@ -444,26 +444,38 @@
                         <div class="card-header frst">
                             <div class="align-items-center ">
                                 <div class="mail-items">
-                                    <h3 class="mb-0">
+                                    <!-- <h3 class="mb-0"> -->
                                         
-                                    <h4><img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> Initial Request &nbsp;&nbsp;
-                                        <span id="ticket-timestamp" style="font-size:12px; font-weight:400;"></span>
-                                        <a onClick="hung()" title="View Details" style="position:absolute;right:62px;cursor:pointer;">
-                                            <i data-feather='maximize'></i>
-                                        </a>
-                                        <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
-                                        <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span> </h4> 
+                                    <h4>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="first">
+                                                <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> {{$details->subject}}  &nbsp;&nbsp;
+                                            </div>
+
+                                            <div class="second">
+                                                <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;"></span>
+
+                                                <a onClick="hung()" title="View Details" style="position:absolute;right:56px;cursor:pointer;">
+                                                    <i data-feather='maximize'></i>
+                                                </a>
+
+                                                <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
+
+                                                <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span> 
+                                            </div>
+                                        <!-- </div> -->
+                                    </h4> 
+
                                         <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
-                                        <a onclick="cancelEditRequest()">
-                                            <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a></span>
+                                            <a onclick="cancelEditRequest()"> <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a>
+                                        </span>
+
                                         <span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn">
                                             <a onclick="saveRequest()">
                                                 <i data-feather='save'></i>
                                             </a>
                                         </span>
-                                    </h3>
-                                    <br>
-                                    <h4 id="ticket_subject_heading"> {{$details->subject}}</h4>
+                                    <!-- <br> -->
                                     <hr>
                                     <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">
                                         <div class="row mt-3">

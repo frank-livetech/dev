@@ -16,7 +16,7 @@ class TicketNote extends Model
 
     protected $table = 'ticket_notes';
     protected $fillable = [
-        'ticket_id','followup_id','color','type','note','visibility','created_at',' updated_at','created_by',
+        'ticket_id','followup_id','color','type','note','visibility','customer_id','company_id','created_at',' updated_at','created_by',
         'updated_by','deleted_by','deleted_at','is_deleted'
     ];
 }

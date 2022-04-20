@@ -3120,7 +3120,8 @@ $("#save_ticket_note").submit(function(event) {
 
     let vis = [];
     if (document.getElementById('note-type-user-org').checked || document.getElementById('note-type-user').checked) {
-        vis = all_staff_ids
+        vis = all_staff_ids;
+
     } else {
         vis = $('#note-visibilty').val();
         if (vis.indexOf('Everyone') > -1) vis = all_staff_ids;
@@ -3130,9 +3131,14 @@ $("#save_ticket_note").submit(function(event) {
     formData.append('ticket_id', ticket.id);
     formData.append('color', gl_color_notes);
     formData.append('visibility', vis.toString());
-    // if ($('#note-id').val()) {
-    //     formData.append('id', $('#note-id').val());
-    // }
+    formData.append('customer_id', temp_sel_customer);
+
+    if(document.getElementById('note-type-user-org').checked) {
+        let cust_cmp = companies_list.find(item => { return item.id == ticket_customer.company_id });
+        if(cust_cmp != null) {
+            formData.append('company_id', cust_cmp.id);
+        }
+    }
 
     if (extract_notes_email != null && extract_notes_email != '') {
         formData.append('tag_emails', extract_notes_email.join(','));
@@ -3431,7 +3437,7 @@ function setCustomerCompany() {
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
 
         $('#adjustCard1Height').attr('style', 'height: 300px !important');
-        $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
+        $('#adjustCard2Height').attr('style', 'height: 197px !important; overflow-y:scroll');
         
     } else {
         $('#cst-company').html('');

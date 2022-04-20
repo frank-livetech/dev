@@ -21,6 +21,8 @@ class CreateTicketNotesTable extends Migration
             $table->mediumText('note')->nullable();
             $table->string('visibility')->nullable();
             $table->integer('created_by')->nullable();
+            $table->integer('customer_id')->nullable();
+            $table->integer('company_id')->nullable();
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();
             $table->timestamp('deleted_at')->nullable();

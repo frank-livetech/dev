@@ -1911,7 +1911,6 @@ function get_customer_type_table_list() {
             }).draw();
             
             $.each(types_arr, function(key, val) {
-
                 $('#mail_type_id').append('<option value="' + val.id + '">' + val.name + '</option>');
                 $('#mail_type_id').trigger('change');
 
@@ -2793,7 +2792,12 @@ function getEmailByID(id) {
             $("#edit_queue_template").val(data.queue_template).trigger("change");
             $("#edit_mail_dept_id").val(data.mail_dept_id).trigger("change");
             $("#edit_mail_type_id").val(data.mail_type_id).trigger("change");
-            $("#edit_mail_status_id").val(data.mail_status_id).trigger("change");
+
+            setTimeout(() => {
+                $("#edit_mail_status_id").val(data.mail_status_id).trigger("change");    
+            }, 1500);
+            
+            
             $("#edit_mail_priority_id").val(data.mail_priority_id).trigger("change");
 
             // checkboxes
@@ -3305,26 +3309,13 @@ function save_pop3_mail() {
         },
         success: function(data) {
             $('#mail-form').closest('.modal-body').find('.btn').attr('disabled', false);
-            console.log(data);
             if (data.status_code == 200 && data.success == true) {
                 $('#save-mail').modal('hide');
                 $('#mail-form').trigger('reset');
                 get_mails_table_list();
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
+                toastr.success( data.message , { timeOut: 5000 });
             } else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: swal_message_time
-                });
+                toastr.error( data.message , { timeOut: 5000 });
             }
         },
         complete: function() {
@@ -4059,4 +4050,48 @@ const saveTicketRefreshTime  = ()  => {
     }
 
 }
+
+
+function showDepartStatus(id , status_id) {
+    $.ajax({
+        type: "POST",
+        url: "{{url('get_department_status')}}",
+        data: {id:id},
+        dataType: 'json',
+        beforeSend: function(data) {
+            $("#dropdown_loader").show();
+        },
+        success: function(data) {
+            let obj = data.status;
+            let option = ``;
+            let select = ``;
+            for(var i =0; i < obj.length; i++) {
+                option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
+            }
+            $("#"+ status_id).html(option);
+        },
+        complete: function(data) {
+            $("#dropdown_loader").hide();
+        },
+        error: function(error) {
+            $("#dropdown_loader").hide();
+            console.log(error);
+        }
+    });
+}
+
+
+$("#mail_dept_id").on('change' , function() {
+    let value = $(this).val();
+    let status_id =  $(this).data('status') ;
+
+    showDepartStatus(value , status_id)
+});
+
+$("#edit_mail_dept_id").on('change' , function() {
+    let value = $(this).val();
+    let status_id =  $(this).data('status') ;
+
+    showDepartStatus(value , status_id)
+});
 </script>
