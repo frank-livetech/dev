@@ -104,7 +104,7 @@
                                                 <div class="col-md-6">
                                                     <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ $user->role }}</span>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" id="unread_specific_user">
                                                     @if ($user->unread > 0)
                                                     <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $user->unread }}</span>
                                                     @endif
@@ -306,6 +306,8 @@
             } else if (message_type == 2) {
                 url = "{{ route('webchat.get') }}";
             }
+
+            $("#unread_specific_user").html('')
 
             $.ajax({
                 headers: {

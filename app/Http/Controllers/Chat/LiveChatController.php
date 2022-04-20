@@ -214,6 +214,7 @@ class LiveChatController extends Controller
                 'reciever_id' => $request->user_to,
                 'msg_body' => $file_path,
                 'type '=> 'file',
+                'hamza '=> 'file',
             ]);
 
         }else{
@@ -223,6 +224,7 @@ class LiveChatController extends Controller
                 'reciever_id' => $request->user_to,
                 'msg_body' => $request->message,
                 'type '=> $msg_type,
+                'hamza '=> 'text',
             ]);
 
         }

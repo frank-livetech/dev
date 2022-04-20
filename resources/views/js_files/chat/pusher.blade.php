@@ -17,8 +17,8 @@
             var unread = parseInt(first)+1
             $("#unread_msgs").text(unread)
             $("#unread_msgs").removeClass('d-none')
-            var audio = new Audio('{{asset("assets/sound/whatsapp.mp3")}}');
-            audio.play()
+            // var audio = new Audio('{{asset("assets/sound/whatsapp.mp3")}}');
+            // audio.play()
             // var html = '('+ unread +') '+ title +
             // console.log(html,title)
             // $("title").html(html)
