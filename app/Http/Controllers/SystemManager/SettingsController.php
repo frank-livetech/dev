@@ -117,6 +117,9 @@ class SettingsController extends Controller
         $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
         $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
 
+
+        $types = DB::table('ticket_types')->get();
+
         // old data
         // return view('system_manager.settings.index', get_defined_vars());
         return view('system_manager.settings.index-new', get_defined_vars());

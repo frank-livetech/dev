@@ -267,13 +267,16 @@
                             <div class="col-md-3 form-group">
                                 <label for="departmrnt">Department</label><span style="color:red">*</span><span id="dept_emp" style="color:red;display:none">Department cannot be Empty</span>
 
-                                <select class="select2 form-control custom-select" type="search" id="mail_dept_id" name="mail_dept_id" style="width: 100%; height:36px;">
+                                <select class="select2 form-control custom-select" type="search" id="mail_dept_id" data-status="mail_status_id" name="mail_dept_id" style="width: 100%; height:36px;">
                                 </select>
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="departmrnt">Type</label><span style="color:red">*</span><span id="type_emp" style="color:red;display:none">Type cannot be Empty</span>
 
                                 <select class="select2 form-control custom-select" type="search" id="mail_type_id" name="mail_type_id" style="width: 100%; height:36px;">
+                                    @foreach($types as $type)
+                                        <option value="{{$type->id}}"> {{$type->name}} </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3 form-group">
@@ -341,12 +344,12 @@
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="departmrnt">Email Subject</label><span style="color:red">*</span><span id="mail_emp" style="color:red;display:none">Email cannot be Empty</span>
-                                <input class="form-control" type="text" name="mail_queue_address" id="edit_email_emp" placeholder="">
+                                <input class="form-control" type="text" name="mail_queue_address" id="edit_email_emp" placeholder="" required>
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="departmrnt">Queue Type</label><span style="color:red">*</span><span id="edit_queue_emp" style="color:red;display:none">Queue Type cannot be Empty</span>
 
-                                <select class="select2 form-control custom-select" type="search" id="edit_queue_type" name="queue_type" style="width: 100%; height:36px;">
+                                <select class="select2 form-control custom-select" type="search" id="edit_queue_type" name="queue_type" style="width: 100%; height:36px;" required>
                                     <option value="365">365</option>
                                     <option value="pop3">POP3</option>
                                     <option value="imap">Imap</option>
@@ -356,7 +359,7 @@
                                 <label for="departmrnt">Protocol</label><span style="color:red">*</span><span id="protocol_emp" style="color:red;display:none">Protocol cannot be Empty</span>
 
                                 <select class="select2 form-control custom-select" type="search" id="edit_protocol"
-                                    name="protocol" style="width: 100%; height:36px;">
+                                    name="protocol" style="width: 100%; height:36px;" required>
                                     <option value="ssl">SSL</option>
                                     <option value="tls">TLS</option>
                                     <option value="starttls">STARTTLS</option>
@@ -418,13 +421,16 @@
                             <div class="col-md-3 form-group">
                                 <label for="departmrnt">Department</label><span style="color:red">*</span><span id="dept_emp" style="color:red;display:none">Department cannot be Empty</span>
 
-                                <select class="select2 form-control custom-select" type="search" id="edit_mail_dept_id" name="mail_dept_id" style="width: 100%; height:36px;">
+                                <select class="select2 form-control custom-select" type="search" data-status="edit_mail_status_id" id="edit_mail_dept_id" name="mail_dept_id" style="width: 100%; height:36px;">
                                 </select>
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="departmrnt">Type</label><span style="color:red">*</span><span id="type_emp" style="color:red;display:none">Type cannot be Empty</span>
 
                                 <select class="select2 form-control custom-select" type="search" id="edit_mail_type_id" name="mail_type_id" style="width: 100%; height:36px;">
+                                    @foreach($types as $type)
+                                        <option value="{{$type->id}}"> {{$type->name}} </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3 form-group">

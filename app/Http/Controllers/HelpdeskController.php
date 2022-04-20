@@ -2709,12 +2709,17 @@ class HelpdeskController extends Controller
             if(!is_array($id)) $id = [$id];
 
             $ticket = Tickets::select('customer_id')->where('id', $id)->first();
-            $ticketid = Tickets::where('customer_id', $ticket->customer_id)->pluck('id');
+            $customer = Customer::where('id' , $ticket->customer_id)->first();
+            $company_id = $customer->company_id;
+            // return dd($customer->toArray());
+            // $ticketid = Tickets::where('customer_id', $ticket->customer_id)->pluck('id');
 
             $notes = json_decode(DB::table('users')
             ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
             ->select('ticket_notes.*', 'users.name', 'users.profile_pic')
             ->where('ticket_notes.is_deleted', 0)->whereIn('ticket_notes.ticket_id', $id)
+            ->orWhere('ticket_notes.customer_id' , $customer->id)
+            ->orWhere('ticket_notes.company_id' , $customer->company_id)
             ->where(function($q) {
                 return $q->where('ticket_notes.visibility', 'like', '%'.\Auth::user()->id.'%')->orWhere('ticket_notes.created_by', \Auth::user()->id);
             })
