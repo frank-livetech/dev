@@ -34,7 +34,6 @@
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
             <ul class="navigation navigation-main sidna" id="sidebarnav"  data-menu="menu-navigation">
-
                     @foreach(Session('menus') as $menu )
                         @if($menu->route != "NULL") 
                             @if($menu->is_active == 1) 
@@ -77,6 +76,9 @@
                                         @if($sub_menu->title == 'Ticket Manager')
                                                 @foreach($departments as $depts)
                                                     {{-- 2nd level --}}
+                                                    @php
+                                                        $dep_url = 'ticket-manager/' . $depts->dept_slug . '/all';
+                                                    @endphp
                                                     <li class="sidebar-item">
                                                         <a class="has-arrow sidebar-link slogan" href="javascript:void(0)" aria-expanded="false">
                                                             <i data-feather='plus' class='slogan_i_plus'></i>
@@ -90,6 +92,14 @@
                                                                 @php
                                                                     $url = 'ticket-manager/' . $depts->dept_slug . '/' . $sts->slug;
                                                                 @endphp
+                                                                @if ($loop->first) 
+                                                                <li class="sidebar-item thirdlvl {{Request::path()}} {{Request::path() == $dep_url ? 'active' : ''}}">
+                                                                    <a href="{{route('ticket-manager.index',[$depts->dept_slug , 'all'])}}" class="slogan sidebar-link">
+                                                                        <span class="hide-menu"> All </span>
+                                                                        <span class="badge badge-light-danger rounded-pill ms-auto me-2" id="sts_cnt_{{$depts->id}}"></span>
+                                                                    </a>
+                                                                </li>
+                                                                @endif
                                                                 <li class="sidebar-item thirdlvl {{Request::path() == $url ? 'active' : ''}}">
                                                                     <a href="{{route('ticket-manager.index',[$depts->dept_slug,$sts->slug])}}" class="slogan sidebar-link">
                                                                         <span class="hide-menu"> {{$sts->name}}</span>

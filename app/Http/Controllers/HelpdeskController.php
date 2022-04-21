@@ -83,9 +83,14 @@ class HelpdeskController extends Controller
     public function ticket_manager($dept,$sts){
         $dept = Departments::where('dept_slug',$dept)->first();
         $dept = $dept->id;
-        $sts = TicketStatus::where('slug',$sts)->first();
-        $sts = $sts->id;
-        
+
+        if($sts == 'all') {
+            $sts = 'all';
+        }else{
+            $sts = TicketStatus::where('slug',$sts)->first();
+            $sts = $sts->id;
+        }
+          
         $departments = Departments::all();
         $statuses = TicketStatus::all();
         $priorities = TicketPriority::all();
@@ -577,6 +582,7 @@ class HelpdeskController extends Controller
     
     public function getFilteredTickets($dept = '' , $sts = ''){
 
+
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
@@ -585,31 +591,49 @@ class HelpdeskController extends Controller
 
         if(\Auth::user()->user_type == 1) {
 
-            $tickets = Tickets::select("*")
-            ->when($sts != '', function($q) use($sts) {
-                return $q->where('tickets.status', $sts);
-            })
-            ->when($dept != '', function($q) use($dept) {
-                return $q->where('tickets.dept_id', $dept);
-            })
-          
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
-        
+            if($sts == 'all') {
+                $tickets = Tickets::select("*")
+                ->when($dept != '', function($q) use($dept) {
+                    return $q->where('tickets.dept_id', $dept);
+                })
+                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
+            }else{
+                $tickets = Tickets::select("*")
+                ->when($sts != '', function($q) use($sts) {
+                    return $q->where('tickets.status', $sts);
+                })
+                ->when($dept != '', function($q) use($dept) {
+                    return $q->where('tickets.dept_id', $dept);
+                })
+                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
+            }        
         } else {
             $aid = \Auth::user()->id;
             $assigned_depts = DepartmentAssignments::where('user_id', $aid)->get()->pluck('dept_id')->toArray();
 
-            $tickets = Tickets::select("*")
-            ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
-                return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
-            })
-            ->when($sts != '', function($q) use($sts) {
-                return $q->where('tickets.status', $sts);
-            })
-            ->when($dept != '', function($q) use($dept) {
-                return $q->where('tickets.dept_id', $dept);
-            })
-            ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
+            if($sts == 'all') {
+                $tickets = Tickets::select("*")
+                ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
+                    return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
+                })
+                ->when($dept != '', function($q) use($dept) {
+                    return $q->where('tickets.dept_id', $dept);
+                })
+                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
+            }else{
+
+                $tickets = Tickets::select("*")
+                ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
+                    return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
+                })
+                ->when($sts != '', function($q) use($sts) {
+                    return $q->where('tickets.status', $sts);
+                })
+                ->when($dept != '', function($q) use($dept) {
+                    return $q->where('tickets.dept_id', $dept);
+                })
+                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
+            }
         }
 
         $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
