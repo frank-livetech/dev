@@ -3215,9 +3215,9 @@ function get_ticket_notes() {
         data: { id: ticket_details.id },
         success: function(data) {
             if (data.success) {
-                if(data.notes.length  != 0) {
+                if(data.notes_count  != 0) {
                     $('.notes_count').addClass('badge badge-light-danger rounded-pill ms-1');
-                    $('.notes_count').text(data.notes.length);
+                    $('.notes_count').text(data.notes_count);
                 }
                 
                 notes = data.notes;
