@@ -2716,10 +2716,9 @@ class HelpdeskController extends Controller
             if(!is_array($customer)) $company_id = [$company_id];
 
 
-            $notes = json_decode(DB::table('users')
+            $notes_arr = DB::table('users')
             ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
-            ->select('ticket_notes.*', 'users.name', 'users.profile_pic')
-            ->where('ticket_notes.is_deleted', 0)->whereIn('ticket_notes.ticket_id', $id)
+            ->select('ticket_notes.*', 'users.name', 'users.profile_pic')->whereIn('ticket_notes.ticket_id', $id)
             ->orWhere('ticket_notes.customer_id' , $customer_id)
             ->orWhere('ticket_notes.company_id' , $company_id)
             ->where(function($q) {
@@ -2728,7 +2727,14 @@ class HelpdeskController extends Controller
             ->when($request->has('type'), function($q) use($type) {
                 return $q->where('ticket_notes.type', $type);
             })->orderBy('created_at', 'desc')
-            ->get(), true);
+            ->get()->toArray();
+            
+            
+            $notes = array_filter($notes_arr, function ($notes_arr) {
+                if($notes_arr->is_deleted == 0) {
+                    return $notes_arr;    
+                }
+            });
     
                
             $response['message'] = 'Success';
