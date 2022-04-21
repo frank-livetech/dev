@@ -2741,6 +2741,7 @@ class HelpdeskController extends Controller
             $response['status_code'] = 200;
             $response['success'] = true;
             $response['notes']= $notes;
+            $response['notes_count']= count($notes);
             
             return response()->json($response);
         } catch(Exception $e) {
