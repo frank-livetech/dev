@@ -1846,7 +1846,7 @@ class MailController extends Controller
 
             $template = str_replace('{Ticket-SLA}', $sla, $template);
             $template = str_replace('{Ticket-Reply-Due}', $rep, $template);
-            $template = str_replace('{Ticket-Resolution-Due}', ($res != '' ? $res . '<hr>' : '') , $template);
+            $template = str_replace('{Ticket-Resolution-Due}', $res , $template);
         }
 
         $sc_vars = DB::table('sc_variables')->get();
