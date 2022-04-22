@@ -675,7 +675,7 @@ class MailController extends Controller
             $staff = User::where('email', trim($emailFrom))->first();
             if(empty($staff)) {
                 // reply is not from our system user
-                
+                $this->handleUnregisteredCustomers($emailFrom);
                 imap_delete($imap, $message);
                 return ;
             }
@@ -777,6 +777,7 @@ class MailController extends Controller
     }
 
     public function handleUnregisteredCustomers($emailFrom){
+
 
         $cust_template = DB::table("templates")->where('code','auto_res_cust_not_reg')->first();
         $admin_template = DB::table("templates")->where('code','auto_res_admin_cust_not_reg')->first();

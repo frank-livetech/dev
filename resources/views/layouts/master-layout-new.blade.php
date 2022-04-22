@@ -126,10 +126,15 @@
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
-
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
     <input type="hidden" value="{{\Auth::user()->profile_pic}}" id="curr_user_image">
     <!-- BEGIN: Header-->
+    <div class="audio" style="display:none">
+        <audio muted="muted" id="msg_my_audio" class="msg_my_audio">
+            <source src='{{asset("assets/sound/whatsapp.mp3")}}' type="audio/mp3">
+        </audio>
+    </div>
+
     @if(\Auth::user()->theme == "dark")
         <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-fluid">
     @else
@@ -240,8 +245,6 @@
     <button class="btn btn-primary btn-icon scroll-top" type="button" style="background-color: #0075be !important"><i data-feather="arrow-up"></i></button>
     <!-- END: Footer-->
 
-
-
     <!-- BEGIN: Vendor JS-->
     <script src="{{asset($file_path . 'app-assets/vendors/js/vendors.min.js')}}"></script>
 
@@ -312,7 +315,11 @@
         const root = "{{request()->root()}}";
         const js_origin  = root + (org_path == 1 ? '/public/' : '/');
         const change_theme_url = "{{asset('change_theme_mode')}}";
+
         $(document).ready(function() {
+
+            var x = document.createElement("AUDIO");
+
             getAllCounts();
             getNotifications();
             getUnreadMessages();
@@ -342,6 +349,26 @@
         var unreadMsg = "{{route('unread.message')}}";
         var get_notifications = "{{url('getNotifications')}}";
         var parser_url = "{{url('save-inbox-replies')}}";
+
+        // function checkaudio() {
+        //     // var buzzer = $('.msg_my_audio')[0];  
+        //     // buzzer.play(); 
+        //     const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        //     const osc = ctx.createOscillator();
+
+        //     console.log(ctx);
+        //     console.log(osc);
+
+        //     osc.connect(ctx.destination);
+
+        //     osc.start(0);
+        //     osc.stop(2);
+
+        //     osc.onended = () => {
+        //         console.log(ctx.state);
+        //     }
+        // }
 
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({

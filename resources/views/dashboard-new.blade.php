@@ -30,7 +30,6 @@
 
 
 <input type="hidden" id="curr_user_name" value="{{Auth::user()->name}}">
-
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -70,6 +69,7 @@
             
         </div> 
     </div>
+
     <div class="content-body">
         <section id="statistics-card">
             <div class="row match-height">
@@ -88,6 +88,9 @@
                                             <a href="{{url('staff-manager')}}">
                                             <h3 class="fw-bolder mb-0">{{$staff_count}}</h3>
                                             <p class="card-text font-small-10 mb-0">Total Staff</p>
+
+                                            
+
                                             </a>
                                         </div>
                                     </div>
@@ -619,7 +622,6 @@
         $("#showstaffdata").html(html);
 
     }
-
     
 function HmsToSeconds(hms) {
     // var hms = '02:04:33';
