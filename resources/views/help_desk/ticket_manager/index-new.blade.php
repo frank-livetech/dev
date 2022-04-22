@@ -423,6 +423,7 @@
                                                             <table id="ticket-logs-list" class="table table-striped table-bordered ticket-table-list">
                                                                 <thead>
                                                                     <tr>
+                                                                        <th class="d-none">ID</th>
                                                                         <th>Activity</th>
                                                                     </tr>
                                                                 </thead>
