@@ -568,10 +568,10 @@ class HelpdeskController extends Controller
         try {
             $ticket = Tickets::findOrFail($ticketID);
             $deadlines = [];
-            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_rep_deadline_from')->orderBy('created_at', 'desc')->first();
+            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_rep_deadline_from')->orderBy('id', 'desc')->first();
             $deadlines[0] = empty($logs) ? $ticket->created_at : $logs->created_at;
 
-            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_res_deadline_from')->orderBy('created_at', 'desc')->first();
+            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_res_deadline_from')->orderBy('id', 'desc')->first();
             $deadlines[1] = empty($logs) ? $ticket->created_at : $logs->created_at;
             
             return $deadlines;
