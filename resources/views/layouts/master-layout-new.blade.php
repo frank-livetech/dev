@@ -130,8 +130,8 @@
     <input type="hidden" value="{{\Auth::user()->profile_pic}}" id="curr_user_image">
     <!-- BEGIN: Header-->
     <div class="audio" style="display:none">
-        <audio muted="muted" id="msg_my_audio" class="msg_my_audio">
-            <source src='{{asset("assets/sound/whatsapp.mp3")}}' type="audio/mp3">
+        <audio id="msg_my_audio" class="msg_my_audio">
+            <source src='{{asset("assets/sound/whatsapp.mp3")}}' type="audio/mpeg">
         </audio>
     </div>
 
@@ -182,7 +182,7 @@
                 <li class="nav-item dropdown dropdown-notification">
                     <a class="nav-link" href="{{route('chats.index')}}" >
                         <i class="ficon" data-feather="message-square"></i>
-                        <span class="badge rounded-pill bg-danger badge-up" id="unread_msgs"></span>
+                        <span class="badge unread_msgs rounded-pill bg-danger badge-up" id="unread_msgs"></span>
                     </a>
                 </li>
                 <li class="nav-item dropdown dropdown-user">
@@ -318,8 +318,6 @@
 
         $(document).ready(function() {
 
-            var x = document.createElement("AUDIO");
-
             getAllCounts();
             getNotifications();
             getUnreadMessages();
@@ -349,26 +347,6 @@
         var unreadMsg = "{{route('unread.message')}}";
         var get_notifications = "{{url('getNotifications')}}";
         var parser_url = "{{url('save-inbox-replies')}}";
-
-        // function checkaudio() {
-        //     // var buzzer = $('.msg_my_audio')[0];  
-        //     // buzzer.play(); 
-        //     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-        //     const osc = ctx.createOscillator();
-
-        //     console.log(ctx);
-        //     console.log(osc);
-
-        //     osc.connect(ctx.destination);
-
-        //     osc.start(0);
-        //     osc.stop(2);
-
-        //     osc.onended = () => {
-        //         console.log(ctx.state);
-        //     }
-        // }
 
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({

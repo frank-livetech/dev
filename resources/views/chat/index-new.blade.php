@@ -106,7 +106,7 @@
                                                 </div>
                                                 <div class="col-md-6" id="unread_specific_user">
                                                     @if ($user->unread > 0)
-                                                    <span class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $user->unread }}</span>
+                                                    <span id="unread_{{$user->id}}" class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $user->unread }}</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -260,10 +260,13 @@
 
         function showActiveUserChat(tag) {
             let user_id = $(tag).data("id");
+            console.log(user_id);
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
             $("#image_url").val(src);
             let whatsapp = $(tag).data("wp");
+
+            $("#unread_"+user_id).empty();
 
             whatsapp == null || whatsapp == '' ? $('.whatsapp_icon').hide() : $('.whatsapp_icon').show();
 
@@ -329,7 +332,9 @@
                             renderWhatsappMessages(obj, data.number);
                         } else {
                             renderWebMessages(obj);
-                            $("#unread_msgs").text(data.unread)
+                            $("#unread_msgs").text(data.unread);
+
+                            let url = window.location.href;
                             $("#unread_msgs").addClass('d-none')
                         }
                     } else {

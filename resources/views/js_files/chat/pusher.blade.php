@@ -1,8 +1,9 @@
 <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
-<script>    
+<script type="text/javascript">    
     var pusher = new Pusher("{{ pusherCredentials('key') }}", {
         cluster: "{{ pusherCredentials('cluster') }}",
     });
+    var song;
 
     // Enter a unique channel you wish your users to be subscribed in.
     var channel = pusher.subscribe('support-chat.'+`{{Auth::id()}}`);
@@ -20,30 +21,13 @@
             renderPusherMessages(data.message, data.sender)
 
         }else{
-            let msg_counter = $("#unread_msgs").text() == '' ? 0 : $("#unread_msgs").text();
-            $("#unread_msgs").text( parseInt(msg_counter) + 1 );
 
+            $("#unread_msgs ").removeClass("d-none");
+            let msg_counter = $(".unread_msgs").text() == '' ? 0 : $(".unread_msgs").text();
+            $(".unread_msgs").text( parseInt(msg_counter) + 1 );
             
-            // const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            jQuery("#msg_my_audio")[0].play();
 
-            // const osc = ctx.createOscillator();
-
-            // osc.connect(ctx.destination);
-
-            // osc.start(0);
-            // osc.stop(2);
-
-            // osc.onended = () => {
-            //     console.log(ctx.state);
-            // }
-
-            document.body.addEventListener("mousemove", function () {
-                var buzzer = $('.msg_my_audio')[0];  
-                buzzer.play(); 
-                console.log("buzzer");
-            })
-
-            
         }
         
     });
