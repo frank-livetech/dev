@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -951,19 +951,10 @@ class HelpdeskController extends Controller
                             $dt = explode('.', $value->sla_plan['reply_deadline']);
                             $rep->addHours($dt[0]);
     
-                            // if(array_key_exists(1, $dt)) {
-                            //     $rep->addMinutes($dt[1]);
-                            // }
-    
                             if(strtotime($rep) < strtotime($nowDate)) {
                                 $lcnt = true;
                             }
     
-                            // $timediff = $nowDate->diffInSeconds($rep, false);
-                            
-                            // if($timediff < 0){
-                            //     $lcnt = true;
-                            // }
                             
                         }
                     }
@@ -977,19 +968,12 @@ class HelpdeskController extends Controller
                                 $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
                                 if($timediff < 0) $lcnt = true;
                             } else {
-                                $rep = Carbon::parse($value->sla_res_deadline_from);
+                                $res = Carbon::parse($value->sla_res_deadline_from);
                                 $dt = explode('.', $value->sla_plan['due_deadline']);
-                                $rep->addHours($dt[0]);
-                                // if(array_key_exists(1, $dt)) {
-                                //     $rep->addMinutes($dt[1]);
-                                // }
-    
-                                if(strtotime($rep) < strtotime($nowDate)) {
+                                $res->addHours($dt[0]);
+                                if(strtotime($res) < strtotime($nowDate)) {
                                     $lcnt = true;
                                 }
-    
-                                // $timediff = $nowDate->diffInSeconds($rep, false);
-                                // if($timediff < 0) $lcnt = true;
                             }
                         }
                     }
@@ -3367,8 +3351,15 @@ class HelpdeskController extends Controller
             $customer = null;
             if(!empty($ticket['customer_id'])) {
                 $customer = Customer::where('id', $ticket['customer_id'])->first();
+                $user_type = 'customer';
             }
-
+            
+            // if customer if null or empty then find user 
+            if(empty($customer)) {
+                $customer = User::where('id' , $ticket['customer_id'])->first();
+                $user_type = 'staff';
+            }
+            
             $mail_template = DB::table('templates')->where('code', $template_code)->first();
             $cust_template = DB::table('templates')->where('code', $cust_template_code)->first();
         
@@ -3405,10 +3396,11 @@ class HelpdeskController extends Controller
                 $cust_message = '';
 
             }else{
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt);
+                
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt , $user_type);
             }
 
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt , $user_type);
             
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
@@ -3429,7 +3421,7 @@ class HelpdeskController extends Controller
                 $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
                 $reply_content= $ticket['ticket_detail'];
                 $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '','');
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '','' , $user_type);
 
                 if(!empty($cust_message)) {
                 

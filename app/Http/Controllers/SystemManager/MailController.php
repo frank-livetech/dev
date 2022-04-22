@@ -1268,7 +1268,7 @@ class MailController extends Controller
             array('module' => 'User', 'values' => $user->toArray()),
         );
 
-        $template = $this->template_parser($order_input, $mail_template->template_html ,'','','','','','','','','');
+        $template = $this->template_parser($order_input, $mail_template->template_html ,'','','','','','','','','','');
 
         $this->sendMail($subject, $template, 'accounts@mylive-tech.com', $user->email, $user->name);
     }
@@ -1294,7 +1294,7 @@ class MailController extends Controller
     }
 
     
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='' , $reset_tkt = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='' , $reset_tkt = '' , $user_type = '') {
         if(empty($template)) {
             return '';
         }
@@ -1302,7 +1302,8 @@ class MailController extends Controller
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
         }
-
+        
+        
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
         
@@ -1532,7 +1533,7 @@ class MailController extends Controller
         }
         
         // replace the generic array modules data
-        $this->replaceShortCodes($data_list, $template);
+        $this->replaceShortCodes($data_list, $template , $user_type);
         if(str_contains($template, '{Creator-Name}')) {
 
             $user = User::where('id' , $ticket['created_by'])->first();
@@ -1573,8 +1574,7 @@ class MailController extends Controller
             $tm_name = 'America/New_York';
         }
 
-
-        if($reset_tkt != '') {
+        if(!empty($reset_tkt)) {
 
             $tckt = array_values(array_filter($data_list, function ($var) {
                 return ($var['module'] == 'Ticket');
@@ -1964,7 +1964,7 @@ class MailController extends Controller
         return $time;
     }
 
-    public function replaceShortCodes($data_list, &$template) {
+    public function replaceShortCodes($data_list, &$template , $user_type) {
         $brand_setting = DB::table("brand_settings")->first();
         $img = '<img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/brand_files/'.$brand_setting->site_logo .'" style="display:block;width:100%;max-width:80px;margin:0px;" width="80"/>';
 
@@ -1979,49 +1979,67 @@ class MailController extends Controller
             $link = '<a href="'.$url.'"> '. $url .'  </a>';
             $template = str_replace('{Ticket-Manager}', $link , $template);
         }            
-                    
+                  
         foreach ($data_list as $key => $data) {
 
             if($data['module'] == 'Customer') {
                 
-
                 if(str_contains($template, '{Customer-ID}')) {
                     $template = str_replace('{Customer-ID}', $data['values']['id'], $template);
                 }
-
-                if(str_contains($template, '{Customer-Name}')) {
-                    $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
-                }
+                
                 if(str_contains($template, '{Customer-Email}')) {
                     $template = str_replace('{Customer-Email}', $data['values']['email'] , $template);
                 }
                 
-                if(str_contains($template, '{Customer-Phone}')) {
-                    $template = str_replace('{Customer-Phone}', $data['values']['phone'] , $template);
-                }
-
-                if(str_contains($template, '{Company-Name}')) {
-                    
-                    if($data['values']['company_id'] != null){
-                        
-                        $company = DB::table("companies")->where('id' , $data['values']['company_id'])->first();
-                        
-                        if($company) {
-                            $template = str_replace('{Company-Name}', $company->name , $template);
-                        }else{
-                           $template = str_replace('Company Name: ', '' , $template); 
-                           $template = str_replace('{Company-Name}', '' , $template); 
-                        }
-                        
-                    }else{
-                        $template = str_replace('Company Name: ', '' , $template);
-                        $template = str_replace('{Company-Name}', '' , $template); 
-                    }
-                }
-
                 if(str_contains($template, '{Site-Link}')) {
                     $val = 'https://mylive-tech.com/dev';
                     $template = str_replace('{Site-Link}', $val , $template);
+                }
+                
+                if(array_key_exists("company_id" ,  $data['values'])) {
+
+                    if(str_contains($template, '{Company-Name}')) {
+                            
+                        if($data['values']['company_id'] != null){
+                            
+                            $company = DB::table("companies")->where('id' , $data['values']['company_id'])->first();
+                            
+                            if($company) {
+                                $template = str_replace('{Company-Name}', $company->name , $template);
+                            }else{
+                               $template = str_replace('Company Name: ', '' , $template); 
+                               $template = str_replace('{Company-Name}', '' , $template); 
+                            }
+                            
+                        }else{
+                            $template = str_replace('Company Name: ', '' , $template);
+                            $template = str_replace('{Company-Name}', '' , $template); 
+                        }
+                    }
+                }else{
+                    $template = str_replace('Company Name: ', '' , $template);
+                    $template = str_replace('{Company-Name}', '' , $template); 
+                }
+                    
+                if($user_type == 'customer') {
+                    
+                    if(str_contains($template, '{Customer-Name}')) {
+                        $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
+                    }
+                    
+                    if(str_contains($template, '{Customer-Phone}')) {
+                        $template = str_replace('{Customer-Phone}', $data['values']['phone'] , $template);
+                    }
+    
+                }else{
+                    if(str_contains($template, '{Customer-Name}')) {
+                        $template = str_replace('{Customer-Name}', $data['values']['name'], $template);
+                    }
+                    if(str_contains($template, '{Customer-Phone}')) {
+                        $template = str_replace('{Customer-Phone}', $data['values']['phone_number'] , $template);
+                    }
+                    
                 }
 
             } else if($data['module'] == 'Ticket') {
