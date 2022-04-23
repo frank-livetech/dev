@@ -110,13 +110,8 @@
                                             </p>
                                         </div>
                                         <div class="chat-meta text-nowrap">
-                                            @if($user->last_msg != null)
-                                                <small class="float-end mb-25 chat-time">
-                                                    @php
-                                                       $date =  new Carbon\Carbon( Carbon\Carbon::parse( $user->last_msg->created_at )->format('H:i A') , \Session::get('timezone') ) 
-                                                    @endphp
-                                                    {{ $date->format('H:i A')}} </small>
-                                            @endif
+                                            
+                                                <small>  </small>
                                             
                                             <div class="col-md-12 mt-2" id="unread_specific_user_{{$user->id}}">
                                                 @if ($user->unread > 0)
