@@ -12,8 +12,7 @@ class SupportMessage extends Model
                 'sender_id',
                 'reciever_id',
                 'msg_body',
-                'type',
-                'hamza',
+                'msg_type',
                 'read_at'
             ];
 }

@@ -50,6 +50,7 @@ class LiveChatController extends Controller
         $users = $users->map(function($user) use ($unreadIds) {
             $contactUnread = $unreadIds->where('sender_id', $user->id)->first();
             $user->unread = $contactUnread ? $contactUnread->messages_count : 0;
+            $user->last_msg = DB::table("web_chats")->where('sender_id',$user->id)->select("msg_body","msg_type","created_at")->orderBy('id','desc')->first();
             return $user;
         });
 
@@ -93,8 +94,8 @@ class LiveChatController extends Controller
         ]);
     }
 
-    public function sendMessage(Request $request)
-    {
+    public function sendMessage(Request $request) {
+
         $user = User::where('id' , $request->user_to)->first();
 
         if($user->whatsapp == null || empty($user)) {
@@ -150,8 +151,8 @@ class LiveChatController extends Controller
      * ==========================================
      *
      */
-    public function getWebMessage(Request $request)
-    {
+    public function getWebMessage(Request $request) {
+
         $id = $request->id;
         // mark all messages with the selected contact as read
         $support = SupportMessage::where('sender_id', $id)->where('reciever_id', auth()->id())
@@ -191,9 +192,17 @@ class LiveChatController extends Controller
      * ==========================================
      *
      */
-    public function sendWebMessages(Request $request)
-    {
+    public function sendWebMessages(Request $request) {
+
+        $msg_type = "text";
+
+        $data =array(
+            'sender_id' => auth()->id(),
+            'reciever_id' => $request->user_to ,
+        );
+
         if(request()->has('file')){
+
             $file = request('file');
             $fileName = $file->getClientOriginalName();
             $fileName = strtolower($fileName);
@@ -206,34 +215,35 @@ class LiveChatController extends Controller
             }
 
             $file->move($target_dir, $fileName);
-            $file_path = $target_dir.'/'.$fileName;
+            $file_path = $target_dir.'/'.$fileName;   
 
-            $msg_type="file";
-            $message = SupportMessage::create([
-                'sender_id' => auth()->id(),
-                'reciever_id' => $request->user_to,
-                'msg_body' => $file_path,
-                'type '=> 'file',
-                'hamza '=> 'file',
-            ]);
+            $msg_type = $request->file('file')->getClientMimeType();
+
+            $data['msg_body'] = $file_path;
+            $data['msg_type'] = $msg_type;
+
+            $message = SupportMessage::create($data);
+
+            if($request->message != null || $request->message != '') {
+
+                $data['msg_body'] = $request->message ;
+                $data['msg_type'] = 'text';
+
+                $message = SupportMessage::create($data);
+            } 
 
         }else{
-            $msg_type = 'text';
-            $message = SupportMessage::create([
-                'sender_id' => auth()->id(),
-                'reciever_id' => $request->user_to,
-                'msg_body' => $request->message,
-                'type '=> $msg_type,
-                'hamza '=> 'text',
-            ]);
 
+            $data['msg_body'] = $request->message ;
+            $data['msg_type'] = $msg_type;
+
+            $message = SupportMessage::create($data);
         }
 
         $user = User::find($message->sender_id);
 
         $supportJob = (new SuportChat($message,$message->reciever_id,$user));
         dispatch($supportJob);
-
 
         return response()->json([
             'data' => $message,
