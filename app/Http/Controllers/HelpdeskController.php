@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -3242,13 +3242,14 @@ class HelpdeskController extends Controller
             }elseif($action_name == 'Customer Ticket Create'){
                 
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
-                $notification_message = 'Ticket Created By Customer ' . $user->name;
+                $notification_message = 'New Ticket (ID <a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a>) Created By '.  $user->name;
+
                 $notification_title = 'New Ticket Created';
                 
 
             } else if($action_name == 'Ticket Create') {
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
-                $notification_message = 'Ticket Created By' . $user->name;
+                $notification_message = 'New Ticket (ID <a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a>) Created By '.  $user->name;
                 $notification_title = 'New Ticket Created';
             }
             

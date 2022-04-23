@@ -495,46 +495,6 @@
             }
         });
 
-        // $(".nav-link-style").click(function(){
-        //     var ter = $(this).find(".feather").attr("class");
-
-
-        //     if(ter == "feather feather-sun ficon"){
-        //         $.ajax({
-        //             url: "{{asset('change_theme_mode')}}",
-        //             type: "POST",
-        //             data: {
-        //                 theme: 'dark'
-        //             },
-        //             dataType: 'json',
-        //             cache: false,
-        //             success: function(data) {
-
-        //             },
-        //             failure: function(errMsg) {
-
-        //                 console.log(errMsg);
-        //             }
-        //         });
-        //     }
-        //     else{
-        //         $.ajax({
-        //             url: "{{asset('change_theme_mode')}}",
-        //             type: "POST",
-        //             data: {
-        //                 theme: 'light'
-        //             },
-        //             dataType: 'json',
-        //             cache: false,
-        //             success: function(data) {},
-        //             failure: function(errMsg) {
-        //                 console.log(errMsg);
-        //             }
-        //         });
-
-        //     }
-        // })
-
         function getNotifications(){
             $.ajax({
                 url: get_notifications,
@@ -623,9 +583,7 @@
         }
     </script>
     @include('js_files.chat.pusher')
+    @include('js_files.pusher_notification.notification')
     @yield('scripts')
 </body>
-<!-- END: Body-->
-
-
 </html>

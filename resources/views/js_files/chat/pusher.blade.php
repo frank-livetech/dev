@@ -3,8 +3,6 @@
     var pusher = new Pusher("{{ pusherCredentials('key') }}", {
         cluster: "{{ pusherCredentials('cluster') }}",
     });
-    var song;
-
     // Enter a unique channel you wish your users to be subscribed in.
     var channel = pusher.subscribe('support-chat.'+`{{Auth::id()}}`);
     // bind the server event to get the response data and append it to the message div
@@ -33,10 +31,6 @@
             });
             
             jQuery("#msg_my_audio")[0].play();
-
-
-
-
         }
         
     });
