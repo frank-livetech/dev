@@ -274,6 +274,7 @@
     <script>
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 2;
+        var is_open = 0;
 
         function loadFile(event) {
             let file = event.target.files[0];
@@ -282,11 +283,6 @@
             }else{
                 $("#attach-doc").removeAttr('name','file');
             }
-            // var output = document.getElementById('hung22');
-            // output.src = URL.createObjectURL(event.target.files[0]);
-            // output.onload = function() {
-            // URL.revokeObjectURL(output.src)
-            // }
         }
 
         function showActiveUserChat(tag) {
@@ -310,6 +306,8 @@
             $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .chat-user-name").text($(tag).attr("data_nm"))
             $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .user-post").text($(tag).data("job"))
             $(".user-profile-sidebar .user-profile-sidebar-area p").text($(tag).data("about"))
+
+            is_open = user_id;
 
         }
 
@@ -530,16 +528,21 @@
 
         function renderPusherMessages(message,sender) {
 
-            console.log(message , "msg");
-            console.log(sender , "sender");
-            console.log(sender.id , "sender id");
-
             let counter = $("#unread_"+sender.id).text();
             if(counter != '') {
-                $("#unread_"+sender.id).text( parseInt(counter) + 1 );
+                if(is_open == sender.id) {
+                    $("#unread_"+sender.id).text('');
+                }else{
+                    $("#unread_"+sender.id).text( parseInt(counter) + 1 );
+                }
             }else{
                 let badge = `<span id="unread_${sender.id}" style="margin-left: 20px !important;" class="badge bg-danger rounded-pill ms-auto me-1">1</span>`;
-                $("#unread_specific_user_" + sender.id).html(badge);
+                if(is_open == sender.id) {
+                    $("#unread_specific_user_" + sender.id).html('');
+                }else{
+                    $("#unread_specific_user_" + sender.id).html(badge);
+                }
+                
             }
 
             if(message.msg_type == 'text') {
@@ -549,9 +552,6 @@
                 $("#last_msg_"+sender.id).html( svg + ' Photo' );
             }
             
-
-            
-
             let msg = ``;
             if(message.type == 'file'){
                 msg = `<div  class="chat-content ${message.type == 'file' ? 'p-0' : ''}"> ${message.msg_body} </div>`;
@@ -616,6 +616,8 @@
                         toastr.success(data.message, {
                             timeOut: 5000
                         });
+
+                        is_open = 0;
                         
                         $("#attach-doc").removeAttr('name','file');
 
