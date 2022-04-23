@@ -89,29 +89,44 @@
                                         data_nm="{{ $user->name }}" data-wp="{{ $user->whatsapp }}"
                                         data_pc="{{ getDefaultProfilePic($user->profile_pic) }}"
                                         data-job="{{ $user->job_title }}"
-                                        data-about="{{ $user->notes }}"
-                                        />
-
+                                        data-about="{{ $user->notes }}">
+                                        
                                         <span class="avatar">
                                             <img class="user_image_{{ $user->id }}"
                                                 src="{{ asset(getDefaultProfilePic($user->profile_pic)) }}"
                                                 height="42" width="42">
                                         </span>
 
-                                        <div class="chat-info">
-                                            <h5 class="mb-0">{{ $user->name }}</h5>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <span class="badge badge-light-success rounded-pill ms-auto me-1">{{ $user->role }}</span>
-                                                </div>
-                                                <div class="col-md-6" id="unread_specific_user">
-                                                    @if ($user->unread > 0)
-                                                    <span id="unread_{{$user->id}}" class="badge badge-light-warning rounded-pill ms-auto me-1">{{ $user->unread }}</span>
+                                        <div class="chat-info flex-grow-1">
+                                            <h5 class="mb-0"> {{ $user->name }} </h5>
+                                            <p class="card-text text-truncate" id="last_msg_{{$user->id}}">
+                                                @if($user->last_msg != null)
+                                                    @if($user->last_msg->msg_type == 'text')
+                                                        {{$user->last_msg->msg_body != null ? $user->last_msg->msg_body : ''}}
+                                                    @else
+                                                        <i data-feather='camera'></i> <span class="mt-1">Photo</span>
                                                     @endif
-                                                </div>
+                                                @endif
+                                            </p>
+                                        </div>
+                                        <div class="chat-meta text-nowrap">
+                                            @if($user->last_msg != null)
+                                                <small class="float-end mb-25 chat-time">
+                                                    @php
+                                                       $date =  new Carbon\Carbon( Carbon\Carbon::parse( $user->last_msg->created_at )->format('H:i A') , \Session::get('timezone') ) 
+                                                    @endphp
+                                                    {{ $date->format('H:i A')}} </small>
+                                            @endif
+                                            
+                                            <div class="col-md-12 mt-2" id="unread_specific_user_{{$user->id}}">
+                                                @if ($user->unread > 0)
+                                                    <span id="unread_{{$user->id}}" style="margin-left: 20px !important;" class="badge bg-danger rounded-pill ms-auto me-1">{{ $user->unread }}</span>
+                                                @endif
                                             </div>
+
                                         </div>
                                     </li>
+
                                     @endif
                                 @endforeach
                                 <li class="no-results">
@@ -197,16 +212,23 @@
 
                                 <!-- Submit Chat form -->
                                 <form class="chat-app-form" id="chat_form">
+
                                     <input type="hidden" name="user_to" id="user_to">
+
                                     <div class="input-group input-group-merge me-1 form-send-message">
-                                        <span class="speech-to-text input-group-text"><i data-feather="mic"
-                                                class="cursor-pointer"></i></span>
-                                        <input type="text" id="message" name="message" class="form-control message"
-                                            placeholder="Type your message or use speech to text" />
+                                        
+                                        <span class="speech-to-text input-group-text">
+                                            <i data-feather="mic" class="cursor-pointer"></i>
+                                        </span>
+
+                                        <input type="text" id="message" name="message" class="form-control message" placeholder="Type your message or use speech to text" />
+
                                         <span class="input-group-text">
                                             <label for="attach-doc" class="attachment-icon form-label mb-0">
-                                                <i data-feather="image" class="cursor-pointer text-secondary"></i>
-                                                <input type="file" name="file" id="attach-doc" hidden /> </label></span>
+                                            <i data-feather="image" class="cursor-pointer text-secondary"></i>
+                                            <input type="file"  onchange="loadFile(event)" id="attach-doc" hidden /> </label>
+                                        </span>
+                                        
                                     </div>
                                     <button type="submit" class="btn btn-primary send">
                                         <i data-feather="send" class="d-lg-none"></i>
@@ -257,6 +279,20 @@
     <script>
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 2;
+
+        function loadFile(event) {
+            let file = event.target.files[0];
+            if(file != undefined) {
+                $("#attach-doc").attr('name','file');
+            }else{
+                $("#attach-doc").removeAttr('name','file');
+            }
+            // var output = document.getElementById('hung22');
+            // output.src = URL.createObjectURL(event.target.files[0]);
+            // output.onload = function() {
+            // URL.revokeObjectURL(output.src)
+            // }
+        }
 
         function showActiveUserChat(tag) {
             let user_id = $(tag).data("id");
@@ -318,23 +354,20 @@
                 },
                 type: "POST",
                 url: url,
-                data: {
-                    id: user_id
-                },
+                data: { id: user_id },
                 dataType: 'json',
                 beforeSend: function(data) {
 
                 },
                 success: function(data) {
                     let obj = data.data;
+                    console.log(obj);
                     if (data.status == 200 && data.success == true) {
                         if (data.type == 'whatsapp') {
                             renderWhatsappMessages(obj, data.number);
                         } else {
                             renderWebMessages(obj);
                             $("#unread_msgs").text(data.unread);
-
-                            let url = window.location.href;
                             $("#unread_msgs").addClass('d-none')
                         }
                     } else {
@@ -449,7 +482,7 @@
                     if (obj[i].sender_id == auth) {
                         let message = ``;
                         let message_type = obj[i].type;
-                        if(obj[i].type == 'file'){
+                        if(obj[i].msg_type.includes('image')){
                             message = `<img src="{{asset('`+obj[i].msg_body+`')}}" alt="file"  width="150px"/>`;
                         }else{
                             message = `<p> ${obj[i].msg_body != null ? obj[i].msg_body : ''} </p>`;
@@ -472,10 +505,10 @@
                     }
                     if (obj[i].reciever_id == auth) {
                         let message = ``;
-                        let message_type = obj[i].type;
+                        let message_type = obj[i].msg_type;
 
-                        if(obj[i].type == 'file'){
-                            message = `<div  class="chat-content ${message_type == 'file' ? 'p-0' : ''}"><img src="{{asset('`+obj[i].msg_body+`')}}" width="150px" alt="file" /> </div>`;
+                        if(obj[i].msg_type.includes('image')){
+                            message = `<div  class="chat-content"><img src="{{asset('`+obj[i].msg_body+`')}}" width="150px" alt="file" /> </div>`;
                         }else{
                             message = `<div class="chat-content"> <p> ${obj[i].msg_body != null ? obj[i].msg_body : ''} </p> </div>`;
                         }
@@ -500,8 +533,30 @@
             }
         }
 
-        function renderPusherMessages(message,sender)
-        {
+        function renderPusherMessages(message,sender) {
+
+            console.log(message , "msg");
+            console.log(sender , "sender");
+            console.log(sender.id , "sender id");
+
+            let counter = $("#unread_"+sender.id).text();
+            if(counter != '') {
+                $("#unread_"+sender.id).text( parseInt(counter) + 1 );
+            }else{
+                let badge = `<span id="unread_${sender.id}" style="margin-left: 20px !important;" class="badge bg-danger rounded-pill ms-auto me-1">1</span>`;
+                $("#unread_specific_user_" + sender.id).html(badge);
+            }
+
+            if(message.msg_type == 'text') {
+                $("#last_msg_"+sender.id).text( message.msg_body );
+            }else{
+                let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>`;
+                $("#last_msg_"+sender.id).html( svg + ' Photo' );
+            }
+            
+
+            
+
             let msg = ``;
             if(message.type == 'file'){
                 msg = `<div  class="chat-content ${message.type == 'file' ? 'p-0' : ''}"> ${message.msg_body} </div>`;
@@ -562,12 +617,16 @@
                     contentType: false,
                     beforeSend: function(data) {},
                     success: function(data) {
+                        console.log(data);
                         toastr.success(data.message, {
                             timeOut: 5000
                         });
+                        
+                        $("#attach-doc").removeAttr('name','file');
+
                         $("#message").val("");
                         let output_message = '';
-                        if(data.message_type == 'file'){
+                        if(data.message_type.includes('image')){
                             output_message = `<img src="{{asset('${data.data.msg_body}')}}" width="150px" alt="file" />`;
                         }else{
                             output_message = `<p> ${data.data.msg_body != null ? data.data.msg_body : ''} </p>`;
@@ -582,7 +641,7 @@
 
                             </div>
                             <div class="chat-body">
-                                <div class="chat-content ${data.message_type == 'file' ? 'p-0' : ''} ">
+                                <div class="chat-content">
                                     ${output_message}
                                 </div>
                             </div>
