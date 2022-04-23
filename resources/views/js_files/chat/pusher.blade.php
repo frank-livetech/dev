@@ -25,8 +25,17 @@
             $("#unread_msgs").removeClass("d-none");
             let msg_counter = $(".unread_msgs").text() == '' ? 0 : $(".unread_msgs").text();
             $(".unread_msgs").text( parseInt(msg_counter) + 1 );
+
+            toastr['success']( data.sender.name + ' Text you ', 'Message', {
+                showMethod: 'slideDown',
+                hideMethod: 'slideUp',
+                timeOut: 3000,
+            });
             
             jQuery("#msg_my_audio")[0].play();
+
+
+
 
         }
         

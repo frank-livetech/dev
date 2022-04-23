@@ -306,6 +306,8 @@
     <!-- <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script> -->
     <!-- END: Page JS-->
 
+    <script src="{{asset($file_path . 'app-assets/js/scripts/extensions/ext-component-toastr.js')}}"></script>
+
     <script type="text/javascript" src="{{asset($file_path . 'assets/dist/js/flashy.min.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/extra-libs/countdown/countdown.css')}}" />
     <script type="text/javascript" src="{{asset($file_path . 'assets/extra-libs/countdown/countdown.js')}}"></script>
