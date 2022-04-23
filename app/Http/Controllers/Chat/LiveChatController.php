@@ -19,12 +19,10 @@ use Pusher\Pusher;
 use Illuminate\Support\Facades\File;
 
 
-class LiveChatController extends Controller
-{
+class LiveChatController extends Controller {
 
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('auth');
 
         $this->middleware(function (Request $request, $next) {
@@ -34,6 +32,7 @@ class LiveChatController extends Controller
             return $next($request);
         });
     }
+
     public function index(){
 
         $users = User::where('is_deleted',0)->where('user_type','!=',5)->get();
@@ -56,7 +55,6 @@ class LiveChatController extends Controller
 
         return view('chat.index-new', get_defined_vars() );
     }
-
 
     // get whatsapp messages
     public function getWhatsAppMessage(Request $request) {
@@ -142,15 +140,6 @@ class LiveChatController extends Controller
         }
     }
 
-    /**
-     * @param Object $request
-     * @return response
-     *
-     * ==========================================
-     * Get Support Chat Page
-     * ==========================================
-     *
-     */
     public function getWebMessage(Request $request) {
 
         $id = $request->id;
@@ -183,15 +172,6 @@ class LiveChatController extends Controller
         ]);
     }
 
-    /**
-     * @param Object $request
-     * @return response
-     *
-     * ==========================================
-     * Support Chat Page
-     * ==========================================
-     *
-     */
     public function sendWebMessages(Request $request) {
 
         $msg_type = "text";
@@ -254,17 +234,8 @@ class LiveChatController extends Controller
         ]);
     }
 
-    /**
-     * @param null
-     * @return integer
-     *
-     * ==========================================
-     * Support Chat message unread count
-     * ==========================================
-     *
-     */
-    public function unreadMessages()
-    {
+    public function unreadMessages() {
+        
         $support = SupportMessage::where('read_at',null)->where('reciever_id',Auth::id())->get();
 
         return response()->json([

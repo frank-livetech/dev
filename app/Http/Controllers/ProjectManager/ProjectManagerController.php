@@ -212,6 +212,14 @@ class ProjectManagerController extends Controller
       $log = new ActivitylogController();
       $log->saveActivityLogs('Project Description' , 'project_description' , $project->id , auth()->id() , $action_perform);
 
+      $sender = User::where('id' , auth()->id())->first();
+      $message = 'abc this is the message';
+      $receiver = User::where('email' , 'muzamilnaveed10@gmail.com')->first();
+
+      $notify = new NotifyController();
+      $notify->sendNotification(  $receiver->id , $sender , $message);
+
+      
       $response['message'] = 'Project Description Saved Successfully';
       $response['status_code'] = 200;
       $response['success'] = true;
