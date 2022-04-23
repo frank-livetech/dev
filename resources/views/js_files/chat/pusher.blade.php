@@ -22,7 +22,7 @@
 
         }else{
 
-            $("#unread_msgs ").removeClass("d-none");
+            $("#unread_msgs").removeClass("d-none");
             let msg_counter = $(".unread_msgs").text() == '' ? 0 : $(".unread_msgs").text();
             $(".unread_msgs").text( parseInt(msg_counter) + 1 );
             
