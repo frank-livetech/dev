@@ -676,6 +676,7 @@ class MailController extends Controller
             if(empty($staff)) {
                 // reply is not from our system user
                 $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject);
+                
                 imap_delete($imap, $message);
                 return ;
             }
@@ -776,19 +777,19 @@ class MailController extends Controller
         return ;
     }
 
-    public function handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject){
+    public function handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject ){
 
 
         $cust_template = DB::table("templates")->where('code','auto_res_cust_not_reg')->first();
         $admin_template = DB::table("templates")->where('code','auto_res_admin_cust_not_reg')->first();
 
         if(!empty($cust_template)) {
-
+            
             $subject = 'Unable to process your email (registration required)';
-            $this->sendMail($subject, $cust_template->template_html , 'mailto:accounts@mylive-tech.com', $emailFrom, '');
+            $this->sendMail($subject, $cust_template->template_html , $strAddress_Sender, $emailFrom, '');
 
         }
-
+       
         if(!empty($admin_template)) {
 
             $template = htmlentities($admin_template->template_html);
@@ -808,7 +809,7 @@ class MailController extends Controller
             }
 
             if(str_contains($template, '{Customer-Email}')) {
-                $template = str_replace('{Customer-Email}', $strAddress_Sender , $template);
+                $template = str_replace('{Customer-Email}', $emailFrom , $template);
             }
 
             $admin_temp = html_entity_decode($template);
@@ -817,9 +818,10 @@ class MailController extends Controller
             $users = User::where('user_type', 1)->get();
 
             foreach($users as $user) {
-                $this->sendMail($subject, $admin_temp, 'mailto:accounts@mylive-tech.com', $user->email, $user->name);
+                $this->sendMail($subject, $admin_temp, $strAddress_Sender, $user->email, $user->name);
             }
         }
+        return ;
 
     }
 
@@ -1217,7 +1219,7 @@ class MailController extends Controller
             $mail->Subject = $subject;
             $mail->Body    = $body;
             $mail->AltBody = '';
-            
+       
             if(is_array($recipient)) {
                 foreach ($recipient as $key => $value) {
                     $mail->clearAllRecipients();
@@ -1226,9 +1228,10 @@ class MailController extends Controller
                 }
             } else {
                 $mail->addAddress($recipient, $recipient_name);
+                
                 if(!$mail->send()) throw new Exception('Failed to send mail');
+               
             }
-
 
         } catch(Exception $e) {
             throw new Exception($e->getMessage());

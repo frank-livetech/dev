@@ -275,6 +275,9 @@
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 2;
         var is_open = 0;
+        $(document).ready(function() {
+            $("#unread_msgs").addClass('d-none');
+        });
 
         function loadFile(event) {
             let file = event.target.files[0];
@@ -287,7 +290,7 @@
 
         function showActiveUserChat(tag) {
             let user_id = $(tag).data("id");
-            console.log(user_id);
+            // console.log(user_id);
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
             $("#image_url").val(src);
@@ -308,7 +311,6 @@
             $(".user-profile-sidebar .user-profile-sidebar-area p").text($(tag).data("about"))
 
             is_open = user_id;
-
         }
 
         function webChat() {
@@ -354,14 +356,15 @@
                 },
                 success: function(data) {
                     let obj = data.data;
-                    console.log(obj);
+                    // console.log(obj);
                     if (data.status == 200 && data.success == true) {
                         if (data.type == 'whatsapp') {
                             renderWhatsappMessages(obj, data.number);
                         } else {
                             renderWebMessages(obj);
                             $("#unread_msgs").text(data.unread);
-                            $("#unread_msgs").addClass('d-none')
+                            $("#unread_msgs").addClass('d-none');
+
                         }
                     } else {
                         $('.show_chat_messages').html('');
@@ -517,7 +520,6 @@
                             </div>`;
                     }
                 }
-
                 $('.show_chat_messages').html(msgs_html);
             } else {
                 $('.show_chat_messages').html('');
@@ -610,10 +612,10 @@
                     contentType: false,
                     beforeSend: function(data) {},
                     success: function(data) {
-                        console.log(data);
-                        toastr.success(data.message, {
-                            timeOut: 5000
-                        });
+                        // console.log(data);
+                        // toastr.success(data.message, {
+                        //     timeOut: 5000
+                        // });
 
                         is_open = 0;
                         

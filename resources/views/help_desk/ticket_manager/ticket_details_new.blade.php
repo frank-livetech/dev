@@ -142,7 +142,7 @@
     .borderOne{
         border: 1px solid #e6e7e8;
         text-align: center;
-        width: 100%;
+        width: 70%;
         min-height: 94px;
         /* padding: 29px 12px; */
         /* padding-top: 21%; */
