@@ -131,7 +131,7 @@
     <!-- BEGIN: Header-->
     <div class="audio" style="display:none">
         <audio id="msg_my_audio" class="msg_my_audio">
-            <source src='{{asset($file_path . "assets/sound/message_tone.mp3")}}' type="audio/mpeg">
+            <source src='{{asset($file_path . "assets/sound/message.mp3")}}' type="audio/mpeg">
         </audio>
     </div>
 
