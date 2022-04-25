@@ -140,18 +140,13 @@ $(function () {
       var $this = $(this),
         startArea = $('.start-chat-area'),
         activeChat = $('.active-chat');
-        var name = this.getAttribute("data_nm");
-        var pic = this.getAttribute("data_pc");
-
-        $('#active_user_name').text(name);
-        $("#active_user_img").attr("src",pic);
 
       if (chatUsersListWrapper.find('ul li').hasClass('active')) {
         chatUsersListWrapper.find('ul li').removeClass('active');
       }
 
       $this.addClass('active');
-      // $this.find('.badge').remove();
+      $this.find('.badge').remove();
 
       if (chatUsersListWrapper.find('ul li').hasClass('active')) {
         startArea.addClass('d-none');
@@ -165,7 +160,11 @@ $(function () {
 
   // auto scroll to bottom of Chat area
   chatsUserList.find('li').on('click', function () {
-    userChats.animate({ scrollTop: userChats[0].scrollHeight }, 400);
+
+    console.log(userChats , "chat");
+    console.log(userChats[0].scrollHeight , "height");
+
+    userChats.animate({ scrollTop: userChats[0].scrollHeight }, 1000);
   });
 
   // Main menu toggle should hide app menu
