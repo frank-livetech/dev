@@ -453,7 +453,7 @@ class MailController extends Controller
                                         $staff = User::where('email', trim($emailFrom))->first();
                                         if(empty($staff)) {
                                             // reply is not from our system user
-                                            $this->handleUnregisteredCustomers($emailFrom);
+                                            $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $email_subject);
                                             continue;
                                         }
                                         $sid = $staff->id;
@@ -488,13 +488,13 @@ class MailController extends Controller
   
                                     }else{
 
-                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);  
+                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $email_subject);  
                                     }
                                 }else{
-                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);  
+                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $email_subject);  
                                 }
                             }else{
-                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap);
+                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $email_subject);
 
                             }
 
@@ -662,7 +662,7 @@ class MailController extends Controller
     }
 
 
-    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap){
+    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $emailSubject){
 
 
         $customer_id = '';
@@ -675,7 +675,7 @@ class MailController extends Controller
             $staff = User::where('email', trim($emailFrom))->first();
             if(empty($staff)) {
                 // reply is not from our system user
-                $this->handleUnregisteredCustomers($emailFrom);
+                $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject);
                 imap_delete($imap, $message);
                 return ;
             }
@@ -776,7 +776,7 @@ class MailController extends Controller
         return ;
     }
 
-    public function handleUnregisteredCustomers($emailFrom){
+    public function handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject){
 
 
         $cust_template = DB::table("templates")->where('code','auto_res_cust_not_reg')->first();
@@ -800,11 +800,15 @@ class MailController extends Controller
             $subject = 'Mail Processing Error at ' . $current_date->format('F d, Y, g:i A');
 
             if(str_contains($template, '{Subject}')) {
-                $template = str_replace('{Subject}', $subject , $template);
+                $template = str_replace('{Subject}', $emailSubject , $template);
             }
     
             if(str_contains($template, '{Customer-Email-Not-Registered}')) {
                 $template = str_replace('{Customer-Email-Not-Registered}', $emailFrom , $template);
+            }
+
+            if(str_contains($template, '{Customer-Email}')) {
+                $template = str_replace('{Customer-Email}', $strAddress_Sender , $template);
             }
 
             $admin_temp = html_entity_decode($template);
