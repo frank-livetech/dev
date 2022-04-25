@@ -784,21 +784,8 @@ class MailController extends Controller
 
         if(!empty($cust_template)) {
 
-            $template = htmlentities($cust_template->template_html);
-
             $subject = 'Unable to process your email (registration required)';
-
-            if(str_contains($template, '{Subject}')) {
-                $template = str_replace('{Subject}', $subject , $template);
-            }
-
-            if(str_contains($template, '{Customer-Email}')) {
-                $template = str_replace('{Customer-Email}', $subject , $template);
-            }
-
-            $cust_temp = html_entity_decode($template);
-
-            $this->sendMail($subject, $cust_temp, 'mailto:accounts@mylive-tech.com', $emailFrom, '');
+            $this->sendMail($subject, $cust_template->template_html , 'mailto:accounts@mylive-tech.com', $emailFrom, '');
 
         }
 
@@ -812,6 +799,13 @@ class MailController extends Controller
             $current_date = new Carbon( now() , $tm_name);
             $subject = 'Mail Processing Error at ' . $current_date->format('F d, Y, g:i A');
 
+            if(str_contains($template, '{Subject}')) {
+                $template = str_replace('{Subject}', $subject , $template);
+            }
+    
+            if(str_contains($template, '{Customer-Email-Not-Registered}')) {
+                $template = str_replace('{Customer-Email-Not-Registered}', $emailFrom , $template);
+            }
 
             $admin_temp = html_entity_decode($template);
 
