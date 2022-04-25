@@ -1327,7 +1327,7 @@ class MailController extends Controller
                         $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                     }else if($action_name == 'ticket_reply_update'){
                         if(!empty($reply_content)){
-                            $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                            $reply_content = '<hr>'. '<p style="margin-bottom:0.5em !important"> '. $reply_content .' </p>';
                         }
                         $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                     }else{
@@ -1393,12 +1393,12 @@ class MailController extends Controller
                             // $reply_content = $reply_content;
                             $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                         }else{
-                            $reply_content = '<hr>'.'<strong>Reply: </strong>'.$reply_content;
+                            $reply_content = '<hr>'.'<p><strong>Reply: </strong></p>'. '<p> '. $reply_content . ' </p>';
                         }
                         
                     }
                     if(!empty($flwup_note)){
-                        $flwup_note = '<hr>'.'<strong>Note: </strong> <br>'.$flwup_note;
+                        $flwup_note = '<hr>'.'<p style="margin-bottom:0px !important"><strong>Note: </strong></p>'. '<p>'. $flwup_note .'</p>';
                     }
                     
                     $template = str_replace('{Ticket-Note}', $flwup_note, $template);
@@ -1855,7 +1855,7 @@ class MailController extends Controller
 
         if($action_name == 'Subject updated') {
             if( str_contains($template, '{Initial-Request-Updated}') ) {
-                $template = str_replace('{Initial-Request-Updated}', '<hr>' . 'Ticket Subject Updated' , $template);    
+                $template = str_replace('{Initial-Request-Updated}', '<hr>' . '<p>Ticket Subject Updated</p>' , $template);    
             }
         }else{
             $template = str_replace('{Initial-Request-Updated}', '' , $template);
