@@ -54,8 +54,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -2542,7 +2542,7 @@ class HelpdeskController extends Controller
                         $class = 'btn-success';
                         $desc = 'You were tagged by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
             
-                        $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                     }
                 }
         
@@ -3497,7 +3497,7 @@ class HelpdeskController extends Controller
                         $class = 'btn-success';
                         $desc = $notification_message;
                         
-                        $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                     }
                 } catch(Exception $e) {
                     // ignore for now
@@ -3650,7 +3650,7 @@ class HelpdeskController extends Controller
                 $class = 'btn-success';
                 $desc = $request->description;
                 
-                $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
             }
 
             $response['message'] = 'Notification sent successfully!';

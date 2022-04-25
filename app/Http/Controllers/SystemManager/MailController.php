@@ -488,19 +488,18 @@ class MailController extends Controller
   
                                     }else{
 
-                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail, $email_subject);  
+                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail);  
                                     }
                                 }else{
-                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail, $email_subject);  
+                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail);  
                                 }
                             }else{
-                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail, $email_subject);
+                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail);
 
                             }
 
                         }
                     }
-                    // dd('not deleted');
                     
                     imap_delete($imap, $message);
                 }
@@ -662,7 +661,7 @@ class MailController extends Controller
     }
 
 
-    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $emailSubject){
+    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender){
 
 
         $customer_id = '';
@@ -675,8 +674,8 @@ class MailController extends Controller
             $staff = User::where('email', trim($emailFrom))->first();
             if(empty($staff)) {
                 // reply is not from our system user
-                $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject);
-                
+                $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $email_subject);
+                $this->createUnregisteredTicket($emailFrom , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender);
                 imap_delete($imap, $message);
                 return ;
             }
@@ -774,6 +773,66 @@ class MailController extends Controller
             }
             // dd('sent');exit;
         }
+        return ;
+    }
+    
+    public function createUnregisteredTicket($emailFrom , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender ){
+        
+        $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
+        $is_staff_tkt = 0;
+        // create new ticket
+        $ticket = Tickets::create([
+            'dept_id' => $eq_value->mail_dept_id,
+            'priority' => $eq_value->mail_priority_id,
+            'subject' => trim($email_subject),
+            'status' => $eq_value->mail_status_id,
+            'type' => $eq_value->mail_type_id,
+            'is_staff_tkt' => $is_staff_tkt,
+            'tkt_crt_type' => 'cron',
+            'cust_email' => $emailFrom,
+            'is_pending' => 1
+        ]);
+        
+        // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
+        $all_parsed = $mail;
+        $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id);
+        $body = $this->email_body_parser($all_parsed, 'ticket');
+        
+        $tickets_count = Tickets::all()->count();
+        
+        $lt = Tickets::orderBy('created_at', 'desc')->first();
+
+        $ticket->ticket_detail = $body;
+        $ticket->attachments = $attaches;
+        $newG = new GeneralController();
+        $helpDesk = new HelpdeskController();
+
+        $ticket->coustom_id = $newG->randomStringFormat($helpDesk::CUSTOMID_FORMAT);
+        if(!empty($lt)) {
+            $ticket->seq_custom_id = 'T-'.strval($lt->id + 1);
+        }else{
+            $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
+        }
+        $ticket->save();
+        
+        // ticket assoc with sla plan
+        $settings = $helpDesk->getTicketSettings(['default_reply_and_resolution_deadline']);
+        if(isset($settings['default_reply_and_resolution_deadline'])) {
+            if($settings['default_reply_and_resolution_deadline'] == 1) {
+                $sla_plan = SlaPlan::where('title', self::DEFAULTSLA_TITLE)->first();
+                if(empty($sla_plan)) {
+                    $sla_plan = SlaPlan::create([
+                        'title' => self::DEFAULTSLA_TITLE,
+                        'sla_status' => 1
+                    ]);
+                }
+                SlaPlanAssoc::create([
+                    'sla_plan_id' => $sla_plan->id,
+                    'ticket_id' => $ticket->id
+                ]);
+            }
+        }
+    
         return ;
     }
 

@@ -26,7 +26,7 @@ class PayrollController extends Controller
     }
 
     public function clockin() {
-        try{
+        // try{
             $clock_in = new StaffAttendance;
             $clock_in->user_id = \Auth::user()->id;
             $clock_in->clock_in = Carbon::now();
@@ -48,7 +48,7 @@ class PayrollController extends Controller
                 $desc = 'Clock In by '.\Auth::user()->name;
                 
                 // try{
-                    $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                    $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                 // }catch(Exception $e) {
                     // $response['message'] = 'Clocked in! Notification Failure';
                     // $response['message'] = $e->getMessage();
@@ -64,13 +64,13 @@ class PayrollController extends Controller
             $response['success'] = true;
             $response['clock_in_time'] = Carbon::now();
             return response()->json($response);
-        }catch(Exception $e) {
-            $response['message'] = $e->getMessage();
-            $response['status_code'] = 500;
-            $response['success'] = false;
-            $response['clock_in_time'] = '';
-            return response()->json($response);
-        }
+        // }catch(Exception $e) {
+        //     $response['message'] = $e->getMessage();
+        //     $response['status_code'] = 500;
+        //     $response['success'] = false;
+        //     $response['clock_in_time'] = '';
+        //     return response()->json($response);
+        // }
     }
 
     public function clockout() {
@@ -119,7 +119,7 @@ class PayrollController extends Controller
                 $desc = 'Clock Out by '.\Auth::user()->name;
                 
                 // try{
-                    $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                    $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                 // }catch(Exception $e) {
                     // $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked.' Notification Failure!';
                     // $response['message'] = $e->getMessage();
