@@ -453,7 +453,7 @@ class MailController extends Controller
                                         $staff = User::where('email', trim($emailFrom))->first();
                                         if(empty($staff)) {
                                             // reply is not from our system user
-                                            $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $email_subject);
+                                            $this->handleUnregisteredCustomers($emailFrom , $eq_value->from_mail , $email_subject);
                                             continue;
                                         }
                                         $sid = $staff->id;
@@ -488,13 +488,13 @@ class MailController extends Controller
   
                                     }else{
 
-                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $email_subject);  
+                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail, $email_subject);  
                                     }
                                 }else{
-                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $email_subject);  
+                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail, $email_subject);  
                                 }
                             }else{
-                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender , $email_subject);
+                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail, $email_subject);
 
                             }
 
