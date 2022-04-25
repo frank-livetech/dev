@@ -474,7 +474,6 @@
                 for (let i = 0; i < obj.length; i++) {
                     if (obj[i].sender_id == auth) {
                         let message = ``;
-                        let message_type = obj[i].type;
                         if(obj[i].msg_type.includes('image')){
                             message = `<img src="{{asset('`+obj[i].msg_body+`')}}" alt="file"  width="150px"/>`;
                         }else{
@@ -490,7 +489,7 @@
 
                                     </div>
                                     <div class="chat-body">
-                                        <div class="chat-content ${message_type == 'file' ? 'p-0' : ''}">
+                                        <div class="chat-content">
                                             ${message}
                                         </div>
                                     </div>
@@ -498,7 +497,6 @@
                     }
                     if (obj[i].reciever_id == auth) {
                         let message = ``;
-                        let message_type = obj[i].msg_type;
 
                         if(obj[i].msg_type.includes('image')){
                             message = `<div  class="chat-content"><img src="{{asset('`+obj[i].msg_body+`')}}" width="150px" alt="file" /> </div>`;
