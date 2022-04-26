@@ -596,7 +596,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
+                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ])->orderBy('tickets.updated_at', 'desc')->get();
             }else{
                 $tickets = Tickets::select("*")
                 ->when($sts != '', function($q) use($sts) {
@@ -605,7 +605,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
+                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ])->orderBy('tickets.updated_at', 'desc')->get();
             }        
         } else {
             $aid = \Auth::user()->id;
@@ -619,7 +619,8 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
+                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['is_enabled', 'yes'] ])->orderBy('tickets.updated_at', 'desc')->get();
+                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
             }else{
 
                 $tickets = Tickets::select("*")
@@ -632,7 +633,8 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
+                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['is_enabled', 'yes'] ])->orderBy('tickets.updated_at', 'desc')->get();
+                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
             }
         }
 
@@ -771,7 +773,7 @@ class HelpdeskController extends Controller
                 
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->where('tickets.trashed', 0);
             })
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
+            ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
             ->get();
             // $tickets = DB::Table('tickets')
             // ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
@@ -829,7 +831,7 @@ class HelpdeskController extends Controller
             ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
                 return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
             })
-            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
+            ->where([ ['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
             ->get();
 
             // $tickets = DB::Table('tickets')

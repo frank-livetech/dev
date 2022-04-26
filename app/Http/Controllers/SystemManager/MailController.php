@@ -868,7 +868,7 @@ class MailController extends Controller
             }
 
             if(str_contains($template, '{Customer-Email}')) {
-                $template = str_replace('{Customer-Email}', $emailFrom , $template);
+                $template = str_replace('{Customer-Email}', $strAddress_Sender , $template);
             }
 
             $admin_temp = html_entity_decode($template);
