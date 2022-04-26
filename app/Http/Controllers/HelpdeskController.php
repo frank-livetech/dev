@@ -2750,7 +2750,7 @@ class HelpdeskController extends Controller
             $response['message'] = 'Success';
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['notes']= $notes;
+            $response['notes']= json_decode($notes);
             $response['notes_count']= count($notes);
             
             return response()->json($response);
@@ -2767,21 +2767,35 @@ class HelpdeskController extends Controller
         try{
             if(!empty($request->id)){
                 $note = TicketNote::findOrFail($request->id);
-                
-                $ticket = Tickets::findOrFail($note->ticket_id);
+
+                return dd($request->all());
 
                 $note->is_deleted = 1;
                 $note->deleted_by = \Auth::user()->id;
                 $note->deleted_at =  Carbon::now();
-
                 $note->save();
-                $ticket->updated_at =  Carbon::now();
-                $ticket->updated_by = \Auth::user()->id;
-                $ticket->save();
+                
+                $ticket = Tickets::where('id' , $note->ticket_id)->first();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
-    
+
+                if(!empty($ticket)) {
+
+                    $ticket->updated_at =  Carbon::now();
+                    $ticket->updated_by = \Auth::user()->id;
+                    $ticket->save();
+
+                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
+        
+                }else{
+                    $ticket = Tickets::where("coustom_id" , $request->ticket_id)->first();
+                    $ticket->updated_at =  Carbon::now();
+                    $ticket->updated_by = \Auth::user()->id;
+                    $ticket->save();
+
+                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$request->ticket_id.'">'.$request->ticket_id.'</a>) Note deleted by '. $name_link;
+                }
+
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id, auth()->id() , $action_perform);
             }
