@@ -1527,20 +1527,20 @@ class MailController extends Controller
             }
         }
 
-        if(str_contains($template, '{Create_Ticket_Button}')) {
-            $staff_data = array_values(array_filter($data_list, function ($var) {
-                return ($var['module'] == 'Ticket');
-            }));
+        if(str_contains($template, '{Create-Ticket-Button}')) {
+            // $staff_data = array_values(array_filter($data_list, function ($var) {
+            //     return ($var['module'] == 'Ticket');
+            // }));
 
-            if( !empty($staff_data[0]['values']) ) {
-                $id = $staff_data[0]['values']['coustom_id'];
+            // if( !empty($staff_data[0]['values']) ) {
+                $id = $ticket['coustom_id'];
 
                 $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/create-ticket' .'/' . $id;
                 $link = '<a href="'.$url.'"> '. $url .'  </a>';
 
-                $template = str_replace('{Create_Ticket_Button}', $link, $template);
+                $template = str_replace('{Create-Ticket-Button}', $link, $template);
                
-            }
+            // }
         }
         
         if(str_contains($template, '{Staff-Signature}')) {
