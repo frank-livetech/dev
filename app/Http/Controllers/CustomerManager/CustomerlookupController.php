@@ -866,6 +866,18 @@ class CustomerlookupController extends Controller
                 }
             }
 
+            $customer_ticket = Tickets::where('cust_email' , $request->email)-where('is_pending',0)->get();
+
+            
+            if(!empty($customer_ticket)) {
+                foreach($customer_ticket as $ticket) {
+                    $ticket->is_pending = 0;
+                    $ticket->save();
+                    $notify = new HelpdeskController();
+                    $notify->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $request->email, '');
+                }
+            }
+
             Customer::create($customer_data);
             
             if($request->customer_login == 1) {

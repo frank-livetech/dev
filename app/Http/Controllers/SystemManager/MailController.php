@@ -1362,8 +1362,7 @@ class MailController extends Controller
 
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
-        }
-        
+        }        
         
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
@@ -1499,7 +1498,7 @@ class MailController extends Controller
                     <td class="separator"></td>
                     </tr>
                 </table>';
-                $template = str_replace('{Ticket-Action}', ($action_name == 'Ticket Followup' ? $line . $actions : $actions) , $template);
+                $template = str_replace('{Ticket-Action}', ($action_name == 'Ticket Followup' ? $actions . $line : $actions) , $template);
             }
             if($template_code == 'ticket_update' || $template_code == 'ticket_followup'){
                 if(str_contains($template, '{Ticket-Updated-By}')){
@@ -1525,6 +1524,22 @@ class MailController extends Controller
                 $this->replaceShortCodes($data_list, $content);
     
                 $template = str_replace('{Ticket-Content}', $content, $template);
+            }
+        }
+
+        if(str_contains($template, '{Create_Ticket_Button}')) {
+            $staff_data = array_values(array_filter($data_list, function ($var) {
+                return ($var['module'] == 'Ticket');
+            }));
+
+            if( !empty($staff_data[0]['values']) ) {
+                $id = $staff_data[0]['values']['coustom_id'];
+
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/create-ticket' .'/' . $id;
+                $link = '<a href="'.$url.'"> '. $url .'  </a>';
+
+                $template = str_replace('{Create_Ticket_Button}', $link, $template);
+               
             }
         }
         
