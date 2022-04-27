@@ -453,28 +453,47 @@
                                             </div>
 
                                             <div class="second">
-                                                <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;"></span>
 
-                                                <a onClick="hung()" title="View Details" style="position:absolute;right:56px;cursor:pointer;">
-                                                    <i data-feather='maximize'></i>
-                                                </a>
+                                                <div class="d-flex">
+                                                    <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;margin-top:5px"></span>
 
-                                                <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
+                                                    <a onclick="hung()" class="mx-1" title="View Details" style="position:absolute;right:56px;cursor:pointer;">
+                                                        <i data-feather='maximize'></i>
+                                                    </a>
 
-                                                <a onclick="editRequest()"><i data-feather='edit-3'></i></a></span> 
+                                                    <span class="float-end" style="float:right; cursor:pointer" title="Edit Initial Request" id="edit_request_btn">
+                                                        <a onclick="editRequest()"><i data-feather='edit-3'></i></a>
+                                                    </span> 
+
+                                                    <span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn">
+                                                            <a onclick="saveRequest()">
+                                                                <i data-feather='save'></i>
+                                                            </a>
+                                                        </span>
+
+                                                        <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
+                                                            <a onclick="cancelEditRequest()"> <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a>
+                                                        </span>
+
+                                                </div>
+
+                                                <div class="d-flex">
+
+                                                    
+
+                                                    <div class="">
+                                                        
+                                                    </div>
+                                                </div>
                                             </div>
                                         <!-- </div> -->
-                                    </h4> 
+                                     
 
-                                        <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
-                                            <a onclick="cancelEditRequest()"> <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a>
-                                        </span>
+                                        <!-- 
 
-                                        <span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn">
-                                            <a onclick="saveRequest()">
-                                                <i data-feather='save'></i>
-                                            </a>
-                                        </span>
+                                            
+                                        </div> -->
+                                    </h4>
                                     <!-- <br> -->
                                     <hr>
                                     <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">

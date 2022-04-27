@@ -2166,7 +2166,9 @@ class HelpdeskController extends Controller
         // $flwup->passed = 1;
         $flwup->save();
         $ticket = Tickets::findOrFail($flwup->ticket_id);
-        return $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        $this->sendNotificationMail($ticket->toArray(), 'ticket_note_create', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        return; 
     }
 
     public function update_ticket_follow_up(Request $request) {

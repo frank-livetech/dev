@@ -216,8 +216,8 @@ class ProjectManagerController extends Controller
       $message = 'abc this is the message';
       $receiver = User::where('email' , 'muzamilnaveed10@gmail.com')->first();
 
-      $notify = new NotifyController();
-      $notify->sendNotification(  $receiver->id , $sender , $message);
+      // $notify = new NotifyController();
+      // $notify->sendNotification(  $receiver->id , $sender , $message);
 
       
       $response['message'] = 'Project Description Saved Successfully';
@@ -272,7 +272,7 @@ class ProjectManagerController extends Controller
             $class = 'btn-success';
             $desc = 'You were tagged by '.\Auth::user()->name . ' on ' . $projects->name. ' Project';
 
-            $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+            $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
         }
 
       }
@@ -329,7 +329,7 @@ class ProjectManagerController extends Controller
             $class = 'btn-success';
             $desc = 'Tag by '.\Auth::user()->name . ' in ' . $projects->name . ' Project';
 
-            $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+            $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
         }
 
       }
@@ -967,12 +967,12 @@ class ProjectManagerController extends Controller
             $pm_id = $project->project_manager_id;
 
             if($receiver_id != 0 && $receiver_id != null){
-              $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+              $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
             }
 
             // For the project manager
             if($pm_id != 0 && $pm_id != null){
-              $notify->GeneralNotifi($sender_id,$pm_id,$slug,$type,$data,$title,$icon,$class,$desc);
+              $notify->sendNotification($sender_id,$pm_id,$slug,$type,$data,$title,$icon,$class,$desc);
             }
 
             //Notifications code for admins only

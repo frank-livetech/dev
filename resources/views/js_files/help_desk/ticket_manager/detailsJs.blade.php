@@ -332,7 +332,7 @@ function setSlaPlanDeadlines(ret = false) {
         $('#sla-rep_due').parent().removeClass('d-none');
         $('#sla-res_due').parent().removeClass('d-none');
         if (ticket.hasOwnProperty('reply_deadline') && ticket.reply_deadline) {
-            // use ticket reset deadlines
+            
             if(ticket.reply_deadline == 'cleared') {
                 $('#sla-rep_due').parent().addClass('d-none');
             } else {
@@ -364,9 +364,7 @@ function setSlaPlanDeadlines(ret = false) {
 
     let currTime = new Date().toLocaleString('en-US', { timeZone: time_zone });
     let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
-
     let endtime = moment('2022-03-08 12:23 PM').format('YYYY-MM-DD hh:mm A');
-
 
     if(ticket != null) {
 
@@ -383,15 +381,12 @@ function setSlaPlanDeadlines(ret = false) {
             let rep_diff = ``;
             if(ticket.reply_deadline != "cleared") {
                 let tkt_rep_due = moment(ticket.reply_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
-                // let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime , "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A") , 'seconds');
                 let timediff_rep = getDatesSeconds( ticket.reply_deadline  , con_currTime  );
-                // console.log(timediff_rep , "timediff_rep");
                 if(timediff_rep <= 0) {
                     resetable = true;
+                    console.log("123");
                     rep_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
-                    // let cal_rep_diff = momentDiff(tkt_rep_due , con_currTime);
-                    // rep_diff = cal_rep_diff.replace("60m", "59m");
                     resetable = false;
                     rep_diff = getHoursMinutesAndSeconds( ticket.reply_deadline, con_currTime);
                 }
@@ -399,7 +394,6 @@ function setSlaPlanDeadlines(ret = false) {
             }else{
                 $('#sla-rep_due').parent().addClass('d-none');
             }
-            
         }
 
         if(ticket.resolution_deadline != null){
@@ -409,23 +403,14 @@ function setSlaPlanDeadlines(ret = false) {
             if(ticket.resolution_deadline != "cleared") {
 
                 let timediff_res = getDatesSeconds( ticket.resolution_deadline , con_currTime  );
-                // console.log(check , "total seconds");
-
                 let tkt_res_due = moment(ticket.resolution_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
-                // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime , "YYYY-MM-DD hh:mm A").format("YYYY-MM-DD hh:mm A") , 'seconds');
-                // console.log(timediff_res , "timediff_res");
                 if(timediff_res <= 0) {
                     resetable = true;
                     res_diff = `<span class="text-center" style="color:red;">Overdue</span>`;
                 }else{
-                    resetable = false;
+                    // resetable = false;
                     res_diff = getHoursMinutesAndSeconds( ticket.resolution_deadline , con_currTime);
-                    // let cal_res_diff = momentDiff(tkt_res_due , con_currTime); 
-                    // console.log(cal_res_diff , "cal_res_diff");
-                    // res_diff = cal_res_diff.replace("60m", "59m");
-                    
                 }
-                // console.log(res_diff , 'res_diff');
                 $('#sla-res_due').html(res_diff);
             }else{
                 $('#sla-res_due').parent().addClass('d-none');
@@ -536,18 +521,33 @@ function SlaPlanReset() {
     console.log(ticket , "ticket");
     if(ticket != null) {
 
-        if(ticket.reply_deadline == null ) {
-            if(ticket_slaPlan != null && ticket_slaPlan != "") {
-                let reply_date = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
-                $("#reply_date").val( moment(reply_date , "YYYY-MM-DD").format('YYYY-MM-DD') );
-                $("#reply_hour").val(  reply_date.format('h') );
-                $("#reply_minute").val(  reply_date.format('mm') );
-                $("#reply_type").val(  reply_date.format('A') );
+        if( ticket.reply_deadline == null || ticket.resolution_deadline == null ) {
+
+            if( ticket.reply_deadline == null ) {
+                if(ticket_slaPlan != null && ticket_slaPlan != "") {
+                    let reply_date = moment(currentTime[0]).add(ticket_slaPlan.reply_deadline , 'h');
+                    $("#reply_date").val( moment(reply_date , "YYYY-MM-DD").format('YYYY-MM-DD') );
+                    $("#reply_hour").val(  reply_date.format('h') );
+                    $("#reply_minute").val(  reply_date.format('mm') );
+                    $("#reply_type").val(  reply_date.format('A') );
+                }
             }
-        }else{
+
+            if( ticket.reply_deadline == null ) {
+                if(ticket_slaPlan != null && ticket_slaPlan != "") {
+                    let due_deadline = moment(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h');
+                    $("#res_date").val( moment(due_deadline , "YYYY-MM-DD").format('YYYY-MM-DD') );
+                    $("#res_hour").val(  due_deadline.format('h'));
+                    $("#res_minute").val(  due_deadline.format('mm') );
+                    $("#res_type").val(  due_deadline.format('A') );
+                }
+            }
+        }
+
+        if(ticket.reply_deadline != null || ticket.resolution_deadline != null ) {
+            
             if(ticket.reply_deadline != "cleared") {
                 let rep_deadline = moment(ticket.reply_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
-                console.log(rep_deadline , "reply deadline");
                 let time  = rep_deadline.split(' ');
                 let split_hours = time[1].split(':');
 
@@ -562,23 +562,9 @@ function SlaPlanReset() {
                 $("#reply_type").val('PM');
             }
 
-            setSlaPlanDeadlines();
-        }
-
-        if(ticket.resolution_deadline == null ) {
-            if(ticket_slaPlan != null && ticket_slaPlan != "") {
-                console.log(ticket_slaPlan , "ticket_slaPlan");
-                let due_deadline = moment(currentTime[0]).add(ticket_slaPlan.due_deadline , 'h');
-                $("#res_date").val( moment(due_deadline , "YYYY-MM-DD").format('YYYY-MM-DD') );
-                $("#res_hour").val(  due_deadline.format('h'));
-                $("#res_minute").val(  due_deadline.format('mm') );
-                $("#res_type").val(  due_deadline.format('A') );
-            }
-        }else{
             if(ticket.resolution_deadline != 'cleared') {
 
                 let res_deadline = moment(ticket.resolution_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
-                console.log(res_deadline , "resolution deadline");
                 let time  = res_deadline.split(' ');
                 let split_hours = time[1].split(':');
 
@@ -3207,7 +3193,7 @@ $("#save_ticket_note").submit(function(event) {
     });
 });
 
-function get_ticket_notes() {
+function get_ticket_notes() {   
     $('#v-pills-notes-list').html('');
     $.ajax({
         type: 'GET',
@@ -3374,10 +3360,11 @@ function deleteTicketNote(ele, id) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.value) {
+            
             $.ajax({
                 type: 'post',
                 url: del_ticket_route,
-                data: { id: id },
+                data: { id: id , ticket_id : "{{$details->coustom_id}}" },
                 success: function(data) {
 
                     if (data.success) {
