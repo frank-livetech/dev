@@ -3194,6 +3194,46 @@ class HelpdeskController extends Controller
         }
     }
 
+
+    // create ticket
+    public function createTicket($id) {
+
+        $ticket = Tickets::where('coustom_id' , $id)->first();
+
+        if(!empty($ticket)) {
+
+            if($ticket->cust_email != null) {
+
+                $customer = Customer::where('email', $ticket->cust_email)->where('is_deleted',0)->first();
+
+                if(!empty($customer)) {
+
+                    $ticket->is_pending = 0;
+                    $ticket->save();
+
+                    $notify->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $customer->email, '');
+
+                }else{
+
+                    $data = [
+                        "username" => $customer->email , 
+                        "email" => $customer->email , 
+                    ];
+
+                    Customer::create($data);
+
+                    $ticket->is_pending = 0;
+                    $ticket->save();
+
+                    $notify->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $customer->email, '');
+                }
+            }
+        }
+
+
+        return redirect()->route('ticket_management.index');
+    }
+
     // Send Ticket mails to users.
     // $data_id is current note saved id
     // tempalte code is when save record it says tempalte_create_note & on update tmeplate_update_note;
