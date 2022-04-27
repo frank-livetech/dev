@@ -582,6 +582,7 @@ class HelpdeskController extends Controller
     
     public function getFilteredTickets($dept = '' , $sts = ''){
 
+
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
@@ -595,7 +596,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ])->orderBy('tickets.updated_at', 'desc')->get();
+                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
             }else{
                 $tickets = Tickets::select("*")
                 ->when($sts != '', function($q) use($sts) {
@@ -604,7 +605,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ])->orderBy('tickets.updated_at', 'desc')->get();
+                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
             }        
         } else {
             $aid = \Auth::user()->id;
@@ -618,8 +619,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['is_enabled', 'yes'] ])->orderBy('tickets.updated_at', 'desc')->get();
-                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
+                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
             }else{
 
                 $tickets = Tickets::select("*")
@@ -632,18 +632,19 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['is_enabled', 'yes'] ])->orderBy('tickets.updated_at', 'desc')->get();
-                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
+                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
             }
         }
 
-        $total_tickets_count = Tickets::where([ ['is_deleted', 0], ['tickets.trashed', 0], ['tickets.status', '!=', $closed_status_id] , ['is_pending' ,0] ])->count();
-        $my_tickets_count = Tickets::where([ ['assigned_to',\Auth::user()->id], ['is_deleted', 0 ], ['tickets.trashed', 0 ], ['tickets.status', '!=', $closed_status_id ],  ['is_pending', 0 ]])->count();
-        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where([ ['is_deleted', 0], ['tickets.trashed', 0], ['tickets.status', '!=', $closed_status_id] , ['is_pending' ,0] ])->count();
-        $late_tickets_count = Tickets::where([ ['is_overdue',1] , ['is_deleted', 0], ['tickets.trashed', 0], ['tickets.status', '!=', $closed_status_id] , ['is_pending' ,0] ])->count();
-        $closed_tickets_count = Tickets::where([ ['status', $closed_status_id], ['is_deleted', 0] , ['is_pending' ,0] ])->count();
-        $trashed_tickets_count = Tickets::where([ ['trashed', 1], ['is_deleted', 0], ['tickets.status', '!=', $closed_status_id] , ['is_pending' ,0] ])->count();
-        $flagged_tickets_count = Tickets::where([ ['is_flagged', 1], ['is_deleted', 0] ,['tickets.trashed', 0], ['tickets.status', '!=', $closed_status_id] , ['is_pending' ,0] ])->count();
+        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        // $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
+        $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         
         foreach($tickets as $value) {
 
@@ -770,7 +771,7 @@ class HelpdeskController extends Controller
                 
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->where('tickets.trashed', 0);
             })
-            ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
             ->get();
             // $tickets = DB::Table('tickets')
             // ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
@@ -828,7 +829,7 @@ class HelpdeskController extends Controller
             ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
                 return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
             })
-            ->where([ ['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
+            ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')
             ->get();
 
             // $tickets = DB::Table('tickets')
@@ -864,18 +865,11 @@ class HelpdeskController extends Controller
         ->when($statusOrUser == 'staff', function($q) use ($sid) {
             return $q->where('tickets.assigned_to', $sid);
         })
-        ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
-        
-
-        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)
-        ->where( [ ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ] )->count();
-        
-        $unassigned_tickets_count = Tickets::whereNull('assigned_to')
-        ->where([ ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
-        
-        
-        $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
-        
+        ->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
+        $unassigned_tickets_count = Tickets::whereNull('assigned_to')->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $late_tickets_count = Tickets::where('is_overdue',1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $closed_tickets_count = Tickets::
         when($statusOrUser == 'customer', function($q) use ($cid) {
             return $q->where('tickets.customer_id', $cid);
@@ -883,11 +877,9 @@ class HelpdeskController extends Controller
         ->when($statusOrUser == 'staff', function($q) use ($sid) {
             return $q->where('tickets.assigned_to', $sid);
         })
-        ->where([ ['status', $closed_status->id] , ['is_pending' ,0] , ['is_deleted' , 0]])->count();
-        
-        $trashed_tickets_count = Tickets::where([ ['trashed', 1] , ['is_deleted', 0] , ['is_pending' ,0] ])->count();
-        
-        $flagged_tickets_count = Tickets::where([ ['is_flagged', 1] , ['is_deleted', 0] ,['tickets.trashed', 0] , ['is_pending' ,0] ,['tickets.status', '!=', $closed_status_id] ])->count();
+        ->where('status', $closed_status->id)->where('is_deleted', 0)->count();
+        $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->count();
+        $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
 
         $open_ticket_count = Tickets::
         when($statusOrUser == 'customer', function($q) use ($cid , $open_status) {
@@ -896,10 +888,15 @@ class HelpdeskController extends Controller
         ->when($statusOrUser == 'staff', function($q) use ($sid) {
             return $q->where('tickets.assigned_to', $sid);
         })
-        ->where([['status','!=', $closed_status->id] , ['is_deleted',0], ['trashed',0] , ['is_pending' ,0] ])->where('is_deleted', 0)->where('trashed', 0)->count();
+        ->where('status','!=', $closed_status->id)->where('is_deleted', 0)->where('trashed', 0)->count();
 
-
-        $tm_name = timeZone();
+        $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
+        $tm_name = '';
+        if($timezone) {
+            $tm_name = $timezone->sys_value != null ? $timezone->sys_value : 'America/New_York';
+        }else{
+            $tm_name = 'America/New_York';
+        }
 
         foreach($tickets as $value) {
             $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
@@ -2169,7 +2166,9 @@ class HelpdeskController extends Controller
         // $flwup->passed = 1;
         $flwup->save();
         $ticket = Tickets::findOrFail($flwup->ticket_id);
-        return $this->sendNotificationMail($ticket->toArray(), 'ticket_followup', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        $this->sendNotificationMail($ticket->toArray(), 'ticket_note_create', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        return; 
     }
 
     public function update_ticket_follow_up(Request $request) {
@@ -2545,7 +2544,7 @@ class HelpdeskController extends Controller
                         $class = 'btn-success';
                         $desc = 'You were tagged by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
             
-                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                     }
                 }
         
@@ -2750,7 +2749,7 @@ class HelpdeskController extends Controller
             $response['message'] = 'Success';
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['notes']= json_decode($notes);
+            $response['notes']= $notes;
             $response['notes_count']= count($notes);
             
             return response()->json($response);
@@ -2767,35 +2766,21 @@ class HelpdeskController extends Controller
         try{
             if(!empty($request->id)){
                 $note = TicketNote::findOrFail($request->id);
-
-                return dd($request->all());
+                
+                $ticket = Tickets::findOrFail($note->ticket_id);
 
                 $note->is_deleted = 1;
                 $note->deleted_by = \Auth::user()->id;
                 $note->deleted_at =  Carbon::now();
+
                 $note->save();
-                
-                $ticket = Tickets::where('id' , $note->ticket_id)->first();
+                $ticket->updated_at =  Carbon::now();
+                $ticket->updated_by = \Auth::user()->id;
+                $ticket->save();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-
-                if(!empty($ticket)) {
-
-                    $ticket->updated_at =  Carbon::now();
-                    $ticket->updated_by = \Auth::user()->id;
-                    $ticket->save();
-
-                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
-        
-                }else{
-                    $ticket = Tickets::where("coustom_id" , $request->ticket_id)->first();
-                    $ticket->updated_at =  Carbon::now();
-                    $ticket->updated_by = \Auth::user()->id;
-                    $ticket->save();
-
-                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$request->ticket_id.'">'.$request->ticket_id.'</a>) Note deleted by '. $name_link;
-                }
-
+                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
+    
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id, auth()->id() , $action_perform);
             }
@@ -3514,7 +3499,7 @@ class HelpdeskController extends Controller
                         $class = 'btn-success';
                         $desc = $notification_message;
                         
-                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                     }
                 } catch(Exception $e) {
                     // ignore for now
@@ -3667,7 +3652,7 @@ class HelpdeskController extends Controller
                 $class = 'btn-success';
                 $desc = $request->description;
                 
-                $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                $notify->GeneralNotifi($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
             }
 
             $response['message'] = 'Notification sent successfully!';

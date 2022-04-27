@@ -868,7 +868,7 @@ class MailController extends Controller
             }
 
             if(str_contains($template, '{Customer-Email}')) {
-                $template = str_replace('{Customer-Email}', $strAddress_Sender , $template);
+                $template = str_replace('{Customer-Email}', $emailFrom , $template);
             }
 
             $admin_temp = html_entity_decode($template);
@@ -1379,7 +1379,7 @@ class MailController extends Controller
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else{
                     if($action_name == 'Ticket Followup'){
-                        $reply_content = '<hr>'.'<p><strong>Reply: </strong></p>'.$reply_content;
+                        $reply_content = $reply_content;
                         $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                     }else if($action_name == 'Ticket Updated'){
                         $reply_content = '<hr>'.'<p><strong>Reply: </strong></p>'.$reply_content;
@@ -1452,12 +1452,12 @@ class MailController extends Controller
                             // $reply_content = $reply_content;
                             $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                         }else{
-                            $reply_content = '<hr>'.'<p><strong>Reply: </strong></p>'. '<p> '. $reply_content . ' </p>';
+                            $reply_content = '<p> '. $reply_content . ' </p>';
                         }
                         
                     }
                     if(!empty($flwup_note)){
-                        $flwup_note = '<hr>'.'<p style="margin-bottom:0px !important"><strong>Note: </strong></p>'. '<p>'. $flwup_note .'</p>';
+                        $flwup_note = '<p>'. $flwup_note .'</p>';
                     }
                     
                     $template = str_replace('{Ticket-Note}', $flwup_note, $template);
@@ -1492,9 +1492,14 @@ class MailController extends Controller
                     
                 }
                 if(!empty($actions)){
-                    $actions = '<hr>'.$actions;
+                    $actions = $actions;
                 }
-                $template = str_replace('{Ticket-Action}', $actions, $template);
+                $line = '<table border="0" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                    <td class="separator"></td>
+                    </tr>
+                </table>';
+                $template = str_replace('{Ticket-Action}', ($action_name == 'Ticket Followup' ? $line . $actions : $actions) , $template);
             }
             if($template_code == 'ticket_update' || $template_code == 'ticket_followup'){
                 if(str_contains($template, '{Ticket-Updated-By}')){
