@@ -596,7 +596,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
+                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
             }else{
                 $tickets = Tickets::select("*")
                 ->when($sts != '', function($q) use($sts) {
@@ -605,7 +605,8 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
+                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
+                // ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
             }        
         } else {
             $aid = \Auth::user()->id;
@@ -619,7 +620,8 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
+                ->where([['tickets.is_deleted', 0],['is_enabled', 'yes'],['tickets.trashed', 0], ['tickets.is_pending',0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
+                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
             }else{
 
                 $tickets = Tickets::select("*")
@@ -632,7 +634,8 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
+                ->where([['tickets.is_deleted', 0],['is_enabled', 'yes'],['tickets.trashed', 0], ['tickets.is_pending', 0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
+                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
             }
         }
 
@@ -3250,6 +3253,7 @@ class HelpdeskController extends Controller
                         "name" => $f_name,
                         "email" => $ticket->cust_email ,
                         "password" => Hash::make($random_no),
+                        "alt_pwd" => Crypt::encryptString($random_no),
                         "user_type" => 5,
                         "status" => 1
                     ]);

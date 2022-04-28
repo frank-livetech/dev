@@ -425,15 +425,32 @@
                                 <div class="d-flex justify-content-evenly ">
                                     <div class="col4">
                                         <h3 class="font-weight-bold"  style="text-align:center; font-size:14px"> 
-                                        <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a></h3>
+                                            @if($details->is_staff_tkt== 0)
+                                                <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a>
+                                            @else
+                                                <a href="{{ url('profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$total_tickets_count}}</a>
+                                            @endif
+                                        </h3>
                                         <h6 class="mb-0" style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Total</a></h6>
                                     </div>
                                     <div class="col4" style="    border-left: 1px solid #ebe9f1; padding-left: 80px; padding-right: 80px; border-right: 1px solid #ebe9f1;">
-                                        <h3 class="font-weight-bold" style="text-align:center; font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a></h3>
+                                        <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
+                                            @if($details->is_staff_tkt== 0)
+                                                <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a>
+                                            @else
+                                                <a href="{{ url('profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a>
+                                            @endif
+                                        </h3>
                                         <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Open</a></h6>
                                     </div>
                                     <div class="col4">
-                                        <h3 class="font-weight-bold" style="text-align:center; font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a></h3>
+                                        <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
+                                            @if($details->is_staff_tkt== 0)
+                                                <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a>
+                                            @else
+                                                <a href="{{ url('profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a>
+                                            @endif
+                                        </h3>
                                         <h6 class="mb-0"  style="font-size:14px"><a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">Closed</a></h6>
                                     </div>
                                 </div>
@@ -1127,7 +1144,7 @@
                             </div>
                             
                             <div class="form-row mt-1">
-                                <div class="col-md-12 form-group border p-1 bg-light rounded">
+                                <div class="col-md-12 form-group border p-1 followup_accordin bg-light rounded">
                                     <div class="form-check-inline" id="general_div" style="">
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="general">
@@ -1202,7 +1219,7 @@
                             </div>
 
                             <div class="form-row" >
-                                <div class="col-md-12 form-group border p-1 bg-light rounded">
+                                <div class="col-md-12 form-group border followup_accordin p-1 bg-light rounded">
                                     <div class="form-check-inline" id="notes_div" style=""> 
                                         <div class="form-check form-check-inline">
                                             <input type="checkbox" class="form-check-input" id="notes">
@@ -1261,8 +1278,22 @@
                                 </div>
                             </div>
 
-                            <div class="form-row mt-1">
-                                <div class="col-md-12 form-group border p-1 bg-light rounded">
+                            <div class="form-row mt-1" >
+                                <div class="col-md-12 form-group border p-1 followup_accordin bg-light rounded">
+                                    <div class="form-check-inline" id="fu_post_reply_div" style=""> 
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" class="form-check-input" id="fu_post_reply">
+                                            <label class="custom-control-label" for="fu_post_reply"> <strong> Post Reply </strong> </label>
+                                        </div>
+                                    </div> 
+                                </div> 
+                                <div class="col-md-12 p-1 mt-1" id="fu_post_reply_ttar_div" style="display:none">
+                                    <textarea class="form-control mymce" rows="3" id="fu_post_reply_ttar" name="follow_up_reply"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-row  mt-1">
+                                <div class="col-md-12 form-group border p-1 followup_accordin bg-light rounded">
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input" id="is_recurring">
                                         <label class="custom-control-label" for="is_recurring"> <strong> Recurrence </strong> </label>
@@ -1470,21 +1501,7 @@
                                 </div>
                                 
                             </div>
-                        
-
-                            <div class="form-row mt-1" >
-                                <div class="col-md-12 form-group border p-1 bg-light rounded">
-                                    <div class="form-check-inline" id="fu_post_reply_div" style=""> 
-                                        <div class="form-check form-check-inline">
-                                            <input type="checkbox" class="form-check-input" id="fu_post_reply">
-                                            <label class="custom-control-label" for="fu_post_reply"> <strong> Post Reply </strong> </label>
-                                        </div>
-                                    </div> 
-                                </div> 
-                                <div class="col-md-12 p-1 mt-1" id="fu_post_reply_ttar_div" style="display:none">
-                                    <textarea class="form-control mymce" rows="3" id="fu_post_reply_ttar" name="follow_up_reply"></textarea>
-                                </div>
-                            </div>
+                    
                         </div>
 
                         <div class="modal-footer">
