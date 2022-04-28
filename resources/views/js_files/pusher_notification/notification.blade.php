@@ -18,13 +18,13 @@
 
             if(notify.sender_id != notify.receiver_id) {
 
-
-
                 toastr['info']( notify.noti_desc , notify.noti_title, {
                     closeButton: true,
                     tapToDismiss: false,
-                    timeOut: 300000000,
+                    timeOut: 3000,
                 });
+
+                jQuery("#msg_my_audio")[0].play();
 
             }
 

@@ -3223,25 +3223,33 @@ class HelpdeskController extends Controller
                 $customer = Customer::where('email', $ticket->cust_email)->where('is_deleted',0)->first();
 
                 if(!empty($customer)) {
-
+                    
+                    $ticket->customer_id = $customer->id;
                     $ticket->is_pending = 0;
+                    $ticket->created_at = Carbon::now();
                     $ticket->save();
-
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '');
-
+                    
+                    $ticket = Tickets::where('coustom_id' , $id)->where('is_pending',0)->first();
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
+                    
                 }else{
-
+                    
+                    $f_name = $ticket->cust_name;
+                    
                     $data = [
                         "username" => $ticket->cust_email , 
+                        "first_name" => $f_name ,
                         "email" => $ticket->cust_email , 
                     ];
 
-                    Customer::create($data);
+                    $customer = Customer::create($data);
 
+                    $ticket->customer_id = $customer->id;
                     $ticket->is_pending = 0;
                     $ticket->save();
-
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '');
+                    
+                    $ticket = Tickets::where('coustom_id' , $id)->where('is_pending',0)->first();
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
                 }
             }
         }
