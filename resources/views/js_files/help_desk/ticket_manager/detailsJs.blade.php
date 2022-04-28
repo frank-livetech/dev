@@ -3277,7 +3277,7 @@ function get_ticket_notes() {
                                 ` + autho + `
                             </div>
                             <blockquote>
-                            <p class="col" style="margin-top:-20px; word-break:break-all">
+                            <p class="col text-dark" style="margin-top:-20px; word-break:break-all; color:black !important">
                                 ${notes[i].note.replace(/\r\n|\n|\r/g, '<br />')}
                             </p>
                             </blockquote>

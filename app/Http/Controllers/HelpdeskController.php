@@ -2753,7 +2753,7 @@ class HelpdeskController extends Controller
             $response['message'] = 'Success';
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['notes']= $notes;
+            $response['notes']= json_decode( json_encode($notes) , true);
             $response['notes_count']= count($notes);
             
             return response()->json($response);
@@ -2770,21 +2770,33 @@ class HelpdeskController extends Controller
         try{
             if(!empty($request->id)){
                 $note = TicketNote::findOrFail($request->id);
-                
-                $ticket = Tickets::findOrFail($note->ticket_id);
 
                 $note->is_deleted = 1;
                 $note->deleted_by = \Auth::user()->id;
                 $note->deleted_at =  Carbon::now();
-
                 $note->save();
-                $ticket->updated_at =  Carbon::now();
-                $ticket->updated_by = \Auth::user()->id;
-                $ticket->save();
+                
+                $ticket = Tickets::where('id' , $note->ticket_id)->first();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
-    
+
+                if(!empty($ticket)) {
+
+                    $ticket->updated_at =  Carbon::now();
+                    $ticket->updated_by = \Auth::user()->id;
+                    $ticket->save();
+
+                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
+        
+                }else{
+                    $ticket = Tickets::where("coustom_id" , $request->ticket_id)->first();
+                    $ticket->updated_at =  Carbon::now();
+                    $ticket->updated_by = \Auth::user()->id;
+                    $ticket->save();
+
+                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$request->ticket_id.'">'.$request->ticket_id.'</a>) Note deleted by '. $name_link;
+                }
+
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id, auth()->id() , $action_perform);
             }
@@ -3215,13 +3227,13 @@ class HelpdeskController extends Controller
                     $ticket->is_pending = 0;
                     $ticket->save();
 
-                    $notify->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $customer->email, '');
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '');
 
                 }else{
 
                     $data = [
-                        "username" => $customer->email , 
-                        "email" => $customer->email , 
+                        "username" => $ticket->cust_email , 
+                        "email" => $ticket->cust_email , 
                     ];
 
                     Customer::create($data);
@@ -3229,7 +3241,7 @@ class HelpdeskController extends Controller
                     $ticket->is_pending = 0;
                     $ticket->save();
 
-                    $notify->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $customer->email, '');
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '');
                 }
             }
         }
@@ -3398,14 +3410,22 @@ class HelpdeskController extends Controller
             $customer = null;
             if(!empty($ticket['customer_id'])) {
                 $customer = Customer::where('id', $ticket['customer_id'])->first();
-                $user_type = 'customer';
+                // $user_type = 'customer';
+            }
+
+            if(!empty($ticket)) {
+
+                $customer = $ticket['is_staff_tkt'] == 1 ? 
+                        User::where('id' , $ticket['customer_id'])->first() : 
+                        Customer::where('id', $ticket['customer_id'])->first();
+
             }
             
             // if customer if null or empty then find user 
-            if(empty($customer)) {
-                $customer = User::where('id' , $ticket['customer_id'])->first();
-                $user_type = 'staff';
-            }
+            // if(empty($customer)) {
+            //     $customer = User::where('id' , $ticket['customer_id'])->first();
+            //     $user_type = 'staff';
+            // }
             
             $mail_template = DB::table('templates')->where('code', $template_code)->first();
             $cust_template = DB::table('templates')->where('code', $cust_template_code)->first();
@@ -3444,10 +3464,10 @@ class HelpdeskController extends Controller
 
             }else{
                 
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt , $user_type);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt , $ticket['is_staff_tkt']);
             }
 
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt , $user_type);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt , $ticket['is_staff_tkt']);
             
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
@@ -3468,7 +3488,7 @@ class HelpdeskController extends Controller
                 $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
                 $reply_content= $ticket['ticket_detail'];
                 $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '','' , $user_type);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '','' , $ticket['is_staff_tkt']);
 
                 if(!empty($cust_message)) {
                 

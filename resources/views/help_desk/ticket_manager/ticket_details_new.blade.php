@@ -449,7 +449,9 @@
                                     <h4>
                                         <div class="d-flex justify-content-between">
                                             <div class="first">
-                                                <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt=""> {{$details->subject}}  &nbsp;&nbsp;
+                                                <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
+                                                <i class="fas fa-money-check-edit fa-2xl" style="font-size:28px"></i>
+                                                <span class="mx-1"> {{$details->subject}} </span>  &nbsp;&nbsp;
                                             </div>
 
                                             <div class="second">
