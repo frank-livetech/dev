@@ -552,7 +552,7 @@ class MailController extends Controller
         return $reset_tkt;
     }
 
-    public function createParserNewReply($ticket , $html_reply ,$email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer ,$ticketID){
+    public function createParserNewReply($ticket , $html_reply ,$email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer){
        $html_reply = mb_convert_encoding($html_reply, 'UTF-8', 'UTF-8');
        $email_reply = mb_convert_encoding($email_reply, 'UTF-8', 'UTF-8');
         $data = array(
@@ -603,7 +603,7 @@ class MailController extends Controller
         $ticket->save;
         $ticket->save();
 
-        $ticket = Tickets::where('coustom_id', $ticketID)->first();
+        $ticket = Tickets::where('coustom_id', $ticket->coustom_id)->first();
         $body = $rep->reply;
         $body = str_replace('\r\n', "", $body);
         $body = str_replace('//', "", $body);
