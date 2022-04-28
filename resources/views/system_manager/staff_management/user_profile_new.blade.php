@@ -1562,6 +1562,21 @@
         }
         console.log(js_origin , "js_origin");
 
+
+        if(url.includes('#tickets')) {
+
+            $("#pills-tickets-tab").click();
+            $("#pills-setting-tab").removeClass("active")
+
+            $("#previous-month").removeClass("show active");
+
+            $("#pills-tickets-tab").addClass('active');
+
+            
+            $("#tickets").addClass("show active");
+
+        }
+
         function loadFile(event) {
             $('.modalImg').hide();
             $("#hung22").show()
