@@ -3797,6 +3797,17 @@ function showFollowUpModal() {
 
     $("#fu_post_reply").prop("checked" , false);
     $("#fu_post_reply_ttar_div").css('display','none');
+
+
+
+    // checking darkmood
+    if ($(".loaded ").hasClass('dark-layout')) {
+        console.log("has dark");
+        $('.followup_accordin').removeClass('bg-light');
+    }else{
+        console.log("no dark found");
+        $('.followup_accordin').addClass('bg-light');
+    }
 }
 
 function notesModalClose() {
