@@ -407,7 +407,11 @@
                                     <div class="col-lg-9 col-md-8" id="style-5">
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px; ">Name : 
+                                        @if($details->is_staff_tkt== 0)
                                             <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
+                                        @else
+                                            <a href="{{url('profile')}}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
+                                        @endif
                                                 <span class="badge badge-secondary type_bdge"> {{$details->is_staff_tkt == 0 ? 'User' : 'Staff'}}  </span> </a></p>
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company"></p>
