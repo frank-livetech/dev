@@ -3250,6 +3250,7 @@ class HelpdeskController extends Controller
                         "name" => $f_name,
                         "email" => $ticket->cust_email ,
                         "password" => Hash::make($random_no),
+                        "alt_pwd" => Crypt::encryptString($random_no),
                         "user_type" => 5,
                         "status" => 1
                     ]);
