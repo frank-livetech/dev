@@ -605,7 +605,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
+                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0] ])->orderBy('tickets.updated_at', 'desc')->get();
                 // ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
             }        
         } else {
@@ -634,7 +634,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0],['is_enabled', 'yes'],['tickets.trashed', 0], ['tickets.is_pending', 0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
+                ->where([['tickets.is_deleted', 0],['is_enabled', 'yes'],['tickets.trashed', 0], ['tickets.is_pending', 0] ])->orderBy('tickets.updated_at', 'desc')->get();
                 // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
             }
         }
