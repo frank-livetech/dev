@@ -53,29 +53,18 @@ class HomeController extends Controller {
 
 
         $open_tickets_count = Tickets::where('status', $open_status->id)
-                                ->where('is_deleted', 0)
-                                ->where('tickets.trashed', 0)
-                                ->where('tickets.status', '!=', $closed_status_id)->count();
+                                ->where([ ['is_deleted', 0], ['tickets.trashed', 0] , ['tickets.status', '!=', $closed_status_id] , ['is_pending' , 0] ])->count();
 
         $unassigned_tickets_count = Tickets::whereNull('assigned_to')
-                                        ->where('is_deleted', 0)
-                                        ->where('tickets.trashed', 0)
-                                        ->where('tickets.status', '!=', $closed_status_id)->count();
-
+                                    ->where([ ['is_deleted', 0], ['tickets.trashed', 0] , ['tickets.status', '!=', $closed_status_id] , ['is_pending' , 0] ])->count();
         $my_tickets_count = Tickets::where('assigned_to', auth()->id() )
-                                ->where('is_deleted', 0)
-                                ->where('tickets.trashed', 0)
-                                ->where('tickets.status', '!=', $closed_status_id)->count();
+                                ->where([ ['is_deleted', 0], ['tickets.trashed', 0] , ['tickets.status', '!=', $closed_status_id] , ['is_pending' , 0] ])->count();
 
-        $total_tickets_count = Tickets::where('is_deleted', 0)
-                                ->where('tickets.trashed', 0)
-                                ->where('tickets.status', '!=', $closed_status_id)->count();
+        $total_tickets_count = Tickets::where([ ['is_deleted', 0], ['tickets.trashed', 0] , ['tickets.status', '!=', $closed_status_id] , ['is_pending' , 0] ])->count();
 
         $late_tickets_count = Tickets::where('is_overdue',1)
-                                ->where('is_deleted', 0)
-                                ->where('tickets.trashed', 0)
-                                ->where('tickets.status', '!=', $closed_status_id)->count();
-
+        ->where([ ['is_overdue',1] ,  ['is_deleted', 0], ['tickets.trashed', 0] , ['tickets.status', '!=', $closed_status_id] , ['is_pending' , 0] ])->count();
+                                
 
 
         $clockin = StaffAttendance::with('user_clocked')

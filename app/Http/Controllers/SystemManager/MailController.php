@@ -453,7 +453,7 @@ class MailController extends Controller
                                         $staff = User::where('email', trim($emailFrom))->first();
                                         if(empty($staff)) {
                                             // reply is not from our system user
-                                            $this->handleUnregisteredCustomers($emailFrom , $eq_value->from_mail , $email_subject);
+                                            $this->handleUnregisteredCustomers($emailFrom , $eq_value->from_mail , $email_subject , $ticketID);
                                             continue;
                                         }
                                         $sid = $staff->id;
@@ -484,17 +484,17 @@ class MailController extends Controller
                                         $email_reply =  $bbcode->convertToHtml($email_reply);   
                                         $email_reply = nl2br($email_reply);
                                         
-                                        $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer , $ticketID);
+                                        $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer);
   
                                     }else{
 
-                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail);  
+                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
                                     }
                                 }else{
-                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail);  
+                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
                                 }
                             }else{
-                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail);
+                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );
 
                             }
 
@@ -661,8 +661,7 @@ class MailController extends Controller
     }
 
 
-    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender){
-
+    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender ){
 
         $customer_id = '';
         $is_staff_tkt = 0;
@@ -674,8 +673,8 @@ class MailController extends Controller
             $staff = User::where('email', trim($emailFrom))->first();
             if(empty($staff)) {
                 // reply is not from our system user
-                $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $email_subject);
-                $this->createUnregisteredTicket($emailFrom , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender);
+                $ticket_id = $this->createUnregisteredTicket($emailFrom , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender);
+                $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $email_subject , $ticket_id );
                 imap_delete($imap, $message);
                 return ;
             }
@@ -690,7 +689,7 @@ class MailController extends Controller
             $email = $customer->email;
             $customer_id = $customer->id;
             $creator_idd = User::where('email', trim($emailFrom))->first();
-            $created_by = $creator_idd->id;
+            $created_by = empty($creator_idd) ? $customer->id : $creator_idd->id;
         }
   
         $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $email_subject)->first();
@@ -833,11 +832,13 @@ class MailController extends Controller
             }
         }
     
-        return ;
+        return $ticket->coustom_id;
     }
 
-    public function handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject ){
+    public function handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $emailSubject , $ticket_id){
 
+
+    
 
         $cust_template = DB::table("templates")->where('code','auto_res_cust_not_reg')->first();
         $admin_template = DB::table("templates")->where('code','auto_res_admin_cust_not_reg')->first();
@@ -868,7 +869,17 @@ class MailController extends Controller
             }
 
             if(str_contains($template, '{Customer-Email}')) {
-                $template = str_replace('{Customer-Email}', $emailFrom , $template);
+                $template = str_replace('{Customer-Email}', $strAddress_Sender , $template);
+            }
+
+            if(str_contains($template, '{Create-Ticket-Button}')) {
+
+                if($ticket_id != '') {
+                    $ticket = Tickets::where('coustom_id' ,$ticket_id)->first();
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/create-ticket' .'/' . $ticket->coustom_id;
+                    $link = '<a href="'.$url.'"> Create Ticket </a>';
+                    $template = str_replace('{Create-Ticket-Button}', $link, $template);
+                }
             }
 
             $admin_temp = html_entity_decode($template);
@@ -1364,6 +1375,7 @@ class MailController extends Controller
             throw new Exception('Provided data list is empty!');
         }        
         
+        
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
         
@@ -1527,22 +1539,6 @@ class MailController extends Controller
             }
         }
 
-        if(str_contains($template, '{Create-Ticket-Button}')) {
-            // $staff_data = array_values(array_filter($data_list, function ($var) {
-            //     return ($var['module'] == 'Ticket');
-            // }));
-
-            // if( !empty($staff_data[0]['values']) ) {
-                $id = $ticket['coustom_id'];
-
-                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/create-ticket' .'/' . $id;
-                $link = '<a href="'.$url.'"> '. $url .'  </a>';
-
-                $template = str_replace('{Create-Ticket-Button}', $link, $template);
-               
-            // }
-        }
-        
         if(str_contains($template, '{Staff-Signature}')) {
             $staff_data = array_values(array_filter($data_list, function ($var) {
                 return ($var['module'] == 'Tech');
@@ -2102,7 +2098,7 @@ class MailController extends Controller
                     $template = str_replace('{Company-Name}', '' , $template); 
                 }
                     
-                if($user_type == 'customer') {
+                if($user_type == 0) {
                     
                     if(str_contains($template, '{Customer-Name}')) {
                         $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
@@ -2151,6 +2147,14 @@ class MailController extends Controller
                     $template = str_replace('{URL}', $url , $template);
                 }
                 // ends here
+
+                
+                if(str_contains($template, '{Create-Ticket-Button}')) {
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/create-ticket' .'/' . $data['values']['coustom_id'];
+                    $link = '<a href="'.$url.'"> Create Ticket </a>';
+                    $template = str_replace('{Create-Ticket-Button}', $link, $template);
+                }
+        
 
                 // customer ticket url
                 if(str_contains($template, '{Customer-URL}')) {
