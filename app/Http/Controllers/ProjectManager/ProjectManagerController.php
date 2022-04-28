@@ -982,7 +982,7 @@ class ProjectManagerController extends Controller
               if($pm_id != 0 && $pm_id != null && $pm_id != $value->id){
 
                 $admin_id = $value->id;
-                $notify->GeneralNotifi($sender_id,$admin_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                $notify->sendNotification($sender_id,$admin_id,$slug,$type,$data,$title,$icon,$class,$desc);
               
               }
 
