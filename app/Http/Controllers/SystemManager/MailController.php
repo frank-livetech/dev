@@ -339,7 +339,7 @@ class MailController extends Controller
             $customer = Customer::where('email', trim($emailFrom))->first();
             
             if(empty($customer)) {
-                $name = $strFromName;
+                // $name = $strFromName;
                 $customer = Customer::create([
                     'username' => trim($emailFrom),
                     'first_name' => array_key_exists(0, $name) ? $name[0] : '',
@@ -488,13 +488,13 @@ class MailController extends Controller
   
                                     }else{
 
-                                        $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
+                                        $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
                                     }
                                 }else{
-                                    $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
+                                    $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
                                 }
                             }else{
-                                $this->createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );
+                                $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );
 
                             }
 
@@ -661,7 +661,7 @@ class MailController extends Controller
     }
 
 
-    public function createParserNewTicket($emailFrom , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender ){
+    public function createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender ){
 
         $customer_id = '';
         $is_staff_tkt = 0;
@@ -673,7 +673,7 @@ class MailController extends Controller
             $staff = User::where('email', trim($emailFrom))->first();
             if(empty($staff)) {
                 // reply is not from our system user
-                $ticket_id = $this->createUnregisteredTicket($emailFrom , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender);
+                $ticket_id = $this->createUnregisteredTicket($emailFrom , $strFromName , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender);
                 $this->handleUnregisteredCustomers($emailFrom , $strAddress_Sender , $email_subject , $ticket_id );
                 imap_delete($imap, $message);
                 return ;
@@ -775,10 +775,12 @@ class MailController extends Controller
         return ;
     }
     
-    public function createUnregisteredTicket($emailFrom , $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender ){
+    public function createUnregisteredTicket($emailFrom , $strFromName ,  $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender ){
         
         $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
         $is_staff_tkt = 0;
+        $name = array_key_exists(0, $strFromName) ? $strFromName[0] : '' .' '. array_key_exists(1, $strFromName) ? $strFromName[1] : '';
+            
         // create new ticket
         $ticket = Tickets::create([
             'dept_id' => $eq_value->mail_dept_id,
@@ -789,6 +791,7 @@ class MailController extends Controller
             'is_staff_tkt' => $is_staff_tkt,
             'tkt_crt_type' => 'cron',
             'cust_email' => $emailFrom,
+            'cust_name' => $name,
             'is_pending' => 1
         ]);
         
@@ -1611,12 +1614,28 @@ class MailController extends Controller
         
         // replace the generic array modules data
         $this->replaceShortCodes($data_list, $template , $user_type);
+        
         if(str_contains($template, '{Creator-Name}')) {
 
             $user = User::where('id' , $ticket['created_by'])->first();
 
             if(!empty($user)) {
+
                 $template = str_replace('{Creator-Name}', $user->name, $template);
+
+            }else{
+
+                $customer =  Customer::where('id', $ticket['created_by'])->first();
+
+                if(!empty($customer)) {
+
+                    $name = $customer->first_name .' '. $customer->last_name;
+                    $template = str_replace('{Creator-Name}', $name, $template);
+                }else{
+                    
+                    $template = str_replace('{Creator-Name}', '', $template);
+                    $template = str_replace('Creator:', '', $template);
+                }
             }
         }
 
@@ -2077,24 +2096,24 @@ class MailController extends Controller
 
                     if(str_contains($template, '{Company-Name}')) {
                             
-                        if($data['values']['company_id'] != null){
+                        if(!empty($data['values']['company_id'])){
                             
                             $company = DB::table("companies")->where('id' , $data['values']['company_id'])->first();
                             
                             if($company) {
                                 $template = str_replace('{Company-Name}', $company->name , $template);
                             }else{
-                               $template = str_replace('Company Name: ', '' , $template); 
+                               $template = str_replace('Company Name:', '' , $template); 
                                $template = str_replace('{Company-Name}', '' , $template); 
                             }
                             
                         }else{
-                            $template = str_replace('Company Name: ', '' , $template);
+                            $template = str_replace('Company Name:', '' , $template);
                             $template = str_replace('{Company-Name}', '' , $template); 
                         }
                     }
                 }else{
-                    $template = str_replace('Company Name: ', '' , $template);
+                    $template = str_replace('Company Name:', '' , $template);
                     $template = str_replace('{Company-Name}', '' , $template); 
                 }
                     
@@ -2105,7 +2124,14 @@ class MailController extends Controller
                     }
                     
                     if(str_contains($template, '{Customer-Phone}')) {
-                        $template = str_replace('{Customer-Phone}', $data['values']['phone'] , $template);
+
+                        if(!empty($data['values']['phone'])) {
+                            $template = str_replace('{Customer-Phone}', $data['values']['phone'] , $template);
+                        }else{
+                            $template = str_replace('Phone Number:', '' , $template);
+                        }
+
+                        
                     }
     
                 }else{
@@ -2113,9 +2139,12 @@ class MailController extends Controller
                         $template = str_replace('{Customer-Name}', $data['values']['name'], $template);
                     }
                     if(str_contains($template, '{Customer-Phone}')) {
-                        $template = str_replace('{Customer-Phone}', $data['values']['phone_number'] , $template);
-                    }
-                    
+                        if(!empty($data['values']['phone_number'] )) {
+                            $template = str_replace('{Customer-Phone}', $data['values']['phone_number'] , $template);
+                        }else{
+                            $template = str_replace('Phone Number:', '' , $template);
+                        }
+                    }                    
                 }
 
             } else if($data['module'] == 'Ticket') {
