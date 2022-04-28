@@ -3244,6 +3244,19 @@ class HelpdeskController extends Controller
 
                     $customer = Customer::create($data);
 
+                    $random_no = Str::random(15);
+
+                    User::create([
+                        "name" => $f_name,
+                        "email" => $ticket->cust_email ,
+                        "password" => Hash::make($random_no),
+                        "user_type" => 5,
+                        "status" => 1
+                    ]);
+
+                    $mailer = new MailController();
+                    $mailer->UserRegisteration( $ticket->cust_email  ,true,'customer');
+
                     $ticket->customer_id = $customer->id;
                     $ticket->is_pending = 0;
                     $ticket->save();
