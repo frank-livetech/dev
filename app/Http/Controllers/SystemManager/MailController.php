@@ -329,8 +329,8 @@ class MailController extends Controller
 
     }
 
-    public function verifyCustomer($emailFrom , $queue){
-     
+    public function verifyCustomer($emailFrom , $queue, $name){
+        
         $customer = '';
         if($queue == 'yes') {
             // email is from our customer
@@ -342,8 +342,8 @@ class MailController extends Controller
                 // $name = $strFromName;
                 $customer = Customer::create([
                     'username' => trim($emailFrom),
-                    'first_name' => array_key_exists(0, $name) ? $name[0] : '',
-                    'last_name' => array_key_exists(1, $name) ? $name[1] : '',
+                    'first_name' => $name ,
+                    'last_name' => $name ,
                     'email' => trim($emailFrom)
                 ]);
             }
@@ -390,6 +390,10 @@ class MailController extends Controller
                     $strAddress_Sender = explode('<',$strAddress_Sender);
                     $strAddress_Sender = trim($strAddress_Sender[1],'>');
                     $email_subject =$header[0]->subject;
+                    
+                    $name = explode(" ",$header[0]->from);
+                    $name = (array_key_exists(0, $name) ? $name[0] : '') .' '. (array_key_exists(1, $name) ? $name[1] : '');
+                    
                     /////////////////////////////////////////////////////////////
                     
                     $mail = $this->mail_get_parts($imap, $message, $mail, 0);
@@ -400,8 +404,8 @@ class MailController extends Controller
                         $emailFrom =  $strAddress_Sender;
                         
                         if(!empty($emailFrom)) {
-
-                            $customer = $this->verifyCustomer($emailFrom , $eq_value->registration_required);
+                            
+                            $customer = $this->verifyCustomer($emailFrom , $eq_value->registration_required , $name);
                             
                             // if(empty($customer)){
 
