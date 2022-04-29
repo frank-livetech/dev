@@ -783,7 +783,7 @@ class MailController extends Controller
         
         $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
         $is_staff_tkt = 0;
-        $name = (array_key_exists(0, $strFromName) ? $strFromName[0] : '') .' '. (array_key_exists(1, $strFromName) ? $strFromName[1] : '');
+        $name = array_key_exists(0, $strFromName) ? $strFromName[0] : '' .' '. array_key_exists(1, $strFromName) ? $strFromName[1] : '';
             
         // create new ticket
         $ticket = Tickets::create([
@@ -1382,6 +1382,7 @@ class MailController extends Controller
             throw new Exception('Provided data list is empty!');
         }        
         
+        
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
         
@@ -1403,12 +1404,7 @@ class MailController extends Controller
                         $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                     }else if($action_name == 'ticket_reply_update'){
                         if(!empty($reply_content)){
-                            $line = '<table border="0" width="100%" cellpadding="0" cellspacing="0">
-                                <tr>
-                                <td class="separator"></td>
-                                </tr>
-                            </table>';
-                            $reply_content =  $line . '<p style="margin-bottom:0.5em !important"> '. $reply_content .' </p>';
+                            $reply_content = '<hr>'. '<p style="margin-bottom:0.5em !important"> '. $reply_content .' </p>';
                         }
                         $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                     }else{
@@ -1549,22 +1545,43 @@ class MailController extends Controller
                 $template = str_replace('{Ticket-Content}', $content, $template);
             }
         }
+        
+        
+        if($action_name == 'Flagged' || $action_name == 'Flag removed')  {
 
-        if(str_contains($template, '{Staff-Signature}')) {
-            $staff_data = array_values(array_filter($data_list, function ($var) {
-                return ($var['module'] == 'Tech');
-            }));
+            if(!empty($ticket)) {
 
-            if( !empty($staff_data[0]['values']) ) {
-                $signature = $staff_data[0]['values']['signature'];
-                if($signature != null) {
-                    $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
-                    $template = str_replace('{Staff-Signature}', $signture, $template);    
+                if($ticket['is_flagged'] == 1) {
+                    $message = '<p><strong>Flag:</strong> Flagged <span style="color:#A5A5A5"> (was: Unflagged) </span> </p>';
+                }else{
+                    $message = '<p><strong>Flag:</strong> Unflagged <span style="color:#A5A5A5"> (was: Flagged) </span> </p>';
+                }
+                if(str_contains($template, '{Ticket-Flagged}')) {
+                    $template = str_replace('{Ticket-Flagged}', $message , $template);
+                }
+            }
+
+        }else{
+            $template = str_replace('{Ticket-Flagged}', ' ' , $template);
+        }
+
+        if($action_name == 'ticket_reply_update') {
+            if(str_contains($template, '{Staff-Signature}')) {
+                $staff_data = array_values(array_filter($data_list, function ($var) {
+                    return ($var['module'] == 'Tech');
+                }));
+    
+                if( !empty($staff_data[0]['values']) ) {
+                    $signature = $staff_data[0]['values']['signature'];
+                    if($signature != null) {
+                        $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
+                        $template = str_replace('{Staff-Signature}', $signture, $template);    
+                    }else{
+                        $template = str_replace('{Staff-Signature}', '' , $template);
+                    }
                 }else{
                     $template = str_replace('{Staff-Signature}', '' , $template);
                 }
-            }else{
-                $template = str_replace('{Staff-Signature}', '' , $template);
             }
         }
 

@@ -485,7 +485,7 @@
                                 <div class="mail-items">
                                     <!-- <h3 class="mb-0"> -->
                                         
-                                    <h4>
+                                    <h3>
                                         <div class="d-flex justify-content-between">
                                             <div class="first">
                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
@@ -537,7 +537,7 @@
 
                                             
                                         </div> -->
-                                    </h4>
+                                    </h3>
                                     <!-- <br> -->
                                     <hr>
                                     <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">
