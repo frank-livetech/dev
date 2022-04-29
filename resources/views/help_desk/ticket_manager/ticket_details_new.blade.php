@@ -485,12 +485,15 @@
                                 <div class="mail-items">
                                     <!-- <h3 class="mb-0"> -->
                                         
-                                    <h4>
+                                    <h3>
                                         <div class="d-flex justify-content-between">
                                             <div class="first">
                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                 <i class="fas fa-money-check-edit fa-2xl" style="font-size:28px"></i>
-                                                <span class="mx-1"> {{$details->subject}} </span>  &nbsp;&nbsp;
+                                                <span class="mx-1"> {{$details->subject}} </span> 
+                                                @if($details->attachments != null)
+                                                <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
+                                                @endif
                                             </div>
 
                                             <div class="second">
@@ -534,7 +537,7 @@
 
                                             
                                         </div> -->
-                                    </h4>
+                                    </h3>
                                     <!-- <br> -->
                                     <hr>
                                     <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">

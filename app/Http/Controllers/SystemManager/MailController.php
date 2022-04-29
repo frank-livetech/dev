@@ -35,8 +35,8 @@ use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 use Illuminate\Support\Facades\URL;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -1545,22 +1545,43 @@ class MailController extends Controller
                 $template = str_replace('{Ticket-Content}', $content, $template);
             }
         }
+        
+        
+        if($action_name == 'Flagged' || $action_name == 'Flag removed')  {
 
-        if(str_contains($template, '{Staff-Signature}')) {
-            $staff_data = array_values(array_filter($data_list, function ($var) {
-                return ($var['module'] == 'Tech');
-            }));
+            if(!empty($ticket)) {
 
-            if( !empty($staff_data[0]['values']) ) {
-                $signature = $staff_data[0]['values']['signature'];
-                if($signature != null) {
-                    $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
-                    $template = str_replace('{Staff-Signature}', $signture, $template);    
+                if($ticket['is_flagged'] == 1) {
+                    $message = '<p><strong>Flag:</strong> Flagged <span style="color:#A5A5A5"> (was: Unflagged) </span> </p>';
+                }else{
+                    $message = '<p><strong>Flag:</strong> Unflagged <span style="color:#A5A5A5"> (was: Flagged) </span> </p>';
+                }
+                if(str_contains($template, '{Ticket-Flagged}')) {
+                    $template = str_replace('{Ticket-Flagged}', $message , $template);
+                }
+            }
+
+        }else{
+            $template = str_replace('{Ticket-Flagged}', ' ' , $template);
+        }
+
+        if($action_name == 'ticket_reply_update') {
+            if(str_contains($template, '{Staff-Signature}')) {
+                $staff_data = array_values(array_filter($data_list, function ($var) {
+                    return ($var['module'] == 'Tech');
+                }));
+    
+                if( !empty($staff_data[0]['values']) ) {
+                    $signature = $staff_data[0]['values']['signature'];
+                    if($signature != null) {
+                        $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
+                        $template = str_replace('{Staff-Signature}', $signture, $template);    
+                    }else{
+                        $template = str_replace('{Staff-Signature}', '' , $template);
+                    }
                 }else{
                     $template = str_replace('{Staff-Signature}', '' , $template);
                 }
-            }else{
-                $template = str_replace('{Staff-Signature}', '' , $template);
             }
         }
 
