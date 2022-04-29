@@ -2640,9 +2640,6 @@ class HelpdeskController extends Controller
         }
     }
 
-
-    
-
     public function update_ticket_customer(Request $request) {
         try {
             $data = $request->all();
@@ -2737,22 +2734,22 @@ class HelpdeskController extends Controller
             ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
             ->select('ticket_notes.*', 'users.name', 'users.profile_pic')->whereIn('ticket_notes.ticket_id', $id)
             ->orWhere('ticket_notes.customer_id' , $customer_id)
-            ->orWhere('ticket_notes.company_id' , $company_id)
+            // ->orWhere('ticket_notes.company_id' , $company_id)
             ->where(function($q) {
                 return $q->where('ticket_notes.visibility', 'like', '%'.\Auth::user()->id.'%')->orWhere('ticket_notes.created_by', \Auth::user()->id);
             })
             ->when($request->has('type'), function($q) use($type) {
                 return $q->where('ticket_notes.type', $type);
-            })->orderBy('created_at', 'desc')
+            })
+            ->orderBy('created_at', 'desc')
             ->get()->toArray();
             
-            
             $notes = array_filter($notes_arr, function ($notes_arr) {
-                if($notes_arr->is_deleted == 0) {
+                if( $notes_arr->is_deleted == 0 ) {
                     return $notes_arr;    
                 }
-            });    
-               
+            }); 
+                 
             $response['message'] = 'Success';
             $response['status_code'] = 200;
             $response['success'] = true;

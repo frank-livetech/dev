@@ -3117,7 +3117,11 @@ $("#save_ticket_note").submit(function(event) {
     formData.append('ticket_id', ticket.id);
     formData.append('color', gl_color_notes);
     formData.append('visibility', vis.toString());
-    formData.append('customer_id', temp_sel_customer);
+    
+
+    if(document.getElementById('note-type-user').checked) {
+        formData.append('customer_id', temp_sel_customer);
+    }
 
     if(document.getElementById('note-type-user-org').checked) {
         let cust_cmp = companies_list.find(item => { return item.id == ticket_customer.company_id });
