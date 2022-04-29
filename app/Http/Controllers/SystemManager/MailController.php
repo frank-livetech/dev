@@ -783,7 +783,7 @@ class MailController extends Controller
         
         $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
         $is_staff_tkt = 0;
-        $name = array_key_exists(0, $strFromName) ? $strFromName[0] : '' .' '. array_key_exists(1, $strFromName) ? $strFromName[1] : '';
+        $name = (array_key_exists(0, $strFromName) ? $strFromName[0] : '') .' '. (array_key_exists(1, $strFromName) ? $strFromName[1] : '');
             
         // create new ticket
         $ticket = Tickets::create([
@@ -1381,6 +1381,8 @@ class MailController extends Controller
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
         }        
+
+        dd($action_name .'=='. $template_code);
         
         
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
@@ -1404,7 +1406,12 @@ class MailController extends Controller
                         $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                     }else if($action_name == 'ticket_reply_update'){
                         if(!empty($reply_content)){
-                            $reply_content = '<hr>'. '<p style="margin-bottom:0.5em !important"> '. $reply_content .' </p>';
+                            $line = '<table border="0" width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                <td class="separator"></td>
+                                </tr>
+                            </table>';
+                            $reply_content =  $line . '<p style="margin-bottom:0.5em !important"> '. $reply_content .' </p>';
                         }
                         $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                     }else{
