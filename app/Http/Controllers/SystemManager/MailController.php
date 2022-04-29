@@ -35,8 +35,8 @@ use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 use Illuminate\Support\Facades\URL;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -1381,9 +1381,6 @@ class MailController extends Controller
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
         }        
-
-        dd($action_name .'=='. $template_code);
-        
         
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
