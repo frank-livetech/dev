@@ -133,6 +133,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/save_sys_date_time','SettingsController@saveSystemDateAndTime');
     //Mail Routes
     Route::get('/get-mails','MailController@get_mails');
+    Route::post('/update_emails_queue','MailController@updateEmailQueueStatus')->name('update.emailQueue');
     Route::post('/get_mail_by_id','MailController@get_email_by_id');
     Route::post('/update_email','MailController@updateEmail');
     Route::post('/save-mail','MailController@save_mail');

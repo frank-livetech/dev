@@ -1161,8 +1161,10 @@
                                     if(full.status == 0) {
                                         return `
                                         <div class="d-flex justify-content-center">
-                                            <button onclick="edit_leave('`+full.id+`','`+full.start_date+`','`+full.end_date+`','`+full.reason+`')" title="edit leave" class="btn btn-success btn-sm rounded" type="button"> <i class="fas fa-pencil-alt"></i> </button>
-                                            <button onclick="delete_leave(`+full.id+`)" class="btn btn-danger btn-sm rounded ml-2" type="button" title="delete leave"> <i class="fas fa-trash"></i> </button>
+                                            <button onclick="edit_leave('`+full.id+`','`+full.start_date+`','`+full.end_date+`','`+full.reason+`')" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                            <i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                            <button onclick="delete_leave(`+full.id+`)" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                            <i class="fa fa-trash"></i></button>
                                         </div>
                                     `;
                                     }else{

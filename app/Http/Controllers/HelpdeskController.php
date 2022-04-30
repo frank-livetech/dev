@@ -366,7 +366,7 @@ class HelpdeskController extends Controller
     // get flagged tickets
     public function get_flag_tickets() {
 
-        $tickets = Tickets::where('is_flagged',1)->with('ticket_customer')->get();
+        $tickets = Tickets::where([['is_flagged',1], ['is_pending',0], ['trashed',0]])->with('ticket_customer')->get();
 
         return response()->json([
             "status_code" => 200 ,

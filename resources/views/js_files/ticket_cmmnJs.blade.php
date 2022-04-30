@@ -271,6 +271,7 @@
                     let option = `<option value="${ticket_view}" selected> ${ticket_view} </option>`;
                     $('select[name=ticket-table-list_length]').append(option);
                 }
+                $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');
                 $('#ticket-table-list').DataTable().page.len(ticket_view).draw();
                 // ticket datatable per page length end
 

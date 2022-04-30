@@ -75,6 +75,28 @@ class MailController extends Controller
         ]);
     }
 
+    public function updateEmailQueueStatus() {
+        $mails = Mail::where('id', request()->id)->first();
+        if(!empty($mails)) {
+
+            $mails->is_enabled = request()->status;
+            $mails->save();
+
+            return response()->json([
+                "status_code" => 200 ,
+                "success" => true, 
+                "message" => 'Email Queue' .(request()->status == 'yes' ? ' Enabled ' : ' Disabled ') . ' Successfully',
+            ]);
+
+        }else{
+            return response()->json([
+                "status_code" => 500 ,
+                "success" => false, 
+                "message" => 'Something went wrong',
+            ]);
+        }
+    }
+
     public function get_email_by_id(Request $request) {
 
         return Mail::where('id',$request->id)->first();
@@ -783,7 +805,7 @@ class MailController extends Controller
         
         $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
         $is_staff_tkt = 0;
-        $name = array_key_exists(0, $strFromName) ? $strFromName[0] : '' .' '. array_key_exists(1, $strFromName) ? $strFromName[1] : '';
+        $name = (array_key_exists(0, $strFromName) ? $strFromName[0] : '') .' '. (array_key_exists(1, $strFromName) ? $strFromName[1] : '');
             
         // create new ticket
         $ticket = Tickets::create([
