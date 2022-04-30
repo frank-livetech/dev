@@ -776,42 +776,6 @@ class HelpdeskController extends Controller
             })
             ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
             ->get();
-            // $tickets = DB::Table('tickets')
-            // ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
-            // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
-            // ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
-            // ->join('ticket_types','ticket_types.id','=','tickets.type')
-            // ->join('departments','departments.id','=','tickets.dept_id')
-            // ->join('customers','customers.id','=','tickets.customer_id')
-            // ->leftjoin('users','users.id','=','tickets.created_by')
-            // ->when($statusOrUser == 'customer', function($q) use($id) {
-            //     return $q->where('tickets.customer_id', $id);
-            // })
-            // ->when($statusOrUser == 'self', function($q) use($id) {
-            //     return $q->where('tickets.assigned_to', \Auth::user()->id);
-            // })
-         
-            // ->when($statusOrUser == 'unassigned', function($q) use($id) {
-            //     return $q->whereNull('tickets.assigned_to');
-            // })
-            // ->when($statusOrUser == 'flagged', function($q) use($id) {
-            //     return $q->where('tickets.is_flagged',1);
-            // })
-            // ->when($statusOrUser == 'closed', function($q) use($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
-            // })
-            // ->when($statusOrUser == 'trash', function($q) {
-            //     return $q->where('tickets.trashed', 1);
-            // })
-            // ->when(empty($statusOrUser), function($q) use($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
-            // })
-            // ->when($statusOrUser == 'total', function($q) use($closed_status_id) {
-                
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
-            // })
-            // ->where('tickets.is_deleted', 0)->orderBy('tickets.id', 'desc')->get();
-        
         } else {
             $aid = \Auth::user()->id;
             $assigned_depts = DepartmentAssignments::where('user_id', $aid)->get()->pluck('dept_id')->toArray();
@@ -834,31 +798,6 @@ class HelpdeskController extends Controller
             })
             ->where([ ['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
             ->get();
-
-            // $tickets = DB::Table('tickets')
-            // ->select('tickets.*','ticket_statuses.name as status_name','ticket_statuses.color as status_color','ticket_priorities.name as priority_name','ticket_priorities.priority_color as priority_color','ticket_types.name as type_name','departments.name as department_name',DB::raw('CONCAT(customers.first_name, " ", customers.last_name) AS customer_name'), DB::raw('COALESCE(users.name, NULL) AS creator_name'))
-            // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
-            // ->join('ticket_priorities','ticket_priorities.id','=','tickets.priority')
-            // ->join('ticket_types','ticket_types.id','=','tickets.type')
-            // ->join('departments','departments.id','=','tickets.dept_id')
-            // ->join('customers','customers.id','=','tickets.customer_id')
-            // ->leftjoin('users','users.id','=','tickets.created_by')
-            // ->when($statusOrUser == 'customer', function($q) use ($id) {
-            //     return $q->where('tickets.customer_id', $id);
-            // })
-            // ->when($statusOrUser == 'closed', function($q) use ($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', $closed_status_id);
-            // })
-            // ->when($statusOrUser == 'trash', function($q) {
-            //     return $q->where('tickets.trashed', 1);
-            // })
-            // ->when(empty($statusOrUser), function($q) use ($closed_status_id) {
-            //     return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
-            // })
-            // ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
-            //     return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
-            // })
-            // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->orderBy('tickets.id', 'desc')->get();
         }
 
         $total_tickets_count = Tickets::
@@ -906,6 +845,7 @@ class HelpdeskController extends Controller
         $tm_name = timeZone();
 
         foreach($tickets as $value) {
+            $value->last_reply = TicketReply::where('ticket_id', $value->id)->orderByDesc('id')->first();
             $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
             $value->tkt_follow_up = TicketFollowUp::where('ticket_id' , $value->id)->where('passed',0)->count();
             // $value->tech_name = 'Unassigned';

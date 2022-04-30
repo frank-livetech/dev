@@ -601,6 +601,16 @@
                 la_color = `#8BB467`;
             }
 
+
+            let last_reply = ``;
+
+            if(val['last_reply'] != null) {
+                last_reply = val['last_reply'].reply;
+            }else{
+                last_reply = shortname;
+            }
+
+
             let notes_icon = `<i class="fas fa-comment-alt-lines mx-1" style="margin-top:2px" title="This Ticket Has One or More Ticket Notes"></i>`;
             let attachment_icon = `<i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Has Attachments"></i>`;
             let follow_up_icon = `<span title="Has Followup"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f7b51b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></span>`;
@@ -613,9 +623,10 @@
                 </div>
             </td>
             <td class='text-center'>${status}</td>
-            <td>
+            <td class="ticketName" id="${val['id']}">
                 <div class="d-flex justify-content-between">
-                    <a href="${ticket_details_route}/${val['coustom_id']}" style="font-weight:bold;color:black">
+
+                    <a href="${ticket_details_route}/${val['coustom_id']}" id="ticket_name_${val['id']}" class="ticket_name fw-bolder" data-id="${val['id']}">   
                         ${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}
                     </a>
 
@@ -623,6 +634,9 @@
                         ${val['attachments'] != null ? attachment_icon : ''}
                         ${val['tkt_follow_up'] > 0 ? follow_up_icon : ''}
                     </span>
+                    <div class="hover_content_${val['id']} bg-white border rounded p-1" style="position:absolute;z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:6px; display:none">
+                        ${last_reply}
+                    </div>
                 </div>
                 
             </td>
@@ -646,6 +660,16 @@
             var name = $(this).attr('id');
             tickets_table_list.column(13).search(name).draw();
         });
+
+
+        
+        // $('.ticket_name').tooltip({
+        //     html: true,
+        //     content: function() {
+        //         return $('#tooltip-content').html();
+        //     }
+        // });
+
     }
 
     function getHoursMinutesAndSeconds(date_one, date_two) {

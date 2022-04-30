@@ -436,7 +436,7 @@
                         // "searching": true,
                         columns: [
                             {
-                                className : 'd-non  ',
+                                className : 'd-none',
                                 "render": function(data, type, full, meta) {
                                     return full.id;
                                 }
