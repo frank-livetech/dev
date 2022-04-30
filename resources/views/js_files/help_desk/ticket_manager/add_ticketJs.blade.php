@@ -1,9 +1,9 @@
 <script>
      $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-    }
-});
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
     // Add Ticket Script Bladde
         let res_templates_list = {!! json_encode($responseTemplates) !!};
         let attachments_src = [];
@@ -26,8 +26,21 @@
                     "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
                     "save table contextmenu directionality emoticons template paste textcolor"
                 ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons",
-
+                contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
+                spellchecker_callback: function (method, text, success, failure) {
+                    var words = text.match(this.getWordCharPattern());
+                    if (method === "spellcheck") {
+                    var suggestions = {};
+                    for (var i = 0; i < words.length; i++) {
+                        suggestions[words[i]] = ["First", "Second"];
+                    }
+                    success({ words: suggestions, dictionary: [ ] });
+                    } else if (method === "addToDictionary") {
+                    // Add word to dictionary here
+                    success();
+                    }
+                },
                 file_picker_callback: function(cb, value, meta) {
                     var input = document.createElement('input');
                     input.setAttribute('type', 'file');

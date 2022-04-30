@@ -1,7 +1,11 @@
 @extends('layouts.master-layout-new')
 @section('title', 'Staff Profile | ' . $profile->name )
 @push('css')
-<link href="{{asset('assets/libs/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet" />
+
+@php
+    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+@endphp
+<link href="{{asset($file_path . 'assets/libs/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet" />
     <style>
         .demo-inline-spacing3{
             background-color: unset !important;
@@ -1538,13 +1542,13 @@
 @endsection
 @section('scripts')
 
-<link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/countdown/countdown.css')}}" />
-<script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/extra-libs/countdown/countdown.css')}}" />
+<script type="text/javascript" src="{{asset($file_path . 'assets/extra-libs/countdown/countdown.js')}}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script type="text/javascript" src="{{asset('assets/extra-libs/pickr/pickr.min.js')}}"></script>
-<script src="{{asset('assets/libs/fullcalendar/dist/fullcalendar.min.js')}}"></script>
-<script src="{{asset('assets/dist/js/pages/calendar/cal-init.js').'?ver='.rand()}}"></script>
+<script type="text/javascript" src="{{asset($file_path . 'assets/extra-libs/pickr/pickr.min.js')}}"></script>
+<script src="{{asset($file_path . 'assets/libs/fullcalendar/dist/fullcalendar.min.js')}}"></script>
+<script src="{{asset($file_path . 'assets/dist/js/pages/calendar/cal-init.js').'?ver='.rand()}}"></script>
 
 {{-- Page JS --}}
 @include('js_files.system_manager.staff_management.staff_profileJs')
@@ -1567,12 +1571,8 @@
 
             $("#pills-tickets-tab").click();
             $("#pills-setting-tab").removeClass("active")
-
             $("#previous-month").removeClass("show active");
-
             $("#pills-tickets-tab").addClass('active');
-
-            
             $("#tickets").addClass("show active");
 
         }
