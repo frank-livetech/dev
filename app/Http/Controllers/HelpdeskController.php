@@ -3377,9 +3377,19 @@ class HelpdeskController extends Controller
 
             if(!empty($ticket)) {
 
-                $customer = $ticket['is_staff_tkt'] == 1 ? 
-                        User::where('id' , $ticket['customer_id'])->first() : 
-                        Customer::where('id', $ticket['customer_id'])->first();
+                if($ticket['is_staff_tkt'] == 1) {
+
+                    $customer = User::where('id' , $ticket['customer_id'])->first();
+
+                    $customer_send = false;
+
+                }else{
+
+                    $customer = Customer::where('id', $ticket['customer_id'])->first();
+
+                    $customer_send = true;
+                }
+
 
             }
             
@@ -3388,6 +3398,9 @@ class HelpdeskController extends Controller
             //     $customer = User::where('id' , $ticket['customer_id'])->first();
             //     $user_type = 'staff';
             // }
+            
+            
+
             
             $mail_template = DB::table('templates')->where('code', $template_code)->first();
             $cust_template = DB::table('templates')->where('code', $cust_template_code)->first();
