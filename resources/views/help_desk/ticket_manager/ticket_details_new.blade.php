@@ -882,14 +882,14 @@
                             </div>
                             
                             <div class="d-flex justify-content-end mt-2 p-1 reply_btns reply-btns" style="display:none !important">
-                                <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this)">
+                                <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this , 'ticket_reply_btns')">
                                     <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                     Reply
                                 </button>
                                 
-                                <button id="draft-rply" type="button" class="btn waves-effect waves-light btn-info float-right mx-1" onclick="publishReply(this, 'draft')">Save As Draft</button>
+                                <button id="draft-rply" type="button" class="btn waves-effect waves-light btn-info float-right mx-1" onclick="publishReply(this, 'draft' , 'ticket_reply_btns')">Save As Draft</button>
                                 <button id="cancel-rply" type="button" class="btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
                             </div>
 
@@ -1012,15 +1012,17 @@
                                         </div> -->
                                     </div>    
                                     <div class="col-md-8">
-                                        <button id="rply" type="button" class="mt-3 btn waves-effect waves-light btn-success float-right" onclick="publishReply(this)">
-                                            <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                            Reply
-                                        </button>
-                                        
-                                        <button id="draft-rply" type="button" class="mt-3 btn waves-effect waves-light btn-info float-right" onclick="publishReply(this, 'draft')">Save As Draft</button>
-                                        <button id="cancel-rply" type="button" class="mt-3 btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
+                                        <div class="ticket_reply_btns">
+                                            <button id="rply" type="button" class="mt-3 btn waves-effect waves-light btn-success float-right" onclick="publishReply(this , 'reply_btns')">
+                                                <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                Reply
+                                            </button>
+                                            
+                                            <button id="draft-rply" type="button" class="mt-3 btn waves-effect waves-light btn-info float-right" onclick="publishReply(this, 'draft' , 'reply_btns')">Save As Draft</button>
+                                            <button id="cancel-rply" type="button" class="mt-3 btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

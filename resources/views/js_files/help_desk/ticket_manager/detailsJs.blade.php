@@ -1605,7 +1605,9 @@ function deleteReply(id , index) {
     });
 }
 
-function publishReply(ele, type = 'publish') {
+function publishReply(ele, reply_btn_id , type = 'publish') {
+    console.log(reply_btn_id , "reply_btn_id");
+    $("."+reply_btn_id).attr('style','display:none !important');
 
     var content = tinyMCE.editors.mymce.getContent();
     tinyContentEditor(content, 'tickets-replies').then(function() {
@@ -1829,6 +1831,8 @@ function composeReply() {
 
     $('.reply_btns').attr('style', 'display: block !important');
     $("#compose_btn").hide();
+    $(".ticket_reply_btns").show();
+
     document.getElementById('compose-reply').classList.toggle('d-none');
 
     $('#replies_attachments').html('');

@@ -634,9 +634,11 @@
                         ${val['attachments'] != null ? attachment_icon : ''}
                         ${val['tkt_follow_up'] > 0 ? follow_up_icon : ''}
                     </span>
-                    <div class="hover_content_${val['id']} bg-white border rounded p-1" style="position:absolute;z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:6px; display:none">
-                        ${last_reply}
-                    </div>
+                        <div class="hover_content_${val['id']} bg-white border rounded p-1" 
+                            style="position:absolute;width:auto; max-width:280px;height:auto; overflow:hidden;display:none; 
+                                z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:6px;">
+                            <p>${last_reply.replace(/\n/g, "<br />")}</p>
+                        </div>
                 </div>
                 
             </td>
@@ -654,6 +656,9 @@
         </tr>`;
 
             tickets_table_list.row.add($(row)).draw();
+
+            // $('.hover_content_'+val['id']).html(last_reply);
+            console.log(last_reply);
         });
 
         $(".list_department").on('click', function() {
