@@ -420,7 +420,7 @@
     function getLatestLogs() {
         $.ajax({
             type: 'GET',
-            url: get_ticket_latest_log,
+            url: "{{url('get_ticket_log')}}",
             success: function(data) {
                 if (data.success) {
                     console.log(data);
@@ -428,15 +428,15 @@
                     $("#ticket-logs-list").DataTable().destroy();
                     $.fn.dataTable.ext.errMode = "none";
                     var tbl = $("#ticket-logs-list").DataTable({
-                        "order": [[ 1, "desc" ]],
+                        "order": [[ 0, "desc" ]],
                         data: obj,
                         "pageLength": 10,
-                        "bInfo": false,
-                        "paging": true,
-                        "searching": true,
+                        // "bInfo": false,
+                        // "paging": true,
+                        // "searching": true,
                         columns: [
                             {
-                                className : 'd-none',
+                                className : 'd-non  ',
                                 "render": function(data, type, full, meta) {
                                     return full.id;
                                 }
@@ -611,4 +611,22 @@
         var color = $('#priority option:selected').data('color');
         $('#prio-label').css('background-color', color);
     });
+
+    function ticketTableLength(val) {
+        
+        $.ajax({
+            type: "POST",
+            url: "{{route('saveGeneralInfo')}}",
+            data: { per_page: val , user_id : {{auth()->id()}} },
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                toastr.success( 'Table length Saved Successfully' , { timeOut: 5000 });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+
+    }
 </script>

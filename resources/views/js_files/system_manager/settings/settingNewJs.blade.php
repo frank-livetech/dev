@@ -1316,6 +1316,17 @@ function get_mails_table_list() {
                         },
                         {
                             "render": function(data, type, full, meta) {
+                                return `<div class="form-check form-switch form-check-success">
+                                    <input type="checkbox" class="form-check-input" onchange="changeEmailQueueStatus(${full.id})" id="customSwitch_${full.id}" ${full.is_enabled == 'yes' ? 'checked' : ''}>
+                                    <label class="form-check-label" for="customSwitch_${full.id}">
+                                        <span class="switch-icon-left"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                                        <span class="switch-icon-right"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                                    </label>
+                                </div>`;
+                            }
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
                                 return full.from_mail != null ? full.from_mail : '-';
                             }
                         },
@@ -1376,6 +1387,34 @@ function get_mails_table_list() {
         },
         complete: function(data) {
             $("#emailtableloader").hide();
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function changeEmailQueueStatus( id) {
+
+    let status = '';
+    if( $("#customSwitch_"+id).is(":checked")) {
+        status = 'yes';
+    }else{
+        status = 'no';
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "{{route('update.emailQueue')}}",
+        data : { id: id , status : status, },
+        dataType: 'json',
+        success: function(data) {
+            if(data.status_code == 200 && data.success == true) {
+                toastr.success( data.message , { timeOut: 5000 });
+                // get_mails_table_list() 
+            }else{
+                toastr.error( data.message , { timeOut: 5000 });
+            }
         },
         error: function(e) {
             console.log(e);

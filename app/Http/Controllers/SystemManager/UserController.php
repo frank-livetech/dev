@@ -1404,9 +1404,9 @@ class UserController extends Controller
 
         $leaves = StaffLeaves::where('requested_by',\Auth::user()->id)->get();
 
-        foreach($leaves as $leave) {
-            $leave->staff = User::where('id',$leave->requested_by)->select('id','name')->first();
-        }
+        // foreach($leaves as $leave) {
+        //     $leave->staff = User::where('id',$leave->requested_by)->select('id','name')->first();
+        // }
         
         // if ($request->ajax()) {
         //     return Datatables::of($leaves)->make(true);

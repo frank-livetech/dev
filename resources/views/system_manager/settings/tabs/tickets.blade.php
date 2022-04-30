@@ -630,6 +630,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                             <thead>
                                                 <tr>
                                                     <th>Sr #</th>
+                                                    <th> </th>
                                                     <th>Email Queue Address</th>
                                                     <th>Type</th>
                                                     <th>Department</th>
