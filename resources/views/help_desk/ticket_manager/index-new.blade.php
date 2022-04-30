@@ -4,139 +4,41 @@
 @section('body')
 <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 <style>
-    .flagged-tr,
-    .flagged-tr .sorting_1
-    {
-        background-color: #FFE4C4 !important;
-    }
-
-    .flagged-tr .fa-flag
-    {
-        color: red !important;
-    }
-   
-    .pr-0{
-        padding-right: 0 !important;
-    }
-    
-    table.dataTable th {
-            padding: 20px 10px !important;
-            vertical-align: middle !important;
-        }
-        table.dataTable .custom{
-        padding-right: 186px !important;
-    }
-    .pr-ticket{
-        min-width: 89px !important;
-    }
-    .pr-replies{
-        min-width: 95px !important;
-    }
-    .pr-due{
-        min-width: 125px !important;
-    }
-    .pr-activity{
-    min-width: 97px !important;
-    padding-right: 19px !important;
-
-    }
-    .pr-tech {
-        min-width: 109px !important;
-    }
-    table.dataTable .custom-cst{
-        padding-right: 37px !important;
-    }
-    table.dataTable td{
-        padding:7px !important;
-        font-size:12px;
-    }
+    .flagged-tr, .flagged-tr .sorting_1 { background-color: #FFE4C4 !important; }
+    .flagged-tr .fa-flag { color: red !important; }
+    .pr-0{ padding-right: 0 !important; }
+    table.dataTable th { padding: 20px 10px !important; vertical-align: middle !important; }
+    table.dataTable .custom{ padding-right: 186px !important; }
+    .pr-ticket{ min-width: 89px !important; }
+    .pr-replies{ min-width: 95px !important; }
+    .pr-due{ min-width: 125px !important; }
+    .pr-activity{ min-width: 97px !important; padding-right: 19px !important; }
+    .pr-tech { min-width: 109px !important; }
+    table.dataTable .custom-cst{ padding-right: 37px !important; }
+    table.dataTable td{ padding:7px !important; font-size:12px; }
     table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before,
-    table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
-        display:none;
-    }
-    .select2-container .select2-selection--single .select2-selection__rendered {
-        padding-right: 60px !important;
-    }
+    table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{ display:none; }
+    .select2-container .select2-selection--single .select2-selection__rendered { padding-right: 60px !important; }
+    #dropD { padding-left: 15px; }
+    .mt-0{ margin: unset }
+    .badge-primary{ background-color:#4eafcb }
+    .card-body.drop-dpt{ padding: 0 !important; }
+    span.select2-container.select2-container--default.select2-container--open{ top: 3.9844px !important }
+    .badge-secondary { color: #fff; background-color: #868e96; }
+    .media-body{ width:575px }
+    .btn-outline-bt{ border: 1px solid #e6e6e6; text-decoration: none; margin-left: 4px; color: #666; padding: 4px 13px 4px 13px; transition: all 0.25s ease;
+        border-radius: 4px; background-color: #f4f5f5; vertical-align: top; }
+    .mr-3{ margin-right: 1rem !important; }
+    .media { display: flex; align-items: flex-start; }
+    .innerBox{ font-size: 15px; height: 100px; overflow-y: scroll; }
+    #style-5::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); background-color: #F5F5F5; }
+    .text-white{ color:white}
+    #style-5::-webkit-scrollbar { width: 3px; height: 10px; background-color: #F5F5F5;}
+    #style-5::-webkit-scrollbar-thumb { background-color: #0ae; background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));}
+    .fc-col-header , .fc-scrollgrid-sync-table , .fc-daygrid-body , .fc-daygrid-body-unbalanced  { width: 100% !important; }
+    .cld-main svg { fill: #7367f0 !important; }
+    .cld-datetime .today { font-size: 1.8rem !important; font-weight: bolder; }
 
-    #dropD {
-    padding-left: 15px;
-}
-    .mt-0{
-        margin: unset
-    }
-    .badge-primary{
-        background-color:#4eafcb
-    }
-    .card-body.drop-dpt{
-        padding: 0 !important;
-    }
-    span.select2-container.select2-container--default.select2-container--open{
-        top: 3.9844px !important
-    }
-    .badge-secondary {
-    color: #fff;
-    background-color: #868e96;
-    }
-    .media-body{
-        width:575px
-    }
-    .btn-outline-bt{
-        border: 1px solid #e6e6e6;
-        text-decoration: none;
-        margin-left: 4px;
-        color: #666;
-        padding: 4px 13px 4px 13px;
-        transition: all 0.25s ease;
-        border-radius: 4px;
-        background-color: #f4f5f5;
-        vertical-align: top;
-    }
-    .mr-3{
-        margin-right: 1rem !important;
-    }
-    .media {
-    display: flex;
-    align-items: flex-start;
-}
-    .innerBox{
-        font-size: 15px;
-        height: 100px;
-        overflow-y: scroll;
-    }
-    #style-5::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
-}
-.text-white{
-    color:white;
-}
-#style-5::-webkit-scrollbar
-{
-	width: 3px;
-    height: 10px;
-	background-color: #F5F5F5;
-}
-
-#style-5::-webkit-scrollbar-thumb
-{
-	background-color: #0ae;
-	
-	background-image: -webkit-gradient(linear, 0 0, 0 100%,
-	                   color-stop(.5, rgba(255, 255, 255, .2)),
-					   color-stop(.5, transparent), to(transparent));
-}
-    .fc-col-header , .fc-scrollgrid-sync-table , .fc-daygrid-body , .fc-daygrid-body-unbalanced  {
-        width: 100% !important;
-    }
-    
-    .cld-main svg {
-        fill: #7367f0 !important;
-    }
-    .cld-datetime .today {
-        font-size: 1.8rem !important;
-        font-weight: bolder;
-    }
 </style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -382,7 +284,7 @@
                                 <div class="row mt-2">
                                     <div class="col-12">
                                         <div class="table-responsive" style="overflow: hidden;">
-                                            <table id="ticket-table-list" class="table table-bordered table-hover display mb-0 ticket-table-list">
+                                            <table id="ticket-table-list" class="table table-bordered display mb-0 ticket-table-list">
                                                 <thead>
                                                     <tr>
                                                         <th>
@@ -731,5 +633,15 @@
             get_ticket_table_list();
         }, (time * one_seconds) );
     }
+
+    $('.content').on('mouseenter', '.ticket_name', function() {
+        let id = $(this).data('id');
+        $('.hover_content_'+id).show();
+    }).on('mouseleave', '.ticket_name', function() {
+        let id = $(this).data('id');
+        $('.hover_content_'+id).hide();
+    });
+
+    
 </script>
 @endsection
