@@ -14,7 +14,7 @@
         let msg_counter = $(".noti_count").text() == '' ? 0 : $(".noti_count").text();
         $(".noti_count").text( parseInt(msg_counter) + 1 );
 
-        if(notify != null) {
+        if(notify.sender_id != null) {
 
             if(notify.sender_id != notify.receiver_id) {
 

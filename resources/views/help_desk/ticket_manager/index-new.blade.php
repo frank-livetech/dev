@@ -57,13 +57,20 @@
                                 <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a> </li>
                                 <li class="breadcrumb-item">Help Desk </li>
                                 <li class="breadcrumb-item active">Tickets Manager </li>
+                                @php 
+                                    $url = url()->full();
+                                    $name = Str::after($url, 'ticket-manager');
+                                @endphp
+                                @if($name != '')
+                                    <li class="breadcrumb-item active"> {{$dept_name}} / {{$status_name}} </li>
+                                @endif
                             </ol>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        
         @if($date_format) 
             <input type="hidden" id="system_date_format" value="{{$date_format}}">
         @else
