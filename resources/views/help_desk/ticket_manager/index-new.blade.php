@@ -596,6 +596,7 @@
     let calendar;
     let ticketsList = null;
     let ticket_events = [];
+    let tkt_arr = [];
     let ticket_format = {!! json_encode($ticket_format) !!};
     let tickets_followups = {!! json_encode($tickets_followups) !!};
     let statuses_list = {!! json_encode($statuses) !!};
@@ -643,6 +644,17 @@
 
     $('.content').on('mouseenter', '.ticket_name', function() {
         let id = $(this).data('id');
+        let item = tkt_arr.find(item => item.id == id);
+        if(item != null) {
+            let last_reply = ``;
+
+            if(item.last_reply != null) {
+                last_reply = item.last_reply.reply;
+            }else{
+                last_reply = item.subject;
+            }
+            $('.hover_content_'+id).html(last_reply);
+        }
         $('.hover_content_'+id).show();
     }).on('mouseleave', '.ticket_name', function() {
         let id = $(this).data('id');
