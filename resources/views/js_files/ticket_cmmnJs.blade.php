@@ -579,15 +579,6 @@
             if (val['assignee_name'] != null) {
                 assignee = val['assignee_name'];
             }
-            if (replier != null) {
-                if (replier.length > 15) {
-                    short_replier = replier.substring(0, 15) + " ...";
-                } else {
-                    short_replier = replier;
-                }
-            } else {
-                short_replier = '---';
-            }
 
             // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
             var last_activity = getDateDiff(val.lastActivity);
@@ -607,7 +598,12 @@
             let follow_up_icon = `<span title="Has Followup"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f7b51b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></span>`;
 
             let row = `<tr class="${val['is_flagged'] == 1 ? 'flagged-tr' : ''}">
-            <td><div class="text-center"><input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" class="tkt_chk" name="select_all" value="${val['id']}"></div></td>
+            <td>
+                <div class="text-center">
+                    <input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" 
+                        class="tkt_chk" name="select_all" value="${val['id']}">
+                        </div>
+            </td>
             <td>
                 <div class="d-flex">
                     ${restore_flag_btn} ${val['tkt_notes'] > 0 ? notes_icon : ''}
@@ -625,10 +621,6 @@
                         ${val['attachments'] != null ? attachment_icon : ''}
                         ${val['tkt_follow_up'] > 0 ? follow_up_icon : ''}
                     </span>
-                    <div class="hover_content_${val['id']} bg-white border rounded p-1" 
-                        style="position:absolute;width:auto; max-width:280px;height:auto; overflow:hidden;display:none; 
-                            z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:6px;">
-                    </div>
                 </div>
                 
             </td>
@@ -646,7 +638,6 @@
         </tr>`;
 
             tickets_table_list.row.add($(row)).draw();
-            console.log(last_reply);
         });
 
         $(".list_department").on('click', function() {
