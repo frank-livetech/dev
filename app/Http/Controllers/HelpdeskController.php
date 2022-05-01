@@ -85,9 +85,17 @@ class HelpdeskController extends Controller
         $dept_name = $dept->name;
         $dept = $dept->id;
 
-        $status =  TicketStatus::where('slug',$sts)->first();
-        $status_name = $status->name;
-        $sts == 'all' ? 'all' : $status->id;
+        if($sts == 'all') {
+            $sts = 'all';
+            $status_name = 'All';
+        }else{
+            $status =  TicketStatus::where('slug',$sts)->first();
+            $status_name = $status->name;
+            $sts = $status->id;
+        }
+
+        
+        
 
           
         $departments = Departments::all();
