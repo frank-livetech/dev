@@ -1013,15 +1013,15 @@
                                     </div>    
                                     <div class="col-md-8">
                                         <div class="ticket_reply_btns">
-                                            <button id="rply" type="button" class="mt-3 btn waves-effect waves-light btn-success float-right" onclick="publishReply(this , 'reply_btns')">
-                                                <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
-                                                    <span class="sr-only">Loading...</span>
-                                                </div>
-                                                Reply
-                                            </button>
-                                            
-                                            <button id="draft-rply" type="button" class="mt-3 btn waves-effect waves-light btn-info float-right" onclick="publishReply(this, 'draft' , 'reply_btns')">Save As Draft</button>
-                                            <button id="cancel-rply" type="button" class="mt-3 btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
+                                        <button id="rply" type="button" class="mt-3 btn waves-effect waves-light btn-success float-right" onclick="publishReply(this , 'reply_btns')">
+                                            <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            Reply
+                                        </button>
+                                        
+                                        <button id="draft-rply" type="button" class="mt-3 btn waves-effect waves-light btn-info float-right" onclick="publishReply(this, 'draft' , 'reply_btns')">Save As Draft</button>
+                                        <button id="cancel-rply" type="button" class="mt-3 btn waves-effect waves-light btn-secondary float-right" onclick="cancelReply(this)">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1170,7 +1170,7 @@
                                 <div class="col-md-12 form-group border p-1 followup_accordin bg-light rounded">
                                     <div class="form-check-inline" id="general_div" style="">
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" class="form-check-input" id="general">
+                                            <input type="checkbox" class="form-check-input general_checkbox" id="general">
                                             <label class="custom-control-label" for="general"> <strong> General </strong> </label>
                                         </div>
                                     </div>                                       
@@ -1245,7 +1245,7 @@
                                 <div class="col-md-12 form-group border followup_accordin p-1 bg-light rounded">
                                     <div class="form-check-inline" id="notes_div" style=""> 
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" class="form-check-input" id="notes">
+                                            <input type="checkbox" class="form-check-input notes_checkbox" id="notes">
                                             <label class="custom-control-label" for="notes"> <strong> Notes </strong> </label>
                                         </div>
                                     </div> 
@@ -1305,7 +1305,7 @@
                                 <div class="col-md-12 form-group border p-1 followup_accordin bg-light rounded">
                                     <div class="form-check-inline" id="fu_post_reply_div" style=""> 
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" class="form-check-input" id="fu_post_reply">
+                                            <input type="checkbox" class="form-check-input reply_checkbox" id="fu_post_reply">
                                             <label class="custom-control-label" for="fu_post_reply"> <strong> Post Reply </strong> </label>
                                         </div>
                                     </div> 
@@ -1318,7 +1318,7 @@
                             <div class="form-row  mt-1">
                                 <div class="col-md-12 form-group border p-1 followup_accordin bg-light rounded">
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" id="is_recurring">
+                                        <input type="checkbox" class="form-check-input recurring_checkbox" id="is_recurring">
                                         <label class="custom-control-label" for="is_recurring"> <strong> Recurrence </strong> </label>
                                     </div>
                                 </div>

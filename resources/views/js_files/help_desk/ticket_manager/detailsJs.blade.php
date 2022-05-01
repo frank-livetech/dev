@@ -216,6 +216,17 @@ $(document).ready(function() {
 
 });
 
+
+setInterval(() => {
+
+    if ($(".loaded ").hasClass('dark-layout')) {
+        ticketDetailTheme.dark();
+    }else{
+        ticketDetailTheme.light();
+    }
+    
+}, 2000);
+
 // show hide cc & bcc email 
 $("#show_cc_email").click(function() {
     if( $(this).is(":checked") ) {
@@ -3839,13 +3850,43 @@ function showFollowUpModal() {
 
     // checking darkmood
     if ($(".loaded ").hasClass('dark-layout')) {
-        console.log("has dark");
+        
         $('.followup_accordin').removeClass('bg-light');
+
+        $('.general_checkbox').attr('style','border:1px solid white !important');
+        $('.notes_checkbox').attr('style','border:1px solid white !important');
+        $('.reply_checkbox').attr('style','border:1px solid white !important');
+        $('.recurring_checkbox').attr('style','border:1px solid white !important');
+
+
     }else{
-        console.log("no dark found");
         $('.followup_accordin').addClass('bg-light');
+
+        $('.general_checkbox').removeAttr('style');
+        $('.notes_checkbox').removeAttr('style');
+        $('.reply_checkbox').removeAttr('style');
+        $('.recurring_checkbox').removeAttr('style');
     }
 }
+
+
+const ticketDetailTheme = {
+    light : () => {
+
+        $('.bootstrap-tagsinput').removeAttr('style');
+
+        $("#response_template_fields").addClass('bg-light');
+        $("#response_template_fields").removeClass('bg-dark');
+    },
+    dark : () => { 
+
+        $('.bootstrap-tagsinput').attr('style','background: #424242; border: 1px solid #424242 !important;');
+        $("#response_template_fields").removeClass('bg-light');
+        $("#response_template_fields").addClass('bg-dark');
+
+    }
+}
+
 
 function notesModalClose() {
     $("#notes_manager_modal").modal('hide');

@@ -272,7 +272,7 @@
                     $('select[name=ticket-table-list_length]').append(option);
                 }
                 $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');
-                $('#ticket-table-list').DataTable().page.len(ticket_view).draw();
+                // $('#ticket-table-list').DataTable().page.len(ticket_view).draw();
                 // ticket datatable per page length end
 
             }
@@ -665,15 +665,6 @@
             var name = $(this).attr('id');
             tickets_table_list.column(13).search(name).draw();
         });
-
-
-        
-        // $('.ticket_name').tooltip({
-        //     html: true,
-        //     content: function() {
-        //         return $('#tooltip-content').html();
-        //     }
-        // });
 
     }
 

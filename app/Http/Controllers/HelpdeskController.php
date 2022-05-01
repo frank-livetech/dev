@@ -82,14 +82,13 @@ class HelpdeskController extends Controller
 
     public function ticket_manager($dept,$sts){
         $dept = Departments::where('dept_slug',$dept)->first();
+        $dept_name = $dept->name;
         $dept = $dept->id;
 
-        if($sts == 'all') {
-            $sts = 'all';
-        }else{
-            $sts = TicketStatus::where('slug',$sts)->first();
-            $sts = $sts->id;
-        }
+        $status =  TicketStatus::where('slug',$sts)->first();
+        $status_name = $status->name;
+        $sts == 'all' ? 'all' : $status->id;
+
           
         $departments = Departments::all();
         $statuses = TicketStatus::all();
@@ -3440,6 +3439,7 @@ class HelpdeskController extends Controller
             }else{
                 
                 $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt , $ticket['is_staff_tkt']);
+                
             }
 
             $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt , $ticket['is_staff_tkt']);
@@ -3447,35 +3447,38 @@ class HelpdeskController extends Controller
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
             if(!empty($cust_message)) {
-                
-                $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
-
-                if(!empty($reply_content)) {
-                    // this is a reply
-                    // $subject = 'Re: '.$subject;
-                }
-                
-                if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                    if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
-                }
-            }
-            if($send_detail == 1){
-                $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
-                $reply_content= $ticket['ticket_detail'];
-                $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '','' , $ticket['is_staff_tkt']);
-
-                if(!empty($cust_message)) {
-                
+                if($customer_send){
                     $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
     
                     if(!empty($reply_content)) {
                         // this is a reply
                         // $subject = 'Re: '.$subject;
                     }
-    
+                    
                     if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
                         if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
+                    }
+                }
+            }
+            if($send_detail == 1){
+                if($customer_send){
+                    $cust_template = DB::table('templates')->where('code', 'auto_res_ticket_reply')->first();
+                    $reply_content= $ticket['ticket_detail'];
+                    $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
+                    $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '','' , $ticket['is_staff_tkt']);
+    
+                    if(!empty($cust_message)) {
+                    
+                        $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
+        
+                        if(!empty($reply_content)) {
+                            // this is a reply
+                            // $subject = 'Re: '.$subject;
+                        }
+        
+                        if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
+                            if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
+                        }
                     }
                 }
 
