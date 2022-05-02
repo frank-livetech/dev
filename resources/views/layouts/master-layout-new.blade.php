@@ -531,15 +531,15 @@
                                     }else{
                                         user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
                                     }
-                                }
-                                else{
+                                }else{
                                     user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
                                 }
 
                                 var date = new Date(notifications[i].created_at);
 
                                 default_icon = `<span class="`+notifications[i].btn_class+` rounded-circle btn-circle"" style="padding:8px 12px">
-                                                <i class="`+notifications[i].noti_icon+`"></i></span>`;
+                                                <i data-feather='${notifications[i].noti_icon}'></i>
+                                                </span>`;
 
                                 var icon = 'fa fa-link';
                                 noti_div += ` <a class="d-flex"href="#" onclick="markRead(`+notifications[i].id+`)" style="cursor: pointer;">

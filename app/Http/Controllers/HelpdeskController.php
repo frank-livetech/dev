@@ -373,7 +373,9 @@ class HelpdeskController extends Controller
     // get flagged tickets
     public function get_flag_tickets() {
 
-        $tickets = Tickets::where([['is_flagged',1], ['is_pending',0], ['trashed',0]])->with('ticket_customer')->get();
+        $closed_status = TicketStatus::where('name','Closed')->first();
+
+        $tickets = Tickets::where([['is_flagged',1], ['is_pending',0], ['trashed',0], ['status','!=', $closed_status->id]])->with('ticket_customer')->get();
 
         return response()->json([
             "status_code" => 200 ,
@@ -3539,7 +3541,7 @@ class HelpdeskController extends Controller
                     $notify = new NotifyController();
                     foreach ($users_list as $key => $value) {
                         $allwd_users[] = [$value['email'], $value['name']];
-                        $sender_id = 0;
+                        $sender_id = auth()->id();
                         $receiver_id = $value['id'];
                         $slug = url('ticket-details/'.$ticket['coustom_id']);
                         $type = 'Tickets';

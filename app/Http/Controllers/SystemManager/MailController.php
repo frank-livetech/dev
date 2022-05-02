@@ -637,7 +637,8 @@ class MailController extends Controller
         if(!empty($sid)) {
           
             $fullname = $staff->name;
-            $name_link = '<a href="'.url('profile').'/' . $staff->id .'">'. $fullname .'</a>';
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/profile'.'/' . $staff->id;
+            $name_link = '<a href="'. $url .'">'. $fullname .'</a>';
 
             $user = $staff;
             $ticket->assigned_to = $sid;
@@ -674,8 +675,10 @@ class MailController extends Controller
         $repliesSaved = true;
         // echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT "Re: '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
         echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
+
+        $tkt_url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/'.$ticket->coustom_id;
         
-        $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
+        $action_perform = 'Ticket ID # <a href="'. $tkt_url.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
 
         // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
         $log = new ActivitylogController();
@@ -786,7 +789,8 @@ class MailController extends Controller
             self::$mailserver_password = $eq_value->mailserver_password;
 
 
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By CRON';
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/' .$ticket->coustom_id;
+            $action_perform = 'Ticket (ID <a href="'. $url .'">'.$ticket->coustom_id.'</a>) Created By CRON';
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
             
@@ -2135,8 +2139,8 @@ class MailController extends Controller
                 }
                 
                 if(str_contains($template, '{Site-Link}')) {
-                    $val = 'https://mylive-tech.com/dev';
-                    $template = str_replace('{Site-Link}', $val , $template);
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/dev';
+                    $template = str_replace('{Site-Link}', $url , $template);
                 }
                 
                 if(array_key_exists("company_id" ,  $data['values'])) {
@@ -2213,8 +2217,8 @@ class MailController extends Controller
                 }
 
                 if(str_contains($template, '{Site-Link}')) {
-                    $val = 'https://mylive-tech.com/dev';
-                    $template = str_replace('{Site-Link}', $val , $template);
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/dev';
+                    $template = str_replace('{Site-Link}', $url , $template);
                 }
 
                 // if module is ticket then replace url to according to customer && user ticket detail urls.
@@ -2301,14 +2305,16 @@ class MailController extends Controller
                 }
 
                 if(str_contains($template, '{URL}') && $data['values']['user_type'] == 5) {
-                    $template = str_replace('{URL}', request()->root().'/user-login', $template);
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/user-login';
+                    $template = str_replace('{URL}', $url, $template);
                 }else{
-                    $template = str_replace('{URL}', request()->root().'/login', $template);
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/login';
+                    $template = str_replace('{URL}', $url , $template);
                 }
 
                 if(str_contains($template, '{Site-Link}')) {
-                    $val = 'https://mylive-tech.com/dev';
-                    $template = str_replace('{Site-Link}', $val , $template);
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/user-login';
+                    $template = str_replace('{Site-Link}', $url , $template);
                 }
 
             }
