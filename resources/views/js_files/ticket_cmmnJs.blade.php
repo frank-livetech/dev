@@ -270,7 +270,10 @@
                 if (ticket_view != 10 && ticket_view != 25 && ticket_view != 50 && ticket_view != 100) {
                     let option = `<option value="${ticket_view}" selected> ${ticket_view} </option>`;
                     $('select[name=ticket-table-list_length]').append(option);
+                }else{
+                    $('select[name=ticket-table-list_length]').val(data.ticket_view.per_page);
                 }
+                
                 $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');
                 // $('#ticket-table-list').DataTable().page.len(ticket_view).draw();
                 // ticket datatable per page length end
