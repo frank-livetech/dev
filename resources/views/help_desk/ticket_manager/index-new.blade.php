@@ -1,6 +1,5 @@
 @extends('layouts.master-layout-new')
 @section('Help Desk','open')
-@section('title', 'Ticket-Manager')
 @section('body')
 <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 <style>
@@ -63,7 +62,12 @@
                                 @endphp
                                 @if($name != '')
                                     <li class="breadcrumb-item active"> {{$dept_name}} / {{$status_name}} </li>
+                                    @section('title', 'Ticket-Manager' . '/' . $dept_name . '/' . $status_name)
+                                @else
+                                    @section('title', 'Ticket-Manager')
                                 @endif
+
+                                
                             </ol>
                         </div>
                     </div>

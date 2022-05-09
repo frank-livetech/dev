@@ -266,12 +266,20 @@
                 if (data.hasOwnProperty('trashed_tickets_count')) $('#trashed_tickets_count').html(data.trashed_tickets_count);
 
                 // ticket datatable per page length start
+                let titalPage = 0;
                 let ticket_view = data.ticket_view == null ? '10' : (data.ticket_view.per_page != null ? data.ticket_view.per_page : '10');
+                totalPage = ticket_view;
                 if (ticket_view != 10 && ticket_view != 25 && ticket_view != 50 && ticket_view != 100) {
                     let option = `<option value="${ticket_view}" selected> ${ticket_view} </option>`;
                     $('select[name=ticket-table-list_length]').append(option);
                 }else{
+                    totalPage = data.ticket_view.per_page;
                     $('select[name=ticket-table-list_length]').val(data.ticket_view.per_page);
+                }
+                let txt = $("#ticket-table-list_info").text();
+                txt = txt.split('of');
+                if(txt.length > 0) {
+                    $("#ticket-table-list_info").text( txt[0] +  ' of ' + totalPage + ' entries');
                 }
                 
                 $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');

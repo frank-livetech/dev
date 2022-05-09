@@ -621,7 +621,16 @@
             dataType: 'json',
             success: function(data) {
                 console.log(data);
-                toastr.success( 'Table length Saved Successfully' , { timeOut: 5000 });
+                if(data.status_code == 200 && data.success == true) {
+                    toastr.success( 'Table length Saved Successfully' , { timeOut: 5000 });
+
+                    let txt = $("#ticket-table-list_info").text();
+                    txt = txt.split('of');
+                    if(txt.length > 0) {
+                        $("#ticket-table-list_info").text( txt[0] +  ' of ' + val + ' entries');
+                    }
+                }
+                
             },
             error: function(error) {
                 console.log(error);
