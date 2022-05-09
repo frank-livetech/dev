@@ -620,8 +620,8 @@
     let url_type = {!! json_encode($url_type) !!};
     let get_tickets_route = "{{asset('/get-tickets')}}";
     let get_counter_tickets = "{{asset('/get-counter-tickets')}}";
-    
-    let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}"
+    let get_filteredtkt_route = "{{asset('/get-filtered-tickets')}}";
+    let ticketLengthCount = {!! json_encode($ticketView) !!};
 
 </script>
 

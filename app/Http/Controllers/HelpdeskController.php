@@ -94,10 +94,6 @@ class HelpdeskController extends Controller
             $sts = $status->id;
         }
 
-        
-        
-
-          
         $departments = Departments::all();
         $statuses = TicketStatus::all();
         $priorities = TicketPriority::all();
@@ -137,6 +133,8 @@ class HelpdeskController extends Controller
         $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
 
         $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
+
+        $ticketView = TicketView::where('user_id' , auth()->id() )->first();
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
 
@@ -183,10 +181,11 @@ class HelpdeskController extends Controller
         $dept = '';
         $sts = '';
 
-
         // get ticket refresh time
         $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
         $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
+
+        $ticketView = TicketView::where('user_id' , auth()->id() )->first();
 
         return view('help_desk.ticket_manager.index-new', get_defined_vars());
     }
