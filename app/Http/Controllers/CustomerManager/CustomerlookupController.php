@@ -13,6 +13,7 @@ use App\Models\CustomerType;
 use App\Models\TicketStatus;
 use App\Models\TicketSettings;
 use App\Models\TicketNote;
+use App\Models\TicketView;
 use App\Models\Customer;
 use App\Models\Company;
 use App\CompanyActivityLog;
@@ -502,6 +503,9 @@ class CustomerlookupController extends Controller
             $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User']])->count();
         }
         $ticketsCount = $tickets->count();
+
+        $ticketView = TicketView::where('user_id' , auth()->id())->first();
+
         return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
     }
 

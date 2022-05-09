@@ -2351,6 +2351,9 @@
 <!-- jQuery ui files-->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+<script>
+    let ticketLengthCount = {!! json_encode($ticketView) !!};
+</script>
 
 @include('js_files.help_desk.asset_manager.templateJs')
 @include('js_files.help_desk.asset_manager.actionsJs')

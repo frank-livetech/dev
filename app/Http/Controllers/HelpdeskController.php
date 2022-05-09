@@ -756,8 +756,8 @@ class HelpdeskController extends Controller
                 return $q->where('tickets.customer_id',$cid)->where('tickets.trashed', 0);
                 // get ticket according to customers
             })
-            ->when($statusOrUser == 'staff', function($q) use ($sid) {
-                return $q->where('tickets.assigned_to',$sid)->where('tickets.trashed', 0);
+            ->when($statusOrUser == 'staff', function($q) use ($sid , $closed_status_id) {
+                return $q->where([['tickets.assigned_to',$sid], ['tickets.trashed', 0] , ['tickets.status','!=',$closed_status_id] ]);
                 // get ticket according to customers
             })
             ->when($statusOrUser == 'unassigned', function($q) use($closed_status_id) {
