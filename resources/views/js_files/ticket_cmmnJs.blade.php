@@ -4,13 +4,14 @@
     let page_name = '';
     var system_date_format = $("#system_date_format").val();
     var usrtimeZone = $("#usrtimeZone").val();
+    let ticketDataTableLength = 10;
 
     function initializeTicketTable(p_name = '') {
         page_name = p_name;
         tickets_table_list = $('#ticket-table-list').DataTable({
             processing: true,
             // "scrollX": true,
-            pageLength: 10,
+            pageLength: ticketLengthCount.per_page,
             fixedColumns: true,
             "autoWidth": false,
             'columnDefs': [{
@@ -276,12 +277,7 @@
                     totalPage = data.ticket_view.per_page;
                     $('select[name=ticket-table-list_length]').val(data.ticket_view.per_page);
                 }
-                let txt = $("#ticket-table-list_info").text();
-                txt = txt.split('of');
-                if(txt.length > 0) {
-                    $("#ticket-table-list_info").text( txt[0] +  ' of ' + totalPage + ' entries');
-                }
-                
+
                 $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');
                 // $('#ticket-table-list').DataTable().page.len(ticket_view).draw();
                 // ticket datatable per page length end
@@ -660,7 +656,6 @@
             var name = $(this).attr('id');
             tickets_table_list.column(13).search(name).draw();
         });
-
     }
 
     function getHoursMinutesAndSeconds(date_one, date_two) {
