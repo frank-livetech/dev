@@ -122,9 +122,6 @@
         .whitePlaceholder::-webkit-input-placeholder {
             color: white !important;
         }
-        .blackPlaceholder::-webkit-input-placeholder {
-            color: #d8d6de !important;
-        }
     </style>
 
     @stack('css')
