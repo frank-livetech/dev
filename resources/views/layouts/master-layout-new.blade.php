@@ -130,8 +130,7 @@
             padding: 4px;
         }
 
-
-        
+        /* checking comment */
     </style>
 
     @stack('css')
