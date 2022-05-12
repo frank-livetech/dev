@@ -853,7 +853,7 @@ class HelpdeskController extends Controller
         $tm_name = timeZone();
 
         foreach($tickets as $value) {
-            $value->last_reply = TicketReply::where('ticket_id', $value->id)->orderByDesc('id')->first();
+            $value->last_reply = TicketReply::where('ticket_id', $value->id)->with('replyUser')->orderByDesc('id')->first();
             $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
             $value->tkt_follow_up = TicketFollowUp::where('ticket_id' , $value->id)->where('passed',0)->count();
             // $value->tech_name = 'Unassigned';
