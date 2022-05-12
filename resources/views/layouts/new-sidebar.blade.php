@@ -47,7 +47,7 @@
                         @else
                             @if($menu->is_active == 1)
                                 <li class=" nav-item @yield( $menu->title )">
-                                    <a class="d-flex align-items-center">
+                                    <a class="d-flex align-items-center m-0">
                                         <?php echo $menu->menu_icon; ?>
                                         <span class="menu-title text-truncate" data-i18n="{{$menu->title}}">{{$menu->title}}</span>
                                     </a>
@@ -59,14 +59,14 @@
                                         
                                         @if($sub_menu->title == "Ticket Manager" && Request::path() == 'ticket-manager')
                                             <li class="active">
-                                                <a class="d-flex align-items-center" href="{{ route($sub_menu->route) }}">
+                                                <a class="d-flex align-items-center m-0" href="{{ route($sub_menu->route) }}">
                                                     <i data-feather="circle"></i>
                                                     <span class="menu-item text-truncate" data-i18n="{{$sub_menu->title}}"> {{$sub_menu->title}} </span>
                                                 </a>
                                             </li>
                                         @else
                                             <li class="@yield( $sub_menu->title )">
-                                                <a class="d-flex align-items-center" href="{{ route($sub_menu->route) }}">
+                                                <a class="d-flex align-items-center m-0" href="{{ route($sub_menu->route) }}">
                                                     <i data-feather="circle"></i>
                                                     <span class="menu-item text-truncate" data-i18n="{{$sub_menu->title}}"> {{$sub_menu->title}} </span>
                                                 </a>
@@ -80,7 +80,7 @@
                                                         $dep_url = 'ticket-manager/' . $depts->dept_slug . '/all';
                                                     @endphp
                                                     <li class="sidebar-item">
-                                                        <a class="has-arrow sidebar-link slogan" href="javascript:void(0)" aria-expanded="false">
+                                                        <a class="has-arrow sidebar-link slogan m-0" href="javascript:void(0)" aria-expanded="false">
                                                             <i data-feather='plus' class='slogan_i_plus'></i>
                                                             <i data-feather='minus' class='slogan_i_minus'></i>
                                                             <span class="hide-menu">{{$depts->name}}</span>

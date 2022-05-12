@@ -122,6 +122,13 @@
         .whitePlaceholder::-webkit-input-placeholder {
             color: white !important;
         }
+
+        .navbarCustomBorder {
+            border: 1px solid #b0bec5;
+            margin: 6px;
+            border-radius: 15px;
+            padding: 4px;
+        }
     </style>
 
     @stack('css')
@@ -605,6 +612,17 @@
                 $("#csearch").removeClass("whitePlaceholder");
             }
         }
+
+
+        $('.nav-item').each(function() {
+
+            // if( $(this).hasClass('sidebar-group-active') &&  $(this).hasClass('open') ) {
+            //     alert("found");
+            // }else{
+            //     alert("note");
+            // }
+
+        });
 
     </script>
     @include('js_files.chat.pusher')
