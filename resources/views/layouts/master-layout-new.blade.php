@@ -129,6 +129,9 @@
             border-radius: 15px;
             padding: 4px;
         }
+
+
+        
     </style>
 
     @stack('css')
