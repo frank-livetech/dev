@@ -822,10 +822,10 @@
       });
 
       // If list item has sub menu items then prevent redirection.
-      $('.navigation-main li.has-sub').on('click', function (e) {
-        $(this).addClass('navbarCustomBorder');
-        e.preventDefault();
-      });
+      // $('.navigation-main li.has-sub').on('click', function (e) {
+      //   $(this).addClass('navbarCustomBorder');
+      // });
+
       $('.navigation-main li.has-sub > a').on('click', function (e) {
         e.preventDefault();
       });
@@ -895,7 +895,7 @@
 
       $.app.nav._bindAnimationEndEvent($listItem, function () {
         $listItem.removeClass('open');
-        $listItem.removeClass('navbarCustomBorder');
+        // $listItem.removeClass('navbarCustomBorder');
         $.app.nav._clearItemStyle($listItem);
       });
 
