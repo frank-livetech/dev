@@ -123,12 +123,12 @@
             color: white !important;
         }
 
-        .navbarCustomBorder {
+        /* .navbarCustomBorder {
             border: 1px solid #b0bec5;
             margin: 6px;
             border-radius: 15px;
             padding: 4px;
-        }
+        } */
 
         /* checking comment */
     </style>
