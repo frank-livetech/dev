@@ -343,6 +343,10 @@
             setInterval(() => {
                 getNotifications()
             }, 60000);
+
+            setInterval(() => {
+                LightAndDarkThemeSetting();
+            }, 1000);
         });
         var user_photo_url = "{{asset('files/user_photos')}}";
         var url = "{{asset('/get_all_counts')}}";
@@ -581,6 +585,17 @@
                 }
             });
         }
+
+        function LightAndDarkThemeSetting() {
+            if ($(".loaded ").hasClass('dark-layout')) {
+                $("#tsearch").css('border','1px solid white');
+                $("#csearch").css('border','1px solid white');
+            }else{
+                $("#tsearch").css('border','1px solid #d8d6de');
+                $("#csearch").css('border','1px solid #d8d6de');
+            }
+        }
+
     </script>
     @include('js_files.chat.pusher')
     @include('js_files.pusher_notification.notification')
