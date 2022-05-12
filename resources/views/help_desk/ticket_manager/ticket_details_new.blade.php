@@ -675,8 +675,8 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-10">
-                                    <div class="tab-content" id="v-pills-tabContent style-5" style="overflow-y: auto; height:250px">
+                                <div class="col-md-10" >
+                                    <div class="tab-content wrapper_content" id="v-pills-tabContent style-5" style="overflow-y: auto; height:250px">
 
                                         <div class="tab-pane fade show active" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
                                             <!-- <div class="col-12 text-right">
@@ -2015,7 +2015,9 @@ function hung(){
     $(this).find("col-md-6").removeClass("col-md-3");
 }
 
-    $("#resizable").resizable();
+    $("#resizable").resizable({
+        alsoResize : '.wrapper_content',
+    });
     
 </script>
 
