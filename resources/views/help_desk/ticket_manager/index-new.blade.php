@@ -637,6 +637,7 @@
 <script>
     // setting ticket table auto refresh
     let time = "{{$ticket_time}}";
+    let userTimeZone = $("#usrtimeZone").val();
     if(time != 0) {
         time = time * 60;
         let one_seconds = 1000;
@@ -649,13 +650,76 @@
     $('.content').on('mouseenter', '.ticket_name', function() {
         let id = $(this).data('id');
         let item = tkt_arr.find(item => item.id == id);
+        console.log(item , "item");
         if(item != null) {
             let last_reply = ``;
 
             if(item.last_reply != null) {
-                last_reply = item.last_reply.reply;
+
+                let time =convertDate(item.created_at);
+                let a = new Date(item.created_at).toLocaleString('en-US', { timeZone: userTimeZone });
+                
+                let user_type = 'Staff';
+                var user_img = ``;
+                
+                if(item.last_reply != null){ 
+
+                    if(item.last_reply.reply_user.user_type == 5) {
+                        user_type = 'User'
+                    }
+
+                    if(item.last_reply.reply_user.profile_pic != null) {
+                        let path = root + '/' + item.last_reply.reply_user.profile_pic;
+                        user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                    }else{
+                        user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    }
+                }
+
+                let html = `
+                <ul class="list-unstyled replies">
+                    <li class="media" id="reply__0">
+                        <span class="mr-3"> ${user_img} </span>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                            <h5 class="mt-0"><span class="text-primary">
+                                <a href="http://127.0.0.1:8000/profile/209"> ${item.lastReplier} </a>
+                                </span>&nbsp;<span class="badge badge-secondary">${user_type}</span>&nbsp;
+                            &nbsp;                            
+                            <br>
+                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ${ time } </span> 
+                            <div class="my-1 bor-top" id="reply-html-4"> ${item.last_reply.reply} </div>
+                        </div>
+                        
+                    </li>
+                    <div class="row mt-1" style="word-break: break-all;"></div>
+                </ul>
+                `
+                last_reply = html;
             }else{
-                last_reply = item.subject;
+
+                let html = `
+                <div class="card p-0">                                  
+                        <h3>
+                            <div class="d-flex justify-content-between">
+                                <div class="first">
+                                    <!-- <img src="http://127.0.0.1:8000/default_imgs/int_req.jpeg" width="30" height="30" alt="">  -->
+                                    <i class="fas fa-money-check-edit fa-2xl" style="font-size:28px"></i>
+                                    <span class="mx-1"> ${item.subject} </span> 
+                                </div>
+                            </div>
+                        </h3>
+                        <hr>
+                        <div class="card-body p-0">
+                            <div class="mail-message">
+                                <div class="row" id="ticket_details_p"><div class="col-12" id="editor_div"> ${item.ticket_detail} </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+
+                last_reply = html;
             }
             $('.hover_content_'+id).html(last_reply);
         }
@@ -665,6 +729,40 @@
         $('.hover_content_'+id).hide();
     });
 
+    function jsTimeZone(date) {
+    let d = new Date(date);
     
+    var year =  d.getFullYear();
+    var month = d.getMonth();
+    var date = d.getDate();
+    var hour = d.getHours();
+    var min = d.getMinutes();
+    var mili = d.getMilliseconds();
+            
+    // year , month , day , hour , minutes , seconds , miliseconds;
+    let new_date = new Date(Date.UTC(year, (month), date, hour, min, mili));
+    let converted_date = new_date.toLocaleString("en-US", {timeZone: userTimeZone});
+    return moment(converted_date).format(date_format + ' ' +'hh:mm A');
+}
+
+
+    function convertDate(date) {
+        
+        var d = new Date(date);
+
+        var min = d.getMinutes();
+        var dt = d.getDate();
+        var d_utc = d.getUTCHours();
+
+        d.setMinutes(min);
+        d.setDate(dt);
+        d.setUTCHours(d_utc);
+
+        let a = d.toLocaleString("en-US" , {timeZone: userTimeZone} );
+        
+        // return a;
+        var converted_date = moment(a).format(date_format + ' ' +'hh:mm A');
+        return converted_date;
+}
 </script>
 @endsection
