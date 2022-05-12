@@ -118,6 +118,13 @@
         a {
             text-decoration: none !important;
         }
+
+        .whitePlaceholder::-webkit-input-placeholder {
+            color: white !important;
+        }
+        .blackPlaceholder::-webkit-input-placeholder {
+            color: #d8d6de !important;
+        }
     </style>
 
     @stack('css')
@@ -590,9 +597,15 @@
             if ($(".loaded ").hasClass('dark-layout')) {
                 $("#tsearch").css('border','1px solid white');
                 $("#csearch").css('border','1px solid white');
+
+                $("#tsearch").addClass("whitePlaceholder");
+                $("#csearch").addClass("whitePlaceholder");
             }else{
                 $("#tsearch").css('border','1px solid #d8d6de');
                 $("#csearch").css('border','1px solid #d8d6de');
+
+                $("#tsearch").removeClass("whitePlaceholder");
+                $("#csearch").removeClass("whitePlaceholder");
             }
         }
 
