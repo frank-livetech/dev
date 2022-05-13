@@ -368,7 +368,6 @@ class HelpdeskController extends Controller
         }
     }
 
-
     // get flagged tickets
     public function get_flag_tickets() {
 
@@ -383,7 +382,6 @@ class HelpdeskController extends Controller
         ]);
         
     }
-
 
     // updated selected ticket
     public function update_selected_ticket(Request $request) {
@@ -3657,12 +3655,17 @@ class HelpdeskController extends Controller
         $status = TicketStatus::whereRaw("find_in_set($request->id,department_id)")->orderBy('seq_no', 'Asc')->get();
         $dept_assigns = DepartmentAssignments::where('dept_id', $request->id)->get()->pluck('user_id')->toArray();
         $users = User::whereIn('id', $dept_assigns)->where('is_deleted',0)->where('status',1)->get();
-
+        $default_queue = Mail::where('mail_dept_id',$request->id)->where('is_deleted', 0)->where('is_default', 'yes')->first();
+        if(!$default_queue){
+            $default_queue = Mail::where('mail_dept_id',$request->id)->where('is_deleted', 0)->first();
+        }
         $response['message'] = 'Department Status List';
         $response['status'] = 200;
         $response['success'] = true;
         $response['status'] = $status;
         $response['users'] = $users;
+        $response['queue'] = $default_queue;
+
         return response()->json($response);
     }
 
