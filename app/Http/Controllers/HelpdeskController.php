@@ -1322,7 +1322,6 @@ class HelpdeskController extends Controller
         }
     }
 
-
     public function delete_ticket_reply(Request $request) {
 
         $reply = TicketReply::find($request->id);
@@ -1335,7 +1334,6 @@ class HelpdeskController extends Controller
         ]);
     }
 
-    
     public function del_tkt(Request $request){
         $data  = $request->tickets;
 

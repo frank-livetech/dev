@@ -541,24 +541,18 @@
                                                     <div class="mt-0 mt-0 rounded" style="padding:4px; width:250px">
                                                         <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
                                                             <div class="">
-                                                            @if($details->ticket_created_by != null)
-                                                                @if(file_exists( getcwd() .'/'. $details->ticket_created_by->profile_pic ))
-                                                                    <img class="rounded" src=" {{ asset( request()->root() .'/'. $details->ticket_created_by->profile_pic)}}" width="30" height="30" />
-                                                                @else
-                                                                    <img width="30" height="30" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                @endif
-                                                            @else
-                                                                <img width="30" height="30" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                            @endif
+                                                                <img class="rounded" src="{{getDefaultProfilePic($details->user_pic)}}" width="30" height="30" />
                                                             </div>
                                                         </div>
                                                         <div class="more-info">
                                                             <?php
                                                                 if($details->ticket_created_by != null) {
                                                                     $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
+                                                                }else{
+                                                                    $user_type = 'User';
                                                                 }
                                                             ?>
-                                                            <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : ''}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                                            <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                                             <span class="ticket-timestamp3 text-muted small"></span>
                                                         </div>
                                                     </div>
@@ -1964,7 +1958,7 @@
             <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
                 <h5 class="text-capitalize" style="word-break: break-all;" ><i class="fas fa-money-check-edit fa-2xl" style="font-size:28px"></i> {{$details->subject}}</h5>
                 <div class="alert alert-primary" role="alert">
-                    <div class="alert-body" >
+                    <div class="alert-body p-0">
                         <div class="d-flex justify-content-between align-items-center align-self-center">
                             <div class="modal-first">
                                 <!-- <span class="ticket-timestamp3"></span> -->
@@ -1973,24 +1967,18 @@
                                 <div class="mt-0 mt-0 rounded" style="padding:4px; width:250px">
                                     <div class="float-start rounded me-1 bg-none" style="margin-top:8px">
                                         <div class="">
-                                        @if($details->ticket_created_by != null)
-                                            @if(file_exists( getcwd() .'/'. $details->ticket_created_by->profile_pic ))
-                                                <img class="rounded" src=" {{ asset( request()->root() .'/'. $details->ticket_created_by->profile_pic)}}" width="30" height="30" />
-                                            @else
-                                                <img width="70" height="70" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                            @endif
-                                        @else
-                                            <img width="70" height="70" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                        @endif
+                                            <img class="rounded" src="{{getDefaultProfilePic($details->user_pic)}}" width="30" height="30" />
                                         </div>
                                     </div>
                                     <div class="more-info">
-                                        <?php
-                                            if($details->ticket_created_by != null) {
-                                                $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
-                                            }
-                                        ?>
-                                        <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : ''}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                    <?php
+                                        if($details->ticket_created_by != null) {
+                                            $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
+                                        }else{
+                                            $user_type = 'User';
+                                        }
+                                    ?>
+                                    <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                         <span class="ticket-timestamp3 text-muted small"></span>
                                     </div>
                                 </div>
