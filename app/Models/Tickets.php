@@ -18,6 +18,10 @@ class Tickets extends Model
     protected $fillable = [
         'dept_id','priority','assigned_to','subject','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','is_overdue','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments','tkt_crt_type','is_pending','cust_email'
     ];
+
+    public function ticket_created_by() {
+        return $this->hasOne(User::class,'id','created_by');
+    }
     
     public function ticketReplies() {
         return $this->hasMany(TicketReply::class,'ticket_id','id')->with('replyUser');

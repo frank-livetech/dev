@@ -123,9 +123,9 @@ $(document).ready(function() {
     // settle company name and phone values
     setCustomerCompany();
     getLatestLogs();
-    $('#ticket-timestamp').text( convertDate(ticket.created_at) );
+    $('#ticket-timestamp').text( 'Posted on ' +  convertDate(ticket.created_at) );
     // $('#ticket-timestamp2').text( convertDate(ticket.created_at) );
-    $('#ticket-timestamp3').text( convertDate(ticket.created_at) );
+    $('.ticket-timestamp3').text('Posted on ' + convertDate( ticket.created_at) );
 
     
     if ($("#ticket_details_edit").length > 0) {
