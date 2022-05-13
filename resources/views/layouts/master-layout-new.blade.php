@@ -148,7 +148,7 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-        @if(session()->get('clockin') == "yes")
+        @if(session()->get('clockin') == "yes" || session()->get('clockin') == null)) 
         <div class="d-flex w-100 fw-bolder clock_in_section">
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
