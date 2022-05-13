@@ -353,9 +353,6 @@
             }
         });
         $(document).ready(function (){
-            setInterval(() => {
-                getNotifications()
-            }, 60000);
 
             setInterval(() => {
                 LightAndDarkThemeSetting();
@@ -614,17 +611,6 @@
                 $("#csearch").removeClass("whitePlaceholder");
             }
         }
-
-
-        $('.nav-item').each(function() {
-
-            // if( $(this).hasClass('sidebar-group-active') &&  $(this).hasClass('open') ) {
-            //     alert("found");
-            // }else{
-            //     alert("note");
-            // }
-
-        });
 
     </script>
     @include('js_files.chat.pusher')

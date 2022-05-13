@@ -14,7 +14,7 @@ use DB;
 class Tickets extends Model
 {
     protected $table = 'tickets';
-    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity'];
+    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity','user_pic'];
     protected $fillable = [
         'dept_id','priority','assigned_to','subject','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','is_overdue','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments','tkt_crt_type','is_pending','cust_email'
     ];
@@ -105,6 +105,19 @@ class Tickets extends Model
             
         }
         return null;
+    }
+
+    public function getUserPicAttribute() {
+
+        $data = DB::table('users')->where('id', $this->created_by)->first();
+        if(!empty($data)) {
+            return $this->user_pic = $data->profile_pic;
+        }else{
+            $customer = DB::table('customers')->where('id', $this->created_by)->first();
+            if(!empty($customer)) {
+                return $this->user_pic = $customer->avatar_url;    
+            }
+        }
     }
 
     public function getAssigneeNameAttribute() {
