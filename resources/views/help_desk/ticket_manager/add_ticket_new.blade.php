@@ -51,16 +51,18 @@
                                             <!-- Dept file chanegs  -->
                                             <div class="col-md-4 mb-1">
                                                 <label class="form-label" for="dept_id">Select Department<span class="text-danger">*</span></label>
-                                                <select class="select2 form-select" style="width:100%" onchange="showDepartStatus(this.value)" name="dept_id" id="dept_id">
+                                                <select class="select2 form-select" style="width:100%" onchange="showDepartStatus(this.value)" name="dept_id" id="dept_id" required>
                                                     @if($departments != null && $departments != "") 
-                                                    @foreach($departments as $key => $department)
-                                                        @if ($key == 0)
-                                                            <option value="{{$department->id}}" selected>{{$department->name}}</option>
-                                                        @else
-                                                            <option value="{{$department->id}}">{{$department->name}}</option>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
+                                                        <option value="" >Select Department</option>
+
+                                                        @foreach($departments as $key => $department)
+                                                            @if ($key == 0)
+                                                                <option value="{{$department->id}}" >{{$department->name}}</option>
+                                                            @else
+                                                                <option value="{{$department->id}}">{{$department->name}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                                 <span class="text-danger small" id="department_error"></span>
                                             </div>
@@ -69,7 +71,8 @@
                                                 @if(Auth::user()->user_type != 5)
                                                     <div class="col-md-4 col-sm-4" style="position:relative">
                                                         <label class="form-label">Select Status<span class="text-danger">*</span></label>
-                                                        <select class="select2 form-control dropdown" style="width:100%" id="status" name="status">
+                                                        <select class="select2 form-control dropdown" style="width:100%" id="status" name="status" required>
+                                                            <option value="" >Select Status</option>
                                                         </select>
                                                         <i class="fas fa-circle-notch fa-spin text-primary" id="dropdown_loader" style="position: absolute; top:34px;font-size:1.2rem; right: 34px; display:none"></i>                                 
                                                         <span class="text-danger small" id="status_error"></span>
@@ -81,9 +84,11 @@
                                                     <select class="select2 form-control dropdown" style="width:100%" id="priority" name="priority" required>
                                                         {{-- <option value="">Select </option> --}}
                                                         @if($priorities != null && $priorities != "")
+                                                            <option value="" >Select Priority</option>
+
                                                             @foreach($priorities as $key=> $priority)
                                                                 @if ($key == 0)
-                                                                    <option value="{{$priority->id}}" selected>{{$priority->name}}</option>
+                                                                    <option value="{{$priority->id}}" >{{$priority->name}}</option>
                                                                 @else
                                                                     <option value="{{$priority->id}}">{{$priority->name}}</option>
                                                                 @endif
@@ -117,9 +122,10 @@
                                                             <select class="select2 form-control dropdown" style="width:100%" id="type" name="type" required>
                                                                 {{-- <option value="">Select</option> --}}
                                                                 @if($types != null && $types != "")
+                                                                    <option value="" >Select Type</option>
                                                                     @foreach($types as $key => $type)
                                                                         @if ($key == 0)
-                                                                            <option value="{{$type->id}}" selected>{{$type->name}}</option>
+                                                                            <option value="{{$type->id}}" >{{$type->name}}</option>
                                                                         @else
                                                                             <option value="{{$type->id}}">{{$type->name}}</option>
                                                                         @endif
@@ -321,6 +327,11 @@
         <div style="display: none;" id="tinycontenteditor"></div>
 @endsection
 @section('scripts')
+<script>
+$(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+      });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     {{-- <script src="{{asset('assets/libs/tinymce/tinymce.min.js')}}"></script>' --}}
     <script src="{{asset('app-assets/js/scripts/forms/form-file-uploader.js')}}"></script>

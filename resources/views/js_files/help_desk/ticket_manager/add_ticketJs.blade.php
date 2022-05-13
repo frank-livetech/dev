@@ -406,41 +406,70 @@
         });
 
         function showDepartStatus(value) {
-            $.ajax({
-                type: "POST",
-                url: "{{url('get_department_status')}}",
-                data: {id:value},
-                dataType: 'json',
-                beforeSend: function(data) {
-                    $("#dropdown_loader").show();
-                },
-                success: function(data) {
-                    console.log(data , "assignee");
-                    let obj = data.status;
-                    let obj_user = data.users;
+            if(value != ''){
+                $.ajax({
+                    type: "POST",
+                    url: "{{url('get_department_status')}}",
+                    data: {id:value},
+                    dataType: 'json',
+                    beforeSend: function(data) {
+                        $("#dropdown_loader").show();
+                    },
+                    success: function(data) {
+                        console.log(data , "assignee");
+                        let obj = data.status;
+                        let obj_user = data.users;
+                        let obj_queue = data.queue;
 
-                    let option = ``;
-                    let select = ``;
+                        let option = ``;
+                        let select = ``;
+                        if(obj_queue == '' || obj_queue == null){
+                            toastr.error('This department does not have any email queue.', { timeOut: 5000 });
+                            return false;
+                        }else{
 
-                    for(var i =0; i < obj.length; i++) {
-                        option +=`<option value="`+obj[i].id+`">`+obj[i].name+`</option>`;
+                            $("#status").html('');
+                            select = `<option value="">Select Status</option>`;
+                            for(var i =0; i < obj.length; i++) {
+                                if(obj_queue.mail_status_id == obj[i].id){
+                                    option +=`<option value="`+obj[i].id+`" selected>`+obj[i].name+`</option>`;
+                                }else{
+                                    option +=`<option value="`+obj[i].id+`">`+obj[i].name+`</option>`;
+                                }
+                            }
+                            $("#status").html(select + option);
+                            
+                            $('#priority').val(obj_queue.mail_priority_id);
+                            $("#priority").trigger('change');
+
+                            $('#type').val(obj_queue.mail_type_id);
+                            $("#type").trigger('change');
+
+                            select = `<option value="">Unassigned</option>`;
+                            $("#assigned_to").html('');
+                            for(var i =0; i < obj_user.length; i++) {
+                                select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
+                            }
+                            $("#assigned_to").html(select);
+
+                            
+                        }
+                        
+                    },
+                    complete: function(data) {
+                        $("#dropdown_loader").hide();
+                    },
+                    error: function(error) {
+                        $("#dropdown_loader").hide();
+                        console.log(error);
                     }
-                    $("#status").html(select + option);
+                });
+            }else{
+                $("#status").html('');
+                $("#assigned_to").html('');
 
-                    select = `<option value="">Unassigned</option>`;
-                    for(var i =0; i < obj_user.length; i++) {
-                        select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
-                    }
-                    $("#assigned_to").html(select);
-                },
-                complete: function(data) {
-                    $("#dropdown_loader").hide();
-                },
-                error: function(error) {
-                    $("#dropdown_loader").hide();
-                    console.log(error);
-                }
-            });
+            }
+            
         }
 
         function ticket_notify(id, template) {
