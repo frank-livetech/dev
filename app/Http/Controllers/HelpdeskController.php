@@ -85,7 +85,6 @@ class HelpdeskController extends Controller
         $dept = Departments::where('dept_slug',$dept)->first();
         $dept_name = $dept->name;
         $dept = $dept->id;
-
         if($sts == 'all') {
             $sts = 'all';
             $status_name = 'All';
@@ -1217,7 +1216,7 @@ class HelpdeskController extends Controller
         
         $id = $ticket->id;
         // $details = Tickets::with('ticketReplies')->where('id', $id)->first();
-        $details = Tickets::where('id', $id)->first();
+        $details = Tickets::where('id', $id)->with('ticket_created_by')->first();
         
         $shared_emails = TicketSharedEmails::where('ticket_id',$details->id)->get()->toArray();
 

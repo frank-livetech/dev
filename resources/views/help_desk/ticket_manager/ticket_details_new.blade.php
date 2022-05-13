@@ -480,26 +480,24 @@
                 <div class="col-md-7">
                     <div class="card" id="style-5">
                     <!-- <div class="card" id="style-5" style="height:270px; overflow-y:auto; overflow-x:hidden"> -->
-                        <div class="card-header frst">
+                        <div class="card-header frst mb-0">
                             <div class="align-items-center ">
                                 <div class="mail-items">
-                                    <!-- <h3 class="mb-0"> -->
-                                        
                                     <h3>
                                         <div class="d-flex justify-content-between">
-                                            <div class="first">
+                                            <div class="first" style="width:clamp(100px, 80% , 1000px)">
                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                 <i class="fas fa-money-check-edit fa-2xl" style="font-size:28px"></i>
-                                                <span class="mx-1"> {{$details->subject}} </span> 
+                                                <span class="mx-1" style="word-break: break-all;"> {{$details->subject}} </span> 
                                                 @if($details->attachments != null)
                                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
                                                 @endif
                                             </div>
-
                                             <div class="second">
 
                                                 <div class="d-flex">
-                                                    <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;margin-top:5px"></span>
+
+                                                    <!-- <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;margin-top:5px"></span> -->
 
                                                     <a onclick="hung()" class="mx-1" title="View Details" style="position:absolute;right:56px;cursor:pointer;">
                                                         <i data-feather='maximize'></i>
@@ -510,14 +508,12 @@
                                                     </span> 
 
                                                     <span style="float:right;cursor:pointer;display:none" title="Save" id="save_request_btn">
-                                                            <a onclick="saveRequest()">
-                                                                <i data-feather='save'></i>
-                                                            </a>
-                                                        </span>
+                                                        <a onclick="saveRequest()"> <i data-feather='save'></i> </a>
+                                                    </span>
 
-                                                        <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
-                                                            <a onclick="cancelEditRequest()"> <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a>
-                                                        </span>
+                                                    <span style="float:right; cursor:pointer; display:none" title="Cancel" id="cancel_request_btn">
+                                                        <a onclick="cancelEditRequest()"> <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a>
+                                                    </span>
 
                                                 </div>
 
@@ -530,15 +526,47 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        <!-- </div> -->
-                                     
-
-                                        <!-- 
-
-                                            
-                                        </div> -->
                                     </h3>
-                                    <!-- <br> -->
+
+                                    <!-- 
+                                        
+                                     -->
+                                     <div class="alert alert-primary" role="alert">
+                                        <div class="alert-body p-0" >
+                                            <div class="d-flex justify-content-between align-items-center align-self-center">
+                                                <div class="modal-first">
+                                                    <!-- <span class="ticket-timestamp3"></span> -->
+                                                </div>
+                                                <div class="modal-second">
+                                                    <div class="mt-0 mt-0 rounded" style="padding:4px; width:250px">
+                                                        <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
+                                                            <div class="">
+                                                            @if($details->ticket_created_by != null)
+                                                                @if(file_exists( getcwd() .'/'. $details->ticket_created_by->profile_pic ))
+                                                                    <img class="rounded" src=" {{ asset( request()->root() .'/'. $details->ticket_created_by->profile_pic)}}" width="30" height="30" />
+                                                                @else
+                                                                    <img width="30" height="30" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                                @endif
+                                                            @else
+                                                                <img width="30" height="30" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                            @endif
+                                                            </div>
+                                                        </div>
+                                                        <div class="more-info">
+                                                            <?php
+                                                                if($details->ticket_created_by != null) {
+                                                                    $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
+                                                                }
+                                                            ?>
+                                                            <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : ''}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                                            <span class="ticket-timestamp3 text-muted small"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
                                     <hr>
                                     <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">
                                         <div class="row mt-3">
@@ -568,35 +596,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="card-header email-detail-head sec d-none" >
-                            <div class="user-details d-flex justify-content-between align-items-center flex-wrap pb-1" style="border-bottom:1px solid #ebe9f1;">
-                                <div class="mail-items">
-                                    <h5 class="mb-0">Subject : {{$details->subject}}</h5>
-                                </div>
-                                <div class="mail-meta-item d-flex align-items-center">
-                                    <small class="mail-date-time text-muted" id="ticket-timestamp2"></small>
-                                    <div class="dropdown ms-50">
-                                        <div role="button" class="dropdown-toggle hide-arrow" id="email_more" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i data-feather="more-vertical" class="font-medium-2"></i>
-                                        </div>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="email_more">
-                                            <div class="dropdown-item" onclick="editRequest()"><i data-feather="corner-up-left" class="me-50"></i>Edit</div>
-                                            <div class="dropdown-item" onclick="toggleReq()"><i data-feather="eye-off" class="me-50"></i>Close</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div> -->
-                        <!-- <div class="card-body mail-message-wrapper pt-2 sec d-none">
-                            <div class="mail-message">
-                                <div class="row" id="ticket_details_p2"></div>
-                            </div>
-                        </div> -->
+                        
                         <div class="card-body mail-message-wrapper frst" id="adjustCard2Height" style="height: 107px; overflow: hidden;">
                             <div class="mail-message">
-                                <div class="row" id="ticket_details_p"></div>
+                                <div class="row text-dark" id="ticket_details_p"></div>
                             </div>
                         </div>
                        
@@ -1959,9 +1962,40 @@
                 
             </div>
             <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
-                <h5 class="text-capitalize" >Subject : {{$details->subject}}</h5>
+                <h5 class="text-capitalize" style="word-break: break-all;" ><i class="fas fa-money-check-edit fa-2xl" style="font-size:28px"></i> {{$details->subject}}</h5>
                 <div class="alert alert-primary" role="alert">
-                    <div class="alert-body" id="ticket-timestamp3">
+                    <div class="alert-body" >
+                        <div class="d-flex justify-content-between align-items-center align-self-center">
+                            <div class="modal-first">
+                                <!-- <span class="ticket-timestamp3"></span> -->
+                            </div>
+                            <div class="modal-second">
+                                <div class="mt-0 mt-0 rounded" style="padding:4px; width:250px">
+                                    <div class="float-start rounded me-1 bg-none" style="margin-top:8px">
+                                        <div class="">
+                                        @if($details->ticket_created_by != null)
+                                            @if(file_exists( getcwd() .'/'. $details->ticket_created_by->profile_pic ))
+                                                <img class="rounded" src=" {{ asset( request()->root() .'/'. $details->ticket_created_by->profile_pic)}}" width="30" height="30" />
+                                            @else
+                                                <img width="70" height="70" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            @endif
+                                        @else
+                                            <img width="70" height="70" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                        @endif
+                                        </div>
+                                    </div>
+                                    <div class="more-info">
+                                        <?php
+                                            if($details->ticket_created_by != null) {
+                                                $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
+                                            }
+                                        ?>
+                                        <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : ''}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                        <span class="ticket-timestamp3 text-muted small"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
                     </div>
                 </div>
