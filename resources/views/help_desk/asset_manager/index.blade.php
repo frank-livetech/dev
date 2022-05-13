@@ -1,5 +1,6 @@
-@extends('layouts.staff-master-layout')
-@section('body-content')
+@extends('layouts.master-layout-new')
+
+@section('css')
 <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 <link href="{{asset('assets/libs/dragula/dist/dragula.min.css')}}" rel="stylesheet">
@@ -41,24 +42,36 @@
     }
 }
 </style>
-<div class="page-breadcrumb">
-    <div class="row">
-        <div class="col-md-5 align-self-center">
-            <div class="d-flex align-items-center">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-                        <li class="breadcrumb-item" aria-current="page">Help Desk</li>
-                        <li class="breadcrumb-item active" aria-current="page">Asset Manager</li>
-                    </ol>
-                </nav>
+@endsection
+@section('body')
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+        <div class="content-header row">
+            <div class="content-header-left col-md-12 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-12">
+                        <h2 class="content-header-title float-start mb-0"> Asset Manager </h2>
+                        <div class="breadcrumb-wrapper">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a>
+                                </li>
+                                <li class="breadcrumb-item"> Help Desk
+                                </li>
+                                <li class="breadcrumb-item"> Asset Manager
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
 
 <!-- <input type="text" class="form-input" id="ipv4" name="ipv4" placeholder="xxx.xxx.xxx.xxx"> -->
-<div class="container-fluid">
+<div class="content-body">
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div id="accordion" class="custom-accordion mb-4">

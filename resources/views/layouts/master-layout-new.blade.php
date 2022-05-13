@@ -147,13 +147,18 @@
             <source src='{{asset($file_path . "assets/sound/message.mp3")}}' type="audio/mpeg">
         </audio>
     </div>
+    <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
+        @if(session()->get('clockin') == "yes")
+        <div class="d-flex w-100 fw-bolder clock_in_section">
+            <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
+            <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
+            <div class="d-flex">
+                <a href="#" class="mx-1 text-danger" onclick="checkClockIn('yes')"> Yes </a> | <a href="#" class="mx-1 text-danger" onclick="checkClockIn('no')"> No </a> | <a href="#" class="ms-1 text-danger" onclick="checkClockIn('ignore')">Ignore</a>
+            </div>
+        </div>
+        @endif
 
-    @if(\Auth::user()->theme == "dark")
-        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-fluid">
-    @else
-        <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-fluid">
-    @endif
-    <div class="navbar-container d-flex content">
+        <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
                 <ul class="nav navbar-nav d-xl-none">
                     <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
@@ -203,9 +208,13 @@
                         <div class="user-nav d-sm-flex d-none">
                             <span class="user-name fw-bolder">{{ Auth::user()->name }}</span>
                             @if(\Auth::user()->user_type == "1")
-                            <span class="user-status">{{Auth::user()->role}}</span>
+                                <span class="user-status">{{Auth::user()->role}}</span>
                             @else
-                            <span class="user-status"></span>
+                                <span class="user-status"></span>
+                            @endif
+
+                            @if(session()->get('clockin') == "yes")
+                            <span class="badge bg-success clockin_timer" style="margin-top:4px"></span>
                             @endif
                         </div>
                         <span class="avatar">
@@ -238,8 +247,9 @@
             </ul>
         </div>
     </nav>
-    <!-- END: Header-->
 
+    
+    <!-- END: Header-->
     @include('layouts.new-sidebar')
 
     <!-- BEGIN: Content-->
@@ -356,6 +366,7 @@
 
             setInterval(() => {
                 LightAndDarkThemeSetting();
+                // clockInTimer();
             }, 1000);
         });
         var user_photo_url = "{{asset('files/user_photos')}}";
@@ -611,6 +622,54 @@
                 $("#csearch").removeClass("whitePlaceholder");
             }
         }
+
+
+        function checkClockIn(type) {
+            $.ajax({
+                url: "{{route('session.clockin')}}",
+                type: "POST",
+                dataType: 'json',
+                data : {type : type},
+                success: function(data) {
+                    console.log(data , "data");
+                    if(data.status == 200 && data.success == true) {
+                        toastr.success( data.message , { timeOut: 5000 });
+
+
+                        if(type != 'yes') {
+                            $('.clockin_timer').hide();
+                            $('.clock_in_section').attr('style','display:none !important');
+                        }
+                    }
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            });
+        }
+
+        function clockInTimer() {
+            let clockintime = "{{session()->get('clockin_time')}}";
+            clockintime = moment(clockintime , "YYY-MM-DD HH:mm:ss").format("YYY-MM-DD HH:mm:ss");
+            let today = moment.utc().format("YYYY-MM-DD HH:mm:ss");
+            
+
+            let ms = moment(today,"YYY-MM-DD HH:mm:ss").diff(moment(clockintime,"YYY-MM-DD HH:mm:ss"));
+            let d = moment.duration(ms);
+            if(d._data != null) {
+                let min = d._data.minutes > 9 ? d._data.minutes : '0' + d._data.minutes;
+                let sec = d._data.seconds > 9 ? d._data.seconds : '0' + d._data.seconds;
+                let hr = d._data.hours > 9 ? d._data.hours : '0' + d._data.hours;
+
+                let time = hr + ':' + min + ':' + sec;
+                $('.clockin_timer').text(time);
+            }
+        }
+
+        window.setInterval(() => {
+            clockInTimer();
+        }, 100);
+        
 
     </script>
     @include('js_files.chat.pusher')

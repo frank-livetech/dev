@@ -380,7 +380,7 @@ class MailController extends Controller
         try {
             $repliesSaved = false;
 
-            $emailQueue = DB::table('email_queues')->where('is_deleted', 0)->get()->toArray();
+            $emailQueue = DB::table('email_queues')->where([ ['is_deleted', 0], ['is_enabled','yes'] ])->get()->toArray();
             
             foreach ($emailQueue as $eq_value) {
                 if($eq_value->is_enabled == 'no') continue;
