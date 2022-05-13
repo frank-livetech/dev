@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Models\Customer;
+use App\Models\SpamUser;
 use App\Models\TicketSharedEmails;
 use App\Models\Tickets;
 use App\Models\Vendors;
@@ -54,8 +55,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -3155,8 +3156,19 @@ class HelpdeskController extends Controller
         }
     }
 
+    public function markUserSpam($mail){
 
-    // create ticket
+        $user = SpamUser::where('email',$mail)->first();
+        if(!$user){
+            SpamUser::create([
+                "email" => $mail ,
+                "banned_by" => \Auth::user()->id,
+            ]);
+        }   
+        return redirect()->route('ticket_management.index'); 
+    }
+
+    // create ticket for customer not registered
     public function createTicket($id) {
 
         $ticket = Tickets::where('coustom_id' , $id)->where('is_pending',1)->first();
