@@ -74,6 +74,7 @@ Route::group ( ['namespace' => 'PayrollManager','middleware' => ['auth','admin']
     Route::post('/add_checkout','PayrollController@clockout');
     Route::post('/save_payroll_settings','PayrollController@save_payroll_settings');
     Route::post('/update-work-hours','PayrollController@update_work_hours');
+    Route::post('/clockin','PayrollController@clockInSession')->name('session.clockin');
 
 });
 

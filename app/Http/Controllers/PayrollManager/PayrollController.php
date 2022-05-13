@@ -26,51 +26,49 @@ class PayrollController extends Controller
     }
 
     public function clockin() {
-        // try{
-            $clock_in = new StaffAttendance;
-            $clock_in->user_id = \Auth::user()->id;
-            $clock_in->clock_in = Carbon::now();
-            $clock_in->date = date_format(Carbon::now(), "Y-m-d");
-            $clock_in->save();
-    
-            $notify = new NotifyController();
-            $users_list = User::where('user_type','=',1)->where('is_deleted',0)->get();
-            foreach ($users_list as $key => $value) {
-                // $allwd_users[] = [$value['email'], $value['name']];
-                $sender_id = \Auth::user()->id;
-                $receiver_id = $value['id'];
-                $slug = 'dashboard';
-                $type = 'attendance';
-                $data = 'data';
-                $title = 'Clock In';
-                $icon = 'ti-calendar';
-                $class = 'btn-success';
-                $desc = 'Clock In by '.\Auth::user()->name;
-                
-                // try{
-                    $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
-                // }catch(Exception $e) {
-                    // $response['message'] = 'Clocked in! Notification Failure';
-                    // $response['message'] = $e->getMessage();
-                    // $response['status_code'] = 201;
-                    // $response['success'] = true;
-                    // $response['clock_in_time'] = Carbon::now();
-                    // return response()->json($response);
-                // }
-            }
-    
-            $response['message'] = 'Clocked in!';
-            $response['status_code'] = 200;
-            $response['success'] = true;
-            $response['clock_in_time'] = Carbon::now();
-            return response()->json($response);
-        // }catch(Exception $e) {
-        //     $response['message'] = $e->getMessage();
-        //     $response['status_code'] = 500;
-        //     $response['success'] = false;
-        //     $response['clock_in_time'] = '';
-        //     return response()->json($response);
-        // }
+        $clock_in = new StaffAttendance;
+        $clock_in->user_id = \Auth::user()->id;
+        $clock_in->clock_in = Carbon::now();
+        $clock_in->date = date_format(Carbon::now(), "Y-m-d");
+        $clock_in->save();
+
+        $notify = new NotifyController();
+        $users_list = User::where('user_type','=',1)->where('is_deleted',0)->get();
+        foreach ($users_list as $key => $value) {
+            $sender_id = \Auth::user()->id;
+            $receiver_id = $value['id'];
+            $slug = 'dashboard';
+            $type = 'attendance';
+            $data = 'data';
+            $title = 'Clock In';
+            $icon = 'ti-calendar';
+            $class = 'btn-success';
+            $desc = 'Clock In by '.\Auth::user()->name;
+            $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+        }
+
+        $response['message'] = 'Clocked in!';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        $response['clock_in_time'] = Carbon::now();
+        return response()->json($response);
+    }
+
+
+    function clockInSession(Request $request) {
+
+        if($request->type == 'yes') {
+            $this->clockin();
+        }
+
+        session()->put('clockin', $request->type);
+        session()->put('clockin_time', now() );
+
+        return response()->json([
+            "status" => 200 , 
+            "success" => true , 
+            "message" => "Clocked in Successfully",
+        ]);
     }
 
     public function clockout() {
