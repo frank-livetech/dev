@@ -901,6 +901,12 @@ class MailController extends Controller
                 $template = str_replace('{Customer-Email-Not-Registered}', $emailFrom , $template);
             }
 
+            // {mark-as-spam}
+            if(str_contains($template, '{mark-as-spam}')) {
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/mark-spam-user' . '/' . $emailFrom;
+                $template = str_replace('{mark-as-spam}', $url , $template);
+            }
+
             if(str_contains($template, '{Customer-Email}')) {
                 $template = str_replace('{Customer-Email}', $strAddress_Sender , $template);
             }
