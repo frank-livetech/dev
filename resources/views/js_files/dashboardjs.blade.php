@@ -148,10 +148,7 @@
 
         });
 
-        // document.getElementById('startDate').valueAsDate = new Date();
-        // get_all_followups();
         searchFollowUps(true);
-
 
         let tt = $('#staff_table').DataTable({
             ordering: false,
@@ -170,9 +167,9 @@
                 {
                     render: function (data, type, full, meta) {
                         if(full.clock_out == null)
-                            return '<span class="badge badge-success py-1">Clocked In</span>';
+                            return '<span class="badge bg-success">Clocked In</span>';
                         else
-                            return '<span class="badge badge-danger py-1">Clocked Out</span>';
+                            return '<span class="badge bg-danger">Clocked Out</span>';
                     }
                 },
                 {
@@ -239,21 +236,39 @@
         if(btn_text == 'clockout') {
             url = `{{asset('add_checkout')}}`;
         }
-
         $.ajax({
             url: url,
             type: 'POST',
             async: true,
             success: function(data) {
                 console.log(data);
+
+
+
                 if (data.success == true) {
                     $('.clock_btn').remove();
                     let btn = ``;
 
                     if(btn_text == 'clockin') {
                         btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
+                        $('.clock_in_section').attr('style','display:none !important');
+
+                        $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
                     }else{
                         btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
+
+                        $('.clockin_timer').hide();
+                        $('.clock_in_section').attr('style','display:none !important');
+
+                        let clockSection = `<div class="d-flex w-100 fw-bolder clock_in_section">
+                            <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
+                            <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
+                            <div class="d-flex">
+                                <a href="#" class="mx-1 text-danger" onclick="staffatt('clockin')"> Yes </a> | <a href="#" class="mx-1 text-danger"> No </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
+                            </div>
+                        </div>`;
+
+                        $('.showClockInSection').html(clockSection);
                     }
                     
                     $('.clock_btn_div').append(btn);
@@ -277,10 +292,10 @@
 
                     if(btn_text == 'clockin') {
                         clock_in_time = convertDate(new Date());
-                        clock_in = `<span class="badge bg-success">Clock In</span>`;
+                        clock_in = `<span class="badge bg-success">Clocked In</span>`;
                     }else{
                         clock_in_time = convertDate( data.clock_in_time );
-                        clock_in = `<span class="badge bg-danger">Clock Out</span>`;
+                        clock_in = `<span class="badge bg-danger">Clocked Out</span>`;
                     }
 
                     let working_hour = data.hasOwnProperty('worked_time');;

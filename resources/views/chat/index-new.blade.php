@@ -10,6 +10,26 @@
             background-repeat: repeat;
             background-size: 210px;
         }
+        .mt-10{
+            margin-top: 81px
+        }
+        
+        .badge-secondary {
+            color: #fff;
+            background-color: #868e96;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.5rem;
+            font-size: 85%;
+            font-weight: 600;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.358rem;
+        }
 
     </style>
 
@@ -26,7 +46,7 @@
                             <span class="close-icon">
                                 <i data-feather="x"></i>
                             </span>
-                            <div class="header-profile-sidebar">
+                            <div class="header-profile-sidebar1">
                                 <div class="avatar box-shadow-1 avatar-xl avatar-border">
                                     <img src="{{ asset(getDefaultProfilePic(Auth::user()->profile_pic)) }}"
                                         id="login_usr_logo" width="50px" height="50px" alt="'s Photo"
@@ -48,6 +68,7 @@
                                 </small>
                             </div>
                         </div>
+                        
                         <!-- User Details end -->
                     </div>
                     <!--/ Admin user profile area -->
@@ -87,7 +108,7 @@
                                     @if (Auth::id() != $user->id)
                                     <li data-id="{{ $user->id }}" onclick="showActiveUserChat(this)"
                                         data_nm="{{ $user->name }}" data-wp="{{ $user->whatsapp }}"
-                                        data_pc="{{ getDefaultProfilePic($user->profile_pic) }}"
+                                        data-pc="{{ getDefaultProfilePic($user->profile_pic) }}"
                                         data-job="{{ $user->job_title }}"
                                         data-about="{{ $user->notes }}">
                                         
@@ -245,11 +266,16 @@
                                 <!-- User Profile image with name -->
                                 <div class="header-profile-sidebar">
                                     <div class="avatar box-shadow-1 avatar-border avatar-xl">
-                                        <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg"
-                                            alt="user_avatar" height="70" width="70" />
+                                        <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="user_avatar" height="70" width="70" />
                                         <span class="avatar-status-busy avatar-status-lg"></span>
                                     </div>
-                                    <h4 class="chat-user-name">Kristopher Candy</h4>
+                                    <div class="d-flex">
+                                        <h4 style=" "> 
+                                            <a href="" class="chat-user-name"></a>  
+                                                <span class="badge badge-secondary type_bdge" style="font-size: 11px"></span> </h4>
+                                        {{-- <h4 class="chat-user-name"></h4> --}}
+                                    </div>
+                                    
                                     <span class="user-post">UI/UX Designer 👩🏻‍💻</span>
                                 </div>
                                 <!--/ User Profile image with name -->
@@ -259,10 +285,55 @@
                                 <h6 class="section-label mb-1">About</h6>
                                 <p>Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop.</p>
                                 <!-- About User -->
+                                <!-- User's personal information -->
+                                <div class="personal-info">
+                                    <h6 class="section-label mb-1 mt-3">Personal Information</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-1">
+                                            <i data-feather="mail" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle currentChatUserEmail"></span>
+                                        </li>
+                                        <li class="mb-1">
+                                            <i data-feather="phone-call" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle currentChatUserNumber"></span>
+                                        </li>
+                                        <li>
+                                            <i data-feather="clock" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Mon - Fri 10AM - 8PM</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--/ User's personal information -->
+
+                                <!-- User's Links -->
+                                {{-- <div class="more-options">
+                                    <h6 class="section-label mb-1 mt-3">Options</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="tag" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Add Tag</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="star" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Important Contact</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="image" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Shared Media</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="trash" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Delete Contact</span>
+                                        </li>
+                                        <li class="cursor-pointer">
+                                            <i data-feather="slash" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Block Contact</span>
+                                        </li>
+                                    </ul>
+                                </div> --}}
+                                <!--/ User's Links -->
                             </div>
                         </div>
-
-                    </div>
                 </div>
             </div>
         </div>
@@ -272,6 +343,7 @@
 
     @section('scripts')
     <script>
+        let users_arr = {!! json_encode($users) !!};
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 2;
         var is_open = 0;
@@ -290,7 +362,32 @@
 
         function showActiveUserChat(tag) {
             let user_id = $(tag).data("id");
-            // console.log(user_id);
+            let user = users_arr.find(item => item.id == user_id);
+            console.log(user);
+            if(user != null) {
+            
+                $("#active_user_name").text( user.name );
+                $('.currentChatUserName').text(user.name);
+                $('.currentChatUserNumber').text(user.phone_number);
+                $('.currentChatUserEmail').text(user.email);
+                $('.currentChatUserCreated').text(user.created_at);
+                $('.currentChatUserdesignation').text(user.job_title);
+               
+            }
+            if(user.user_type == 1){
+                $(".type_bdge").text( 'Staff' );
+            }else{
+                $(".type_bdge").text( 'User' );
+            }
+
+            
+
+
+            let img_src = $(tag).data('pc');
+            $("#active_user_img").attr('src', img_src);
+
+            
+
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
             $("#image_url").val(src);

@@ -12,6 +12,7 @@ use Validator;
 use Throwable;
 use App\Models\Notification;
 use App\Http\Controllers\NotifyController;
+use App\Http\Controllers\SystemManager\MailController;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
@@ -26,15 +27,23 @@ class PayrollController extends Controller
     }
 
     public function clockin() {
+
         $clock_in = new StaffAttendance;
         $clock_in->user_id = \Auth::user()->id;
         $clock_in->clock_in = Carbon::now();
         $clock_in->date = date_format(Carbon::now(), "Y-m-d");
         $clock_in->save();
 
+        session()->put('clockin', 'no');
+        session()->put('clockin_time', now() );
+
+        $template = DB::table("templates")->where('code','staff_clockin')->first();
+                
         $notify = new NotifyController();
-        $users_list = User::where('user_type','=',1)->where('is_deleted',0)->get();
+        $users_list = User::where([ ['user_type',1] , ['is_deleted',0] ])->get();
+
         foreach ($users_list as $key => $value) {
+
             $sender_id = \Auth::user()->id;
             $receiver_id = $value['id'];
             $slug = 'dashboard';
@@ -45,6 +54,17 @@ class PayrollController extends Controller
             $class = 'btn-success';
             $desc = 'Clock In by '.\Auth::user()->name;
             $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+
+            if(!empty($template)) {
+
+                $detail = $value['email'] != auth()->user()->email ? 
+                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked in' : 
+                    'Hi you just clock in into LT-CMS, here are the details';
+                
+                $temp = $this->templateReplaceShortCodes($template->template_html ,$detail, 'clockin' , 0);
+                $mail = new MailController();
+                $mail->sendMail( 'Staff Clockin' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
+            }
         }
 
         $response['message'] = 'Clocked in!';
@@ -52,23 +72,6 @@ class PayrollController extends Controller
         $response['success'] = true;
         $response['clock_in_time'] = Carbon::now();
         return response()->json($response);
-    }
-
-
-    function clockInSession(Request $request) {
-
-        if($request->type == 'yes') {
-            $this->clockin();
-        }
-
-        session()->put('clockin', $request->type);
-        session()->put('clockin_time', now() );
-
-        return response()->json([
-            "status" => 200 , 
-            "success" => true , 
-            "message" => "Clocked in Successfully",
-        ]);
     }
 
     public function clockout() {
@@ -83,9 +86,14 @@ class PayrollController extends Controller
             $clock_in->clocked_out_by = 'user';
     
             $clock_in->save();
+
+            session()->put('clockin', 'yes');
+            session()->put('clockin_time', now() );
             
             $get_tsk_lst = Tasks::where('task_status','default')->where('assign_to', \Auth::user()->id)->get();
-            
+
+            $template = DB::table("templates")->where('code','staff_clockin')->first();
+
             foreach($get_tsk_lst as $task){
     
                 $strt_time =  $task->started_at; 
@@ -116,18 +124,17 @@ class PayrollController extends Controller
                 $class = 'btn-success';
                 $desc = 'Clock Out by '.\Auth::user()->name;
                 
-                // try{
-                    $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
-                // }catch(Exception $e) {
-                    // $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked.' Notification Failure!';
-                    // $response['message'] = $e->getMessage();
-                    // $response['status_code'] = 201;
-                    // $response['success'] = true;
-                    // $response['clock_in_time'] = $startTime;
-                    // $response['clock_out_time'] = Carbon::now();
-                    // $response['worked_time'] = $clock_in->hours_worked;
-                    // return response()->json($response);
-                // }
+                $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                if(!empty($template)) {
+
+                    $detail = $value['email'] != auth()->user()->email ? 
+                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked out' : 
+                    'Hi you just clock out into LT-CMS, here are the details';
+                    
+                    $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
+                    $mail = new MailController();
+                    $mail->sendMail( 'Staff Clock out' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
+                }
             }
     
             $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked;
@@ -146,6 +153,55 @@ class PayrollController extends Controller
             $response['clock_out_time'] = '';
             return response()->json($response);
         }
+    }
+
+    public function templateReplaceShortCodes($template_html , $detail,  $type , $totalWorkingHour) {
+
+        $template = htmlentities($template_html);
+
+        if(str_contains($template, '{Staff-name}')) {
+            $template = str_replace('{Staff-name}', $detail , $template);
+        }
+
+        if(str_contains($template, '{current_date}')) {
+            $todayDateTime = new Carbon( now() , timeZone() );
+            $template = str_replace('{current_date}', $todayDateTime->format('Y-m-d') , $template);
+        }
+
+        if(str_contains($template, '{current_time}')) {
+            $todayDateTime = new Carbon( now() , timeZone() );
+            $time = $type == 'clockin' ? '<strong>Clock in time:  </strong>' : '<strong>Clock out time:  </strong>';
+            $template = str_replace('{current_time}', $time . $todayDateTime->format('h:i A') , $template);
+        }
+
+        if($type == 'clockin') {
+            if(str_contains($template, '{Worked_hours}')) {
+                $template = str_replace('{Worked_hours}','', $template);
+                $template = str_replace('Worked hours:','', $template);
+            }
+        }else{
+            if(str_contains($template, '{Worked_hours}')) {
+                $template = str_replace('{Worked_hours}', $totalWorkingHour , $template);
+            } 
+        }
+
+        return html_entity_decode($template);
+    }
+
+    function clockInSession(Request $request) {
+
+        if($request->type == 'yes') {
+            $this->clockin();
+        }
+
+        session()->put('clockin', $request->type);
+        session()->put('clockin_time', now() );
+
+        return response()->json([
+            "status" => 200 , 
+            "success" => true , 
+            "message" => "Clocked in Successfully",
+        ]);
     }
 
     public function check_clockins() {

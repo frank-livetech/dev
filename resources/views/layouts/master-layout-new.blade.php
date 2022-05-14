@@ -148,14 +148,17 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-        @if(session()->get('clockin') == "yes" || session()->get('clockin') == null)) 
+
+        @if( session()->get('clockin') == "yes" || session()->get('clockin') == null ) 
         <div class="d-flex w-100 fw-bolder clock_in_section">
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
             <div class="d-flex">
-                <a href="#" class="mx-1 text-danger" onclick="checkClockIn('yes')"> Yes </a> | <a href="#" class="mx-1 text-danger" onclick="checkClockIn('no')"> No </a> | <a href="#" class="ms-1 text-danger" onclick="checkClockIn('ignore')">Ignore</a>
+                <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" class="mx-1 text-danger"> No </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
             </div>
         </div>
+        @else
+        <div class="showClockInSection w-100"></div>
         @endif
 
         <div class="navbar-container d-flex content">
@@ -213,7 +216,7 @@
                                 <span class="user-status"></span>
                             @endif
 
-                            @if(session()->get('clockin') == "yes")
+                            @if(session()->get('clockin') == "no" || session()->get('clockin') == null)
                             <span class="badge bg-success clockin_timer" style="margin-top:4px"></span>
                             @endif
                         </div>
@@ -366,7 +369,6 @@
 
             setInterval(() => {
                 LightAndDarkThemeSetting();
-                // clockInTimer();
             }, 1000);
         });
         var user_photo_url = "{{asset('files/user_photos')}}";
@@ -648,13 +650,103 @@
             });
         }
 
-        function clockInTimer() {
-            let clockintime = "{{session()->get('clockin_time')}}";
-            clockintime = moment(clockintime , "YYY-MM-DD HH:mm:ss").format("YYY-MM-DD HH:mm:ss");
+        let clockintime = "{{session()->get('clockin_time')}}";
+
+        function sessionClockIn(btn_text) {
+
+            let url = "{{asset('add_checkin')}}";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                async: true,
+                success: function(data) {
+                    console.log(data);
+
+                    if (data.success == true) {
+                        $('.clock_btn').remove();
+
+                        let btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
+                        $('.clock_in_section').attr('style','display:none !important');
+                        
+                        $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
+                        $('.clock_btn_div').append(btn);
+
+                        var curr_user_name = $("#curr_user_name").val();
+                        var system_date_format = $("#system_date_format").val();
+                        var today = new Date();
+                        let time = moment(today).format('h:mm:ss');
+                        let date = moment(today).format(system_date_format);
+
+                        let clock_out_time = ``;
+                        
+                        if( data.hasOwnProperty('clock_out_time') ) {
+                            clock_out_time =convertDate( data.clock_out_time );
+                        }else{
+                            clock_out_time = `-`;
+                        }
+
+                        let clock_in_time = ``;
+                        let clock_in = ``;
+
+                        if(btn_text == 'clockin') {
+                            clock_in_time = convertDate(new Date());
+                            clock_in = `<span class="badge bg-success">Clocked In</span>`;
+                        }else{
+                            clock_in_time = convertDate( data.clock_in_time );
+                            clock_in = `<span class="badge bg-danger">Clocked Out</span>`;
+                        }
+
+                        let working_hour = data.hasOwnProperty('worked_time');;
+
+                        if(working_hour) {
+                            working_hour = data.worked_time;
+                        }else{
+                            working_hour = `-`;
+                        }
+
+                        let url = window.location.href;
+
+                        if(url.includes('home')) {
+                            $("#staff_table tbody").append(
+                            `<tr id="new_entry">
+                                <td></td>
+                                <td>${curr_user_name} </td>
+                                <td>${clock_in}</td>
+                                <td>${date}</td>
+                                <td>${clock_in_time}</td>
+                                <td>${clock_out_time}</td>
+                                <td>${working_hour}</td>
+                            </tr>`);
+                        }
+
+                        if(data.status_code == 201) {
+                            toastr.warning(data.message, { timeOut: 5000 });
+                        } else {
+                            toastr.success(data.message, { timeOut: 5000 });
+                        }
+                    } else {
+                        toastr.error(data.message, {
+                            timeOut: 5000
+                        });
+                    }
+                },
+                complete:function(data) {
+                    clockInTimer(clockintime);
+                },
+                failure: function(data) {
+                    console.log(data);
+                    toastr.error(data.message, {
+                        timeOut: 5000
+                    });
+                }
+            });
+        }       
+
+        function clockInTimer(clockintime) {
+            let clock_in_time = moment(clockintime , "YYY-MM-DD HH:mm:ss").format("YYY-MM-DD HH:mm:ss");
             let today = moment.utc().format("YYYY-MM-DD HH:mm:ss");
             
-
-            let ms = moment(today,"YYY-MM-DD HH:mm:ss").diff(moment(clockintime,"YYY-MM-DD HH:mm:ss"));
+            let ms = moment(today,"YYY-MM-DD HH:mm:ss").diff(moment(clock_in_time,"YYY-MM-DD HH:mm:ss"));
             let d = moment.duration(ms);
             if(d._data != null) {
                 let min = d._data.minutes > 9 ? d._data.minutes : '0' + d._data.minutes;
@@ -667,7 +759,7 @@
         }
 
         window.setInterval(() => {
-            clockInTimer();
+            clockInTimer(clockintime);
         }, 100);
         
 

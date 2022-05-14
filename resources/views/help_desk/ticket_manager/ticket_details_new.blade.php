@@ -483,7 +483,68 @@
                         <div class="card-header frst mb-0">
                             <div class="align-items-center ">
                                 <div class="mail-items">
-                                    <h3>
+                                    <div class="" role="alert">
+                                        <div class="alert-body p-0" >
+                                            <div class="" style="display: -webkit-box">
+                                                <div class="modal-first">
+                                                    <div class="mt-0 mt-0 rounded" style="padding:4px; ">
+                                                        <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
+                                                            <div class="">
+                                                                <img class="rounded" src="{{getDefaultProfilePic($details->user_pic)}}" width="40" height="40" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="more-info">
+                                                            <?php
+                                                                if($details->ticket_created_by != null) {
+                                                                    $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
+                                                                }else{
+                                                                    $user_type = 'User';
+                                                                }
+                                                            ?>
+                                                            <div class="" style="display: -webkit-box">
+                                                                <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                                                <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
+                                                            </div>
+                                                            <div class="first" >
+                                                                <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
+                                                               
+                                                                <span  style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
+                                                                @if($details->attachments != null)
+                                                                <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
+                                                                @endif
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="modal-second">
+                                                    <div class="d-flex">
+
+                                                        <!-- <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;margin-top:5px"></span> -->
+    
+                                                        <a onclick="hung()" class="mx-1" title="View Details" style="position:absolute;right:56px;cursor:pointer;">
+                                                            <i data-feather='maximize'></i>
+                                                        </a>
+    
+                                                        <span class="float-end" style="position:absolute;right:46px;cursor:pointer;" title="Edit Initial Request" id="edit_request_btn">
+                                                            <a onclick="editRequest()"><i data-feather='edit-3'></i></a>
+                                                        </span> 
+    
+                                                        <span style="float:right;cursor:pointer;display:none;position:absolute;right:50px;cursor:pointer;" title="Save" id="save_request_btn">
+                                                            <a onclick="saveRequest()"> <i data-feather='save'></i> </a>
+                                                        </span>
+    
+                                                        <span style="float:right; cursor:pointer; display:none;position:absolute;right:34px;cursor:pointer;" title="Cancel" id="cancel_request_btn">
+                                                            <a onclick="cancelEditRequest()"> <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a>
+                                                        </span>
+    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    {{-- <h3>
                                         <div class="d-flex justify-content-between">
                                             <div class="first" style="width:clamp(100px, 80% , 1000px)">
                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
@@ -526,12 +587,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                    </h3>
+                                    </h3> --}}
 
                                     <!-- 
                                         
                                      -->
-                                     <div class="alert alert-primary" role="alert">
+                                     {{-- <div class="alert alert-primary" role="alert">
                                         <div class="alert-body p-0" >
                                             <div class="d-flex justify-content-between align-items-center align-self-center">
                                                 <div class="modal-first">
@@ -560,7 +621,7 @@
                                             </div>
                                             
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <hr>
                                     <div class="form-group mb-0" id="ticket_subject_edit_div" style="display:none">
                                         <div class="row mt-3">
