@@ -48,10 +48,16 @@
                             </span>
                             <div class="header-profile-sidebar1">
                                 <div class="avatar box-shadow-1 avatar-xl avatar-border">
-                                    <img src="{{ asset(getDefaultProfilePic(Auth::user()->profile_pic)) }}"
-                                        id="login_usr_logo" width="50px" height="50px" alt="'s Photo"
-                                        class="rounded-circle">
-
+                                    @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
+                                    @if(Auth::user()->profile_pic != null)
+                                        @if(file_exists( getcwd() .'/'. Auth::user()->profile_pic ) )
+                                            <img src="{{ asset( request()->root() .'/'. Auth::user()->profile_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
+                                        @else
+                                            <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                        @endif
+                                    @else
+                                        <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                    @endif
                                 </div>
                                 <h4 class="chat-user-name">{{ Auth::user()->name }}</h4>
                                 <span class="user-post">Admin</span>
@@ -83,10 +89,16 @@
                             <div class="d-flex align-items-center w-100">
                                 <div class="sidebar-profile-toggle">
                                     <div class="avatar avatar-border">
-                                        <img src="{{ asset(getDefaultProfilePic(Auth::user()->profile_pic)) }}"
-                                            id="login_usr_logo" width="50px" height="50px" alt="'s Photo"
-                                            class="rounded-circle">
-
+                                            @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
+                                            @if(Auth::user()->profile_pic != null)
+                                                @if(file_exists( getcwd() .'/'. Auth::user()->profile_pic ) )
+                                                    <img src="{{ asset( request()->root() .'/'. Auth::user()->profile_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
+                                                @else
+                                                    <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                @endif
+                                            @else
+                                                <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            @endif
                                     </div>
                                 </div>
                                 <div class="input-group input-group-merge ms-1 w-100">
@@ -113,9 +125,16 @@
                                         data-about="{{ $user->notes }}">
                                         
                                         <span class="avatar">
-                                            <img class="user_image_{{ $user->id }}"
-                                                src="{{ asset(getDefaultProfilePic($user->profile_pic)) }}"
-                                                height="42" width="42">
+                                            @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
+                                            @if($user->profile_pic != null)
+                                                @if(file_exists( getcwd() .'/'. $user->profile_pic ) )
+                                                    <img src="{{ asset( request()->root() .'/'. $user->profile_pic)}}" class="user_image_{{ $user->id }}" width="40" height="40" id="profile-user-img" />
+                                                @else
+                                                    <img class="user_image_{{ $user->id }}" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                @endif
+                                            @else
+                                                <img class="user_image_{{ $user->id }}" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                            @endif
                                         </span>
 
                                         <div class="chat-info flex-grow-1">
@@ -190,8 +209,16 @@
                                             </div>
                                             <div class="avatar avatar-border user-profile-toggle m-0 me-1"
                                                 id="active_user_pic">
-                                                <img src="{{asset(getDefaultProfilePic(Auth::user()->profile_pic))}}"
-                                                    id="active_user_img" alt="avatar" height="36" width="36" />
+                                                    @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
+                                                    @if(Auth::user()->profile_pic != null)
+                                                        @if(file_exists( getcwd() .'/'. Auth::user()->profile_pic ) )
+                                                            <img src="{{ asset( request()->root() .'/'. Auth::user()->profile_pic)}}" class="rounded-circle" width="40" height="40" id="active_user_img" />
+                                                        @else
+                                                            <img class="rounded-circle" width="40" height="40" id="active_user_img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                        @endif
+                                                    @else
+                                                        <img class="rounded-circle" width="40" height="40" id="active_user_img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                    @endif
                                                 <!-- <span class="avatar-status-busy"></span> -->
 
                                             </div>
@@ -379,9 +406,6 @@
             }else{
                 $(".type_bdge").text( 'User' );
             }
-
-            
-
 
             let img_src = $(tag).data('pc');
             $("#active_user_img").attr('src', img_src);
