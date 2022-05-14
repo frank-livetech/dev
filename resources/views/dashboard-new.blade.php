@@ -58,10 +58,10 @@
                 <div class="clock_btn_div mx-1">
                 @if($clockin)
                     <button type="button" 
-                        class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockout')">
+                        class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockout' , this)">
                         <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
                 @else
-                    <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockin')">
+                    <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockin' , this)">
                     <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>
                 @endif
                 </div>
