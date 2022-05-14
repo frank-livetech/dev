@@ -255,6 +255,8 @@
                         $('.clock_in_section').attr('style','display:none !important');
 
                         $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
+
+                        clockintime = moment(data.clock_in_time , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
                     }else{
                         btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
 

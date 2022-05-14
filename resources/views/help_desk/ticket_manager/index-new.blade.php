@@ -659,11 +659,12 @@
                 let time =convertDate(item.created_at);
                 let a = new Date(item.created_at).toLocaleString('en-US', { timeZone: userTimeZone });
                 
-                let user_type = 'Staff';
+                
                 var user_img = ``;
                 
                 if(item.last_reply != null){ 
 
+                    let user_type = 'Staff';
                     if(item.last_reply.reply_user.user_type == 5) {
                         user_type = 'User'
                     }
@@ -699,17 +700,37 @@
                 last_reply = html;
             }else{
 
+                let user_type = 'User';
+                if(item.ticket_created_by == null) {
+                    user_type = 'Staff'
+                }
+
+                if(item.user_pic!= null) {
+                    let path = root + '/' + item.user_pic;
+                    user_img = `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                }else{
+                    user_img = `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                }
+
                 let html = `
-                <div class="card p-0">                                  
-                        <h3>
-                            <div class="d-flex justify-content-between">
-                                <div class="first">
-                                    <!-- <img src="http://127.0.0.1:8000/default_imgs/int_req.jpeg" width="30" height="30" alt="">  -->
-                                    <i class="fas fa-money-check-edit fa-2xl" style="font-size:28px"></i>
-                                    <span class="mx-1"> ${item.subject} </span> 
+                <div class="card p-0">
+                        <div class="modal-first">
+                            <div class="mt-0 mt-0 rounded" style="padding:4px; ">
+                                <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
+                                    <div class=""> ${user_img} </div>
                                 </div>
+                                <div class="more-info">
+                                    <div class="" style="display: -webkit-box">
+                                        <h6 class="mb-0"> ${item.creator_name != null ? item.creator_name : item.customer_name} <span class="badge badge-secondary"> ${user_type}</span>  </h6>
+                                        <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Posted on ${convertDate(item.created_at)}</span>
+                                    </div>
+                                    <div class="first">                                        
+                                        <span style="word-break: break-all;font-size:20px"> ${item.subject} </span> 
+                                    </div>
+                                </div>
+
                             </div>
-                        </h3>
+                        </div>
                         <hr>
                         <div class="card-body p-0">
                             <div class="mail-message">
