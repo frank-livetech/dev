@@ -33,15 +33,17 @@ if(!function_exists('path')){
 
 if(!function_exists('getDefaultProfilePic')){
     function getDefaultProfilePic($pic){
+
+        $path = Session::get('is_live') == 1 ? 'public/' : '/';
         
         if($pic != null){
             if(file_exists(getcwd() . '/' . $pic)){
-                return request()->root() . '/' . $pic;
+                return request()->root() . $path .  $pic;
             }else{
-                return file_path() . 'default_imgs/customer.png';
+                return request()->root() . $path .  'default_imgs/customer.png';
             }
         }else{
-            return file_path() . 'default_imgs/customer.png';
+            return request()->root() . $path . 'default_imgs/customer.png';
         }
     }
 }

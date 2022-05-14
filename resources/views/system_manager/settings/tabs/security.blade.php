@@ -16,6 +16,12 @@
                                         <span class="d-none d-lg-block"> Firewall </span>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="#banneduser" data-bs-toggle="tab" aria-expanded="false" class="nav-link rounded-0">
+                                        <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
+                                        <span class="d-none d-lg-block"> Banned User </span>
+                                    </a>
+                                </li>
 
                             </ul>
                             
@@ -221,6 +227,51 @@
                                 <div class="tab-pane" id="settings1">
 
                                 </div>
+                                <div class="tab-pane" id="banneduser">
+                                    <div class="card mb-0">
+                                       
+                                            <div class="card-body">
+                                                <div class="widget-header widget-header-small">
+                                                    <div class="row">
+                                                        <div class="col-md-8 col-sm-6">
+                                                            <h4 class="widget-title lighter smaller menu_title">Banned Users Table
+                                                            </h4>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6">
+                                                           
+                                                            <button class="btn waves-effect waves-light btn-success rounded btn-sm" data-bs-toggle="modal" data-bs-target="#banned-user" style="float:right">
+                                                                <i data-feather='user-plus'></i>&nbsp;Add User</button>
+                                                                <button class="btn waves-effect waves-light btn-danger rounded btn-sm" style="float:right;margin-right:10px">
+                                                                    <i data-feather='trash-2' style="padding-right:3px;"></i>&nbsp;Delete User</button>
+                                                        </div>
+                                                    </div>
+                                                   <br>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <table id="ticket-departments-list" class="table display table-bordered table-hover ticket-departments-list" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>E-mail</th>
+                                                                    <th>Banned By</th>
+                                                                    <th>Date</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="unchecked"></td>
+                                                                    <td>Test@test.com</td>
+                                                                    <td>AR.test</td>
+                                                                    <td>4/6/2021 12:12 AM</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -255,3 +306,28 @@
 
 
 <!--Security-->
+<div id="banned-user" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dept">Add User</h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="widget-box widget-color-dark user-form" id="save_banned_user" action="{{asset('save-banned-user')}}" method="post">
+                    <div class="form-group my-1">
+                        <label for="departmrnt" class="d-flex mb-1 align-items-center">
+                            E-mail
+                        </label>
+                        <input class="form-control mb-1" type="text" name="name" id="user_name" placeholder="" required>
+                        
+                    </div>
+                    <div class="form-group my-1 text-end mt-2">
+                        <button type="Submit" class="btn btn-rounded btn-success">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

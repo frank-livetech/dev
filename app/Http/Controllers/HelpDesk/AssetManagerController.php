@@ -42,7 +42,7 @@ class AssetManagerController extends Controller
         $customers = customer::all();
         $companies = Company::all();
 
-        return view('help_desk.asset_manager.index',compact('customers','companies'));
+        return view('help_desk.asset_manager.index-new',compact('customers','companies'));
     }
 
     public function asset_template(){
