@@ -117,10 +117,10 @@
                             <h4 class="chat-list-title">Chats</h4>
                             <ul class="chat-users-list chat-list media-list">
                                 @foreach ($users as $user)
-                                    @if (Auth::id() != $user->id)
+                                    @if (Auth::id() != $user->id)                                           
                                     <li data-id="{{ $user->id }}" onclick="showActiveUserChat(this)"
                                         data_nm="{{ $user->name }}" data-wp="{{ $user->whatsapp }}"
-                                        data-pc="{{ getDefaultProfilePic($user->profile_pic) }}"
+                                        data-pc="{{$user->profile_pic}}"
                                         data-job="{{ $user->job_title }}"
                                         data-about="{{ $user->notes }}">
                                         
@@ -407,10 +407,9 @@
                 $(".type_bdge").text( 'User' );
             }
 
-            let img_src = $(tag).data('pc');
-            $("#active_user_img").attr('src', img_src);
 
-            
+            let imgsrc = $('.user_image_'+user_id).attr('src');
+            $("#active_user_img").attr('src', imgsrc);            
 
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
