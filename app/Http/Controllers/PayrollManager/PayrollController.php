@@ -38,8 +38,7 @@ class PayrollController extends Controller
         session()->put('clockin_time', now() );
 
         $template = DB::table("templates")->where('code','staff_clockin')->first();
-                
-        $notify = new NotifyController();
+                        $notify = new NotifyController();
         $users_list = User::where([ ['user_type',1] , ['is_deleted',0] ])->get();
 
         foreach ($users_list as $key => $value) {
@@ -63,7 +62,7 @@ class PayrollController extends Controller
                 
                 $temp = $this->templateReplaceShortCodes($template->template_html ,$detail, 'clockin' , 0);
                 $mail = new MailController();
-                $mail->sendMail( auth()->user()->name . ' Clock in' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
+                $mail->sendMail( auth()->user()->name . ' Clock in' , $temp , 'system_notification@mylive-tech.com', $value['email'] , $value['name']);
             }
         }
 
@@ -133,7 +132,7 @@ class PayrollController extends Controller
                     
                     $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
                     $mail = new MailController();
-                    $mail->sendMail( auth()->user()->name .' Clock out' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
+                    $mail->sendMail( auth()->user()->name .' Clock out' , $temp , 'system_notification@mylive-tech.com', $value['email'], $value['name']);
                 }
             }
     
