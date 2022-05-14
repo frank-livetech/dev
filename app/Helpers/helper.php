@@ -33,12 +33,11 @@ if(!function_exists('path')){
 
 if(!function_exists('getDefaultProfilePic')){
     function getDefaultProfilePic($pic){
-
         $path = Session::get('is_live') == 1 ? 'public/' : '/';
         
         if($pic != null){
             if(file_exists(getcwd() . '/' . $pic)){
-                return request()->root() .'/'. $path .  $pic;
+                return request()->root() . $path .  $pic;
             }else{
                 return request()->root() . $path .  'default_imgs/customer.png';
             }

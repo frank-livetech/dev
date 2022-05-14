@@ -58,12 +58,12 @@ class PayrollController extends Controller
             if(!empty($template)) {
 
                 $detail = $value['email'] != auth()->user()->email ? 
-                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked in' : 
+                    'Hi ' . auth()->user()->name . ', Staff member ' . $value['name'] . ' just clocked in' : 
                     'Hi you just clock in into LT-CMS, here are the details';
                 
                 $temp = $this->templateReplaceShortCodes($template->template_html ,$detail, 'clockin' , 0);
                 $mail = new MailController();
-                $mail->sendMail( 'Staff Clockin' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
+                $mail->sendMail( auth()->user()->name . ' Clock in' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
             }
         }
 
@@ -128,12 +128,12 @@ class PayrollController extends Controller
                 if(!empty($template)) {
 
                     $detail = $value['email'] != auth()->user()->email ? 
-                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked out' : 
+                    'Hi ' . auth()->user()->name . ', Staff member ' . $value['name'] . ' just clocked out' : 
                     'Hi you just clock out into LT-CMS, here are the details';
                     
                     $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
                     $mail = new MailController();
-                    $mail->sendMail( 'Staff Clock out' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
+                    $mail->sendMail( auth()->user()->name .' Clock out' , $temp , 'system_notification@mylive-tech.com', auth()->user()->email , auth()->user()->name);
                 }
             }
     
@@ -164,8 +164,13 @@ class PayrollController extends Controller
         }
 
         if(str_contains($template, '{current_date}')) {
+            $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
+            $date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
+
             $todayDateTime = new Carbon( now() , timeZone() );
-            $template = str_replace('{current_date}', $todayDateTime->format('Y-m-d') , $template);
+            $fr = $this->convertFormat($date_format);
+
+            $template = str_replace('{current_date}', $todayDateTime->format($fr) , $template);
         }
 
         if(str_contains($template, '{current_time}')) {
@@ -186,6 +191,40 @@ class PayrollController extends Controller
         }
 
         return html_entity_decode($template);
+    }
+
+    function convertFormat($format) {
+
+        $replacements = [
+            'DD'   => 'd', 
+            'ddd'  => 'D', 
+            'D'    => 'j', 
+            'dddd' => 'l', 
+            'E'    => 'N', 
+            'o'    => 'S',
+            'e'    => 'w', 
+            'DDD'  => 'z', 
+            'W'    => 'W', 
+            'MMMM' => 'F', 
+            'MM'   => 'm', 
+            'MMM'  => 'M',
+            'M'    => 'n', 
+            'YYYY' => 'Y', 
+            'YY'   => 'y', 
+            'a'    => 'a', 
+            'A'    => 'A', 
+            'h'    => 'g',
+            'H'    => 'G', 
+            'hh'   => 'h', 
+            'HH'   => 'H', 
+            'mm'   => 'i', 
+            'ss'   => 's', 
+            'SSS'  => 'u',
+            'zz'   => 'e', 'X'    => 'U',
+        ];
+
+        $phpFormat = strtr($format, $replacements);
+        return $phpFormat;
     }
 
     function clockInSession(Request $request) {
