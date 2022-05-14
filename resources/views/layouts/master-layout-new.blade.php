@@ -148,8 +148,9 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-
+        
         @if( session()->get('clockin') == "yes" || session()->get('clockin') == null ) 
+        <!-- <span class="loadingText mx-1 fw-bolder text-dark">Please wait...</span> -->
         <div class="d-flex w-100 fw-bolder clock_in_section">
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
@@ -160,6 +161,7 @@
         @else
         <div class="showClockInSection w-100"></div>
         @endif
+        <div class="loadingText mx-1 fw-bolder text-dark"></div>
 
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
@@ -659,15 +661,18 @@
                 url: url,
                 type: 'POST',
                 async: true,
+                beforeSend:function(data) {
+                    $(".loadingText").text(`Please wait..`);
+                    $(".loadingText").addClass(`w-50`);
+                    $('.clock_in_section').attr('style','display:none !important');
+                },
                 success: function(data) {
                     console.log(data);
 
                     if (data.success == true) {
                         $('.clock_btn').remove();
 
-                        let btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
-                        $('.clock_in_section').attr('style','display:none !important');
-                        
+                        let btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
                         $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
                         $('.clock_btn_div').append(btn);
 
@@ -732,8 +737,10 @@
                 },
                 complete:function(data) {
                     clockInTimer(clockintime);
+                    $(".loadingText").text(``);
                 },
-                failure: function(data) {
+                error: function(data) {
+                    $('.clock_in_section').attr('style','display:block !important');
                     console.log(data);
                     toastr.error(data.message, {
                         timeOut: 5000

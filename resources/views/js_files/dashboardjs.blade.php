@@ -229,36 +229,37 @@
         });
     }
 
-    function staffatt(btn_text) {
+    function staffatt(btn_text, btn) {
 
         let url = "{{asset('add_checkin')}}";
 
         if(btn_text == 'clockout') {
             url = `{{asset('add_checkout')}}`;
         }
+
+        $(btn).text("Processing..");
+        $(btn).attr('disabled', true);
+
         $.ajax({
             url: url,
             type: 'POST',
             async: true,
             success: function(data) {
                 console.log(data);
-
-
-
                 if (data.success == true) {
                     $('.clock_btn').remove();
                     let btn = ``;
 
                     if(btn_text == 'clockin') {
-                        btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
+                        btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
                         $('.clock_in_section').attr('style','display:none !important');
 
                         $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
                     }else{
-                        btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin')"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
+                        btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
 
                         $('.clockin_timer').hide();
-                        $('.clock_in_section').attr('style','display:none !important');
+                        $('.clock_in_section').removeAttr('style');
 
                         let clockSection = `<div class="d-flex w-100 fw-bolder clock_in_section">
                             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
