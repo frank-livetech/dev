@@ -36,8 +36,8 @@ use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 use Illuminate\Support\Facades\URL;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
