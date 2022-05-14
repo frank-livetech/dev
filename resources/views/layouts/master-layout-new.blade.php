@@ -653,6 +653,7 @@
         }
 
         let clockintime = "{{session()->get('clockin_time')}}";
+        console.log(clockintime , "clockintime");
 
         function sessionClockIn(btn_text) {
 
@@ -729,6 +730,8 @@
                         } else {
                             toastr.success(data.message, { timeOut: 5000 });
                         }
+
+                        clockInTimer( moment.utc().format("YYYY-MM-DD HH:mm:ss") );
                     } else {
                         toastr.error(data.message, {
                             timeOut: 5000
@@ -736,7 +739,6 @@
                     }
                 },
                 complete:function(data) {
-                    clockInTimer(clockintime);
                     $(".loadingText").text(``);
                 },
                 error: function(data) {
@@ -747,12 +749,11 @@
                     });
                 }
             });
-        }       
-
+        }    
+        
         function clockInTimer(clockintime) {
-            let clock_in_time = moment(clockintime , "YYY-MM-DD HH:mm:ss").format("YYY-MM-DD HH:mm:ss");
+            let clock_in_time = moment(clockintime , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
             let today = moment.utc().format("YYYY-MM-DD HH:mm:ss");
-            
             let ms = moment(today,"YYY-MM-DD HH:mm:ss").diff(moment(clock_in_time,"YYY-MM-DD HH:mm:ss"));
             let d = moment.duration(ms);
             if(d._data != null) {

@@ -58,7 +58,7 @@ class PayrollController extends Controller
 
                 $detail = $value['email'] != auth()->user()->email ? 
                     'Hi ' . auth()->user()->name . ', Staff member ' . $value['name'] . ' just clocked in' : 
-                    'Hi you just clock in into LT-CMS, here are the details';
+                    'Hey, you just clocked in into LT-CMS, here are the details';
                 
                 $temp = $this->templateReplaceShortCodes($template->template_html ,$detail, 'clockin' , 0);
                 $mail = new MailController();
@@ -128,7 +128,7 @@ class PayrollController extends Controller
 
                     $detail = $value['email'] != auth()->user()->email ? 
                     'Hi ' . auth()->user()->name . ', Staff member ' . $value['name'] . ' just clocked out' : 
-                    'Hi you just clock out into LT-CMS, here are the details';
+                    'Hey, you just clocked out from LT-CMS, here are the details';
                     
                     $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
                     $mail = new MailController();
