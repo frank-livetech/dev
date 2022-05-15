@@ -731,7 +731,7 @@
                             toastr.success(data.message, { timeOut: 5000 });
                         }
 
-                        clockInTimer( moment.utc().format("YYYY-MM-DD HH:mm:ss") );
+                        clockintime = moment(data.clock_in_time , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
                     } else {
                         toastr.error(data.message, {
                             timeOut: 5000
@@ -766,6 +766,7 @@
             }
         }
 
+        console.log(clockintime , "near");
         window.setInterval(() => {
             clockInTimer(clockintime);
         }, 100);

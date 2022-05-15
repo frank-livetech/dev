@@ -602,7 +602,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
+                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->with('ticket_created_by')->get();
             }else{
                 $tickets = Tickets::select("*")
                 ->when($sts != '', function($q) use($sts) {
@@ -611,7 +611,7 @@ class HelpdeskController extends Controller
                 ->when($dept != '', function($q) use($dept) {
                     return $q->where('tickets.dept_id', $dept);
                 })
-                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0] ])->orderBy('tickets.updated_at', 'desc')->get();
+                ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0] ])->orderBy('tickets.updated_at', 'desc')->with('ticket_created_by')->get();
                 // ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
             }        
         } else {
@@ -780,7 +780,7 @@ class HelpdeskController extends Controller
                 
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->where('tickets.trashed', 0);
             })
-            ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
+            ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')->with('ticket_created_by')
             ->get();
         } else {
             $aid = \Auth::user()->id;
@@ -802,7 +802,7 @@ class HelpdeskController extends Controller
             ->when(\Auth::user()->user_type != 5, function($q) use ($assigned_depts, $aid) {
                 return $q->whereIn('tickets.dept_id', $assigned_depts)->orWhere('tickets.assigned_to', $aid)->orWhere('tickets.created_by', $aid);
             })
-            ->where([ ['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')
+            ->where([ ['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')->with('ticket_created_by')
             ->get();
         }
 
