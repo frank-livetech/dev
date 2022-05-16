@@ -18,16 +18,16 @@
 
             if(notify.sender_id != notify.receiver_id) {
 
-                toastr['info']( notify.noti_desc , notify.noti_title, {
-                    closeButton: true,
-                    tapToDismiss: false,
-                    timeOut: 3000,
-                });
+                if(notify.noti_desc != null && notify.noti_title != null) {
+                    toastr['info']( notify.noti_desc , notify.noti_title, {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        timeOut: 10000,
+                    });
 
-                jQuery("#msg_my_audio")[0].play();
-
+                    jQuery("#msg_my_audio")[0].play();
+                }
             }
-
         }
 
     });
