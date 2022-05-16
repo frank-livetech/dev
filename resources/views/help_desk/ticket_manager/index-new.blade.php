@@ -673,7 +673,7 @@
                         let path = root + '/' + item.last_reply.reply_user.profile_pic;
                         user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                     }else{
-                        user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                        user_img += `<img src="{{asset('${root}/default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
                 }
 
@@ -697,7 +697,7 @@
                     <div class="row mt-1" style="word-break: break-all;"></div>
                 </ul>
                 `
-                last_reply = html;
+            last_reply = html;
             }else{
 
                 let user_type = 'User';
@@ -709,7 +709,7 @@
                     let path = root + '/' + item.user_pic;
                     user_img = `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                 }else{
-                    user_img = `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    user_img = `<img src="{{asset('${root}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }
 
                 let html = `

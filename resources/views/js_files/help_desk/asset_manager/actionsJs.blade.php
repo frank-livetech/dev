@@ -46,10 +46,6 @@ function get_asset_table_list() {
                         }
                     },
                     {
-                        "data": null,
-                        "defaultContent": ""
-                    },
-                    {
                         "render": function(data, type, full, meta) {
                             return `<a href="{{url('general-info')}}/` + full.id + `">` + full.asset_title + `</a>`;
                         }
@@ -100,15 +96,6 @@ function get_asset_table_list() {
                     tr.addClass('shown');
                 }
             });
-
-            tbl.on('order.dt search.dt', function() {
-                tbl.column(2, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw();
 
         },
         error: function(f) {

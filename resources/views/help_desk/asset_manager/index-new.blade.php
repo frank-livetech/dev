@@ -73,12 +73,12 @@
     }
 
     td.details-control {
-        background: url('{{url("default_imgs/details_open.png")}}') no-repeat center center !important;
+        background: url('{{url("public/default_imgs/details_open.png")}}') no-repeat center center !important;
         cursor: pointer;
         z-index: 9999 !important;
     }
     tr.shown td.details-control {
-        background: url('{{url("default_imgs/details_close.png")}}') no-repeat center center !important;
+        background: url('{{url("public/default_imgs/details_close.png")}}') no-repeat center center !important;
         cursor: pointer;
         z-index: 9999 !important;
     }
@@ -409,7 +409,6 @@
                                                 <input type="checkbox" id="checkAll" name="assets[]" value="0">
                                             </div>
                                         </th>
-                                        <th>ID</th>
                                         <th>Asset Title</th>
                                         <th>Template Name</th>
                                         <th>Actions</th>
