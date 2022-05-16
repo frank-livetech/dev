@@ -25,6 +25,8 @@ use App\Models\TicketStatus;
 use App\Models\Departments;
 use App\Models\DepartmentAssignments;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\StaffAttendance;
+use Carbon\Carbon;
 // use DB;
 
 class AuthController extends Controller
@@ -393,6 +395,20 @@ class AuthController extends Controller
                     Session::put('depts', $depts);
                     
                     Session::put('menus', $role_features->sortBy('sequence'));
+
+                    $currentDate = Carbon::now();
+                    $currentDate = $currentDate->format('Y-m-d');
+
+                    $staffData = StaffAttendance::where([ ['date', $currentDate], ['clock_out', null], ['user_id',auth()->user()->id]])->orderByDesc('id')->first();
+                    if(!empty($staffData)) {
+                        Session::put('clockin', 1);
+                        Session::put('clockin_time', $staffData->clock_in);
+                        Session::put('staff_data', $staffData );
+                    }else{
+                        Session::put('clockin', 0);
+                        Session::put('clockin_time', null);
+                        Session::put('staff_data', null );
+                    }
 
                     $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
                     if($system_format) {

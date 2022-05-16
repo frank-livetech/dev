@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use DB;
+use Session;
 use Exception;
 use SystemSettings;
 
@@ -28,17 +29,40 @@ class PayrollController extends Controller
 
     public function clockin() {
 
-        $clock_in = new StaffAttendance;
-        $clock_in->user_id = \Auth::user()->id;
-        $clock_in->clock_in = Carbon::now();
-        $clock_in->date = date_format(Carbon::now(), "Y-m-d");
-        $clock_in->save();
+        $currentDate = Carbon::now();
+        $currentDate = $currentDate->format('Y-m-d');
 
-        session()->put('clockin', 'no');
-        session()->put('clockin_time', now() );
+        $staffData = StaffAttendance::where([ ['date', $currentDate], ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
+
+        $clock_in_arr = [
+            "user_id" => auth()->id(),
+            "date" => date_format(Carbon::now() , "Y-m-d"),
+            "clock_in" => Carbon::now(),
+        ];
+
+        if(!empty($staffData)) {
+
+            // clockout user
+            $staffData->clock_out = Carbon::now();
+            $startTime = Carbon::parse($staffData->clock_in);
+            $totalDuration = (array) $staffData->clock_out->diff($startTime);
+            $staffData->hours_worked = sprintf("%02s:%02s:%02s", ($totalDuration['d']*24)+$totalDuration['h'], $totalDuration['i'], $totalDuration['s']);
+            $staffData->clocked_out_by = 'user';
+            $staffData->save();
+
+            // after clockout again clock in 
+            StaffAttendance::create($clock_in_arr);
+
+        }else{
+            StaffAttendance::create($clock_in_arr);
+        }
+
+        Session::put('clockin', 1);
+        Session::put('clockin_time', now());
+        Session::put('staff_data', $staffData );
 
         $template = DB::table("templates")->where('code','staff_clockin')->first();
-                        $notify = new NotifyController();
+        $notify = new NotifyController();
         $users_list = User::where([ ['user_type',1] , ['is_deleted',0] ])->get();
 
         foreach ($users_list as $key => $value) {
@@ -57,7 +81,7 @@ class PayrollController extends Controller
             if(!empty($template)) {
 
                 $detail = $value['email'] != auth()->user()->email ? 
-                    'Hi ' . auth()->user()->name . ', Staff member ' . $value['name'] . ' just clocked in' : 
+                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked in' : 
                     'Hey, you just clocked in into LT-CMS, here are the details';
                 
                 $temp = $this->templateReplaceShortCodes($template->template_html ,$detail, 'clockin' , 0);
@@ -86,8 +110,9 @@ class PayrollController extends Controller
     
             $clock_in->save();
 
-            session()->put('clockin', 'yes');
-            session()->put('clockin_time', now() );
+            Session::put('clockin',0);
+            Session::put('clockin_time', null );
+            Session::put('staff_data', null );
             
             $get_tsk_lst = Tasks::where('task_status','default')->where('assign_to', \Auth::user()->id)->get();
 
@@ -127,7 +152,7 @@ class PayrollController extends Controller
                 if(!empty($template)) {
 
                     $detail = $value['email'] != auth()->user()->email ? 
-                    'Hi ' . auth()->user()->name . ', Staff member ' . $value['name'] . ' just clocked out' : 
+                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked out' : 
                     'Hey, you just clocked out from LT-CMS, here are the details';
                     
                     $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
