@@ -214,10 +214,8 @@ function get_all_companies() {
                                 <label class="custom-control-label" for="customCheck_` + data[i].id + `"></label>
                             </div>
                         </td>
-                        <!--<td>` + count + `</td>-->
-                        <td><a href="company-profile/` + data[i].id + `"><i class="fas fa-eye"></i></a></td>
-                        
-                        <td>` + (data[i].name != null ? data[i].name : '-') + `</td>
+                        <!--<td>` + count + `</td>-->                        
+                        <td><a href="company-profile/` + (data[i].id != null ? data[i].id : '-') + `">` + (data[i].name != null ? data[i].name : '-') + `</a></td>
                         <td>` + (data[i].poc_first_name != null ? data[i].poc_first_name : '-') + `</td>
                         <td>` + (data[i].poc_last_name != null ? data[i].poc_last_name : '-') + `</td>
                         <td>` + (data[i].email != null ? data[i].email : '-') + `</td>

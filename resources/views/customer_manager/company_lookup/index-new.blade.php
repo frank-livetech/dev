@@ -57,18 +57,12 @@
                                         <label class="custom-control-label" for="customCheck1"></label>
                                     </div>
                                 </th>
-                                <!-- <th>Sr</th> -->
-                                <th>Profile</th>
                                 <th>Company Name</th>
                                 <th>Owner First Name</th>
                                 <th>Owner Last Name</th>
                                 <th>E-mail</th>
                                 <th>Phone</th>
                                 <th>Address</th>
-                                <!-- <th>Country</th>
-                                <th>State</th>
-                                <th>City</th>
-                                <th>Zip Code</th> -->
                                 <th>Created at</th>
                                 <th>Action</th>
                             </tr>
