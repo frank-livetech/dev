@@ -403,12 +403,12 @@
                                 class="table table-bordered w-100 no-wrap asset-table-list">
                                 <thead>
                                     <tr>
-                                        <th></th>
                                         <th>
                                             <div class="text-center">
                                                 <input type="checkbox" id="checkAll" name="assets[]" value="0">
                                             </div>
                                         </th>
+                                        <th></th>
                                         <th>Asset Title</th>
                                         <th>Template Name</th>
                                         <th>Actions</th>

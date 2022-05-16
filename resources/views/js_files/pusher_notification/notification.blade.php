@@ -18,7 +18,7 @@
 
             if(notify.sender_id != notify.receiver_id) {
 
-                if(notify.noti_desc != null && notify.noti_title != null) {
+                // if(notify.noti_desc != null && notify.noti_title != null) {
                     toastr['info']( notify.noti_desc , notify.noti_title, {
                         closeButton: true,
                         tapToDismiss: false,
@@ -26,7 +26,7 @@
                     });
 
                     jQuery("#msg_my_audio")[0].play();
-                }
+                // }
             }
         }
 
