@@ -476,7 +476,7 @@ class HelpdeskController extends Controller
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
+            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Created By '. $name_link;
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);    
             
@@ -997,7 +997,7 @@ class HelpdeskController extends Controller
 
                     // save activity logs
                     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Recycled By by '. $name_link;
+                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Recycled By by '. $name_link;
 
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
@@ -1334,7 +1334,7 @@ class HelpdeskController extends Controller
                 
                 // Add Delete log
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Permanently Deleted By '. $name_link;
+                $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Permanently Deleted By '. $name_link;
                 
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
@@ -1371,7 +1371,7 @@ class HelpdeskController extends Controller
                 $del_tkt->save();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Moved to trash By '. $name_link;
+                $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Moved to trash By '. $name_link;
 
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
@@ -1401,7 +1401,7 @@ class HelpdeskController extends Controller
                 $del_tkt->save();
                 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Recycled By '. $name_link;
+                $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Recycled By '. $name_link;
 
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
@@ -1437,7 +1437,7 @@ class HelpdeskController extends Controller
             
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a>) '.$msg.' '. $name_link;
+            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> '.$msg.' '. $name_link;
 
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $flag_tkt->id , auth()->id() , $action_perform);
@@ -1481,7 +1481,7 @@ class HelpdeskController extends Controller
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up added by '. $name_link;
+            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Follow-up added by '. $name_link;
 
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id, auth()->id() , $action_perform);
@@ -2177,7 +2177,7 @@ class HelpdeskController extends Controller
             $flwup->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up "'.$logData.'" by ' . $name_link;
+            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Follow-up "'.$logData.'" by ' . $name_link;
 
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id, auth()->id() , $action_perform);
@@ -2390,7 +2390,7 @@ class HelpdeskController extends Controller
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up deleted by '. $name_link;
+            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Follow-up deleted by '. $name_link;
 
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_follow_up' , $ticket->id , auth()->id() , $action_perform);
@@ -2432,12 +2432,12 @@ class HelpdeskController extends Controller
 
 
                 $data = $note;
-                $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note updated by '. $name_link;
+                $action_performed = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Note updated by '. $name_link;
             }else{
                 $data['created_by'] = \Auth::user()->id;
                 $note = TicketNote::create($data);
 
-                $action_performed = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note added by '. $name_link;
+                $action_performed = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Note added by '. $name_link;
             }
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
@@ -2717,7 +2717,7 @@ class HelpdeskController extends Controller
                     $ticket->updated_by = \Auth::user()->id;
                     $ticket->save();
 
-                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
+                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Note deleted by '. $name_link;
         
                 }else{
                     $ticket = Tickets::where("coustom_id" , $request->ticket_id)->first();
@@ -2725,7 +2725,7 @@ class HelpdeskController extends Controller
                     $ticket->updated_by = \Auth::user()->id;
                     $ticket->save();
 
-                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$request->ticket_id.'">'.$request->ticket_id.'</a>) Note deleted by '. $name_link;
+                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$request->ticket_id.'">'.$request->ticket_id.'</a> Note deleted by '. $name_link;
                 }
 
                 $log = new ActivitylogController();
@@ -2808,7 +2808,7 @@ class HelpdeskController extends Controller
                     }
 
                     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                    $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$value->coustom_id.'">'.$value->coustom_id.'</a>) merged into (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) By '. $name_link;
+                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$value->coustom_id.'">'.$value->coustom_id.'</a> merged into ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> By '. $name_link;
         
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id, auth()->id() , $action_perform);
@@ -2889,7 +2889,7 @@ class HelpdeskController extends Controller
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Sla Plan Association Updated By '. $name_link;
+            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Sla Plan Association Updated By '. $name_link;
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $request->ticket_id , auth()->id() , $action_perform);
             $log->saveActivityLogs('Tickets' , 'sla_res_deadline_from' , $request->ticket_id , auth()->id() , $action_perform);
@@ -2918,7 +2918,7 @@ class HelpdeskController extends Controller
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) reply & resolution deadlines Updated By '. $name_link;
+            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> reply & resolution deadlines Updated By '. $name_link;
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $request->ticket_id , auth()->id() , $action_perform);
 
@@ -3264,14 +3264,14 @@ class HelpdeskController extends Controller
             }elseif($action_name == 'Customer Ticket Create'){
                 
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
-                $notification_message = 'New Ticket (ID <a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a>) Created By '.  $user->name;
+                $notification_message = 'New Ticket ID <a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a> Created By '.  $user->name;
 
                 $notification_title = 'New Ticket Created';
                 
 
             } else if($action_name == 'Ticket Create') {
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
-                $notification_message = 'New Ticket (ID <a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a>) Created By '.  $user->name;
+                $notification_message = 'New Ticket ID <a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a> Created By '.  $user->name;
                 $notification_title = 'New Ticket Created';
             }
             

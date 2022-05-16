@@ -401,7 +401,7 @@ class ProjectManagerController extends Controller
             }else{
 
               $data['created_by'] = auth()->id();
-              $action_perform = 'Project Folder '. $data['name'] .' ' . (request()->id == null ? 'Created By ' : 'Updated By ') . ' '. $name_link;
+              $action_perform = 'Project Folder '. $data['name'] .' ' . request()->id == null ? 'Created By ' : 'Updated By ' . ' '. $name_link;
               $log = new ActivitylogController();
               $log->saveActivityLogs('Project Folder' , 'project_folder' , $data['id'] , auth()->id() , $action_perform);
 

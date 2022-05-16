@@ -793,7 +793,7 @@ class MailController extends Controller
 
 
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/' .$ticket->coustom_id;
-            $action_perform = 'Ticket (ID <a href="'. $url .'">'.$ticket->coustom_id.'</a>) Created By CRON';
+            $action_perform = 'Ticket ID <a href="'. $url .'">'.$ticket->coustom_id.'</a> Created By CRON';
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
             

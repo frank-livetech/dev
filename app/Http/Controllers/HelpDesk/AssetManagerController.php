@@ -241,7 +241,7 @@ class AssetManagerController extends Controller
                 $ticket->updated_by = auth()->id() ;
                 $ticket->save();
                 
-                $action_perform = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset added By '. $name_link;
+                $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset added By '. $name_link;
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' ,  $ticket->ticket_id , auth()->id() , $action_perform);
             }
@@ -336,7 +336,7 @@ class AssetManagerController extends Controller
             $ticket->save();
             
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset deleted By '. $name_link;
+            $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset deleted By '. $name_link;
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->ticket_id , auth()->id() , $action_perform);
         }
@@ -509,7 +509,7 @@ class AssetManagerController extends Controller
                 $ticket->save();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket (ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset updated By '. $name_link;
+                $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset updated By '. $name_link;
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'ticket_replies' , $asset->ticket_id , auth()->id() , $action_perform);
             }
