@@ -1449,4 +1449,26 @@ class SettingsController extends Controller
         return response()->json($response);
     }
 
+
+    public function delete_banned_users(Request $request) {
+        // return dd($request->all());
+        $data   = SpamUser::whereIn('id',$request->id)->get();
+        if( count($data) > 0) {
+            SpamUser::whereIn('id',$request->id)->delete();
+            return response()->json([
+                "status" => 200 , 
+                "success" => true ,
+                "message" => "Banned User deleted Successfully",
+            ]);
+        }else{
+
+            return response()->json([
+                "status" => 500 , 
+                "success" => false ,
+                "message" => "Something Went Wrong",
+            ]);
+        }
+
+    }
+
 }

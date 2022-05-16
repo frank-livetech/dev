@@ -4134,6 +4134,15 @@ $("#edit_mail_dept_id").on('change' , function() {
     showDepartStatus(value , status_id)
 });
 
+
+
+// banned user check all
+$(".check-all").click(function() {
+
+    $("input[type=checkbox]").prop("checked", $(this).prop("checked"))
+    $(this).is(":checked") ? $("#deleteBannedUser").removeAttr("disabled") : $("#deleteBannedUser").attr("disabled",true);
+});
+
 function getAllBannedUser() {
     $.ajax({
         type: "GET",
@@ -4157,18 +4166,14 @@ function getAllBannedUser() {
                 columns: [
                     {
                         "render": function(data, type, full, meta) {
-                           
                             return (
-                                `<input class="form-check-input check" value ="` + full.id +`" type="checkbox" id="inlineCheckbox2" value="unchecked">`
+                                `<input class="form-check-input check singleCheck_${full.id}" name="banned_check" onclick="bannedCheckBox(${full.id})" value ="` + full.id +`" type="checkbox" id="inlineCheckbox2" value="1">`
                             );
-
                         },
-
                     },
                     {
-                        "render": function(data, type, full, meta) {
-                            
-                            return full.email;
+                        "render": function(data, type, full, meta) {  
+                            return full.email + '--' + full.id;
                         }
                     },
                     {
@@ -4209,6 +4214,17 @@ function getAllBannedUser() {
             console.log(e);
         }
     });
+}
+
+function bannedCheckBox(id) {
+    $(".check-all").prop("checked", false);
+    $("#deleteBannedUser").removeAttr("disabled");   
+
+    if( $(".singleCheck_"+id).is(":checked") ) {
+        $("#deleteBannedUser").removeAttr("disabled") 
+    }else{
+        $("#deleteBannedUser").attr("disabled",true)
+    }
 }
 
 function EditBannedUserModel(id, email) {
@@ -4260,4 +4276,36 @@ $("#save_banned_user").submit(function(event) {
 
     });
 });
+
+
+function deleteBannedUser() {
+    var banned_id = [];
+
+    $("input:checkbox[name=banned_check]:checked").each(function() {
+        banned_id.push( $(this).val() ); 
+    });
+    if(banned_id.length > 0) {
+
+        $.ajax({
+            type: "POST",
+            url: '{{route("delete.bannedUser")}}',
+            data: {id:banned_id},
+            success: function(data) {
+                console.log(data, "a");
+
+                if(data.status == 200 && data.success == true) {
+                    toastr.success(data.message, { timeOut: 5000 });
+                    getAllBannedUser();
+                }                    
+                
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+
+    }else{
+        toastr.error("Please select atleast one record", { timeOut: 5000 });
+    }
+}
 </script>
