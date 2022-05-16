@@ -148,11 +148,9 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-        
-        @if( session()->get('clockin') == "yes" || session()->get('clockin') == null ) 
-        <!-- <span class="loadingText mx-1 fw-bolder text-dark">Please wait...</span> -->
+        @if( session()->get('clockin') == 0 || session()->get('clockin') == null )
         <div class="d-flex w-100 fw-bolder clock_in_section">
-            <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
+            <h5 class="ms-1 fw-bolder text-danger">You are not clocked in-</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
             <div class="d-flex">
                 <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" class="mx-1 text-danger"> No </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
@@ -218,7 +216,7 @@
                                 <span class="user-status"></span>
                             @endif
 
-                            @if(session()->get('clockin') == "no" || session()->get('clockin') == null)
+                            @if( session()->get('clockin') == 1 || session()->get('clockin') != null)
                             <span class="badge bg-success clockin_timer" style="margin-top:4px"></span>
                             @endif
                         </div>

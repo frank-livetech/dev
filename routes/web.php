@@ -107,6 +107,10 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::get('/settings-new','SettingsController@settingsNew')->name('settings.index-new');
     //Response Category Crud
 
+    // banned user
+    Route::post('/save-banned-user','SettingsController@SaveBannedUser');
+    Route::get('/get-banned-user','SettingsController@get_banned_users');
+
     Route::post('/add_cat','SettingsController@addResponseCategory');
     Route::get('/get_all_resTemplate','SettingsController@getallCatResponse');
     Route::post('/update_cat_response','SettingsController@updateCatResponse');
