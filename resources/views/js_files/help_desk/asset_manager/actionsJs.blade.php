@@ -27,7 +27,7 @@ function get_asset_table_list() {
                 },
                 'columnDefs': [
                     {
-                        'targets': 0,
+                        'targets': 1,
                         'createdCell':  function (td, cellData, rowData, row, col) {
                             $(td).attr('id',rowData.id); 
                         }
@@ -35,15 +35,15 @@ function get_asset_table_list() {
                 ],
                 columns: [
                     {
+                        "render": function() {
+                            return `<div class="text-center"><input type="checkbox" id="" name="" value=""></div>`;
+                        }
+                    },
+                    {
                         "className":'details-control text-left',
                         "orderable":false,
                         "data":null,
                         "defaultContent": ''
-                    },
-                    {
-                        "render": function() {
-                            return `<div class="text-center"><input type="checkbox" id="" name="" value=""></div>`;
-                        }
                     },
                     {
                         "render": function(data, type, full, meta) {
