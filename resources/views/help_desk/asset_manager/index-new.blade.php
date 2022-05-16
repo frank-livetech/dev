@@ -71,6 +71,17 @@
         display: -ms-flexbox;
         margin-bottom: 12px;
     }
+
+    td.details-control {
+        background: url('{{url("default_imgs/details_open.png")}}') no-repeat center center !important;
+        cursor: pointer;
+        z-index: 9999 !important;
+    }
+    tr.shown td.details-control {
+        background: url('{{url("default_imgs/details_close.png")}}') no-repeat center center !important;
+        cursor: pointer;
+        z-index: 9999 !important;
+    }
 </style>
 @endsection
 
@@ -389,10 +400,15 @@
                         
                         <div class="table-responsive">
                             <table id="asset-table-list"
-                                class="table table-striped table-bordered w-100 no-wrap asset-table-list">
+                                class="table table-bordered w-100 no-wrap asset-table-list">
                                 <thead>
                                     <tr>
-                                        <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
+                                        <th></th>
+                                        <th>
+                                            <div class="text-center">
+                                                <input type="checkbox" id="checkAll" name="assets[]" value="0">
+                                            </div>
+                                        </th>
                                         <th>ID</th>
                                         <th>Asset Title</th>
                                         <th>Template Name</th>
