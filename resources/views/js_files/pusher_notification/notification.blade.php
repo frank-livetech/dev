@@ -39,6 +39,9 @@
 
 
     function appendNotification(icon , title , desc) {
+
+        let time = moment( new Date().toLocaleString('en-US', { timeZone: "{{Session::get('timezone')}}" })).format('hh:mm A');
+
         let html = `<a class="d-flex" href="#" onclick="markRead(15)" style="cursor: pointer;">
             <div class="list-item d-flex align-items-start">
                 <div class="me-1">
@@ -51,7 +54,7 @@
                 <div class="list-item-body flex-grow-1">
                     <p class="media-heading">
                     <span class="fw-bolder">${title}</span>
-                    <span class="float-end">${moment().format('hh:mm A')}</span> </p>
+                    <span class="float-end">${time}</span> </p>
                     <small class="notification-text">${desc}</small>
                 </div>
             </div>

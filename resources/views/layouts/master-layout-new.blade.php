@@ -811,9 +811,6 @@
             clockInTimer(clockintime);
         }, 100);
         
-
-        
-
     </script>
     @include('js_files.chat.pusher')
     @include('js_files.pusher_notification.notification')
