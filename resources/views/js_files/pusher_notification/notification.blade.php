@@ -27,7 +27,7 @@
                     toastr['info']( notify.noti_desc , notify.noti_title, {
                         closeButton: true,
                         tapToDismiss: false,
-                        timeOut: 10000000000,
+                        timeOut: 10000,
                     });
 
                     jQuery("#msg_my_audio")[0].play();
