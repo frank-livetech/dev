@@ -48,7 +48,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/file-uploaders/dropzone.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/js/scripts/components/components-tooltips.js')}}">
 
-
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
     <!-- END: Vendor CSS-->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -62,6 +61,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/dark-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/bordered-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/semi-dark-layout.css')}}">
+
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/imagePreview.css')}}">
 
     <!-- BEGIN: Page CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet" type="text/css">
@@ -265,6 +266,11 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
+    <div id="image-viewer">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="full-image">
+    </div>
+
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
         {{Session::get('site_footer')}}
@@ -299,6 +305,8 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/file-uploaders/dropzone.min.js')}}"></script>
 
     <script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
+
+    <script src="{{asset($file_path . 'app-assets/js/scripts/imagePreview.js')}}"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>

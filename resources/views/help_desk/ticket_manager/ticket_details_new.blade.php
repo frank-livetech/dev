@@ -122,8 +122,8 @@
     }
     .downFile{
         position: absolute;
-        bottom: 4px;
-        right:55px;
+        top: 4px;
+        right:4px;
         border-radius: 4px;
         color: #fff;
         padding: 2px 10px;
@@ -142,7 +142,7 @@
     .borderOne{
         border: 1px solid #e6e7e8;
         text-align: center;
-        width: 70%;
+        width: auto;
         min-height: 94px;
         /* padding: 29px 12px; */
         /* padding-top: 21%; */

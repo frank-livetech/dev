@@ -11,7 +11,7 @@
         tickets_table_list = $('#ticket-table-list').DataTable({
             processing: true,
             // "scrollX": true,
-            pageLength: ticketLengthCount.per_page,
+            pageLength: (ticketLengthCount == null ? 10 : (ticketLengthCount.per_page !=null ? ticketLengthCount.per_page : 10)),
             fixedColumns: true,
             "autoWidth": false,
             'columnDefs': [{
@@ -274,7 +274,7 @@
                     let option = `<option value="${ticket_view}" selected> ${ticket_view} </option>`;
                     $('select[name=ticket-table-list_length]').append(option);
                 }else{
-                    totalPage = data.ticket_view.per_page;
+                    totalPage = (data.ticket_view == null ? 10 : (data.ticket_view.per_page !=null ? data.ticket_view.per_page : 10))
                     $('select[name=ticket-table-list_length]').val(data.ticket_view.per_page);
                 }
 
