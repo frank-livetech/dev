@@ -120,20 +120,19 @@
                 <div class="card-body">
                     <center class="mt-1">
                         @php
-                        $path = Session::get('is_live') == 1 ? '/' : '/';
+                        $path = Session::get('is_live') == 1 ? '/public/' : '/';
                         @endphp
                         <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
                             @if($company->com_logo != null)
-                            @if(is_file( getcwd() .'/'. $company->com_logo ))
-                            <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle"
-                                width="100" height="100" id="company_curr_img" />
+                                @if(is_file( getcwd() .'/'. $company->com_logo ))
+                                    <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
+                                @else
+                                <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
+                                    width="100" height="100" id="company_curr_img" />
+                                @endif
                             @else
-                            <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
-                                width="100" height="100" id="company_curr_img" />
-                            @endif
-                            @else
-                            <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
-                                width="100" height="100" id="company_curr_img" />
+                                <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
+                                    width="100" height="100" id="company_curr_img" />
                             @endif
                         </a>
                         <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left:50px;bottom:60px"><i class="fa fa-pencil-alt picEdit"></i></a> -->
@@ -967,14 +966,14 @@
 
                                             <div class="table-responsive">
                                                 <table id="asset-table-list"
-                                                    class="table table-striped table-bordered w-100 no-wrap asset-table-list">
+                                                    class="table table-bordered w-100 no-wrap asset-table-list">
                                                     <thead>
                                                         <tr>
                                                             <th>
                                                                 <div class="text-center"><input type="checkbox"
                                                                         id="checkAll" name="assets[]" value="0"></div>
                                                             </th>
-                                                            <th>ID</th>
+                                                            <th></th>
                                                             <th>Asset Title</th>
                                                             <th>Template Name</th>
                                                             <th>Actions</th>
@@ -1358,6 +1357,7 @@
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -1597,7 +1597,7 @@
                 <div class="text-center" id="prof-img ">
                     @php
 
-                    $path = Session::get('is_live') == 1 ? '/' : '/';
+                    $path = Session::get('is_live') == 1 ? '/public/' : '/';
                     @endphp
                     @if($company->com_logo != null)
                     @if(is_file( getcwd() .'/'. $company->com_logo ))

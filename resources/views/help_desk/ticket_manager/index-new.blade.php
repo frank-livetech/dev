@@ -702,19 +702,13 @@
 
                 let user_type = item.ticket_created_by == null ? 'Staff' : 'User';
 
-                if(item.user_pic!= null) {
-                    let path = root + '/' + item.user_pic;
-                    user_img = `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
-                }else{
-                    user_img = `<img src="{{asset('${root}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-                }
-
+                let img = `<img src="${item.user_pic}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                 let html = `
                 <div class="card p-0">
                         <div class="modal-first">
                             <div class="mt-0 mt-0 rounded" style="padding:4px; ">
                                 <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
-                                    <div class=""> ${user_img} </div>
+                                    <div class=""> ${img} </div>
                                 </div>
                                 <div class="more-info">
                                     <div class="" style="display: -webkit-box">
