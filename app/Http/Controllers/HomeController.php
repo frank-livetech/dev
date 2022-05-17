@@ -140,20 +140,20 @@ class HomeController extends Controller {
         // }
 
         $settings = BrandSettings::first();
-        $version = '';
-        if($settings) {
-            $version =  $settings->site_logo_title;
-        }else{
-            $version = 'Dashboard';
-        }
+        $version = (empty($settings) ? 'Dashboard' : ($settings->site_logo_title != null ? $settings->site_logo_title  : 'Dashboard') );
 
         $count = Notification::with(['sender','user'])->orderBy('id','desc')->where('receiver_id',\Auth::user()->id)->where('read_at',NULL)->count();
+
+        $currentDate = Carbon::now();
+        $staffData = StaffAttendance::where([ ['date', $currentDate->format('Y-m-d')], ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
+
         $response['message'] = 'Notification List';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['data'] = $notifications;
         $response['total_notification'] = $count;
         $response['system_version'] = $version;
+        $response['staff_clock_in'] = $staffData;
         return response()->json($response);
 
     }
