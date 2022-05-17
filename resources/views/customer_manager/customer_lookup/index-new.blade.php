@@ -73,7 +73,6 @@
                                                 <label class="custom-control-label" for="customCheck1"></label>
                                             </div>
                                         </th>
-                                        <th> </th>
                                         <th class="cust_first">First Name</th>
                                         <th class="cust_first">Last Name</th>
                                         <th>E-mail</th>

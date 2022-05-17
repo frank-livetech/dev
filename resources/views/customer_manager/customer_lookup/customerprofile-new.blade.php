@@ -1010,11 +1010,11 @@
                                                 
                                                 <div class="table-responsive">
                                                     <table id="asset-table-list"
-                                                        class="table table-striped table-bordered w-100 no-wrap asset-table-list">
+                                                        class="table table-bordered w-100 no-wrap asset-table-list">
                                                         <thead>
                                                             <tr>
                                                                 <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
-                                                                <th>ID</th>
+                                                                <th></th>
                                                                 <th>Asset Title</th>
                                                                 <th>Template Name</th>
                                                                 <th>Actions</th>

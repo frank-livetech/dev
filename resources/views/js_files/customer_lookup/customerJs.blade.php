@@ -393,10 +393,8 @@ function get_all_customers() {
                             <label class="custom-control-label" for="customCheck_${data[i].id}"></label>
                         </div>
                     </td>
-                    <!-- <td>${count}</td>-->
-                    <td><a href="customer-profile/${data[i].id}"><i class="fas fa-eye"></i></a></td>
-                    <td>${(data[i].first_name != null ? data[i].first_name : '-')}</td>
-                    <td>${(data[i].last_name != null ? data[i].last_name : '-')}</td>
+                    <td> <a href="customer-profile/${data[i].id}"> ${(data[i].first_name != null ? data[i].first_name : '-')} </a> </td>
+                    <td> <a href="customer-profile/${data[i].id}"> ${(data[i].last_name != null ? data[i].last_name : '-')} </a> </td>
                     <td>${(data[i].email != null ? data[i].email : '-')}</td>
                     <td><a href="tel: ${(data[i].phone != null ? data[i].phone : '-')}">${(data[i].phone != null ? data[i].phone : '-')}</a></td>
                     <td>${(data[i].company != null ? data[i].company.name : '-')}</td>
@@ -421,33 +419,6 @@ function get_all_customers() {
                     }],
                 });
             }
-            // var customer_table = $('#customerTable').DataTable();
-
-            // $('#toggle_column').multipleSelect({
-            //     width: 300,
-            //     onClick: function(view) {
-            //         var selectedItems = $('#toggle_column').multipleSelect("getSelects");
-            //         for (var i = 0; i < 14; i++) {
-            //             columns = customer_table.column(i).visible(0);
-            //         }
-            //         for (var i = 0; i < selectedItems.length; i++) {
-            //             var s = selectedItems[i];
-            //             customer_table.column(s).visible(1);
-            //         }
-            //         $('#contacts_table').css('width', '100%');
-            //     },
-            //     onCheckAll: function() {
-            //         for (var i = 0; i < 14; i++) {
-            //             columns = customer_table.column(i).visible(1);
-            //         }
-            //     },
-            //     onUncheckAll: function() {
-            //         for (var i = 0; i < 14; i++) {
-            //             columns = customer_table.column(i).visible(0);
-            //         }
-            //         $('#contacts_table').css('width', '100%');
-            //     }
-            // });
         },
         complete: function(data) {
             $('.loader_container').hide();

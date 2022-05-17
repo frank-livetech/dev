@@ -122,15 +122,16 @@
         .whitePlaceholder::-webkit-input-placeholder {
             color: white !important;
         }
-
-        /* .navbarCustomBorder {
-            border: 1px solid #b0bec5;
-            margin: 6px;
-            border-radius: 15px;
-            padding: 4px;
-        } */
-
-        /* checking comment */
+        td.details-control {
+            background: url('{{url($file_path . "default_imgs/details_open.png")}}') no-repeat center center !important;
+            cursor: pointer;
+            z-index: 9999 !important;
+        }
+        tr.shown td.details-control {
+            background: url('{{url($file_path ."default_imgs/details_close.png")}}') no-repeat center center !important;
+            cursor: pointer;
+            z-index: 9999 !important;
+        }
     </style>
 
     @stack('css')

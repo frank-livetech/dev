@@ -71,17 +71,6 @@
         display: -ms-flexbox;
         margin-bottom: 12px;
     }
-
-    td.details-control {
-        background: url('{{url("public/default_imgs/details_open.png")}}') no-repeat center center !important;
-        cursor: pointer;
-        z-index: 9999 !important;
-    }
-    tr.shown td.details-control {
-        background: url('{{url("public/default_imgs/details_close.png")}}') no-repeat center center !important;
-        cursor: pointer;
-        z-index: 9999 !important;
-    }
 </style>
 @endsection
 
