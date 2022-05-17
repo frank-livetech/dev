@@ -208,7 +208,7 @@
                 </li>
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none">
+                        <div class="user-nav d-sm-flex d-none navUserInfo">
                             <span class="user-name fw-bolder">{{ Auth::user()->name }}</span>
                             @if(\Auth::user()->user_type == "1")
                                 <span class="user-status">{{Auth::user()->role}}</span>
@@ -345,7 +345,6 @@
         const change_theme_url = "{{asset('change_theme_mode')}}";
 
         $(document).ready(function() {
-
             getAllCounts();
             getNotifications();
             getUnreadMessages();
@@ -376,6 +375,8 @@
         var unreadMsg = "{{route('unread.message')}}";
         var get_notifications = "{{url('getNotifications')}}";
         var parser_url = "{{url('save-inbox-replies')}}";
+        let clockintime = "{{session()->get('clockin_time')}}";
+        console.log(clockintime , "clockintime");
 
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({
@@ -541,6 +542,9 @@
                     $('.version_title').text(data.system_version);
 
                     if(data.status_code == 200 && data.success == true){
+
+                        renderClockIn(data.staff_clock_in);
+
                         notifications = data.data;
 
                         let count = data.total_notification;
@@ -625,6 +629,46 @@
             }
         }
 
+        function renderClockIn(data) {
+            console.log(data , "data");
+            // if data is null then its clock in 
+            if(data == null) {
+
+                let clockinbtn = `
+                <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockin' , this)">
+                    <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;
+                $('.clock_btn_div ').html(clockinbtn);
+                $('.clock_in_section').show();
+                $('.clockin_timer').hide();
+
+                let clockSection = `<div class="d-flex w-100 fw-bolder clock_in_section">
+                    <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
+                    <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
+                    <div class="d-flex">
+                        <a href="#" class="mx-1 text-danger" onclick="staffatt('clockin')"> Yes </a> | <a href="#" class="mx-1 text-danger"> No </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
+                    </div>
+                </div>`;
+
+                $('.showClockInSection').html(clockSection);
+
+            }else{
+
+                let clockoutbtn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
+                $('.clock_btn_div').html(clockoutbtn);
+                $('.clock_in_section').attr('style','display:none !important');
+
+                if($('.navUserInfo').children().length == 2) {
+                    $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
+                    clockintime = moment(data.clock_in , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+                    clockInTimer(clockintime);
+                }else{
+                    clockintime = moment(data.clock_in , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+                    clockInTimer(clockintime);
+                }
+            }
+
+        }
+
 
         function checkClockIn(type) {
             $.ajax({
@@ -649,9 +693,6 @@
                 }
             });
         }
-
-        let clockintime = "{{session()->get('clockin_time')}}";
-        console.log(clockintime , "clockintime");
 
         function sessionClockIn(btn_text) {
 
@@ -768,6 +809,8 @@
         window.setInterval(() => {
             clockInTimer(clockintime);
         }, 100);
+        
+
         
 
     </script>
