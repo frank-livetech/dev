@@ -55,8 +55,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -208,22 +208,14 @@ class HelpdeskController extends Controller
         
         $data = $request->all();
         $response = array();
-        // return dd($request->all());
         try {
             $ticket = Tickets::where('id',$data['id'])->first();
 
             $data['action_performed'] = ($request->has('action_performed')) ? $data['action_performed'] : "";
-            
+
             if(!empty($ticket)) {
                 if(array_key_exists('attachments', $data)) {
                     // target dir for ticket files against ticket id
-
-                    
-                    
-                    // $target_dir = public_path().'/files/tickets/'.$data['id'];
-                    // if (!File::isDirectory($target_dir)) {
-                    //     mkdir($target_dir, 0777, true);
-                    // }
 
                     $file_path = \Session::get('is_live') == 1 ? 'public/' : '';
                     $target_dir = 'storage/tickets/'.$data['id'];
@@ -298,6 +290,14 @@ class HelpdeskController extends Controller
                         $log = new ActivitylogController();
                         $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
 
+
+                        // send notification
+                        $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                        $type = 'ticket_updated';
+                        $title = 'Ticked Updated';
+                        $desc = 'Ticket ' . $ticket->coustom_id .' '. $data['action_performed'] . ' by ' . auth()->user()->name;
+                        sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
                     }
 
                 }
@@ -339,7 +339,17 @@ class HelpdeskController extends Controller
 
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+
+                    // send notification
+                    $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                    $type = 'ticket_updated';
+                    $title = 'Ticked Updated';
+                    $desc = 'Ticket ' . $ticket->coustom_id . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
+                    sendNotificationToAdmins($slug , $type , $title ,  $desc);
                 }
+
+
+                
                 
 
                 $response['message'] = 'Ticket Updated Successfully!';
@@ -392,6 +402,13 @@ class HelpdeskController extends Controller
 
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $tkt_id[$i] , auth()->id() , $action_perform);
+
+            // send notification
+            $slug = url('ticket-details') .'/'.$tk->coustom_id;
+            $type = 'ticket_updated';
+            $title = 'Ticket Updated';
+            $desc = 'Ticket ' . $tk->coustom_id . '  Updated by ' . auth()->user()->name;
+            sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
         }
 
@@ -485,7 +502,14 @@ class HelpdeskController extends Controller
             if($request->res == 1) {
                 $resTemp = new SettingsController();
                 $resTemp->addResponseTemplate($request);
-            }     
+            }  
+            
+            // send notification
+            $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+            $type = 'ticket_created';
+            $title = 'New Ticket Alert';
+            $desc = 'Ticket ' . $ticket->coustom_id . ' Created by ' . auth()->user()->name;
+            sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             // return false;
             $response['id'] = $ticket->id;
@@ -1178,6 +1202,16 @@ class HelpdeskController extends Controller
             $response['success'] = true;
             $response['data'] = $save_reply;
             $response['tkt_updated_at'] =  $up_tkt->updated_at;
+
+
+            // send notification
+            $slug = url('ticket-details') .'/'.$up_tkt->coustom_id;
+            $type = 'ticket_reply_added';
+            $title = 'Ticked Reply Added';
+            $desc = 'Ticket ' . $up_tkt->coustom_id .' Reply added by ' . auth()->user()->name;
+            sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
+
             return response()->json($response);
     
         // }catch(Exception $e) {
@@ -1375,6 +1409,13 @@ class HelpdeskController extends Controller
 
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
+
+                // send notification
+                $slug = url('ticket-details') .'/'.$del_tkt->coustom_id;
+                $type = 'ticket_trashed';
+                $title = 'Ticked Trashed';
+                $desc = 'Ticket ' . $del_tkt->coustom_id .' Trashed by ' .auth()->user()->name;
+                sendNotificationToAdmins($slug , $type , $title ,  $desc);
             }
 
             $response['message'] = 'Data Successfully Moved to trash!';
@@ -1405,6 +1446,13 @@ class HelpdeskController extends Controller
 
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
+
+                // send notification
+                $slug = url('ticket-details') .'/'.$del_tkt->coustom_id;
+                $type = 'ticket_retore';
+                $title = 'Ticket Restore';
+                $desc = 'Ticket ' . $del_tkt->coustom_id .' Restored by ' .auth()->user()->name;
+                sendNotificationToAdmins($slug , $type , $title ,  $desc);
             }
 
             $response['message'] = 'Data Recycled Successfully!';
@@ -1424,9 +1472,11 @@ class HelpdeskController extends Controller
             $flag_tkt = Tickets::where('id', $request->id)->first();
 
             $msg = 'Flagged By';
+            $title = 'Ticket Flagged';
             if($flag_tkt->is_flagged){
                 $flag_tkt->is_flagged = 0;
                 $msg = 'Flag Removed By';
+                $title = 'Ticket Unflagged';
             }else{
                 $flag_tkt->is_flagged = 1;
             }
@@ -1441,6 +1491,13 @@ class HelpdeskController extends Controller
 
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $flag_tkt->id , auth()->id() , $action_perform);
+
+
+            // send notification
+            $slug = url('ticket-details') .'/'.$flag_tkt->coustom_id;
+            $type = Str::slug($title, '-');
+            $desc = 'Ticket ' . $flag_tkt->coustom_id .' ' . $msg . ' ' .auth()->user()->name;
+            sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             $response['message'] = 'Ticket Flagged Successfully!';
             $response['status_code'] = 200;
@@ -2488,7 +2545,14 @@ class HelpdeskController extends Controller
         
             }
             $check =  Tickets::where('id' , $request->ticket_id)->first();
-            // dd($check); exit();
+            
+
+            // send notification
+            $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+            $type = 'ticket_updated';
+            $title = ($request->id != null ? 'Ticket Note Updated' : 'Ticket Note Created');
+            $desc = 'Ticket ' . $ticket->coustom_id . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
+            sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             $response['message'] = 'Ticket Note Saved Successfully!';
             $response['sla_updated'] = $sla_updated;
