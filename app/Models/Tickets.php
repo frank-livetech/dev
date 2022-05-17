@@ -129,7 +129,6 @@ class Tickets extends Model
             $customer = DB::table('customers')->where('id', $this->created_by)->first();
             if(!empty($customer)) {
                 
-
                 if($customer->avatar_url!= null) {
                     if(is_file( getcwd() . $path . $customer->avatar_url)) {
                         $image = request()->root() . $path . $customer->avatar_url;
