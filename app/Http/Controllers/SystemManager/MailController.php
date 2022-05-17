@@ -681,7 +681,7 @@ class MailController extends Controller
 
         $tkt_url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/'.$ticket->coustom_id;
         
-        $action_perform = 'Ticket ID # <a href="'. $tkt_url.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
+        $action_perform = 'Ticket ID <a href="'. $tkt_url.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
 
         // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
         $log = new ActivitylogController();
