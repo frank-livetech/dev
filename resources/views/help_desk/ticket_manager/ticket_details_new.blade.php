@@ -486,7 +486,7 @@
                                     <div class="" role="alert">
                                         <div class="alert-body p-0" >
                                             <div class="" style="display: -webkit-box">
-                                                <div class="modal-first">
+                                                <div class="modal-first w-100">
                                                     <div class="mt-0 mt-0 rounded" style="padding:4px; ">
                                                         <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
                                                             <div class="">
@@ -1945,7 +1945,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             
             <div class="modal-header mb-1">
-            <div class="modal-first">
+            <div class="modal-first w-100">
                                                     <div class="mt-0 mt-0 rounded" style="padding:4px; ">
                                                         <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
                                                             <div class="">

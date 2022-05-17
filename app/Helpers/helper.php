@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\User;
+use App\Http\Controllers\NotifyController;
 
 
 if(!function_exists('pusherCredentials')){
@@ -58,5 +60,24 @@ if(!function_exists('timeZone')){
         }
 
         return $tm_name;
+    }
+}
+
+if(!function_exists('sendNotificationToAdmins')){
+    function sendNotificationToAdmins($slug , $type , $title , $desc){
+        $admin_users = User::where('user_type', 1)->get()->toArray();
+        $notify = new NotifyController();
+        foreach ($admin_users as $key => $value) {
+            $sender_id = auth()->id();
+            $receiver_id = $value['id'];
+            $slug = $slug;
+            $type = $type;
+            $data = 'data';
+            $title = $title;
+            $icon = 'calendar';
+            $class = 'btn-success';
+            $desc = $desc;
+            $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+        }
     }
 }
