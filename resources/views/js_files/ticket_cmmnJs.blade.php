@@ -572,8 +572,7 @@
             if (val['replies'] > 0) {
                 replies = val['replies'];
             }
-            let replier = '---'
-            val['lastReplier'];
+            let replier = '---';
 
             if (val['lastReplier'] != null) {
                 replier = val['lastReplier'];
@@ -637,10 +636,12 @@
                 </div>
                 
             </td>
-            <td><a href="${ticket_details_route}/${val['coustom_id']}" style="color:black">${custom_id}</a></td>
+            <td>
+                <span class="text-dark"><a href="${ticket_details_route}/${val['coustom_id']}">${custom_id}</a></span>
+            </td>
             <td class='text-center'>${prior}</td>
             <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
-            <td>${short_replier}</td>
+            <td>${ val['lastReplier'] != null ? val['lastReplier'] : val['creator_name']}</td>
             <td class='text-center'>${replies}</td>
             <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
             <td class='text-center'>${new_rep_due}</td>

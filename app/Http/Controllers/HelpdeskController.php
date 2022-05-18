@@ -295,7 +295,7 @@ class HelpdeskController extends Controller
                         $slug = url('ticket-details') .'/'.$ticket->coustom_id;
                         $type = 'ticket_updated';
                         $title = 'Ticked Updated';
-                        $desc = 'Ticket ' . $ticket->coustom_id .' '. $data['action_performed'] . ' by ' . auth()->user()->name;
+                        $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] . ' by ' . auth()->user()->name;
                         sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
                     }
@@ -344,7 +344,7 @@ class HelpdeskController extends Controller
                     $slug = url('ticket-details') .'/'.$ticket->coustom_id;
                     $type = 'ticket_updated';
                     $title = 'Ticked Updated';
-                    $desc = 'Ticket ' . $ticket->coustom_id . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
+                    $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
                     sendNotificationToAdmins($slug , $type , $title ,  $desc);
                 }
 
@@ -407,7 +407,7 @@ class HelpdeskController extends Controller
             $slug = url('ticket-details') .'/'.$tk->coustom_id;
             $type = 'ticket_updated';
             $title = 'Ticket Updated';
-            $desc = 'Ticket ' . $tk->coustom_id . '  Updated by ' . auth()->user()->name;
+            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$tk->coustom_id.'">'.$tk->coustom_id.'</a> Updated by ' . auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
         }
@@ -508,7 +508,7 @@ class HelpdeskController extends Controller
             $slug = url('ticket-details') .'/'.$ticket->coustom_id;
             $type = 'ticket_created';
             $title = 'New Ticket Alert';
-            $desc = 'Ticket ' . $ticket->coustom_id . ' Created by ' . auth()->user()->name;
+            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Created by ' . auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             // return false;
@@ -1205,11 +1205,11 @@ class HelpdeskController extends Controller
 
 
             // send notification
-            $slug = url('ticket-details') .'/'.$up_tkt->coustom_id;
-            $type = 'ticket_reply_added';
-            $title = 'Ticked Reply Added';
-            $desc = 'Ticket ' . $up_tkt->coustom_id .' Reply added by ' . auth()->user()->name;
-            sendNotificationToAdmins($slug , $type , $title ,  $desc);
+            // $slug = url('ticket-details') .'/'.$up_tkt->coustom_id;
+            // $type = 'ticket_reply_added';
+            // $title = 'Ticked Reply Added';
+            // $desc = 'Ticket ' . $up_tkt->coustom_id .' Reply added by ' . auth()->user()->name;
+            // sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
 
             return response()->json($response);
@@ -1414,7 +1414,7 @@ class HelpdeskController extends Controller
                 $slug = url('ticket-details') .'/'.$del_tkt->coustom_id;
                 $type = 'ticket_trashed';
                 $title = 'Ticked Trashed';
-                $desc = 'Ticket ' . $del_tkt->coustom_id .' Trashed by ' .auth()->user()->name;
+                $desc = 'Ticket <a href="'.url('ticket-details').'/' .$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Trashed by ' .auth()->user()->name;
                 sendNotificationToAdmins($slug , $type , $title ,  $desc);
             }
 
@@ -1451,7 +1451,7 @@ class HelpdeskController extends Controller
                 $slug = url('ticket-details') .'/'.$del_tkt->coustom_id;
                 $type = 'ticket_retore';
                 $title = 'Ticket Restore';
-                $desc = 'Ticket ' . $del_tkt->coustom_id .' Restored by ' .auth()->user()->name;
+                $desc = 'Ticket <a href="'.url('ticket-details').'/' .$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Restored by ' .auth()->user()->name;
                 sendNotificationToAdmins($slug , $type , $title ,  $desc);
             }
 
@@ -1496,7 +1496,7 @@ class HelpdeskController extends Controller
             // send notification
             $slug = url('ticket-details') .'/'.$flag_tkt->coustom_id;
             $type = Str::slug($title, '-');
-            $desc = 'Ticket ' . $flag_tkt->coustom_id .' ' . $msg . ' ' .auth()->user()->name;
+            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> ' . $msg . ' ' .auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             $response['message'] = 'Ticket Flagged Successfully!';
@@ -2551,7 +2551,7 @@ class HelpdeskController extends Controller
             $slug = url('ticket-details') .'/'.$ticket->coustom_id;
             $type = 'ticket_updated';
             $title = ($request->id != null ? 'Ticket Note Updated' : 'Ticket Note Created');
-            $desc = 'Ticket ' . $ticket->coustom_id . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
+            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             $response['message'] = 'Ticket Note Saved Successfully!';
