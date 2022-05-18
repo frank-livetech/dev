@@ -568,6 +568,7 @@ Route::get('/asset-manager','HelpDesk\AssetManagerController@asset_manager')->na
 Route::post('/update_asset_manager','HelpDesk\AssetManagerController@editAssetManager');
 
 Route::get('/get-all-templates','HelpDesk\AssetManagerController@getAllTemplates');
+Route::post('/delete-template','HelpDesk\AssetManagerController@deleteTemplates')->name('delete.assetTemplate');
 
 Route::post('/save-asset-template','HelpDesk\AssetManagerController@save_form');
 Route::Post('/publish-ticket-reply','HelpdeskController@save_ticket_reply');

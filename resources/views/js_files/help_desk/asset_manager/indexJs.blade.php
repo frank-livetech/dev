@@ -41,10 +41,7 @@
             url: "{{url('/get-all-templates')}}",
             dataType: 'json',
             success: function(data) {
-                console.log(data , "data");
                 var obj = data.data;
-                console.log(obj , "obj")
-
                 $('#asset-temp-table-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#asset-temp-table-list').DataTable({
@@ -52,6 +49,9 @@
                     "pageLength": 10,
                     "bInfo": false,
                     "paging": true,
+                    "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                        $(nRow).attr('id', 'row__'+aData.id);
+                    },
                     columns: [
                         {
                         "render": function (data, type, full, meta) {
@@ -68,7 +68,13 @@
                     },
                     {
                         "render": function (data, type, full, meta) {
-                            return '-';
+                            return `
+                                <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                    <button onclick="deleteTemplate(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fa fa-trash"></i></button>
+                                </div>`;
                         }
                     },
 
@@ -87,6 +93,41 @@
             },
             error: function(f) {
                 console.log('get assets error ', f);
+            }
+        });
+    }
+
+    function deleteTemplate(id) {
+        Swal.fire({
+            title: 'Do you want to delete?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    },
+                    type: "POST",
+                    url: "{{route('delete.assetTemplate')}}",
+                    data: { id:id },
+                    dataType: 'json',
+                    success: function(data) {
+
+                        if (data.status == 200 && data.success == true) {
+                            toastr.success(data.message, { timeOut: 5000 });
+                            $("#row__"+id).remove();
+                        } else {
+                            toastr.error(data.message, { timeOut: 5000 });
+                        }
+                    },
+                    error: function(e) {
+                        console.log(e)
+                    }
+                });
             }
         });
     }

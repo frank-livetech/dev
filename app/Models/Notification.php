@@ -132,8 +132,7 @@ class Notification extends Model
     public function getCreatedAtAttribute($value) {
         $date = new \DateTime($value);
         $date->setTimezone(new \DateTimeZone( timeZone() ));                            
-        $res = Carbon::parse( $date->format('Y-m-d H:i A') );
-        return $res->format(system_date_format() . ' H:i A');
+        return $date->format(system_date_format() .' H:i A');
     }
 
     public function scopeRead(){

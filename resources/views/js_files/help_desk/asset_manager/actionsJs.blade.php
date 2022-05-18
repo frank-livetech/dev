@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    let asset_arr = [];
 
 function get_asset_table_list() {
     $.ajax({
@@ -11,9 +12,8 @@ function get_asset_table_list() {
         },
         dataType: 'json',
         success: function(data) {
-            // console.log(data , "data this");
-            console.log(data.assets, 'assets');
             var obj = data.assets;
+            asset_arr = obj;
 
             $('.asset-table-list').DataTable().destroy();
             $.fn.dataTable.ext.errMode = 'none';
@@ -85,8 +85,6 @@ function get_asset_table_list() {
                 var row = tbl.row( tr );
                 var id = $(this).attr('id');
 
-                console.log(id , "id");
-
                 if ( row.child.isShown() ) {
                     row.child.hide();
                     tr.removeClass('shown');
@@ -106,18 +104,119 @@ function get_asset_table_list() {
 }
 
 function showAssetDetails(id) {
+
+    let item = asset_arr.find(item => item.id == id);
+    console.log(item , "item");
+    let template_html  = ``;
+    let customer_html = ``;
+    let company_html = ``;
+    let asset_field_html = ``;
+    let asset_record_html = ``;
+
+    if(item != null) {
+
+
+        if(item.template != null) {
+
+            template_html = `
+            <div class="col-md-4 text-start rounded p-1">
+                <div class="bg-light p-2 rounded">
+                    <h4 class="fw-bolder"> Template </h4>
+                    <hr>
+                    <div>
+                        <span class="text-mited"> Name : </span> <span class="fw-bolder"> ${item.template.title} </span>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        if(item.customer != null) {
+
+            customer_html = `
+            <div class="col-md-4 text-start rounded p-1">
+                <div class="bg-light p-2 rounded">
+                    <h4 class="fw-bolder"> Customer </h4>
+                    <hr>
+                    <div>
+                        <span class="text-mited"> Name : </span> <span class="fw-bolder"> ${item.customer.first_name} ${item.customer.last_name} </span> <br>
+                        <span class="text-mited"> Email : </span> <span class="fw-bolder"> ${item.customer.email} </span> <br>
+                        <span class="text-mited"> Phone : </span> <span class="fw-bolder"> ${item.customer.phone} </span> <br>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        if(item.company != null) {
+
+            company_html = `
+            <div class="col-md-4 text-start rounded p-1">
+                <div class="bg-light p-2 rounded">
+                    <h4 class="fw-bolder"> Company </h4>
+                    <hr>
+                    <div>
+                        <span class="text-mited"> Name : </span> <span class="fw-bolder"> ${item.company.name} </span> <br>
+                        <span class="text-mited"> Email : </span> <span class="fw-bolder"> ${item.company.email} </span> <br>
+                        <span class="text-mited"> Phone : </span> <span class="fw-bolder"> ${item.customer.phone} </span> <br>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        if(item.asset_fields != null) {
+
+            for( let data of item.asset_fields) {
+                asset_field_html += `
+                <div class="col-md-6 text-start rounded p-1">
+                    <div class="bg-light p-2 rounded">
+                        <h4 class="fw-bolder"> Asset Fields </h4>
+                        <hr>
+                        <div>
+                            <span class="text-mited"> Label : </span> <span class="fw-bolder"> ${data.label} </span> <br>
+                            <span class="text-mited"> Placeholder : </span> <span class="fw-bolder"> ${data.placeholder} </span> <br>
+                            <span class="text-mited"> Type : </span> <span class="fw-bolder"> ${data.type} </span> <br>
+                            <span class="text-mited"> Required : </span> <span class="fw-bolder"> ${data.required == 0 ? 'No' : 'Yes'} </span> <br>
+                            <span class="text-mited"> Col Width : </span> <span class="fw-bolder"> ${data.col_width} </span> <br>
+                            <span class="text-mited"> Description : </span> <span class="fw-bolder"> ${data.description != null ? data.description : '-'} </span> <br>
+                            <span class="text-mited"> Multiple : </span> <span class="fw-bolder"> ${data.is_multi == 0 ? 'No' : 'Yes'} </span> <br>
+                            <span class="text-mited"> Options : </span> <span class="fw-bolder"> ${data.options == null ? 'No' : 'Yes'} </span> <br>
+                        </div>
+                    </div>
+                </div>`;
+            }
+        }
+
+        if(item.asset_record != null) {
+
+            for( let data of item.asset_record) {
+
+                let custom_key = 'fl_' + data.form_id;
+                let key = data[custom_key];
+
+                asset_record_html += `
+                <div class="col-md-6 text-start rounded p-1">
+                    <div class="bg-light p-2 rounded">
+                        <h4 class="fw-bolder"> Asset Records </h4>
+                        <hr>
+                        <div>
+                            <span class="text-mited"> Value : </span> <span class="fw-bolder"> ${ data[custom_key] } </span> <br>
+                        </div>
+                    </div>
+                </div>`;
+            }
+        }
+
+
+    }
+
     return `
-        <div class="row bg-light p-1 m-1">
-            <div class="col-md-4 text-start">
-                <div>
-                    <span class="text-mited"> Asset id </span>
-                    <h4 class="fw-bolder"> ${id} </h4>
-                </div>
-                <div>
-                    <span class="text-mited"> System Name </span>
-                    <h4 class="fw-bolder"> LT-CMS </h4>
-                </div>
-            </div>              
+        <div class="row p-1">
+            ${template_html}            
+            ${customer_html}            
+            ${company_html}            
+        </div>
+        <div class="row mt-1 p-1">
+            ${asset_field_html}
+            ${asset_record_html}
         </div>`;
 }
 
