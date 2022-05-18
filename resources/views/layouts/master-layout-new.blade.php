@@ -133,6 +133,10 @@
             cursor: pointer;
             z-index: 9999 !important;
         }
+        table.dataTable th { padding: 20px 10px !important; vertical-align: middle !important; }
+        .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:before, .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:after {
+            opacity: 0.5; margin-top: 10px;
+        }
     </style>
 
     @stack('css')
