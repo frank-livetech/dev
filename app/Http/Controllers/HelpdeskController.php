@@ -3407,6 +3407,10 @@ class HelpdeskController extends Controller
 
 
             }
+
+            if($action_name == 'Ticket Updated'){
+                $customer_send = false;
+            }
             
             // if customer if null or empty then find user 
             // if(empty($customer)) {
