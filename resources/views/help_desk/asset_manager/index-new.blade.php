@@ -63,7 +63,9 @@
         margin-left: 12px;
         white-space: nowrap;
         text-overflow: ellipsis;
-        font-weight: bold;
+        font-weight: bolder;
+        font-size:14px;
+        white-space: break-spaces;
     }
     .FieldSettingsSideBarItem_container {
         -ms-flex-preferred-size: calc(50% - 6px);
@@ -113,7 +115,7 @@
                     <div class="accordion-item" id="headingOne">
                         <h2 class="accordion-header" >
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMarginOne" aria-expanded="false" aria-controls="accordionMarginOne">
-                                Add Asset Template
+                                Add Asset Type
                             </button>
                         </h2>
                         <div id="accordionMarginOne" class="accordion-collapse collapse" aria-labelledby="headingMarginOne" data-bs-parent="#accordionMargin">
@@ -392,7 +394,7 @@
                                 class="table table-bordered w-100 no-wrap asset-table-list">
                                 <thead>
                                     <tr>
-                                        <th>
+                                        <th width="2%">
                                             <div class="text-center">
                                                 <input type="checkbox" id="checkAll" name="assets[]" value="0">
                                             </div>

@@ -383,7 +383,11 @@ class AssetManagerController extends Controller
             });
         }
         
-        $assets = $query->where('is_deleted', 0)->with('template')->get();
+        $assets = $query->where('is_deleted', 0)->with(['template','asset_fields','customer','company'])->get();
+
+        foreach($assets as $asset) {
+            $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->get();
+        }
         
         $response['message'] = 'Success';
         $response['status_code'] = 200;
@@ -391,6 +395,24 @@ class AssetManagerController extends Controller
         $response['assets']= $assets;
         
         return response()->json($response);
+    }
+
+    public function showAssets(Request $request) {
+
+        $asset =  Assets::find($request->id);
+        $AssetForm =  AssetForms::find($asset->asset_forms_id);
+        $AssetFields = AssetFields::where("asset_forms_id","=",$asset->asset_forms_id)->get();
+        $asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$request->id)->first();
+
+        $response['message'] = 'Asset List';
+        $response['status_code'] = 200;
+        $response['asset'] = $asset;
+        $response['AssetForm'] = $AssetForm;
+        $response['AssetFields'] = $AssetFields;
+        $response['asset_record'] = $asset_record;
+        $response['success'] = true;
+        return response()->json($response);
+
     }
 
     public function getAssetDetails($id) {
@@ -472,12 +494,23 @@ class AssetManagerController extends Controller
 
 
     public function getAllTemplates() {
-        $data = AssetForms::where("is_deleted","=",0)->get();
+        $data = AssetForms::where("is_deleted",0)->get();
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['data']= $data;
         return response()->json($response);
+    }
+
+    public function deleteTemplates() {
+        $data = AssetForms::find(request()->id);
+        if(!empty($data)) {
+            $data->is_deleted = 1;
+            $data->save();
+            return response()->json([ "messages" => 'Asset Template Deleted',  "status" => 200 , "success" => true ]);
+        }else{
+            return response()->json([ "messages" => 'Asset not found.. Something went wrong',  "status" => 500 , "success" => false ]);
+        }
     }
 
     public function editAssetManager(Request $request) {
@@ -587,26 +620,6 @@ class AssetManagerController extends Controller
         $company = DB::table("companies")->where("id","=",$asset->company_id)->first();
         
         return view('help_desk.asset_manager.gen_info',compact('asset','asset_templates_form','asset_templates_fields','customer','company'));
-    }
-
-
-
-    public function showAssets(Request $request) {
-
-        $asset =  Assets::find($request->id);
-        $AssetForm =  AssetForms::find($asset->asset_forms_id);
-        $AssetFields = AssetFields::where("asset_forms_id","=",$asset->asset_forms_id)->get();
-        $asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$request->id)->first();
-
-        $response['message'] = 'Asset List';
-        $response['status_code'] = 200;
-        $response['asset'] = $asset;
-        $response['AssetForm'] = $AssetForm;
-        $response['AssetFields'] = $AssetFields;
-        $response['asset_record'] = $asset_record;
-        $response['success'] = true;
-        return response()->json($response);
-
     }
 
     public function updateAssets(Request $request) {
