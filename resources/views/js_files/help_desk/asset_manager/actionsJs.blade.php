@@ -115,32 +115,30 @@ function showAssetDetails(id) {
 
     if(item != null) {
 
-
-        if(item.template != null) {
-
-            template_html = `
-            <div class="col-md-4 text-start rounded p-1">
-                <div class="bg-light p-2 rounded">
-                    <h4 class="fw-bolder"> Template </h4>
-                    <hr>
-                    <div>
-                        <span class="text-mited"> Name : </span> <span class="fw-bolder"> ${item.template.title} </span>
-                    </div>
-                </div>
-            </div>`;
-        }
-
         if(item.customer != null) {
 
             customer_html = `
-            <div class="col-md-4 text-start rounded p-1">
+            <div class="col-md-6 text-start rounded p-1">
                 <div class="bg-light p-2 rounded">
-                    <h4 class="fw-bolder"> Customer </h4>
+                    <h4 class="fw-bolder"> Customer Detail </h4>
                     <hr>
                     <div>
-                        <span class="text-mited"> Name : </span> <span class="fw-bolder"> ${item.customer.first_name} ${item.customer.last_name} </span> <br>
-                        <span class="text-mited"> Email : </span> <span class="fw-bolder"> ${item.customer.email} </span> <br>
-                        <span class="text-mited"> Phone : </span> <span class="fw-bolder"> ${item.customer.phone} </span> <br>
+                        <table class="table table -hover table-hover">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bolder"> Name </td>
+                                    <td> ${item.customer.first_name} ${item.customer.last_name}  </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bolder"> Email </td>
+                                    <td> ${item.customer.email}  </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bolder"> Phone </td>
+                                    <td> ${item.customer.phone} </td>
+                                </tr>                                                        
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>`;
@@ -149,40 +147,31 @@ function showAssetDetails(id) {
         if(item.company != null) {
 
             company_html = `
-            <div class="col-md-4 text-start rounded p-1">
+            <div class="col-md-6 text-start rounded p-1">
                 <div class="bg-light p-2 rounded">
-                    <h4 class="fw-bolder"> Company </h4>
+                    <h4 class="fw-bolder"> Company Detail </h4>
                     <hr>
                     <div>
-                        <span class="text-mited"> Name : </span> <span class="fw-bolder"> ${item.company.name} </span> <br>
-                        <span class="text-mited"> Email : </span> <span class="fw-bolder"> ${item.company.email} </span> <br>
-                        <span class="text-mited"> Phone : </span> <span class="fw-bolder"> ${item.customer.phone} </span> <br>
+                        <table class="table table -hover table-hover">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bolder"> Name </td>
+                                    <td> ${item.company.name} </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bolder"> Email </td>
+                                    <td> ${item.company.email}  </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bolder"> Phone </td>
+                                    <td> ${item.company.phone} </td>
+                                </tr>                                                        
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>`;
-        }
 
-        if(item.asset_fields != null) {
-
-            for( let data of item.asset_fields) {
-                asset_field_html += `
-                <div class="col-md-6 text-start rounded p-1">
-                    <div class="bg-light p-2 rounded">
-                        <h4 class="fw-bolder"> Asset Fields </h4>
-                        <hr>
-                        <div>
-                            <span class="text-mited"> Label : </span> <span class="fw-bolder"> ${data.label} </span> <br>
-                            <span class="text-mited"> Placeholder : </span> <span class="fw-bolder"> ${data.placeholder} </span> <br>
-                            <span class="text-mited"> Type : </span> <span class="fw-bolder"> ${data.type} </span> <br>
-                            <span class="text-mited"> Required : </span> <span class="fw-bolder"> ${data.required == 0 ? 'No' : 'Yes'} </span> <br>
-                            <span class="text-mited"> Col Width : </span> <span class="fw-bolder"> ${data.col_width} </span> <br>
-                            <span class="text-mited"> Description : </span> <span class="fw-bolder"> ${data.description != null ? data.description : '-'} </span> <br>
-                            <span class="text-mited"> Multiple : </span> <span class="fw-bolder"> ${data.is_multi == 0 ? 'No' : 'Yes'} </span> <br>
-                            <span class="text-mited"> Options : </span> <span class="fw-bolder"> ${data.options == null ? 'No' : 'Yes'} </span> <br>
-                        </div>
-                    </div>
-                </div>`;
-            }
         }
 
         if(item.asset_record != null) {
@@ -195,10 +184,37 @@ function showAssetDetails(id) {
                 asset_record_html += `
                 <div class="col-md-6 text-start rounded p-1">
                     <div class="bg-light p-2 rounded">
-                        <h4 class="fw-bolder"> Asset Records </h4>
+                        <h4 class="fw-bolder"> Asset Detail </h4>
                         <hr>
                         <div>
-                            <span class="text-mited"> Value : </span> <span class="fw-bolder"> ${ data[custom_key] } </span> <br>
+                            <table class="table table -hover table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bolder"> Asset Title </td>
+                                        <td> ${item.asset_title} </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bolder"> Template Type </td>
+                                        <td> ${item.template != null ? item.template.title : '---'}  </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bolder"> Manufacturer </td>
+                                        <td> ${item.asset_record != null ? data[custom_key] : '---'} </td>
+                                    </tr> 
+                                    <tr>
+                                        <td class="fw-bolder"> Customer Name </td>
+                                        <td> ${item.customer != null ? (item.customer.first_name  + ' ' + item.customer.last_name) : '---'} </td>
+                                    </tr> 
+                                    <tr>
+                                        <td class="fw-bolder"> Company Name  </td>
+                                        <td> ${item.company != null ? item.company.name : '---'} </td>
+                                    </tr> 
+                                    <tr>
+                                        <td class="fw-bolder"> Owner Name </td>
+                                        <td> ${item.company != null ? (item.company.poc_first_name + ' ' + item.company.poc_last_name ): '---'} </td>
+                                    </tr>                                                        
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>`;
@@ -215,7 +231,6 @@ function showAssetDetails(id) {
             ${company_html}            
         </div>
         <div class="row mt-1 p-1">
-            ${asset_field_html}
             ${asset_record_html}
         </div>`;
 }
