@@ -22,14 +22,28 @@ function get_asset_table_list() {
                 "pageLength": 50,
                 "bInfo": false,
                 "paging": true,
-                columns: [{
+                "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                    $(nRow).attr('id', 'row__'+aData.id);
+                },
+                'columnDefs': [
+                    {
+                        'targets': 1,
+                        'createdCell':  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id',rowData.id); 
+                        }
+                    }
+                ],
+                columns: [
+                    {
                         "render": function() {
                             return `<div class="text-center"><input type="checkbox" id="" name="" value=""></div>`;
                         }
                     },
                     {
-                        "data": null,
-                        "defaultContent": ""
+                        "className":'details-control text-left',
+                        "orderable":false,
+                        "data":null,
+                        "defaultContent": ''
                     },
                     {
                         "render": function(data, type, full, meta) {
@@ -54,79 +68,34 @@ function get_asset_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             return `
-                        <button title="Edit Type" class="btn btn-success btn-circle" onclick="editAsset(` + full.id + `);">
-                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                        </button>
-                    
-                        <button class="btn btn-danger btn-circle" title="Delete Asset" onclick="deleteAsset(` + full.id + `);">
-                            <i class="fas fa-trash-alt" aria-hidden="true"></i>
-                        </button>
-                        `;
+                                <div class="d-flex justify-content-center">
+                                    <button onclick="editAsset(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fas fa-pencil-alt"></i></button>&nbsp;
+                                    <button onclick="deleteAsset(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fa fa-trash"></i></button>
+                                </div>`;
                         }
                     },
                 ],
             });
 
-            tbl.on('order.dt search.dt', function() {
-                tbl.column(1, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw();
+            // Add event listener for opening and closing details
+            $('.asset-table-list tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = tbl.row( tr );
+                var id = $(this).attr('id');
 
+                console.log(id , "id");
 
-            // var vendor_arr = data.assets;
-            // $("#asset-table-list tbody").html("");
-
-
-            // var count = 1;
-            // $.each(vendor_arr, function(key, val) {
-
-            //     let template_title = '';
-
-            //     if(val.template.name != null) {
-            //         template_title = val.template.name;
-            //     }else{
-            //         template_title = '-';
-            //     }
-
-
-            //     let customers = '';
-            //     let companies = '';
-            //     let projects = '';
-            //     let monitor = '';
-            //     if (val.customer_id) customers = val.customer_id;
-            //     if (val.company_id) companies = val.company_id;
-            //     if (val.project_id) projects = val.project_id;
-            //     let name = val.asset_forms_id;
-            //     let template = val.asset_forms_id;
-
-            //     if (templates.length) {
-            //         template = templates.filter(itm => itm.id == template);
-            //         if (template.length) {
-            //             template = template[0].title;
-            //         }
-            //     }
-
-            //     assets_table_list.row.add([
-
-            //         '<div class="text-center"><input type="checkbox" class="assets" name="assets" value=' + val['id'] + ' id=' + val['id'] + '></div>',
-            //         val['id'],
-            //         '<a href="' + general_info_route + '/' + val['id'] + '">' + val['asset_title'] + '</a>',
-            //         template_title,
-            //         '-',
-            //         '-',
-            //         '-',
-            //         '-',
-            //         '<button title="Edit Type" class="btn btn-success btn-circle" onclick="event.stopPropagation();editAsset(' + val['id'] + ');"><i class="mdi mdi-grease-pencil" aria-hidden="true"></i></button>&nbsp;<button class="btn btn-danger btn-circle" title="Delete Asset" onclick="event.stopPropagation();deleteAsset(' +
-            //         val['id'] +
-            //         ');return false;"><i class="fa fa-trash " aria-hidden="true"></i></button>'
-
-            //     ]).draw(false);
-            //     count++;
-            // });
+                if ( row.child.isShown() ) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    row.child( showAssetDetails(id) ).show();
+                    tr.addClass('shown');
+                }
+            });
 
         },
         error: function(f) {
@@ -134,6 +103,22 @@ function get_asset_table_list() {
         }
     });
 
+}
+
+function showAssetDetails(id) {
+    return `
+        <div class="row bg-light p-1 m-1">
+            <div class="col-md-4 text-start">
+                <div>
+                    <span class="text-mited"> Asset id </span>
+                    <h4 class="fw-bolder"> ${id} </h4>
+                </div>
+                <div>
+                    <span class="text-mited"> System Name </span>
+                    <h4 class="fw-bolder"> LT-CMS </h4>
+                </div>
+            </div>              
+        </div>`;
 }
 
 function get_asset_temp_table_list() {

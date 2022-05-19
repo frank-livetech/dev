@@ -13,6 +13,7 @@ use App\Models\CustomerType;
 use App\Models\ResponseTemplate;
 use App\Models\ResTemplateCat;
 use App\Models\Notification;
+use App\Models\SpamUser;
 use Spatie\Permission\Models\Role;
 use App\Models\DispatchStatus;
 use App\Models\Tasks;
@@ -47,6 +48,7 @@ class SettingsController extends Controller
         });
 
     }
+
     public function settings(){
 
         $brand_settings = BrandSettings::first();
@@ -124,6 +126,7 @@ class SettingsController extends Controller
         // return view('system_manager.settings.index', get_defined_vars());
         return view('system_manager.settings.index-new', get_defined_vars());
     }
+
     public function settingsNew(){
 
         $brand_settings = BrandSettings::first();
@@ -340,6 +343,7 @@ class SettingsController extends Controller
             return response()->json($response);
         }
     }
+
     public function get_departments(){
         
         // $departments = Departments::get();
@@ -688,9 +692,6 @@ class SettingsController extends Controller
         }
     }
 
-
-
-
     public function get_types(){
         // $types = TicketType::get();
         $types = DB::table('ticket_types')->get();
@@ -715,7 +716,6 @@ class SettingsController extends Controller
         return response()->json($response);
     }
 
-
     public function get_dispatch_status(){
         // $types = TicketType::get();
         $types = DB::table('dispatch_status')->get();
@@ -728,7 +728,6 @@ class SettingsController extends Controller
         return response()->json($response);
     }
 
-
     public function get_project_type(){
         // $types = TicketType::get();
         $types = DB::table('project_type')->get();
@@ -740,8 +739,6 @@ class SettingsController extends Controller
         
         return response()->json($response);
     }
-
-
 
     public function delete_department(Request $request){
         
@@ -827,7 +824,6 @@ class SettingsController extends Controller
         
     }
 
-
     public function delete_project_type(Request $request){
         
         $data = $request->all();
@@ -841,7 +837,6 @@ class SettingsController extends Controller
     
         
     }
-
 
     public function ticket_format(Request $request){
             
@@ -929,7 +924,6 @@ class SettingsController extends Controller
             return response()->json($response,500);
         }
     }
-
 
     public function saveSystemDateAndTime(Request $request) {
         $response = array();
@@ -1052,7 +1046,6 @@ class SettingsController extends Controller
     }
 
     /// Response Category Template
-
     public function addResponseCategory(Request $request) {
         if(empty(trim($request->name, " "))) {
             $response['message'] = 'Category name is empty!';
@@ -1072,7 +1065,6 @@ class SettingsController extends Controller
         return response()->json($response);
     }
 
-
     public function getallCatResponse() {
 
         $data = RestemplateCat::where("is_deleted","=",0)->get();
@@ -1083,6 +1075,7 @@ class SettingsController extends Controller
         $response['data'] = $data;
         return response()->json($response);
     }
+
     public function updateCatResponse(Request $request) {
         if(empty(trim($request->name, " "))) {
             $response['message'] = 'Category name is empty!';
@@ -1299,7 +1292,6 @@ class SettingsController extends Controller
         }
     }
 
-
     public function customerSetting(Request $request) {
 
         $data = array(  
@@ -1389,14 +1381,12 @@ class SettingsController extends Controller
         }
     }
 
-
     public function sendRecapsEmails(Request $request) {
 
         $tasks = Tasks::where('start_date' , '2021-07-06')->where('is_deleted',0)->get();
         return $tasks;
 
     }
-
 
     public function showAllNotifications(){
 
@@ -1421,6 +1411,63 @@ class SettingsController extends Controller
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
+
+    }
+
+
+    public function SaveBannedUser(Request $request){
+
+        $data = array(
+            "email" => $request->email,
+            "banned_by" => \Auth::user()->id,
+        );
+
+        if($request->edituser != null && $request->edituser != " ") {
+            
+            SpamUser::where('id',$request->edituser)->update($data);
+            $title = 'Updated';
+        }else{
+            SpamUser::create($data);
+            $title = 'Saved';
+        }
+
+        $response['message'] = 'User '.$title.' Successfully';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        return response()->json($response);
+    }
+    
+    public function get_banned_users(){
+        
+        $banned_users = SpamUser::orderBy('id', 'DESC')->with('banned_by_user')->get();
+
+        $response['message'] = 'Success';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        $response['banned_users']= $banned_users;
+        
+        return response()->json($response);
+    }
+
+
+    public function delete_banned_users(Request $request) {
+        // return dd($request->all());
+        $data   = SpamUser::whereIn('id',$request->id)->get();
+        if( count($data) > 0) {
+            SpamUser::whereIn('id',$request->id)->delete();
+            return response()->json([
+                "status" => 200 , 
+                "success" => true ,
+                "message" => "Banned User deleted Successfully",
+            ]);
+        }else{
+
+            return response()->json([
+                "status" => 500 , 
+                "success" => false ,
+                "message" => "Something Went Wrong",
+            ]);
+        }
 
     }
 

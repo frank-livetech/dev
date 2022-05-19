@@ -38,7 +38,7 @@ class TicketController extends Controller
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
 
-            $action_perform = 'Ticket (ID'.$ticket->coustom_id.') Created By '. $name_link;
+            $action_perform = 'Ticket ID'.$ticket->coustom_id.' Created By '. $name_link;
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' ,$ticket->id , auth()->id() , $action_perform);
             

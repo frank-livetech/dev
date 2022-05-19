@@ -19,7 +19,7 @@ let response_temp_arr = [];
 
 $(document).ready(function() {
     get_mails_table_list();
- // save sla 
+    // save sla 
     $("#sla_form").submit(function(event) {
         event.preventDefault();
 
@@ -383,6 +383,7 @@ $(document).ready(function() {
     get_project_type_table_list();
     get_priority_table_list();
     get_mails_table_list();
+    getAllBannedUser();
     
     $("#dept_is_enabled").bootstrapSwitch();
     //Response Template
@@ -1395,7 +1396,6 @@ function get_mails_table_list() {
 }
 
 function changeEmailQueueStatus( id) {
-
     let status = '';
     if( $("#customSwitch_"+id).is(":checked")) {
         status = 'yes';
@@ -4133,4 +4133,179 @@ $("#edit_mail_dept_id").on('change' , function() {
 
     showDepartStatus(value , status_id)
 });
+
+
+
+// banned user check all
+$(".check-all").click(function() {
+
+    $("input[type=checkbox]").prop("checked", $(this).prop("checked"))
+    $(this).is(":checked") ? $("#deleteBannedUser").removeAttr("disabled") : $("#deleteBannedUser").attr("disabled",true);
+});
+
+function getAllBannedUser() {
+    $.ajax({
+        type: "GET",
+        url: "{{url('get-banned-user')}}",
+        dataType: 'json',
+        beforeSend: function(data) {
+            $(".loader_container").show();
+        },
+        success: function(data) {
+            var obj = data.banned_users;
+            
+            console.log(obj, "banned user");
+
+            $("#banned-user-list").DataTable().destroy();
+            $.fn.dataTable.ext.errMode = "none";
+            var tbl = $("#banned-user-list").DataTable({
+                data: obj,
+                pageLength: 10,
+                bInfo: true,
+                paging: true,
+                columns: [
+                    {
+                        "render": function(data, type, full, meta) {
+                            return (
+                                `<input class="form-check-input check singleCheck_${full.id}" name="banned_check" onclick="bannedCheckBox(${full.id})" value ="` + full.id +`" type="checkbox" id="inlineCheckbox2" value="1">`
+                            );
+                        },
+                    },
+                    {
+                        "render": function(data, type, full, meta) {  
+                            return full.email + '--' + full.id;
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            if(full.banned_by_user != null) {
+                                return full.banned_by_user.name !=null ? full.banned_by_user.name : '-';
+                            }else{
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return full.created_at;
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            return (
+                                `<div class="d-flex justify-content-center">
+                                    <button onclick="EditBannedUserModel(` + full.id + `, '` + full.email + `')" 
+                                    type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <i class="fas fa-pencil-alt"></i></button>
+                        
+                                </div>`
+                            );
+                        }
+                    }
+                ]
+            });
+
+            
+        },
+        complete: function(data) {
+            $(".loader_container").hide();
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function bannedCheckBox(id) {
+    $(".check-all").prop("checked", false);
+    $("#deleteBannedUser").removeAttr("disabled");   
+
+    if( $(".singleCheck_"+id).is(":checked") ) {
+        $("#deleteBannedUser").removeAttr("disabled") 
+    }else{
+        $("#deleteBannedUser").attr("disabled",true)
+    }
+}
+
+function EditBannedUserModel(id, email) {
+    $('#email').val(email);
+    $('#edituser').val(id);
+    $('#banned_user_title').text('Edit User');
+    $('#banned-user').modal('show');
+}
+
+function ShowBannedUserModel() {
+
+    $('#edituser').val('');
+    $("#save_banned_user")[0].reset();
+    $('#banned_user_title').text('Add User');
+    $('#banned-user').modal('show');
+}
+
+$("#save_banned_user").submit(function(event) {
+    event.preventDefault();
+
+    let action = $(this).attr('action');
+    let method = $(this).attr('method');
+    var form_data = new FormData(this);
+
+    $.ajax({
+        url: action,
+        type: method,
+        data: form_data,
+        dataType: 'JSON',
+
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+            if (data.status_code == 200 && data.success == true) {
+                toastr.success(data.message, { timeOut: 5000 });
+
+                $("#save_banned_user")[0].reset();
+                $("#banned-user").modal('hide');
+                getAllBannedUser();
+
+            } else {
+                toastr.error(data.message, { timeOut: 5000 });
+            }
+        },
+        error: function(e) {
+            console.log(e)
+        }
+
+    });
+});
+
+
+function deleteBannedUser() {
+    var banned_id = [];
+
+    $("input:checkbox[name=banned_check]:checked").each(function() {
+        banned_id.push( $(this).val() ); 
+    });
+    if(banned_id.length > 0) {
+
+        $.ajax({
+            type: "POST",
+            url: '{{route("delete.bannedUser")}}',
+            data: {id:banned_id},
+            success: function(data) {
+                console.log(data, "a");
+
+                if(data.status == 200 && data.success == true) {
+                    toastr.success(data.message, { timeOut: 5000 });
+                    getAllBannedUser();
+                }                    
+                
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+
+    }else{
+        toastr.error("Please select atleast one record", { timeOut: 5000 });
+    }
+}
 </script>

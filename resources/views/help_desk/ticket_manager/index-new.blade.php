@@ -653,27 +653,27 @@
         console.log(item , "item");
         if(item != null) {
             let last_reply = ``;
+            let type = ``;
 
             if(item.last_reply != null) {
 
                 let time =convertDate(item.created_at);
-                let a = new Date(item.created_at).toLocaleString('en-US', { timeZone: userTimeZone });
-                
                 
                 var user_img = ``;
                 
                 if(item.last_reply != null){ 
 
-                    let user_type = 'Staff';
-                    if(item.last_reply.reply_user.user_type == 5) {
-                        user_type = 'User'
+                    type = 'Staff';
+                    if(item.last_reply.reply_user != null) {
+                        type = item.last_reply.reply_user.user_type == 5 ? 'User' : 'Staff';
                     }
 
                     if(item.last_reply.reply_user.profile_pic != null) {
                         let path = root + '/' + item.last_reply.reply_user.profile_pic;
                         user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                     }else{
-                        user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                        user_img += `<img src="{{asset('${root}/default_imgs/customer.png')}}" class="rounded-circle" 
+                                width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
                 }
 
@@ -686,7 +686,7 @@
                             <div class="col-md-12">
                             <h5 class="mt-0"><span class="text-primary">
                                 <a href="http://127.0.0.1:8000/profile/209"> ${item.lastReplier} </a>
-                                </span>&nbsp;<span class="badge badge-secondary">${user_type}</span>&nbsp;
+                                </span>&nbsp;<span class="badge badge-secondary">${type}</span>&nbsp;
                             &nbsp;                            
                             <br>
                             <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ${ time } </span> 
@@ -697,27 +697,18 @@
                     <div class="row mt-1" style="word-break: break-all;"></div>
                 </ul>
                 `
-                last_reply = html;
+            last_reply = html;
             }else{
 
-                let user_type = 'User';
-                if(item.ticket_created_by == null) {
-                    user_type = 'Staff'
-                }
+                let user_type = item.ticket_created_by == null ? 'Staff' : 'User';
 
-                if(item.user_pic!= null) {
-                    let path = root + '/' + item.user_pic;
-                    user_img = `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
-                }else{
-                    user_img = `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-                }
-
+                let img = `<img src="${item.user_pic}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                 let html = `
                 <div class="card p-0">
                         <div class="modal-first">
                             <div class="mt-0 mt-0 rounded" style="padding:4px; ">
                                 <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
-                                    <div class=""> ${user_img} </div>
+                                    <div class=""> ${img} </div>
                                 </div>
                                 <div class="more-info">
                                     <div class="" style="display: -webkit-box">

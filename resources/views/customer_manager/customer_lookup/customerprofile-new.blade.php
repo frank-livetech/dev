@@ -925,149 +925,11 @@
                                 
                                     <div class="col-sm-12">
                                         <div class="accordion accordion-margin" id="accordionMargin">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingMarginOne">
-                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMarginOne" aria-expanded="false" aria-controls="accordionMarginOne">
-                                                        Add Asset Template
-                                                    </button>
-                                                </h2>
-                                                <div id="accordionMarginOne" class="accordion-collapse collapse" aria-labelledby="headingMarginOne" data-bs-parent="#accordionMargin">
-                                                    <div class="accordion-body">
-                                                        <div class="card">
-                                                                <div class="card-body">
-                                                                    <div class="">
-                                                                        <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
-                                                                            <div class="row p-1">
-                                                                                <div class="col-md-12">
-                                                                                    <div class="form-group">
-                                                                                        <label for="tempTitle">Template Title</label>
-                                                                                        <input class="form-control" type="text" id="tempTitle" required="" placeholder="Title">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row ">
-                                                                            <div class="col-md-4">
-                                                                                <div class="card p-1" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('text')">
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-edit pr-2"></i> Input Field</button>
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <h6 class="text-cyan mb-0"><i class="fas fa-edit pr-2"></i> Input Field</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('phone')">
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-phone pr-2"></i> Phone Number</button>
+                                            
 
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <h6 class="text-cyan mb-0"><i class="fas fa-phone pr-2"></i> Phone Number</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('email')" >
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-envelope pr-2"></i> Email</button>
+                                        
 
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <h6 class="text-cyan mb-0"><i class="fas fa-envelope pr-2"></i> Email</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a href="javascript:fieldAdd('textbox')"  class="buttonPush">
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-indent pr2"></i> Text Area</button>
 
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <h6 class="text-cyan"><i class="fas fa-indent pr2"></i> Text Area</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('selectbox')">
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-chevron-circle-down pr-2"></i> Select</button>
-
-                                                                                            {{-- <div class="box p-2 rounded ">
-                                                                                                <h6 class="text-cyan"><i class="fas fa-chevron-circle-down pr-2"></i> Select</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('password')" >
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-key pr-2"></i> Password</button>
-
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <h6 class="text-cyan"><i class="fas fa-key pr-2"></i>Password</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('ipv4')" >
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-qrcode pr-2"></i> IPv4</button>
-
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <h6 class="text-cyan"><i class="fas fa-qrcode pr-2"></i> IPv4</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('url')" >
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-laptop-code pr-2"></i> URL</button>
-
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <!-- <h5 class="font-weight-light text-cyan"></h5> -->
-                                                                                                <h6 class="text-cyan"><i class="fas fa-laptop-code pr-2"></i> URL</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <a class="buttonPush" href="javascript:fieldAdd('address')" >
-                                                                                        <div class="card border-cyan card-hover mb-1">
-                                                                                            <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-map-marked-alt pr-2"></i> Address</button>
-
-                                                                                            {{-- <div class="box p-2 rounded">
-                                                                                                <!-- <h5 class="font-weight-light text-cyan"></h5> -->
-                                                                                                <h6 class="text-cyan"><i class="fas fa-map-marked-alt pr-2"></i> Address</h6>
-                                                                                            </div> --}}
-                                                                                        </div>
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-8">
-                                                                                <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
-                                                                                    <div class="m-1">
-                                                                                        <button type="button" class="btn btn-success float-btn ml-2" onclick="saveTemplate()" style="margin-left: 5px"> Save Template </button>
-                                                                                        <button type="button" class="btn btn-info float-btn" onclick=""> Preview </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
-                                                                                    <div class="row p-1">
-                                                                                        <div class="col-md-12 pt-1 ">
-                                                                                            <div class="head text-center ">
-                                                                                                <h4> Please Insert a Field Here from Insert Field Button </h4>
-                                                                                            </div>
-                                                                                            <div id="cardycard">
-                                                                                            </div>
-                                                                                            <div class="tail" id="card-colors" style="display:;">
-                                                                                                <div class="row connectedSortable border" id="sortable-row-start" style="min-height:10px; display: none;">
-                                                                                                    <div class="appends d-none"></div>
-                                                                                                </div>
-                                                                                                <div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
-                                                                                                    <div class="appends d-none"></div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingMargintwo">
                                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionMargintwo" aria-expanded="false" aria-controls="accordionMarginOne" style="margin-bottom: 14px;">
@@ -1148,11 +1010,11 @@
                                                 
                                                 <div class="table-responsive">
                                                     <table id="asset-table-list"
-                                                        class="table table-striped table-bordered w-100 no-wrap asset-table-list">
+                                                        class="table table-bordered w-100 no-wrap asset-table-list">
                                                         <thead>
                                                             <tr>
                                                                 <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
-                                                                <th>ID</th>
+                                                                <th></th>
                                                                 <th>Asset Title</th>
                                                                 <th>Template Name</th>
                                                                 <th>Actions</th>

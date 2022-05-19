@@ -1208,9 +1208,9 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-                                <img src="{{asset('${js_path}default_imgs/pdf.png')}}" style="width:65px; height:65px; margin-top:14px"  alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pdf.png')}}"  alt=""> ${item}</span>
-                                <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
+                                    <a href="{{asset('files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile">
+                                        <i class="fa fa-download"></i>
+                                    </a>
                             </div>
                         </div>` 
             }
@@ -1221,9 +1221,6 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-
-                                <img src="{{asset('${js_path}default_imgs/xlx.png')}}" width="38" alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/xlx.png')}}"  alt=""> ${item}</span>
                                 <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
@@ -1235,11 +1232,14 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
- 
                                 <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/image.jpeg')}}" alt="">  ${item}</span>
-                                <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                            </div>
+                                    <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile">
+                                        <i data-feather='download'></i>
+                                    </a>
+                                    <a href="javascript:void(0)" onclick="showAttachmentPreview(${ticket_details.id},'${item}')" style="right:45px !important" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile">
+                                        <i data-feather='maximize'></i>
+                                    </a>
+                            </div>                            
                         </div>` 
             }
             else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
@@ -1249,9 +1249,6 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-
-                                <img src="{{asset('${js_path}default_imgs/word.png')}}" width="38" alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/word.png')}}"  alt="">  ${item}</span>
                                 <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
@@ -1263,9 +1260,6 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-
-                                <img src="{{asset('${js_path}default_imgs/pptx.png')}}" class="imgIcon" width="38" alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/pptx.png')}}"  alt="">  ${item}</span>
                                 <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
@@ -1277,9 +1271,6 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-
-                                <img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class="imgIcon" width="38" alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/zip.jpeg')}}"  alt="">  ${item}</span>
                                 <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
@@ -1291,9 +1282,6 @@ function getTicketDetailsContent() {
                                 </div>
                             <div class="borderOne">
                                 <span class="overlayAttach"></span>
-
-                                <img src="{{asset('${js_path}default_imgs/txt.gif')}}" class="imgIcon" width="38" alt="">
-                                <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/txt.gif')}}"  alt="">  ${item}</span>
                                 <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile"><i class="fa fa-download"></i></a>
                             </div>
                         </div>` 
@@ -1306,6 +1294,12 @@ function getTicketDetailsContent() {
     }
 
     return tdet;
+}
+
+function showAttachmentPreview(id , item) {
+    let path = root + `/storage/tickets/${id}/${item}`;
+    $("#full-image").attr("src", path);
+    $('#image-viewer').show();
 }
 
 function listReplies() {

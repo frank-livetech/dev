@@ -8,6 +8,7 @@ use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 use FCM;
 use App\User;
+use Carbon\Carbon;
 
 class Notification extends Model
 {
@@ -126,6 +127,13 @@ class Notification extends Model
         // return Array (key:token, value:error) - in production you should remove from your database the tokens present in this array
         //$downstreamResponse->tokensWithError();
 
+    }
+
+    public function getCreatedAtAttribute($value) {
+        $date = new \DateTime($value);
+        $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+        $res = Carbon::parse( $date->format('Y-m-d H:i A') );
+        return $res->format(system_date_format() . ' H:i A');
     }
 
     public function scopeRead(){

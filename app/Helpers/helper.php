@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\User;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\NotifyController;
 
 
 if(!function_exists('pusherCredentials')){
@@ -58,5 +61,44 @@ if(!function_exists('timeZone')){
         }
 
         return $tm_name;
+    }
+}
+
+if(!function_exists('sendNotificationToAdmins')){
+    function sendNotificationToAdmins($slug , $type , $title , $desc){
+        $admin_users = User::where('user_type', 1)->get()->toArray();
+        $notify = new NotifyController();
+        foreach ($admin_users as $key => $value) {
+            $sender_id = auth()->id();
+            $receiver_id = $value['id'];
+            $slug = $slug;
+            $type = $type;
+            $data = 'data';
+            $title = $title;
+            $icon = 'calendar';
+            $class = 'btn-success';
+            $desc = $desc;
+            $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+        }
+    }
+}
+
+
+if(!function_exists('system_date_format')) {
+    function system_date_format(){
+        $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
+        $format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
+
+        $replacements = [
+            'DD'   => 'd',  'ddd'  => 'D',  'D'    => 'j',  'dddd' => 'l',  'E'    => 'N',  'o'    => 'S',
+            'e'    => 'w',  'DDD'  => 'z',  'W'    => 'W',  'MMMM' => 'F',  'MM'   => 'm',  'MMM'  => 'M',
+            'M'    => 'n',  'YYYY' => 'Y',  'YY'   => 'y',  'a'    => 'a',  'A'    => 'A',  'h'    => 'g',
+            'H'    => 'G',  'hh'   => 'h',  'HH'   => 'H',  'mm'   => 'i',  'ss'   => 's',  'SSS'  => 'u',
+            'zz'   => 'e', 'X'    => 'U',
+        ];
+
+        $phpFormat = strtr($format, $replacements);
+        return $phpFormat;
+
     }
 }

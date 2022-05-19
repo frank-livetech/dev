@@ -48,7 +48,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/file-uploaders/dropzone.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/js/scripts/components/components-tooltips.js')}}">
 
-
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
     <!-- END: Vendor CSS-->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -62,6 +61,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/dark-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/bordered-layout.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/semi-dark-layout.css')}}">
+
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/imagePreview.css')}}">
 
     <!-- BEGIN: Page CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet" type="text/css">
@@ -122,15 +123,20 @@
         .whitePlaceholder::-webkit-input-placeholder {
             color: white !important;
         }
-
-        /* .navbarCustomBorder {
-            border: 1px solid #b0bec5;
-            margin: 6px;
-            border-radius: 15px;
-            padding: 4px;
-        } */
-
-        /* checking comment */
+        td.details-control {
+            background: url('{{url($file_path . "default_imgs/details_open.png")}}') no-repeat center center !important;
+            cursor: pointer;
+            z-index: 9999 !important;
+        }
+        tr.shown td.details-control {
+            background: url('{{url($file_path ."default_imgs/details_close.png")}}') no-repeat center center !important;
+            cursor: pointer;
+            z-index: 9999 !important;
+        }
+        table.dataTable th { padding: 20px 10px !important; vertical-align: middle !important; }
+        .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:before, .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:after {
+            opacity: 0.5; margin-top: 10px;
+        }
     </style>
 
     @stack('css')
@@ -148,14 +154,12 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-        
-        @if( session()->get('clockin') == "yes" || session()->get('clockin') == null ) 
-        <!-- <span class="loadingText mx-1 fw-bolder text-dark">Please wait...</span> -->
+        @if( session()->get('clockin') == 0 || session()->get('clockin') == null )
         <div class="d-flex w-100 fw-bolder clock_in_section">
-            <h5 class="ms-1 fw-bolder text-danger">You are not clocked in -</h5>
-            <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now:</h5>
+            <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
+            <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
             <div class="d-flex">
-                <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" class="mx-1 text-danger"> No </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
+                <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
             </div>
         </div>
         @else
@@ -210,7 +214,7 @@
                 </li>
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none">
+                        <div class="user-nav d-sm-flex d-none navUserInfo">
                             <span class="user-name fw-bolder">{{ Auth::user()->name }}</span>
                             @if(\Auth::user()->user_type == "1")
                                 <span class="user-status">{{Auth::user()->role}}</span>
@@ -218,7 +222,7 @@
                                 <span class="user-status"></span>
                             @endif
 
-                            @if(session()->get('clockin') == "no" || session()->get('clockin') == null)
+                            @if( session()->get('clockin') == 1 || session()->get('clockin') != null)
                             <span class="badge bg-success clockin_timer" style="margin-top:4px"></span>
                             @endif
                         </div>
@@ -266,6 +270,11 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
+    <div id="image-viewer">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="full-image">
+    </div>
+
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
         {{Session::get('site_footer')}}
@@ -300,6 +309,8 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/file-uploaders/dropzone.min.js')}}"></script>
 
     <script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
+
+    <script src="{{asset($file_path . 'app-assets/js/scripts/imagePreview.js')}}"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
@@ -347,7 +358,6 @@
         const change_theme_url = "{{asset('change_theme_mode')}}";
 
         $(document).ready(function() {
-
             getAllCounts();
             getNotifications();
             getUnreadMessages();
@@ -378,6 +388,8 @@
         var unreadMsg = "{{route('unread.message')}}";
         var get_notifications = "{{url('getNotifications')}}";
         var parser_url = "{{url('save-inbox-replies')}}";
+        let clockintime = "{{session()->get('clockin_time')}}";
+        console.log(clockintime , "clockintime");
 
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({
@@ -543,6 +555,9 @@
                     $('.version_title').text(data.system_version);
 
                     if(data.status_code == 200 && data.success == true){
+
+                        renderClockIn(data.staff_clock_in);
+
                         notifications = data.data;
 
                         let count = data.total_notification;
@@ -627,6 +642,46 @@
             }
         }
 
+        function renderClockIn(data) {
+            console.log(data , "data");
+            // if data is null then its clock in 
+            if(data == null) {
+
+                let clockinbtn = `
+                <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockin' , this)">
+                    <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;
+                $('.clock_btn_div ').html(clockinbtn);
+                $('.clock_in_section').show();
+                $('.clockin_timer').hide();
+
+                let clockSection = `<div class="d-flex w-100 fw-bolder clock_in_section">
+                    <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
+                    <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
+                    <div class="d-flex">
+                        <a href="#" class="mx-1 text-danger" onclick="staffatt('clockin')"> Yes </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
+                    </div>
+                </div>`;
+
+                $('.showClockInSection').html(clockSection);
+
+            }else{
+
+                let clockoutbtn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
+                $('.clock_btn_div').html(clockoutbtn);
+                $('.clock_in_section').attr('style','display:none !important');
+
+                if($('.navUserInfo').children().length == 2) {
+                    $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
+                    clockintime = moment(data.clock_in , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+                    clockInTimer(clockintime);
+                }else{
+                    clockintime = moment(data.clock_in , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+                    clockInTimer(clockintime);
+                }
+            }
+
+        }
+
 
         function checkClockIn(type) {
             $.ajax({
@@ -651,9 +706,6 @@
                 }
             });
         }
-
-        let clockintime = "{{session()->get('clockin_time')}}";
-        console.log(clockintime , "clockintime");
 
         function sessionClockIn(btn_text) {
 
@@ -771,7 +823,6 @@
             clockInTimer(clockintime);
         }, 100);
         
-
     </script>
     @include('js_files.chat.pusher')
     @include('js_files.pusher_notification.notification')

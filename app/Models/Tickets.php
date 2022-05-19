@@ -7,8 +7,8 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Models\TicketReply;
 use App\Models\Activitylog;
 use App\User;
+use Session;
 use App\Models\Customer;
-
 use DB;
 
 class Tickets extends Model
@@ -110,12 +110,35 @@ class Tickets extends Model
     public function getUserPicAttribute() {
 
         $data = DB::table('users')->where('id', $this->created_by)->first();
+        $path = Session::get('is_live') == 1 ? '/public' . '/' : '/';
+
         if(!empty($data)) {
-            return $this->user_pic = $data->profile_pic;
+
+            if($data->profile_pic != null) {
+                if(is_file( getcwd() . $path . $data->profile_pic )) {
+                    $image = request()->root() . $path . $data->profile_pic;
+                }else{
+                    $image = request()->root() . $path . 'default_imgs/customer.png';
+                }
+            }else{
+                $image = request()->root() . $path . 'default_imgs/customer.png';
+            }
+
+            return $this->user_pic = $image;
         }else{
             $customer = DB::table('customers')->where('id', $this->created_by)->first();
             if(!empty($customer)) {
-                return $this->user_pic = $customer->avatar_url;    
+                
+                if($customer->avatar_url!= null) {
+                    if(is_file( getcwd() . $path . $customer->avatar_url)) {
+                        $image = request()->root() . $path . $customer->avatar_url;
+                    }else{
+                        $image = request()->root() . $path . 'default_imgs/customer.png';
+                    }
+                }else{
+                    $image = request()->root() . $path . 'default_imgs/customer.png';
+                }
+                return $this->user_pic = $image;
             }
         }
     }

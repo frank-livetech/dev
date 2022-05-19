@@ -1,5 +1,79 @@
 @extends('layouts.master-layout-new')
 @section('body')
+
+@section('customtheme')
+<style>
+    .talign{
+        text-align: center
+    }
+    .m-bot{
+        margin-bottom: 0.5rem
+    }
+    .float-btn{
+        float: right
+    }
+     table.dataTable th{
+        padding: 15px !important
+    }
+    table.dataTable>thead>tr>th:not(.sorting_disabled), table.dataTable>thead>tr>td:not(.sorting_disabled){
+        padding-right: 14px !important
+    }
+    .FieldItem_container {
+        font-size: 16px;
+        cursor: pointer;
+        position: relative;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-preferred-size: calc(50% - 6px);
+        flex-basis: calc(50% - 6px);
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 12px;
+        padding: 12px 29px 12px 9px;
+        box-sizing: border-box;
+        border-left: 4px solid #D3DDE1;
+        border-radius: 4px;
+        color: #455560;
+        background-color: #FFFFFF;
+        line-height: 1;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        transition: 200ms opacity ease-in-out, 200ms box-shadow ease-in-out, 200ms border-left-color ease-in-out;
+    }
+    .FieldItem_container:hover, .FieldItem_container.is-drag-layer {
+        box-shadow: 0 0 3px 0 rgb(0 0 0 / 20%);
+        border-left-color: #069EB4;
+    }
+    .FieldItem_container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: 1px solid #D3DDE1;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-left-width: 0;
+    }
+    .FieldItem_container .FieldItem_title {
+        max-width: 200px;
+        margin-left: 12px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: bold;
+    }
+    .FieldSettingsSideBarItem_container {
+        -ms-flex-preferred-size: calc(50% - 6px);
+        flex-basis: calc(50% - 6px);
+        display: -ms-flexbox;
+        margin-bottom: 12px;
+    }
+</style>
+@endsection
+
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 @endphp
@@ -59,55 +133,54 @@
                                                 </div>
                                                 <div class="row ">
                                                     <div class="col-md-4">
-                                                        <div class="card p-1" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
+                                                        <div class="card p-1" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;background-color: #F7F8F8">
                                                             <div class="row">
                                                             <div class="col-md-6 talign">
+                                                           
                                                             <a class="buttonPush " href="javascript:fieldAdd('text')" >
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-edit pr-2" style="font-size: 42px"></i> </button>
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <h6 class="text-cyan mb-0"><i class="fas fa-edit pr-2"></i> Input Field</h6>
-                                                                    </div> --}}
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-edit pr-2" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">Input Field</span>
+                                                                    </div>
                                                                 </div>
-                                                                Input Field
-                                                            </a>
+                                                             </a>
                                                             </div>
                                                             <div class="col-md-6 talign">
                                                             <a class="buttonPush" href="javascript:fieldAdd('phone')">
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-phone pr-2" style="font-size: 42px"></i> </button>
-
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <h6 class="text-cyan mb-0"><i class="fas fa-phone pr-2"></i> Phone Number</h6>
-                                                                    </div> --}}
+                                                        
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-phone" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">Phone Number</span>
+                                                                    </div>
                                                                 </div>
-                                                                Phone Number
                                                             </a>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 talign">
                                                             <a class="buttonPush" href="javascript:fieldAdd('email')" >
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-envelope pr-2" style="font-size: 42px"></i> </button>
-
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <h6 class="text-cyan mb-0"><i class="fas fa-envelope pr-2"></i> Email</h6>
-                                                                    </div> --}}
+                                                                
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-envelope" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">Email</span>
+                                                                    </div>
                                                                 </div>
-                                                                Email
+                                                                
                                                             </a>
                                                         </div>
                                                             <div class="col-md-6 talign">
                                                             <a href="javascript:fieldAdd('textbox')"  class="buttonPush">
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-indent pr2" style="font-size: 42px"></i> </button>
-
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <h6 class="text-cyan"><i class="fas fa-indent pr2"></i> Text Area</h6>
-                                                                    </div> --}}
+                                                                
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-indent" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">Text Area</span>
+                                                                    </div>
                                                                 </div>
-                                                                Text Area
+                                                                
                                                             </a>
                                                         </div>
                                                     
@@ -115,68 +188,66 @@
                                                 <div class="row">
                                                     <div class="col-md-6 talign">
                                                             <a class="buttonPush" href="javascript:fieldAdd('selectbox')">
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-chevron-circle-down pr-2" style="font-size: 42px"></i></button>
-
-                                                                    {{-- <div class="box p-2 rounded ">
-                                                                        <h6 class="text-cyan"><i class="fas fa-chevron-circle-down pr-2"></i> Select</h6>
-                                                                    </div> --}}
+                                                                
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-chevron-circle-down" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">Select</span>
+                                                                    </div>
                                                                 </div>
-                                                                Select
+                                                                
                                                             </a>
                                                         </div>
                                                         <div class="col-md-6 talign">
                                                             <a class="buttonPush" href="javascript:fieldAdd('password')" >
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-key pr-2" style="font-size: 42px"></i></button>
-
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <h6 class="text-cyan"><i class="fas fa-key pr-2"></i>Password</h6>
-                                                                    </div> --}}
+                                                                
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-key" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">Password</span>
+                                                                    </div>
                                                                 </div>
-                                                                Password
+                                                                
                                                             </a>
                                                         </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-6 talign">
                                                             <a class="buttonPush" href="javascript:fieldAdd('ipv4')" >
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-qrcode pr-2" style="font-size: 42px"></i> </button>
-
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <h6 class="text-cyan"><i class="fas fa-qrcode pr-2"></i> IPv4</h6>
-                                                                    </div> --}}
+                                                               
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-qrcode" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">IPv4</span>
+                                                                    </div>
                                                                 </div>
-                                                                IPv4
+                                                                
                                                             </a>
                                                         </div>
                                                         <div class="col-md-6 talign">
                                                             <a class="buttonPush" href="javascript:fieldAdd('url')" >
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-laptop-code pr-2" style="font-size: 42px"></i> </button>
-
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <!-- <h5 class="font-weight-light text-cyan"></h5> -->
-                                                                        <h6 class="text-cyan"><i class="fas fa-laptop-code pr-2"></i> URL</h6>
-                                                                    </div> --}}
+                                                               
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-laptop-code" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">URL</span>
+                                                                    </div>
                                                                 </div>
-                                                                URL
+                                                                
                                                             </a>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 talign">
                                                             <a class="buttonPush" href="javascript:fieldAdd('address')" >
-                                                                <div class="card border-cyan card-hover m-bot">
-                                                                    <button type="button" class="btn btn-outline-success waves-effect"><i class="fas fa-map-marked-alt pr-2" style="font-size: 42px"></i> </button>
-
-                                                                    {{-- <div class="box p-2 rounded">
-                                                                        <!-- <h5 class="font-weight-light text-cyan"></h5> -->
-                                                                        <h6 class="text-cyan"><i class="fas fa-map-marked-alt pr-2"></i> Address</h6>
-                                                                    </div> --}}
+                                                               
+                                                                <div class="FieldSettingsSideBarItem_container">
+                                                                    <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                        <i class="fas fa-map-marked-alt" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                        <span class="FieldItem_title">Address</span>
+                                                                    </div>
                                                                 </div>
-                                                                Address
+                                                                
                                                             </a>
                                                         </div>
                                                     </div>
@@ -318,11 +389,15 @@
                         
                         <div class="table-responsive">
                             <table id="asset-table-list"
-                                class="table table-striped table-bordered w-100 no-wrap asset-table-list">
+                                class="table table-bordered w-100 no-wrap asset-table-list">
                                 <thead>
                                     <tr>
-                                        <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
-                                        <th>ID</th>
+                                        <th>
+                                            <div class="text-center">
+                                                <input type="checkbox" id="checkAll" name="assets[]" value="0">
+                                            </div>
+                                        </th>
+                                        <th></th>
                                         <th>Asset Title</th>
                                         <th>Template Name</th>
                                         <th>Actions</th>
@@ -414,23 +489,8 @@
         </div>
     </div>
 </div>
-<style>
-    .talign{
-        text-align: center
-    }
-    .m-bot{
-        margin-bottom: 0.5rem
-    }
-    .float-btn{
-        float: right
-    }
-     table.dataTable th{
-        padding: 15px !important
-    }
-    table.dataTable>thead>tr>th:not(.sorting_disabled), table.dataTable>thead>tr>td:not(.sorting_disabled){
-        padding-right: 14px !important
-    }
-</style>
+
+
 @endsection
 @section('scripts')
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
