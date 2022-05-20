@@ -111,7 +111,7 @@ function showAssetDetails(id) {
     let customer_html = ``;
     let company_html = ``;
     let asset_field_html = ``;
-    let asset_record_html = ``;
+    let asset_field_tr = ``;
 
     if(item != null) {
 
@@ -174,14 +174,25 @@ function showAssetDetails(id) {
 
         }
 
-        if(item.asset_record != null) {
+        if(item.asset_fields != null) {
 
-            for( let data of item.asset_record) {
+            for( let data of item.asset_fields) {
 
-                let custom_key = 'fl_' + data.form_id;
-                let key = data[custom_key];
+                if(item.asset_record) {
+                    let custom_key = 'fl_' + data.id;
+                    let key = item.asset_record[custom_key];
 
-                asset_record_html += `
+
+                    asset_field_tr += `
+                        <tr>
+                            <td class="fw-bolder"> ${data.label} </td>
+                            <td> ${ key } </td>
+                        </tr>`;
+
+                }
+            }
+
+            asset_field_html += `
                 <div class="col-md-6 text-start rounded p-1">
                     <div class="bg-light p-2 rounded">
                         <h4 class="fw-bolder"> Asset Detail </h4>
@@ -195,30 +206,14 @@ function showAssetDetails(id) {
                                     </tr>
                                     <tr>
                                         <td class="fw-bolder"> Template Type </td>
-                                        <td> ${item.template != null ? item.template.title : '---'}  </td>
+                                        <td> ${item.template.title} </td>
                                     </tr>
-                                    <tr>
-                                        <td class="fw-bolder"> Manufacturer </td>
-                                        <td> ${item.asset_record != null ? data[custom_key] : '---'} </td>
-                                    </tr> 
-                                    <tr>
-                                        <td class="fw-bolder"> Customer Name </td>
-                                        <td> ${item.customer != null ? (item.customer.first_name  + ' ' + item.customer.last_name) : '---'} </td>
-                                    </tr> 
-                                    <tr>
-                                        <td class="fw-bolder"> Company Name  </td>
-                                        <td> ${item.company != null ? item.company.name : '---'} </td>
-                                    </tr> 
-                                    <tr>
-                                        <td class="fw-bolder"> Owner Name </td>
-                                        <td> ${item.company != null ? (item.company.poc_first_name + ' ' + item.company.poc_last_name ): '---'} </td>
-                                    </tr>                                                        
+                                    ${asset_field_tr}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>`;
-            }
         }
 
 
@@ -231,7 +226,7 @@ function showAssetDetails(id) {
             ${company_html}            
         </div>
         <div class="row mt-1 p-1">
-            ${asset_record_html}
+            ${item.asset_fields != null ? asset_field_html : ''}
         </div>`;
 }
 
@@ -573,17 +568,12 @@ function getFields(id) {
         $("#templateTitle").css("display", "none");
         return;
     }
-    console.log(templates, "before");
     let data = templates.filter(itm => itm.id == id);
-    console.log(data, "before");
     data = data[0].fields;
-    console.log(data);
-
     var fields = ``;
 
     for (var i = 0; i < data.length; i++) {
         var length = data.length;
-        console.log(data.length, "dasdasdasdasd");
         let placeholder = data[i].placeholder != null ? data[i].placeholder : "";
         let required = data[i].required == 1 ? "required" : "";
 
@@ -724,10 +714,27 @@ $("#save_asset_form").submit(function (event) {
     var action = $(this).attr('action');
     var method = $(this).attr('method');
 
-    formData.append('customer_id', asset_customer_uid);
-    formData.append('company_id', asset_company_id);
+    
     formData.append('project_id', asset_project_id);
     formData.append('ticket_id', asset_ticket_id);
+
+    let url = window.location.href;
+
+    if(url.includes('asset-manager')) {
+
+
+        if($("#company_id").val() == '') {
+            toastr.error( 'Company field is required' , { timeOut: 5000 });
+            return false;
+        }
+
+        formData.append('customer_id', $("#customer_id").val() );
+        formData.append('company_id',  $("#company_id").val() );
+
+    }else{
+        formData.append('customer_id', asset_customer_uid);
+        formData.append('company_id', asset_company_id);
+    }
 
     let demo_address = $("#demo_address").val();
 

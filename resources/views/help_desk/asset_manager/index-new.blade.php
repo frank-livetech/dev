@@ -330,10 +330,29 @@
                                     </div>
                                 </div>
                                 <div class="form-row mt-1" id="templateTitle" style="display:none;">
-                                    <div class="col-md-12 form-group">
-                                        <div class="form-group">
-                                            <label>Asset Title</label>
-                                                <input type="text" name="asset_title" id="asset_title" class="asset_title form-control">
+                                    <div class="row">
+                                        <div class="col-md-4 form-group">
+                                            <div class="form-group">
+                                                <label>Asset Title</label>
+                                                    <input type="text" name="asset_title" id="asset_title" class="asset_title form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <div class="form-group">
+                                                <label> Company <span class="text-danger"> * </span>  </label>
+                                                <select name="company_id" id="company_id" class="select2">
+                                                    <option value=""> Choose </option>
+                                                    @foreach($companies as $company)
+                                                        <option value="{{$company->id}}"> {{$company->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <div class="form-group">
+                                                <label> Customer </label>
+                                                <select name="customer_id" id="customer_id" class="select2"> </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -401,7 +420,7 @@
                                         </th>
                                         <th></th>
                                         <th>Asset Title</th>
-                                        <th>Template Name</th>
+                                        <th> Asset Type</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -495,6 +514,9 @@
 
 @endsection
 @section('scripts')
+<script> 
+    let companies = @json($companies);
+</script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
 <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>

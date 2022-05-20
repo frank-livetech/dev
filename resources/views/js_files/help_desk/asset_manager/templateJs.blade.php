@@ -324,6 +324,7 @@ function saveTemplate() {
     if (!$('#tempTitle').val()) {
         toastr.error('Template Title Required', { timeOut: 5000 });
         $('#tempTitle').focus();
+        $("#tempTitle").css('border','1px solid red')
         return false;
     }
 
@@ -359,6 +360,7 @@ function saveTemplate() {
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data) {
+                $("#tempTitle").removeAttr('style');
                 if (data.success) {
                     getFormsTemplates();
                     getAllTemplate();

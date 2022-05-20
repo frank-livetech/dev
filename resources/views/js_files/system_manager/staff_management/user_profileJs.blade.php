@@ -242,7 +242,7 @@
                 requested_by : $("#requested_by").val(),
                 leave_id : $("#leave_id").val(),
                 start_date : $("#leave_start_date").val(),
-                end_date : $("#leave_end_date").val(),
+                end_date : moment( $("#leave_end_date").val() ).add(24, 'hours').format('YYYY-MM-DD') ,
                 reason: $("#leave_reason").val(),
             }
 
@@ -259,6 +259,15 @@
                         get_all_leaves();
                         toastr.success(data.message, { timeOut: 5000 });
                         $("#leaveModal").modal('hide');
+                    
+                        let event = {
+                            title : form.reason , 
+                            start : form.start_date ,
+                            end : form.end_date ,
+                        }
+
+                        // add event into calender
+                        calendar.addEvent( event );
 
                     }else{
                         toastr.error(data.message, { timeOut: 5000 });
@@ -859,7 +868,7 @@
         get_all_leaves();
         var defaultEvents = [];
             
-        get_all_schedules(defaultEvents);
+        // get_all_schedules(defaultEvents);
     });
 
     $("#payroll-tab").click(function() {
@@ -1140,20 +1149,6 @@
                             {
                                 "render": function(data, type, full, meta) {
                                     return full.end_date != null ? full.end_date : '-';
-                                }
-                            },
-                            {
-                                "render": function(data, type, full, meta) {
-                                    let pending = `<span class="badge bg-warning badge-pill text-white">pending</span>`;
-                                    let approved = `<span class="badge bg-success badge-pill text-white">approved</span>`;
-                                    let rejected = `<span class="badge bg-danger badge-pill text-white">rejected</span>`;
-                                    if(full.status == 0) {
-                                        return pending;
-                                    }else if(full.status == 1) {
-                                        return approved;
-                                    }else{
-                                        return rejected;
-                                    }
                                 }
                             },
                             {

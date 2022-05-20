@@ -131,6 +131,30 @@
             }
         });
     }
+
+
+    $("#company_id").on("change" , function() {
+        $("#customer_id").empty();
+        let item = companies.find(item => item.id == $(this).val() );
+        let option = ``;
+        if(item != null) {
+
+            console.log(item , "item");
+
+            if(item.staff_members.length != 0) {
+
+                
+                let root = `<option value="">Choose</option>`;
+
+                for(let data of item.staff_members) {
+                    option += `<option value="${data.id}"> ${ data.first_name} ${data.last_name} </option>`;
+                }
+                console.log(option);
+                $("#customer_id").append(root + option).trigger('change');
+            }
+
+        }
+    });
   
 
 </script>

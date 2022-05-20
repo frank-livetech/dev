@@ -1,11 +1,8 @@
 @extends('layouts.master-layout-new')
 @section('title', 'Staff Profile | ' . $profile->name )
-@push('css')
 
-@php
-    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
-@endphp
-<link href="{{asset($file_path . 'assets/libs/fullcalendar/dist/fullcalendar.min.css')}}" rel="stylesheet" />
+@section('customtheme')
+    @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
     <style>
         .demo-inline-spacing3{
             background-color: unset !important;
@@ -20,86 +17,84 @@
             height: 1px;
             margin: 15px;
         }
-            .f-btn{
-                float: right
-            }
-            .buttons-copy {
-                background: #238fac;
-                color: #fff;
-                border-color: hsl(193, 66%, 41%);
-                font-weight: 700
-            }
-            .buttons-excel{
-                background: #026e39;
-                color: #fff;
-                border-color: #026e39;
-                font-weight: 700
-            }
-            .buttons-pdf{
-                background: #CC4438;
-                color: #fff;
-                font-weight: 700;
-                border-color: #CC4438;
-            }
-            .float-right{
-                float: right
-            }
-            .mti-2 {
-                margin-top: 1.9rem !important;
-                }
-            .demo-inline-spacing {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between !important;
-                align-items: center;
-                background-color: rgb(243, 239, 239);
-                padding: 14px;
-                border-radius: 5px
-            }
-            .demo-inline-spacing1 {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between !important;
-                align-items: center;
-               padding: 7px;
-                border-radius: 5px
-            }
-            .demo-inline-spacing > * {
-                margin-right: unset;
-                margin-top: unset;
-}   
-.soc-card {
-        justify-content: space-between;
-        display: flex;
-    }
+        .f-btn{
+            float: right
+        }
+        .buttons-copy {
+            background: #238fac;
+            color: #fff;
+            border-color: hsl(193, 66%, 41%);
+            font-weight: 700
+        }
+        .buttons-excel{
+            background: #026e39;
+            color: #fff;
+            border-color: #026e39;
+            font-weight: 700
+        }
+        .buttons-pdf{
+            background: #CC4438;
+            color: #fff;
+            font-weight: 700;
+            border-color: #CC4438;
+        }
+        .float-right{
+            float: right
+        }
+        .mti-2 {
+            margin-top: 1.9rem !important;
+        }
+        .demo-inline-spacing {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between !important;
+            align-items: center;
+            background-color: rgb(243, 239, 239);
+            padding: 14px;
+            border-radius: 5px
+        }
+        .demo-inline-spacing1 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between !important;
+            align-items: center;
+            padding: 7px;
+            border-radius: 5px
+        }
+        .demo-inline-spacing > * {
+            margin-right: unset;
+            margin-top: unset;
+        }   
+        .soc-card {
+            justify-content: space-between;
+            display: flex;
+        }
+        .soc-ico {
+            font-size: 24px;
+        }
+        .picEdit{
+            cursor:pointer;
+            position: absolute;
+            top: 72px;
+            left: 139px;
+            border: 1px solid #fff;
+            padding: 4px;
+            border-radius: 100%;
+            background: #fbfbfb;
+        }
 
-    .soc-ico {
-        font-size: 24px;
-    }
-.picEdit{
-    cursor:pointer;
-    position: absolute;
-    top: 72px;
-    left: 139px;
-    border: 1px solid #fff;
-    padding: 4px;
-    border-radius: 100%;
-    background: #fbfbfb;
-}
-/* #curr_user_pic figure {
-    background: #4a3753;
-} */
-#curr_user_pic figure img{
-    opacity: 1;
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
-}
-#curr_user_pic figure:hover img {
-	opacity: .5;
-}
-
+        #curr_user_pic figure img{
+            opacity: 1;
+            -webkit-transition: .3s ease-in-out;
+            transition: .3s ease-in-out;
+        }
+        #curr_user_pic figure:hover img {
+            opacity: .5;
+        }
     </style>
-@endpush
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/calendar.css')}}">
+@endsection
+
 @section('body')
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -478,37 +473,15 @@
                             <hr>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="card">
-                                            <div class="d-flex justify-content-between p-2">
-                                                <h3 class="lead">View Your Schedule here Below</h3>
-                                                <button onclick="openScheduleModal()" class="btn btn-success  rounded"> <i class="fas fa-plus-circle"></i> Set Schedule </button>
-                                            </div>
-    
-                                            <div class="card-body">
-                                                <div id="calendar" class="dashboard-calendar"></div>
-    
-                                                <!-- BEGIN MODAL -->
-                                                <div class="modal fade none-border" id="my-event">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header d-flex align-items-center">
-                                                                <h4 class="modal-title"><strong> Add Work Time </strong></h4>
-                                                                <button type="button" class="close ml-auto" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                            </div>
-                                                            <div class="modal-body"></div>
-                                                            <!-- <div class="modal-footer">
-                                                                <button type="button" class="btn btn-white waves-effect" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-success save-event waves-effect waves-light">Save</button>
-                                                                <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
-                                                            </div> -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
+                                    
+                                    <div class="card">
+                                        <div class="d-flex justify-content-between p-2">
+                                            <h3 class="lead">View Your Schedule here Below</h3>
+                                            <button onclick="openScheduleModal()" class="btn btn-success  rounded"> <i class="fas fa-plus-circle"></i> Set Schedule </button>
                                         </div>
                                     </div>
+
+                                    <div id='calendar'></div>
     
                                 </div>
                             </div>
@@ -527,7 +500,6 @@
                                             <th>Reason</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -1511,6 +1483,25 @@
             </div>
         </div>
     </div>
+
+        <!-- schdule Modal -->
+        <div class="modal fade" id="EventDetailModal" tabindex="-1" aria-labelledby="editPicModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="schedule-title"> Event </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span class="text-muted small"> Reason </span>
+                    <h3 id="event-title" class="fw-bolder"></h3>
+                    <span class="fw-bolder">Start Date : </span> <span id="event-start-date"> </span> <br>
+                    <span class="fw-bolder">End Date : </span> <span id="event-end-date"> </span> <br>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- schdule Modal -->
     <div class="modal fade" id="workHoursModal" tabindex="-1" aria-labelledby="workHoursModalLabel" aria-hidden="true">
@@ -1541,32 +1532,21 @@
 </div>
 @endsection
 @section('scripts')
+    
+    <script src="{{asset($file_path . 'app-assets/js/calendar.js')}}"></script>
 
-<link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/extra-libs/countdown/countdown.css')}}" />
-<script type="text/javascript" src="{{asset($file_path . 'assets/extra-libs/countdown/countdown.js')}}"></script>
+    @include('js_files.system_manager.staff_management.staff_profileJs')
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script type="text/javascript" src="{{asset($file_path . 'assets/extra-libs/pickr/pickr.min.js')}}"></script>
-<script src="{{asset($file_path . 'assets/libs/fullcalendar/dist/fullcalendar.min.js')}}"></script>
-<script src="{{asset($file_path . 'assets/dist/js/pages/calendar/cal-init.js').'?ver='.rand()}}"></script>
-
-{{-- Page JS --}}
-@include('js_files.system_manager.staff_management.staff_profileJs')
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+    <!-- requestLeaveModal -->
 
 <script>
+    var calender;
+    let events = @json($leaves);
     let ticketLengthCount = {!! json_encode($ticketView) !!};
         var url  = window.location.href;
         if(url.includes('#staff-schedule')) {
             $("#my-schedule-tab").click();
         }
-        console.log(js_origin , "js_origin");
-
 
         if(url.includes('#tickets')) {
 
@@ -1587,11 +1567,42 @@
             URL.revokeObjectURL(output.src) // free memory
             }
         };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                selectable: true,
+                editable: true,
+                dayMaxEvents: true,
+                headerToolbar: {
+                    left: 'prevYear,prev,next,nextYear today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                },
+                events: events,
+                color: 'yellow', 
+                textColor: 'black',
+                select:function(start, end ,allday) {
+                    console.log(start , "start");
+                },
+                eventClick: function(info) {
+                    console.log(info , "info");
+                    $("#EventDetailModal").modal('show');
+
+                    $("#event-title").text(info.event.title);
+
+                    let str = moment(info.event.start).format('YYYY-MM-DD');
+                    $("#event-start-date").text(str);
+
+                    let ed = moment(info.event.end).add(-24 , 'hours').format('YYYY-MM-DD');
+                    $("#event-end-date").text(ed);
+                }
+            });
+            calendar.render();
+        });
 </script>
 
-@include('js_files.ticket_cmmnJs')
-@include('js_files.system_manager.staff_management.user_profileJs')
-
-
-
+    @include('js_files.ticket_cmmnJs')
+    @include('js_files.system_manager.staff_management.user_profileJs')
 @endsection
