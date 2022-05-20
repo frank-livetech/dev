@@ -28,6 +28,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\Usercertification;
 use App\Models\Integrations;
 use App\Models\Tasks;
+use App\Http\Controllers\NotifyController;
 use App\Models\UserDocuments;
 use App\Models\StaffAttendance;
 use Exception;
@@ -96,6 +97,7 @@ class UserController extends Controller
 
         return view('system_manager.staff_management.index-new', get_defined_vars());
     }
+
     public function new(){
         $tags = Tags::all();
         $roles = Role::all();
@@ -103,6 +105,7 @@ class UserController extends Controller
 
         return view('system_manager.staff_management.index-new',compact('tags','roles'));
     }
+
     public function insertUsers(Request $request) {
         $data = $request->all();
         $response = array();
@@ -580,6 +583,26 @@ class UserController extends Controller
         else $selected_staff_members = array();
     
         $ticketView = TicketView::where('user_id' , $id)->first();
+
+        $leaves = StaffLeaves::where('requested_by' , auth()->id())->get();
+
+        foreach($leaves as $leave) {
+
+            $leave->title =  $leave->reason;
+            $leave->allDay = true;
+            $leave->backgroundColor = "#5e50ee";
+
+            $arr = [
+                "calender" => "Business" ,
+                "is_holiday" => 0 , 
+                "is_leave" => 0 , 
+            ];
+          
+            $leave->extendedProps = $arr;
+
+            $leave->start = $leave->start_date;
+            $leave->end  = $leave->end_date;
+        }
 
         return view('system_manager.staff_management.user_profile_new', get_defined_vars());
         // return view('system_manager.staff_management.user_profile',compact('id', 'priorities','date_format','types','departments','statuses','customers','users','ticket_format','docs', 'tickets','certificates','profile','staff_att_data','countries','tasks','staff_state','google', 'google_api','selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
@@ -1392,12 +1415,57 @@ class UserController extends Controller
 
         }
 
+        $template = DB::table("templates")->where('code','staff_leave')->first();
+        $notify = new NotifyController();
+        $users_list = User::where([ ['user_type',1] , ['is_deleted',0] ])->get();
+
+        foreach ($users_list as $key => $value) {
+
+            if(!empty($template)) {
+
+                $detail = $value['email'] != auth()->user()->email ? 
+                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just Add A Leave' : 
+                    'Hey, you just Add a Leave into LT-CMS, here are the details';
+                
+                $temp = $this->leaveTemplateReplaceShortCodes($template->template_html ,$detail , $data['reason'] , $data['start_date'] , $data['end_date'] );
+                $mail = new MailController();
+                $mail->sendMail( auth()->user()->name . ' Added a Leave' , $temp , 'system_notification@mylive-tech.com', $value['email'] , $value['name']);
+            }
+        }
+
         return response()->json([
             'success' => true,
             'message' => $title,
             'status_code' => 200,
         ]);
+    }
 
+    public function leaveTemplateReplaceShortCodes($template_html , $detail , $reason , $start_date , $end_date) {
+
+        $template = htmlentities($template_html);
+
+        if(str_contains($template, '{Staff-name}')) {
+            $template = str_replace('{Staff-name}', $detail , $template);
+        }
+
+        if(str_contains($template, '{current_date}')) {
+            $todayDateTime = new Carbon( now() , timeZone() );
+            $template = str_replace('{current_date}', $todayDateTime->format( system_date_format() ) , $template);
+        }
+
+        if(str_contains($template, '{Reason}')) {
+            $template = str_replace('{Reason}', $reason , $template);
+        }
+
+        if(str_contains($template, '{Start-Date}')) {
+            $template = str_replace('{Start-Date}', $start_date , $template);
+        }
+
+        if(str_contains($template, '{End-Date}')) {
+            $template = str_replace('{End-Date}', $end_date , $template);
+        }
+
+        return html_entity_decode($template);
     }
 
     public function get_all_leaves(Request $request) {

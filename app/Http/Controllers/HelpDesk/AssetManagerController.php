@@ -40,8 +40,7 @@ class AssetManagerController extends Controller
     public function asset_manager(){
         
         $customers = customer::all();
-        $companies = Company::all();
-
+        $companies = Company::with('staff_members')->get();
         return view('help_desk.asset_manager.index-new',compact('customers','companies'));
     }
 
@@ -386,7 +385,7 @@ class AssetManagerController extends Controller
         $assets = $query->where('is_deleted', 0)->with(['template','asset_fields','customer','company'])->get();
 
         foreach($assets as $asset) {
-            $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->get();
+            $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->first();
         }
         
         $response['message'] = 'Success';

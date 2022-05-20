@@ -163,6 +163,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
     Route::post('/update-staff','UserController@updateStaff');
     //for profile view
     Route::get('/profile/{id}','UserController@profile');
+
     Route::get('/profile-new/{id}','UserController@newProfile');
 
     Route::post('/dept_permission','UserController@departmentPermission');
