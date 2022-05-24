@@ -631,7 +631,7 @@
 
                     <div class="hover_content_${val['id']} bg-white border rounded p-1" 
                         style="position:absolute;width:clamp(auto, 80%, auto);height:auto; overflow:hidden; white-space: initial; display:none;
-                            z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:6px;">
+                            z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:16px;">
                     </div>
                 </div>
                 
