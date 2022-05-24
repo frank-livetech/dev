@@ -74,7 +74,7 @@
                                 </li>
                                 <li class="breadcrumb-item"><a href="{{route('customer.lookup')}}">Customer Lookup</a>
                                 </li>
-                                <li class="breadcrumb-item active">{{$customer->first_name}} {{$customer->last_name}}
+                                <li class="breadcrumb-item active"><a href="javascript:location.reload()">{{$customer->first_name}} {{$customer->last_name}}</a>
                                 </li>
                             </ol>
                         </div>

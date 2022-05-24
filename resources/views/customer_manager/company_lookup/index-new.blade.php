@@ -23,9 +23,9 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item">Company Manager
+                                <li class="breadcrumb-item"><a href="javascript:location.reload()">Company Manager</a>
                                 </li>
-                                <li class="breadcrumb-item active">Company Lookup
+                                <li class="breadcrumb-item active"><a href="javascript:location.reload()">Company Lookup</a>
                                 </li>
                             </ol>
                         </div>

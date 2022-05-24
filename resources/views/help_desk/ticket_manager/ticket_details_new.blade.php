@@ -315,11 +315,11 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item">Help Desk
+                                <li class="breadcrumb-item"><a href="javascript:location.reload()">Help Desk</a>
                                 </li>
-                                <li class="breadcrumb-item active"><a href="{{url('ticket-manager')}}">Tickets Manager</a>
+                                <li class="breadcrumb-item active"><a href="{{url('ticket-manager')}}">Ticket Manager</a>
                                 </li>
-                                <li class="breadcrumb-item active">Ticket Detail
+                                <li class="breadcrumb-item active"><a href="javascript:location.reload()">Ticket Detail </a>
                                 </li>
                             </ol>
                         </div>

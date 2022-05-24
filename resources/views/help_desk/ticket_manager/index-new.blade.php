@@ -47,24 +47,24 @@
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper p-0">
         <div class="content-header row">
-            <div class="content-header-left col-md-7 col-12 mb-2">
+            <div class="content-header-left col-md-12 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
-                        <h2 class="content-header-title float-start mb-0">Tickets Manager</h2>
+                        <h2 class="content-header-title float-start mb-0">Ticket Manager</h2>
                         <div class="breadcrumb-wrapper">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a> </li>
-                                <li class="breadcrumb-item">Help Desk </li>
-                                <li class="breadcrumb-item active">Tickets Manager </li>
+                                <li class="breadcrumb-item"><a href="javascript:location.reload()">Help Desk</a> </li>
+                                <li class="breadcrumb-item active"><a href="javascript:location.reload()">Ticket Manager </a> </li>
                                 @php 
                                     $url = url()->full();
                                     $name = Str::after($url, 'ticket-manager');
                                 @endphp
                                 @if($name != '')
-                                    <li class="breadcrumb-item active"> {{$dept_name}} / {{$status_name}} </li>
-                                    @section('title', 'Ticket-Manager' . '/' . $dept_name . '/' . $status_name)
+                                    <li class="breadcrumb-item active"> <a href="javascript:location.reload()">{{$dept_name}} / {{$status_name}}</a> </li>
+                                    @section('title', 'Ticket Manager' . '/' . $dept_name . '/' . $status_name)
                                 @else
-                                    @section('title', 'Ticket-Manager')
+                                    @section('title', 'Ticket Manager')
                                 @endif
 
                                 
