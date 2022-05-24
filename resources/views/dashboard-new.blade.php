@@ -43,16 +43,16 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="">Home</a>
                             </li>
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active"><a href="javascript:location.reload()">Dashboard</a></li>
                         </ol>
                     </div>
                 </div>
             </div>
         </div>
-         <div class="content-header-right text-md-end col-md-7 col-12 d-md-block d-none">
+         <div class="content-header-right text-md-end col-md-7 col-12 d-md-block">
             <div class="d-flex justify-content-end">
                 <div>
-                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fa fa-cog" aria-hidden="true"></i>&nbsp; Support Dashboard</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled ><i class="fa fa-cog" aria-hidden="true"></i>&nbsp; Support Dashboard</button>
                     <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i class="fas fa-chart-line" aria-hidden="true"></i>&nbsp; CFO Dashboard</button>
                 </div>
                 <div class="clock_btn_div mx-1">
