@@ -493,11 +493,8 @@
                                                                 @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
                                                                 
                                                                 @if($details->user_pic != null)
-                                                                    @if(file_exists( getcwd() .'/'. $details->user_pic ) )
                                                                         <img src="{{ asset( request()->root() .'/'. $details->user_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
-                                                                    @else
-                                                                        <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                    @endif
+                                                                   
                                                                 @else
                                                                     <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                                 @endif
