@@ -115,8 +115,8 @@ class Tickets extends Model
         if(!empty($data)) {
 
             if($data->profile_pic != null) {
-                if(is_file( getcwd() . $path . $data->profile_pic )) {
-                    $image = request()->root() . $path . $data->profile_pic;
+                if(file_exists( getcwd() .'/'. $data->profile_pic )) {
+                    $image = request()->root() . '/' . $data->profile_pic;
                 }else{
                     $image = request()->root() . $path . 'default_imgs/customer.png';
                 }

@@ -400,7 +400,7 @@
                                                 </div>
                                                 <div>
                                                     <h6 class="text-muted fw-bolder">Off Clock Staff</h6>
-                                                    <h3 class="mb-0" style="text-align: center">{{$late_tickets_count}}</h3>
+                                                    <h3 class="mb-0" style="text-align: center">{{$staff_inactive_count}}</h3>
                                                 </div>
                                             </div>
                                         </div>
