@@ -458,18 +458,11 @@
                                         </div>
                                     </a>
                                 </div>
-                                <!-- <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="{{asset('/ticket-manager/unassigned')}}" class="card card_shadow card_back border-success card-hover">
-                                        <div class="box p-2 rounded text-center">
-                                            <h2 class=" total_inactive_count" id="total_inactive_count">{{$staff_inactive_count}}</h2>
-                                            <h6 class="text-success ">Unassign Tickets</h6>
-                                        </div>
-                                    </a>
-                                </div> -->
+                               
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <a href="#" class="card card_shadow card_back  border-danger card-hover">
                                         <div class="box p-2 rounded text-center">
-                                            <h2 class=" ">{{$late_tickets_count}}</h2>
+                                            <h2 class=" ">{{$staff_inactive_count}}</h2>
                                             <h6 class="text-danger ">Off Clock Staff</h6>
                                         </div>
                                     </a>
