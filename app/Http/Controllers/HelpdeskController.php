@@ -55,8 +55,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-require 'vendor/autoload.php';
-//require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -656,7 +656,7 @@ class HelpdeskController extends Controller
             }
         }
 
-        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $total_tickets_count = Tickets::where([ ['is_deleted', 0], ['is_pending' ,0] ,['trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
         // $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
@@ -1248,9 +1248,13 @@ class HelpdeskController extends Controller
         // $ticket = Tickets::all();
         if($details->is_staff_tkt == 1){
             $ticket_customer = User::firstWhere('id',$details->customer_id);
+
         }else{
             $ticket_customer = Customer::firstWhere('id',$details->customer_id);
         }
+
+        $ticket_creator = User::firstWhere('id',$details->created_by);
+
         $all_customers = Customer::with('company')->get();
         $all_companies = Company::all();
         $responseTemplates = ResponseTemplate::get();

@@ -3624,9 +3624,6 @@ function showDepartStatus(value , type) {
                     $('#status').trigger('change');
                 }
                 
-                
-                select = `<option value="">Unassigned</option>`;
-                $('#tech-h5').text('Unassigned');
                 if(reply_flag == 0) {
                     $("#update_ticket").css("display", "block");
                 }
@@ -3634,26 +3631,40 @@ function showDepartStatus(value , type) {
 
                 let assigned_to = $('#assigned_to').val();
                 let ass_obj = {};
-                ass_obj = {
-                    id:2,
-                    data: ticket.assignee_name,
-                    new_data: null,
-                    new_text: "Unassigned" ,
-                }
+                let flg = false;
 
-                let item = updates_Arr.filter(item => item.id == 2);
-                let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
-                if(item.length > 0) {
-                    updates_Arr[index].id = 2;
-                    updates_Arr[index].data = ticket.assignee_name ; 
-                    updates_Arr[index].new_data = null ;
-                    updates_Arr[index].new_text = "Unassigned";
-                }else{
-                    updates_Arr.push(ass_obj);
-                }
+               
+                select = `<option value="">Unassigned</option>`;
 
                 for(var i =0; i < obj_user.length; i++) {
-                    select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
+                    if(assigned_to == obj_user[i].id){
+                        select +=`<option value="`+obj_user[i].id+`" selected>`+obj_user[i].name+`</option>`;
+                        flg = true;
+                    }else{
+                        select +=`<option value="`+obj_user[i].id+`" >`+obj_user[i].name+`</option>`;
+                    }
+                }
+
+                if(flg == false){
+                    $('#tech-h5').text('Unassigned');
+
+                        ass_obj = {
+                        id:2,
+                        data: ticket.assignee_name,
+                        new_data: null,
+                        new_text: "Unassigned" ,
+                    }
+
+                    let item = updates_Arr.filter(item => item.id == 2);
+                    let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
+                    if(item.length > 0) {
+                        updates_Arr[index].id = 2;
+                        updates_Arr[index].data = ticket.assignee_name ; 
+                        updates_Arr[index].new_data = null ;
+                        updates_Arr[index].new_text = "Unassigned";
+                    }else{
+                        updates_Arr.push(ass_obj);
+                    }
                 }
 
                 $("#assigned_to").html(select);
