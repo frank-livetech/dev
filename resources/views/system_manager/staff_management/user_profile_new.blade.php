@@ -101,7 +101,7 @@
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper container-fluid p-0">
         <div class="content-header row">
-            <div class="content-header-left col-md-7 col-12 mb-2">
+            <div class="content-header-left col-md-12 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
                         <h2 class="content-header-title float-start mb-0">My Profile</h2>
@@ -109,7 +109,9 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item">My Profile
+                                <li class="breadcrumb-item"><a href="javascript:location.reload()">My Profile</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="javascript:location.reload()">{{$profile->name}}</a>
                                 </li>
                             </ol>
                         </div>
@@ -279,15 +281,26 @@
                                     </div>
     
                                     <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-5 form-group">
                                             <label for="example-email">Email</label><span class="text-danger">*</span>
                                             <input type="email" value="{{$profile->email}}" placeholder="Email" class="form-control " name="email" id="email" disabled required>
     
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-4 form-group">
                                             <label>Phone No </label>
-                                            <input type="phone" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control">
+                                            <input type="number" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control">
                                             <span class="text-danger small" id="phone_error"></span>
+                                        </div>
+                                        
+                                        <div class="col-md-3">
+                                            <label>Phone Type</label>
+                                            <select class="select2 form-select" id="select2-disabled-result" name="phone_type" id="phone_type">
+                                                <option value="">Select</option>
+                                                <option value="cell phone">Cell Phone</option>
+                                                <option value="landline" >Landline</option>
+                                                <option value="office">Office</option>
+                                                <option value="other">Other</option>
+                                            </select>
                                         </div>
                                     </div>
 
