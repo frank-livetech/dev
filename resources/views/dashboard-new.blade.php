@@ -350,9 +350,9 @@
                             
                         </div>
                         <div class="card-body">
-                            <div class="row p-2">
+                            <div class="row px-2">
                                 @foreach($users as $user)
-                                <div class="col-md-2 mb-1">
+                                <div class="col-md-1 col-sm-3 col-3 mb-1" style="margin-right: 1rem">
                                     @if($user->profile_pic != "" && $user->profile_pic != null)
                                         @if(file_exists( getcwd() .'/'. $user->profile_pic ))
                                             <span class="avatar">
@@ -360,20 +360,23 @@
                                                     <img  src="{{ request()->root() .'/'. $user->profile_pic}}"
                                                         alt="'s Photo" class="rounded-circle" width="50" height="50">
                                                 </a>
-                                            <span class="avatar-status-online"></span></span>
+                                            {{-- <span class="avatar-status-online"></span>--}}
+                                        </span> 
                                         @else
                                             <span class="avatar">
                                                 <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip" data-placement="top" title="{{$user->name}}">
                                                     <img src="{{asset($file_path . 'default_imgs/customer.png')}}" alt="'s Photo" class="rounded-circle avatar" width="50px" height="50">
                                                 </a>
-                                            <span class="avatar-status-online"></span></span>
+                                            {{-- <span class="avatar-status-online"></span> --}}
+                                        </span>
                                         @endif
                                     @else
                                     <span class="avatar">
                                         <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip" data-placement="top" title="{{$user->name}}">
                                             <img src="{{asset($file_path . 'default_imgs/customer.png')}}" alt="'s Photo" class="rounded-circle avatar" width="50px" height="50">
                                         </a>
-                                    <span class="avatar-status-online"></span></span>
+                                    {{-- <span class="avatar-status-online"></span> --}}
+                                </span>
                                     @endif
                                     
                                 </div>
