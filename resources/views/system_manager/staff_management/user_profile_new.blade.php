@@ -530,11 +530,11 @@
                                         <input type="radio" id="date_range" onclick="filterData('date_range')" name="customRadio" class="form-check-input">
                                         <label class="form-check-label" for="date_range">Date Range</label>
                                     </div>
-    
+{{--     
                                 <div class="row my-2">
                                     <label class="col-12">{{$general_staff_note}}</label>
                                     <label class="col-12">{{in_array($id, $selected_staff_members) ? $note_for_selected_staff : ''}}</label>
-                                </div>
+                                </div> --}}
     
                                 <div id="daterangediv" style="display:none">
                                     <div class="row">
@@ -552,7 +552,7 @@
                                     </div>
                                 </div>
     
-                                <div class="row pt-4">
+                                <div class="row pt-2">
                                     <div class="col-md-3">
                                         <div class="card border-bottom border-primary">
                                             <div class="box p-2 rounded  text-center">
@@ -1541,7 +1541,7 @@
 
 <script>
     var calender;
-    let events = @json($leaves);
+    
     let ticketLengthCount = {!! json_encode($ticketView) !!};
         var url  = window.location.href;
         if(url.includes('#staff-schedule')) {
