@@ -491,32 +491,16 @@
                                                         <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
                                                             <div class="">
                                                                 @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
-                                                                @if($details->is_staff_tkt == 0)
-                                                                    @if($ticket_customer != null)
-                                                                        @if($ticket_customer->avatar_url != null)
-                                                                            @if(file_exists( getcwd() .'/'. $ticket_customer->avatar_url ))
-                                                                                <img src=" {{ asset( request()->root() .'/'. $ticket_customer->avatar_url)}}" class="rounded-circle" width="70" height="70" id="profile-user-img" />
-                                                                            @else
-                                                                                <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="70" height="70" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                            @endif
-                                                                        @else
-                                                                            <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="70" height="70" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                        @endif
+                                                                
+                                                                @if($details->user_pic != null)
+                                                                    @if(file_exists( getcwd() .'/'. $details->user_pic ) )
+                                                                        <img src="{{ asset( request()->root() .'/'. $details->user_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
                                                                     @else
-                                                                        <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="70" height="70" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                                        <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
                                                                     @endif
-
                                                                 @else
-                                                                    @if($ticket_creator->profile_pic != null)
-                                                                        @if(file_exists( getcwd() .'/'. $ticket_creator->profile_pic ) )
-                                                                            <img src="{{ asset( request()->root() .'/'. $ticket_creator->profile_pic)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
-                                                                        @else
-                                                                            <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="100" height="100" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                        @endif
-                                                                    @else($ticket_creator->profile_pic == NULL)
-                                                                            <img id="login_logo_preview" name="login_logo_preview" class="rounded-circle" width="80" height="80" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                    @endif
-                                                                @endif    
+                                                                    <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="more-info">

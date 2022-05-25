@@ -1248,13 +1248,10 @@ class HelpdeskController extends Controller
         // $ticket = Tickets::all();
         if($details->is_staff_tkt == 1){
             $ticket_customer = User::firstWhere('id',$details->customer_id);
-
+            
         }else{
             $ticket_customer = Customer::firstWhere('id',$details->customer_id);
         }
-
-        $ticket_creator = User::firstWhere('id',$details->created_by);
-
         $all_customers = Customer::with('company')->get();
         $all_companies = Company::all();
         $responseTemplates = ResponseTemplate::get();
