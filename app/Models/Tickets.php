@@ -116,12 +116,12 @@ class Tickets extends Model
 
             if($data->profile_pic != null) {
                 if(file_exists( getcwd() .'/'. $data->profile_pic )) {
-                    $image = request()->root() . '/' . $data->profile_pic;
+                    $image = $data->profile_pic;
                 }else{
-                    $image = request()->root() . $path . 'default_imgs/customer.png';
+                    $image = $path . 'default_imgs/customer.png';
                 }
             }else{
-                $image = request()->root() . $path . 'default_imgs/customer.png';
+                $image = $path . 'default_imgs/customer.png';
             }
 
             return $this->user_pic = $image;
@@ -131,12 +131,12 @@ class Tickets extends Model
                 
                 if($customer->avatar_url!= null) {
                     if(is_file( getcwd() . $path . $customer->avatar_url)) {
-                        $image = request()->root() . $path . $customer->avatar_url;
+                        $image = $customer->avatar_url;
                     }else{
-                        $image = request()->root() . $path . 'default_imgs/customer.png';
+                        $image = $path . 'default_imgs/customer.png';
                     }
                 }else{
-                    $image = request()->root() . $path . 'default_imgs/customer.png';
+                    $image = $path . 'default_imgs/customer.png';
                 }
                 return $this->user_pic = $image;
             }
