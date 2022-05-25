@@ -1361,6 +1361,7 @@ class UserController extends Controller
             $user->website = $data['website'];
             $user->name = $data['full_name'];
             $user->signature = $data['signature'];
+            $user->phone_type = $data['phone_type'];
 
             if($request->change_password_checkbox) {
 

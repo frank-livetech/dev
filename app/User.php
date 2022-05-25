@@ -37,7 +37,7 @@ class User extends Authenticatable implements JWTSubject
         'sms','whatsapp','address','apt_address','phone_number','country','state','city','twitter',
         'pinterest','fb','insta','job_title','zip','notes','alt_pwd','website','is_support_staff',
         'created_at','updated_at','device_token', 'signature',
-    'linkedin','google_id','company_id','privacy_policy',
+    'linkedin','google_id','company_id','privacy_policy','phone_type'
     ];
 
     protected $appends = ['role','staffTags'];
