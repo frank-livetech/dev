@@ -670,6 +670,26 @@ class UserController extends Controller
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();  
 
+        $leaves = StaffLeaves::where('requested_by' , $id)->get();
+
+        foreach($leaves as $leave) {
+
+            $leave->title =  $leave->reason;
+            $leave->allDay = true;
+            $leave->backgroundColor = "#5e50ee";
+
+            $arr = [
+                "calender" => "Business" ,
+                "is_holiday" => 0 , 
+                "is_leave" => 0 , 
+            ];
+          
+            $leave->extendedProps = $arr;
+
+            $leave->start = $leave->start_date;
+            $leave->end  = $leave->end_date;
+        }
+
         $ticketView = TicketView::where('user_id' , $id)->first();
           
         return view('system_manager.staff_management.user_profile_new', get_defined_vars());
