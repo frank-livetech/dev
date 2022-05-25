@@ -939,6 +939,8 @@ class HelpdeskController extends Controller
                                     $lcnt = true;
                                 }
                             }
+                        }else{
+                            
                         }
                     }
                 }
@@ -950,8 +952,15 @@ class HelpdeskController extends Controller
                     $tkt = Tickets::where('id',$value->id)->first();
                     $tkt->is_overdue = 1;
                     $tkt->save();
+
+                }else if($value->is_overdue == 1){
+                    $tkt = Tickets::where('id',$value->id)->first();
+                    $tkt->is_overdue = 0;
+                    $tkt->save();
                 }
             // }
+            
+                $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
             
         }
         
