@@ -656,7 +656,7 @@ class HelpdeskController extends Controller
             }
         }
 
-        $total_tickets_count = Tickets::where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
+        $total_tickets_count = Tickets::where([ ['is_deleted', 0], ['is_pending' ,0] ,['trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
         // $total_tickets_count = Tickets::where('dept_id',$dept)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         // $overdue_tickets_count = Tickets::where('is_overdue',1)->count();
