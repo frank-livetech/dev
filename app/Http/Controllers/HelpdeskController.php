@@ -585,11 +585,20 @@ class HelpdeskController extends Controller
         try {
             $ticket = Tickets::findOrFail($ticketID);
             $deadlines = [];
-            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_rep_deadline_from')->orderBy('id', 'desc')->first();
-            $deadlines[0] = empty($logs) ? $ticket->created_at : $logs->created_at;
 
-            $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_res_deadline_from')->orderBy('id', 'desc')->first();
-            $deadlines[1] = empty($logs) ? $ticket->created_at : $logs->created_at;
+            $rep_logs = Activitylog::where('ref_id', $ticketID)->where([ ['module', 'Tickets'], ['table_ref', 'sla_rep_deadline_from'] ])->orderByDesc('id')->first();
+            if(!empty($rep_logs)) {
+                $deadlines[0] =  strtotime($rep_logs->created_at) < strtotime($ticket->created_at) ? $ticket->created_at : $rep_logs->created_at;
+            }else{
+                 $deadlines[0] = $ticket->created_at;
+            }
+            
+            $res_logs = Activitylog::where('ref_id', $ticketID)->where([ ['module', 'Tickets'], ['table_ref', 'sla_res_deadline_from'] ])->orderByDesc('id')->first();
+            if(!empty($res_logs)) {
+                $deadlines[1] =  strtotime($res_logs->created_at) < strtotime($ticket->created_at) ? $ticket->created_at : $res_logs->created_at;
+            }else{
+                $deadlines[1] = $ticket->created_at;
+            }
             
             return $deadlines;
         } catch(Exception $e) {
