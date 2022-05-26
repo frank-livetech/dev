@@ -296,7 +296,7 @@
                             <a class="nav-link loadTickets" id="pills-tickets-tab" data-bs-toggle="pill" href="#tickets" role="tab"
                                 aria-controls="pills-tickets" aria-selected="false">Tickets
                                 @if($ticketsCount != 0)
-                            <span id="tickets_count" class="badge bg-light-danger bg-light-warning mx-1"> {{$ticketsCount}} </span> 
+                            <span id="tickets_count" class="badge bg-dark text-white mx-1"> {{$ticketsCount}} </span> 
                             @endif
                                 </a>
                         </li>

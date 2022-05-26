@@ -55,8 +55,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Illuminate\Support\Facades\URL;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -770,8 +770,8 @@ class HelpdeskController extends Controller
             ->when($statusOrUser == 'self', function($q) use($closed_status_id) {
                 return $q->where('tickets.assigned_to', \Auth::user()->id)->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
-            ->when($statusOrUser == 'customer', function($q) use ($cid) {
-                return $q->where('tickets.customer_id',$cid)->where('tickets.trashed', 0);
+            ->when($statusOrUser == 'customer', function($q) use ($cid , $closed_status_id) {
+                return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status','!=',$closed_status_id]]);
                 // get ticket according to customers
             })
             ->when($statusOrUser == 'staff', function($q) use ($sid , $closed_status_id) {
@@ -846,11 +846,11 @@ class HelpdeskController extends Controller
         $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
         
         $closed_tickets_count = Tickets::
-        when($statusOrUser == 'customer', function($q) use ($cid) {
-            return $q->where('tickets.customer_id', $cid);
+        when($statusOrUser == 'customer', function($q) use ($cid  , $closed_status_id) {
+            return $q->where([['tickets.customer_id', $cid], ['tickets.status','!=',$closed_status_id]]);
         })
-        ->when($statusOrUser == 'staff', function($q) use ($sid) {
-            return $q->where('tickets.assigned_to', $sid);
+        ->when($statusOrUser == 'staff', function($q) use ($sid  , $closed_status_id) {
+            return $q->where([['tickets.assigned_to', $sid], ['tickets.status','!=',$closed_status_id]]);
         })
         ->where([ ['status', $closed_status->id] , ['is_pending' ,0] , ['is_deleted' , 0]])->count();
         

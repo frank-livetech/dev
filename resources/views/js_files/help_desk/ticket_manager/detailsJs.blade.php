@@ -888,6 +888,10 @@ function setSlaPlan() {
 
 function editRequest() {
     // toggleReq();
+
+    let sbj = $(".tkt-subject").text();
+    $('.ticket_subject_edit').val(sbj);
+
     $('#ticket_subject_heading').css('display', 'none');
     $('#ticket_details_p').css('display', 'none');
     $('#edit_request_btn').css('display', 'none');
@@ -895,8 +899,6 @@ function editRequest() {
     $('#ticket_details_edit_div').css('display', 'block');
     $('#save_request_btn').css('display', 'block');
     $('#cancel_request_btn').css('display', 'block');
-
-    $('#ticket_subject_edit').val(ticket.subject);
 
     if(ticket_details.attachments) {
         let attchs = ticket_details.attachments.split(',');
@@ -1029,6 +1031,7 @@ async function tinyContentEditor(content, action) {
 }
 
 function saveRequest() {
+    
     subject_div = $('#ticket_subject_edit').val();
     // ticket_details = $('#ticket_details_edit').val();
 
@@ -1073,6 +1076,8 @@ function saveRequest() {
             cache: false,
             success: function(data) {
                 if (data.success == true) {
+
+                    $("#tkt-subject").text(subject_div);
                     ticket_details.ticket_detail = content;
                     updateTicketDate();
 
