@@ -1233,10 +1233,10 @@ function getTicketDetailsContent() {
                             <div class="borderOne" style="background:black">
                                <span class="overlayAttach"></span> 
                                 <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="">
-                                    <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile">
+                                    <a href="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Download">
                                         <i data-feather='download'></i>
                                     </a>
-                                    <a href="javascript:void(0)" onclick="showAttachmentPreview(${ticket_details.id},'${item}')" style="right:45px !important" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile">
+                                    <a href="javascript:void(0)" onclick="showAttachmentPreview(${ticket_details.id},'${item}')" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Preview" style="right:45px !important" download="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="downFile">
                                         <i data-feather='maximize'></i>
                                     </a>
                             </div>                            

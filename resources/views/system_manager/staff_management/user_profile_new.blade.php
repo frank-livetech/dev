@@ -289,20 +289,19 @@
                                         <div class="col-md-4 form-group">
                                             <label>Phone No </label>
                                             <input type="number" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control">
-                                            <span class="text-danger small" id="phone_error"></span>
+                                            
                                         </div>
                                         
                                         <div class="col-md-3">
                                             <label>Phone Type</label>
                                             <select class="select2 form-select" id="select2-disabled-result" name="phone_type" id="phone_type">
-                                                
-                                                    <option value="{{$profile->phone_type}}" selected>{{$profile->phone_type}}</option>
                                                     <option value="">Select</option>
-                                                    <option value="cell phone">Cell Phone</option>
-                                                    <option value="landline" >Landline</option>
-                                                    <option value="office">Office</option>
-                                                    <option value="other">Other</option>
-                                               
+                                                    
+                                                    <option value="cellphone" {{$profile->phone_type == "cellphone" ? "selected" : ''}}>Cell Phone</option>
+                                                    <option value="landline" {{$profile->phone_type == "landline" ? "selected" : ''}}>Landline</option>
+                                                    <option value="office" {{$profile->phone_type == "office" ? "selected" : ''}}>Office</option>
+                                                    <option value="other" {{$profile->phone_type == "other" ? "selected" : ''}}>Other</option>
+                                                    
                                             </select>
                                         </div>
                                     </div>
