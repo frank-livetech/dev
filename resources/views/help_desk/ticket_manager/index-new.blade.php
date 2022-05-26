@@ -306,16 +306,16 @@
                                                         <th></th>
                                                         <th>Status</th>
                                                         <th class='custom'>Subject</th>
-                                                        <th class='pr-ticket'>Ticket ID</th>
+                                                        <th class='pr-ticket' style="padding:7px !important">Ticket ID</th>
                                                         <th >Priority</th>
                                                         <th class='custom-cst'>Customer</th>
                                                         <th class='pr-replies custom-cst'>Last Replier</th>
                                                         <th>Replies</th>
-                                                        <th class='pr-activity '>Last Activity</th>
+                                                        <th class='pr-activity' style="padding:7px !important">Last Activity</th>
                                                         <th class='pr-ticket'>Reply Due</th>
-                                                        <th class='pr-due'>Resolution Due</th>
+                                                        <th class='pr-due' style="padding:7px !important">Resolution Due</th>
                                                         <th class='pr-tech custom-cst'>Assigned Staff</th>
-                                                        <th class='custom-cst'>Department</th>
+                                                        <th class='custom-cst' style="padding:7px !important">Department</th>
                                                         <!-- <th class='pr-tech custom-cst'>Creation Date</th> -->
                                                     </tr>
                                                 </thead>
