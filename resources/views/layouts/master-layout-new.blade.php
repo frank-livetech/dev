@@ -205,7 +205,7 @@
                 </li>
                 <li class="nav-item dropdown dropdown-notification">
                     <a class="nav-link" href="{{route('chats.index')}}" >
-                        <i class="ficon" data-feather="message-square"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square" style="width: 1.5rem;height:1.5rem"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                         <span class="badge unread_msgs rounded-pill bg-danger badge-up" id="unread_msgs"></span>
                     </a>
                 </li>
@@ -584,8 +584,7 @@
                                                 </span>`;
 
                                 var icon = 'fa fa-link';
-                                noti_div += ` <a class="d-flex"href="#" onclick="markRead(`+notifications[i].id+`)" style="cursor: pointer;">
-                                        <div class="list-item d-flex align-items-start">
+                                noti_div += `<div class="list-item d-flex align-items-start" onclick="markRead(`+notifications[i].id+`)" style ="cursor:pointer">
                                             <div class="me-1">
                                                 <div class="avatar">
                                                     ${notifications[i].noti_type == "attendance" ? user_image : default_icon}
@@ -597,8 +596,7 @@
                                                 <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
                                                 <small class="notification-text">${notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc'}</small>
                                             </div>
-                                        </div>
-                                    </a>`;
+                                        </div>`;
 
                             }
                             $('.notifications').append(noti_div)

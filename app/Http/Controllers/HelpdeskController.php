@@ -962,10 +962,6 @@ class HelpdeskController extends Controller
                     $tkt->is_overdue = 1;
                     $tkt->save();
 
-                }else if($value->is_overdue == 1){
-                    $tkt = Tickets::where('id',$value->id)->first();
-                    $tkt->is_overdue = 0;
-                    $tkt->save();
                 }
             // }
             

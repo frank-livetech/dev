@@ -647,9 +647,9 @@ class MailController extends Controller
             $ticket->assigned_to = $sid;
             $ticket->save();
             try {
-                $body = $rep->reply;
-                $body = str_replace('\r\n', "", $body);
-                $body = str_replace('//', "", $body);
+                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                $email_reply = str_replace('/\r\n/', "", $email_reply);
                 
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt );
 
@@ -1597,7 +1597,7 @@ class MailController extends Controller
             $template = str_replace('{Ticket-Flagged}', ' ' , $template);
         }
 
-        if($action_name == 'ticket_reply_update') {
+        // if($action_name == 'ticket_reply_update' || $action_name == 'ticket_reply') {
             if(str_contains($template, '{Staff-Signature}')) {
                 $staff_data = array_values(array_filter($data_list, function ($var) {
                     return ($var['module'] == 'Tech');
@@ -1615,7 +1615,7 @@ class MailController extends Controller
                     $template = str_replace('{Staff-Signature}', '' , $template);
                 }
             }
-        }
+        // }
 
         if(str_contains($template, '{Our-Company-Details}')) {
             $content = DB::table('templates')->where('code', 'company_details')->first();
