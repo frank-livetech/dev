@@ -711,12 +711,7 @@
             }
         }
 
-        var regex = new RegExp("^[0-9]+$");
-
-        if(!regex.test(phone)) {
-            $("#phone_error").html("Only numeric values allowed");
-            return false;
-        }
+        
         
         let pass_checkbox =  $("#change_password_checkbox").is(":checked") ? 1 : 0;
 

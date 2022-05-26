@@ -289,12 +289,7 @@ $("#update_user").submit(function (event) {
             return false;
         }
     }
-    var regex = new RegExp("^[0-9]+$");
-
-    if(!regex.test($('#phone').val())) {
-        $("#phone_error").html("Only numeric values allowed");
-        return false;
-    }
+    
 
     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     var urlregex = new RegExp(pattern);
