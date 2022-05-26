@@ -84,7 +84,7 @@ class AssetManagerController extends Controller
         // return \json_decode($request->fields);
         try{
 
-            $assetForm = AssetForms::where('title',$request->title)->first();
+            $assetForm = AssetForms::where('title',$request->title)->where('is_deleted',0)->first();
 
             if($assetForm) {
                 $response['message'] = "Template Already define";

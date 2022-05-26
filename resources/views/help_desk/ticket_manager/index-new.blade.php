@@ -314,7 +314,7 @@
                                                         <th class='pr-activity '>Last Activity</th>
                                                         <th class='pr-ticket'>Reply Due</th>
                                                         <th class='pr-due'>Resolution Due</th>
-                                                        <th class='pr-tech custom-cst'>Assigned Tech</th>
+                                                        <th class='pr-tech custom-cst'>Assigned Staff</th>
                                                         <th class='custom-cst'>Department</th>
                                                         <!-- <th class='pr-tech custom-cst'>Creation Date</th> -->
                                                     </tr>
