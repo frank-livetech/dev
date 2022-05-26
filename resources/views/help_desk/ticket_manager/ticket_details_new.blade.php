@@ -343,11 +343,11 @@
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
                                 <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i>
                                 @if($details->trashed == 0)
-                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="trashTicket({{$details->id}})"><i data-feather='trash-2'></i> Trash</button>
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="trashTicket({{$details->id}})"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Trash</button>
                                 @else
-                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="restoreTicket({{$details->id}})"> <i data-feather='refresh-ccw'></i> Restore</button>
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="restoreTicket({{$details->id}})"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg> Restore</button>
                                 @endif
-                                <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:145px;position: absolute" onclick=""><i data-feather='alert-triangle'></i> Spam</button>
+                                <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:145px;position: absolute" onclick=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Spam</button>
                             
                             </h5>
                             <div class="profile-pic mt-2">
@@ -530,19 +530,19 @@
                                                         <!-- <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;margin-top:5px"></span> -->
     
                                                         <a onclick="hung()" class="mx-1" title="View Details" style="position:absolute;right:56px;cursor:pointer;">
-                                                            <i data-feather='maximize'></i>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                                                         </a>
     
                                                         <span class="float-end" style="position:absolute;right:46px;cursor:pointer;" title="Edit Initial Request" id="edit_request_btn">
-                                                            <a onclick="editRequest()"><i data-feather='edit-3'></i></a>
+                                                            <a onclick="editRequest()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
                                                         </span> 
     
                                                         <span style="float:right;cursor:pointer;display:none;position:absolute;right:50px;cursor:pointer;" title="Save" id="save_request_btn">
-                                                            <a onclick="saveRequest()"> <i data-feather='save'></i> </a>
+                                                            <a onclick="saveRequest()"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></a>
                                                         </span>
     
                                                         <span style="float:right; cursor:pointer; display:none;position:absolute;right:34px;cursor:pointer;" title="Cancel" id="cancel_request_btn">
-                                                            <a onclick="cancelEditRequest()"> <i data-feather='x' class="text-danger" style="margin-left: 5px;"></i></a>
+                                                            <a onclick="cancelEditRequest()"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x text-danger" style="margin-left: 5px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></a>
                                                         </span>
     
                                                     </div>
