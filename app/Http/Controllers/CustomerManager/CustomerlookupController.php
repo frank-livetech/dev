@@ -498,7 +498,9 @@ class CustomerlookupController extends Controller
         $customers = Customer::where('id','!=', $customer_id)->select('email')->get()->toArray();
 
         $notesCount = 0;
-        $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0]])->get();
+
+        $closed_status = TicketStatus::where('name','Closed')->first();
+        $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0] ,['status','!=',$closed_status->id]])->get();
         foreach($tickets as $ticket) {
             $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User']])->count();
         }

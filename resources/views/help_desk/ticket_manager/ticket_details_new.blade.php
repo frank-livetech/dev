@@ -515,7 +515,7 @@
                                                             <div class="first" >
                                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                                
-                                                                <span  style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
+                                                                <span id="tkt-subject" class="tkt-subject" style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
                                                                 @if($details->attachments != null)
                                                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
                                                                 @endif
@@ -558,7 +558,7 @@
                                                 <div class="row " >
                                                     <h4 class="control-label col-sm-12" required="">Subject</h4><span id="subject" style="display:none;color:red">subject cannot be empty</span>
                                                     <div class=" col-sm-10">
-                                                        <input type="text" id="ticket_subject_edit" class="form-control" required>
+                                                        <input type="text" id="ticket_subject_edit" class="form-control ticket_subject_edit" required>
                                                     </div>
                                                 </div>
                                             </div>

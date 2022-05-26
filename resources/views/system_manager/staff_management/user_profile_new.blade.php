@@ -4,95 +4,36 @@
 @section('customtheme')
     @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
     <style>
-        .demo-inline-spacing3{
-            background-color: unset !important;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between !important;
-            align-items: center;
-            padding: 14px;
-            border-radius: 5px;
-        }
-        hr:not([size]) {
-            height: 1px;
-            margin: 15px;
-        }
-        .f-btn{
-            float: right
-        }
-        .buttons-copy {
-            background: #238fac;
-            color: #fff;
-            border-color: hsl(193, 66%, 41%);
-            font-weight: 700
-        }
-        .buttons-excel{
-            background: #026e39;
-            color: #fff;
-            border-color: #026e39;
-            font-weight: 700
-        }
-        .buttons-pdf{
-            background: #CC4438;
-            color: #fff;
-            font-weight: 700;
-            border-color: #CC4438;
-        }
-        .float-right{
-            float: right
-        }
-        .mti-2 {
-            margin-top: 1.9rem !important;
-        }
-        .demo-inline-spacing {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between !important;
-            align-items: center;
-            background-color: rgb(243, 239, 239);
-            padding: 14px;
-            border-radius: 5px
-        }
-        .demo-inline-spacing1 {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between !important;
-            align-items: center;
-            padding: 7px;
-            border-radius: 5px
-        }
-        .demo-inline-spacing > * {
-            margin-right: unset;
-            margin-top: unset;
-        }   
-        .soc-card {
-            justify-content: space-between;
-            display: flex;
-        }
-        .soc-ico {
-            font-size: 24px;
-        }
-        .picEdit{
-            cursor:pointer;
-            position: absolute;
-            top: 72px;
-            left: 139px;
-            border: 1px solid #fff;
-            padding: 4px;
-            border-radius: 100%;
-            background: #fbfbfb;
-        }
-
-        #curr_user_pic figure img{
-            opacity: 1;
-            -webkit-transition: .3s ease-in-out;
-            transition: .3s ease-in-out;
-        }
-        #curr_user_pic figure:hover img {
-            opacity: .5;
-        }
+        .demo-inline-spacing3{ background-color: unset !important; display: flex; flex-wrap: wrap; justify-content: space-between !important; align-items: center; padding: 14px; border-radius: 5px; }
+        hr:not([size]) { height: 1px; margin: 15px; }
+        .f-btn{ float: right }
+        .buttons-copy { background: #238fac; color: #fff; border-color: hsl(193, 66%, 41%); font-weight: 700 }
+        .buttons-excel{ background: #026e39; color: #fff; border-color: #026e39; font-weight: 700 }
+        .buttons-pdf{ background: #CC4438; color: #fff; font-weight: 700; border-color: #CC4438; }
+        .float-right{ float: right }
+        .mti-2 { margin-top: 1.9rem !important; }
+        .demo-inline-spacing { display: flex; flex-wrap: wrap; justify-content: space-between !important; align-items: center; background-color: rgb(243, 239, 239); padding: 14px; border-radius: 5px}
+        .demo-inline-spacing1 { display: flex; flex-wrap: wrap; justify-content: space-between !important; align-items: center; padding: 7px; border-radius: 5px }
+        .demo-inline-spacing > * { margin-right: unset; margin-top: unset; }   
+        .soc-card { justify-content: space-between; display: flex; }
+        .soc-ico { font-size: 24px; }
+        .picEdit{ cursor:pointer; position: absolute; top: 72px; left: 139px; border: 1px solid #fff; padding: 4px; border-radius: 100%; background: #fbfbfb; }
+        #curr_user_pic figure img{ opacity: 1; -webkit-transition: .3s ease-in-out; transition: .3s ease-in-out; }
+        #curr_user_pic figure:hover img { opacity: .5; }
+        table { width:100% !important; }
+        .fc-daygrid-body{width:100% !important;}
+        .fc-scrollgrid-sync-table {width:100% !important; height:100% !important;}
+        .fc-scrollgrid-sync-table tr { height:100px !important; width:100% !important}
     </style>
-    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/calendar.css')}}">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script> -->
+
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-calendar.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/form-validation.css')}}">
+    
 @endsection
 
 @section('body')
@@ -120,6 +61,7 @@
             </div>
         </div>
     </div>
+
     <div class="content-body">
         @if($date_format) 
         <input type="hidden" id="system_date_format" value="{{$date_format}}">
@@ -128,6 +70,7 @@
         @endif
         <div class="row">
             <div class="col-lg-3 col-xlg-3 col-md-5">
+
                 <div class="card">
                     <div class="card-body">
                         <div class="mt-4 text-center" id="curr_user_pic">
@@ -196,6 +139,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="card-body">
                     <div id="map_2" class="gmaps"></div>
@@ -495,10 +439,11 @@
                                             <button onclick="openScheduleModal()" class="btn btn-success  rounded"> <i class="fas fa-plus-circle"></i> Set Schedule </button>
                                         </div>
                                     </div>
-
-                                    <div id='calendar'></div>
-    
                                 </div>
+
+                                <div id='calendar'></div>
+
+
                             </div>
                             <hr>
     
@@ -545,12 +490,7 @@
                                         <input type="radio" id="date_range" onclick="filterData('date_range')" name="customRadio" class="form-check-input">
                                         <label class="form-check-label" for="date_range">Date Range</label>
                                     </div>
-{{--     
-                                <div class="row my-2">
-                                    <label class="col-12">{{$general_staff_note}}</label>
-                                    <label class="col-12">{{in_array($id, $selected_staff_members) ? $note_for_selected_staff : ''}}</label>
-                                </div> --}}
-    
+
                                 <div id="daterangediv" style="display:none">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -1499,8 +1439,8 @@
         </div>
     </div>
 
-        <!-- schdule Modal -->
-        <div class="modal fade" id="EventDetailModal" tabindex="-1" aria-labelledby="editPicModalLabel" aria-hidden="true">
+    <!-- schdule Modal -->
+    <div class="modal fade" id="EventDetailModal" tabindex="-1" aria-labelledby="editPicModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1548,7 +1488,8 @@
 @endsection
 @section('scripts')
     
-    <script src="{{asset($file_path . 'app-assets/js/calendar.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <!-- <script src="{{asset( $file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
 
     @include('js_files.system_manager.staff_management.staff_profileJs')
 
@@ -1556,6 +1497,8 @@
 
 <script>
     var calender;
+    var events = @json($leaves);
+    console.log(events , "events");
     
     let ticketLengthCount = {!! json_encode($ticketView) !!};
         var url  = window.location.href;
@@ -1591,13 +1534,14 @@
                 editable: true,
                 dayMaxEvents: true,
                 headerToolbar: {
-                    left: 'prevYear,prev,next,nextYear today',
+                    left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
                 },
                 events: events,
-                color: 'yellow', 
-                textColor: 'black',
+                render:function(data) {
+                    console.log(data , "data");
+                },
                 select:function(start, end ,allday) {
                     console.log(start , "start");
                 },
@@ -1616,6 +1560,8 @@
             });
             calendar.render();
         });
+        $('.fc-col-header ').attr('style','width:100% !important;');
+        $('.fc-scrollgrid-sync-table').attr('style','width:100% !important; height:100% !important');
 </script>
 
     @include('js_files.ticket_cmmnJs')
