@@ -1597,7 +1597,7 @@ class MailController extends Controller
             $template = str_replace('{Ticket-Flagged}', ' ' , $template);
         }
 
-        if($action_name == 'ticket_reply_update') {
+        // if($action_name == 'ticket_reply_update' || $action_name == 'ticket_reply') {
             if(str_contains($template, '{Staff-Signature}')) {
                 $staff_data = array_values(array_filter($data_list, function ($var) {
                     return ($var['module'] == 'Tech');
@@ -1615,7 +1615,7 @@ class MailController extends Controller
                     $template = str_replace('{Staff-Signature}', '' , $template);
                 }
             }
-        }
+        // }
 
         if(str_contains($template, '{Our-Company-Details}')) {
             $content = DB::table('templates')->where('code', 'company_details')->first();
