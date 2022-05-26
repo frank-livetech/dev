@@ -179,12 +179,19 @@
                 }, 
                 {
                     render: function(data, type, full, meta) {
-                        return moment(full.clock_in).format($("#system_date_format").val());
+                        // alert({{Session::get("timezone")}});
+                        // alert($("#system_date_format").val());
+                        let clock_in = moment.tz(full.created_at,'{{Session::get("timezone")}}').format($("#system_date_format").val() + ' ' +'hh:mm A');
+                        return clock_in;
+                        // return moment(full.clock_in).format($("#system_date_format").val());
                     }
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.clock_out ? moment(full.clock_out).format($("#system_date_format").val()) : '-';
+                        let clock_in = moment.tz(full.created_at,'{{Session::get("timezone")}}').format($("#system_date_format").val() + ' ' +'hh:mm A');
+                        let clock_out = full.clock_out != null ? moment(clock_in).add( HmsToSeconds(full.hours_worked) , 'seconds').format($("#system_date_format").val() + ' ' +'hh:mm A') : '-'
+                        // return full.clock_out ? moment(full.clock_out).format($("#system_date_format").val()) : '-';
+                        return clock_out;
                     }
                 },
                 {
