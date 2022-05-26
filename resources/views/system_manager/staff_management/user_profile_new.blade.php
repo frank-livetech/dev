@@ -295,11 +295,14 @@
                                         <div class="col-md-3">
                                             <label>Phone Type</label>
                                             <select class="select2 form-select" id="select2-disabled-result" name="phone_type" id="phone_type">
-                                                <option value="">Select</option>
-                                                <option value="cell phone">Cell Phone</option>
-                                                <option value="landline" >Landline</option>
-                                                <option value="office">Office</option>
-                                                <option value="other">Other</option>
+                                                
+                                                    <option value="{{$profile->phone_type}}" selected>{{$profile->phone_type}}</option>
+                                                    <option value="">Select</option>
+                                                    <option value="cell phone">Cell Phone</option>
+                                                    <option value="landline" >Landline</option>
+                                                    <option value="office">Office</option>
+                                                    <option value="other">Other</option>
+                                               
                                             </select>
                                         </div>
                                     </div>
