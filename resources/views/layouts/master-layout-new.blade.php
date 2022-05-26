@@ -583,8 +583,7 @@
                                                 </span>`;
 
                                 var icon = 'fa fa-link';
-                                noti_div += ` <a class="d-flex"href="#" onclick="markRead(`+notifications[i].id+`)" style="cursor: pointer;">
-                                        <div class="list-item d-flex align-items-start">
+                                noti_div += `<div class="list-item d-flex align-items-start" onclick="markRead(`+notifications[i].id+`)" style ="cursor:pointer">
                                             <div class="me-1">
                                                 <div class="avatar">
                                                     ${notifications[i].noti_type == "attendance" ? user_image : default_icon}
@@ -596,8 +595,7 @@
                                                 <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
                                                 <small class="notification-text">${notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc'}</small>
                                             </div>
-                                        </div>
-                                    </a>`;
+                                        </div>`;
 
                             }
                             $('.notifications').append(noti_div)
