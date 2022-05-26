@@ -132,7 +132,7 @@ class Notification extends Model
     public function getCreatedAtAttribute($value) {
         $date = new \DateTime($value);
         $date->setTimezone(new \DateTimeZone( timeZone() ));                            
-        return $date->format(system_date_format() .' H:i A');
+        return $date->format(system_date_format() .' h:i a');
     }
 
     public function scopeRead(){

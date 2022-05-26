@@ -557,7 +557,6 @@
                         renderClockIn(data.staff_clock_in);
 
                         notifications = data.data;
-
                         let count = data.total_notification;
 
                         $(".noti_count").addClass('badge rounded-pill bg-danger badge-up ');
@@ -566,38 +565,41 @@
                         if(notifications.length > 0) {
                             for(var i = 0 ; i < notifications.length ; i++){
 
-                                if(notifications[i].sender != null) {
 
-                                    if(notifications[i].sender.profile_pic != null ) {
-                                        user_image = `<img src="${root}/${notifications[i].sender.profile_pic}" alt="avatar" width="32" height="32">`;
+                                if(notifications[i].noti_desc != "") {                                
+
+                                    if(notifications[i].sender != null) {
+
+                                        if(notifications[i].sender.profile_pic != null ) {
+                                            user_image = `<img src="${root}/${notifications[i].sender.profile_pic}" alt="avatar" width="32" height="32">`;
+                                        }else{
+                                            user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
+                                        }
                                     }else{
                                         user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
                                     }
-                                }else{
-                                    user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
-                                }
 
-                                var date = new Date(notifications[i].created_at);
+                                    var date = new Date(notifications[i].created_at);
 
-                                default_icon = `<span class="`+notifications[i].btn_class+` rounded-circle btn-circle"" style="padding:8px 12px">
-                                                <i data-feather='${notifications[i].noti_icon}'></i>
-                                                </span>`;
+                                    default_icon = `<span class="`+notifications[i].btn_class+` rounded-circle btn-circle"" style="padding:8px 12px">
+                                                    <i data-feather='${notifications[i].noti_icon}'></i>
+                                                    </span>`;
 
-                                var icon = 'fa fa-link';
-                                noti_div += `<div class="list-item d-flex align-items-start" onclick="markRead(`+notifications[i].id+`)" style ="cursor:pointer">
-                                            <div class="me-1">
-                                                <div class="avatar">
-                                                    ${notifications[i].noti_type == "attendance" ? user_image : default_icon}
+                                    var icon = 'fa fa-link';
+                                    noti_div += `<div class="list-item d-flex align-items-start" onclick="markRead(`+notifications[i].id+`)" style ="cursor:pointer">
+                                                <div class="me-1">
+                                                    <div class="avatar">
+                                                        ${notifications[i].noti_type == "attendance" ? user_image : default_icon}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="list-item-body flex-grow-1">
-                                                <p class="media-heading">
-                                                <span class="fw-bolder">${notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification'}</span>
-                                                <span class="float-end">` + moment(notifications[i].created_at).format('LT') + `</span> </p>
-                                                <small class="notification-text">${notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc'}</small>
-                                            </div>
-                                        </div>`;
-
+                                                <div class="list-item-body flex-grow-1">
+                                                    <p class="media-heading">
+                                                    <span class="fw-bolder">${notifications[i].noti_title != null ? notifications[i].noti_title : 'Notification'}</span>
+                                                    <span class="float-end">${moment(notifications[i].created_at, "h:mm A").format("h:mm A")}</span> </p>
+                                                    <small class="notification-text">${notifications[i].noti_desc != null ? notifications[i].noti_desc : 'Notification Desc'}</small>
+                                                </div>
+                                            </div>`;
+                                }
                             }
                             $('.notifications').append(noti_div)
 

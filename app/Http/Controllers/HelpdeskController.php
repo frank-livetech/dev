@@ -846,11 +846,11 @@ class HelpdeskController extends Controller
         $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
         
         $closed_tickets_count = Tickets::
-        when($statusOrUser == 'customer', function($q) use ($cid  , $closed_status_id) {
-            return $q->where([['tickets.customer_id', $cid], ['tickets.status','!=',$closed_status_id]]);
+        when($statusOrUser == 'customer', function($q) use ($cid) {
+            return $q->where('tickets.customer_id', $cid);
         })
-        ->when($statusOrUser == 'staff', function($q) use ($sid  , $closed_status_id) {
-            return $q->where([['tickets.assigned_to', $sid], ['tickets.status','!=',$closed_status_id]]);
+        ->when($statusOrUser == 'staff', function($q) use ($sid) {
+            return $q->where('tickets.assigned_to', $sid);
         })
         ->where([ ['status', $closed_status->id] , ['is_pending' ,0] , ['is_deleted' , 0]])->count();
         
