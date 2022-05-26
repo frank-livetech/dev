@@ -1939,50 +1939,50 @@
 </div> -->
 <div class="modal modal-slide-in event-sidebar fade" id="viewFullDetails2">
     <div class="modal-dialog sidebar-lg">
-        <div class="modal-content p-0">
+        <div class="modal-content p-0" style="margin-right: 0px">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             
             <div class="modal-header mb-1">
-            <div class="modal-first w-100">
-                                                    <div class="mt-0 mt-0 rounded" style="padding:4px; ">
-                                                        <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
-                                                            <div class="">
-                                                                @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
-                                                                @if($details->user_pic != null)
-                                                                    @if(file_exists( getcwd() .'/'. $details->user_pic ) )
-                                                                        <img src="{{ asset( request()->root() .'/'. $details->user_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
-                                                                    @else
-                                                                        <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                    @endif
-                                                                @else
-                                                                    <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <?php
-                                                                if($details->ticket_created_by != null) {
-                                                                    $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
-                                                                }else{
-                                                                    $user_type = 'User';
-                                                                }
-                                                            ?>
-                                                            <div class="" style="display: -webkit-box">
-                                                                <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
-                                                                <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
-                                                            </div>
-                                                            <div class="first" >
-                                                                <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
-                                                               
-                                                                <span  style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
-                                                                @if($details->attachments != null)
-                                                                <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
-                                                                @endif
-                                                            </div>
-                                                        </div>
+                <div class="modal-first w-100">
+                    <div class="mt-0 mt-0 rounded" style="padding:4px; ">
+                        <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
+                            <div class="">
+                                @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
+                                @if($details->user_pic != null)
+                                    @if(file_exists( getcwd() .'/'. $details->user_pic ) )
+                                        <img src="{{ asset( request()->root() .'/'. $details->user_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
+                                    @else
+                                        <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                    @endif
+                                @else
+                                    <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                @endif
+                            </div>
+                        </div>
+                        <div class="more-info">
+                            <?php
+                                if($details->ticket_created_by != null) {
+                                    $user_type = $details->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
+                                }else{
+                                    $user_type = 'User';
+                                }
+                            ?>
+                            <div class="" style="display: -webkit-box">
+                                <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
+                            </div>
+                            <div class="first" >
+                                <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
+                                
+                                <span  style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
+                                @if($details->attachments != null)
+                                <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
+                                @endif
+                            </div>
+                        </div>
 
-                                                    </div>
-                                                </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
                 <div class="row" id="ticket_details_p3"></div>
