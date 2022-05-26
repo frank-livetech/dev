@@ -647,9 +647,9 @@ class MailController extends Controller
             $ticket->assigned_to = $sid;
             $ticket->save();
             try {
-                $body = $rep->reply;
-                $body = str_replace('\r\n', "", $body);
-                $body = str_replace('//', "", $body);
+                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                $email_reply = str_replace('/\r\n/', "", $email_reply);
                 
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt );
 
