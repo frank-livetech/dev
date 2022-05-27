@@ -14,7 +14,7 @@ use DB;
 class Tickets extends Model
 {
     protected $table = 'tickets';
-    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity','user_pic'];
+    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity','user_pic','last_reply','tkt_notes','tkt_follow_up'];
     protected $fillable = [
         'dept_id','priority','assigned_to','subject','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','is_overdue','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments','tkt_crt_type','is_pending','cust_email'
     ];
@@ -36,6 +36,24 @@ class Tickets extends Model
         $id = $this->id;
         $repCount = TicketReply::where('ticket_id', $id)->count();
         return $repCount;
+    }
+
+    public function getLastReplyAttribute() {
+        $id = $this->id;
+        $last_reply = TicketReply::where('ticket_id', $id)->with('replyUser')->orderByDesc('id')->first();
+        return $last_reply;
+    }
+
+    public function getTktNotesAttribute() {
+        $id = $this->id;
+        $tkt_notes = TicketNote::where('ticket_id' , $id)->count();
+        return $tkt_notes;
+    }
+
+    public function getTktFollowUpAttribute() {
+        $id = $this->id;
+        $tkt_follow_up = TicketFollowUp::where('ticket_id' , $id)->count();
+        return $tkt_follow_up;
     }
 
     public function getLastActivityAttribute() {
