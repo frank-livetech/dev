@@ -697,12 +697,13 @@
                     <div class="row mt-1" style="word-break: break-all;"></div>
                 </ul>
                 `
-            last_reply = html;
+                last_reply = html;
             }else{
 
                 let user_type = item.ticket_created_by == null ? 'Staff' : 'User';
+                let path = root + '/' + item.user_pic;
 
-                let img = `<img src="${item.user_pic}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                let img = `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                 let html = `
                 <div class="card p-0">
                         <div class="modal-first">
