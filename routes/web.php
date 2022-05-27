@@ -577,7 +577,7 @@ Route::post('/delete-ticket-reply','HelpdeskController@delete_ticket_reply');
 
 Route::get('/general-info/{id}', 'HelpDesk\AssetManagerController@gen_info')->name("general.index");
 
-Route::get('/get-tickets/{status?}/{id?}','HelpdeskController@getTickets');
+Route::get('/get-tickets/{status?}/{id?}/{type?}','HelpdeskController@getTickets');
 Route::get('/get-filtered-tickets/{dept?}/{sts?}','HelpdeskController@getFilteredTickets');
 
 

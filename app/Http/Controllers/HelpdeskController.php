@@ -748,7 +748,7 @@ class HelpdeskController extends Controller
 
     }
 
-    public function getTickets($statusOrUser='', $id='') {
+    public function getTickets($statusOrUser='', $id='' , $type = '') {
         $cid = '';
         $sid = '';
         if(!empty($id)) {
@@ -770,7 +770,10 @@ class HelpdeskController extends Controller
             ->when($statusOrUser == 'self', function($q) use($closed_status_id) {
                 return $q->where('tickets.assigned_to', \Auth::user()->id)->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
-            ->when($statusOrUser == 'customer', function($q) use ($cid , $closed_status_id) {
+            ->when($statusOrUser == 'customer', function($q) use ($cid , $closed_status_id,$type) {
+                if($type == 'closed'){
+                    return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status',$closed_status_id]]);
+                }
                 return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status','!=',$closed_status_id]]);
                 // get ticket according to customers
             })
