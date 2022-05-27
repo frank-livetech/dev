@@ -324,22 +324,33 @@
                                 <div class="form-row">
                                     <div class="col-md-12 form-group">
                                         <div class="form-group">
-                                            <label>Asset Template</label>
+                                            <label>Asset Type</label>
                                             <select class="select2 form-select form-control" onchange="getFields(this.value)" id="form_id" name="form_id" required></select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-row mt-1" id="templateTitle" style="display:none;">
                                     <div class="row">
-                                        <div class="col-md-4 form-group">
+                                        <div class="col-md-4 form-group d-none">
                                             <div class="form-group">
                                                 <label>Asset Title</label>
-                                                    <input type="text" name="asset_title" id="asset_title" class="asset_title form-control">
+                                                    <input type="hidden" name="asset_title" id="asset_title" class="asset_title form-control">
                                             </div>
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <div class="form-group">
-                                                <label> Company <span class="text-danger"> * </span>  </label>
+                                                <label> Customer </label>
+                                                <select name="customer_id" id="customer_id" class="select2">
+                                                    <option value=""> Choose </option>
+                                                    @foreach($customers as $customer)
+                                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <div class="form-group">
+                                                <label> Company </label>
                                                 <select name="company_id" id="company_id" class="select2">
                                                     <option value=""> Choose </option>
                                                     @foreach($companies as $company)
@@ -348,12 +359,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 form-group">
-                                            <div class="form-group">
-                                                <label> Customer </label>
-                                                <select name="customer_id" id="customer_id" class="select2"> </select>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="row mt-1" id="form-fields"></div>
@@ -420,6 +426,8 @@
                                         </th>
                                         <th></th>
                                         <th>Asset Title</th>
+                                        <th> Company </th>
+                                        <th> Customer </th>
                                         <th> Asset Type</th>
                                         <th>Actions</th>
                                     </tr>
@@ -516,6 +524,9 @@
 @section('scripts')
 <script> 
     let companies = @json($companies);
+    let customers = @json($customers);
+    console.log(companies , "com");
+    console.log(customers , "customers");
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>

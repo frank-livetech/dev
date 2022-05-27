@@ -52,6 +52,24 @@ function get_asset_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
+                            if(full.company != null) {
+                                return full.company.name != null ? full.company.name : '-';
+                            }else{
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            if(full.customer != null) {
+                                return full.customer.first_name +' '+ full.customer.last_name;
+                            }else{
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
 
                             if (full.template != null) {
                                 if (full.template.title != null) {
@@ -723,8 +741,8 @@ $("#save_asset_form").submit(function (event) {
     if(url.includes('asset-manager')) {
 
 
-        if($("#company_id").val() == '') {
-            toastr.error( 'Company field is required' , { timeOut: 5000 });
+        if($("#company_id").val() == '' || $("#customer_id").val() == "") {
+            toastr.error( 'Company or Customer field is required' , { timeOut: 5000 });
             return false;
         }
 

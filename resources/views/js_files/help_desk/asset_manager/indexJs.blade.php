@@ -133,27 +133,26 @@
     }
 
 
-    $("#company_id").on("change" , function() {
-        $("#customer_id").empty();
-        let item = companies.find(item => item.id == $(this).val() );
-        let option = ``;
-        if(item != null) {
-
-            console.log(item , "item");
-
-            if(item.staff_members.length != 0) {
-
-                
-                let root = `<option value="">Choose</option>`;
-
-                for(let data of item.staff_members) {
-                    option += `<option value="${data.id}"> ${ data.first_name} ${data.last_name} </option>`;
+    $("#customer_id").on("change" , function() {
+        $("#company_id").empty();
+        let root = `<option value="">Choose</option>`;
+        if($(this).val() != '') {
+            let item = customers.find(item => item.id == $(this).val() );
+            if(item != null) {
+                if(item.company_id != null) {
+                    let company = companies.find(com => com.id == item.company_id);
+                    let option = `<option value="${company.id}"> ${company.name} </option>`;
+                    $("#company_id").append(root + option).trigger('change');
                 }
-                console.log(option);
-                $("#customer_id").append(root + option).trigger('change');
             }
-
+        }else{
+            let option = ``;
+            for(let data of companies)  {
+                option += `<option value="${data.id}"> ${data.name} </option>`;
+            }
+            $("#company_id").append(root + option).trigger('change');
         }
+
     });
   
 
