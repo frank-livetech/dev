@@ -757,25 +757,5 @@
     let converted_date = new_date.toLocaleString("en-US", {timeZone: userTimeZone});
     return moment(converted_date).format(date_format + ' ' +'hh:mm A');
 }
-
-
-    function convertDate(date) {
-        
-        var d = new Date(date);
-
-        var min = d.getMinutes();
-        var dt = d.getDate();
-        var d_utc = d.getUTCHours();
-
-        d.setMinutes(min);
-        d.setDate(dt);
-        d.setUTCHours(d_utc);
-
-        let a = d.toLocaleString("en-US" , {timeZone: userTimeZone} );
-        
-        // return a;
-        var converted_date = moment(a).format(date_format + ' ' +'hh:mm A');
-        return converted_date;
-}
 </script>
 @endsection

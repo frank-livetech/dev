@@ -1990,6 +1990,23 @@
         </div>
     </div>
 </div>
+
+
+    <!-- image preview Modal -->
+    <div class="modal fade text-start" id="defaultPreview" tabindex="-1" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel1">Image Preview</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="showDefaultPreview"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- image preview Modal -->
 @endsection
 
 @section('scripts')

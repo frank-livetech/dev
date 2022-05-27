@@ -6,41 +6,38 @@
         float: right
     }
     .field-icon {
-    position: relative;
-    left:410px;
-    top: 263px;
+        position: relative;
+        left:410px;
+        top: 263px;
     }
     .crd_icons img{
     width:18%;
-}
-.float-btn{
-    float:right
-}
-/* .btn{
-    padding: 0rem 1rem !important
-} */
-.currencies b{
-    padding: 3px 7px;
-    border: 1px solid #54667a;
-    margin: 3px;
-    border-radius: 50%;
-}
-.crypto img{
-    width:14%;
-}
-.payCard-number{
-    font-family: Orbitron;
-    letter-spacing: 4px;
-    margin-top: 40px;
-}
-.payCard-text{
-    /* width: 39px; */
-    font-size: 16px;
-    font-family: Orbitron;
-}
-.payCard{
-    background-color: rgba(218,165,32,0.3) !important;
-}
+    }
+    .float-btn{
+        float:right
+    }
+    .currencies b{
+        padding: 3px 7px;
+        border: 1px solid #54667a;
+        margin: 3px;
+        border-radius: 50%;
+    }
+    .crypto img{
+        width:14%;
+    }
+    .payCard-number{
+        font-family: Orbitron;
+        letter-spacing: 4px;
+        margin-top: 40px;
+    }
+    .payCard-text{
+        /* width: 39px; */
+        font-size: 16px;
+        font-family: Orbitron;
+    }
+    .payCard{
+        background-color: rgba(218,165,32,0.3) !important;
+    }
 </style>
 @section('body')
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -1067,85 +1064,43 @@
                                         </a>
                                     </div>
                                 </div>
-    
-                                <div class="col-12 mb-3 d-none">
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="0">#</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="1">Status</a>
-                                    -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="2">Subject</a>
-                                    -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                                        data-column="3">TicketID</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                                        data-column="4">Priority</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                                        data-column="5">Customer</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="6">Last
-                                        Replier</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="7">Replies</a>
-                                    -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="8">Last
-                                        Activity</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="9">Reply
-                                        Due</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="10">Resolution
-                                        Due</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="11">Assigned
-                                        Tech</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1"
-                                        data-column="12">Department</a> -
-                                    <a class="toggle-vis btn btn-sm btn-success text-white mb-1" data-column="13">Creation
-                                        Date</a>
-                                </div>
-    
-                                <div class="table-responsive">
-                                    {{-- <div class="row">
-                                        <div class="col-md-12" style="text-align:right;">
-                                            <select class="multiple-select  mb-2" name="tk_select" id="tk_select" placeholder="Show/Hide" multiple="multiple" selected="selected">
-                                                <option value="0">#</option>
-                                                <option value="2">Status</option>
-                                                <option value="3">Status</option>
-                                                <option value="4">Ticket ID</option>
-                                                <option value="5">Prioprity</option>
-                                                <option value="6">Customer</option>
-                                                <option value="7">Last Replier</option>
-                                                <option value="8">Replies</option>
-                                                <option value="9">Last Activity</option>
-                                                <option value="10">Reply Due</option>
-                                                <option value="11">Resolution Due</option>
-                                                <option value="12">Assigned Tech</option>
-                                                <option value="13">Department</option>
-                                                <option value="14">Creation Date</option>
-                                            </select>
-                                        </div>
-                                    </div> --}}
-    
+        
+                                <div class="table-responsive position-relative">
+                                       
                                     <table id="ticket-table-list" class="table table-striped table-bordered table-hover display ticket-table-list">
-                                    <thead>
-                                                    <tr>
-                                                        <th>
-                                                            <div class="text-center">
-                                                                <input type="checkbox" name="select_all[]" id="select-all">
-                                                            </div>
-                                                        </th>
-                                                        <th></th>
-                                                        <th>Status</th>
-                                                        <th class='custom'>Subject</th>
-                                                        <th class='pr-ticket'>Ticket ID</th>
-                                                        <th >Priority</th>
-                                                        <th class='custom-cst'>Customer</th>
-                                                        <th class='pr-replies custom-cst'>Last Replier</th>
-                                                        <th>Replies</th>
-                                                        <th class='pr-activity '>Last Activity</th>
-                                                        <th class='pr-ticket'>Reply Due</th>
-                                                        <th class='pr-due'>Resolution Due</th>
-                                                        <th class='pr-tech custom-cst'>Assigned Tech</th>
-                                                        <th class='custom-cst'>Department</th>
-                                                        <!-- <th class='pr-tech custom-cst'>Creation Date</th> -->
-                                                    </tr>
-                                                </thead>
-                                        <tbody></tbody>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="text-center">
+                                                        <input type="checkbox" name="select_all[]" id="select-all">
+                                                    </div>
+                                                </th>
+                                                <th></th>
+                                                <th>Status</th>
+                                                <th class='custom'>Subject</th>
+                                                <th class='pr-ticket'>Ticket ID</th>
+                                                <th >Priority</th>
+                                                <th class='custom-cst'>Customer</th>
+                                                <th class='pr-replies custom-cst'>Last Replier</th>
+                                                <th>Replies</th>
+                                                <th class='pr-activity '>Last Activity</th>
+                                                <th class='pr-ticket'>Reply Due</th>
+                                                <th class='pr-due'>Resolution Due</th>
+                                                <th class='pr-tech custom-cst'>Assigned Tech</th>
+                                                <th class='custom-cst'>Department</th>
+                                                <!-- <th class='pr-tech custom-cst'>Creation Date</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
                                     </table>
+
+                                    <div class="loading__">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2214,6 +2169,7 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 <script>
+    let tkt_arr = [];
     let ticketLengthCount = {!! json_encode($ticketView) !!};
 </script>
 
@@ -2241,5 +2197,101 @@
         getFormsTemplates();
         get_asset_table_list();
     });
+
+    $('.content').on('mouseenter', '.ticket_name', function() {
+        let id = $(this).data('id');
+        let item = tkt_arr.find(item => item.id == id);
+        console.log(item , "item");
+        if(item != null) {
+            let last_reply = ``;
+            let type = ``;
+
+            if(item.last_reply != null) {
+
+                let time =convertDate(item.created_at);
+                
+                var user_img = ``;
+                
+                if(item.last_reply != null){ 
+
+                    type = 'Staff';
+                    if(item.last_reply.reply_user != null) {
+                        type = item.last_reply.reply_user.user_type == 5 ? 'User' : 'Staff';
+                    }
+
+                    if(item.last_reply.reply_user.profile_pic != null) {
+                        let path = root + '/' + item.last_reply.reply_user.profile_pic;
+                        user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                    }else{
+                        user_img += `<img src="{{asset('${root}/default_imgs/customer.png')}}" class="rounded-circle" 
+                                width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    }
+                }
+
+                let html = `
+                <ul class="list-unstyled replies">
+                    <li class="media" id="reply__0">
+                        <span class="mr-3"> ${user_img} </span>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                            <h5 class="mt-0"><span class="text-primary">
+                                <a href="http://127.0.0.1:8000/profile/209"> ${item.lastReplier} </a>
+                                </span>&nbsp;<span class="badge badge-secondary">${type}</span>&nbsp;
+                            &nbsp;                            
+                            <br>
+                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ${ time } </span> 
+                            <div class="my-1 bor-top" id="reply-html-4"> ${item.last_reply.reply} </div>
+                        </div>
+                        
+                    </li>
+                    <div class="row mt-1" style="word-break: break-all;"></div>
+                </ul>
+                `
+                last_reply = html;
+            }else{
+
+                let user_type = item.ticket_created_by == null ? 'Staff' : 'User';
+                let path = root + '/' + item.user_pic;
+
+                let img = `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                let html = `
+                <div class="card p-0">
+                        <div class="modal-first">
+                            <div class="mt-0 mt-0 rounded" style="padding:4px; ">
+                                <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
+                                    <div class=""> ${img} </div>
+                                </div>
+                                <div class="more-info">
+                                    <div class="" style="display: -webkit-box">
+                                        <h6 class="mb-0"> ${item.creator_name != null ? item.creator_name : item.customer_name} <span class="badge badge-secondary"> ${user_type}</span>  </h6>
+                                        <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Posted on ${convertDate(item.created_at)}</span>
+                                    </div>
+                                    <div class="first">                                        
+                                        <span style="word-break: break-all;font-size:20px"> ${item.subject} </span> 
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="card-body p-0">
+                            <div class="mail-message">
+                                <div class="row" id="ticket_details_p"><div class="col-12" id="editor_div"> ${item.ticket_detail} </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+
+                last_reply = html;
+            }
+            $('.hover_content_'+id).html(last_reply);
+        }
+        $('.hover_content_'+id).show();
+    }).on('mouseleave', '.ticket_name', function() {
+        let id = $(this).data('id');
+        $('.hover_content_'+id).hide();
+    });
+
 </script>
 @endsection

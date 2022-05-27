@@ -382,6 +382,25 @@
         redrawTicketsTable(ticket_arr);
     }
 
+    function convertDate(date) {
+        
+        var d = new Date(date);
+
+        var min = d.getMinutes();
+        var dt = d.getDate();
+        var d_utc = d.getUTCHours();
+
+        d.setMinutes(min);
+        d.setDate(dt);
+        d.setUTCHours(d_utc);
+
+        let a = d.toLocaleString("en-US" , {timeZone: "{{Session::get('timezone')}}"} );
+        
+        // return a;
+        var converted_date = moment(a).format("{{Session::get('system_date')}}" + ' ' +'hh:mm A');
+        return converted_date;
+    }
+
     function redrawTicketsTable(ticket_arr) {
         tkt_arr = ticket_arr;
         var la_color = ``;
@@ -658,6 +677,8 @@
             var name = $(this).attr('id');
             tickets_table_list.column(13).search(name).draw();
         });
+
+        $('.loading__').addClass('d-none');
     }
 
     function getHoursMinutesAndSeconds(date_one, date_two) {
@@ -781,8 +802,10 @@
             dataType: 'json',
             cache: false,
             success: function(data) {
-                // console.log(data, "data");
-                if (key = 'trashed') in_recycle_mode = true;
+                // if(key == 'trashed') {
+                //     in_recycle_mode = true;
+                // }
+                in_recycle_mode = (key == 'trashed' ? true : false);
                 redrawTicketsTable(data.tickets);
             }
         });
