@@ -190,12 +190,12 @@ class AssetManagerController extends Controller
             $module = '';
             $ref = '';
 
-            if(!empty($data['customer_id'])) {
+            if(!empty($data['customer_id']) && $data['customer_id'] != 'null') {
                 $asset['customer_id'] = $data['customer_id'];
                 $module = 'Customer Asset';
                 $ref = 'customer_asset_created';
             }
-            if(!empty($data['company_id'])) {
+            if(!empty($data['company_id']) && $data['company_id'] != 'null') {
                 $asset['company_id'] = $data['company_id'];
                 $module = 'Company Asset';
                 $ref = 'company_asset_created';
