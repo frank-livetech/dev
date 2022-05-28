@@ -1390,15 +1390,13 @@ class SettingsController extends Controller
 
     public function showAllNotifications(){
 
-        $user_type = \Auth::user()->user_type;
-
-        if($user_type == 1) {
-            $notifications = Notification::all();
+        if( auth()->user()->user_type == 1) {
+            $notifications = Notification::whereNotNull('noti_title')->orderbyDesc('id')->get();
         }else{
-            $notifications = Notification::where('receiver_id', \Auth::user()->id)->get();
+            $notifications = Notification::whereNotNull('noti_title')->where('receiver_id', auth()->id() )->orderbyDesc('id')->get();
         }
 
-        Notification::where('receiver_id', \Auth::user()->id)->update(['read_at' => Carbon::now()]);
+        Notification::where('receiver_id', auth()->id() )->update(['read_at' => Carbon::now()]);
         
         return view('notification.notification-new',compact('notifications'));
     }

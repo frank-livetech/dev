@@ -185,7 +185,7 @@ $(document).ready(function() {
     }
 
     $('#ticket_details_p').html(getTicketDetailsContent());
-    $('#ticket_details_p2').html(getTicketDetailsContent());
+    // $('#ticket_details_p2').html(getTicketDetailsContent());
     $('#ticket_details_p3').html(getTicketDetailsContent());
 
     get_ticket_notes();
@@ -1159,13 +1159,13 @@ function getTicketDetailsContent() {
         let attchs = ticket_details.attachments.split(',');
         tdet += '';
         attchs.forEach(item => {
-            // tdet += `<p><a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
             var tech =  `{{asset('/storage/tickets/${ticket_details.id}/${item}')}}`;
+            console.log(tech , "tech tech tech");
             var ter = getExt(tech);
             // return ter;
             if(ter == "pdf" ){
                 tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1195,7 +1195,7 @@ function getTicketDetailsContent() {
             else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                 tdet+= `
                 <div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1363,9 +1363,9 @@ function getTicketDetailsContent() {
                     </div>` 
             }
         });
-
-        tdet += `<div class="col-12" id="editor_div">${content}</div></div>`;
     }
+
+    tdet += `<div class="col-12" id="editor_div">${content}</div>`;
 
     return tdet;
 }
