@@ -42,23 +42,22 @@
 
         let time = moment( new Date().toLocaleString('en-US', { timeZone: "{{Session::get('timezone')}}" })).format('hh:mm A');
 
-        let html = `<a class="d-flex" href="#" onclick="markRead(15)" style="cursor: pointer;">
-            <div class="list-item d-flex align-items-start">
-                <div class="me-1">
-                    <div class="avatar">
-                        <span class="btn-success rounded-circle btn-circle" "="" style="padding:8px 12px">
-                    <i data-feather="${icon}"></i>
+        let html = `
+        <div class="list-item d-flex align-items-start" style="cursor:pointer">
+            <div class="me-1">
+                <div class="avatar">
+                    <span class="btn-success rounded-circle btn-circle" "="" style="padding:8px 12px">
+                        <i data-feather="${icon}"></i>
                     </span>
-                    </div>
-                </div>
-                <div class="list-item-body flex-grow-1">
-                    <p class="media-heading">
-                    <span class="fw-bolder">${title}</span>
-                    <span class="float-end">${time}</span> </p>
-                    <small class="notification-text">${desc}</small>
                 </div>
             </div>
-        </a>`;
+            <div class="list-item-body flex-grow-1">
+                <p class="media-heading">
+                <span class="fw-bolder"> ${title} </span>
+                <span class="float-end"> ${time} </span> </p>
+                <small class="notification-text"> ${desc} </small>
+            </div>
+        </div>`;
 
         $('.list_all_notifications').prepend(html);
     }
