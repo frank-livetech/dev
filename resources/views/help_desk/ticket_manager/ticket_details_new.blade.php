@@ -28,8 +28,10 @@
         padding: 0 !important;
     }
     span.select2-container.select2-container--default.select2-container--open{
-        top: 3.9844px !important
+        top: 3.9844px !important;
+        left:0px !important
     }
+
     .badge-secondary {
     color: #fff;
     background-color: #868e96;
@@ -480,7 +482,7 @@
                 <div class="col-md-7">
                     <div class="card" id="style-5">
                     <!-- <div class="card" id="style-5" style="height:270px; overflow-y:auto; overflow-x:hidden"> -->
-                        <div class="card-header frst mb-0">
+                        <div class="card-header frst mb-0" style="padding-bottom: unset">
                             <div class="align-items-center ">
                                 <div class="mail-items">
                                     <div class="" role="alert">
@@ -786,7 +788,7 @@
                                 <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
                                     <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
                                     <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5">Selected</h5>
-                                    <select class="select2 form-control  " id="dept_id" name="dept_id" style="width: 100%; height:36px;">
+                                    <select class="select2 form-select form-control form-control-line" id="dept_id" name="dept_id" style="width: 100%; height:36px;">
                                         
                                         @foreach($departments as $department)
                                             <option  value="{{$department->id}}" {{ $department->id == $details->dept_id ? 'selected' : '' }} >{{$department->name}}</option>
@@ -2002,6 +2004,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="showDefaultPreview"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-sm-12 DownloadImage" style="text-align:right">
+                           
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

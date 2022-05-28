@@ -1151,7 +1151,7 @@ function getTicketDetailsContent() {
             content = content;
         }
       
-        tdet = `<div class="col-12" id="editor_div">${content}</div>`;
+        tdet = ``;
         
     }
 
@@ -1164,8 +1164,8 @@ function getTicketDetailsContent() {
             var ter = getExt(tech);
             // return ter;
             if(ter == "pdf" ){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
+                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1183,7 +1183,7 @@ function getTicketDetailsContent() {
                                                                 </h6>
                                                             </a>
                                                         </div>
-                                                        <h6 style='font-size:12px'>77 KB</h6>
+                                                        
                                                     </div>
                                             </div>
                                         </div>
@@ -1194,7 +1194,7 @@ function getTicketDetailsContent() {
             }
             else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                 tdet+= `
-                <div class="col-md-4 mt-1" style='position:relative;' >
+                <div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
                             <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
@@ -1213,7 +1213,7 @@ function getTicketDetailsContent() {
                                                                 </h6>
                                                             </a>
                                                         </div>
-                                                        <h6 style='font-size:12px'>77 KB</h6>
+                                                       
                                                     </div>
                                             </div>
                                         </div>
@@ -1223,7 +1223,7 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;' >
+                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
                             <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
@@ -1235,9 +1235,9 @@ function getTicketDetailsContent() {
                                                             </div>
                                                         </div>
                                                         <div class="more-info">
-                                                            <h6 class="mb-0" style='font-size:12px;margin-top: 7px;'><strong> image001.png</strong></h6>
+                                                            <h6 class="mb-0" style='font-size:12px;margin-top: 7px;'><strong> ${item}</strong></h6>
                                                         </div>
-                                                        <h6 style='font-size:12px'>77 KB</h6>
+                                                        
                                                     </div>
                                             </div>
                                         </div>
@@ -1247,7 +1247,7 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;' >
+                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
                             <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
@@ -1266,7 +1266,7 @@ function getTicketDetailsContent() {
                                                                 </h6>
                                                             </a>
                                                         </div>
-                                                        <h6 style='font-size:12px'>77 KB</h6>
+                                                        
                                                     </div>
                                             </div>
                                         </div>
@@ -1276,7 +1276,7 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;' >
+                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
                             <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
@@ -1295,7 +1295,7 @@ function getTicketDetailsContent() {
                                                                 </h6>
                                                             </a>
                                                         </div>
-                                                        <h6 style='font-size:12px'>77 KB</h6>
+                                                        
                                                     </div>
                                             </div>
                                         </div>
@@ -1305,7 +1305,7 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "zip"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;' >
+                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
                             <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
@@ -1324,7 +1324,7 @@ function getTicketDetailsContent() {
                                                                 </h6>
                                                             </a>
                                                         </div>
-                                                        <h6 style='font-size:12px'>77 KB</h6>
+                                                        
                                                     </div>
                                             </div>
                                         </div>
@@ -1353,7 +1353,7 @@ function getTicketDetailsContent() {
                                                                 </h6>
                                                             </a>
                                                         </div>
-                                                        <h6 style='font-size:12px'>77 KB</h6>
+                                                        
                                                     </div>
                                             </div>
                                         </div>
@@ -1364,7 +1364,7 @@ function getTicketDetailsContent() {
             }
         });
 
-        tdet += '</div>';
+        tdet += `<div class="col-12" id="editor_div">${content}</div></div>`;
     }
 
     return tdet;
@@ -1372,7 +1372,9 @@ function getTicketDetailsContent() {
 
 function showAttachedImage(id, item) {
     let img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
+    let downloadimg = `<a class="btn btn-primary waves-effect waves-float waves-light" href="{{asset('storage/tickets/${id}/${item}')}}" download><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a>`
     $('.showDefaultPreview').html(img);
+    $('.DownloadImage').html(downloadimg);
     $("#defaultPreview").modal('show');
     $('#defaultPreview').draggable({
         "handle":".modal-header"
