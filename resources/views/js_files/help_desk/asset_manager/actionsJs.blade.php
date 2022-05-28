@@ -46,8 +46,12 @@ function get_asset_table_list() {
                         "defaultContent": ''
                     },
                     {
+                        
                         "render": function(data, type, full, meta) {
-                            return `<a href="{{url('general-info')}}/` + full.id + `">` + full.asset_title + `</a>`;
+                            let general_field = full.asset_fields[0]['id'];
+                            let index = 'fl_'+general_field;
+                            let gen_fld_record = full.asset_record[index];
+                            return `<a href="{{url('general-info')}}/` + full.id + `">` + gen_fld_record + `</a>`;
                         }
                     },
                     {
@@ -145,15 +149,15 @@ function showAssetDetails(id) {
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.customer.first_name} ${item.customer.last_name}  </td>
+                                    <td> ${item.customer.first_name != null ? item.customer.first_name : '' } ${item.customer.last_name != null ? item.customer.last_name : '' }  </td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.customer.email}  </td>
+                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  </td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.customer.phone} </td>
+                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } </td>
                                 </tr>                                                        
                             </tbody>
                         </table>
@@ -218,12 +222,9 @@ function showAssetDetails(id) {
                         <div>
                             <table class="table table -hover table-hover">
                                 <tbody>
+                                   
                                     <tr>
-                                        <td class="fw-bolder"> Asset Title </td>
-                                        <td> ${item.asset_title} </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bolder"> Template Type </td>
+                                        <td class="fw-bolder"> Asset Type </td>
                                         <td> ${item.template.title} </td>
                                     </tr>
                                     ${asset_field_tr}
@@ -238,14 +239,15 @@ function showAssetDetails(id) {
     }
 
     return `
+        <div class="row mt-1 p-1">
+            ${item.asset_fields != null ? asset_field_html : ''}
+        </div>
         <div class="row p-1">
             ${template_html}            
             ${customer_html}            
             ${company_html}            
         </div>
-        <div class="row mt-1 p-1">
-            ${item.asset_fields != null ? asset_field_html : ''}
-        </div>`;
+        `;
 }
 
 function get_asset_temp_table_list() {
