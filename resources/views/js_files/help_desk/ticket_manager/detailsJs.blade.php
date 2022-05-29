@@ -3150,6 +3150,10 @@ function createFollowUp(event) {
                 // send mail notification regarding ticket action
                 // ticket_notify('ticket_followup', 'Follow-up added');
 
+                if(data.hasOwnProperty('ticket_close')) {
+                    $("#status").val(data.ticket_close).trigger("change");
+                }
+
                 // refresh logs
                 getLatestLogs();
 
@@ -4041,7 +4045,7 @@ function resetSLA(value) {
     //     $("#ticket-rep-due").val("");
     // }else{
     //     $("#ticket-res-due").val("");
-    // }
+    // }`
     if(value == 'reply_due') {
         $("#reply_date").val("");
         $("#reply_hour").val("12");

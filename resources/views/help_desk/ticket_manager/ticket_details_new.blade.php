@@ -1516,10 +1516,18 @@
                     
                         </div>
 
-                        <div class="modal-footer">
-                            <div class="row">
-                                <div class="col-sm-12" style="text-align:right">
-                                    <button class="btn btn-primary" type="submit">Save</button>
+                        <div class="row p-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="form-check-inline" >
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input general_checkbox" name="close_ticket" value="1" id="close_ticket">
+                                        <label class="custom-control-label" for="close_ticket"> <strong> Close Ticket  </strong></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12" style="text-align:right">
+                                        <button class="btn btn-primary" type="submit">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

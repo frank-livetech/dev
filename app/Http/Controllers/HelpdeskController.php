@@ -1565,6 +1565,12 @@ class HelpdeskController extends Controller
             $data['created_by'] = \Auth::user()->id;
             $ticket_followUp = TicketFollowUp::create($data);
 
+            if( isset($request->close_ticket)){ 
+                $status = TicketStatus::firstWhere('slug','closed');
+                $ticket->status = $status->id;
+                $response['ticket_close'] = $status->id;
+            }
+
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
