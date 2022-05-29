@@ -1071,6 +1071,7 @@ function saveRequest() {
                 subject: $('#ticket_subject_edit').val(),
                 ticket_detail: content,
                 attachments: attachments_src,
+                action: 'ticket_detail_update',
             },
             dataType: 'json',
             cache: false,
@@ -2246,7 +2247,8 @@ function updateTicket(){
 
             // priority: priority,
             id: ticket.id,
-            dd_Arr:updates_Arr
+            dd_Arr:updates_Arr,
+            action: 'ticket_detail_update',
             // action_performed: 'Ticket Priority'
         },
         dataType: 'json',

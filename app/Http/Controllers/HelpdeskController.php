@@ -350,11 +350,13 @@ class HelpdeskController extends Controller
                     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
 
                     // send notification
-                    $slug = url('ticket-details') .'/'.$ticket->coustom_id;
-                    $type = 'ticket_updated';
-                    $title = 'Ticked Updated';
-                    $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
-                    sendNotificationToAdmins($slug , $type , $title ,  $desc);
+                    if($request->action == 'ticket_detail_update') {
+                        $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                        $type = 'ticket_updated';
+                        $title = 'Ticked Updated';
+                        $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
+                        sendNotificationToAdmins($slug , $type , $title ,  $desc);
+                    }
                 }
 
 
