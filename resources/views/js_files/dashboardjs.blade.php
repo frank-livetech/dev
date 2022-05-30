@@ -149,7 +149,8 @@
         });
 
         searchFollowUps(true);
-
+        let atte_data = {!! json_encode($staff_att_data) !!};
+        console.log(atte_data)
         let tt = $('#staff_table').DataTable({
             ordering: false,
             data:  {!! json_encode($staff_att_data) !!} ,
@@ -162,8 +163,8 @@
                 {
                     render: function (data, type, full, meta) {
                         var name = '---';
-                        if(full.user_clocked != null) {
-                            name = full.user_clocked.name != null ? full.user_clocked.name : '-';
+                        if(full.name != null) {
+                            name = full.name != null ? full.name : '-';
                         }else{
                             name = '-';
                         }

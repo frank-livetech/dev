@@ -82,13 +82,20 @@ class HomeController extends Controller {
         //                     ->where('date',date_format(Carbon::now(),"Y-m-d"))
         //                     ->limit(15)->get();
 
-        $staff_att_data = StaffAttendance::with('user_clocked')->orderBy('id', 'DESC')->groupBy('user_id')->get();
+        // $staff_att_data = StaffAttendance::with('user_clocked')->orderBy('id', 'DESC')->groupBy('user_id')->get();
+        $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
+        $staff_att_data = array();
+        foreach($users as $user){
+            $staffData = StaffAttendance::where('user_id',$user->id)->where('date','>=',date_format(Carbon::yesterday(),"Y-m-d"))->orderByDesc('id')->first();
+            if($staffData){
+                $staffData->name = $user->name;
+                array_push($staff_att_data,$staffData);
+            }
+            
+        }
         
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
         $staff_inactive_count = $staff_count - $staff_active_count;
-
-
-        $users = User::where('is_deleted',0)->where('user_type','!=',5)->where('is_support_staff','!=',1)->get();
 
         $ticket_follow_ups = TicketFollowUp::where('created_by', auth()->id() )
         ->with(['ticket' => function ($query) {
