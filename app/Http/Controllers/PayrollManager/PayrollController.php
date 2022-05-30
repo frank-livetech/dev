@@ -32,7 +32,7 @@ class PayrollController extends Controller
         $currentDate = Carbon::now();
         $currentDate = $currentDate->format('Y-m-d');
 
-        $staffData = StaffAttendance::where([ ['date', $currentDate], ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
+        $staffData = StaffAttendance::where([ ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
 
         $clock_in_arr = [
             "user_id" => auth()->id(),
