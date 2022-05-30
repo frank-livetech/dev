@@ -554,6 +554,7 @@
 
                     if(data.status_code == 200 && data.success == true){
 
+                        console.log(data.staff_clock_in);
                         renderClockIn(data.staff_clock_in);
 
                         notifications = data.data;
@@ -641,9 +642,8 @@
         }
 
         function renderClockIn(data) {
-            console.log(data , "data");
             // if data is null then its clock in 
-            if(data == null) {
+            if(data == null || data.clock_out != null) {
 
                 let clockinbtn = `
                 <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockin' , this)">
@@ -667,7 +667,7 @@
                 let clockoutbtn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
                 $('.clock_btn_div').html(clockoutbtn);
                 $('.clock_in_section').attr('style','display:none !important');
-
+                
                 if($('.navUserInfo').children().length == 2) {
                     $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
                     clockintime = moment(data.clock_in , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
@@ -677,7 +677,6 @@
                     clockInTimer(clockintime);
                 }
             }
-
         }
 
 

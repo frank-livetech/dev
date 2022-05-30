@@ -144,8 +144,9 @@ class HomeController extends Controller {
 
         $count = Notification::with(['sender','user'])->orderBy('id','desc')->where('receiver_id',\Auth::user()->id)->where('read_at',NULL)->count();
 
-        $currentDate = Carbon::now();
-        $staffData = StaffAttendance::where([ ['date', $currentDate->format('Y-m-d')], ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
+        // $currentDate = Carbon::now();
+        // $staffData = StaffAttendance::where([ ['date', $currentDate->format('Y-m-d')], ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
+        $staffData = StaffAttendance::where('user_id',auth()->user()->id)->orderByDesc('id')->first();
 
         $response['message'] = 'Notification List';
         $response['status_code'] = 200;
