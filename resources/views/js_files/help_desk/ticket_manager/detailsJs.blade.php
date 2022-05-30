@@ -3824,17 +3824,34 @@ async function downloadPNGFromAnyImageSrc(src) {
 
 function addAttachment(type, olderAttach='') {
     if(olderAttach) {
-        $('#'+type+'_attachments').append(`<div class="input-group pt-3">
-            <div class="custom-file text-left">
-                <input type="file" class="form-control" id="${type}_attachment_${ticket_attachments_count}" disabled>
-                <label class="custom-file-label" for="${type}_attachment_${ticket_attachments_count}">${olderAttach}</label>
-            </div>
-            <div class="input-group-append">
-                <button class="btn btn-dark" type="button" title="Remove" onclick="removeAttachment(this, '${olderAttach}', '${type}')"><span class="fa fa-times"></span></button>
-            </div>
-        </div>`);
+        $('#'+type+'_attachments').append(`
+                        <div class="col-md-4 pt-1" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${olderAttach}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                            </div>
+                                                        </div>
+                                                        <div class="more-info">
+                                                            <a>
+                                                                <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+                                                                    ${olderAttach}
+                                                                </h6>
+                                                            </a>
+                                                        </div>
+                                                        
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>`);
     } else {
-        $('#'+type+'_attachments').append(`<div class="input-group pt-3">
+        $('#'+type+'_attachments').append(`<div class="input-group pt-1">
             <div class="custom-file text-left">
                 <input type="file" class="form-control ${type}_attaches" id="${type}_attachment_${ticket_attachments_count}">
                 <label class="custom-file-label" for="${type}_attachment_${ticket_attachments_count}"></label>

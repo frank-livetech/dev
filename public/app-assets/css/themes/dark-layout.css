@@ -1447,3 +1447,6 @@ background-color: #283046 !important ;
 
 .dark-layout .horizontal-layout .main-menu-content .navbar-nav > li.active .dropdown-menu li.open.active > a {
   color: #b4b7bd !important; }
+.dark-layout div.dataTables_wrapper .dataTables_info{
+  color: #ffffff;
+}
