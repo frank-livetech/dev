@@ -667,7 +667,7 @@
                 let clockoutbtn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
                 $('.clock_btn_div').html(clockoutbtn);
                 $('.clock_in_section').attr('style','display:none !important');
-                
+
                 if($('.navUserInfo').children().length == 2) {
                     $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
                     clockintime = moment(data.clock_in , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
@@ -809,7 +809,11 @@
                 let min = d._data.minutes > 9 ? d._data.minutes : '0' + d._data.minutes;
                 let sec = d._data.seconds > 9 ? d._data.seconds : '0' + d._data.seconds;
                 let hr = d._data.hours > 9 ? d._data.hours : '0' + d._data.hours;
-
+                let days = d._data.days;
+                if(days > 0){
+                    let hours = days * 24;
+                    hr += hours;
+                }
                 let time = hr + ':' + min + ':' + sec;
                 $('.clockin_timer').text(time);
             }
