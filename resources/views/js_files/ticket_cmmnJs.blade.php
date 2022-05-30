@@ -481,7 +481,7 @@
                 }
                 if (res_due) {
                     // overdue or change format of the date
-                    if (res_due.diff(moment(), "seconds") < 0) res_due = `<div class="text-center" onclick="resetSLAPlan(${val['id']})" title="${res_due.format('YYYY-MM-DD hh:mm')}"><span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span></div>`;
+                    if (res_due.diff(moment(), "seconds") < 0) res_due = `<div class="text-center" onclick="resetSLAPlan(${val['id']})" title="${res_due.format('YYYY-MM-DD hh:mm')}"><span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};cursor:pointer">Overdue</span></div>`;
                     else {
                         // do the date formatting
                         // res_due = res_due.format('YYYY-MM-DD hh:mm');
@@ -505,7 +505,7 @@
                     // overdue or change format of the date
                     if (rep_due.diff(moment(), "seconds") < 0) {
                         rep_due = `<div class="text-center" onclick="resetSLAPlan(${val['id']})" title="${rep_due.format('YYYY-MM-DD hh:mm')}">
-                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};cursor:pointer">Overdue</span>
                             </div>`;
                     } else {
                         // do the date formatting
