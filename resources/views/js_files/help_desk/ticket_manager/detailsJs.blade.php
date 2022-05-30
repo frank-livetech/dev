@@ -1165,8 +1165,8 @@ function getTicketDetailsContent() {
             var ter = getExt(tech);
             // return ter;
             if(ter == "pdf" ){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
+                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1195,8 +1195,8 @@ function getTicketDetailsContent() {
             }
             else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                 tdet+= `
-                <div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
+                <div class="col-md-4" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1224,8 +1224,8 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1248,8 +1248,8 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
+                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1277,8 +1277,8 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
+                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important; margin-bottom: 1rem;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1306,8 +1306,8 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else if(ter == "zip"){
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
+                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
@@ -1335,8 +1335,8 @@ function getTicketDetailsContent() {
                     </div>` 
             }
             else{
-                tdet+= `<div class="col-md-4 mt-1" style='position:relative;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;'>
+                tdet+= `<div class="col-md-4" style='position:relative;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
                                 <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
                                     <div class="" style="display: -webkit-box">
                                                 <div class="modal-first w-100">
