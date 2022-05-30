@@ -83,7 +83,7 @@ class HomeController extends Controller {
         //                     ->limit(15)->get();
 
         $staff_att_data = StaffAttendance::with('user_clocked')->orderBy('id', 'DESC')->groupBy('user_id')->get();
-
+        
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
         $staff_inactive_count = $staff_count - $staff_active_count;
 

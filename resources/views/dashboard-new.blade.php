@@ -593,38 +593,38 @@
         }
     });
     var system_date_format = $("#system_date_format").val();
-    let data = {!! json_encode($staff_att_data) !!};
+    // let data = {!! json_encode($staff_att_data) !!};
     
-    if(data.length > 0) {
-        let html = ``;
-        let name = ``;
-        for(var i =0; i < data.length; i++) {
-            if(data[i].user_clocked != null) {
-                name = data[i].user_clocked.name != null ? data[i].user_clocked.name : '-';
-            }else{
-                name = '-';
-            }
+    // if(data.length > 0) {
+    //     let html = ``;
+    //     let name = ``;
+    //     for(var i =0; i < data.length; i++) {
+    //         if(data[i].user_clocked != null) {
+    //             name = data[i].user_clocked.name != null ? data[i].user_clocked.name : '-';
+    //         }else{
+    //             name = '-';
+    //         }
 
-            let clock_in = moment.tz(data[i].created_at,'{{Session::get("timezone")}}').format(system_date_format + ' ' +'hh:mm A');
+    //         let clock_in = moment.tz(data[i].created_at,'{{Session::get("timezone")}}').format(system_date_format + ' ' +'hh:mm A');
 
-            html +=`
-                <tr>
-                    <td> ${i+1} </td>
-                    <td> ${name} </td>
-                    <td>
-                        <span class="badge bg-${data[i].clock_out == null ? 'success' : 'danger'}">${data[i].clock_out == null ? 'Clocked In' : 'Clocked Out'}</span>
-                    </td>
-                    <td> ${data[i].date != null ? data[i].date : '-'}</td>
-                    <td> ${data[i].clock_in != null ? clock_in : '-'} </td>
-                    <td> ${data[i].clock_out != null ? moment(clock_in).add( HmsToSeconds(data[i].hours_worked) , 'seconds').format(system_date_format + ' ' +'hh:mm A') : '-'} </td>
-                    <td> ${data[i].hours_worked != null ? data[i].hours_worked : '-'} </td>
-                </tr>
-            `;
-        }
+    //         html +=`
+    //             <tr>
+    //                 <td> ${i+1} </td>
+    //                 <td> ${name} </td>
+    //                 <td>
+    //                     <span class="badge bg-${data[i].clock_out == null ? 'success' : 'danger'}">${data[i].clock_out == null ? 'Clocked In' : 'Clocked Out'}</span>
+    //                 </td>
+    //                 <td> ${data[i].date != null ? data[i].date : '-'}</td>
+    //                 <td> ${data[i].clock_in != null ? clock_in : '-'} </td>
+    //                 <td> ${data[i].clock_out != null ? moment(clock_in).add( HmsToSeconds(data[i].hours_worked) , 'seconds').format(system_date_format + ' ' +'hh:mm A') : '-'} </td>
+    //                 <td> ${data[i].hours_worked != null ? data[i].hours_worked : '-'} </td>
+    //             </tr>
+    //         `;
+    //     }
 
-        $("#showstaffdata").html(html);
+    //     $("#showstaffdata").html(html);
 
-    }
+    // }
     
 function HmsToSeconds(hms) {
     // var hms = '02:04:33';

@@ -161,7 +161,14 @@
                 },
                 {
                     render: function (data, type, full, meta) {
-                        return full.user_clocked.name;
+                        var name = '---';
+                        if(full.user_clocked != null) {
+                            name = full.user_clocked.name != null ? full.user_clocked.name : '-';
+                        }else{
+                            name = '-';
+                        }
+
+                        return name;
                     }
                 },
                 {
