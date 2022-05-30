@@ -86,7 +86,8 @@ class HomeController extends Controller {
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
         $staff_att_data = array();
         foreach($users as $user){
-            $staffData = StaffAttendance::where('user_id',$user->id)->where('date','>=',date_format(Carbon::yesterday(),"Y-m-d"))->orderByDesc('id')->first();
+            // $staffData = StaffAttendance::where('user_id',$user->id)->where('date','>=',date_format(Carbon::yesterday(),"Y-m-d"))->orderByDesc('id')->first();
+            $staffData = StaffAttendance::where('user_id',$user->id)->orderByDesc('id')->first();
             if($staffData){
                 $staffData->name = $user->name;
                 array_push($staff_att_data,$staffData);
