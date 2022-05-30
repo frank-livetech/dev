@@ -812,7 +812,7 @@
                 let days = d._data.days;
                 if(days > 0){
                     let hours = days * 24;
-                    hr += hours;
+                    hr = parseInt(hours) + parseInt(hr);
                 }
                 let time = hr + ':' + min + ':' + sec;
                 $('.clockin_timer').text(time);
