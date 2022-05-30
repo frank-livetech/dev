@@ -106,8 +106,11 @@ class HomeController extends Controller {
 
     public function getAllStaffAttendance() {
         $staff_count = User::where('is_deleted',0)->where('user_type','!=',5)->where('user_type','!=',4)->where('status',1)->count();
-        $staff_att_data = StaffAttendance::with('user_clocked')->where('date',date_format(Carbon::now(),"Y-m-d"))->get();
+        // $staff_att_data = StaffAttendance::with('user_clocked')->where('date',date_format(Carbon::now(),"Y-m-d"))->get();
+        $staff_att_data = StaffAttendance::with('user_clocked')->orderBy('id', 'DESC')->groupBy('user_id')->get();
+
         $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
+
         $staff_inactive_count = $staff_count - $staff_active_count;
 
         $response['message'] = 'Staff Attendance List';
