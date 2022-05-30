@@ -262,16 +262,20 @@ class HelpdeskController extends Controller
                         if($dd_values[$dd]['id'] == 1){
                             $data['dept_id'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Department Updated';
+                            $message = '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';  
                         }elseif($dd_values[$dd]['id'] == 2){
                             $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Tech Lead Updated';
+                            $message = '<strong> Tech :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';  
                         }elseif($dd_values[$dd]['id'] == 3){
                             $data['type'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Type Updated';
+                            $message = '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
                         }elseif($dd_values[$dd]['id'] == 4){
 
                             $data['status'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Status Updated';
+                            $message = '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';  
                             $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
                             if($os && $os->name == 'Closed'){
                                 $data['reply_deadline'] = 'cleared';
@@ -280,7 +284,7 @@ class HelpdeskController extends Controller
                         }elseif($dd_values[$dd]['id'] == 5){
                             $data['priority'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Priority Updated';
-                            
+                            $message = '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
                         }
 
                         // save activity logs
@@ -295,7 +299,12 @@ class HelpdeskController extends Controller
                         $slug = url('ticket-details') .'/'.$ticket->coustom_id;
                         $type = 'ticket_updated';
                         $title = 'Ticked Updated';
-                        $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] . ' by ' . auth()->user()->name;
+
+                        $desc = '<div>
+                            <strong>Ticket Detail Section Improvements</strong> <br>
+                            '. $message .' <br>
+                            Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] . ' by ' . auth()->user()->name .'
+                        </div>';
                         sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
                     }
@@ -341,11 +350,13 @@ class HelpdeskController extends Controller
                     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
 
                     // send notification
-                    $slug = url('ticket-details') .'/'.$ticket->coustom_id;
-                    $type = 'ticket_updated';
-                    $title = 'Ticked Updated';
-                    $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
-                    sendNotificationToAdmins($slug , $type , $title ,  $desc);
+                    if($request->action == 'ticket_detail_update') {
+                        $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                        $type = 'ticket_updated';
+                        $title = 'Ticked Updated';
+                        $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
+                        sendNotificationToAdmins($slug , $type , $title ,  $desc);
+                    }
                 }
 
 
@@ -385,30 +396,64 @@ class HelpdeskController extends Controller
 
         // return dd($request->all());
         $tkt_id = explode(',', $request->tkt_id);
+
         for($i = 0; $i < count($tkt_id); $i++) {
 
             $tk = Tickets::where('id' , $tkt_id[$i])->first();
-            $tk->assigned_to = $request->assigned_to != null ? $request->assigned_to : $tk->assigned_to;
-            $tk->type = $request->type != null ? $request->type : $tk->type;
+            // dD($tk->toArray());
+
             $tk->status = $request->status != null ? $request->status : $tk->status;
+            $tk->type = $request->type != null ? $request->type : $tk->type;
             $tk->priority = $request->priority != null ? $request->priority : $tk->priority;
             $tk->dept_id = $request->dept_id != null ? $request->dept_id : $tk->dept_id;
+            $tk->assigned_to = $request->assigned_to != null ? $request->assigned_to : $tk->assigned_to;
+
+            if( isset($request->status) ) {
+                $status =  TicketStatus::where('id',$request->status )->first();
+                $message = '<strong> Status </strong> '. $status->name .' (was : '. $tk->status_name .')';  
+            }
+
+            if( isset($request->type) ) {
+                $type =  TicketType::where('id',$request->type )->first();
+                $message = '<strong> Type </strong> '. $type->name .' (was : '. $tk->type_name .')';  
+            }
+
+            if( isset($request->priority) ) {
+                $priority =  TicketPriority::where('id',$request->priority )->first();
+                $message = '<strong> Priority </strong> '. $priority->name .' (was : '. $tk->priority_name .')';  
+            }
+
+            if( isset($request->dept_id) ) {
+                $dep =  Departments::where('id',$request->dept_id )->first();
+                $message = '<strong> Department </strong> '. $dep->name .' (was : '. $tk->department_name .')';  
+            }
+
+            if( isset($request->assigned_to) ) {
+                $user =  User::where('id',$request->assigned_to )->first();
+                $message = '<strong> Techh </strong> '. $user->name .' (was : '. $tk->creator_name .')';  
+            }
+            
             $tk->updated_at = Carbon::now();
-            $tk->save();
             
             // save activity logs
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
             $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$tk->coustom_id.'">'.$tk->coustom_id.'</a>  Updated By '. $name_link;
 
             $log = new ActivitylogController();
-            $log->saveActivityLogs('Tickets' , 'tickets' , $tkt_id[$i] , auth()->id() , $action_perform);
+            // $log->saveActivityLogs('Tickets' , 'tickets' , $tkt_id[$i] , auth()->id() , $action_perform);
 
             // send notification
             $slug = url('ticket-details') .'/'.$tk->coustom_id;
             $type = 'ticket_updated';
             $title = 'Ticket Updated';
-            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$tk->coustom_id.'">'.$tk->coustom_id.'</a> Updated by ' . auth()->user()->name;
+            $desc = '<div>
+                        <strong>Ticket Manager Section Improvements</strong> <br>
+                        '. $message .' <br>
+                        Ticket <a href="'.url('ticket-details').'/' .$tk->coustom_id.'">'.$tk->coustom_id.'</a> Updated by ' . auth()->user()->name . '
+                    </div>';
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
+            $tk->save();
 
         }
 
@@ -1519,6 +1564,12 @@ class HelpdeskController extends Controller
 
             $data['created_by'] = \Auth::user()->id;
             $ticket_followUp = TicketFollowUp::create($data);
+
+            if( isset($request->close_ticket)){ 
+                $status = TicketStatus::firstWhere('slug','closed');
+                $ticket->status = $status->id;
+                $response['ticket_close'] = $status->id;
+            }
 
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;

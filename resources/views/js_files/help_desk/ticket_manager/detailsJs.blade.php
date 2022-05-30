@@ -1071,6 +1071,7 @@ function saveRequest() {
                 subject: $('#ticket_subject_edit').val(),
                 ticket_detail: content,
                 attachments: attachments_src,
+                action: 'ticket_detail_update',
             },
             dataType: 'json',
             cache: false,
@@ -2246,7 +2247,8 @@ function updateTicket(){
 
             // priority: priority,
             id: ticket.id,
-            dd_Arr:updates_Arr
+            dd_Arr:updates_Arr,
+            action: 'ticket_detail_update',
             // action_performed: 'Ticket Priority'
         },
         dataType: 'json',
@@ -3148,6 +3150,10 @@ function createFollowUp(event) {
                 // send mail notification regarding ticket action
                 // ticket_notify('ticket_followup', 'Follow-up added');
 
+                if(data.hasOwnProperty('ticket_close')) {
+                    $("#status").val(data.ticket_close).trigger("change");
+                }
+
                 // refresh logs
                 getLatestLogs();
 
@@ -4039,7 +4045,7 @@ function resetSLA(value) {
     //     $("#ticket-rep-due").val("");
     // }else{
     //     $("#ticket-res-due").val("");
-    // }
+    // }`
     if(value == 'reply_due') {
         $("#reply_date").val("");
         $("#reply_hour").val("12");
