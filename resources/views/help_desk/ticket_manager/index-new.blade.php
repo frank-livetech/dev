@@ -1224,5 +1224,10 @@ $('.content').on('mouseenter', '.ticket_name', function() {
     $('.hover_content_' + id).hide();
 });
 
+function getExt(filename) {
+    var ext = filename.split('.').pop();
+    if(ext == filename) return "";
+    return ext;
+}
 </script>
 @endsection
