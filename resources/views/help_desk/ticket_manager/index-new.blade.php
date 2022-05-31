@@ -159,6 +159,7 @@ span.select2-container.select2-container--default.select2-container--open {
     font-size: 1.8rem !important;
     font-weight: bolder;
 }
+.cursor { cursor: pointer !important }
 </style>
 @php
 $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
