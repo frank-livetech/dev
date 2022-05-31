@@ -575,7 +575,7 @@
                                             <div class="col-12 pt-3">
                                                 
                                                 <button class="btn btn-outline-primary btn-sm" type="button" onclick="addAttachment('tickets')"><span class="fa fa-plus"></span> Add Attachment</button>
-                                                <div class="form-group" id="tickets_attachments"></div>
+                                                <div class="row form-group" id="tickets_attachments"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1521,7 +1521,7 @@
                                 <div class="form-check-inline" >
                                     <div class="form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input general_checkbox" name="close_ticket" value="1" id="close_ticket">
-                                        <label class="custom-control-label" for="close_ticket"> <strong> Close Ticket  </strong></label>
+                                        <label class="custom-control-label" for="close_ticket"> <strong> Close Ticket Now </strong></label>
                                     </div>
                                 </div>
                                 <div class="row">
