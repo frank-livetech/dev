@@ -575,7 +575,7 @@ class AssetManagerController extends Controller
         $field_data = array();
         
         //assets table
-        $asset = Assets::with(['createdByUser','updatedByUser'])->findOrFail($id);
+        $asset = Assets::findOrFail($id);
         
         //asset_templates_fields
         $asset_templates_fields =  DB::table("asset_templates_fields")->where("asset_forms_id","=",$asset->asset_forms_id)->get();

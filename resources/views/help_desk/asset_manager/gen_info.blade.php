@@ -120,10 +120,10 @@
                             </tr>
                             @endif
 
-                            @if($asset->createdByUser !=NULL && $asset->createdByUser != '')
+                            @if($asset->created_by_name !=NULL && $asset->created_by_name != '')
                             <tr>
                                 <td>Created By</td>
-                                <td>{{$asset->createdByUser->name}}</td>
+                                <td>{{$asset->created_by_name}}</td>
                             </tr>
                             @endif
                             
