@@ -7,7 +7,6 @@ use App\Models\AssetForms;
 use App\Models\AssetFields;
 use App\Models\Customer;
 use App\Models\Company;
-use App\User;
 
 class Assets extends Model
 {
@@ -27,6 +26,8 @@ class Assets extends Model
         'deleted_at',
         'is_deleted'
     ];
+    protected $appends = ['created_by_name', 'updated_by_name'];
+
 
     public function template() {
         return $this->hasOne(AssetForms::class, 'id', 'asset_forms_id');
@@ -44,12 +45,30 @@ class Assets extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function  createdByUser(){
-        return $this->belongsTo(User::class,'id','created_by');
+    public function getCreatedByNameAttribute() {
+        $id = $this->created_by;
+        if($id){
+            $user = User::where('id', $id)->first();
+            if($user){
+                return $user->name;
+            }
+        }
+        
+        return '---';
     }
 
-    public function  updatedByUser(){
-        return $this->belongsTo(User::class,'id','updated_by');
+    public function getUpdatedByNameAttribute() {
+        $id = $this->cupdated_by;
+        if($id){
+            $user = User::where('id', $id)->first();
+            if($user){
+                return $user->name;
+            }
+        }
+        
+        return '---';
+
     }
+
 }
 
