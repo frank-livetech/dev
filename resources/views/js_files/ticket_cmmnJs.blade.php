@@ -803,7 +803,9 @@
                 // if(key == 'trashed') {
                 //     in_recycle_mode = true;
                 // }
-                in_recycle_mode = (key == 'trashed' ? true : false);
+                console.log(key , "key");
+                in_recycle_mode = (key == 'trash' ? true : false);
+                console.log(in_recycle_mode , "in_recycle_mode");
                 redrawTicketsTable(data.tickets);
             }
         });

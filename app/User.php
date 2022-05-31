@@ -68,6 +68,14 @@ class User extends Authenticatable implements JWTSubject
         return $role->name;
     }
 
+    public function getCreatedAtAttribute($value) {
+        if($value != null) {
+            $date = new \DateTime($value);
+            $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+            return $date->format(system_date_format() .' h:i a');
+        }
+    }
+
     public function getStaffTagsAttribute() {
         $tags_arr = explode(",",$this->tags);
         $arr = Tags::select('name')->whereIn('id',$tags_arr)->get();
