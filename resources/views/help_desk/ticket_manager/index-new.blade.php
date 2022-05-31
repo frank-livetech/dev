@@ -981,210 +981,213 @@ $('.content').on('mouseenter', '.ticket_name', function() {
 
             }
             let attachments = '';
-            attchs.forEach(attach => {
-                var tech =  `{{asset('/storage/tickets/${item.id}/${attach}')}}`;
-                var ter = getExt(tech);
-                // return ter;
-                if(ter == "pdf" ){
-                    attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                                <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                    <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                        <div class="" style="display: -webkit-box">
-                                                    <div class="modal-first w-100">
-                                                        <div class="mt-0 rounded" >
-                                                            <div class="float-start rounded me-1 bg-none" style="">
-                                                                <div class="">                                                               
-                                                                    <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pdf.png" width="25px">    
+            if(attchs != ''){
+                attchs.forEach(attach => {
+                    var tech =  `{{asset('/storage/tickets/${item.id}/${attach}')}}`;
+                    var ter = getExt(tech);
+                    // return ter;
+                    if(ter == "pdf" ){
+                        attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+                                        <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pdf.png" width="25px">    
+                                                                    </div>
                                                                 </div>
+                                                                <div class="more-info">
+                                                                    <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
+                                                                            download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
+                                                                        <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+                                                                            ${attach}
+                                                                        </h6>
+                                                                    </a>
+                                                                </div>
+                                                                
                                                             </div>
-                                                            <div class="more-info">
-                                                                <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
-                                                                        download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
-                                                                    <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                        ${attach}
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` 
+                    }
+                    else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
+                        attachments+= `
+                        <div class="col-md-4" style='position:relative;cursor:pointer' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+                                        <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}xlx.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="more-info">
+                                                                    <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
+                                                                            download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
+                                                                        <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+                                                                            ${attach}
+                                                                        </h6>
+                                                                    </a>
+                                                                </div>
                                                             
-                                                        </div>
+                                                            </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ` 
-                }
-                else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
-                    attachments+= `
-                    <div class="col-md-4" style='position:relative;cursor:pointer' >
-                                <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                    <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                        <div class="" style="display: -webkit-box">
-                                                    <div class="modal-first w-100">
-                                                        <div class="mt-0 rounded" >
-                                                            <div class="float-start rounded me-1 bg-none" style="">
-                                                                <div class="">                                                               
-                                                                    <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}xlx.png" width="25px">    
+                            ` 
+                    }
+                    else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
+                        attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${item.id}, '${attach}')" >
+                                        <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{asset('storage/tickets/${item.id}/${attach}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="more-info">
-                                                                <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
-                                                                        download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
-                                                                    <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                        ${attach}
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                        
-                                                        </div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ` 
-                }
-                else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                    attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                                <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${item.id}, '${attach}')" >
-                                    <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                        <div class="" style="display: -webkit-box">
-                                                    <div class="modal-first w-100">
-                                                        <div class="mt-0 rounded" >
-                                                            <div class="float-start rounded me-1 bg-none" style="">
-                                                                <div class="">                                                               
-                                                                    <img src="{{asset('storage/tickets/${item.id}/${attach}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                                <div class="more-info">
+                                                                    <h6 class="mb-0" style='font-size:12px;margin-top: 7px;'><strong> ${attach}</strong></h6>
                                                                 </div>
+                                                                
                                                             </div>
-                                                            <div class="more-info">
-                                                                <h6 class="mb-0" style='font-size:12px;margin-top: 7px;'><strong> ${attach}</strong></h6>
-                                                            </div>
-                                                            
-                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ` 
-                }
-                else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                    attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                                <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                    <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                        <div class="" style="display: -webkit-box">
-                                                    <div class="modal-first w-100">
-                                                        <div class="mt-0 rounded" >
-                                                            <div class="float-start rounded me-1 bg-none" style="">
-                                                                <div class="">                                                               
-                                                                    <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}word.png" width="25px">    
+                            ` 
+                    }
+                    else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
+                        attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+                                        <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}word.png" width="25px">    
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="more-info">
-                                                                <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
-                                                                        download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
-                                                                    <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                        ${attach}
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ` 
-                }
-                else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                    attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                                <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important; margin-bottom: 1rem;'>
-                                    <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                        <div class="" style="display: -webkit-box">
-                                                    <div class="modal-first w-100">
-                                                        <div class="mt-0 rounded" >
-                                                            <div class="float-start rounded me-1 bg-none" style="">
-                                                                <div class="">                                                               
-                                                                    <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pptx.png" width="25px">    
+                                                                <div class="more-info">
+                                                                    <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
+                                                                            download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
+                                                                        <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+                                                                            ${attach}
+                                                                        </h6>
+                                                                    </a>
                                                                 </div>
+                                                                
                                                             </div>
-                                                            <div class="more-info">
-                                                                <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
-                                                                        download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
-                                                                    <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                        ${attach}
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            
-                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ` 
-                }
-                else if(ter == "zip"){
-                    attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                                <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                    <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                        <div class="" style="display: -webkit-box">
-                                                    <div class="modal-first w-100">
-                                                        <div class="mt-0 rounded" >
-                                                            <div class="float-start rounded me-1 bg-none" style="">
-                                                                <div class="">                                                               
-                                                                    <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}zip.png" width="25px">    
+                            ` 
+                    }
+                    else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
+                        attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important; margin-bottom: 1rem;'>
+                                        <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pptx.png" width="25px">    
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="more-info">
-                                                                <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
-                                                                        download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
-                                                                    <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                        ${item}
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                </div>
-                                            </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ` 
-                }
-                else{
-                    attachments+= `<div class="col-md-4" style='position:relative;' >
-                                <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                    <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                        <div class="" style="display: -webkit-box">
-                                                    <div class="modal-first w-100">
-                                                        <div class="mt-0 rounded" >
-                                                            <div class="float-start rounded me-1 bg-none" style="">
-                                                                <div class="">                                                               
-                                                                    <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}txt.png" width="25px">    
+                                                                <div class="more-info">
+                                                                    <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
+                                                                            download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
+                                                                        <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+                                                                            ${attach}
+                                                                        </h6>
+                                                                    </a>
                                                                 </div>
+                                                                
                                                             </div>
-                                                            <div class="more-info">
-                                                                <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
-                                                                        download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
-                                                                    <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                        ${attach}
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            
-                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ` 
-                }
-            });
+                            ` 
+                    }
+                    else if(ter == "zip"){
+                        attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+                                        <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}zip.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="more-info">
+                                                                    <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
+                                                                            download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
+                                                                        <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+                                                                            ${item}
+                                                                        </h6>
+                                                                    </a>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` 
+                    }
+                    else{
+                        attachments+= `<div class="col-md-4" style='position:relative;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+                                        <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}txt.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="more-info">
+                                                                    <a href="{{asset('public/files/tickets/${item.id}/${attach}')}}" 
+                                                                            download="{{asset('public/files/tickets/${item.id}/${attach}')}}" >
+                                                                        <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+                                                                            ${attach}
+                                                                        </h6>
+                                                                    </a>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` 
+                    }
+                });
+            }
+            
 
 
             let img =
