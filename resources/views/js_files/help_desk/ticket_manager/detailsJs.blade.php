@@ -1161,7 +1161,6 @@ function getTicketDetailsContent() {
         tdet += '';
         attchs.forEach(item => {
             var tech =  `{{asset('/storage/tickets/${ticket_details.id}/${item}')}}`;
-            console.log(tech , "tech tech tech");
             var ter = getExt(tech);
             // return ter;
             if(ter == "pdf" ){
