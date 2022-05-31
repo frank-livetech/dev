@@ -1008,7 +1008,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                                     </div>
                                 </div>
                             </div>
-                        </div>` 
+                        ` 
                 }
                 else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                     attachments+= `
@@ -1038,7 +1038,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                                     </div>
                                 </div>
                             </div>
-                        </div>` 
+                        ` 
                 }
                 else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
                     attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
@@ -1062,7 +1062,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                                     </div>
                                 </div>
                             </div>
-                        </div>` 
+                        ` 
                 }
                 else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
                     attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
@@ -1091,7 +1091,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                                     </div>
                                 </div>
                             </div>
-                        </div>` 
+                        ` 
                 }
                 else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
                     attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
@@ -1120,7 +1120,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                                     </div>
                                 </div>
                             </div>
-                        </div>` 
+                        ` 
                 }
                 else if(ter == "zip"){
                     attachments+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
@@ -1149,7 +1149,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                                     </div>
                                 </div>
                             </div>
-                        </div>` 
+                        ` 
                 }
                 else{
                     attachments+= `<div class="col-md-4" style='position:relative;' >
@@ -1178,7 +1178,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                                     </div>
                                 </div>
                             </div>
-                        </div>` 
+                        ` 
                 }
             });
 
@@ -1205,7 +1205,9 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                             </div>
                         </div>
                         <hr>
+                        <div class ="row">
                         ${attachments}
+                        </div>
                         <div class="card-body p-0">
                             <div class="mail-message">
                                 <div class="row" id="ticket_details_p"><div class="col-12" id="editor_div"> ${content} </div>
