@@ -331,7 +331,7 @@
                                     success: function(res) {
                                         ticket_notify(data.id, 'ticket_create');
                                         toastr.success(data.message, { timeOut: 5000 });
-                                        // window.location.href = "{{route('ticket_management.index')}}";
+                                        window.location.href = "{{route('ticket_management.index')}}";
                                     }
                                 });
                             });

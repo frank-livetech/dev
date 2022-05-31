@@ -1412,12 +1412,10 @@ class MailController extends Controller
 
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
-        }        
-        
-        
+        }   
+                
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
-        
 
         $template = htmlentities($template);
         if(!empty($reply_content)) {
@@ -1626,6 +1624,35 @@ class MailController extends Controller
                 $this->replaceShortCodes($data_list, $content);
     
                 $template = str_replace('{Our-Company-Details}', $content, $template);
+            }
+        }
+
+        // dd( $ticket['attachments'] );
+
+        if(str_contains($template, '{Initial-Request-Attachments}')) {
+
+            $layout = "";
+
+            if($ticket != null) {
+
+                if($ticket['attachments'] != null) {
+
+                    $attachments = explode(',', $ticket['attachments']);
+
+                    for($i =0; $i <count($attachments); $i++) {
+
+                        $layout .= '
+                            <a href="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'" 
+                            download="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'"/>  '.$attachments[$i].'  </a> <br>';
+                    }
+
+                    $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
+
+                }else{
+                    $template = str_replace('Attachments', '', $template);
+                    $template = str_replace('{Initial-Request-Attachments}', '', $template);
+                }
+
             }
         }
 
