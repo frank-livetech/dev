@@ -2243,6 +2243,7 @@ class MailController extends Controller
                         $content = $data['values']['ticket_detail']; 
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
+                        $content = preg_replace("/<img[^>]+\>/i", " ", $content); 
                         
                         $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
