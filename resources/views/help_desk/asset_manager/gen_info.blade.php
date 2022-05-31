@@ -119,6 +119,13 @@
     
                             </tr>
                             @endif
+
+                            @if($asset->createdByUser !=NULL && $asset->createdByUser != '')
+                            <tr>
+                                <td>Created By</td>
+                                <td>{{$asset->createdByUser->name}}</td>
+                            </tr>
+                            @endif
                             
                         </tbody>
                     </table>
