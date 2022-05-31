@@ -126,6 +126,13 @@
                                 <td>{{$asset->created_by_name}}</td>
                             </tr>
                             @endif
+
+                            @if($asset->updated_by_name !=NULL && $asset->updated_by_name != '')
+                            <tr>
+                                <td>Updated By</td>
+                                <td>{{$asset->updated_by_name}}</td>
+                            </tr>
+                            @endif
                             
                         </tbody>
                     </table>
