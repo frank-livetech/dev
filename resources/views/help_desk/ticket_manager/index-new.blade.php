@@ -975,7 +975,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
 
             // Attchments of initial request
 
-            let attchs = ticket_details.attachments.split(',');
+            let attchs = item.attachments.split(',');
             let attachments = '';
             attchs.forEach(attach => {
                 var tech =  `{{asset('/storage/tickets/${item.id}/${attach}')}}`;
