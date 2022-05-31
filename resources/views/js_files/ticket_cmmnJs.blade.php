@@ -481,7 +481,7 @@
                 }
                 if (res_due) {
                     // overdue or change format of the date
-                    if (res_due.diff(moment(), "seconds") < 0) res_due = `<div class="text-center" onclick="resetSLAPlan(${val['id']})" title="${res_due.format('YYYY-MM-DD hh:mm')}"><span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};cursor:pointer">Overdue</span></div>`;
+                    if (res_due.diff(moment(), "seconds") < 0) res_due = `<div class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${res_due.format('YYYY-MM-DD hh:mm')}"><span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};cursor:pointer">Overdue</span></div>`;
                     else {
                         // do the date formatting
                         // res_due = res_due.format('YYYY-MM-DD hh:mm');
@@ -504,7 +504,7 @@
                 if (rep_due) {
                     // overdue or change format of the date
                     if (rep_due.diff(moment(), "seconds") < 0) {
-                        rep_due = `<div class="text-center" onclick="resetSLAPlan(${val['id']})" title="${rep_due.format('YYYY-MM-DD hh:mm')}">
+                        rep_due = `<div class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${rep_due.format('YYYY-MM-DD hh:mm')}">
                                 <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};cursor:pointer">Overdue</span>
                             </div>`;
                     } else {
@@ -519,11 +519,11 @@
             let new_res_due = ``;
 
             if (val['reply_deadline'] == null) {
-                new_rep_due = rep_due.replace("60m", "59m");
+                new_rep_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})"> ${rep_due.replace("60m", "59m")} </span>`;
             }
 
             if (val['resolution_deadline'] == null) {
-                new_res_due = res_due.replace("60m", "59m");
+                new_res_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})"> ${rep_due.replace("60m", "59m")} </span>`;
             }
 
 
@@ -542,16 +542,16 @@
                     let timediff_rep = getDatesSeconds(val['reply_deadline'], con_currTime);
 
                     if (timediff_rep <= 0) {
-                        new_rep_due = `<div class="text-center" title="${tkt_rep_due}">
+                        new_rep_due = `<div class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${tkt_rep_due}">
                                 <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
                             </div>`;
                     } else {
-                        new_rep_due = getHoursMinutesAndSeconds(val['reply_deadline'], con_currTime);
+                        new_rep_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})">${getHoursMinutesAndSeconds(val['reply_deadline'], con_currTime)}</span>`;
                         // let cal_rep_due = momentDiff(tkt_rep_due , con_currTime);
                         // new_rep_due = cal_rep_due.replace("60m", "59m");
                     }
                 } else {
-                    new_rep_due = ``;
+                    new_rep_due = `<span onclick="resetSLAPlan(${val['id']})" class="cursor badge bg-light"> Reset </span>`;
                 }
             }
 
@@ -568,16 +568,16 @@
                     // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
                     let timediff_res = getDatesSeconds(val['resolution_deadline'], con_currTime);
                     if (timediff_res <= 0) {
-                        new_res_due = `<div class="text-center" title="${tkt_res_due}">
+                        new_res_due = `<div class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${tkt_res_due}">
                                 <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
                             </div>`;
                     } else {
-                        new_res_due = getHoursMinutesAndSeconds(val['resolution_deadline'], con_currTime);
+                        new_res_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})">${getHoursMinutesAndSeconds(val['resolution_deadline'], con_currTime)}</span>`
                         // let cal_res_due = momentDiff(tkt_res_due , con_currTime);   
                         // new_res_due = cal_res_due.replace("60m", "59m");
                     }
                 } else {
-                    new_res_due = ``;
+                    new_res_due = `<span onclick="resetSLAPlan(${val['id']})" class="cursor badge bg-light"> Reset </span>`;
                 }
             }
 
