@@ -965,6 +965,13 @@ $('.content').on('mouseenter', '.ticket_name', function() {
 
             let user_type = item.ticket_created_by == null ? 'Staff' : 'User';
             let path = root + '/' + item.user_pic;
+            let content = item.ticket_detail;
+
+            if(item.tkt_crt_type == 'cron'){
+                content = content.replace(/<img[^>]*>/g,"");
+            }else{
+                content = content;
+            }
 
             let img =
                 `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
@@ -990,7 +997,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                         <hr>
                         <div class="card-body p-0">
                             <div class="mail-message">
-                                <div class="row" id="ticket_details_p"><div class="col-12" id="editor_div"> ${item.ticket_detail} </div>
+                                <div class="row" id="ticket_details_p"><div class="col-12" id="editor_div"> ${content} </div>
                             </div>
                         </div>
                     </div>`;
