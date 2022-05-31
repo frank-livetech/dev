@@ -7,7 +7,7 @@ use App\Models\AssetForms;
 use App\Models\AssetFields;
 use App\Models\Customer;
 use App\Models\Company;
-
+use App\User;
 class Assets extends Model
 {
     protected $table = 'assets';
