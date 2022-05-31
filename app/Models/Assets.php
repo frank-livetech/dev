@@ -7,7 +7,7 @@ use App\Models\AssetForms;
 use App\Models\AssetFields;
 use App\Models\Customer;
 use App\Models\Company;
-use App\Models\User;
+use App\User;
 
 class Assets extends Model
 {
