@@ -42,5 +42,13 @@ class Assets extends Model
     public function company() {
         return $this->belongsTo(Company::class);
     }
+
+    public function  createdByUser(){
+        return $this->belongsTo(User::class,'id','created_by');
+    }
+
+    public function  updatedByUser(){
+        return $this->belongsTo(User::class,'id','updated_by');
+    }
 }
 
