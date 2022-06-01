@@ -304,6 +304,9 @@
         color: #777;
         font-weight: normal;
     }
+    .body-hover:hover{
+        border: 1px solid #fab81c;
+    }
 </style>
 @endsection
 
