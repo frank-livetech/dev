@@ -1111,7 +1111,7 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal Notes Modal -->
 
-        <div class="modal fade text-start" id="follow_up" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade text-start" id="follow_up" role="dialog"  data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -2072,6 +2072,7 @@ function hung(){
     $("#resizable").resizable({
         alsoResize : '.wrapper_content',
     });
+    $('#follow_up').draggable();  
     
 </script>
 

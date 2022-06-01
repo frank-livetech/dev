@@ -839,30 +839,25 @@
         var poc_first_name = $('#poc_first_name').val();
         var poc_last_name = $('#poc_last_name').val();
         var name = $('#name').val();
-        var email = $('#cemail').val();
+        
         var phone = $('#phone').val();
         var country = $("#country").val();
         var state = $("#state").val();
         var city = $("#city").val();
         var zip = $("#zip").val();
         var address = $('#address').val();
-        var user_id = $("#user_id").val()
+        var user_id = $("#user_id").val();
+        var domain = $("#domain").val();
 
 
         var a = checkEmptyFields(poc_first_name, $("#err"));
         var b = checkEmptyFields(poc_last_name, $("#err1"));
         var c = checkEmptyFields(name, $("#err2"));
-        var d = checkValidEmail(email, $("#err3"));
+       // var d = checkValidEmail(email, $("#err3"));
         var e = checkEmptyFields(phone, $("#err4"));
 
-        var regex = new RegExp("^[0-9]+$");
-
-        if(!regex.test(phone)) {
-            $("#err4").html("Only numeric values allowed");
-            return false;
-        }
-
-        if (a && b && c && d && e == true) {
+        
+        if (a && b && c  == true) {
 
             var formData = {
                 poc_first_name: poc_first_name,
@@ -875,7 +870,8 @@
                 city: city,
                 zip: zip,
                 address: address,
-                user_id: user_id
+                user_id: user_id,
+                domain: domain
             }
 
             $.ajax({

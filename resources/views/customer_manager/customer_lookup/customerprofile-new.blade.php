@@ -1751,6 +1751,11 @@
                                     <input type="text" class="form-control" id="cemail">
                                     <span class="text-danger small" id="err3"></span>
                                 </div>
+                                {{-- <div class="col-md-6">
+                                    <label for="domain" class="small">Domain</label>
+                                    <input type="text" class="form-control" id="domain">
+                                    <span class="text-danger small" id="err3"></span>
+                                </div> --}}
                                 <div class="col-md-6">
                                     <label for="phone" class="small">Phone Number</label>
                                     <input type="text" class="form-control" id="phone">
