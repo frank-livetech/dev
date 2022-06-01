@@ -1649,7 +1649,7 @@ class MailController extends Controller
                     $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
 
                 }else{
-                    $template = str_replace('Attachments', '', $template);
+                    // $template = str_replace('Attachments', '', $template);
                     $template = str_replace('{Initial-Request-Attachments}', '', $template);
                 }
 
