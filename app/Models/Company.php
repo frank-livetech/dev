@@ -48,7 +48,8 @@ class Company extends Model
         'updated_by',
         'is_deleted',
         'deleted_at',
-        'com_logo'
+        'com_logo',
+        'domain'
     ];
 
 
