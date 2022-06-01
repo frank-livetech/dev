@@ -551,7 +551,7 @@
                         // new_rep_due = cal_rep_due.replace("60m", "59m");
                     }
                 } else {
-                    new_rep_due = `<span onclick="resetSLAPlan(${val['id']})" class="cursor badge bg-light"> Reset </span>`;
+                    new_rep_due = ``;
                 }
             }
 
@@ -577,7 +577,7 @@
                         // new_res_due = cal_res_due.replace("60m", "59m");
                     }
                 } else {
-                    new_res_due = `<span onclick="resetSLAPlan(${val['id']})" class="cursor badge bg-light"> Reset </span>`;
+                    new_res_due = ``;
                 }
             }
 
