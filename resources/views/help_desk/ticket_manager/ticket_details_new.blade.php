@@ -1165,8 +1165,8 @@
                                 <div class="col-md-12 form-group border p-1 followup_accordin bg-light rounded">
                                     <div class="form-check-inline" id="general_div" style="">
                                         <div class="form-check form-check-inline">
-                                            <input type="checkbox" class="form-check-input general_checkbox" id="general">
-                                            <label class="custom-control-label" for="general"> <strong> General </strong> </label>
+                                            <input type="checkbox" class="form-check-input general_checkbox" id="general" name="general">
+                                            <label class="custom-control-label" for="general"> <strong> <span style="font-family: sans-serif">G</span>eneral </strong> </label>
                                         </div>
                                     </div>                                       
                                 </div>
@@ -2078,8 +2078,9 @@ function hung(){
     $("#resizable").resizable({
         alsoResize : '.wrapper_content',
     });
+
     $('#follow_up').draggable();  
-    
+
 </script>
 
 @endsection
