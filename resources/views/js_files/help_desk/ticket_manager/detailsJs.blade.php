@@ -185,9 +185,9 @@ $(document).ready(function() {
     }
 
     $('#ticket_details_p').html(getTicketDetailsContent());
-    // $('#ticket_details_p2').html(getTicketDetailsContent());
     $('#ticket_details_p3').html(getTicketDetailsContent());
-
+    parserEmbeddedImages();
+    
     get_ticket_notes();
     getTicketFollowUp();
 
@@ -928,7 +928,6 @@ function cancelEditRequest() {
     $('#ticket-details').css('display', 'none');
 
     $('#ticket_details_p').html(getTicketDetailsContent());
-    // $('#ticket_details_p2').html(getTicketDetailsContent());
     $('#ticket_details_p3').html(getTicketDetailsContent());
 }
 
@@ -1133,7 +1132,6 @@ function saveRequest() {
 
                     $('#ticket_subject_heading').text($('#ticket_subject_edit').val());
                     $('#ticket_details_p').html(getTicketDetailsContent());
-                    // $('#ticket_details_p2').html(getTicketDetailsContent());
                     $('#ticket_details_p3').html(getTicketDetailsContent());
                 }
             }
@@ -1146,228 +1144,253 @@ function getTicketDetailsContent() {
     var content = ticket_details.ticket_detail;
     if(ticket_details != null || ticket_details != "") {
 
-        if(ticket_details.tkt_crt_type == 'cron'){
-            content = content.replace(/<img[^>]*>/g,"");
-        }else{
+        // if(ticket_details.tkt_crt_type == 'cron'){
+        //     content = content.replace(/<img[^>]*>/g,"");
+        // }else{
             content = content;
-        }
+        // }
       
         tdet = ``;
         
     }
 
-    if(ticket_details.attachments) {
-        let attchs = ticket_details.attachments.split(',');
-        tdet += '';
-        attchs.forEach(item => {
-            var tech =  `{{asset('/storage/tickets/${ticket_details.id}/${item}')}}`;
-            var ter = getExt(tech);
-            // return ter;
-            if(ter == "pdf" ){
-                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pdf.png" width="25px">    
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
-                                                                    download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
-                                                                <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                    ${item}
-                                                                </h6>
-                                                            </a>
-                                                        </div>
+    // if(ticket_details.attachments) {
+    //     let attchs = ticket_details.attachments.split(',');
+    //     tdet += '';
+    //     attchs.forEach(item => {
+    //         var tech =  `{{asset('/storage/tickets/${ticket_details.id}/${item}')}}`;
+    //         var ter = getExt(tech);
+    //         // return ter;
+    //         if(ter == "pdf" ){
+    //             tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+    //                         <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+    //                             <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+    //                                 <div class="" style="display: -webkit-box">
+    //                                             <div class="modal-first w-100">
+    //                                                 <div class="mt-0 rounded" >
+    //                                                     <div class="float-start rounded me-1 bg-none" style="">
+    //                                                         <div class="">                                                               
+    //                                                             <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pdf.png" width="25px">    
+    //                                                         </div>
+    //                                                     </div>
+    //                                                     <div class="more-info">
+    //                                                         <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
+    //                                                                 download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
+    //                                                             <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+    //                                                                 ${item}
+    //                                                             </h6>
+    //                                                         </a>
+    //                                                     </div>
                                                         
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>` 
-            }
-            else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
-                tdet+= `
-                <div class="col-md-4" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}xlx.png" width="25px">    
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
-                                                                    download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
-                                                                <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                    ${item}
-                                                                </h6>
-                                                            </a>
-                                                        </div>
+    //                                                 </div>
+    //                                         </div>
+    //                                     </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>` 
+    //         }
+    //         else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
+    //             tdet+= `
+    //             <div class="col-md-4" style='position:relative;cursor:pointer' >
+    //                         <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+    //                             <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+    //                                 <div class="" style="display: -webkit-box">
+    //                                             <div class="modal-first w-100">
+    //                                                 <div class="mt-0 rounded" >
+    //                                                     <div class="float-start rounded me-1 bg-none" style="">
+    //                                                         <div class="">                                                               
+    //                                                             <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}xlx.png" width="25px">    
+    //                                                         </div>
+    //                                                     </div>
+    //                                                     <div class="more-info">
+    //                                                         <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
+    //                                                                 download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
+    //                                                             <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+    //                                                                 ${item}
+    //                                                             </h6>
+    //                                                         </a>
+    //                                                     </div>
                                                        
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>` 
-            }
-            else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <h6 class="mb-0" style='font-size:12px;margin-top: 7px;'><strong> ${item}</strong></h6>
-                                                        </div>
+    //                                                 </div>
+    //                                         </div>
+    //                                     </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>` 
+    //         }
+    //         else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
+    //             tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+    //                         <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+    //                             <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+    //                                 <div class="" style="display: -webkit-box">
+    //                                             <div class="modal-first w-100">
+    //                                                 <div class="mt-0 rounded" >
+    //                                                     <div class="float-start rounded me-1 bg-none" style="">
+    //                                                         <div class="">                                                               
+    //                                                             <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+    //                                                         </div>
+    //                                                     </div>
+    //                                                     <div class="more-info">
+    //                                                         <h6 class="mb-0" style='font-size:12px;margin-top: 7px;'><strong> ${item}</strong></h6>
+    //                                                     </div>
                                                         
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>` 
-            }
-            else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}word.png" width="25px">    
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
-                                                                    download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
-                                                                <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                    ${item}
-                                                                </h6>
-                                                            </a>
-                                                        </div>
+    //                                                 </div>
+    //                                         </div>
+    //                                     </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>` 
+    //         }
+    //         else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
+    //             tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+    //                         <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+    //                             <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+    //                                 <div class="" style="display: -webkit-box">
+    //                                             <div class="modal-first w-100">
+    //                                                 <div class="mt-0 rounded" >
+    //                                                     <div class="float-start rounded me-1 bg-none" style="">
+    //                                                         <div class="">                                                               
+    //                                                             <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}word.png" width="25px">    
+    //                                                         </div>
+    //                                                     </div>
+    //                                                     <div class="more-info">
+    //                                                         <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
+    //                                                                 download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
+    //                                                             <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+    //                                                                 ${item}
+    //                                                             </h6>
+    //                                                         </a>
+    //                                                     </div>
                                                         
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>` 
-            }
-            else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important; margin-bottom: 1rem;'>
-                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pptx.png" width="25px">    
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
-                                                                    download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
-                                                                <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                    ${item}
-                                                                </h6>
-                                                            </a>
-                                                        </div>
+    //                                                 </div>
+    //                                         </div>
+    //                                     </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>` 
+    //         }
+    //         else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
+    //             tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+    //                         <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important; margin-bottom: 1rem;'>
+    //                             <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+    //                                 <div class="" style="display: -webkit-box">
+    //                                             <div class="modal-first w-100">
+    //                                                 <div class="mt-0 rounded" >
+    //                                                     <div class="float-start rounded me-1 bg-none" style="">
+    //                                                         <div class="">                                                               
+    //                                                             <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pptx.png" width="25px">    
+    //                                                         </div>
+    //                                                     </div>
+    //                                                     <div class="more-info">
+    //                                                         <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
+    //                                                                 download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
+    //                                                             <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+    //                                                                 ${item}
+    //                                                             </h6>
+    //                                                         </a>
+    //                                                     </div>
                                                         
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>` 
-            }
-            else if(ter == "zip"){
-                tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}zip.png" width="25px">    
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
-                                                                    download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
-                                                                <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                    ${item}
-                                                                </h6>
-                                                            </a>
-                                                        </div>
+    //                                                 </div>
+    //                                         </div>
+    //                                     </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>` 
+    //         }
+    //         else if(ter == "zip"){
+    //             tdet+= `<div class="col-md-4" style='position:relative;cursor:pointer' >
+    //                         <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+    //                             <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+    //                                 <div class="" style="display: -webkit-box">
+    //                                             <div class="modal-first w-100">
+    //                                                 <div class="mt-0 rounded" >
+    //                                                     <div class="float-start rounded me-1 bg-none" style="">
+    //                                                         <div class="">                                                               
+    //                                                             <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}zip.png" width="25px">    
+    //                                                         </div>
+    //                                                     </div>
+    //                                                     <div class="more-info">
+    //                                                         <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
+    //                                                                 download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
+    //                                                             <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+    //                                                                 ${item}
+    //                                                             </h6>
+    //                                                         </a>
+    //                                                     </div>
                                                         
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>` 
-            }
-            else{
-                tdet+= `<div class="col-md-4" style='position:relative;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
-                                <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}txt.png" width="25px">    
-                                                            </div>
-                                                        </div>
-                                                        <div class="more-info">
-                                                            <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
-                                                                    download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
-                                                                <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
-                                                                    ${item}
-                                                                </h6>
-                                                            </a>
-                                                        </div>
+    //                                                 </div>
+    //                                         </div>
+    //                                     </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>` 
+    //         }
+    //         else{
+    //             tdet+= `<div class="col-md-4" style='position:relative;' >
+    //                         <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;'>
+    //                             <div class="card-body" style="padding: .3rem .3rem !important;background-color:#dfdcdc1f">
+    //                                 <div class="" style="display: -webkit-box">
+    //                                             <div class="modal-first w-100">
+    //                                                 <div class="mt-0 rounded" >
+    //                                                     <div class="float-start rounded me-1 bg-none" style="">
+    //                                                         <div class="">                                                               
+    //                                                             <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}txt.png" width="25px">    
+    //                                                         </div>
+    //                                                     </div>
+    //                                                     <div class="more-info">
+    //                                                         <a href="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" 
+    //                                                                 download="{{asset('public/files/tickets/${ticket_details.id}/${item}')}}" >
+    //                                                             <h6 class="mb-0 fw-bolder" style='font-size:12px;margin-top: 7px;'>
+    //                                                                 ${item}
+    //                                                             </h6>
+    //                                                         </a>
+    //                                                     </div>
                                                         
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>` 
-            }
-        });
-    }
+    //                                                 </div>
+    //                                         </div>
+    //                                     </div>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>` 
+    //         }
+    //     });
+    // }
 
     tdet += `<div class="col-12" id="editor_div">${content}</div>`;
 
     return tdet;
+}
+
+function parserEmbeddedImages(){
+    
+    var index = 0;
+    $('#ticket_details_p img').each(function () {
+        
+        let attchs = ticket_details.attachments.split(',');
+        console.log(ticket_details.id)
+        console.log(attchs[index])
+        $(this).attr('src', "{{asset('storage/tickets')}}/"+ticket_details.id+'/'+attchs[index]);
+        index++;
+        
+    });
+    var index1 = 0;
+    $('#ticket_details_p3 img').each(function () {
+        
+        let attchs = ticket_details.attachments.split(',');
+        console.log(ticket_details.id)
+        console.log(attchs[index])
+        $(this).attr('src', "{{asset('storage/tickets')}}/"+ticket_details.id+'/'+attchs[index1]);
+        index1++;
+        
+    });
+    
 }
 
 function showAttachedImage(id, item) {
