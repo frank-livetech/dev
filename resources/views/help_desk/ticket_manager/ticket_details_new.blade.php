@@ -15,6 +15,12 @@
         width: auto !important;
         max-width: 340px !important;
     }
+    a:link, span.MsoHyperlink {
+        mso-style-priority: 99;
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: none;
+    }
     #dropD {
         padding-left: 15px;
     }
