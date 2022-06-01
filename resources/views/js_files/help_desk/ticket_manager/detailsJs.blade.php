@@ -2212,7 +2212,6 @@ function updateTicket(){
         toastr.warning( 'There is nothing to update.' , { timeOut: 5000 });
         return false;
     }
-
     $.ajax({
         type: "post",
         url: update_ticket_route,
@@ -2229,6 +2228,18 @@ function updateTicket(){
         success: function(data) {
             // console.log(data)
             if (data.success == true) {
+
+                let closeStatus = updates_Arr.find(item => item.new_text == 'Closed');
+                if(closeStatus != null) {
+                    let closetkt = $('.closeCounter').text();
+                    $('.closeCounter').text( parseInt(closetkt) + 1 );
+
+                    let opencounter = $('.openCounter').text();
+
+                    if(opencounter != 0) {
+                        $('.openCounter').text( parseInt(opencounter) - 1 );
+                    }
+                }
 
                 for(var i = 0 ; i < updates_Arr.length ; i++){
 
