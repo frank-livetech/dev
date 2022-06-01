@@ -1144,11 +1144,11 @@ function getTicketDetailsContent() {
     var content = ticket_details.ticket_detail;
     if(ticket_details != null || ticket_details != "") {
 
-        if(ticket_details.tkt_crt_type == 'cron'){
-            content = content.replace(/<img[^>]*>/g,"");
-        }else{
+        // if(ticket_details.tkt_crt_type == 'cron'){
+        //     content = content.replace(/<img[^>]*>/g,"");
+        // }else{
             content = content;
-        }
+        // }
       
         tdet = ``;
         
