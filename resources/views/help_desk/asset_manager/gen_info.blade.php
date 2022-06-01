@@ -39,7 +39,6 @@
                         <a onclick="editRecord()"><i class="text-success" data-feather='save'></i></a>
                     </span>
                 </h4>
-    
                 <div class="table-responsive">
                     <input type="hidden" value="{{$asset->id}}" id="asset_id">
                     <input type="hidden" value="{{$asset->asset_forms_id}}" id="asset_forms_id">
@@ -120,17 +119,27 @@
                             </tr>
                             @endif
 
-                            @if($asset->created_by_name !=NULL && $asset->created_by_name != '')
+                            @if($asset->created_by_user !=NULL )
                             <tr>
                                 <td>Created By</td>
-                                <td>{{$asset->created_by_name}}</td>
+                                <td>
+                                    {{$asset->created_by_user->name}} 
+                                    @if($asset->created_by_user->created_at !=null)
+                                        {{$asset->created_by_user->created_at}}
+                                    @endif
+                                </td>
                             </tr>
                             @endif
 
-                            @if($asset->updated_by_name !=NULL && $asset->updated_by_name != '')
+                            @if($asset->updated_by_user !=NULL)
                             <tr>
                                 <td>Updated By</td>
-                                <td>{{$asset->updated_by_name}}</td>
+                                <td>
+                                    {{$asset->updated_by_user->name}}
+                                    @if($asset->updated_by_user->created_at !=null)
+                                        {{$asset->updated_by_user->created_at}}
+                                    @endif
+                                </td>
                             </tr>
                             @endif
                             

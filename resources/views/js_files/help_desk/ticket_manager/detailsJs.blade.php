@@ -1819,6 +1819,8 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                 cache: false,
                 success: function(data) {
 
+                    $("#assigned_to").val("{{auth()->id()}}").trigger("change");
+
                     reply_flag = 0;
 
                     var new_date  = new Date().toLocaleString('en-US', { timeZone: time_zone });
