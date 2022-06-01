@@ -3,6 +3,12 @@
 @section('body')
 <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 <style>
+    a:link, span.MsoHyperlink {
+        mso-style-priority: 99;
+        color: inherit !important;
+        font-weight: inherit !important;
+        text-decoration: none;
+    }
 .flagged-tr,
 .flagged-tr .sorting_1 {
     background-color: #FFE4C4 !important;
