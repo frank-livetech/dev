@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\User;
+use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,5 +15,19 @@ class StaffAttendance extends Model
 
     public function user_clocked() {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function getClockInAttribute($value) {
+        $date = new \DateTime($value);
+        $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+        return $date->format(system_date_format() .' h:i a');
+    }
+    public function getClockOutAttribute($value) {
+        $date = new \DateTime($value);
+        $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+        return $date->format(system_date_format() .' h:i a');
+    }
+    public function getDateAttribute($value) {                           
+        return Carbon::parse($value)->format(system_date_format());
     }
 }
