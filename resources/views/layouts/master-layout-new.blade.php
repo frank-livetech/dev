@@ -151,16 +151,17 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-        @if( session()->get('clockin') == 0 || session()->get('clockin') == null )
+            
+        @if( session()->get('clockin') == 0 && session()->get('clockin') == NULL)
         <div class="d-flex w-100 fw-bolder clock_in_section">
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
             <div class="d-flex">
-                <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
+                <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger">Ignore</a>
             </div>
         </div>
         @else
-        <div class="showClockInSection w-100"></div>
+            <div class="showClockInSection w-100"></div>
         @endif
         <div class="loadingText mx-1 fw-bolder text-dark"></div>
 
@@ -387,7 +388,9 @@
         var get_notifications = "{{url('getNotifications')}}";
         var parser_url = "{{url('save-inbox-replies')}}";
         let clockintime = "{{session()->get('clockin_time')}}";
+        let clockinStatus = "{{session()->get('clockin')}}";
         console.log(clockintime , "clockintime");
+        console.log(clockinStatus , "clockinStatus");
 
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({
@@ -554,7 +557,7 @@
 
                     if(data.status_code == 200 && data.success == true){
 
-                        console.log(data.staff_clock_in);
+                        console.log(data.staff_clock_in ,"abcqweoqwiueyr");
                         renderClockIn(data.staff_clock_in);
 
                         notifications = data.data;
@@ -656,11 +659,14 @@
                     <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
                     <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
                     <div class="d-flex">
-                        <a href="#" class="mx-1 text-danger" onclick="staffatt('clockin')"> Yes </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
+                        <a href="#" class="mx-1 text-danger" onclick="staffatt('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger">Ignore</a>
                     </div>
                 </div>`;
 
-                $('.showClockInSection').html(clockSection);
+
+                if(clockinStatus != 'ignore') {
+                    $('.showClockInSection').html(clockSection);
+                }                
 
             }else{
 
@@ -678,7 +684,6 @@
                 }
             }
         }
-
 
         function checkClockIn(type) {
             $.ajax({
@@ -705,10 +710,8 @@
         }
 
         function sessionClockIn(btn_text) {
-
-            let url = "{{asset('add_checkin')}}";
             $.ajax({
-                url: url,
+                url: "{{asset('add_checkin')}}",
                 type: 'POST',
                 async: true,
                 beforeSend:function(data) {
@@ -819,7 +822,6 @@
             }
         }
 
-        console.log(clockintime , "near");
         window.setInterval(() => {
             clockInTimer(clockintime);
         }, 100);

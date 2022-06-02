@@ -937,12 +937,20 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                     type = item.last_reply.reply_user.user_type == 5 ? 'User' : 'Staff';
                 }
 
-                if (item.last_reply.reply_user.profile_pic != null) {
-                    let path = root + '/' + item.last_reply.reply_user.profile_pic;
-                    user_img +=
+                if (item.last_reply.reply_user != null) {
+
+                    if(item.last_reply.reply_user.profile_pic != null) {
+
+                        let path = root + '/' + item.last_reply.reply_user.profile_pic;
+                        user_img +=
                         `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+
+                    }else{
+                        user_img += `<img src="${js_origin}/default_imgs/customer.png" class="rounded-circle" 
+                                width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    }
                 } else {
-                    user_img += `<img src="{{asset('${root}/default_imgs/customer.png')}}" class="rounded-circle" 
+                    user_img += `<img src="${js_origin}/default_imgs/customer.png" class="rounded-circle" 
                                 width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }
             }

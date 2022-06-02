@@ -453,9 +453,9 @@
                                     <div class="col4" style="    border-left: 1px solid #ebe9f1; padding-left: 80px; padding-right: 80px; border-right: 1px solid #ebe9f1;">
                                         <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
                                             @if($details->is_staff_tkt == 0)
-                                                <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary">{{$open_tickets_count}}</a>
+                                                <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}#ticket-open" class="text-primary openCounter">{{$open_tickets_count}}</a>
                                             @else
-                                                <a href="{{ url('profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$open_tickets_count}}</a>
+                                                <a href="{{ url('profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary openCounter">{{$open_tickets_count}}</a>
                                             @endif
                                         </h3>
                                         <h6 class="mb-0"  style="font-size:14px">
@@ -469,9 +469,9 @@
                                     <div class="col4">
                                         <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
                                             @if($details->is_staff_tkt == 0)
-                                                <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary">{{$closed_tickets_count}}</a>
+                                                <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" class="text-primary closeCounter">{{$closed_tickets_count}}</a>
                                             @else
-                                                <a href="{{ url('profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary">{{$closed_tickets_count}}</a>
+                                                <a href="{{ url('profile') }}/{{$ticket_customer->id}}#tickets" class="text-primary closeCounter">{{$closed_tickets_count}}</a>
                                             @endif
                                         </h3>
                                         <h6 class="mb-0"  style="font-size:14px">

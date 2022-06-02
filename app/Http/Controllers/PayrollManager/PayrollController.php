@@ -253,17 +253,26 @@ class PayrollController extends Controller
 
     function clockInSession(Request $request) {
 
-        if($request->type == 'yes') {
-            $this->clockin();
-        }
+        if($request->type == 'ignore') {
+            session()->put('clockin', $request->type);
+            session()->put('clockin_time', now() );
+            $message = 'Ignored Successfully';
+        }else{
 
-        session()->put('clockin', $request->type);
-        session()->put('clockin_time', now() );
+            if($request->type == 'yes') {
+                $this->clockin();
+            }
+    
+            session()->put('clockin', $request->type);
+            session()->put('clockin_time', now() );
+
+            $message = "Clocked in Successfully";
+        }
 
         return response()->json([
             "status" => 200 , 
             "success" => true , 
-            "message" => "Clocked in Successfully",
+            "message" => $message,
         ]);
     }
 

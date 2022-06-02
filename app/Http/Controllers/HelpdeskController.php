@@ -56,7 +56,7 @@ use Illuminate\Support\Facades\URL;
 use Session;
 
 require 'vendor/autoload.php';
-//require '../vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -1310,7 +1310,7 @@ class HelpdeskController extends Controller
         if($ticket->customer_id != null){
             $total_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
             $open_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['status','!=',$closed_status->id], ['status',$open_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
-            $closed_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],  ['status',$open_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
+            $closed_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],  ['status',$closed_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
         }
         
         $bbcode = new BBCode();
@@ -3398,10 +3398,10 @@ class HelpdeskController extends Controller
                 $attachs = $data_id;
                 $pathTo = 'storage/tickets-replies/'.$ticket['id'];
                 if($is_cron){
-                    $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by System';
+                    $notification_message = 'Ticket <a href="'.url('ticket-details').'/'.$ticket['coustom_id'].'">'.$ticket['coustom_id'].'</a>  Reply Added by System';
                     $notification_title = 'Reply Added';
                 }else{
-                    $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by '. $user->name;
+                    $notification_message = 'Ticket <a href="'.url('ticket-details').'/'.$ticket['coustom_id'].'">'.$ticket['coustom_id'].'</a>  Reply Added by '. $user->name;
                     $notification_title = 'Reply Added';
                 }
                 
