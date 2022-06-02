@@ -2243,9 +2243,31 @@ class MailController extends Controller
                         $content = $data['values']['ticket_detail']; 
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
-                        // if($data['values']['tkt_crt_type'] == 'cron'){
-                        //     $content = preg_replace("/<img[^>]+\>/i", " ", $content); 
-                        // }
+                        if($data['values']['tkt_crt_type'] == 'cron'){
+                            // $content = preg_replace("/<img[^>]+\>/i", " ", $content); 
+                            $content = str_replace("<o:p>","",$content);
+                            $content = str_replace("</o:p>","",$content);
+                            
+                            $doc = new \DOMDocument();
+                            $doc->loadHTML($content);
+                            $tags = $doc->getElementsByTagName('img');
+                            $attaches = explode(",",$data['values']['attachments']);
+                            $atch_count = 0;
+                            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets/'.$data['values']['id'].'/';
+                            
+                            if($tags){
+                                foreach ($tags as $tag) {
+                                    $old_src = $tag->getAttribute('src');
+                                    $new_src_url = $url.$attaches[$atch_count];
+                                    $tag->setAttribute('src', $new_src_url);
+                                    $tag->setAttribute('style', 'width:100%;height:100%;display:block');
+                                    $atch_count++;
+                                }
+                                $content = $doc->saveHTML();
+                            }
+                            
+                            
+                        }
                         $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
                     }
