@@ -1,4 +1,16 @@
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
 
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
 <script>
     // User Profile Script Blade
     $.ajaxSetup({
@@ -535,9 +547,9 @@
                         {
                             "render": function(data, type, full, meta) {
                                 if (full.clock_out == null) {
-                                    return `<span class="badge badge-success py-1">Clocked In</span>`;
+                                    return `<span class="badge badge-success" style="background-color:#468847">Clocked In</span>`;
                                 } else {
-                                    return `<span class="badge badge-danger py-1">Clocked Out</span>`;
+                                    return `<span class="badge badge-danger" style="background-color:#b94a48">Clocked Out</span>`;
                                 }
                             }
                         },
@@ -563,7 +575,9 @@
                         },
                         {
                             "render": function(data, type, full, meta) {
-                                return `<span class="fa fa-pencil-alt" style="cursor: pointer;" onclick="editWorkHours(${full.id}, '${full.hours_worked}')"></span>`;
+                                return `<button  onclick="editWorkHours(${full.id}, '${full.hours_worked}')" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>`
+                                
                             }
                         },
 
