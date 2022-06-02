@@ -1629,32 +1629,32 @@ class MailController extends Controller
 
         // dd( $ticket['attachments'] );
 
-        if(str_contains($template, '{Initial-Request-Attachments}')) {
+        // if(str_contains($template, '{Initial-Request-Attachments}')) {
 
-            $layout = "";
+        //     $layout = "";
 
-            if($ticket != null) {
+        //     if($ticket != null) {
 
-                if($ticket['attachments'] != null) {
+        //         if($ticket['attachments'] != null) {
 
-                    $attachments = explode(',', $ticket['attachments']);
+        //             $attachments = explode(',', $ticket['attachments']);
 
-                    for($i =0; $i <count($attachments); $i++) {
+        //             for($i =0; $i <count($attachments); $i++) {
 
-                        $layout .= '
-                            <a href="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'" 
-                            download="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'"/>  '.$attachments[$i].'  </a> <br>';
-                    }
+        //                 $layout .= '
+        //                     <a href="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'" 
+        //                     download="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'"/>  '.$attachments[$i].'  </a> <br>';
+        //             }
 
-                    $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
+        //             $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
 
-                }else{
-                    // $template = str_replace('Attachments', '', $template);
-                    $template = str_replace('{Initial-Request-Attachments}', '', $template);
-                }
+        //         }else{
+        //             // $template = str_replace('Attachments', '', $template);
+        //             $template = str_replace('{Initial-Request-Attachments}', '', $template);
+        //         }
 
-            }
-        }
+        //     }
+        // }
 
         if(str_contains($template, '{Asset-ID-####}')) {
             $asset = array_values(array_filter($data_list, function($value) {
@@ -2243,9 +2243,9 @@ class MailController extends Controller
                         $content = $data['values']['ticket_detail']; 
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
-                        if($data['values']['tkt_crt_type'] == 'cron'){
-                            $content = preg_replace("/<img[^>]+\>/i", " ", $content); 
-                        }
+                        // if($data['values']['tkt_crt_type'] == 'cron'){
+                        //     $content = preg_replace("/<img[^>]+\>/i", " ", $content); 
+                        // }
                         $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
                     }
