@@ -741,23 +741,23 @@ class MailController extends Controller
                 'tkt_crt_type' => 'cron',
                 'created_by' => $created_by
             ]);
+            $newG = new GeneralController();
+            $helpDesk = new HelpdeskController();
+            $cust_id = $newG->randomStringFormat($helpDesk::CUSTOMID_FORMAT);
             
-            // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
             $all_parsed = $mail;
-            $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id);
+            $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id , $cust_id);
             $body = $this->email_body_parser($all_parsed, 'ticket');
-            
+            dd('sd');
             $tickets_count = Tickets::all()->count();
             
             $lt = Tickets::orderBy('created_at', 'desc')->first();
 
             $ticket->ticket_detail = $body;
-            $ticket->attachments = $attaches;
-            
-            $newG = new GeneralController();
-            $helpDesk = new HelpdeskController();
-
-            $ticket->coustom_id = $newG->randomStringFormat($helpDesk::CUSTOMID_FORMAT);
+            $ticket->attachments = $attaches[1];
+            $ticket->embed_attachments = $attaches[0];
+        
+            $ticket->coustom_id = $cust_id;
             if(!empty($lt)) {
                 $ticket->seq_custom_id = 'T-'.strval($lt->id + 1);
             }else{
@@ -828,7 +828,6 @@ class MailController extends Controller
             'is_pending' => 1
         ]);
         
-        // $all_parsed = $this->mail_parse_ticket_attachments($mail, $ticket->id);
         $all_parsed = $mail;
         $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id);
         $body = $this->email_body_parser($all_parsed, 'ticket');
@@ -1129,64 +1128,77 @@ class MailController extends Controller
         return $attachments;
     }
 
-    public function mail_parse_ticket_attachments($data, $tid) {
+    public function mail_parse_ticket_attachments($data, $tid , $custom_id = '') {
         $filesNames = '';
+        $embed_names = '';
+        $attach_names = '';
+        $files = array();
+        $emded_count = 1;
+        $attach_count = 1;
+        $count = 0;
+        $count1 = 0; 
+        
         foreach ($data as $key =>$value) {
+            // print_r($value['Content-Disposition']);
+            // echo 1;
+            // continue;
+            // print_r($value['data']);exit;
+            if($count <= 0){
+                $count = substr_count($value['data'],"Content-Disposition: inline;");
+            }
+            if($count1 <= 0){
+                $count1 = substr_count($value['data'],"Content-Disposition: attachment;");
+            }
             if(array_key_exists('is_attachment', $value) && $value['is_attachment'] == '1') {
-                $filename = preg_replace('/[^a-zA-Z0-9_.]/', '_', $value['filename']);
-                $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-                // $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
-                // if(empty($ext)) $ext = 'svg';
-                // $filename = 'Live-tech_'.date_format(Carbon::now(), 'Y-m-d_h-i-s').'_'.$key.'.'.$ext;
-                
-                // $target_src = 'public/files/tickets/'.$tid.'/'.$filename;
-                // $target_dir = public_path('files/tickets/'.$tid);
-                // $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/tickets/'.$tid.'/'.$filename;
-                
-                // if (!File::isDirectory($target_dir)) {
-                //     mkdir($target_dir, 0777, true);
-                // }
-
-                $target_dir = 'storage/tickets/'.$tid.'/';
-                $target_src = $target_dir.$filename;
                     
-                if (!File::isDirectory($target_dir)) {
-                    mkdir($target_dir, 0777, true);
+                if($emded_count <= $count){
+                    $filename = preg_replace('/[^a-zA-Z0-9_.]/', '_', $value['filename']);
+                    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    
+                    if(empty($ext)) $ext = 'svg';
+                    $filename = $custom_id.'_'.$key.'.'.$ext;
+ 
+                    $target_dir = 'storage/tickets/'.$tid.'/';
+                    $target_src = $target_dir.$filename;
+                        
+                    if (!File::isDirectory($target_dir)) {
+                        mkdir($target_dir, 0777, true);
+                    }
+    
+                    file_put_contents($target_src, $value['data']);
+    
+                    if(!empty($embed_names)) $embed_names .= ','.$filename;
+                    else $embed_names = $filename;
+                    $emded_count++;
+                    
+                }else{
+                    
+                    $filename = preg_replace('/[^a-zA-Z0-9_.]/', '_', $value['filename']);
+                    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    
+                    if(empty($ext)) $ext = 'svg';
+                    $filename = $custom_id.'_'.$key.'.'.$ext;
+    
+                    $target_dir = 'storage/tickets/'.$tid.'/';
+                    $target_src = $target_dir.$filename;
+                        
+                    if (!File::isDirectory($target_dir)) {
+                        mkdir($target_dir, 0777, true);
+                    }
+    
+                    file_put_contents($target_src, $value['data']);
+    
+                    if(!empty($attach_names)) $attach_names .= ','.$filename;
+                    else $attach_names = $filename;
+                    $attach_count++;
+                    
                 }
-
-                file_put_contents($target_src, $value['data']);
-
-                if(!empty($filesNames)) $filesNames .= ','.$filename;
-                else $filesNames = $filename;
-
-                // if(empty($filesNames)) $filesNames = $filename;
-                // else $filesNames .= '|'.$filename;
-                
-                // if( in_array($ext, self::IMAGE_EXTENSIONS) ) {
-                //     $data[$key]['data'] = '<div class="reply-attachs-container">
-                //     <div class="reply-image"><img src="'.$filepath.'" alt="'.$filename.'" class="reply-image"></div>
-                //         <div class="reply-bottom">
-                //             <div class="reply-filename">'.$filename.'</div>
-                //             <a href="'.$filepath.'" target="_blank" class="reply-action"><i class="fa fa-download text-white"></i></a>
-                //         </div>
-                //     </div>';
-                // } else {
-                //     $data[$key]['data'] = '<div class="reply-attachs-container">
-                //         <div class="reply-image"><svg height="120" width="120" class="reply-image">
-                //             <text x="0" y="15" fill="grey" transform="translate(35 50)" font-size="20">.'.strtoupper($ext).'</text>
-                //             Sorry, your browser does not support inline SVG.
-                //         </svg></div>
-                //         <div class="reply-bottom">
-                //             <div class="reply-filename">'.$filename.'</div>
-                //             <a href="'.$filepath.'" target="_blank" class="reply-action"><i class="fa fa-download text-white"></i></a>
-                //         </div>
-                //     </div>';
-                // }
             }
         }
-        // return $data;
-        return $filesNames;
+        array_push($files,$embed_names);
+        array_push($files,$attach_names);
+        
+        return $files;
     }
 
     public function mail_parse_headers($headers){
@@ -2244,6 +2256,7 @@ class MailController extends Controller
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
                         if($data['values']['tkt_crt_type'] == 'cron'){
+
                             // $content = preg_replace("/<img[^>]+\>/i", " ", $content); 
                             $content = str_replace("<o:p>","",$content);
                             $content = str_replace("</o:p>","",$content);
@@ -2253,6 +2266,7 @@ class MailController extends Controller
                             $tags = $doc->getElementsByTagName('img');
                             $attaches = explode(",",$data['values']['attachments']);
                             $atch_count = 0;
+                            
                             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets/'.$data['values']['id'].'/';
                             
                             if($tags){
@@ -2260,12 +2274,12 @@ class MailController extends Controller
                                     $old_src = $tag->getAttribute('src');
                                     $new_src_url = $url.$attaches[$atch_count];
                                     $tag->setAttribute('src', $new_src_url);
-                                    $tag->setAttribute('style', 'width:100%;height:100%;display:block');
+                                    $tag->setAttribute('style
+                                    ', 'width:100%;');
                                     $atch_count++;
                                 }
                                 $content = $doc->saveHTML();
                             }
-                            
                             
                         }
                         $content =  $bbcode->convertToHtml($content);
