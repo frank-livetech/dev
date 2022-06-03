@@ -17,17 +17,17 @@ class StaffAttendance extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-    public function getClockInAttribute($value) {
-        $date = new \DateTime($value);
-        $date->setTimezone(new \DateTimeZone( timeZone() ));                            
-        return $date->format(system_date_format() .' h:i a');
-    }
-    public function getClockOutAttribute($value) {
-        $date = new \DateTime($value);
-        $date->setTimezone(new \DateTimeZone( timeZone() ));                            
-        return $date->format(system_date_format() .' h:i a');
-    }
-    public function getDateAttribute($value) {                           
-        return Carbon::parse($value)->format(system_date_format());
-    }
+    // public function getClockInAttribute($value) {
+    //     $date = new \DateTime($value);
+    //     $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+    //     return $date->format(system_date_format() .' h:i a');
+    // }
+    // public function getClockOutAttribute($value) {
+    //     $date = new \DateTime($value);
+    //     $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+    //     return $date->format(system_date_format() .' h:i a');
+    // }
+    // public function getDateAttribute($value) {                           
+    //     return Carbon::parse($value)->format(system_date_format());
+    // }
 }
