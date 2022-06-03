@@ -359,6 +359,60 @@
                                     </ul>
                                 </div> --}}
                                 <!--/ User's Links -->
+                                <!-- PREFERENCES -->
+                                <div class="more-options">
+                                    <h6 class="section-label mb-1 mt-3">Preferences</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="tag" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Language spoken: English</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="star" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Assigned account manager: Muhammad Kashif</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="phone-call" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Best times to call: 1PM TO 4PM</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="align-right" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Notes: This is note</span>
+                                        </li>
+                                        <li class="cursor-pointer">
+                                            <i data-feather="chevrons-right" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Transfer to: Frank</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--/ PREFERENCES END -->
+                                 <!-- Recent activity of users account -->
+                                 <div class="more-options">
+                                    <h6 class="section-label mb-1 mt-3">Recent activity of users account</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="tag" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Last change</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="star" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Last login attempt failed: 05/05/2022</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="phone-call" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">User logged in: 10 minutes ago</span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="align-right" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Muhammad updated ticket abc-123-4567 </span>
+                                        </li>
+                                        <li class="cursor-pointer">
+                                            <i data-feather="chevrons-right" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Transfer to: Frank</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--/ PREFERENCES END -->
                             </div>
                         </div>
                 </div>
