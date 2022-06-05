@@ -725,7 +725,7 @@ class MailController extends Controller
         }
   
         $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $email_subject)->first();
-        
+      
         if(empty($ticket)) {
             $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
             
@@ -746,9 +746,9 @@ class MailController extends Controller
             $cust_id = $newG->randomStringFormat($helpDesk::CUSTOMID_FORMAT);
             
             $all_parsed = $mail;
+
             $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id , $cust_id);
             $body = $this->email_body_parser($all_parsed, 'ticket');
-            dd('sd');
             $tickets_count = Tickets::all()->count();
             
             $lt = Tickets::orderBy('created_at', 'desc')->first();
@@ -1140,6 +1140,7 @@ class MailController extends Controller
         
         foreach ($data as $key =>$value) {
             // print_r($value['Content-Disposition']);
+
             // echo 1;
             // continue;
             // print_r($value['data']);exit;
@@ -1150,6 +1151,7 @@ class MailController extends Controller
                 $count1 = substr_count($value['data'],"Content-Disposition: attachment;");
             }
             if(array_key_exists('is_attachment', $value) && $value['is_attachment'] == '1') {
+
                     
                 if($emded_count <= $count){
                     $filename = preg_replace('/[^a-zA-Z0-9_.]/', '_', $value['filename']);
@@ -1321,18 +1323,18 @@ class MailController extends Controller
             // }
 
             //Attachments
-            if(!empty($attachments) && !empty($path)) {
-                $attachments = explode(',', $attachments);
+            // if(!empty($attachments) && !empty($path)) {
+            //     $attachments = explode(',', $attachments);
               
-                foreach ($attachments as $key => $value) {
-                    $path_tmp =  __DIR__."/../../../../$path/$value";
+            //     foreach ($attachments as $key => $value) {
+            //         $path_tmp =  __DIR__."/../../../../$path/$value";
                     
-                    if(is_readable($path_tmp)) {
-                        // echo $path_tmp;
-                        if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
-                    }
-                }
-            }
+            //         if(is_readable($path_tmp)) {
+            //             // echo $path_tmp;
+            //             if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
+            //         }
+            //     }
+            // }
             // dd($mail);
             // exit;
             //Content
@@ -2274,8 +2276,7 @@ class MailController extends Controller
                                     $old_src = $tag->getAttribute('src');
                                     $new_src_url = $url.$attaches[$atch_count];
                                     $tag->setAttribute('src', $new_src_url);
-                                    $tag->setAttribute('style
-                                    ', 'width:100%;');
+                                    $tag->setAttribute('style', 'width:100%;');
                                     $atch_count++;
                                 }
                                 $content = $doc->saveHTML();

@@ -11,9 +11,9 @@
         max-width: 640px !important;
     }
     #editor_div img {
-        height: auto !important;
-        width: auto !important;
-        max-width: 340px !important;
+        /*height: auto !important;*/
+        /*width: auto !important;*/
+        /*max-width: 340px !important;*/
     }
     a:link, span.MsoHyperlink {
         mso-style-priority: 99;
@@ -594,6 +594,7 @@
                         
                         <div class="card-body mail-message-wrapper frst" id="adjustCard2Height" style="height: 107px; overflow: hidden;">
                             <div class="mail-message">
+                                <div class="row text-dark" id="ticket_details_p_attachments"></div>
                                 <div class="row text-dark" id="ticket_details_p"></div>
                             </div>
                         </div>
@@ -2004,6 +2005,7 @@
                 </div>
             </div>
             <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
+                <div class="row text-dark" id="ticket_details_p3_attachments"></div>
                 <div class="row" id="ticket_details_p3"></div>
             </div>
         </div>
