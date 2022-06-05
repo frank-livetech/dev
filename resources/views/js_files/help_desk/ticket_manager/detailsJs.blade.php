@@ -1179,7 +1179,7 @@ function parseAttachments(){
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pdf.png" width="25px">    
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">    
                                                             </div>
                                                         </div>
                                                        
@@ -1201,7 +1201,7 @@ function parseAttachments(){
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}xlx.png" width="25px">    
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">    
                                                             </div>
                                                         </div>
                                                         
@@ -1243,7 +1243,7 @@ function parseAttachments(){
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}word.png" width="25px">    
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">    
                                                             </div>
                                                         </div>
                                                        
@@ -1264,7 +1264,7 @@ function parseAttachments(){
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}pptx.png" width="25px">    
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">    
                                                             </div>
                                                         </div>
                                                        
@@ -1285,7 +1285,7 @@ function parseAttachments(){
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}zip.png" width="25px">    
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">    
                                                             </div>
                                                         </div>
                                                         
@@ -1306,7 +1306,7 @@ function parseAttachments(){
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs' : 'default_imgs/')}}txt.png" width="25px">    
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">    
                                                             </div>
                                                         </div>
                                                         

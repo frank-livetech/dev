@@ -292,8 +292,8 @@
                                 </span>
                                 <!-- User Profile image with name -->
                                 <div class="header-profile-sidebar">
-                                    <div class="avatar box-shadow-1 avatar-border avatar-xl">
-                                        <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="user_avatar" height="70" width="70" />
+                                    <div class="avatar box-shadow-1 avatar-border avatar-xl" id="avatar_image_link">
+                                        <a href=""><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="user_avatar" height="70" width="70" /></a>
                                         <span class="avatar-status-busy avatar-status-lg"></span>
                                     </div>
                                     <div class="d-flex">
@@ -392,7 +392,7 @@
                                     <ul class="list-unstyled">
                                         <li class="cursor-pointer mb-1">
                                             <i data-feather="tag" class="font-medium-2 me-50"></i>
-                                            <span class="align-middle">Last change</span>
+                                            <span class="align-middle">Last change: Change password 2m ago</span>
                                         </li>
                                         <li class="cursor-pointer mb-1">
                                             <i data-feather="star" class="font-medium-2 me-50"></i>
@@ -409,6 +409,26 @@
                                         <li class="cursor-pointer">
                                             <i data-feather="chevrons-right" class="font-medium-2 me-50"></i>
                                             <span class="align-middle">Transfer to: Frank</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--/ PREFERENCES END -->
+                                <!--/ PREFERENCES END -->
+                                 <!-- Recent activity of users account -->
+                                 <div class="more-options">
+                                    <h6 class="section-label mb-1 mt-3">Details</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="tag" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">IP logging: 192.168.1.1 </span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="star" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Online: For 20 minutes </span>
+                                        </li>
+                                        <li class="cursor-pointer mb-1">
+                                            <i data-feather="phone-call" class="font-medium-2 me-50"></i>
+                                            <span class="align-middle">Currently viewing: https://mylive-tech.com/dev </span>
                                         </li>
                                     </ul>
                                 </div>
@@ -444,16 +464,26 @@
         function showActiveUserChat(tag) {
             let user_id = $(tag).data("id");
             let user = users_arr.find(item => item.id == user_id);
+            let clicktocall=  `<a href="{{asset('tel:'.'${user.phone_number}')}}">${user.phone_number}</a>`;
+               
             console.log(user);
             if(user != null) {
             
                 $("#active_user_name").text( user.name );
                 $('.currentChatUserName').text(user.name);
-                $('.currentChatUserNumber').text(user.phone_number);
+                if(user.phone_number != null){
+                    $('.currentChatUserNumber').html(clicktocall); 
+                }else{
+                    $('.currentChatUserNumber').html('No phone Number Added'); 
+                }
+                
                 $('.currentChatUserEmail').text(user.email);
                 $('.currentChatUserCreated').text(user.created_at);
                 $('.currentChatUserdesignation').text(user.job_title);
-               
+                $('.currentChatUserProfile').text(user_id);
+                $('.user-profile-sidebar').addClass('show');
+                $('.body-content-overlay').addClass('show');
+                
             }
             if(user.user_type == 1){
                 $(".type_bdge").text( 'Staff' );
@@ -461,9 +491,11 @@
                 $(".type_bdge").text( 'User' );
             }
 
-
             let imgsrc = $('.user_image_'+user_id).attr('src');
-            $("#active_user_img").attr('src', imgsrc);            
+            $("#active_user_img").attr('src', imgsrc);  
+            // let imghref =  js_origin . '/' . 'profile' . '/' . user_id;
+            // console.log(imghref)
+            // $("#avatar_image_link").attr("href", imghref);          
 
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
@@ -480,6 +512,7 @@
             webChat();
 
             $(".header-profile-sidebar .avatar img").attr('src',src)
+            
             $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .chat-user-name").text($(tag).attr("data_nm"))
             $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .user-post").text($(tag).data("job"))
             $(".user-profile-sidebar .user-profile-sidebar-area p").text($(tag).data("about"))
