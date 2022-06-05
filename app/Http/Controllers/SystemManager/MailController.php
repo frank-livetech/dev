@@ -1643,32 +1643,50 @@ class MailController extends Controller
 
         // dd( $ticket['attachments'] );
 
-        // if(str_contains($template, '{Initial-Request-Attachments}')) {
+        if(str_contains($template, '{Initial-Request-Attachments}')) {
 
-        //     $layout = "";
+            $layout = "";
 
-        //     if($ticket != null) {
+            if($ticket != null) {
 
-        //         if($ticket['attachments'] != null) {
+                if($ticket['attachments'] != null) {
 
-        //             $attachments = explode(',', $ticket['attachments']);
+                    $attachments = explode(',', $ticket['attachments']);
+                    
+                    for($i =0; $i <count($attachments); $i++) {
 
-        //             for($i =0; $i <count($attachments); $i++) {
+                        $imgeUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/') . '/public/default_imgs/';
+                        
+                        if ( str_contains($attachments[$i], 'csv') || str_contains($attachments[$i], 'xls') || str_contains($attachments[$i], 'xlsx') || str_contains($attachments[$i], 'sql')) {
+                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/xlx.png" width="25px"> </div>';
+                    
+                        }else if( str_contains($attachments[$i], 'pdf') ){
+                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/pdf.png" width="25px"> </div>';
+                    
+                        }else if( str_contains($attachments[$i], 'docs') || str_contains($attachments[$i], 'doc') || str_contains($attachments[$i], 'txt') || str_contains($attachments[$i], 'dotx') ||  str_contains($attachments[$i], 'docx') ){
+                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/word.png" width="25px"> </div>';
+                    
+                        }else if( str_contains($attachments[$i], 'ppt') || str_contains($attachments[$i], 'pptx') || str_contains($attachments[$i], 'pot') || str_contains($attachments[$i], 'pptm') ){
+                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/pptx.png" width="25px"> </div>';
+                    
+                        } else if( str_contains($attachments[$i], 'zip') ){
+                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/zip.png" width="25px"> </div>';
+                    
+                        }else{
+                            $layout .= ' <div class=""><img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/ '.$ticket['id'].'/'.$attachments[$i].'" /> </div>';
+                        }
 
-        //                 $layout .= '
-        //                     <a href="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'" 
-        //                     download="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'"/>  '.$attachments[$i].'  </a> <br>';
-        //             }
+                    }
 
-        //             $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
+                    $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
 
-        //         }else{
-        //             // $template = str_replace('Attachments', '', $template);
-        //             $template = str_replace('{Initial-Request-Attachments}', '', $template);
-        //         }
+                }else{
+                    $template = str_replace('Attachments', '', $template);
+                    $template = str_replace('{Initial-Request-Attachments}', '', $template);
+                }
 
-        //     }
-        // }
+            }
+        }
 
         if(str_contains($template, '{Asset-ID-####}')) {
             $asset = array_values(array_filter($data_list, function($value) {
