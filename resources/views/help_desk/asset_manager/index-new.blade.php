@@ -118,7 +118,7 @@
                                 Add Asset Type
                             </button>
                         </h2>
-                        <div id="accordionMarginOne" class="accordion-collapse collapse" aria-labelledby="headingMarginOne" data-bs-parent="#accordionMargin">
+                        <div id="accordionMarginOne" class="accordion-collapse collapse show" aria-labelledby="headingMarginOne" data-bs-parent="#accordionMargin">
                             <div class="accordion-body">
                                 <div class="card">
                                         <div class="card-body">
@@ -525,6 +525,7 @@
 <script> 
     let companies = @json($companies);
     let customers = @json($customers);
+    let asset_type_arr = [];
     console.log(companies , "com");
     console.log(customers , "customers");
 </script>

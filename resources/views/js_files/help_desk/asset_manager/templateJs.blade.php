@@ -200,53 +200,131 @@ function fieldAdd(code) {
     $('.activa').removeClass('activa');
 }
 
-function templateSetting(code, obj_key) {
-    g_obj_key = obj_key;
-    g_temp_code = code;
+function templateSetting(code, obj_key , action = null , id = null) {
 
-    // alert(g_temp_code);
-    $('#fields-modal #dyn-data').html('');
-    $('#fields-modal #ph').parent().show();
-    if (code == 'selectbox') {
-        // setting setup
-        $('#fields-modal #dyn-data').html(template[code].setting);
-    }
-    if (Object.keys(fields_list_data[obj_key]).length) {
-        if (fields_list_data[obj_key].is_multi) $('#fields-modal #is_multi').prop('checked', true);
-        else $('#fields-modal #is_single').prop('checked', true);
+    console.log(action , "action");
+    if(action != null) {
 
-        $('#fields-modal #lbl').val(template[code].title);
+        // console.log(fields_list_data , "fields_list_data");
 
-        $('#fields-modal #ph').val(fields_list_data[obj_key].placeholder);
-        $('#fields-modal #desc').val(fields_list_data[obj_key].description);
+        let item = fields_list_data.find(item => item.id == id);
+        if(item != null) {
+            
+            $("#lbl").val( item.label );
+            $("#ph").val( item.placeholder );
+            $("#desc").val( item.description );
 
-        if (fields_list_data[obj_key].hasOwnProperty('options')) {
-            if (fields_list_data[obj_key].options.length > 1) {
-                for (let i = 1; i < fields_list_data[obj_key].options.length; i++) {
-                    $('#fields-modal #addOption').trigger('click');
+            if(item.required == 1) {
+                $("#is_required").prop("checked", true);
+            }else{
+                $("#is_required").prop("checked", false);
+            }
+            let dropdown_options = ``;
+            if(item.options != null) {
+
+                let options = item.options.split('|');
+                console.log(options , "12");
+                
+                if(options.length > 0) {
+
+                    for(let data of options) {
+                        dropdown_options+= `
+                            <div class="col-12 form-group d-flex">
+                                <input type="text" class="form-control optVals" value="${data}" placeholder="Option Value" required="">
+                                <button class="btn btn-danger waves-effect waves-light ml-2" type="button" onclick="this.parentNode.remove();">
+                                    <i class="ti-close"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
                 }
+                let html = `
+                <div id="dyn-data"><div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="is_single" name="radio-stacked" ${item.is_multi == 0 ? 'checked' : ''}>
+                            <label class="custom-control-label" for="is_single">Single</label>
+                        </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="is_multi" name="radio-stacked" ${item.is_multi == 1 ? 'checked' : ''}>
+                            <label class="custom-control-label" for="is_multi">Multiple</label>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Options</label>
+
+                        <div class="row" id="select-options"> ${dropdown_options} </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="button" class="btn btn-info waves-effect waves-light float-right" id="addOption">Add Option</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>`;
+
+                $("#dyn-data").html(html);
+            }else{
+                $("#dyn-data").empty();
             }
 
-            $('#fields-modal .optVals').each(element => {
-                $('#fields-modal').find('.optVals')[element].value = fields_list_data[obj_key].options[element];
-            });
         }
 
-        if (fields_list_data[obj_key].required) $('#fields-modal #is_required').prop('checked', true);
+        $('#fields-modal #headinglabel').html(template[code].title + ' Setting');
+        $('#fields-modal #lbl').focus();
+        $('#fields-modal').modal('show');
+
+    }else{
+        g_obj_key = obj_key;
+        g_temp_code = code;
+
+        $('#fields-modal #dyn-data').html('');
+        $('#fields-modal #ph').parent().show();
+        if (code == 'selectbox') {
+            // setting setup
+            $('#fields-modal #dyn-data').html(template[code].setting);
+        }
+        if (Object.keys(fields_list_data[obj_key]).length) {
+            if (fields_list_data[obj_key].is_multi) $('#fields-modal #is_multi').prop('checked', true);
+            else $('#fields-modal #is_single').prop('checked', true);
+
+            $('#fields-modal #lbl').val(template[code].title);
+
+            $('#fields-modal #ph').val(fields_list_data[obj_key].placeholder);
+            $('#fields-modal #desc').val(fields_list_data[obj_key].description);
+
+            if (fields_list_data[obj_key].hasOwnProperty('options') && fields_list_data[obj_key].options != null) {
+                if (fields_list_data[obj_key].options.length > 1) {
+                    for (let i = 1; i < fields_list_data[obj_key].options.length; i++) {
+                        $('#fields-modal #addOption').trigger('click');
+                    }
+                }
+
+                $('#fields-modal .optVals').each(element => {
+                    $('#fields-modal').find('.optVals')[element].value = fields_list_data[obj_key].options[element];
+                });
+            }
+
+            if (fields_list_data[obj_key].required) $('#fields-modal #is_required').prop('checked', true);
+        }
+
+        if (g_temp_code == 'password') {
+            $("#is_required").prop("checked", true);
+            $("#is_required").attr("disabled", true);
+        } else {
+            $("#is_required").prop("checked", false);
+            $("#is_required").removeAttr("disabled");
+        }
+
+
+        $('#fields-modal #headinglabel').html(template[code].title + ' Setting');
+        $('#fields-modal #lbl').focus();
+        $('#fields-modal').modal('show');
     }
-
-    if (g_temp_code == 'password') {
-        $("#is_required").prop("checked", true);
-        $("#is_required").attr("disabled", true);
-    } else {
-        $("#is_required").prop("checked", false);
-        $("#is_required").removeAttr("disabled");
-    }
-
-
-    $('#fields-modal #headinglabel').html(template[code].title + ' Setting');
-    $('#fields-modal #lbl').focus();
-    $('#fields-modal').modal('show');
 }
 
 function removeField(f_ind, el) {

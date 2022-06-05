@@ -565,6 +565,7 @@ function getFormsTemplates() {
         success: function(data) {
             if (data.success == true) {
                 templates = data.templates;
+                asset_type_arr = data.data;
                 let opts = '<option value="">Select</option>';
                 for (let i in templates) {
                     opts += `<option value="${templates[i].id}">${templates[i].title}</option>`;

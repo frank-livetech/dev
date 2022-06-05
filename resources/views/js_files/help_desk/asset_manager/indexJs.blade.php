@@ -42,6 +42,7 @@
             dataType: 'json',
             success: function(data) {
                 var obj = data.data;
+                asset_type_arr = data.data;
                 $('#asset-temp-table-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#asset-temp-table-list').DataTable({
@@ -70,7 +71,7 @@
                         "render": function (data, type, full, meta) {
                             return `
                                 <div class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
+                                    <button onclick="editTemplate(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                     <i class="fas fa-pencil-alt"></i></button>&nbsp;
                                     <button onclick="deleteTemplate(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                     <i class="fa fa-trash"></i></button>
@@ -95,6 +96,56 @@
                 console.log('get assets error ', f);
             }
         });
+    }
+
+    function editTemplate(id) {
+        let item = asset_type_arr.find(item => item.id == id);
+
+        console.log(item, "this");
+        let single_input = ``;
+        let row = ``;
+        if(item != null) {
+
+            if(item.fields != null && item.fields.length != 0) {
+
+                fields_list_data = item.fields;
+
+                for(let data of item.fields) {
+                    
+                    single_input += `
+                        <div class="appends ui-sortable-handle col-md-${data.col_width}" data-id="2" data-col="12" style="opacity: 1;">
+                            <div class="card card-hover m-1 style=" box-shadow:="" 0="" 12px="" 24px="" rgb(34="" 41="" 47="" 32%)="" !important;""="">
+                                <div class="card-body" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="title">
+                                            <h5 class="card-title small mb-0"><i class="fas fa-grip-vertical pr-2" style="color:grey;"></i> ${data.label}</h5>
+                                        </div>
+                                        <div class="actions" style="position:absolute; top:18px;right:8px">
+                                            <i onclick="removeField(${data.asset_forms_id}, this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>
+                                            <a href="javascript:templateSetting('${data.type}', ${data.asset_forms_id} , 'update' , ${data.id})" class="float-right">
+                                            <i class="fas fa-cog"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    
+                    if(data.col_width != 12) {
+                        row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
+                    }else{
+                        row =  `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
+                    }
+
+                }
+
+
+                $('.tail').html(row);
+
+            }
+
+            
+
+        }
     }
 
     function deleteTemplate(id) {
