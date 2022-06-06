@@ -1681,7 +1681,7 @@ class MailController extends Controller
                     $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
 
                 }else{
-                    $template = str_replace('Attachments', '', $template);
+                    // $template = str_replace('Attachments', '', $template);
                     $template = str_replace('{Initial-Request-Attachments}', '', $template);
                 }
 
@@ -2284,7 +2284,7 @@ class MailController extends Controller
                             $doc = new \DOMDocument();
                             $doc->loadHTML($content);
                             $tags = $doc->getElementsByTagName('img');
-                            $attaches = explode(",",$data['values']['attachments']);
+                            $attaches = explode(",",$data['values']['embed_attachments']);
                             $atch_count = 0;
                             
                             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets/'.$data['values']['id'].'/';
