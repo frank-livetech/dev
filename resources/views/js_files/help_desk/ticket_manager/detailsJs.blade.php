@@ -1165,7 +1165,10 @@ function parseAttachments(){
     let tdet = '';
     if(ticket_details.attachments) {
         let attchs = ticket_details.attachments.split(',');
-        tdet += '';
+        
+        tdet +=`<div class="row">
+                    <h3>Attachments</h3>
+                </div>`
         attchs.forEach(item => {
             var tech =  `{{asset('/storage/tickets/${ticket_details.id}/${item}')}}`;
             var ter = getExt(tech);
