@@ -749,6 +749,8 @@ class MailController extends Controller
 
             $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id , $cust_id);
             $body = $this->email_body_parser($all_parsed, 'ticket');
+            // dd($body);
+            // dd($all_parsed);
             $tickets_count = Tickets::all()->count();
             
             $lt = Tickets::orderBy('created_at', 'desc')->first();
@@ -1008,23 +1010,39 @@ class MailController extends Controller
     private function email_body_parser($all_parsed, $type="reply",$from = '') {
         $data = '';
         // $attachments = '<br><br>';
+        // dd($all_parsed);
         foreach ($all_parsed as $key => $value) {
             if(array_key_exists('charset', $value)) {
-                $data = $value;
+                if(!array_key_exists('is_attachment', $value)){
+                    $data = $value;
+                }
+                
+                
             }
             // if(array_key_exists('is_attachment', $value)) {
             //     $attachments .= $value['data'];
             // }
         }
-        
+        // dd($data);
+        // dd('$all_parsed');
         if(array_key_exists(2, $all_parsed) && array_key_exists('charset', $all_parsed[2])) {
-            $data = $all_parsed[2];
+            if(!array_key_exists('is_attachment', $value)){
+                $data = $all_parsed[2];
+            }
+            
         } else if(array_key_exists('1.2', $all_parsed) && array_key_exists('charset', $all_parsed['1.2'])) {
-            $data = $all_parsed['1.2'];
+           
+            if(!array_key_exists('is_attachment', $value)){
+                $data = $all_parsed[1.2];
+            }
         } else if(array_key_exists('1.1', $all_parsed) && array_key_exists('charset', $all_parsed['1.1'])) {
-            $data = $all_parsed['1.1'];
+            if(!array_key_exists('is_attachment', $value)){
+                $data = $all_parsed[1.1];
+            }
         } else if(array_key_exists(1, $all_parsed) && array_key_exists('charset', $all_parsed[1])) {
-            $data = $all_parsed[1];
+            if(!array_key_exists('is_attachment', $value)){
+                $data = $all_parsed[1];
+            }
         }
 
         if($data['charset'] == 'ISO-8859-1' || $data['charset'] == 'iso-8859-1') $data = utf8_encode($data['data']);
@@ -1681,7 +1699,7 @@ class MailController extends Controller
                     $template = str_replace('{Initial-Request-Attachments}', $layout, $template);
 
                 }else{
-                    // $template = str_replace('Attachments', '', $template);
+                    $template = str_replace('Attachments', '', $template);
                     $template = str_replace('{Initial-Request-Attachments}', '', $template);
                 }
 
