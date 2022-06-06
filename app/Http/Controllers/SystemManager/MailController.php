@@ -1674,7 +1674,7 @@ class MailController extends Controller
                     for($i =0; $i <count($attachments); $i++) {
 
                         $imgeUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/') . '/public/default_imgs/';
-                        $attchUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/ '.$ticket['id'];
+                        $attchUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'];
 
                         if ( str_contains($attachments[$i], 'csv') || str_contains($attachments[$i], 'xls') || str_contains($attachments[$i], 'xlsx') || str_contains($attachments[$i], 'sql')) {
                             $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/xlx.png" style="width:25px !important"></a> </div>';
