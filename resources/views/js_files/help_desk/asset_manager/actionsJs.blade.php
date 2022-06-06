@@ -753,6 +753,15 @@ $("#save_asset_form").submit(function (event) {
         formData.append('company_id',  $("#company_id").val() );
 
     }else{
+
+        if(asset_customer_uid == null || asset_customer_uid == "") {
+            asset_customer_uid = $(".tkt_customer_id").val();
+        }
+
+        if(asset_company_id == null || asset_company_id == "") {
+            asset_company_id = $(".tkt_company_id").val();
+        }
+
         formData.append('customer_id', asset_customer_uid);
         formData.append('company_id', asset_company_id);
     }

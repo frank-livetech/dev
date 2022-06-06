@@ -227,6 +227,12 @@ class AssetManagerController extends Controller
                 $asset['asset_title'] = $data['asset_title'];
             }
 
+            if(isset($request->tkt_customer_id)) {
+                $asset['customer_id'] = $request->tkt_customer_id;
+            }
+            if(isset($request->tkt_company_id) ) {
+                $asset['company_id'] = $request->tkt_company_id;
+            }
             $assetRes = Assets::create($asset);
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
             $action_perform = $module . ' # '. $assetRes->id .' Created By '. $name_link;

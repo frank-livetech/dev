@@ -946,10 +946,30 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-row mt-1" id="templateTitle" style="display:none;">
-                                                            <div class="col-md-12 form-group">
+                                                            <!-- <div class="col-md-12 form-group">
                                                                 <div class="form-group">
                                                                     <label>Asset Title</label>
                                                                         <input type="text" name="asset_title" id="asset_title" class="asset_title form-control">
+                                                                </div>
+                                                            </div> -->
+                                                            <div class="row mt-2">
+                                                                <div class="col-md-6">
+                                                                    <label for="">Customers</label>
+                                                                    <select class="form-control select2 tkt_customer_id" id="tkt_customer_id">
+                                                                            <option value="">Choose</option>
+                                                                        @foreach($all_customers as $cus)
+                                                                            <option value="{{$cus->id}}"> {{$cus->first_name}} {{$cus->last_name}} </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label for="">Company</label>
+                                                                    <select class="form-control select2 tkt_company_id" id="tkt_company_id">
+                                                                    <option value="">Choose</option>
+                                                                        @foreach($all_companies as $com)
+                                                                            <option value="{{$com->id}}"> {{$com->name}} </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2176,6 +2196,22 @@
 <script>
     let tkt_arr = [];
     let ticketLengthCount = {!! json_encode($ticketView) !!};
+    let customers = @json($all_customers);
+    let companies = @json($all_companies);
+    let cust_id = $("#customer_id").val();
+
+    $(document).ready(function() {
+        let item = customers.find(item => item.id == cust_id );
+        if(item != null) {
+            $("#tkt_customer_id").val(cust_id).trigger("change");
+            if(item.company_id != null) {
+                let company = companies.find(com => com.id == item.company_id);
+                // alert(company.name);
+                // let option = `<option value="${company.id}"> ${company.name} </option>`;
+                $("#tkt_company_id").val(company.id).trigger('change');
+            }
+        }
+    });
 </script>
 
 @include('js_files.help_desk.asset_manager.templateJs')
@@ -2298,5 +2334,26 @@
         $('.hover_content_'+id).hide();
     });
 
+    $("#tkt_customer_id").on("change" , function() {
+        $("#tkt_company_id").empty();
+        let root = `<option value="">Choose</option>`;
+        if($(this).val() != '') {
+            let item = customers.find(item => item.id == $(this).val() );
+            $("#customer_id").val($(this).val());
+            if(item != null) {
+                if(item.company_id != null) {
+                    let company = companies.find(com => com.id == item.company_id);
+                    let option = `<option value="${company.id}"> ${company.name} </option>`;
+                    $("#tkt_company_id").append(root + option).trigger('change');
+                }
+            }
+        }else{
+            let option = ``;
+            for(let data of companies)  {
+                option += `<option value="${data.id}"> ${data.name} </option>`;
+            }
+            $("#tkt_company_id").append(root + option).trigger('change');
+        }
+    });
 </script>
 @endsection
