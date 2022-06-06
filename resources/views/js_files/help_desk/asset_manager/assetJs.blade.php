@@ -19,19 +19,6 @@
         }
 
         assets_table_list = $('#asset-table-list').DataTable();
-        $('a.toggle-vis').on('click', function(e) {
-            e.preventDefault();
-
-            $(this).toggleClass('btn-success');
-            $(this).toggleClass('btn-secondary');
-
-            // Get the column API object
-            var column = assets_table_list.column($(this).attr('data-column'));
-
-            // Toggle the visibility
-            column.visible(!column.visible());
-        });
-
 
         $("#checkAll").click(function() {
             $('input:checkbox.assets').not(this).prop('checked', this.checked);

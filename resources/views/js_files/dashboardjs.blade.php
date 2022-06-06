@@ -324,10 +324,12 @@
                         working_hour = `-`;
                     }
 
+                    let trLength = $("#showstaffdata tr").length;
+
 
                     $("#staff_table tbody").append(
                         `<tr id="new_entry">
-                            <td></td>
+                            <td>${trLength+1}</td>
                             <td>${curr_user_name} </td>
                             <td>${clock_in}</td>
                             <td>${date}</td>
@@ -335,6 +337,7 @@
                             <td>${clock_out_time}</td>
                             <td>${working_hour}</td>
                         </tr>`);
+
 
                     if(data.status_code == 201) {
                         toastr.warning(data.message, { timeOut: 5000 });
