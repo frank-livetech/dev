@@ -83,7 +83,6 @@ class AssetManagerController extends Controller
     public function save_form(Request $request) {
         // return \json_decode($request->fields);
         try{
-
             $assetForm = AssetForms::where('title',$request->title)->where('is_deleted',0)->first();
 
             if($assetForm) {
@@ -493,7 +492,7 @@ class AssetManagerController extends Controller
 
 
     public function getAllTemplates() {
-        $data = AssetForms::where("is_deleted",0)->get();
+        $data = AssetForms::with('fields')->where("is_deleted",0)->get();
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
