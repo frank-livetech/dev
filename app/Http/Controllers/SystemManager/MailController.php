@@ -1674,24 +1674,25 @@ class MailController extends Controller
                     for($i =0; $i <count($attachments); $i++) {
 
                         $imgeUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/') . '/public/default_imgs/';
-                        
+                        $attchUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'];
+
                         if ( str_contains($attachments[$i], 'csv') || str_contains($attachments[$i], 'xls') || str_contains($attachments[$i], 'xlsx') || str_contains($attachments[$i], 'sql')) {
-                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/xlx.png" style="width:25px !important"> </div>';
+                            $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/xlx.png" style="width:25px !important"></a> </div>';
                     
                         }else if( str_contains($attachments[$i], 'pdf') ){
-                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/pdf.png" style="width:25px !important"> </div>';
+                            $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/pdf.png" style="width:25px !important"></a> </div>';
                     
                         }else if( str_contains($attachments[$i], 'docs') || str_contains($attachments[$i], 'doc') || str_contains($attachments[$i], 'txt') || str_contains($attachments[$i], 'dotx') ||  str_contains($attachments[$i], 'docx') ){
-                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/word.png" style="width:25px !important"> </div>';
+                            $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/word.png" style="width:25px !important"></a> </div>';
                     
                         }else if( str_contains($attachments[$i], 'ppt') || str_contains($attachments[$i], 'pptx') || str_contains($attachments[$i], 'pot') || str_contains($attachments[$i], 'pptm') ){
-                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/pptx.png" style="width:25px !important"> </div>';
+                            $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/pptx.png" style="width:25px !important"> </a></div>';
                     
                         } else if( str_contains($attachments[$i], 'zip') ){
-                            $layout .= ' <div class=""><img src="'.$imgeUrl.'/zip.png" style="width:25px !important"> </div>';
+                            $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/zip.png" style="width:25px !important"> </a></div>';
                     
                         }else{
-                            $layout .= ' <div class=""><img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/ '.$ticket['id'].'/'.$attachments[$i].'" /> </div>';
+                            $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/ '.$ticket['id'].'/'.$attachments[$i].'" /> </a></div>';
                         }
 
                     }
