@@ -702,6 +702,8 @@
                                                                 <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
                                                                 <th>ID</th>
                                                                 <th>Asset Title</th>
+                                                                <th>Company</th>
+                                                                <th>Customer</th>
                                                                 <th>Template Name</th>
                                                                 <th>Actions</th>
                                                             </tr>
@@ -2106,6 +2108,7 @@ function hung(){
 
     $('#follow_up').draggable();  
 
+    get_asset_table_list();
 </script>
 
 @endsection

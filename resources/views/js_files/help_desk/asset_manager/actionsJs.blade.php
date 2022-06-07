@@ -48,10 +48,18 @@ function get_asset_table_list() {
                     {
                         
                         "render": function(data, type, full, meta) {
-                            let general_field = full.asset_fields[0]['id'];
-                            let index = 'fl_'+general_field;
-                            let gen_fld_record = full.asset_record[index];
-                            return `<a href="{{url('general-info')}}/` + full.id + `">` + gen_fld_record + `</a>`;
+                            if(full.asset_fields != null) {
+                                let general_field = full.asset_fields[0]['id'];
+                                let index = 'fl_'+general_field;
+                                if(full.asset_record != null) {
+                                    let gen_fld_record = full.asset_record[index];
+                                    return `<a href="{{url('general-info')}}/` + full.id + `">` + gen_fld_record + `</a>`;
+                                }else{
+                                    return `-`;
+                                }
+                            }else{
+                                return `-`;
+                            }
                         }
                     },
                     {
