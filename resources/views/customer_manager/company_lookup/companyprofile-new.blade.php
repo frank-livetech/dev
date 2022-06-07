@@ -975,6 +975,8 @@
                                                             </th>
                                                             <th></th>
                                                             <th>Asset Title</th>
+                                                            <th>Company</th>
+                                                            <th>Customer</th>
                                                             <th>Template Name</th>
                                                             <th>Actions</th>
                                                         </tr>
