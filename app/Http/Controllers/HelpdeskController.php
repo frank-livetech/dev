@@ -819,7 +819,9 @@ class HelpdeskController extends Controller
                 if($type == 'closed'){
                     return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status',$closed_status_id]]);
                 }
-                return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status','!=',$closed_status_id]]);
+                // return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status','!=',$closed_status_id]]);
+                return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.is_deleted',0]]);
+
                 // get ticket according to customers
             })
             ->when($statusOrUser == 'staff', function($q) use ($sid , $closed_status_id) {
