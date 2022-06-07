@@ -30,6 +30,8 @@
     var profile_img_path = "{{asset('/files/asset_img/1601560516.png')}}";
     var del_ticket_route = "{{asset('/del-ticket-note')}}";
     var ticket_notes_route = "{{asset('/get-ticket-notes')}}";
+    let customers = @json($all_customers);
+    let companies = @json($all_companies);
 
     //Flag Ticket Definings
     var flag_ticket_route = "{{asset('/flag_ticket')}}";
@@ -74,7 +76,39 @@
             data:userlist,
         });
 
+        if(ticket.customer_id != null) {
+            let findCustomer = customers.find(item => item.id == ticket.customer_id);
+
+            if(findCustomer != null) {
+                $("#tkt_customer_id").val(findCustomer.id).trigger("change");
+
+                if(findCustomer.company != null) {
+                    $("#tkt_company_id").val(findCustomer.company.id).trigger("change");
+                }
+            }
+        }
     }); 
+
+    $("#tkt_customer_id").on("change" , function() {
+        $("#tkt_company_id").empty();
+        let root = `<option value="">Choose</option>`;
+        if($(this).val() != '') {
+            let item = customers.find(item => item.id == $(this).val() );
+            if(item != null) {
+                if(item.company_id != null) {
+                    let company = companies.find(com => com.id == item.company_id);
+                    let option = `<option value="${company.id}"> ${company.name} </option>`;
+                    $("#tkt_company_id").append(root + option).trigger('change');
+                }
+            }
+        }else{
+            let option = ``;
+            for(let data of companies)  {
+                option += `<option value="${data.id}"> ${data.name} </option>`;
+            }
+            $("#tkt_company_id").append(root + option).trigger('change');
+        }
+    });
 
     $('.br-white').click(function(event){
         event.stopPropagation();

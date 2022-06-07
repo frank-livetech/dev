@@ -871,7 +871,7 @@
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title mb-0">Ticket Replies </h4>
                                 <div>
-                                    <a href="#v-pills-tab" id="compose_btn" class="btn btn-success float-right" onclick="composeReply()">
+                                    <a href="#v-pills-tab" id="compose_btn" class="btn btn-success float-right" onclick="composeReply()" style="color: #fff !important">
                                         Compose 
                                     </a>                               
                                     <a id="update_ticket" style="display:none" class="btn btn-success float-right mx-2" onclick="updateTicket()">
@@ -1739,10 +1739,30 @@
                         </div>
                     </div>
                     <div class="form-row asst_temp_title" id="templateTitle" style="display:none;">
-                        <div class="col-md-12 form-group">
+                        <!-- <div class="col-md-12 form-group">
                             <div class="form-group">
                                 <label>Asset Title</label>
                                     <input type="text" name="asset_title" id="asset_title" class="asset_title form-control" required>
+                            </div>
+                        </div> -->
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label for="">Customers</label>
+                                <select class="form-control select2 tkt_customer_id" id="tkt_customer_id">
+                                        <option value="">Choose</option>
+                                    @foreach($all_customers as $customer)
+                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Company</label>
+                                <select class="form-control select2 tkt_company_id" id="tkt_company_id">
+                                <option value="">Choose</option>
+                                    @foreach($all_companies as $company)
+                                        <option value="{{$company->id}}"> {{$company->name}} </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>

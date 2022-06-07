@@ -508,6 +508,9 @@ class CustomerlookupController extends Controller
 
         $ticketView = TicketView::where('user_id' , auth()->id())->first();
 
+        $all_customers = Customer::with('company')->get();
+        $all_companies = Company::all();
+
         return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
     }
 
