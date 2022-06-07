@@ -1035,7 +1035,7 @@
                                                                 <th>Asset Title</th>
                                                                 <th>Company</th>
                                                                 <th> Customer</th>
-                                                                <th>Template Name</th>
+                                                                <th> Asset Type </th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
@@ -2195,6 +2195,7 @@
 <!-- jQuery ui files-->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
     let tkt_arr = [];
     let ticketLengthCount = {!! json_encode($ticketView) !!};

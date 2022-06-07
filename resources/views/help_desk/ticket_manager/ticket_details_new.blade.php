@@ -696,7 +696,7 @@
                                             <div class="col-12 px-0 my-2">
                                                 <div class="table-responsive" width='200px'>
                                                     <table id="asset-table-list"
-                                                        class="table table-striped w-100 table-bordered no-wrap asset-table-list">
+                                                        class="table w-100 table-bordered no-wrap asset-table-list">
                                                         <thead>
                                                             <tr>
                                                                 <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
@@ -704,7 +704,7 @@
                                                                 <th>Asset Title</th>
                                                                 <th>Company</th>
                                                                 <th>Customer</th>
-                                                                <th>Template Name</th>
+                                                                <th>Asset Type </th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
@@ -2080,6 +2080,8 @@
     @include('js_files.help_desk.asset_manager.actionsJs')
     {{-- @include('js_files.help_desk.ticket_manager.ticketsJs') --}}
     @include('js_files.help_desk.asset_manager.assetJs')
+
+    <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
         $('[data-dismiss=modal]').on('click', function(e) {
         var $t = $(this),
