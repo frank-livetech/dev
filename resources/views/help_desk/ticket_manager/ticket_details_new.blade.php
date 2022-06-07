@@ -1739,10 +1739,30 @@
                         </div>
                     </div>
                     <div class="form-row asst_temp_title" id="templateTitle" style="display:none;">
-                        <div class="col-md-12 form-group">
+                        <!-- <div class="col-md-12 form-group">
                             <div class="form-group">
                                 <label>Asset Title</label>
                                     <input type="text" name="asset_title" id="asset_title" class="asset_title form-control" required>
+                            </div>
+                        </div> -->
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label for="">Customers</label>
+                                <select class="form-control select2 tkt_customer_id" id="tkt_customer_id">
+                                        <option value="">Choose</option>
+                                    @foreach($all_customers as $customer)
+                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="">Company</label>
+                                <select class="form-control select2 tkt_company_id" id="tkt_company_id">
+                                <option value="">Choose</option>
+                                    @foreach($all_companies as $company)
+                                        <option value="{{$company->id}}"> {{$company->name}} </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
