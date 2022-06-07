@@ -1062,7 +1062,7 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-3">
-                                        <a href="javascript:listTickets('total')" class="card card-hover border-info" >
+                                        <a href="javascript:listTickets('total')" class="card card-hover border-info">
                                             <div class="box p-2 rounded info text-center">
                                                 <h1 class="font-weight-light " id="total_tickets_count"></h1>
                                                 <h6 class="text-info">All Tickets</h6>
@@ -1070,7 +1070,7 @@
                                         </a>
                                     </div>
                                     <div class="col-md-3">
-                                        <a href="javascript:listTickets('open')" class="card card-hover border-warning" >
+                                        <a href="javascript:listTickets('open')" class="card card-hover border-warning">
                                             <div class="box p-2 rounded warning text-center">
                                                 <h1 class="font-weight-light " id="open_ticket_count"></h1>
                                                 <h6 class="text-warning">Open</h6>
