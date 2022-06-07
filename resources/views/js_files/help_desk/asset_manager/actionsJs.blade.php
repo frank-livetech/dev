@@ -160,11 +160,11 @@ function showAssetDetails(id) {
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  ${item.customer.email != null ? '<i class="far fa-copy"></i>': ''}</td>
+                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  ${item.customer.email != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy"></i>': ''}</td>
+                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
                                 </tr>                                                        
                             </tbody>
                         </table>
@@ -185,15 +185,15 @@ function showAssetDetails(id) {
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.company.name != null ? item.company.name : '-' } ${item.company.name != null ? '<i class="far fa-copy"></i>': ''}</td>
+                                    <td> ${item.company.name != null ? item.company.name : '-' } ${item.company.name != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.company.email != null ? item.company.email : '-'}  ${item.company.email != null ? '<i class="far fa-copy"></i>': ''}</td>
+                                    <td> ${item.company.email != null ? item.company.email : '-'}  ${item.company.email != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.company.phone != null ? item.company.phone : '-'} ${item.company.phone != null ? '<i class="far fa-copy"></i>': ''}</td>
+                                    <td> ${item.company.phone != null ? item.company.phone : '-'} ${item.company.phone != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
                                 </tr>                                                        
                             </tbody>
                         </table>
@@ -215,7 +215,7 @@ function showAssetDetails(id) {
                     asset_field_tr += `
                         <tr>
                             <td class="fw-bolder"> ${data.label} </td>
-                            <td>${key != null ? key : '-'} ${key != null ? '<i class="far fa-copy"></i>': ''}</td>
+                            <td>${key != null ? key : '-'} ${key != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
                         </tr>`;
 
                 }
