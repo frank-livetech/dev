@@ -132,7 +132,6 @@ function get_asset_table_list() {
     });
 
 }
-
 function showAssetDetails(id) {
 
     let item = asset_arr.find(item => item.id == id);
@@ -157,15 +156,15 @@ function showAssetDetails(id) {
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.customer.first_name != null ? item.customer.first_name : '' } ${item.customer.last_name != null ? item.customer.last_name : '' }  </td>
+                                    <td> ${item.customer.first_name != null ? item.customer.first_name : '' } ${item.customer.last_name != null ? item.customer.last_name : '' }  ${item.customer.first_name != null ? '<i class="far fa-copy"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  </td>
+                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  ${item.customer.email != null ? '<i class="far fa-copy"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } </td>
+                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy"></i>': ''}</td>
                                 </tr>                                                        
                             </tbody>
                         </table>
@@ -186,15 +185,15 @@ function showAssetDetails(id) {
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.company.name != null ? item.company.name : '-'} </td>
+                                    <td> ${item.company.name != null ? item.company.name : '-' } ${item.company.name != null ? '<i class="far fa-copy"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.company.email != null ? item.company.email : '-'}  </td>
+                                    <td> ${item.company.email != null ? item.company.email : '-'}  ${item.company.email != null ? '<i class="far fa-copy"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.company.phone != null ? item.company.phone : '-'} </td>
+                                    <td> ${item.company.phone != null ? item.company.phone : '-'} ${item.company.phone != null ? '<i class="far fa-copy"></i>': ''}</td>
                                 </tr>                                                        
                             </tbody>
                         </table>
@@ -216,7 +215,7 @@ function showAssetDetails(id) {
                     asset_field_tr += `
                         <tr>
                             <td class="fw-bolder"> ${data.label} </td>
-                            <td> ${ key } </td>
+                            <td>${key != null ? key : '-'} ${key != null ? '<i class="far fa-copy"></i>': ''}</td>
                         </tr>`;
 
                 }
