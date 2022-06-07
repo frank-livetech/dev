@@ -186,15 +186,15 @@ function showAssetDetails(id) {
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.company.name} </td>
+                                    <td> ${item.company.name != null ? item.company.name : '-'} </td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.company.email}  </td>
+                                    <td> ${item.company.email != null ? item.company.email : '-'}  </td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.company.phone} </td>
+                                    <td> ${item.company.phone != null ? item.company.phone : '-'} </td>
                                 </tr>                                                        
                             </tbody>
                         </table>
