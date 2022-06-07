@@ -1167,7 +1167,7 @@ function parseAttachments(){
         let attchs = ticket_details.attachments.split(',');
         
         tdet +=`<div class="row">
-                    <h3>Attachments</h3>
+                    <h6 style="font-size:.8rem !important"><strong>Attachments</strong></h6>
                 </div>`
         attchs.forEach(item => {
             var tech =  `{{asset('/storage/tickets/${ticket_details.id}/${item}')}}`;

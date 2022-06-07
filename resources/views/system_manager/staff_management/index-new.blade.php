@@ -19,6 +19,9 @@
         margin-right: 8px;
         font-size: 6px;
     }
+    .select2-search__field{
+        width: 352.406px !important
+    }
 </style>
 @php
     $path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -202,8 +205,15 @@
                                     <div class="col-12">
                                         <div class="form-group user-password-div w-100">
                                             <span class="block input-icon input-icon-right d-flex">
-                                                <input name="password" id="staffpassword" class="form-control" type="text" value="" placeholder="Password" required>
+                                                <div class=" input-group form-password-toggle input-group-merge">
+                                                    <input type="password" name="password" id="staffpassword" class="form-control" value="" placeholder="Password" required>
+                                                    <div class="input-group-text cursor-pointer">
+                                                        <i data-feather="eye"></i>
+                                                    </div>
+                                                </div>
+                                                {{-- <input name="password" id="staffpassword" class="form-control" type="password" value="" placeholder="Password" required> --}}
                                                 <button class="btn btn-primary ml-auto" type="button" onclick="generatePassword()">Generate</button>
+                                                <a class="btn btn-success mx-1" onclick="copyPassword()">Copy</a>
                                             </span>
                                             <span class="small text-danger" id="password_error"></span>
                                             <small class="text-muted">
@@ -221,10 +231,18 @@
                                             </span>
                                         </div>
                                     </div> --}}
-
-                                    <div class="col-md-6">
+                                    <div class="col-md-2 form-group hire-input-country_box position-relative">
+                                        <div class="form-group">
+                                        <select name="country" class="select2 form-select" id="country">
+                                          <option data-country-code="DZ" value="1">USA</option>
+                                          <option data-country-code="AD" value="55">Brazil</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <span class="block input-icon input-icon-right">
+                                                
                                                 <input type="text" name="phone_number" id="phone" class="form-control" value="" placeholder="Phone" required>
                                                 <span class="fa fa-asterisk field-icon text-danger reqField"></span>
                                             </span>
@@ -234,17 +252,18 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <select class="form-control" id="role_id" name="role_id"  style="height: 36px;width: 100%;">
+                                            <select class="select2 form-select" id="role_id" name="role_id">
                                                 @foreach($roles as $role)
                                                     <option value="{{$role->id}}">{{$role->name}}</option>
                                                 @endforeach
-                                            </select>
+                                        </select>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6 mt-1 mb-1">
                                         <div class="form-group">
-                                            <select class="select2 form-control" id="tags" name="tags" multiple="multiple" style="height: 36px;width: 100%;">
+
+                                            <select class="tags-select select2 form-control" id="tags" name="tags" multiple="multiple" style="height: 36px;width: 100%;" data-placeholder="Select Tags">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -295,6 +314,27 @@
 @endsection
 @section('scripts')
     <script>
+        function copyPassword() {
+            
+            var copyText = document.getElementById("staffpassword");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+
+        }
+
+        $(function() {
+            $("#country").change(function() {
+                let countryCode = $(this).find('option:selected').data('country-code');
+                let value = "+" + $(this).val();
+                $('#phone').val(value).intlTelInput("setCountry", countryCode);
+               
+            });
+            
+            var code = "+1";
+            $('#phone').val(code).intlTelInput();
+        });
+
         $('.staff_table').DataTable();
         // let a = "{{Session('system_date')}}";
         // console.log(a , "a");
