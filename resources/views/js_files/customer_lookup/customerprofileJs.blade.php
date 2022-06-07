@@ -386,12 +386,30 @@
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-
-        }else if(url.includes('##ticket-open')) {
+            alert("ticket");
+        }
+        if(url.includes('#open')) {
             
             $("#pills-tickets-tab").click();
-            listTickets('open');
+            $("#pills-setting-tab").removeClass("active")
+            $("#previous-month").removeClass("show active");
+            $("#pills-tickets-tab").addClass('active');
+            $("#tickets").addClass("show active");
 
+            listTickets('open');
+            alert("open");
+        }
+        if(url.includes('#closed')) {
+
+            listTickets('closed');
+            
+            $("#pills-tickets-tab").click();
+            $("#pills-setting-tab").removeClass("active")
+            $("#previous-month").removeClass("show active");
+            $("#pills-tickets-tab").addClass('active');
+            $("#tickets").addClass("show active");
+
+            alert("closed");
         }
 
         try {
