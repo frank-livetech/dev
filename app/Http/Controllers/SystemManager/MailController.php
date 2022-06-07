@@ -1293,7 +1293,7 @@ class MailController extends Controller
         return($attachment);
     }
 
-    public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '') {
+    public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '',$template_code = '') {
         try {
             // $mail = new PHPMailer(true);
             $mail = new PHPMailer();
@@ -1339,20 +1339,21 @@ class MailController extends Controller
             // if($reply == 'ticket_reply') {
             //     $mail->addReplyTo($recipient, $subject);
             // }
-
-            //Attachments
-            // if(!empty($attachments) && !empty($path)) {
-            //     $attachments = explode(',', $attachments);
-              
-            //     foreach ($attachments as $key => $value) {
-            //         $path_tmp =  __DIR__."/../../../../$path/$value";
-                    
-            //         if(is_readable($path_tmp)) {
-            //             // echo $path_tmp;
-            //             if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
-            //         }
-            //     }
-            // }
+            if($template_code == 'ticket_create'){
+                //Attachments
+                if(!empty($attachments) && !empty($path)) {
+                    $attachments = explode(',', $attachments);
+                    foreach ($attachments as $key => $value) {
+                        $path_tmp =  __DIR__."/../../../../$path/$value";
+                        
+                        if(is_readable($path_tmp)) {
+                            // echo $path_tmp;
+                            if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
+                        }
+                    }
+                }
+            }
+            
             // dd($mail);
             // exit;
             //Content
