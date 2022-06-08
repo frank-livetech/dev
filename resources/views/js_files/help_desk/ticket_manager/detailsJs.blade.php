@@ -1332,8 +1332,12 @@ function parserEmbeddedImages(){
     
     var index = 0;
     $('#ticket_details_p img').each(function () {
-        
-        let attchs = ticket_details.embed_attachments.split(',');
+        let attchs = '';
+        if(ticket_details.embed_attachments != null){
+
+            attchs = ticket_details.embed_attachments.split(',');
+            
+        }
         console.log(attchs[index])
         if(attchs[index] == undefined){
             
