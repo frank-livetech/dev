@@ -96,8 +96,8 @@ class HomeController extends Controller {
         }
         
         // $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
-        $staff_active_count = StaffAttendance::where('clock_out',NULL)->orderBy('id', 'DESC')->groupBy('user_id')->count();
-
+        $staff_active_count = StaffAttendance::where('clock_out',NULL)->orderBy('id', 'DESC')->groupBy('user_id')->get();
+        $staff_active_count = $staff_active_count->count();
         $staff_inactive_count = $staff_count - $staff_active_count;
 
         $ticket_follow_ups = TicketFollowUp::where('created_by', auth()->id() )
@@ -163,7 +163,7 @@ class HomeController extends Controller {
         // $currentDate = Carbon::now();
         // $staffData = StaffAttendance::where([ ['date', $currentDate->format('Y-m-d')], ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
         $staffData = StaffAttendance::where('user_id',auth()->user()->id)->orderByDesc('id')->first();
-
+        
         $response['message'] = 'Notification List';
         $response['status_code'] = 200;
         $response['success'] = true;
