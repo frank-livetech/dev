@@ -1332,8 +1332,12 @@ function parserEmbeddedImages(){
     
     var index = 0;
     $('#ticket_details_p img').each(function () {
-        
-        let attchs = ticket_details.embed_attachments.split(',');
+        let attchs = '';
+        if(ticket_details.embed_attachments != null){
+
+            attchs = ticket_details.embed_attachments.split(',');
+            
+        }
         console.log(attchs[index])
         if(attchs[index] == undefined){
             
@@ -1348,7 +1352,12 @@ function parserEmbeddedImages(){
     var index1 = 0;
     $('#ticket_details_p3 img').each(function () {
         
-        let attchs = ticket_details.embed_attachments.split(',');
+        let attchs = '';
+        if(ticket_details.embed_attachments != null){
+
+            attchs = ticket_details.embed_attachments.split(',');
+            
+        }
         if(attchs[index1] != undefined){
             $(this).attr('src', "{{asset('storage/tickets')}}/"+ticket_details.id+'/'+attchs[index1]);
             $(this).attr("onClick","showAttachedImage("+ticket_details.id+"," + attchs[index1]  + ")");

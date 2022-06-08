@@ -1698,7 +1698,7 @@ class MailController extends Controller
                         }
                         $flexlayout = '<div class=""><label><strong>Attachments</strong></label></div><div class="row" style="display:flex">'.$layout.'</div>';
                         $template = str_replace('{Initial-Request-Attachments}', $flexlayout, $template);
-    
+                        
                     }else{
                         $template = str_replace('{Initial-Request-Attachments}', '', $template);
                     }
@@ -1709,7 +1709,6 @@ class MailController extends Controller
             $template = str_replace('{Initial-Request-Attachments}', '', $template);
         }
         
-
         if(str_contains($template, '{Asset-ID-####}')) {
             $asset = array_values(array_filter($data_list, function($value) {
                 return ($value['module'] == 'Asset');
