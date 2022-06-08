@@ -56,6 +56,7 @@ class CreateCompaniesTable extends Migration
                 $table->integer('is_default')->default(0);
                 $table->string('website')->nullable();
                 $table->string('com_sla')->nullable();
+                $table->string('domain')->nullable();
 
 
                 $table->timestamps();

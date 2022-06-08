@@ -182,6 +182,7 @@ class HelpdeskController extends Controller
         $departments = Departments::all();
         $priorities = TicketPriority::all();
         $types = TicketType::all();
+        $companies = Company::all();
         $users = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
         $customers = Customer::where('is_deleted', 0)->get();
 
@@ -468,6 +469,7 @@ class HelpdeskController extends Controller
         $current_date = Carbon::now();
 
         $data = $request->all();
+        // return dd($data);
         $response = array();
         try {
             if ($request->has('newcustomer')) {
@@ -2665,6 +2667,25 @@ class HelpdeskController extends Controller
                 $c['has_account'] = 0;
             }
             $c['phone'] = $data['phone'];
+
+            if( isset($request->new_company ) && $request->new_company == 'new_company' ) {
+
+                $companyData = Company::create([
+                    "poc_first_name" => $request->poc_first_name,
+                    "poc_last_name" => $request->poc_last_name,
+                    "name" => $request->company_name,
+                    "domain" => $request->company_domain,
+                    "phone" => $request->company_phone_number,
+
+                ]);
+
+                $c['company_id'] = $companyData->id;
+
+            }else{
+                $c['company_id'] = $request->company_id;
+            }
+
+
             $customer = Customer::create($c);
 
             return $customer->id;

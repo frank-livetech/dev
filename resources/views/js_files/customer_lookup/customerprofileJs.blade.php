@@ -386,7 +386,6 @@
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-            alert("ticket");
         }
         if(url.includes('#open')) {
             
@@ -397,7 +396,6 @@
             $("#tickets").addClass("show active");
 
             listTickets('open');
-            alert("open");
         }
         if(url.includes('#closed')) {
 
@@ -408,8 +406,6 @@
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-
-            alert("closed");
         }
 
         try {

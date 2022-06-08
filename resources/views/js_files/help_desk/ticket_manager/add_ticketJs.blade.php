@@ -267,6 +267,19 @@
                     form_Data['customer_id'] = for_customer_profile_id;
                 }
 
+                if( $("#new_company").val() == "new_company") {
+
+                    form_Data['new_company'] = new_company;
+                    form_Data['poc_first_name'] = $("#poc_first_name").val();
+                    form_Data['poc_last_name'] = $("#poc_last_name").val();
+                    form_Data['company_name'] = $("#company_name").val();
+                    form_Data['company_domain'] = $("#company_domain").val();
+                    form_Data['company_phone_number'] = $("#company_phone_number").val();
+
+                }else{
+                    form_Data['company_id'] = $("#company_id").val();
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "{{url('save-tickets')}}",
@@ -619,4 +632,14 @@
             $("#onlyMe").prop("checked", false);
             $("#allStaff").prop("checked", true);
         });
+
+
+        function newCompany() {
+            $(".newCompany").toggle();
+            $("#new_company").val("new_company");
+            $("#company_id").val("").trigger("change");
+        }
+        function selectCompany() {
+            $("#new_company").val("old");
+        }
     </script>
