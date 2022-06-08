@@ -500,7 +500,7 @@ class CustomerlookupController extends Controller
         $notesCount = 0;
 
         $closed_status = TicketStatus::where('name','Closed')->first();
-        $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0] ,['status','!=',$closed_status->id]])->get();
+        $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0] ])->get();
         foreach($tickets as $ticket) {
             $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User']])->count();
         }

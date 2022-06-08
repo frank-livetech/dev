@@ -143,18 +143,18 @@ $('#btn-add-new-user').click(function() {
     $('#addNewUser').modal('show');
 })
 
-$("#phone").keyup(function() {
-    var regex = new RegExp("^[0-9]+$");
+// $("#phone").keyup(function() {
+//     var regex = new RegExp("^[0-9]+$");
 
-    if (!regex.test($(this).val())) {
-        $("#phone_error").html("Only numeric values allowed");
-    } else {
-        $("#phone_error").html(" ");
-    }
-    if ($(this).val() == '') {
-        $("#phone_error").html(" ");
-    }
-});
+//     if (!regex.test($(this).val())) {
+//         $("#phone_error").html("Only numeric values allowed");
+//     } else {
+//         $("#phone_error").html(" ");
+//     }
+//     if ($(this).val() == '') {
+//         $("#phone_error").html(" ");
+//     }
+// });
 
 $("#sms").keyup(function() {
     var regex = new RegExp("^[0-9]+$");
@@ -239,10 +239,10 @@ $("#save_user").submit(function(event) {
         return false;
       }
 
-    if (!regex.test(phone)) {
-        $("#phone_error").html("Only numeric values allowed");
-        return false;
-    }
+    // if (!regex.test(phone)) {
+    //     $("#phone_error").html("Only numeric values allowed");
+    //     return false;
+    // }
 
     if (password.length <= 7) {
         $("#password_error").html("Password Should be Minimum 8 Characters");

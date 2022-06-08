@@ -99,6 +99,10 @@ br + br { display: none; }
     height:100%;
     display:none;
 }
+.badge-secondary {
+    color: #fff;
+    background-color: #868e96;
+    }
 </style>
 
 <div class="content-body">
@@ -113,7 +117,7 @@ br + br { display: none; }
 
     <h1>View Ticket : {{$ticket->coustom_id}}</h1>
     
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-8">
             <div class="card mt-2">
                 <div class="card-body">
@@ -139,8 +143,88 @@ br + br { display: none; }
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+    <div class="col-md-12">
+        <div class="card" id="style-5">
+        <!-- <div class="card" id="style-5" style="height:270px; overflow-y:auto; overflow-x:hidden"> -->
+            <div class="card-header frst mb-0" style="padding-bottom: unset">
+                <div class="align-items-center ">
+                    <div class="mail-items">
+                        <div class="" role="alert">
+                            <div class="alert-body p-0" >
+                                <div class="" style="display: -webkit-box">
+                                    <div class="modal-first w-100">
+                                        <div class="mt-0 mt-0 rounded" style="padding:4px; ">
+                                            <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
+                                                <div class="">
+                                                    @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
+                                                    
+                                                    @if($ticket->user_pic != null)
+                                                            <img src="{{ asset( request()->root() .''. $ticket->user_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
+                                                       
+                                                    @else
+                                                        <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <?php
+                                                    if($ticket->ticket_created_by != null) {
+                                                        $user_type = $ticket->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
+                                                    }else{
+                                                        $user_type = 'User';
+                                                    }
+                                                ?>
+                                                <div class="" style="display: -webkit-box">
+                                                    <h6 class="mb-0"> {{$ticket->creator_name != null ? $ticket->creator_name : $ticket->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                                    <span style="margin-left: 9px;">Posted on <span id="tkt_created_at"></span>
+                                                </div>
+                                                <div class="first" >
+                                                    <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
+                                                   
+                                                    <span id="tkt-subject" class="tkt-subject" style="word-break: break-all;font-size:20px"> {{$ticket->subject}} </span> 
+                                                    @if($ticket->attachments != null)
+                                                    <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
+                                                    @endif
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                       <hr>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body mail-message-wrapper frst" id="adjustCard2Height" style="height: 197px !important;overflow-y: scroll;">
+                <div class="mail-message">
+                    <div class="row show_attachments"></div>
+                    <div class="row text-dark" id="ticket_details_p">{!! $ticket->ticket_detail !!}</div>
+                </div>
+            </div>
+           
+            {{-- <div class="card-footer">
+                <div class="mail-attachments">
+                    <div class="d-flex align-items-center mb-1">
+                        <i data-feather='paperclip'></i>&nbsp;
+                        <h5 class="fw-bolder text-body mb-0">1 Attachments</h5>
+                    </div>
+                    <div class="row d-flex flex-column">
+                        <a href="#" class="mb-50">
+                            <img src="../../../app-assets/images/icons/doc.png" class="me-25" alt="png" height="18">
+                            <small class="text-muted fw-bolder">interdum.docx</small>
+                        </a>
+                        
+                    </div>
+                </div>
+            </div> --}}
+        </div>  
+    </div>
     <div class="card">
         <div class="card-body p-0" id="status_html" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color : ' ')}}">
             <div class="row">
@@ -262,7 +346,28 @@ br + br { display: none; }
 </div>
 
 <div style="display: none;" id="tinycontenteditor"></div>
-
+{{-- image preview --}}
+<div class="modal fade text-start" id="defaultPreview" tabindex="-1" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Image Preview</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="showDefaultPreview" style="text-align: center"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-sm-12 DownloadImage" style="text-align:right">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- image preview end --}}
 @endsection
 
 @section('scripts')
@@ -280,75 +385,17 @@ br + br { display: none; }
             }
         });
 
-        let ticket = {!!json_encode($ticket) !!};
-
+       
+        parseAttachments();
         // show attachments
         // if(ticket != null) {
         //     var content = content.replace(/<img[^>]*>/g,"");
         //     tdet = `<div class="col-12">${content}</div>`;
         // }
-        if(ticket.attachments != null) {
-            let attachments = ticket.attachments;
-            attachments = attachments.split(',');
-            let files = ``;
-            let ext = ``;
-            let file_name = ``;
-
-            for(var i =0; i < attachments.length; i++) {
-                let extens = attachments[i].split('.');
-
-                for(var k =0; k < extens.length; k++) {
-                    if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
-                        ext = `<img src="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="img-fluid">`;
-                        file_name = `image.jpeg`;
-                    }
-
-                    if(extens[1] == 'pdf') {
-                        ext = `<img src="{{asset('${js_path}default_imgs/pdf.png')}}" class=" attImg"  alt="" >`;
-                        file_name = `pdf.png`;
-                    }
-
-                    if(extens[1] == 'txt') {
-                        ext = `<img src="{{asset('${js_path}default_imgs/txt.png')}}" class=" attImg"  alt="" >`;
-                        file_name = `txt.png`;
-                    }
-
-                    if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
-                        ext = `<img src="{{asset('${js_path}default_imgs/word.png')}}" class=" attImg"  alt="" >`;
-                        file_name = `word.png`;
-                    }
-
-                    if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
-                        ext = `<img src="{{asset('${js_path}default_imgs/xlx.png')}}" class=" attImg"  alt="" >`;
-                        file_name = `xlx.png`;
-                    }
-
-                    if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
-                        ext = `<img src="{{asset('${js_path}default_imgs/pptx.png')}}" class=" attImg"  alt="" >`;
-                        file_name = `pptx.png`;
-                    }
-
-                    if(extens[1] == 'zip') {
-                        ext = `<img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class=" attImg"  alt="" >`;
-                        file_name = `zip.jpeg`;
-                    }
-
-                }
-                files += `
-                <div class="col-md-6 mt-1" style='position:relative;'>
-                        <div class="borderOne" style="display: flex; justify-content: center; align-items: center;">
-                            <span class="overlayAttach"></span>
-                            ${ext}
-                            <span class="fileName"><img style="width:16px;height:16px;" src="{{asset('${js_path}default_imgs/${file_name}')}}"  alt=""> ${attachments[i]}</span>
-                            <a href="" download="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="downFile"><i class="fa fa-download"></i></a>
-                        </div>
-                    </div>`;
-            }
-            $('.show_attachments').html(files);
-        }
+        
 
         $(".meta_tags").tagsinput('items');
-
+        let ticket = {!!json_encode($ticket) !!};
         $("#tkt_created_at").html( ticketDetail.date_conversion(ticket.updated_at) );
         $("#tkt_updated_at").html( ticketDetail.date_conversion(ticket.updated_at) );
 
@@ -375,6 +422,273 @@ br + br { display: none; }
         }
 
     });
+
+    function showAttachedImage(id, item) {
+    let img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
+    let csv = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png"> `;
+    let pdf = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png">`; 
+    let doc = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png">` ;
+    let pptx = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png"> `;
+    let zip =   `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png">`    
+    let downloadimg = `<a class="btn btn-primary waves-effect waves-float waves-light" href="{{asset('storage/tickets/${id}/${item}')}}" download><svg style="color: #fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span style="color: #fff"> Download</span></a>`;
+    
+    var file_type = img.substr(img.lastIndexOf('.')).toLowerCase();
+    
+    if (file_type.includes('csv') || file_type.includes('xls') || file_type.includes('xlsx') || file_type.includes('sql')) {
+        $('.showDefaultPreview').html(csv);
+
+    }else if(file_type.includes('pdf')){
+        $('.showDefaultPreview').html(pdf);
+
+    }else if(file_type.includes('docs') || file_type.includes('doc') || file_type.includes('txt') || file_type.includes('dotx') || file_type.includes('docx')){
+        $('.showDefaultPreview').html(doc);
+
+    }else if(file_type.includes('ppt') || file_type.includes('pptx') || file_type.includes('pot') || file_type.includes('pptm')){
+        $('.showDefaultPreview').html(pptx);
+
+    } else if(file_type.includes('zip')){
+        $('.showDefaultPreview').html(zip);
+
+    }else{
+        $('.showDefaultPreview').html(img);
+    }
+    $('.DownloadImage').html(downloadimg);
+    $("#defaultPreview").modal('show');
+    
+}
+function parseAttachments(){
+    let tdet = '';
+    let ticket = {!!json_encode($ticket) !!};
+    if(ticket.attachments != null) {
+            
+            let attchs = ticket.attachments.split(',');
+            
+            let files = ``;
+            let ext = ``;
+            let file_name = ``;
+
+            tdet +=`<div class="row">
+                    <h6 style="font-size:.8rem !important"><strong>Attachments</strong></h6>
+                </div>`
+
+            attchs.forEach(item => {
+            var tech =  `{{asset('/storage/tickets/${ticket.id}/${item}')}}`;
+            var ter = getExt(tech);
+            // return ter;
+            if(ter == "pdf" ){
+                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket.id}, '${item}')" >
+                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">    
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>` 
+            }
+            else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
+                tdet+= `
+                <div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket.id}, '${item}')" >
+                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">    
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>` 
+            }
+            else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
+                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket.id}, '${item}')" >
+                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{asset('storage/tickets/${ticket.id}/${item}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>` 
+            }
+            else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
+                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket.id}, '${item}')" >
+                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">    
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>` 
+            }
+            else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
+                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket.id}, '${item}')" >
+                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">    
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>` 
+            }
+            else if(ter == "zip"){
+                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket.id}, '${item}')" >
+                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">    
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>` 
+            }
+            else{
+                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket.id}, '${item}')" >
+                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                    <div class="" style="display: -webkit-box">
+                                                <div class="modal-first w-100">
+                                                    <div class="mt-0 rounded" >
+                                                        <div class="float-start rounded me-1 bg-none" style="">
+                                                            <div class="">                                                               
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">    
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>` 
+            }
+        });
+            // for(var i =0; i < attachments.length; i++) {
+            //     let extens = attachments[i].split('.');
+
+            //     for(var k =0; k < extens.length; k++) {
+            //         if(extens[1] == 'jpeg' || extens[1] == 'png' || extens[1] == 'jpg' || extens[1] == 'webp' || extens[1] == 'svg') {
+            //             ext = `<img src="{{asset('storage/tickets/${ticket.id}/${attachments[i]}')}}" class="img-fluid" width="25px">`;
+            //             file_name = `image.jpeg`;
+            //         }
+
+            //         if(extens[1] == 'pdf') {
+            //             ext = `<img src="{{asset('${js_path}default_imgs/pdf.png')}}" class=" attImg"  alt="" width="25px">`;
+            //             file_name = `pdf.png`;
+            //         }
+
+            //         if(extens[1] == 'txt') {
+            //             ext = `<img src="{{asset('${js_path}default_imgs/txt.png')}}" class=" attImg"  alt="" width="25px">`;
+            //             file_name = `txt.png`;
+            //         }
+
+            //         if(extens[1] == 'docm' || extens[1] == 'docx' || extens[1] == 'dot' || extens[1] == 'dotx') {
+            //             ext = `<img src="{{asset('${js_path}default_imgs/word.png')}}" class=" attImg"  alt=""  width="25px">`;
+            //             file_name = `word.png`;
+            //         }
+
+            //         if(extens[1] == 'xls' || extens[1] == 'xlsb' || extens[1] == 'xlsm' || extens[1] == 'xlsx') {
+            //             ext = `<img src="{{asset('${js_path}default_imgs/xlx.png')}}" class=" attImg"  alt=""  width="25px">`;
+            //             file_name = `xlx.png`;
+            //         }
+
+            //         if(extens[1] == 'pptx' || extens[1] == 'pptm' || extens[1] == 'ppt') {
+            //             ext = `<img src="{{asset('${js_path}default_imgs/pptx.png')}}" class=" attImg"  alt="" width="25px">`;
+            //             file_name = `pptx.png`;
+            //         }
+
+            //         if(extens[1] == 'zip') {
+            //             ext = `<img src="{{asset('${js_path}default_imgs/zip.jpeg')}}" class=" attImg"  alt="" width="25px">`;
+            //             file_name = `zip.jpeg`;
+            //         }
+
+            //     }
+            //     files += `
+            //     <div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' onclick="showAttachedImage(${ticket.id}, '${attachments[i]}')">
+            //                 <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' >
+            //                     <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+            //                         <div class="" style="display: -webkit-box">
+            //                                     <div class="modal-first w-100">
+            //                                         <div class="mt-0 rounded" >
+            //                                             <div class="float-start rounded me-1 bg-none" style="">
+            //                                                 <div class="">                                                               
+            //                                                     ${ext}
+            //                                                 </div>
+            //                                             </div>
+                                                        
+            //                                         </div>
+            //                                 </div>
+            //                             </div>
+            //                     </div>
+            //                 </div>
+            //             </div>
+            //         </div>
+            //     `;
+            // }
+            $('.show_attachments').html(tdet);
+        }
+}
 </script>
     @include('customer.Js.tkt_Js')
 @endsection
