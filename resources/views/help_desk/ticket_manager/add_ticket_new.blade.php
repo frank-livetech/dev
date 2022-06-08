@@ -41,7 +41,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form class="needs-validation was-validated" novalidate="" id="save_tickets">
+                            <form id="save_tickets">
                                 <div class="form-group">
                                     <div class="row g-1">
                                         <div class="col-md-8 col-12 position-relative">
@@ -236,7 +236,7 @@
                                         <div class="row mt-1">
                                             <div class="col-md-4">
                                                 <label for="example-search-input" class=" col-form-label">Phone Number
-                                                    <span class="text-danger">*</span></label>
+                                                    </label>
                                                 <div class="">
                                                     <input class="form-control" type="text"
                                                         onkeypress="return event.charCode >= 48 && event.charCode <= 57"

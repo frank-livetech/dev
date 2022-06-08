@@ -467,6 +467,7 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                         <div class="row mt-2">
                             <div class="col-12">
                                 <div class="table-responsive" style="overflow: hidden;">
+                                    <span class="fw-bolder"> <span class="total_tickets">0</span>  ticket selected</span>
                                     <table id="ticket-table-list"
                                         class="table table-bordered display mb-0 ticket-table-list">
                                         <thead>

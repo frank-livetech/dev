@@ -227,12 +227,12 @@
                         $("#email_error").html(' ');
                     }
 
-                    if( phone == '' || phone == null) {
-                        $("#phone_error").html('This field is required');
-                        return false;
-                    }else{
-                        $("#phone_error").html(' ');
-                    }
+                    // if( phone == '' || phone == null) {
+                    //     $("#phone_error").html('This field is required');
+                    //     return false;
+                    // }else{
+                    //     $("#phone_error").html(' ');
+                    // }
 
                 }else{
                     newcustomer = '';

@@ -2591,9 +2591,9 @@ class HelpdeskController extends Controller
                         
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
 
-                        $temp = $this->templateReplaceShortCodes($template->template_html , $ticket->coustom_id);
+                        $temp = $this->templateReplaceShortCodes($template->template_html , $ticket->coustom_id, $request->note);
                         $mail = new MailController();
-                        $mail->sendMail( 'STAFF ASSIST has been requested for ' . $ticket->coustom_id , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
                     }
                 }
             }
@@ -2623,7 +2623,7 @@ class HelpdeskController extends Controller
         }    
     }
 
-    function templateReplaceShortCodes($template_html, $ticketID) {
+    function templateReplaceShortCodes($template_html, $ticketID , $notes) {
 
         $template = htmlentities($template_html);
 
@@ -2633,6 +2633,10 @@ class HelpdeskController extends Controller
 
         if(str_contains($template, '{Ticket-ID}')) {
             $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticketID , $template);
+        }
+
+        if(str_contains($template, '{Notes}')) {
+            $template = str_replace('{Notes}', ' Ticket ' .  $notes , $template);
         }
 
         if(str_contains($template, '{Go-To-Ticket}')) {
