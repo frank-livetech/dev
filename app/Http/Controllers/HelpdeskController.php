@@ -2566,6 +2566,8 @@ class HelpdeskController extends Controller
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id , auth()->id() , $action_performed);
 
+            $template = DB::table("templates")->where('code','mentioned_by')->first();
+
             if($request->tag_emails != null && $request->tag_emails != '') {
 
                 $emails = explode(',',$request->tag_emails);
@@ -2588,9 +2590,12 @@ class HelpdeskController extends Controller
                         $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
                         
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+
+                        $temp = $this->templateReplaceShortCodes($template->template_html , $ticket->coustom_id);
+                        $mail = new MailController();
+                        $mail->sendMail( 'STAFF ASSIST has been requested for ' . $ticket->coustom_id , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
                     }
                 }
-        
             }
             $check =  Tickets::where('id' , $request->ticket_id)->first();
             
@@ -2615,9 +2620,29 @@ class HelpdeskController extends Controller
             $response['status_code'] = 500;
             $response['success'] = false;
             return response()->json($response);
+        }    
+    }
+
+    function templateReplaceShortCodes($template_html, $ticketID) {
+
+        $template = htmlentities($template_html);
+
+        if(str_contains($template, '{Staff-Name}')) {
+            $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
         }
 
-                 
+        if(str_contains($template, '{Ticket-ID}')) {
+            $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticketID , $template);
+        }
+
+        if(str_contains($template, '{Go-To-Ticket}')) {
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticketID;
+            // $url = '<a href="{Go-To-Ticket}">Go To Ticket</a>';
+            $template = str_replace('{Go-To-Ticket}', $url , $template);
+        }
+
+
+        return html_entity_decode($template);
     }
 
     public function addTicketCustomer(Request $request) {
