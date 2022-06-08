@@ -1705,6 +1705,8 @@ class MailController extends Controller
     
                 }
             }
+        }else{
+            $template = str_replace('{Initial-Request-Attachments}', '', $template);
         }
         
 
