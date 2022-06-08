@@ -140,7 +140,7 @@
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
                             <span class="user-name fw-bolder">{{ Auth::user()->name }} {{auth()->user()->avatar_url}}</span>
-                            {{-- <span class="user-status">{{ Auth::user()->email }}</span> --}}
+                            <span class="user-status">User</span>
                         </div>
                         <span class="avatar">
                             @php
@@ -151,11 +151,11 @@
                                 <img src="{{ request()->root() .'/'. auth()->user()->profile_pic }}" class="rounded-circle"
                                     width="50" height="50" id="profile-user-img" />
                                 @else
-                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                                <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="40" height="40"
                                     id="profile-user-img" />
                                 @endif
                             @else
-                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
+                            <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="40" height="40"
                                 id="profile-user-img" />
                             @endif
                             <span class="avatar-status-online"></span></span>

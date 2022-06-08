@@ -20,7 +20,7 @@
                                 <div class="row g-1">
                                     <div class="col-md-8 col-12 position-relative">
                                         <label class="form-label" for="validationTooltip01">Subject <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="subject" name="subject" required="">
+                                        <input type="text" class="form-control" id="subject" name="subject" required>
                                         <span class="text-danger small" id="subject_error"></span>
                                     </div>
                                     <!-- Dept file chanegs  -->

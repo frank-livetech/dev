@@ -75,12 +75,14 @@
                                 <tr>
                                     <th>Ticket ID</th>
                                     <th>Subject</th>
-                                    <th> Last Update </th>
-                                    <th> Last Replier </th>
-                                    <th>Department </th>
-                                    <th> Type </th>
                                     <th> Status </th>
                                     <th> Priority </th>
+                                    <th> Type </th>
+                                    <th> Last Activity </th>
+                                    <th> Last Replier </th>
+                                    <th>Department </th>
+                                    
+                                   
                                 </tr>
                             </thead>
                             <tbody>

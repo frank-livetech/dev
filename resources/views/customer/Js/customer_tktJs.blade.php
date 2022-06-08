@@ -95,6 +95,23 @@
                             },
                             {
                                 "render": function (data, type, full, meta) {
+                                    let status = `<span class="badge" style="background-color:${full.status_color != null ? full.status_color : ''}"> ${full.status_name} </span>`;
+                                    return full.status_name != null ? status : '-';
+                                }
+                            },
+                            {
+                                "render": function (data, type, full, meta) {
+                                    let priority = `<span class="badge" style="background-color:${full.priority_color != null ? full.priority_color : ''}"> ${full.priority_name} </span>`;
+                                    return full.priority_name != null ? priority : '-';
+                                }
+                            },
+                            {
+                                "render": function (data, type, full, meta) {
+                                    return full.type_name != null ? full.type_name : '-';
+                                }
+                            },
+                            {
+                                "render": function (data, type, full, meta) {
                                     return full.updated_at != null ? customer.region_wise_dateTime(full.updated_at) : '-';
                                 }
                             },
@@ -108,23 +125,7 @@
                                     return full.department_name != null ? full.department_name : '-';
                                 }
                             },
-                            {
-                                "render": function (data, type, full, meta) {
-                                    return full.type_name != null ? full.type_name : '-';
-                                }
-                            },
-                            {
-                                "render": function (data, type, full, meta) {
-                                    let status = `<span class="badge" style="background-color:${full.status_color != null ? full.status_color : ''}"> ${full.status_name} </span>`;
-                                    return full.status_name != null ? status : '-';
-                                }
-                            },
-                            {
-                                "render": function (data, type, full, meta) {
-                                    let priority = `<span class="badge" style="background-color:${full.priority_color != null ? full.priority_color : ''}"> ${full.priority_name} </span>`;
-                                    return full.priority_name != null ? priority : '-';
-                                }
-                            },
+    
                             ],
                         });
                     }else{
