@@ -90,10 +90,18 @@
             // show hide tkt buttons
             (chck == true ? $('.show_tkt_btns').show() : $('.show_tkt_btns').hide());
             // 
+            let totalSelectedTickets = $('#ticket-table-list tbody input[type="checkbox"]').length;
 
+            let selectedCount = $('.total_tickets').text();
+            
             $('#ticket-table-list tbody input[type="checkbox"]').each(function() {
-                if (chck) $(this).prop('checked', true);
-                else $(this).prop('checked', false);
+                if (chck == true) {
+                    $(this).prop('checked', true);
+                    $('.total_tickets').text( parseInt(selectedCount) + totalSelectedTickets );
+                } else {
+                    $(this).prop('checked', false);
+                    $('.total_tickets').text( parseInt(selectedCount) - totalSelectedTickets );
+                } 
             });
         });
     }
@@ -101,9 +109,16 @@
     function selectSingle(id) {
         let chck = $("#select_single_" + id).prop('checked');
         $("#select_single_" + id).toggleClass('chkd');
+
+        let selectedCount = $('.total_tickets').text();
+
         if (chck == true) {
             $('.show_tkt_btns').show()
+            $('.total_tickets').text( parseInt(selectedCount) + 1);
+        }else{
+            $('.total_tickets').text( parseInt(selectedCount) - 1);
         }
+
         var checked_tkt = jQuery(".chkd").length;
         if (checked_tkt == 0) {
             $('.show_tkt_btns').hide()
@@ -119,6 +134,11 @@
         $("#prio-label").attr('style', 'border-right: 1px solid white; padding: 12px;');
 
         $('.drop-dpt').attr('style', 'background-color:#b0bec5;border-radius:9px;');
+
+        
+        // if( parseInt(selectedCount) != 0) {
+            
+        // }
     }
 
     function updateTickets() {
