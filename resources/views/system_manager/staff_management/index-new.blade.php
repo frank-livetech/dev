@@ -19,9 +19,6 @@
         margin-right: 8px;
         font-size: 6px;
     }
-    .select2-search__field{
-        width: 352.406px !important
-    }
 </style>
 @php
     $path = Session::get('is_live') == 1 ? 'public/' : '/';
@@ -183,8 +180,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <span class="block input-icon input-icon-right">
-                                                <input name="full_name" id="full_name" class="form-control" type="text" value="" placeholder="Full Name" required>
-                                                <span class="fa fa-asterisk field-icon text-danger reqField"></span>
+                                                <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                                <input name="full_name" id="full_name" class="form-control" type="text" value="" placeholder="" required>
+                                                {{-- <span class="fa fa-asterisk field-icon text-danger reqField"></span> --}}
                                             </span>
                                         </div>
                                     </div>
@@ -192,8 +190,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <span class="block input-icon input-icon-right">
-                                                <input name="email" id="email" class="form-control" type="text" value="" placeholder="Username" required>
-                                                <span class="fa fa-asterisk field-icon text-danger reqField"></span>
+                                                <label class="form-label">Username <span class="text-danger">*</span></label>
+                                                <input name="email" id="email" class="form-control" type="text" value="" placeholder="" required>
+                                                {{-- <span class="fa fa-asterisk field-icon text-danger reqField"></span> --}}
                                             </span>
                                             <span class="small text-danger" id="email_error"></span>
                                             <small class="text-muted">
@@ -204,9 +203,12 @@
 
                                     <div class="col-12">
                                         <div class="form-group user-password-div w-100">
+                                            <label class="form-label">Password <span class="text-danger">*</span></label>
                                             <span class="block input-icon input-icon-right d-flex">
+                                                
                                                 <div class=" input-group form-password-toggle input-group-merge">
-                                                    <input type="password" name="password" id="staffpassword" class="form-control" value="" placeholder="Password" required>
+                                                
+                                                    <input type="password" name="password" id="staffpassword" class="form-control" value="" placeholder="" required>
                                                     <div class="input-group-text cursor-pointer">
                                                         <i data-feather="eye"></i>
                                                     </div>
@@ -233,6 +235,7 @@
                                     </div> --}}
                                     <div class="col-md-2 form-group hire-input-country_box position-relative">
                                         <div class="form-group">
+                                            <label class="form-label">Select Country</label>
                                         <select name="country" class="select2 form-select" id="country">
                                           <option data-country-code="DZ" value="1">USA</option>
                                           <option data-country-code="AD" value="55">Brazil</option>
@@ -241,10 +244,11 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
+                                            
                                             <span class="block input-icon input-icon-right">
-                                                
-                                                <input type="text" name="phone_number" id="phone" class="form-control" value="" placeholder="Phone" required>
-                                                <span class="fa fa-asterisk field-icon text-danger reqField"></span>
+                                                <label class="form-label">Phone</label>
+                                                <input type="text" name="phone_number" id="phone" class="form-control" value="" placeholder="" >
+                                                {{-- <span class="fa fa-asterisk field-icon text-danger reqField"></span> --}}
                                             </span>
                                             <span class="text-danger small" id="phone_error"></span>
                                         </div>
@@ -252,6 +256,8 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label class="form-label">User Role <span class="text-danger">*</span></label>
+
                                             <select class="select2 form-select" id="role_id" name="role_id">
                                                 @foreach($roles as $role)
                                                     <option value="{{$role->id}}">{{$role->name}}</option>
@@ -262,8 +268,8 @@
 
                                     <div class="col-md-6 mt-1 mb-1">
                                         <div class="form-group">
-
-                                            <select class="tags-select select2 form-control" id="tags" name="tags" multiple="multiple" style="height: 36px;width: 100%;" data-placeholder="Select Tags">
+                                            <label class="form-label">Select Tag</label>
+                                            <select class="tags-select select2 form-control" id="tags" name="tags" multiple="multiple" style="height: 36px;width: 100%;">
                                                 <option></option>
                                             </select>
                                         </div>
@@ -280,13 +286,15 @@
 
                                     <div class="col-md-6 mb-1">
                                         <div class="form-group">
-                                            <input name="sms" id="sms" class="form-control" placeholder="SMS" type="text">
+                                            <label class="form-label">SMS</label>
+                                            <input name="sms" id="sms" class="form-control" type="text">
                                             <span class="text-danger small" id="sms_error"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6 mb-1">
                                         <div class="form-group">
+                                            <label class="form-label">WhatsApp </label>
                                             <input type="text" name="whatsapp" id="whatsapp" class="form-control" placeholder="WhatsApp">
                                             <span class="text-danger small" id="wtsapp_error"></span>
                                         </div>

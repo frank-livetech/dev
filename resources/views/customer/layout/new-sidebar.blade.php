@@ -1,6 +1,6 @@
 <!-- BEGIN: Main Menu-->
 <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
-        <div class="navbar-header mt-2">
+        <div class="navbar-header">
             <ul class="nav navbar-nav flex-row ">
                 <li class="nav-item me-auto">
                     <a class="navbar-brand mt-1" href="">

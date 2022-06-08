@@ -801,7 +801,7 @@
                             <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
                                 <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
                                     <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5">Selected</h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5"></h5>
                                     <select class="select2 form-select form-control form-control-line" id="dept_id" name="dept_id" style="width: 100%; height:36px;">
                                         
                                         @foreach($departments as $department)
@@ -811,7 +811,7 @@
                                 </div>
                                 <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
                                     <label class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5">Selected</h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5"></h5>
                                     <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
                                         <option value="">Unassigned</option>
                                         @foreach($users as $user)
@@ -821,7 +821,7 @@
                                 </div>
                                 <div class="col-md-2 br-white" id="type-label" style="border-right: 1px solid white;padding: 12px;">
                                     <label class="control-label col-sm-12 end_padding text-white "><strong>Type</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="type-h5">Selected</h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="type-h5"></h5>
                                     <select class="select2 form-control " id="type" name="type" style="width: 100%; height:36px;">
                                         @foreach($types as $type)
                                             <option value="{{$type->id}}" {{ $type->id == $details->type ? 'selected' : '' }}>{{$type->name}}</option>
