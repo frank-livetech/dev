@@ -1698,7 +1698,7 @@ class MailController extends Controller
                         }
                         $flexlayout = '<div class=""><label><strong>Attachments</strong></label></div><div class="row" style="display:flex">'.$layout.'</div>';
                         $template = str_replace('{Initial-Request-Attachments}', $flexlayout, $template);
-    
+                        
                     }else{
                         $template = str_replace('{Initial-Request-Attachments}', '', $template);
                     }
@@ -1709,7 +1709,6 @@ class MailController extends Controller
             $template = str_replace('{Initial-Request-Attachments}', '', $template);
         }
         
-
         if(str_contains($template, '{Asset-ID-####}')) {
             $asset = array_values(array_filter($data_list, function($value) {
                 return ($value['module'] == 'Asset');
@@ -1752,7 +1751,7 @@ class MailController extends Controller
         
         // replace the generic array modules data
         $this->replaceShortCodes($data_list, $template , $user_type);
-        
+        // dd('template_parser');
         if(str_contains($template, '{Creator-Name}')) {
 
             $user = User::where('id' , $ticket['created_by'])->first();
@@ -2311,19 +2310,21 @@ class MailController extends Controller
                             $tags = $doc->getElementsByTagName('img');
                             $attaches = explode(",",$data['values']['embed_attachments']);
                             $atch_count = 0;
-                            
+                           
                             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets/'.$data['values']['id'].'/';
-                            
-                            if($tags){
-                                foreach ($tags as $tag) {
-                                    $old_src = $tag->getAttribute('src');
-                                    $new_src_url = $url.$attaches[$atch_count];
-                                    $tag->setAttribute('src', $new_src_url);
-                                    $tag->setAttribute('style', 'width:100%;');
-                                    $atch_count++;
+                            if($data['values']['embed_attachments'] != NULL){
+                                if($tags){
+                                    foreach ($tags as $tag) {
+                                        $old_src = $tag->getAttribute('src');
+                                        $new_src_url = $url.$attaches[$atch_count];
+                                        $tag->setAttribute('src', $new_src_url);
+                                        $tag->setAttribute('style', 'width:100%;');
+                                        $atch_count++;
+                                    }
+                                    $content = $doc->saveHTML();
                                 }
-                                $content = $doc->saveHTML();
                             }
+                            
                             
                         }
                         $content =  $bbcode->convertToHtml($content);
@@ -2449,22 +2450,24 @@ class MailController extends Controller
             $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
             $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
             
-
-           
+            
+                
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
                 $k = str_replace('_', ' ', $key);
                 $k = ucwords($k);
                 $k = str_replace(' ', '-', $k);
     
+         
                 if(!is_array($value) && !is_object($value) && !empty($value)) {
+
 
                     if($data['module'] == 'Ticket') {
                         $tkt =Tickets::where('id' , $data['values']['id'] )->first();
-                     
+                    //  dd('masachusa');
                         // date_default_timezone_set($tm_name);
-                        $fr = $this->convertFormat($date_format) . ' g:i a';
                         
+                        $fr = $this->convertFormat($date_format) . ' g:i a';
                         
                         $tkt_created_at = new \DateTime( $data['values']['created_at'] );
                         $tkt_created_at->setTimezone(new \DateTimeZone($tm_name));                            
@@ -2489,6 +2492,7 @@ class MailController extends Controller
 
                 }
             }
+        
         }
     }
 
