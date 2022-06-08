@@ -182,6 +182,7 @@ class HelpdeskController extends Controller
         $departments = Departments::all();
         $priorities = TicketPriority::all();
         $types = TicketType::all();
+        $companies = Company::all();
         $users = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
         $customers = Customer::where('is_deleted', 0)->get();
 
@@ -468,6 +469,7 @@ class HelpdeskController extends Controller
         $current_date = Carbon::now();
 
         $data = $request->all();
+        // return dd($data);
         $response = array();
         try {
             if ($request->has('newcustomer')) {
@@ -2564,6 +2566,8 @@ class HelpdeskController extends Controller
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id , auth()->id() , $action_performed);
 
+            $template = DB::table("templates")->where('code','mentioned_by')->first();
+
             if($request->tag_emails != null && $request->tag_emails != '') {
 
                 $emails = explode(',',$request->tag_emails);
@@ -2586,9 +2590,12 @@ class HelpdeskController extends Controller
                         $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
                         
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+
+                        $temp = $this->templateReplaceShortCodes($template->template_html , $ticket->coustom_id);
+                        $mail = new MailController();
+                        $mail->sendMail( 'STAFF ASSIST has been requested for ' . $ticket->coustom_id , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
                     }
                 }
-        
             }
             $check =  Tickets::where('id' , $request->ticket_id)->first();
             
@@ -2613,9 +2620,29 @@ class HelpdeskController extends Controller
             $response['status_code'] = 500;
             $response['success'] = false;
             return response()->json($response);
+        }    
+    }
+
+    function templateReplaceShortCodes($template_html, $ticketID) {
+
+        $template = htmlentities($template_html);
+
+        if(str_contains($template, '{Staff-Name}')) {
+            $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
         }
 
-                 
+        if(str_contains($template, '{Ticket-ID}')) {
+            $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticketID , $template);
+        }
+
+        if(str_contains($template, '{Go-To-Ticket}')) {
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticketID;
+            // $url = '<a href="{Go-To-Ticket}">Go To Ticket</a>';
+            $template = str_replace('{Go-To-Ticket}', $url , $template);
+        }
+
+
+        return html_entity_decode($template);
     }
 
     public function addTicketCustomer(Request $request) {
@@ -2673,6 +2700,25 @@ class HelpdeskController extends Controller
                 $c['has_account'] = 0;
             }
             $c['phone'] = $data['phone'];
+
+            if( isset($request->new_company ) && $request->new_company == 'new_company' ) {
+
+                $companyData = Company::create([
+                    "poc_first_name" => $request->poc_first_name,
+                    "poc_last_name" => $request->poc_last_name,
+                    "name" => $request->company_name,
+                    "domain" => $request->company_domain,
+                    "phone" => $request->company_phone_number,
+
+                ]);
+
+                $c['company_id'] = $companyData->id;
+
+            }else{
+                $c['company_id'] = $request->company_id;
+            }
+
+
             $customer = Customer::create($c);
 
             return $customer->id;
