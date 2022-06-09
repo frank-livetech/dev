@@ -918,7 +918,7 @@ class HelpdeskController extends Controller
 
         $open_ticket_count = Tickets::
         when($statusOrUser == 'customer', function($q) use ($cid , $open_status) {
-            return $q->where('tickets.customer_id', $cid)->where('status' ,'!=', $closed_status_id);;
+            return $q->where('tickets.customer_id', $cid)->where('status' ,'!=', $closed_status->id);;
         })
         ->when($statusOrUser == 'staff', function($q) use ($sid) {
             return $q->where('tickets.assigned_to', $sid);
