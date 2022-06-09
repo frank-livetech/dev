@@ -156,15 +156,15 @@ function showAssetDetails(id) {
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.customer.first_name != null ? item.customer.first_name : '' } ${item.customer.last_name != null ? item.customer.last_name : '' }  ${item.customer.first_name != null ? '<i class="far fa-copy"></i>': ''}</td>
+                                    <td> ${item.customer.first_name != null ? item.customer.first_name : '---' } ${item.customer.last_name != null ? item.customer.last_name : '---' }  ${item.customer.first_name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.first_name+'`)" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  ${item.customer.email != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
+                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  ${item.customer.email != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.email+'`)" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
+                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.phone+'`)" style="float:right"></i>': ''}</td>
                                 </tr>                                                        
                             </tbody>
                         </table>
@@ -189,15 +189,15 @@ function showAssetDetails(id) {
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.company.name != null ? item.company.name : '-' } ${item.company.name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.name+'`)" style="float:right"></i>': ''}</td>
+                                    <td> ${item.company.name != null ? item.company.name : '---' } ${item.company.name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.name+'`)" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.company.email != null ? item.company.email : '-'}  ${item.company.email != null ? '<i class="far fa-copy"  style="float:right"></i>': ''}</td>
+                                    <td> ${item.company.email != null ? item.company.email : '---'}  ${item.company.email != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.email+'`)" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.company.phone != null ? item.company.phone : '-'} ${item.company.phone != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
+                                    <td> ${item.company.phone != null ? item.company.phone : '---'} ${item.company.phone != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.phone+'`)" style="float:right"></i>': ''}</td>
                                 </tr>                                                        
                             </tbody>
                         </table>
@@ -219,7 +219,7 @@ function showAssetDetails(id) {
                     asset_field_tr += `
                         <tr>
                             <td class="fw-bolder"> ${data.label} </td>
-                            <td>${key != null ? key : '-'} ${key != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
+                            <td>${key != null ? key : '-'} ${key != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+key+'`)" style="float:right"></i>': ''}</td>
                         </tr>`;
 
                 }
@@ -236,7 +236,8 @@ function showAssetDetails(id) {
                                    
                                     <tr>
                                         <td class="fw-bolder"> Asset Type </td>
-                                        <td> ${item.template.title} </td>
+                                        <td>${item.template.title != null ? item.template.title : '---'} ${item.template.title != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.template.title+'`)" style="float:right"></i>': ''}</td>
+                                        
                                     </tr>
                                     ${asset_field_tr}
                                 </tbody>
@@ -270,7 +271,7 @@ function copyToClipBoard(text) {
     document.execCommand('copy');
     $input.remove();
 
-    toastr.success('text copied', { timeOut: 5000 });
+    toastr.success('Text copied', { timeOut: 5000 });
 }
 
 function get_asset_temp_table_list() {
