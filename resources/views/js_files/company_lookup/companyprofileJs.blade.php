@@ -29,6 +29,7 @@
     let tkts_ids = [];
     let timeouts_list = [];
     let loggedInUser_id = {!! json_encode(\Auth::user()->id) !!};
+    let loggedInUser_role = {!! json_encode(\Auth::user()->user_type) !!};
 
     function initMap(){
     address1Field = document.querySelector("#address");
@@ -325,7 +326,7 @@
                     for (let i in notes) {
                         let timeOut = '';
                         let autho = '';
-                        if (notes[i].created_by == loggedInUser_id) {
+                        if (loggedInUser_role == 1) {
                             autho = `<div class="ml-auto mt-2">
 
                                 <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"

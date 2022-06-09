@@ -59,6 +59,8 @@
     let ticket_notify_route = "{{asset('/ticket_notification')}}";
     let flag_ticket_route = "{{asset('/flag_ticket')}}";
     let loggedInUser = {!! json_encode(\Auth::user()->id) !!};
+    let loggedInUser_role = {!! json_encode(\Auth::user()->user_type) !!};
+
     let date_format = "{{Session::get('system_date')}}";
     let time_zone = "{{Session::get('timezone')}}";
     let url_type = '';
@@ -1770,7 +1772,7 @@
         for (let i in notes) {
             
             let autho = '';
-            if (notes[i].created_by == loggedInUser) {
+            if (loggedInUser_role == 1) {
                 autho = `<div class="ml-auto mt-2">
 
                         <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
