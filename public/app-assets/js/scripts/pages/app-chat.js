@@ -120,7 +120,7 @@ $(function () {
   if (userProfileToggle.length) {
     userProfileToggle.on('click', function () {
       userProfileSidebar.addClass('show');
-      overlay.addClass('show');
+      // overlay.addClass('show');
     });
   }
 

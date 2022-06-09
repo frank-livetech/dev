@@ -4,6 +4,7 @@
 @section('body')
 
     <style>
+        
         .whatsapp_chat {
             background-image: url('{{ asset('default_imgs/whatsapp_bg.jpg') }} !important');
             background-color: #f2f0f7;
@@ -259,10 +260,13 @@
                                     <input type="hidden" name="user_to" id="user_to">
 
                                     <div class="input-group input-group-merge me-1 form-send-message">
-                                        
-                                        <span class="speech-to-text input-group-text">
-                                            <i data-feather="mic" class="cursor-pointer"></i>
-                                        </span>
+                                        {{-- <a href="#" data-toggle="popover" title=""> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></a> --}}
+                                        <button type="button" class="btn btn-outline-secondary" data-toggle="popover" data-bs-placement="top"  title="">
+                                            <i class="fas fa-plus-circle"></i>
+                                        </button>
+                                        {{-- <span class="speech-to-text input-group-text">
+                                            
+                                        </span> --}}
 
                                         <input type="text" id="message" name="message" class="form-control message" placeholder="Type your message or use speech to text" />
 
@@ -288,10 +292,10 @@
                         <div class="user-profile-sidebar">
                             <header class="user-profile-header">
                                 <span class="close-icon">
-                                    <i data-feather="x"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 </span>
                                 <!-- User Profile image with name -->
-                                <div class="header-profile-sidebar">
+                                <div class="header-profile-sidebar" style="height: 250px !important">
                                     <div class="avatar box-shadow-1 avatar-border avatar-xl" id="avatar_image_link">
                                         <a href=""><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="user_avatar" height="70" width="70" /></a>
                                         <span class="avatar-status-busy avatar-status-lg"></span>
@@ -304,13 +308,32 @@
                                     </div>
                                     
                                     <span class="user-post">UI/UX Designer 👩🏻‍💻</span>
+                                    <div class="text-center my-1">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="FACEBOOK"><i class="fab fa-facebook-square" style="font-size: 18px;"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="LINKDIN"><i class="fab fa-linkedin" style="font-size: 18px;"></i></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="WHATSAPP"><i class="fab fa-whatsapp-square" style="font-size: 18px;"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="WEBSITE"><i class="fas fa-globe" style="font-size: 18px;"></i></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="SMS"><i class="fas fa-sms" style="font-size: 18px;"></i></button>
+                                </div>
                                 </div>
                                 <!--/ User Profile image with name -->
                             </header>
                             <div class="user-profile-sidebar-area">
                                 <!-- About User -->
-                                <h6 class="section-label mb-1">About</h6>
-                                <p>Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop.</p>
+                                
+                                <h6 class="section-label mb-1">Quick Actions</h6>
+                                <div class="">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " >Send Transcript</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Ban</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Forword To</button>
+                                    
+                                </div>
+                                <div class="mt-1 text-center">
+                                    
+                                    <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">New Ticket</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Invite staff</button>
+                                </div>
+                                {{-- <p>Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop.</p> --}}
                                 <!-- About User -->
                                 <!-- User's personal information -->
                                 <div class="personal-info">
@@ -443,7 +466,16 @@
     @endsection
 
     @section('scripts')
+    
     <script>
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover({
+            html:true,
+            content:function(){
+            return ('<span><i class="fad fa-microphone" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-image" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-file" style="padding-right: 4px;"></i></span>');
+            },
+         });   
+    });
         let users_arr = {!! json_encode($users) !!};
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 2;
@@ -482,7 +514,7 @@
                 $('.currentChatUserdesignation').text(user.job_title);
                 $('.currentChatUserProfile').text(user_id);
                 $('.user-profile-sidebar').addClass('show');
-                $('.body-content-overlay').addClass('show');
+                // $('.body-content-overlay').addClass('show');
                 
             }
             if(user.user_type == 1){

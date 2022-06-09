@@ -329,7 +329,7 @@
 
     <!-- BEGIN: Theme JS-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-
+    <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-popovers.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/core/app-menu.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/core/app.js')}}"></script>
     <!-- END: Theme JS-->
