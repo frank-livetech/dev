@@ -424,6 +424,7 @@ class CustomerlookupController extends Controller
 
     public function customer_profile($customer_id, $type = null) {
         $customer = Customer::with('company')->where('id', $customer_id)->first();
+        $company_id = $customer->company_id;
         
         if(!empty($customer)) {
             $credential = User::where('email', $customer->email)->first();
@@ -501,9 +502,13 @@ class CustomerlookupController extends Controller
 
         $closed_status = TicketStatus::where('name','Closed')->first();
         $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0] ])->get();
-        foreach($tickets as $ticket) {
-            $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User']])->count();
-        }
+        // $company_id
+        
+        $notesCount = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$customer_id)->orwhere('company_id',$company_id)->count();
+        // return $notesCount;
+        // foreach($tickets as $ticket) {
+        //     $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User'],['is_deleted',0]])->count();
+        // }
         $ticketsCount = $tickets->count();
 
         $ticketView = TicketView::where('user_id' , auth()->id())->first();
