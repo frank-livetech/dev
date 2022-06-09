@@ -366,7 +366,8 @@
         in_recycle_mode = false;
 
         $('#btnMovetotrash').show();
-        if (f_key == 'closed' || f_key == 'trash') {
+        if (f_key == 'trash') {
+        // if (f_key == 'closed' || f_key == 'trash') {
             getClosedOrTrashedTickets(f_key);
             return true;
         }
@@ -379,6 +380,9 @@
                     break;
                 case 'open':
                     ticket_arr = ticket_arr.filter(item => item.status_name == 'Open');
+                    break;
+                case 'closed':
+                    ticket_arr = ticket_arr.filter(item => item.status_name == 'Closed');
                     break;
                 case 'unassigned':
                     ticket_arr = ticket_arr.filter(item => item.assigned_to == null);

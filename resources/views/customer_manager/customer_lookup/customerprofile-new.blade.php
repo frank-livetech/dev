@@ -334,7 +334,7 @@
                         <li class="nav-item">
                             <a class="nav-link" onclick="getNotes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes 
                             @if($notesCount != 0)
-                            <span id="notes_count" class="badge bg-light-danger bg-light-warning mx-1"> {{$notesCount}} </span> 
+                            <span id="notes_count" class="badge bg-dark text-light mx-1"> {{$notesCount}} </span> 
                             @endif
                         </a>
                         </li>
@@ -1061,7 +1061,7 @@
                                     </button> -->
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-md-3" id="allTicket>
+                                    <div class="col-md-3" id="allTicket">
                                         <a href="javascript:listTickets('total')" class="card card-hover border-info">
                                             <div class="box p-2 rounded info text-center">
                                                 <h1 class="font-weight-light " id="total_tickets_count"></h1>
