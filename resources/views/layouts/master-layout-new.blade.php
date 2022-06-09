@@ -289,6 +289,9 @@
         const swal_message_time = 5000;
     </script>
     <!-- BEGIN: Page Vendor JS-->
+    {{-- phone validation --}}
+    <script src="{{asset($file_path . 'app-assets/jquery.caret.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/jquery.mobilePhoneNumber.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
