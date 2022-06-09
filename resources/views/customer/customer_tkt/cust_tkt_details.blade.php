@@ -160,7 +160,7 @@ br + br { display: none; }
                                                     @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
                                                     
                                                     @if($ticket->user_pic != null)
-                                                            <img src="{{ asset( request()->root() .''. $ticket->user_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
+                                                            <img src="{{ asset( request()->root() .'/'. $ticket->user_pic)}}" class="rounded-circle" width="40" height="40" id="profile-user-img" />
                                                        
                                                     @else
                                                         <img class="rounded-circle" width="40" height="40" id="profile-user-img" src="{{asset($file_path .'default_imgs/customer.png')}}" />
