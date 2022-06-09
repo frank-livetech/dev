@@ -446,13 +446,14 @@ class CompanyController extends Controller
 
         $notesCount = 0;
         $customers = Customer::where('company_id', $id)->get();
-        foreach($customers as $customer) {
-            $customer_tickets = Tickets::where('customer_id' , $customer->id)->get();
+        // foreach($customers as $customer) {
+        //     $customer_tickets = Tickets::where('customer_id' , $customer->id)->get();
 
-            foreach($customer_tickets as $ticket) {
-                $notesCount += TicketNote::where('ticket_id', $ticket->id)->where('type','User Organization')->count();
-            }
-        }
+        //     foreach($customer_tickets as $ticket) {
+        //         $notesCount += TicketNote::where('ticket_id', $ticket->id)->where('type','User Organization')->count();
+        //     }
+        // }
+        $notesCount = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$id)->count();
 
         return view('customer_manager.company_lookup.companyprofile-new', get_defined_vars());
     }

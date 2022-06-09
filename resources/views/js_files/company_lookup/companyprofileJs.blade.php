@@ -369,7 +369,14 @@
                                     width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
                         }
-
+                        let n_type = '<i class="fas fa-clipboard-list"></i>';
+                        if(notes[i].type == 'Ticket') {
+                            n_type = '<i class="fas fa-clipboard-list"></i>';
+                        }else if(notes[i].type == 'User') {
+                            n_type = '<i class="fas fa-user"></i>';
+                        }else{
+                            n_type = '<i class="far fa-building"></i>';
+                        }
                         let flup = `
                         <div class="col-12 rounded p-2 my-1 d-flex" id="note-div-${notes[i].id}" style="background-color:${notes[i].color != null ? notes[i].color : 'rgb(255, 230, 177)'}">
                             <div style="margin-right: 10px; margin-left: -8px;">
@@ -377,7 +384,7 @@
                             </div>
                             <div class="w-100">
                                 <div class="d-flex justify-content-between">
-                                    <h5 class="note-head">Original Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span> </h5>
+                                    <h5 class="note-head">Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span>  ${n_type}</h5>
                                     ${autho}
                                 </div>
                                 <p class="col" style="word-break:break-all">
