@@ -19,4 +19,8 @@ class TicketNote extends Model
         'ticket_id','followup_id','color','type','note','visibility','customer_id','company_id','created_at',' updated_at','created_by',
         'updated_by','deleted_by','deleted_at','is_deleted'
     ];
+
+    public function user(){
+        return $this->hasOne(\App\User::class,'id','created_by');
+    }
 }

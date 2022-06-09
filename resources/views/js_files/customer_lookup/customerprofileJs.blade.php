@@ -1725,8 +1725,9 @@
             type: 'GET',
             url: "{{asset('/get-ticket-notes')}}",
             data: {
-                id: tkts_ids,
-                type: 'User'
+                // id: tkts_ids,
+                type: 'User',
+                customer: $("#customer_id").val()
             },
             // contentType: 'json',
             // enctype: 'multipart/form-data',
