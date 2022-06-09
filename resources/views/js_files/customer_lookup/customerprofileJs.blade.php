@@ -1814,6 +1814,15 @@
             let tkt_subject = '';
             let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
             if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
+           
+            let n_type = '<i class="fas fa-clipboard-list"></i>';
+            if(notes[i].type == 'Ticket') {
+                n_type = '<i class="fas fa-clipboard-list"></i>';
+            }else if(notes[i].type == 'User') {
+                n_type = '<i class="fas fa-user"></i>';
+            }else{
+                n_type = '<i class="far fa-building"></i>';
+            }
 
             flup += `
             <div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
@@ -1822,7 +1831,7 @@
                 </div>
                 <div class="w-100">
                     <div class="col-12 p-0">
-                    <h5 class="note-head">Original Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span> </h5>
+                    <h5 class="note-head">Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span>  ${n_type}</h5>
                         ${autho}
                     </div>
                     <p class="note-details">${notes[i].note} </p>
