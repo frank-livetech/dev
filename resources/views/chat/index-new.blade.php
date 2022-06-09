@@ -297,7 +297,9 @@
                                 <!-- User Profile image with name -->
                                 <div class="header-profile-sidebar" style="height: 250px !important">
                                     <div class="avatar box-shadow-1 avatar-border avatar-xl" id="avatar_image_link">
-                                        <a href=""><img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="user_avatar" height="70" width="70" /></a>
+                                        <a href="" id="profileLink">
+                                            <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="user_avatar" height="70" width="70" />
+                                        </a>
                                         <span class="avatar-status-busy avatar-status-lg"></span>
                                     </div>
                                     <div class="d-flex">
@@ -525,9 +527,10 @@
 
             let imgsrc = $('.user_image_'+user_id).attr('src');
             $("#active_user_img").attr('src', imgsrc);  
-            // let imghref =  js_origin . '/' . 'profile' . '/' . user_id;
-            // console.log(imghref)
-            // $("#avatar_image_link").attr("href", imghref);          
+
+            let profileLink =  js_origin + 'profile/' + user_id;
+            $("#profileLink").addClass('sideModalImg_'+user_id);
+            $(".sideModalImg_"+user_id).attr('href',profileLink );
 
             $("#user_to").val(user_id);
             let src = $('.user_image_' + user_id).attr('src');
