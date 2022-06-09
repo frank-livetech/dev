@@ -178,18 +178,22 @@ function showAssetDetails(id) {
             company_html = `
             <div class="col-md-6 text-start rounded p-1">
                 <div class="bg-light p-2 rounded">
-                    <h4 class="fw-bolder"> Company Detail </h4>
+                    
+                    <div class="d-flex justify-content-between">
+                        <h4 class="fw-bolder"> Company Detail </h4>
+                        <span class="small text-success fw-bolder url_copy_${item.id}"></span>
+                    </div>
                     <hr>
                     <div>
                         <table class="table table -hover table-hover">
                             <tbody>
                                 <tr>
                                     <td class="fw-bolder"> Name </td>
-                                    <td> ${item.company.name != null ? item.company.name : '-' } ${item.company.name != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
+                                    <td> ${item.company.name != null ? item.company.name : '-' } ${item.company.name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.name+'`)" style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Email </td>
-                                    <td> ${item.company.email != null ? item.company.email : '-'}  ${item.company.email != null ? '<i class="far fa-copy" style="float:right"></i>': ''}</td>
+                                    <td> ${item.company.email != null ? item.company.email : '-'}  ${item.company.email != null ? '<i class="far fa-copy"  style="float:right"></i>': ''}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bolder"> Phone </td>
@@ -255,6 +259,18 @@ function showAssetDetails(id) {
             ${company_html}            
         </div>
         `;
+}
+
+function copyToClipBoard(text) {
+    
+    let $input = $("<input>");
+    $('body').append($input);
+
+    $input.val(text).select();
+    document.execCommand('copy');
+    $input.remove();
+
+    toastr.success('text copied', { timeOut: 5000 });
 }
 
 function get_asset_temp_table_list() {
