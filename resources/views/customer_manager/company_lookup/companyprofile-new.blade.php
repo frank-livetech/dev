@@ -258,7 +258,7 @@
                         <a class="nav-link loadNotes" id="notes-profile-tab" data-bs-toggle="tab" href="#ticket_notes"
                             role="tab" aria-controls="pills-profile" aria-selected="false">Notes
                             @if($notesCount != 0)
-                            <span id="notes_count" class="badge bg-light-danger bg-light-warning mx-1"> {{$notesCount}}
+                            <span id="notes_count" class="badge bg-dark text-white mx-1"> {{$notesCount}}
                             </span>
                             @endif
                         </a>
