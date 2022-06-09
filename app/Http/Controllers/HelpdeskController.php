@@ -2811,7 +2811,7 @@ class HelpdeskController extends Controller
                     $customer = Customer::where('id', $request->customer)->first();
                     $company_id = $customer->company_id;
                     
-                   $notes = TicketNote::with('user')->whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$request->customer)->orwhere('company_id',$company_id)->get();
+                   $notes = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$request->customer)->orwhere('company_id',$company_id)->get();
                     
                 }
             }else{

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use App\User;
 
 class TicketNote extends Model
 {
@@ -19,8 +20,18 @@ class TicketNote extends Model
         'ticket_id','followup_id','color','type','note','visibility','customer_id','company_id','created_at',' updated_at','created_by',
         'updated_by','deleted_by','deleted_at','is_deleted'
     ];
+    protected $appends = ['profile_pic', 'name'];
 
-    public function user(){
-        return $this->hasOne(\App\User::class,'id','created_by');
+    public function getNameAttribute() {
+
+        $id = $this->created_by;
+        $user = User::where('id', $id)->first();
+        return $user->first_name .' '. $user->last_name;
+    }
+    public function getProfilePicAttribute() {
+
+        $id = $this->created_by;
+        $user = User::where('id', $id)->first();
+        return $user->profile_pic;
     }
 }
