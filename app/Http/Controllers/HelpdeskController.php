@@ -2817,7 +2817,7 @@ class HelpdeskController extends Controller
                     
                 }else if($request->type == 'User Organization'){
                     
-                     $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$company_id)->get();
+                     $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$request->company_id)->get();
                 }
             }else{
                 if(!$request->has('id')) throw new Exception('Ticket id missing');
