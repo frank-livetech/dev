@@ -26,7 +26,7 @@ class TicketNote extends Model
 
         $id = $this->created_by;
         $user = User::where('id', $id)->first();
-        return $user->first_name .' '. $user->last_name;
+        return $user->name;
     }
     public function getProfilePicAttribute() {
 
