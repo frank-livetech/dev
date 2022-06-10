@@ -4,7 +4,16 @@
 @section('body')
 
     <style>
-        
+        .tag{
+            width: fit-content !important;
+            padding: 0.25rem;
+            border-radius: 4px;
+            margin-left: 4px;
+            margin-top: 4px;
+        }
+        .label-info{
+            background-color: #6d5eac !important;
+        }
         .whatsapp_chat {
             background-image: url('{{ asset('default_imgs/whatsapp_bg.jpg') }} !important');
             background-color: #f2f0f7;
@@ -457,7 +466,16 @@
                                         </li>
                                     </ul>
                                 </div>
+                                <div class="more-options">
+                                <h6 class="section-label mb-1 mt-3">Add Tags</h6>
+                                <ul class="list-unstyled">
+                                    <li class="cursor-pointer mb-5">
+                                       <i data-feather="tag" class="font-medium-2 me-50"></i>
+                                       <input type="text" id="to_mails" name="to_mails" class="form-control" placeholder="Tags" data-role="tagsinput" style="display: none;">
+                                    </li>
+                                </ul>
                                 <!--/ PREFERENCES END -->
+                                </div>
                             </div>
                         </div>
                 </div>

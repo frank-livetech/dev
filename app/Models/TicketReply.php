@@ -12,7 +12,7 @@ class TicketReply extends Model
     protected $table = 'ticket_replies';
 
     protected $fillable = [
-        'ticket_id', 'user_id', 'customer_id', 'msgno', 'reply', 'cc', 'date', 'type','is_published', 'created_at', 'updated_at', 'attachments'
+        'ticket_id', 'user_id', 'customer_id', 'msgno', 'reply', 'cc', 'date', 'type','is_published', 'created_at', 'updated_at', 'attachments','embed_attachments'
     ];
     
     public function ticket() {
