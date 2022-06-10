@@ -228,8 +228,7 @@ function showAssetDetails(id) {
             asset_field_html += `
                 <div class="col-md-12 text-start rounded">
                     <div class="bg-light p-2 rounded">
-                        <h4 class="fw-bolder"> Asset Detail </h4>
-                        <hr>
+                        
                         <div>
                             <table class="table table -hover table-hover">
                                 <tbody>
