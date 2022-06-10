@@ -5,17 +5,17 @@
     });
     // Enter a unique channel you wish your users to be subscribed in.
     var channel = pusher.subscribe('notification.'+`{{Auth::id()}}`);
-    var presenceChannel = pusher.subscribe('presenceChannelName');
-    presenceChannel.bind("pusher:subscription_succeeded", (members) => {
-    // For example
-    // update_member_count(members.count);
+    // var presenceChannel = pusher.subscribe('presenceChannelName');
+    // presenceChannel.bind("pusher:subscription_succeeded", (members) => {
+    // // For example
+    // // update_member_count(members.count);
 
-    members.each((member) => {
-        // For example
-        console.log(member)
-        // add_member(member.id, member.info);
-    });
-    });
+    // members.each((member) => {
+    //     // For example
+    //     console.log(member)
+    //     // add_member(member.id, member.info);
+    // });
+    // });
 
     // var count = presenceChannel.members.count;
     console.log(presenceChannel)
