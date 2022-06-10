@@ -6,8 +6,14 @@
     // Enter a unique channel you wish your users to be subscribed in.
     var channel = pusher.subscribe('notification.'+`{{Auth::id()}}`);
     var presenceChannel = pusher.subscribe('presenceChannelName');
-    var count = presenceChannel.members.count;
-    console.log(count)
+    presenceChannel.bind("pusher:subscription_succeeded", function () {
+        var me = presenceChannel.members.me;
+        var userId = me.id;
+        var userInfo = me.info;
+    });
+
+    // var count = presenceChannel.members.count;
+    console.log(presenceChannel)
     // bind the server event to get the response data and append it to the message div
 console.log(channel)
     channel.bind("notification-event", (data) => {
