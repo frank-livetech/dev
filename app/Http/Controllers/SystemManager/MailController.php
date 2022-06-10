@@ -338,7 +338,7 @@ class MailController extends Controller
                     
                 }
                 
-            }else if(str_contains($html_reply,'On') && str_contains($html_reply,'wrote') && str_contains($html_reply,$eq_value->mail_queue_address) && str_contains($html_reply,'<blockquote type="cite">On')){
+            }else if(str_contains($html_reply,'On') && str_contains($html_reply,'wrote') && str_contains($html_reply,$eq_value->mailserver_username) && str_contains($html_reply,'<blockquote type="cite">On')){
                 $content =  explode('<blockquote type="cite">On',$html_reply);
                 $html_reply = $content[0];
             }  
@@ -422,7 +422,7 @@ class MailController extends Controller
                     $mail = $this->mail_get_parts($imap, $message, $mail, 0);
                     $mail[0]["parsed"] = $this->mail_parse_headers($mail[0]["data"]);
                     $emailFrom =  $strAddress_Sender;
-                    
+                    // dd('sad');
                     $spam_user = SpamUser::where('email',$emailFrom)->first();
                     if(!$spam_user){
                         if(!empty($email_subject)) {
@@ -511,7 +511,7 @@ class MailController extends Controller
                                             $email_reply = str_replace('[\url]', "</a>", $html_reply);
                                             $email_reply =  $bbcode->convertToHtml($email_reply);   
                                             $email_reply = nl2br($email_reply);
-                                            
+                                          
                                             $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer);
       
                                         }else{
@@ -529,8 +529,8 @@ class MailController extends Controller
                             }
                         }
                     }
-                    
-                    imap_delete($imap, $message);
+                    dd('testuing');
+                    // imap_delete($imap, $message);
                 }
 
                 imap_close($imap, CL_EXPUNGE);
