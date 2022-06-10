@@ -474,7 +474,7 @@
             $('[data-toggle="popover"]').popover({
             html:true,
             content:function(){
-            return ('<span><i class="fad fa-microphone" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-image" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-file" style="padding-right: 4px;"></i></span>');
+            return ('<span><i class="fad fa-microphone" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-image" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-file" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-smile"></i></span>');
             },
          });   
     });

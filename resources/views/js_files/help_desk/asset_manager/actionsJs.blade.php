@@ -144,68 +144,68 @@ function showAssetDetails(id) {
 
     if(item != null) {
 
-        if(item.customer != null) {
+        // if(item.customer != null) {
 
-            customer_html = `
-            <div class="col-md-6 text-start rounded p-1">
-                <div class="bg-light p-2 rounded">
-                    <h4 class="fw-bolder"> Customer Detail </h4>
-                    <hr>
-                    <div>
-                        <table class="table table -hover table-hover">
-                            <tbody>
-                                <tr>
-                                    <td class="fw-bolder"> Name </td>
-                                    <td> ${item.customer.first_name != null ? item.customer.first_name : '---' } ${item.customer.last_name != null ? item.customer.last_name : '---' }  ${item.customer.first_name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.first_name+'`)" style="float:right"></i>': ''}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bolder"> Email </td>
-                                    <td> ${item.customer.email != null ? item.customer.email : '---' }  ${item.customer.email != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.email+'`)" style="float:right"></i>': ''}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.phone+'`)" style="float:right"></i>': ''}</td>
-                                </tr>                                                        
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>`;
-        }
+        //     customer_html = `
+        //     <div class="col-md-6 text-start rounded">
+        //         <div class="bg-light p-2 rounded">
+        //             <h4 class="fw-bolder"> Customer Detail </h4>
+        //             <hr>
+        //             <div>
+        //                 <table class="table table -hover table-hover">
+        //                     <tbody>
+        //                         <tr>
+        //                             <td class="fw-bolder"> Name </td>
+        //                             <td> ${item.customer.first_name != null ? item.customer.first_name : '---' } ${item.customer.last_name != null ? item.customer.last_name : '---' }  ${item.customer.first_name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.first_name+'`)" style="float:right"></i>': ''}</td>
+        //                         </tr>
+        //                         <tr>
+        //                             <td class="fw-bolder"> Email </td>
+        //                             <td> ${item.customer.email != null ? item.customer.email : '---' }  ${item.customer.email != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.email+'`)" style="float:right"></i>': ''}</td>
+        //                         </tr>
+        //                         <tr>
+        //                             <td class="fw-bolder"> Phone </td>
+        //                             <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.phone+'`)" style="float:right"></i>': ''}</td>
+        //                         </tr>                                                        
+        //                     </tbody>
+        //                 </table>
+        //             </div>
+        //         </div>
+        //     </div>`;
+        // }
 
-        if(item.company != null) {
+        // if(item.company != null) {
 
-            company_html = `
-            <div class="col-md-6 text-start rounded p-1">
-                <div class="bg-light p-2 rounded">
+        //     company_html = `
+        //     <div class="col-md-6 text-start rounded">
+        //         <div class="bg-light p-2 rounded">
                     
-                    <div class="d-flex justify-content-between">
-                        <h4 class="fw-bolder"> Company Detail </h4>
-                        <span class="small text-success fw-bolder url_copy_${item.id}"></span>
-                    </div>
-                    <hr>
-                    <div>
-                        <table class="table table -hover table-hover">
-                            <tbody>
-                                <tr>
-                                    <td class="fw-bolder"> Name </td>
-                                    <td> ${item.company.name != null ? item.company.name : '---' } ${item.company.name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.name+'`)" style="float:right"></i>': ''}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bolder"> Email </td>
-                                    <td> ${item.company.email != null ? item.company.email : '---'}  ${item.company.email != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.email+'`)" style="float:right"></i>': ''}</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bolder"> Phone </td>
-                                    <td> ${item.company.phone != null ? item.company.phone : '---'} ${item.company.phone != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.phone+'`)" style="float:right"></i>': ''}</td>
-                                </tr>                                                        
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>`;
+        //             <div class="d-flex justify-content-between">
+        //                 <h4 class="fw-bolder"> Company Detail </h4>
+        //                 <span class="small text-success fw-bolder url_copy_${item.id}"></span>
+        //             </div>
+        //             <hr>
+        //             <div>
+        //                 <table class="table table -hover table-hover">
+        //                     <tbody>
+        //                         <tr>
+        //                             <td class="fw-bolder"> Name </td>
+        //                             <td> ${item.company.name != null ? item.company.name : '---' } ${item.company.name != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.name+'`)" style="float:right"></i>': ''}</td>
+        //                         </tr>
+        //                         <tr>
+        //                             <td class="fw-bolder"> Email </td>
+        //                             <td> ${item.company.email != null ? item.company.email : '---'}  ${item.company.email != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.email+'`)" style="float:right"></i>': ''}</td>
+        //                         </tr>
+        //                         <tr>
+        //                             <td class="fw-bolder"> Phone </td>
+        //                             <td> ${item.company.phone != null ? item.company.phone : '---'} ${item.company.phone != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.phone+'`)" style="float:right"></i>': ''}</td>
+        //                         </tr>                                                        
+        //                     </tbody>
+        //                 </table>
+        //             </div>
+        //         </div>
+        //     </div>`;
 
-        }
+        // }
 
         if(item.asset_fields != null) {
 
@@ -226,7 +226,7 @@ function showAssetDetails(id) {
             }
 
             asset_field_html += `
-                <div class="col-md-6 text-start rounded p-1">
+                <div class="col-md-12 text-start rounded">
                     <div class="bg-light p-2 rounded">
                         <h4 class="fw-bolder"> Asset Detail </h4>
                         <hr>
@@ -251,7 +251,7 @@ function showAssetDetails(id) {
     }
 
     return `
-        <div class="row mt-1 p-1">
+        <div class="row">
             ${item.asset_fields != null ? asset_field_html : ''}
         </div>
         <div class="row p-1">
