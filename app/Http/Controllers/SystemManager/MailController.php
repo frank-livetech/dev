@@ -529,8 +529,8 @@ class MailController extends Controller
                             }
                         }
                     }
-                    dd('testuing');
-                    // imap_delete($imap, $message);
+                    // dd('testuing');
+                    imap_delete($imap, $message);
                 }
 
                 imap_close($imap, CL_EXPUNGE);
