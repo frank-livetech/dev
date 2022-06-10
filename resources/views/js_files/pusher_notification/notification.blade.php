@@ -6,7 +6,7 @@
     // Enter a unique channel you wish your users to be subscribed in.
     var channel = pusher.subscribe('notification.'+`{{Auth::id()}}`);
     // bind the server event to get the response data and append it to the message div
-
+console.lgo(channel)
     channel.bind("notification-event", (data) => {
         console.log(data , "pusher notification");
         let notify = data.message;
