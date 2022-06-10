@@ -422,7 +422,7 @@ class MailController extends Controller
                     $mail = $this->mail_get_parts($imap, $message, $mail, 0);
                     $mail[0]["parsed"] = $this->mail_parse_headers($mail[0]["data"]);
                     $emailFrom =  $strAddress_Sender;
-                    // dd('sad');
+                   
                     $spam_user = SpamUser::where('email',$emailFrom)->first();
                     if(!$spam_user){
                         if(!empty($email_subject)) {
@@ -436,7 +436,7 @@ class MailController extends Controller
                                 //     $this->handleUnregisteredCustomers($emailFrom);
     
                                 // }else{
-    
+     
                                 if(strpos($email_subject, '[') !== false && strpos($email_subject, ']:') !== false && strpos($email_subject, '!') !== false){
                                     $id = '';
                                     if(strpos($email_subject, $eq_value->mail_queue_address) !== false){
@@ -529,6 +529,7 @@ class MailController extends Controller
                             }
                         }
                     }
+
                     // dd('testuing');
                     imap_delete($imap, $message);
                 }
@@ -1044,10 +1045,14 @@ class MailController extends Controller
                 $data = $all_parsed[1];
             }
         }
-
-        if($data['charset'] == 'ISO-8859-1' || $data['charset'] == 'iso-8859-1') $data = utf8_encode($data['data']);
-        else $data = $data['data'];
+        if(array_key_exists('charset', $data)){
+            if($data['charset'] == 'ISO-8859-1' || $data['charset'] == 'iso-8859-1') $data = utf8_encode($data['data']);
+            else $data = $data['data'];
+        }else{
+            $data = $data['data'];
+        }
         
+       
         // if($type == 'reply'){
         //     $str = 'From: '.$from.' <'.$from.'>';
         //     $gmail_str = $from.' wrote:';
