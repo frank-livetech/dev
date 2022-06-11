@@ -3623,11 +3623,11 @@ class HelpdeskController extends Controller
 
             }else{
                 
-                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt , $ticket['is_staff_tkt']);
+                $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt , $ticket['is_staff_tkt'],$embed_imges);
                 
             }
 
-            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt , $ticket['is_staff_tkt']);
+            $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt , $ticket['is_staff_tkt'],$embed_imges);
             
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
@@ -3641,7 +3641,7 @@ class HelpdeskController extends Controller
                     }
                     
                     if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                        if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param , '' , $embed_imges);
+                        if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param );
                     }
                 }
             }
@@ -3662,7 +3662,7 @@ class HelpdeskController extends Controller
                         }
         
                         if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                            if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param , '' , $embed_imges);
+                            if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param );
                         }
                     }
                 }
@@ -3708,7 +3708,7 @@ class HelpdeskController extends Controller
                     // if(!empty($tech)) $users_list[] = $tech->attributesToArray();
                     // echyo "dfs";
                      
-                    if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param,$template_code , $embed_imges);
+                    if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param,$template_code);
                 }
                 $allwd_users = [];
 
