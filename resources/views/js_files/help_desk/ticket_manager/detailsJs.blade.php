@@ -1433,7 +1433,9 @@ function listReplies() {
                 let tdet = '';
                 if(reply.attachments) {
                     let attchs = reply.attachments.split(',');
-                    tdet += '';
+                    tdet +=`<div class="row">
+                                <h6 style="font-size:.8rem !important"><strong>Attachments</strong></h6>
+                            </div>`
                     attchs.forEach(item => {
                         var tech =  `{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}`;
                         var ter = getExt(tech);
@@ -1458,8 +1460,7 @@ function listReplies() {
                                         </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>` 
+                        </div>` 
             }
             else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                 tdet+= `
@@ -1480,7 +1481,6 @@ function listReplies() {
                                         </div>
                                 </div>
                             </div>
-                        </div>
                     </div>` 
             }
             else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
@@ -1501,7 +1501,6 @@ function listReplies() {
                                         </div>
                                 </div>
                             </div>
-                        </div>
                     </div>` 
             }
             else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
@@ -1522,7 +1521,6 @@ function listReplies() {
                                         </div>
                                 </div>
                             </div>
-                        </div>
                     </div>` 
             }
             else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
@@ -1543,7 +1541,6 @@ function listReplies() {
                                         </div>
                                 </div>
                             </div>
-                        </div>
                     </div>` 
             }
             else if(ter == "zip"){
@@ -1564,7 +1561,6 @@ function listReplies() {
                                         </div>
                                 </div>
                             </div>
-                        </div>
                     </div>` 
             }
             else{
@@ -1585,7 +1581,6 @@ function listReplies() {
                                         </div>
                                 </div>
                             </div>
-                        </div>
                     </div>` 
             }
                         // tdet += `<p><a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
@@ -1709,7 +1704,7 @@ function listReplies() {
                     </li>
                     <div class="row mt-1" style="word-break: break-all;">
                             ${tdet}
-                        </div>
+                    </div>
                     <hr>`;
 
                 if (reply.hasOwnProperty('msgno') && reply.msgno) {
