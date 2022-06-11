@@ -135,8 +135,13 @@
                         <div class="col-md-6 form-group">
                             <label for="phone" class="small">Phone</label>
                             <!-- <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="phone" id="phone" placeholder="eg. 3334445555"> -->
-                            <input type="text" class="form-control" name="phone" id="phone" placeholder="eg. 3334445555">
-                            <span class="text-danger small" id="phone_error"></span>
+                            <div class="d-flex">
+                                <div class="country mt-1" style="padding-right: 8px;"></div>
+                                <input type="tel" class="tel form-control" name="phone" id="phone" placeholder="" autofocus>
+                            </div>
+                            <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                            {{-- <input type="text" class="form-control" name="phone" id="phone" placeholder="eg. 3334445555">
+                            <span class="text-danger small" id="phone_error"></span> --}}
                         </div>
                         <div class="col-md-4 form-group " id="customer_email">
                             <label for="company" class="small">Company Name</label>

@@ -237,12 +237,17 @@
                                             <div class="col-md-4">
                                                 <label for="example-search-input" class=" col-form-label">Phone Number
                                                     </label>
-                                                <div class="">
+                                                    <div class="d-flex">
+                                                        <div class="country mt-1" style="padding-right: 8px;"></div>
+                                                        <input type="tel" class="tel form-control" name="phone" id="tkt_phone" placeholder="" autofocus>
+                                                    </div>
+                                                    <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                                {{-- <div class="">
                                                     <input class="form-control" type="text"
                                                         onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                                                         id="tkt_phone" name="phone">
                                                     <span class="text-danger small" id="phone_error"></span>
-                                                </div>
+                                                </div> --}}
                                             </div>
 
                                             <div class="col-md-3">
@@ -307,8 +312,13 @@
 
                                                 <div class="col-md-6">
                                                     <label for="phone" class="small">Phone Number</label>
-                                                    <input type="text" class="form-control" name="company_phone_number"
-                                                        id="company_phone_number">
+                                                    <div class="d-flex">
+                                                        <div class="country mt-1" style="padding-right: 8px;"></div>
+                                                        <input type="tel" class="tel form-control" name="company_phone_number" id="company_phone_number" placeholder="" autofocus>
+                                                    </div>
+                                                    <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                                    {{-- <input type="text" class="form-control" name="company_phone_number"
+                                                        id="company_phone_number"> --}}
                                                 </div>
                                             </div>
 

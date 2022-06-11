@@ -1073,9 +1073,14 @@
                             <div class="row mt-1">
                                 <div class="col-md-6 form-group">
                                     <label>Phone No</label>
-                                    <input type="text" id="phone" name="phone" value="{{$company->phone}}"
+                                    <div class="d-flex">
+                                        <div class="country mt-1" style="padding-right: 8px;"></div>
+                                        <input type="tel" class="tel form-control" name="phone" id="phone" value="{{$company->phone}}" placeholder="" autofocus>
+                                    </div>
+                                    <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                    {{-- <input type="text" id="phone" name="phone" value="{{$company->phone}}"
                                         class="form-control">
-                                    <span class="text-danger small" id="err4"></span>
+                                    <span class="text-danger small" id="err4"></span> --}}
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="profile_email">Email</label>
