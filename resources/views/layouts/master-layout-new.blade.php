@@ -285,6 +285,15 @@
 
     <!-- BEGIN Vendor JS-->
     <script>
+        jQuery(function($){
+          var input = $('[type=tel]')
+          input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+          input.bind('country.mobilePhoneNumber', function(e, country) {
+            $('.country').text(country || '')
+          })
+        });
+      </script>
+    <script>
         const colorUrl = "{{asset('get-color')}}";
         const swal_message_time = 5000;
     </script>
