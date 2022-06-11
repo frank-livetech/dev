@@ -1411,6 +1411,35 @@ function showAttachmentPreview(id , item) {
     $('#image-viewer').show();
 }
 
+function parserReplyEmbeddedImages(reply_id , images){
+    
+    var index = 0;
+    $('#'+reply_id+' img').each(function () {
+        let attchs = '';
+        
+        if(images != null && images != 'null'){
+
+            attchs = images.split(',');
+            
+        }
+        // console.log(attchs[index])
+        if(attchs[index] == undefined || attchs[index] == null){
+            $(this).remove();
+        }else{
+            var classList = $(this).attr("class");
+            if(classList != 'rounded-circle ' && classList != ' attImg'){
+                $(this).attr('src', "{{asset('storage/tickets-replies')}}/"+ticket_details.id+'/'+attchs[index]);
+                // $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
+                index++;
+            }
+            
+        }
+        
+        
+    });
+    
+}
+
 function listReplies() {
     $('#ticket-replies').html('');
     // console.log(ticketReplies , "ticketReplies");
@@ -1426,6 +1455,7 @@ function listReplies() {
     let replies_html = ``;
     if(ticketReplies.length > 0) {
         ticketReplies.forEach(function(reply, index) {
+            replies_html = ``;
             if (reply.is_published === 0) {
                 editReply(index);
                 $('#draft-rply').show();
@@ -1442,147 +1472,147 @@ function listReplies() {
 
                         
                         // return ter;
-                         if(ter == "pdf" ){
-                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">    
+                    if(ter == "pdf" ){
+                        tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                        <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                               
                                                             </div>
-                                                        </div>
-                                                       
                                                     </div>
-                                            </div>
+                                                </div>
                                         </div>
-                                </div>
-                            </div>
-                        </div>` 
-            }
-            else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
-                tdet+= `
-                <div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">    
+                                    </div>
+                                </div>` 
+                    }
+                    else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
+                        tdet+= `
+                        <div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                        <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                                
                                                             </div>
-                                                        </div>
-                                                        
                                                     </div>
-                                            </div>
+                                                </div>
                                         </div>
-                                </div>
-                            </div>
-                    </div>` 
-            }
-            else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
-                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                    </div>
+                            </div>` 
+                    }
+                    else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
+                        tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                        <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                                    </div>
+                                                                </div>
+                                                               
                                                             </div>
-                                                        </div>
-                                                       
                                                     </div>
-                                            </div>
+                                                </div>
                                         </div>
-                                </div>
-                            </div>
-                    </div>` 
-            }
-            else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
-                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">    
+                                    </div>
+                            </div>` 
+                    }
+                    else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
+                        tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                        <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                               
                                                             </div>
-                                                        </div>
-                                                       
                                                     </div>
-                                            </div>
+                                                </div>
                                         </div>
-                                </div>
-                            </div>
-                    </div>` 
-            }
-            else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
-                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">    
+                                    </div>
+                            </div>` 
+                    }
+                    else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
+                        tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                        <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                               
                                                             </div>
-                                                        </div>
-                                                       
                                                     </div>
-                                            </div>
+                                                </div>
                                         </div>
-                                </div>
-                            </div>
-                    </div>` 
-            }
-            else if(ter == "zip"){
-                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">    
+                                    </div>
+                            </div>` 
+                    }
+                    else if(ter == "zip"){
+                        tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                        <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                                
                                                             </div>
-                                                        </div>
-                                                        
                                                     </div>
-                                            </div>
+                                                </div>
                                         </div>
-                                </div>
-                            </div>
-                    </div>` 
-            }
-            else{
-                tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                            <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
-                                <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
-                                    <div class="" style="display: -webkit-box">
-                                                <div class="modal-first w-100">
-                                                    <div class="mt-0 rounded" >
-                                                        <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">    
+                                    </div>
+                            </div>` 
+                    }
+                    else{
+                        tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                        <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
+                                            <div class="" style="display: -webkit-box">
+                                                        <div class="modal-first w-100">
+                                                            <div class="mt-0 rounded" >
+                                                                <div class="float-start rounded me-1 bg-none" style="">
+                                                                    <div class="">                                                               
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">    
+                                                                    </div>
+                                                                </div>
+                                                                
                                                             </div>
-                                                        </div>
-                                                        
                                                     </div>
-                                            </div>
+                                                </div>
                                         </div>
-                                </div>
-                            </div>
-                    </div>` 
-            }
+                                    </div>
+                            </div>` 
+                    }
                         // tdet += `<p><a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
                     });
 
@@ -1655,11 +1685,11 @@ function listReplies() {
                 }
 
                 var content = '';
-                if(reply.type == 'cron'){
-                    content = reply.reply.replace(/<img[^>]*>/g,"");
-                }else{
+                // if(reply.type == 'cron'){
+                //     content = reply.reply.replace(/<img[^>]*>/g,"");
+                // }else{
                     content = reply.reply;
-                }
+                // }
 
                 if(reply.hasOwnProperty("user_type")) {
                     if(reply.user_type == 5) {
@@ -1683,7 +1713,7 @@ function listReplies() {
                     }
                 }
                                 
-                replies_html +=`
+                replies_html =`
                     <li class="media" id="reply__${index}">
                         <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
                         <div class="row">
@@ -1713,8 +1743,10 @@ function listReplies() {
                     $('#reply-html-' + reply.id).find('img').css('margin', '0 8px 8px 0');
                 }
             }
+            $("#ticket-replies").append(replies_html);
+            parserReplyEmbeddedImages(`reply__${index}`,`${reply.embed_attachments}`);
         });
-        $("#ticket-replies").append(replies_html);
+        
 
         $('.bor-top').find(' p img').css('width','200px !important');
  
