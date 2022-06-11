@@ -1463,7 +1463,7 @@ class MailController extends Controller
     }
 
     
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='' , $reset_tkt = '' , $user_type = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='' , $reset_tkt = '' , $user_type = '',$embed_imges = '') {
         if(empty($template)) {
             return '';
         }
@@ -1485,11 +1485,11 @@ class MailController extends Controller
                 $doc->loadHTML($reply_content);
                 // dd('here');
                 $tags = $doc->getElementsByTagName('img');
-                $attaches = explode(",",$data['values']['embed_attachments']);
+                $attaches = explode(",",$embed_imges);
                 $atch_count = 0;
             
                 $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets-replies/'.$data['values']['id'].'/';
-                if($data['values']['embed_attachments'] != NULL){
+                if($embed_imges != NULL){
                     if($tags){
                         foreach ($tags as $tag) {
                             $old_src = $tag->getAttribute('src');
