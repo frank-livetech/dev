@@ -504,10 +504,10 @@ class MailController extends Controller
                                             // Remove extra threads
                                             $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
                                             
-                                             $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply); 
-                                             $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
+                                            //  $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply); 
+                                            //  $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
                                             $email_reply = str_replace('\r\n', "", $html_reply);
-                                           
+                                        //   dd($email_reply);
                                             $email_reply = str_replace('//', "", $email_reply);
                                             $email_reply = str_replace('[url=', "<a href=", $html_reply);
                                             $email_reply = str_replace('[\url]', "</a>", $html_reply);
@@ -651,8 +651,8 @@ class MailController extends Controller
             $ticket->assigned_to = $sid;
             $ticket->save();
             try {
-                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
-                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt , $embed_imges);
@@ -668,8 +668,8 @@ class MailController extends Controller
             $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
             $user = $customer;
             try {
-                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
-                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 // $email_reply = str_replace('//', "<br>", $email_reply);
                 // dd($email_reply);
@@ -1310,6 +1310,7 @@ class MailController extends Controller
 
     public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '',$template_code = '') {
         try {
+            
             // $mail = new PHPMailer(true);
             $mail = new PHPMailer();
             $mail->CharSet = "UTF-8";
@@ -1351,7 +1352,7 @@ class MailController extends Controller
                     $mail->addCC($c);
                 }
             }
-            if($reply == 'ticket_reply') {
+            if($template_code == 'ticket_reply' || $template_code == 'auto_res_ticket_reply') {
                 if(!empty($attachments) && !empty($path)) {
                     $attachments = explode(',', $attachments);
                     foreach ($attachments as $key => $value) {
@@ -1487,8 +1488,8 @@ class MailController extends Controller
                 $tags = $doc->getElementsByTagName('img');
                 $attaches = explode(",",$embed_imges);
                 $atch_count = 0;
-            
-                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets-replies/'.$data['values']['id'].'/';
+                $bbcode = new BBCode();
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets-replies/'.$ticket['id'].'/';
                 if($embed_imges != NULL){
                     if($tags){
                         foreach ($tags as $tag) {
@@ -1503,7 +1504,7 @@ class MailController extends Controller
                 }
                 
                 $reply_content =  $bbcode->convertToHtml($reply_content);
-                
+                // dd($reply_content);
                 if($template_code == 'auto_res_ticket_reply'){
                     // $reply_content = $reply_content;
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
