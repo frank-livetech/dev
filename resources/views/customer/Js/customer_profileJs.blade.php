@@ -184,12 +184,12 @@
                 }
             }
 
-            var regex = new RegExp("^[0-9]+$");
+            // var regex = new RegExp("^[0-9]+$");
 
-            if(!regex.test(phone)) {
-                $("#phone_error").html("Only numeric values allowed");
-                return false;
-            }
+            // if(!regex.test(phone)) {
+            //     $("#phone_error").html("Only numeric values allowed");
+            //     return false;
+            // }
 
             let pass_checkbox =  $("#change_password_checkbox").is(":checked") ? 1 : 0;
 
@@ -314,12 +314,12 @@
             var d = customerClass.checkValidEmail(email, $("#err3"));
             var e = customerClass.checkEmptyFields(phone, $("#err4"));
 
-            var regex = new RegExp("^[0-9]+$");
+            //var regex = new RegExp("^[0-9]+$");
 
-            if(!regex.test(phone)) {
-                $("#err4").html("Only numeric values allowed");
-                return false;
-            }
+            // if(!regex.test(phone)) {
+            //     $("#err4").html("Only numeric values allowed");
+            //     return false;
+            // }
 
             if (a && b && c && d && e == true) {
 

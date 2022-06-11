@@ -129,33 +129,33 @@
   
   
   });  
-  $("#phone").keyup(function() {
+//   $("#phone").keyup(function() {
 
-  var regex = new RegExp("^[0-9]+$");
+//   var regex = new RegExp("^[0-9]+$");
 
-  if(!regex.test($(this).val())) {
-      $("#phone_error2").html("Only numeric values allowed");
-  }else{
-      $("#phone_error2").html(" ");
-  }
-  if($(this).val() == '') {
-      $("#phone_error2").html(" ");
-  }
-  });
+//   if(!regex.test($(this).val())) {
+//       $("#phone_error2").html("Only numeric values allowed");
+//   }else{
+//       $("#phone_error2").html(" ");
+//   }
+//   if($(this).val() == '') {
+//       $("#phone_error2").html(" ");
+//   }
+//   });
 
 
   $("#direct_line").keyup(function() {
 
-  var regex = new RegExp("^[0-9]+$");
+//   var regex = new RegExp("^[0-9]+$");
 
-  if(!regex.test($(this).val())) {
-      $("#phone_error").html("Only numeric values allowed");
-  }else{
-      $("#phone_error").html(" ");
-  }
-  if($(this).val() == '') {
-  $("#phone_error").html(" ");
-  }
+//   if(!regex.test($(this).val())) {
+//       $("#phone_error").html("Only numeric values allowed");
+//   }else{
+//       $("#phone_error").html(" ");
+//   }
+//   if($(this).val() == '') {
+//   $("#phone_error").html(" ");
+//   }
   });
   function get_categories_list(){
 

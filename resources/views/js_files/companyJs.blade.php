@@ -51,12 +51,12 @@ $(document).ready(function() {
             is_default = 0;
         }
 
-        var regex = new RegExp("^[0-9]+$");
+        // var regex = new RegExp("^[0-9]+$");
 
-        if (!regex.test(phone)) {
-            $("#err4").html("Only numeric values allowed");
-            return false;
-        }
+        // if (!regex.test(phone)) {
+        //     $("#err4").html("Only numeric values allowed");
+        //     return false;
+        // }
 
         if (a && b && c && d == true) {
 
@@ -121,19 +121,19 @@ $(document).ready(function() {
     });
 
 
-    $("#phone").keyup(function() {
+    // $("#phone").keyup(function() {
 
-        var regex = new RegExp("^[0-9]+$");
+    //     var regex = new RegExp("^[0-9]+$");
 
-        if (!regex.test($(this).val())) {
-            $("#err4").html("Only numeric values allowed");
-        } else {
-            $("#err4").html(" ");
-        }
-        if ($(this).val() == '') {
-            $("#err4").html(" ");
-        }
-    });
+    //     if (!regex.test($(this).val())) {
+    //         $("#err4").html("Only numeric values allowed");
+    //     } else {
+    //         $("#err4").html(" ");
+    //     }
+    //     if ($(this).val() == '') {
+    //         $("#err4").html(" ");
+    //     }
+    // });
 
 
 
