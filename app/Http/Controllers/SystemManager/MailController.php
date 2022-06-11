@@ -655,7 +655,7 @@ class MailController extends Controller
                 $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 
-                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt );
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt , $embed_imges);
 
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
@@ -673,7 +673,7 @@ class MailController extends Controller
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 // $email_reply = str_replace('//', "<br>", $email_reply);
                 // dd($email_reply);
-                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt );
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt , $embed_imges);
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
             }
@@ -1351,9 +1351,19 @@ class MailController extends Controller
                     $mail->addCC($c);
                 }
             }
-            // if($reply == 'ticket_reply') {
-            //     $mail->addReplyTo($recipient, $subject);
-            // }
+            if($reply == 'ticket_reply') {
+                if(!empty($attachments) && !empty($path)) {
+                    $attachments = explode(',', $attachments);
+                    foreach ($attachments as $key => $value) {
+                        $path_tmp =  __DIR__."/../../../../$path/$value";
+                        
+                        if(is_readable($path_tmp)) {
+                            // echo $path_tmp;
+                            if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
+                        }
+                    }
+                }
+            }
             if($template_code == 'ticket_create'){
                 //Attachments
                 if(!empty($attachments) && !empty($path)) {
@@ -1469,6 +1479,30 @@ class MailController extends Controller
         if(!empty($reply_content)) {
             if(str_contains($template, '{Ticket-Reply}')) {
               
+                $doc = new \DOMDocument();
+                // dd($content);
+                libxml_use_internal_errors(true);
+                $doc->loadHTML($reply_content);
+                // dd('here');
+                $tags = $doc->getElementsByTagName('img');
+                $attaches = explode(",",$data['values']['embed_attachments']);
+                $atch_count = 0;
+            
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets-replies/'.$data['values']['id'].'/';
+                if($data['values']['embed_attachments'] != NULL){
+                    if($tags){
+                        foreach ($tags as $tag) {
+                            $old_src = $tag->getAttribute('src');
+                            $new_src_url = $url.$attaches[$atch_count];
+                            $tag->setAttribute('src', $new_src_url);
+                            $tag->setAttribute('style', 'width:100%;');
+                            $atch_count++;
+                        }
+                        $reply_content = $doc->saveHTML();
+                    }
+                }
+                
+                $reply_content =  $bbcode->convertToHtml($reply_content);
                 
                 if($template_code == 'auto_res_ticket_reply'){
                     // $reply_content = $reply_content;

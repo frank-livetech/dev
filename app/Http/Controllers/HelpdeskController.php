@@ -3396,7 +3396,7 @@ class HelpdeskController extends Controller
 
     // is_closed for when ticket is closed and customer reply from third party.... then its store today datetime to reply_due & resolution_due
     // reset_tkt for when reply_due & resolution_due is cleared and customer reply from third party... then its store today datetime to reply_due & resolution_due
-    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '',$flwup_updated = '' , $is_closed = '' , $reset_tkt = '') {
+    public function sendNotificationMail($ticket, $template_code, $reply_content='', $cc='', $action_name='', $data_id=null, $mail_frm_param='',$old_params = '' , $auto_res = '' , $send_detail = '',$flwup_note = '',$flwup_updated = '' , $is_closed = '' , $reset_tkt = '' , $embed_imges = '') {
 
         try {
             /*********** dept mail for email notification ***************/
@@ -3641,7 +3641,7 @@ class HelpdeskController extends Controller
                     }
                     
                     if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                        if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
+                        if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param , '' , $embed_imges);
                     }
                 }
             }
@@ -3662,7 +3662,7 @@ class HelpdeskController extends Controller
                         }
         
                         if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                            if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param);
+                            if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param , '' , $embed_imges);
                         }
                     }
                 }
@@ -3708,7 +3708,7 @@ class HelpdeskController extends Controller
                     // if(!empty($tech)) $users_list[] = $tech->attributesToArray();
                     // echyo "dfs";
                      
-                    if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param,$template_code);
+                    if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param,$template_code , $embed_imges);
                 }
                 $allwd_users = [];
 
