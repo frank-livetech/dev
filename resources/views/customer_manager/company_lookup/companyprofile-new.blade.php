@@ -1080,7 +1080,7 @@
                                     <small class="text-danger">Please add country code before number e.g (+1) for US</small>
                                     {{-- <input type="text" id="phone" name="phone" value="{{$company->phone}}"
                                         class="form-control">
-                                    <span class="text-danger small" id="err4"></span> --}}
+                                    {{-- <span class="text-danger small" id="err4"></span> --}} --}}
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="profile_email">Email</label>

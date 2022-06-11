@@ -63,14 +63,14 @@ $(function() {
             var cmp_phone = $("#cmp_phone").val();
 
 
-            var regex = new RegExp("^[0-9]+$");
+            // var regex = new RegExp("^[0-9]+$");
 
-            if (!regex.test(cmp_phone)) {
-                $("#cmp_phone_error").html("Only numeric values allowed");
-                return false;
-            } else {
-                $("#cmp_phone_error").html(" ");
-            }
+            // if (!regex.test(cmp_phone)) {
+            //     $("#cmp_phone_error").html("Only numeric values allowed");
+            //     return false;
+            // } else {
+            //     $("#cmp_phone_error").html(" ");
+            // }
 
         }
 
@@ -95,12 +95,12 @@ $(function() {
             $("#err_email").html(" ");
         }
 
-        var regex = new RegExp("^[0-9]+$");
+        // var regex = new RegExp("^[0-9]+$");
 
-        if (!regex.test(phone)) {
-            $("#phone_error").html("Only numeric values allowed");
-            return false;
-        }
+        // if (!regex.test(phone)) {
+        //     $("#phone_error").html("Only numeric values allowed");
+        //     return false;
+        // }
 
         var formData = {
             first_name: first_name,
@@ -181,19 +181,19 @@ $(function() {
     });
 
 
-    $("#phone").keyup(function() {
+    // $("#phone").keyup(function() {
 
-        var regex = new RegExp("^[0-9]+$");
+    //     var regex = new RegExp("^[0-9]+$");
 
-        if (!regex.test($(this).val())) {
-            $("#phone_error").html("Only numeric values allowed");
-        } else {
-            $("#phone_error").html(" ");
-        }
-        if ($(this).val() == '') {
-            $("#phone_error").html(" ");
-        }
-    });
+    //     if (!regex.test($(this).val())) {
+    //         $("#phone_error").html("Only numeric values allowed");
+    //     } else {
+    //         $("#phone_error").html(" ");
+    //     }
+    //     if ($(this).val() == '') {
+    //         $("#phone_error").html(" ");
+    //     }
+    // });
 
 
 
