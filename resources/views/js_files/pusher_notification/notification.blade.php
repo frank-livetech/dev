@@ -18,7 +18,7 @@
     // });
 
     // var count = presenceChannel.members.count;
-    console.log(presenceChannel)
+    // console.log(presenceChannel)
     // bind the server event to get the response data and append it to the message div
 console.log(channel)
     channel.bind("notification-event", (data) => {
