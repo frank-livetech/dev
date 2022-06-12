@@ -121,8 +121,13 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="phone" class="small">Phone</label>
-                                <input type="tel" class="form-control" id="phone" placeholder="ed. 123456789">
-                                <span class="text-danger small" id="err4"></span>
+                                <div class="d-flex">
+                                    <div class="country mt-1" style="padding-right: 8px;"></div>
+                                    <input type="tel" class="tel form-control" name="phone" id="phone" placeholder="" autofocus>
+                                </div>
+                                <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                {{-- <input type="tel" class="form-control" id="phone" placeholder="ed. 123456789">
+                                <span class="text-danger small" id="err4"></span> --}}
                             </div>
                         </div>
 

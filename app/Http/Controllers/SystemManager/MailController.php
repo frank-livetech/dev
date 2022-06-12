@@ -496,23 +496,25 @@ class MailController extends Controller
                                         if(!empty($ticket)) {
                                             // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
                                             $all_parsed = $mail;
-                                            $attaches = $this->mail_parse_attachments($mail, $ticket->id);
+                                            $attaches = $this->mail_parse_attachments($mail, $ticket->id , $ticketID);
+                                            $attachments = $attaches[1];
+                                            $embed_imges = $attaches[0];
                                             $reply = $this->email_body_parser($all_parsed,'reply',$eq_value->mailserver_username);
                                             $html_reply = $bbcode->convertFromHtml($reply);
                                             // Remove extra threads
                                             $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
                                             
-                                             $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply); 
-                                             $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
+                                            //  $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply); 
+                                            //  $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
                                             $email_reply = str_replace('\r\n', "", $html_reply);
-                                           
+                                        //   dd($email_reply);
                                             $email_reply = str_replace('//', "", $email_reply);
                                             $email_reply = str_replace('[url=', "<a href=", $html_reply);
                                             $email_reply = str_replace('[\url]', "</a>", $html_reply);
                                             $email_reply =  $bbcode->convertToHtml($email_reply);   
                                             $email_reply = nl2br($email_reply);
                                           
-                                            $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer);
+                                            $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attachments,$embed_imges , $message , $sid , $staff , $cid , $customer);
       
                                         }else{
     
@@ -582,7 +584,7 @@ class MailController extends Controller
         return $reset_tkt;
     }
 
-    public function createParserNewReply($ticket , $html_reply ,$email_reply , $date , $attaches , $message , $sid , $staff , $cid , $customer){
+    public function createParserNewReply($ticket , $html_reply ,$email_reply , $date , $attaches ,$embed_imges, $message , $sid , $staff , $cid , $customer){
        $html_reply = mb_convert_encoding($html_reply, 'UTF-8', 'UTF-8');
        $email_reply = mb_convert_encoding($email_reply, 'UTF-8', 'UTF-8');
         $data = array(
@@ -591,7 +593,8 @@ class MailController extends Controller
             "msgno" => $message,
             "reply" => nl2br($html_reply),
             "date" => new Carbon($date),
-            "attachments" => $attaches
+            "attachments" => $attaches,
+            'embed_attachments' => $embed_imges
         );
 
         $fullname = '';
@@ -648,11 +651,11 @@ class MailController extends Controller
             $ticket->assigned_to = $sid;
             $ticket->save();
             try {
-                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
-                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 
-                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt );
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt , $embed_imges);
 
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
@@ -665,12 +668,12 @@ class MailController extends Controller
             $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
             $user = $customer;
             try {
-                $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
-                $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 // $email_reply = str_replace('//', "<br>", $email_reply);
                 // dd($email_reply);
-                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt );
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt , $embed_imges);
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
             }
@@ -1050,6 +1053,7 @@ class MailController extends Controller
             else $data = $data['data'];
         }else{
             $data = $data['data'];
+            $data = utf8_encode($data['data']);
         }
         
        
@@ -1091,68 +1095,8 @@ class MailController extends Controller
         // return substr($data, 0, $i).$attachments;
     }
 
-    public function mail_parse_attachments($data, $tid) {
-        $attachments = '';
-        foreach ($data as $key =>$value) {
-            if(array_key_exists('is_attachment', $value) && $value['is_attachment'] == '1'){
-                $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
-
-                if(empty($ext)) $ext = 'svg';
-
-                $filename = 'Live-tech_'.date_format(Carbon::now(), 'Y-m-d_h-i-s').'_'.$key.'.'.$ext;
-                
-                // $target_src = 'public/files/replies/'.$tid.'/'.$filename;
-                // $target_dir = public_path('files/replies/'.$tid);
-                // $filepath = 'http://localhost/framework/public/files/replies/'.$tid.'/'.$filename;
-                // $filepath = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/replies/'.$tid.'/'.$filename;
-                
-                // if (!File::isDirectory($target_dir)) {
-                //     mkdir($target_dir, 0777, true);
-                // }
-
-                $target_dir = 'storage/tickets-replies/'.$tid;
-                $target_src = $target_dir.'/'.$filename;
-                    
-                if (!File::isDirectory($target_dir)) {
-                    mkdir($target_dir, 0777, true);
-                }
-
-                file_put_contents($target_src, $value['data']);
-
-                if(!empty($attachments)) $attachments .= ','.$filename;
-                else $attachments = $filename;
-                
-                // if( in_array($ext, self::IMAGE_EXTENSIONS) ) {
-                    
-                // }
-                // if(strtolower($ext) == 'svg') {
-                //     $data[$key]['data'] = '<div class="reply-attachs-container">
-                //         <div class="reply-image"><svg height="120" width="120" class="reply-image">
-                //             <text x="0" y="15" fill="grey" transform="translate(35 50)" font-size="20">.'.strtoupper($ext).'</text>
-                //             Sorry, your browser does not support inline SVG.
-                //         </svg></div>
-                //         <div class="reply-bottom">
-                //             <div class="reply-filename">'.$value['filename'].'</div>
-                //             <a href="'.$filepath.'" target="_blank" class="reply-action"><i class="fa fa-download text-white"></i></a>
-                //         </div>
-                //     </div>';
-                // } else {
-                //     $data[$key]['data'] = '<div class="reply-attachs-container">
-                //     <div class="reply-image"><img src="'.$filepath.'" alt="'.$value['filename'].'" class="reply-image"></div>
-                //         <div class="reply-bottom">
-                //             <div class="reply-filename">'.$value['filename'].'</div>
-                //             <a href="'.$filepath.'" target="_blank" class="reply-action"><i class="fa fa-download text-white"></i></a>
-                //         </div>
-                //     </div>';
-                // }
-            }
-        }
-        // return $data;
-        return $attachments;
-    }
-
-    public function mail_parse_ticket_attachments($data, $tid , $custom_id = '') {
-        $filesNames = '';
+    public function mail_parse_attachments($data, $tid , $custom_id) {
+       
         $embed_names = '';
         $attach_names = '';
         $files = array();
@@ -1162,11 +1106,77 @@ class MailController extends Controller
         $count1 = 0; 
         
         foreach ($data as $key =>$value) {
-            // print_r($value['Content-Disposition']);
+            
+            if($count <= 0){
+                $count = substr_count($value['data'],"Content-Disposition: inline;");
+            }
+            if($count1 <= 0){
+                $count1 = substr_count($value['data'],"Content-Disposition: attachment;");
+            }
+            
+            if(array_key_exists('is_attachment', $value) && $value['is_attachment'] == '1'){
+                
+                if($emded_count <= $count){
+                    
+                    $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
 
-            // echo 1;
-            // continue;
-            // print_r($value['data']);exit;
+                    if(empty($ext)) $ext = 'svg';
+    
+                    $filename = $custom_id.'_R'.$key.'.'.$ext;
+                    $target_dir = 'storage/tickets-replies/'.$tid;
+                    $target_src = $target_dir.'/'.$filename;
+                        
+                    if (!File::isDirectory($target_dir)) {
+                        mkdir($target_dir, 0777, true);
+                    }
+    
+                    file_put_contents($target_src, $value['data']);
+    
+                    if(!empty($embed_names)) $embed_names .= ','.$filename;
+                    else $embed_names = $filename;
+                    $emded_count++;
+                    
+                }else{
+                    $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
+
+                    if(empty($ext)) $ext = 'svg';
+    
+                    $filename = $custom_id.'_R'.$key.'.'.$ext;
+                    $target_dir = 'storage/tickets-replies/'.$tid;
+                    $target_src = $target_dir.'/'.$filename;
+                        
+                    if (!File::isDirectory($target_dir)) {
+                        mkdir($target_dir, 0777, true);
+                    }
+    
+                    file_put_contents($target_src, $value['data']);
+    
+                    if(!empty($attach_names)) $attach_names .= ','.$filename;
+                    else $attach_names = $filename;
+                    $attach_count++;
+                }
+              
+            }
+        }
+        
+        array_push($files,$embed_names);
+        array_push($files,$attach_names);
+        
+        return $files;
+    }
+
+    public function mail_parse_ticket_attachments($data, $tid , $custom_id = '') {
+        
+        $embed_names = '';
+        $attach_names = '';
+        $files = array();
+        $emded_count = 1;
+        $attach_count = 1;
+        $count = 0;
+        $count1 = 0; 
+        
+        foreach ($data as $key =>$value) {
+            
             if($count <= 0){
                 $count = substr_count($value['data'],"Content-Disposition: inline;");
             }
@@ -1300,6 +1310,7 @@ class MailController extends Controller
 
     public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '',$template_code = '') {
         try {
+            
             // $mail = new PHPMailer(true);
             $mail = new PHPMailer();
             $mail->CharSet = "UTF-8";
@@ -1341,9 +1352,19 @@ class MailController extends Controller
                     $mail->addCC($c);
                 }
             }
-            // if($reply == 'ticket_reply') {
-            //     $mail->addReplyTo($recipient, $subject);
-            // }
+            if($template_code == 'ticket_reply' || $template_code == 'auto_res_ticket_reply') {
+                if(!empty($attachments) && !empty($path)) {
+                    $attachments = explode(',', $attachments);
+                    foreach ($attachments as $key => $value) {
+                        $path_tmp =  __DIR__."/../../../../$path/$value";
+                        
+                        if(is_readable($path_tmp)) {
+                            // echo $path_tmp;
+                            if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
+                        }
+                    }
+                }
+            }
             if($template_code == 'ticket_create'){
                 //Attachments
                 if(!empty($attachments) && !empty($path)) {
@@ -1443,7 +1464,7 @@ class MailController extends Controller
     }
 
     
-    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='' , $reset_tkt = '' , $user_type = '') {
+    public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='' , $reset_tkt = '' , $user_type = '',$embed_imges = '') {
         if(empty($template)) {
             return '';
         }
@@ -1459,7 +1480,31 @@ class MailController extends Controller
         if(!empty($reply_content)) {
             if(str_contains($template, '{Ticket-Reply}')) {
               
+                $doc = new \DOMDocument();
+                // dd($content);
+                libxml_use_internal_errors(true);
+                $doc->loadHTML($reply_content);
+                // dd('here');
+                $tags = $doc->getElementsByTagName('img');
+                $attaches = explode(",",$embed_imges);
+                $atch_count = 0;
+                $bbcode = new BBCode();
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets-replies/'.$ticket['id'].'/';
+                if($embed_imges != NULL){
+                    if($tags){
+                        foreach ($tags as $tag) {
+                            $old_src = $tag->getAttribute('src');
+                            $new_src_url = $url.$attaches[$atch_count];
+                            $tag->setAttribute('src', $new_src_url);
+                            $tag->setAttribute('style', 'width:100%;');
+                            $atch_count++;
+                        }
+                        $reply_content = $doc->saveHTML();
+                    }
+                }
                 
+                $reply_content =  $bbcode->convertToHtml($reply_content);
+                // dd($reply_content);
                 if($template_code == 'auto_res_ticket_reply'){
                     // $reply_content = $reply_content;
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);

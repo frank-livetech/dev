@@ -191,18 +191,18 @@ $(".user-confirm-password-div").on('click','.show-confirm-password-btn',function
     }
 });
 
-$("#phone").keyup(function(){
-    var regex = new RegExp("^[0-9]+$");
+// $("#phone").keyup(function(){
+//     var regex = new RegExp("^[0-9]+$");
 
-    if(!regex.test($(this).val())) {
-        $("#phone_error").html("Only numeric values allowed");
-    }else{
-        $("#phone_error").html(" ");
-    }
-    if($(this).val() == '') {
-        $("#phone_error").html(" ");
-    }
-});
+//     if(!regex.test($(this).val())) {
+//         $("#phone_error").html("Only numeric values allowed");
+//     }else{
+//         $("#phone_error").html(" ");
+//     }
+//     if($(this).val() == '') {
+//         $("#phone_error").html(" ");
+//     }
+// });
 
 
 // change password checkbox

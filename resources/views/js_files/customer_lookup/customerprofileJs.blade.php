@@ -836,19 +836,19 @@
         });
     });
 
-    $("#prof_phone").keyup(function() {
+    // $("#prof_phone").keyup(function() {
 
-        var regex = new RegExp("^[0-9]+$");
+    //     var regex = new RegExp("^[0-9]+$");
 
-        if(!regex.test($(this).val())) {
-            $("#phone_error").html("Only numeric values allowed");
-        }else{
-            $("#phone_error").html(" ");
-        }
-        if($(this).val() == '') {
-            $("#phone_error").html(" ");
-        }
-    });
+    //     if(!regex.test($(this).val())) {
+    //         $("#phone_error").html("Only numeric values allowed");
+    //     }else{
+    //         $("#phone_error").html(" ");
+    //     }
+    //     if($(this).val() == '') {
+    //         $("#phone_error").html(" ");
+    //     }
+    // });
 
     $("#companyForm").submit(function(event) {
         event.preventDefault();

@@ -721,19 +721,19 @@
         }
     });
 
-    $("#prof_phone").keyup(function() {
+    // $("#prof_phone").keyup(function() {
 
-        var regex = new RegExp("^[0-9]+$");
+    //     var regex = new RegExp("^[0-9]+$");
 
-        if(!regex.test($(this).val())) {
-            $("#phone_error").html("Only numeric values allowed");
-        }else{
-            $("#phone_error").html(" ");
-        }
-        if($(this).val() == '') {
-            $("#phone_error").html(" ");
-        }
-    });
+    //     if(!regex.test($(this).val())) {
+    //         $("#phone_error").html("Only numeric values allowed");
+    //     }else{
+    //         $("#phone_error").html(" ");
+    //     }
+    //     if($(this).val() == '') {
+    //         $("#phone_error").html(" ");
+    //     }
+    // });
 
     $('#update_customer').submit(function(event) {
         event.preventDefault();
@@ -845,12 +845,12 @@
             }
         }
 
-        var regex = new RegExp("^[0-9]+$");
+        // var regex = new RegExp("^[0-9]+$");
 
-        if(!regex.test(phone)) {
-            $("#phone_error").html("Only numeric values allowed");
-            return false;
-        }
+        // if(!regex.test(phone)) {
+        //     $("#phone_error").html("Only numeric values allowed");
+        //     return false;
+        // }
 
         var form = {
             customer_id: customer_id,
@@ -993,12 +993,12 @@
         var d = checkValidEmail(email, $("#err3"));
         var e = checkEmptyFields(phone, $("#err4"));
 
-        var regex = new RegExp("^[0-9]+$");
+        // var regex = new RegExp("^[0-9]+$");
 
-        if(!regex.test(phone)) {
-            $("#err4").html("Only numeric values allowed");
-            return false;
-        }
+        // if(!regex.test(phone)) {
+        //     $("#err4").html("Only numeric values allowed");
+        //     return false;
+        // }
 
         if (a && b && c && d && e == true) {
 

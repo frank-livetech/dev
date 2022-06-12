@@ -670,18 +670,18 @@
           readURL(this);
     });
 
-    $("#phone").keyup(function(){
-        var regex = new RegExp("^[0-9]+$");
+    // $("#phone").keyup(function(){
+    //     var regex = new RegExp("^[0-9]+$");
 
-        if(!regex.test($(this).val())) {
-            $("#err4").html("Only numeric values allowed");
-        }else{
-            $("#err4").html(" ");
-        }
-        if($(this).val() == '') {
-            $("#err4").html(" ");
-        }
-    });
+    //     if(!regex.test($(this).val())) {
+    //         $("#err4").html("Only numeric values allowed");
+    //     }else{
+    //         $("#err4").html(" ");
+    //     }
+    //     if($(this).val() == '') {
+    //         $("#err4").html(" ");
+    //     }
+    // });
 
     $("#update_company").submit(function (event) {
 
@@ -724,10 +724,10 @@
 
         var regex = new RegExp("^[0-9]+$");
 
-        if(!regex.test(phone)) {
-            $("#phone_error").html("Only numeric values allowed");
-            return false;
-        }
+        // if(!regex.test(phone)) {
+        //     $("#phone_error").html("Only numeric values allowed");
+        //     return false;
+        // }
 
         
 
