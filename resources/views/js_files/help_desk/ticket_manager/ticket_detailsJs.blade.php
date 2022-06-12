@@ -290,7 +290,7 @@
         $('#phone-fill').val(phn);
     }
 
-    function copyToClipBoard() {
+    function ticketUrlCopy() {
 
         let url = window.location.href;
         let $input = $("<input>");
