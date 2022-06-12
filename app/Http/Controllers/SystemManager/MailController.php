@@ -1680,21 +1680,31 @@ class MailController extends Controller
 
         // if($action_name == 'ticket_reply_update' || $action_name == 'ticket_reply') {
             if(str_contains($template, '{Staff-Signature}')) {
-                $staff_data = array_values(array_filter($data_list, function ($var) {
-                    return ($var['module'] == 'Tech');
-                }));
-    
-                if( !empty($staff_data[0]['values']) ) {
-                    $signature = $staff_data[0]['values']['signature'];
-                    if($signature != null) {
-                        $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
+                if(auth()->user()) {
+                    if(auth()->user()->signature != null) {
+
+                        $signture = preg_replace("/\r\n|\r|\n/", '<br/>', auth()->user()->signature  );
                         $template = str_replace('{Staff-Signature}', $signture, $template);    
                     }else{
                         $template = str_replace('{Staff-Signature}', '' , $template);
                     }
-                }else{
-                    $template = str_replace('{Staff-Signature}', '' , $template);
                 }
+                
+                // $staff_data = array_values(array_filter($data_list, function ($var) {
+                //     return ($var['module'] == 'Tech');
+                // }));
+    
+                // if( !empty($staff_data[0]['values']) ) {
+                //     $signature = $staff_data[0]['values']['signature'];
+                //     if($signature != null) {
+                //         $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
+                //         $template = str_replace('{Staff-Signature}', $signture, $template);    
+                //     }else{
+                //         $template = str_replace('{Staff-Signature}', '' , $template);
+                //     }
+                // }else{
+                //     $template = str_replace('{Staff-Signature}', '' , $template);
+                // }
             }
         // }
 
