@@ -841,6 +841,7 @@
     </script>
     @include('js_files.chat.pusher')
     @include('js_files.pusher_notification.notification')
+    @include('js_files.pusher_notification.user_status')
     @yield('scripts')
 </body>
 </html>

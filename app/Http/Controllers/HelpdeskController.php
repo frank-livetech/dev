@@ -389,7 +389,6 @@ class HelpdeskController extends Controller
             "success" => true ,
             "tickets" => $tickets,
         ]);
-        
     }
 
     // updated selected ticket
@@ -1515,10 +1514,12 @@ class HelpdeskController extends Controller
 
             $msg = 'Flagged By';
             $title = 'Ticket Flagged';
+            $flag = 'Flagged by ';
             if($flag_tkt->is_flagged){
                 $flag_tkt->is_flagged = 0;
                 $msg = 'Flag Removed By';
                 $title = 'Ticket Unflagged';
+                $flag = 'Unflagged by ';
             }else{
                 $flag_tkt->is_flagged = 1;
             }
@@ -1541,6 +1542,19 @@ class HelpdeskController extends Controller
             $desc = 'Ticket <a href="'.url('ticket-details').'/' .$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> ' . $msg . ' ' .auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
+            
+            $template = DB::table("templates")->where('code','mentioned_by')->first();
+            if(!empty($template)) {
+
+                if($flag_tkt->assigned_to != null) {
+                    $user = User::where('id', $flag_tkt->assigned_to)->first();
+                    $temp = $this->replaceFlagTicketShortCodes($template->template_html,$flag_tkt->coustom_id , $flag);
+                    $mail = new MailController();
+                    $mail->sendMail( $title , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
+                }
+            }
+    
+
             $response['message'] = 'Ticket Flagged Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
@@ -1551,6 +1565,24 @@ class HelpdeskController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }
+    }
+
+    
+    public function replaceFlagTicketShortCodes($html , $ticket_id ,$flag) {
+        $template = htmlentities($html);
+
+        if(str_contains($template, '{Ticket-Flagged}')) {
+            $text = 'Ticket ' . $ticket_id . ' ' . $flag  . auth()->user()->name; 
+            $template = str_replace('{Ticket-Flagged}', $text , $template);
+        }
+
+        if(str_contains($template, '{Go-To-Ticket}')) {
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticketID;
+            // $url = '<a href="{Go-To-Ticket}">Go To Ticket</a>';
+            $template = str_replace('{Go-To-Ticket}', $url , $template);
+        }
+
+        return html_entity_decode($template);
     }
   
     public function save_ticket_follow_up(Request $request) {
