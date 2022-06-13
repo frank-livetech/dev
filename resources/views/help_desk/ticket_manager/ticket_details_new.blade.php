@@ -2085,7 +2085,11 @@
     @include('js_files.help_desk.asset_manager.actionsJs')
     {{-- @include('js_files.help_desk.ticket_manager.ticketsJs') --}}
     @include('js_files.help_desk.asset_manager.assetJs')
-
+    <script>
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
+    </script>
     <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
         $('[data-dismiss=modal]').on('click', function(e) {
