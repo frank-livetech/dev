@@ -1577,7 +1577,7 @@ class HelpdeskController extends Controller
         }
 
         if(str_contains($template, '{Go-To-Ticket}')) {
-            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticketID;
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket_id;
             // $url = '<a href="{Go-To-Ticket}">Go To Ticket</a>';
             $template = str_replace('{Go-To-Ticket}', $url , $template);
         }
