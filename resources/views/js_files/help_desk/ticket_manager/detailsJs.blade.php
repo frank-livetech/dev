@@ -1684,7 +1684,7 @@ function listReplies() {
                 if(reply.reply_user != null) {
                     if(reply.reply_user.profile_pic != null) {
                         let path = root + '/' + reply.reply_user.profile_pic;
-                        user_img += `<img src="{{asset('${path}')}}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                        user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                     }else{
                         user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
@@ -2693,7 +2693,7 @@ function executeFollowUps(check_followup) {
                 user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
                 width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
             }else{
-                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                user_img += `<img src="${path}default_imgs/customer.png" 
                         width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
             }
 
