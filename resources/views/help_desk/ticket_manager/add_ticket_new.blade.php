@@ -1,6 +1,11 @@
 @extends('layouts.master-layout-new')
 @section('title', 'Add Ticket')
 @section('body')
+<style>
+    .tox-collection__item-icon{
+        font-size:25px !important;
+    }
+</style>    
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
