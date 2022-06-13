@@ -97,14 +97,14 @@
             <div class="row match-height">
                 <div class="col-lg-12 col-12">
                     <div class="card card-statistics">
-                        <div class="card-header" style="padding: 1rem 0 0.6rem 0;">
+                        <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;">
                             <div class="row ">
                                
-                                <div class="col-md-10">
+                                <div class="col-md-3">
 
-                                    <div class="d-flex align-items-center pull-right">
+                                    <div class="d-flex align-items-center pull-left">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar font-medium-2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                        <input type="text" class="form-control flat-picker bg-transparent border-0 shadow-none flatpickr-input active" placeholder="YYYY-MM-DD" readonly="readonly">
+                                        <input type="text" class="form-control flat-picker bg-transparent border-0 shadow-none flatpickr-input active" placeholder="YYYY-MM-DD To YYYY-MM-DD" readonly="readonly" style="width: 250px;">
                                     </div>
                                 </div>
 
@@ -115,6 +115,7 @@
                             </div>
                            
                         </div>
+                        <hr>
                         <div class="card-body statistics-body">
                             <div class="row">
                                 <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
