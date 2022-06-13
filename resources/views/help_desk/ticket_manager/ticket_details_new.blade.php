@@ -5,6 +5,9 @@
 @section('body')
 @section('customtheme')
 <style>
+    #dropD .select2{
+        display:none;
+    }
     .tox-collection__item-icon{
         font-size:25px !important;
     }
