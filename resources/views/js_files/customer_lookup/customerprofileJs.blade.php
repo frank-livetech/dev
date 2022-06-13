@@ -401,13 +401,14 @@
         }
         if(url.includes('#closed')) {
 
-            listTickets('closed');
             
             $("#pills-tickets-tab").click();
             $("#pills-setting-tab").removeClass("active")
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
+
+            listTickets('closed');            
         }
 
         try {

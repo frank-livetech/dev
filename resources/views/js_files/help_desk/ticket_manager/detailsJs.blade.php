@@ -1921,7 +1921,12 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                 cache: false,
                 success: function(data) {
 
-                    $("#assigned_to").val("{{auth()->id()}}").trigger("change");
+                    let owner = updates_Arr.find(item => item.id == 2);
+                    if(owner != null) {
+                        $("#assigned_to").val( owner.new_data).trigger("change");
+                    }else{
+                        $("#assigned_to").val("{{auth()->id()}}").trigger("change");
+                    }
 
                     reply_flag = 0;
 

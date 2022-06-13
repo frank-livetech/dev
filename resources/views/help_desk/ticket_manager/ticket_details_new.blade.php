@@ -348,7 +348,7 @@
                         <div class="card-body" id="adjustCard1Height" style="height:250px; overflow: hidden;">
                             <h5 class="card-title mb-0">Ticket ID: 
                                     <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
-                                    <a href="javascript:void(0)" onclick="copyToClipBoard()"> 
+                                    <a href="javascript:void(0)" onclick="ticketUrlCopy()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
