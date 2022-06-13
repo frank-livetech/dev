@@ -60,6 +60,7 @@ $(function () {
       $(this).flatpickr({
         mode: 'range',
         // defaultDate: "today"
+        dateFormat: "m-d-y"
       });
     });
   }
