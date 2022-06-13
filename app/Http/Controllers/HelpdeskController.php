@@ -1514,12 +1514,12 @@ class HelpdeskController extends Controller
 
             $msg = 'Flagged By';
             $title = 'Ticket Flagged';
-            $flag = 'Flagged by ';
+            $flag = 'Flagged ';
             if($flag_tkt->is_flagged){
                 $flag_tkt->is_flagged = 0;
                 $msg = 'Flag Removed By';
                 $title = 'Ticket Unflagged';
-                $flag = 'Unflagged by ';
+                $flag = 'Unflagged ';
             }else{
                 $flag_tkt->is_flagged = 1;
             }
@@ -1543,7 +1543,7 @@ class HelpdeskController extends Controller
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             
-            $template = DB::table("templates")->where('code','mentioned_by')->first();
+            $template = DB::table("templates")->where('code','ticket_common_notification')->first();
             if(!empty($template)) {
 
                 if($flag_tkt->assigned_to != null) {
@@ -1571,9 +1571,20 @@ class HelpdeskController extends Controller
     public function replaceFlagTicketShortCodes($html , $ticket_id ,$flag) {
         $template = htmlentities($html);
 
-        if(str_contains($template, '{Ticket-Flagged}')) {
-            $text = 'Ticket ' . $ticket_id . ' ' . $flag  . auth()->user()->name; 
-            $template = str_replace('{Ticket-Flagged}', $text , $template);
+        if(str_contains($template, '{Staff-Name}')) {
+            $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
+        }
+
+        if(str_contains($template, '{Message}')) {
+            $template = str_replace('{Message}', $flag , $template);
+        }
+
+        if(str_contains($template, '{Ticket-ID}')) {
+            $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticketID , $template);
+        }
+
+        if(str_contains($template, '{Notes}')) {
+            $template = str_replace('{Notes}', '' , $template);
         }
 
         if(str_contains($template, '{Go-To-Ticket}')) {
@@ -2598,7 +2609,7 @@ class HelpdeskController extends Controller
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_notes' , $ticket->id , auth()->id() , $action_performed);
 
-            $template = DB::table("templates")->where('code','mentioned_by')->first();
+            $template = DB::table("templates")->where('code','ticket_common_notification')->first();
 
             if($request->tag_emails != null && $request->tag_emails != '') {
 
@@ -2661,6 +2672,10 @@ class HelpdeskController extends Controller
 
         if(str_contains($template, '{Staff-Name}')) {
             $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
+        }
+
+        if(str_contains($template, '{Message}')) {
+            $template = str_replace('{Message}', ' mentioned you in ' , $template);
         }
 
         if(str_contains($template, '{Ticket-ID}')) {
