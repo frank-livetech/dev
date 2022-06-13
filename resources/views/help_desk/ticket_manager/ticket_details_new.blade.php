@@ -5,6 +5,9 @@
 @section('body')
 @section('customtheme')
 <style>
+    .tox-collection__item-icon{
+        font-size:25px !important;
+    }
     .bor-top img {
         height: auto !important;
         width: auto !important;
