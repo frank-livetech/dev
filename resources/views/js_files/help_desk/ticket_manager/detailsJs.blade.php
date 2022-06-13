@@ -1369,14 +1369,19 @@ function parserEmbeddedImages(){
     
 }
 
-function showAttachedImage(id, item) {
+function showAttachedImage(id, item , type = '') {
     let img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
     let csv = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png"> `;
     let pdf = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png">`; 
     let doc = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png">` ;
     let pptx = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png"> `;
-    let zip =   `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png">`    
-    let downloadimg = `<a class="btn btn-primary waves-effect waves-float waves-light" href="{{asset('storage/tickets/${id}/${item}')}}" download><svg style="color: #fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span style="color: #fff"> Download</span></a>`;
+    let zip =   `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png">` 
+    let downloadimg = '';
+    if(type == 'reply'){
+        downloadimg = `<a class="btn btn-primary waves-effect waves-float waves-light" href="{{asset('storage/tickets-replies/${id}/${item}')}}" download><svg style="color: #fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span style="color: #fff"> Download</span></a>`;
+    }esle{
+        downloadimg = `<a class="btn btn-primary waves-effect waves-float waves-light" href="{{asset('storage/tickets/${id}/${item}')}}" download><svg style="color: #fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span style="color: #fff"> Download</span></a>`;
+    } 
     
     var file_type = img.substr(img.lastIndexOf('.')).toLowerCase();
     
@@ -1474,7 +1479,7 @@ function listReplies() {
                         // return ter;
                     if(ter == "pdf" ){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}','reply')" >
                                         <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
                                             <div class="" style="display: -webkit-box">
                                                         <div class="modal-first w-100">
@@ -1495,7 +1500,7 @@ function listReplies() {
                     else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                         tdet+= `
                         <div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}','reply')" >
                                         <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
                                             <div class="" style="display: -webkit-box">
                                                         <div class="modal-first w-100">
@@ -1515,7 +1520,7 @@ function listReplies() {
                     }
                     else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}','reply')" >
                                         <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
                                             <div class="" style="display: -webkit-box">
                                                         <div class="modal-first w-100">
@@ -1535,7 +1540,7 @@ function listReplies() {
                     }
                     else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}','reply')" >
                                         <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
                                             <div class="" style="display: -webkit-box">
                                                         <div class="modal-first w-100">
@@ -1555,7 +1560,7 @@ function listReplies() {
                     }
                     else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}','reply')" >
                                         <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
                                             <div class="" style="display: -webkit-box">
                                                         <div class="modal-first w-100">
@@ -1575,7 +1580,7 @@ function listReplies() {
                     }
                     else if(ter == "zip"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}','reply')" >
                                         <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
                                             <div class="" style="display: -webkit-box">
                                                         <div class="modal-first w-100">
@@ -1595,7 +1600,7 @@ function listReplies() {
                     }
                     else{
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
-                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}')" >
+                                    <div class="card" style='border:1px solid #c7c7c7;border-radius: 3px !important;margin-bottom: 1rem;' onclick="showAttachedImage(${ticket_details.id}, '${item}','reply')" >
                                         <div class="card-body body-hover" style="padding: .1rem .1rem !important;background-color:#dfdcdc1f">
                                             <div class="" style="display: -webkit-box">
                                                         <div class="modal-first w-100">
