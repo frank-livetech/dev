@@ -1670,7 +1670,7 @@ function listReplies() {
                 if(reply.customer_replies != null) {
                     if(reply.customer_replies.avatar_url != null) {
                         let path = root +'/'+ reply.customer_replies.avatar_url;
-                        customer_img += `<img src="{{asset('${path}')}}" width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
+                        customer_img += `<img src="${path}" width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
                     }else{
                         customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     } 
