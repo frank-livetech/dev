@@ -57,7 +57,7 @@ $(window).on('load', function () {
     flatPicker.each(function () {
       $(this).flatpickr({
         mode: 'range',
-        defaultDate: ['2019-05-01', '2019-05-10']
+        // defaultDate: ["today" ,"today"]
       });
     });
   }
