@@ -1370,7 +1370,13 @@ function parserEmbeddedImages(){
 }
 
 function showAttachedImage(id, item , type = '') {
-    let img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
+    let img = ``;
+
+    if(type == 'reply'){
+        img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
+    }else{
+        img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
+    }
     let csv = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png"> `;
     let pdf = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png">`; 
     let doc = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png">` ;
