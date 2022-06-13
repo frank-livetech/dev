@@ -281,7 +281,7 @@
 
                                         <div class="row newCompany mt-3" style="display:none">
 
-                                            <input type="hidden" id="new_company">
+                                            <input type="hidden" id="new_company" class="form-control">
 
                                             <h3>New Company</h3>
                                             <hr>

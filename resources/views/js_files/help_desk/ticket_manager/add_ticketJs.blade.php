@@ -269,7 +269,7 @@
 
                 if( $("#new_company").val() == "new_company") {
 
-                    form_Data['new_company'] = new_company;
+                    form_Data['new_company'] = 'new_company';
                     form_Data['poc_first_name'] = $("#poc_first_name").val();
                     form_Data['poc_last_name'] = $("#poc_last_name").val();
                     form_Data['company_name'] = $("#company_name").val();
@@ -359,9 +359,9 @@
                         }
                     },
                     complete:function(data ) {
-                        // $("#btnSaveTicket").show();
-                        // $("#publishing").hide();
-                        // $("#status_modal").hide();
+                        $("#btnSaveTicket").show();
+                        $("#publishing").hide();
+                        $("#status_modal").hide();
                     },
                     failure: function(errMsg) {
                         $("#btnSaveTicket").show();
@@ -635,11 +635,17 @@
 
 
         function newCompany() {
+            
             $(".newCompany").toggle();
             $("#new_company").val("new_company");
             $("#company_id").val("").trigger("change");
         }
         function selectCompany() {
-            $("#new_company").val("old");
+            if($("#company_id").val() == ''){
+                $("#new_company").val("new_company");
+            }else{
+                $("#new_company").val("old");
+            }
+            
         }
     </script>
