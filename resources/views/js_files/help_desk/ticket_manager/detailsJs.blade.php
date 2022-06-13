@@ -1373,7 +1373,7 @@ function showAttachedImage(id, item , type = '') {
     let img = ``;
 
     if(type == 'reply'){
-        img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
+        img = `<img src="{{asset('storage/tickets-replies/${id}/${item}')}}" class="w-100 h-100">`;
     }else{
         img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
     }
