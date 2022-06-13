@@ -1580,7 +1580,7 @@ class HelpdeskController extends Controller
         }
 
         if(str_contains($template, '{Ticket-ID}')) {
-            $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticketID , $template);
+            $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticket_id , $template);
         }
 
         if(str_contains($template, '{Notes}')) {
