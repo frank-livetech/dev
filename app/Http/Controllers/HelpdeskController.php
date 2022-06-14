@@ -1651,6 +1651,7 @@ class HelpdeskController extends Controller
         try {
             
             $replies = TicketReply::where('ticket_id', $id)->with(['replyUser','customerReplies'])->orderBy('created_at', 'DESC')->get();
+            $bbcode = new BBCode();
 
             foreach ($replies as $key => $rep) {
                 if($rep !=null){
