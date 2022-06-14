@@ -444,6 +444,9 @@ select:-webkit-autofill {
   padding: 0; }
 
 @media (max-width: 767.98px) {
+  div#style-5{
+    text-align: center !important;
+  }
   .btn-sm-block {
     display: block;
     width: 100%; } }
