@@ -3204,7 +3204,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 
 div.dataTables_wrapper .dataTables_info {
   padding-top: 1.25rem !important;
-  color: #6e6e6e; }
+  color: #000; }
 
 tr.group {
   background-color: #fafafc; }
