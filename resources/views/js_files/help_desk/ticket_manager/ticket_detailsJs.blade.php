@@ -61,7 +61,7 @@
     $( document ).ready(function() {
        
 
-        // $("#dropD ").find(".select2").hide();
+        $("#dropD ").find(".select2").hide();
         $("#dropD ").find("h5").show();
         selectD();
 
