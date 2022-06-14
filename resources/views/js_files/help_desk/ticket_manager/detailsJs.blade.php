@@ -55,6 +55,12 @@ $(document).ready(function() {
         
         contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
         toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
+        emoticons_append: {
+    custom_mind_explode: {
+      keywords: ['brain', 'mind', 'explode', 'blown'],
+      char: 'ðŸ¤¯'
+    }
+  },
         spellchecker_callback: function (method, text, success, failure) {
             var words = text.match(this.getWordCharPattern());
             if (method === "spellcheck") {
@@ -1761,7 +1767,6 @@ function listReplies() {
             $("#ticket-replies").append(replies_html);
             parserReplyEmbeddedImages(`reply__${index}`,`${reply.embed_attachments}`);
         });
-        
 
         $('.bor-top').find(' p img').css('width','200px !important');
  
