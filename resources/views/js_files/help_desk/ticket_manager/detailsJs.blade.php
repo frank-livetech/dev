@@ -3697,7 +3697,7 @@ function setCustomerCompany() {
         $('#cst-company').html('');
         $('#cst-company-name').html('');
 
-        $('#adjustCard1Height').attr('style', 'height: 260px !important');
+        // $('#adjustCard1Height').attr('style', 'height: 260px !important');
         $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
     }
 }
