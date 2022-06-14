@@ -351,7 +351,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="card">
-                        <div class="card-body" id="adjustCard1Height" style="height:250px; overflow: hidden;">
+                        <div class="card-body" id="adjustCard1Height" style="overflow: hidden;">
                             <h5 class="card-title mb-0">Ticket ID: 
                                     <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
                                     <a href="javascript:void(0)" onclick="ticketUrlCopy()"> 
