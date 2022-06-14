@@ -99,6 +99,21 @@
     <!-- END: Material Design CDNS-->
 
     <style>
+        ::-webkit-input-placeholder {
+            color: #000 !important;
+        }
+        :-moz-placeholder{
+            color: #000 !important;
+        }
+        ::-moz-placeholder{
+            color: #000 !important;
+        }
+        :-ms-input-placeholder{
+            color: #000 !important;
+        }
+        ::placeholder{
+            color: #000 !important;
+        }
         .loading__ {
             background: white !important;
             width: 100%;
@@ -346,6 +361,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/tagsinput.js')}}"></script>
 
     <!-- BEGIN: Page JS-->
+    <script src="{{asset($file_path . 'app-assets/js/scripts/charts/chart-apex.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-invoice-list.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/cards/card-statistics.js')}}"></script>

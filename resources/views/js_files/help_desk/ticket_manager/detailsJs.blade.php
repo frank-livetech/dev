@@ -1670,7 +1670,7 @@ function listReplies() {
                 if(reply.customer_replies != null) {
                     if(reply.customer_replies.avatar_url != null) {
                         let path = root +'/'+ reply.customer_replies.avatar_url;
-                        customer_img += `<img src="${path}"  width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
+                        customer_img += `<img src="${path}" width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
                     }else{
                         customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     } 
@@ -1686,13 +1686,13 @@ function listReplies() {
                         let path = root + '/' + reply.reply_user.profile_pic;
                         user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                     }else{
-                        user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                        user_img += `<img src="${js_path}default_imgs/customer.png" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
                     
                     // link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
 
                 }else{
-                    user_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
+                    user_img += `<img src="${js_path}default_imgs/customer.png" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                 }
 
                 var content = '';
@@ -2693,7 +2693,7 @@ function executeFollowUps(check_followup) {
                 user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
                 width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
             }else{
-                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                user_img += `<img src="${path}default_imgs/customer.png" 
                         width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
             }
 

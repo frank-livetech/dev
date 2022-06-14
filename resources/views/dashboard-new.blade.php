@@ -2,6 +2,8 @@
 @section('Dashboard','active')
 @section('title', 'Dashboard')
 @section('body')
+
+
 <style>
     table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before,
     table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
@@ -17,6 +19,27 @@
     {
         color: red !important;
     }
+    .card-statistics .statistics-body {
+        padding: 0rem 2.4rem 1rem !important 
+    }
+    .selectbox {
+    background: #fff;
+    color: #1d3b4a;
+    padding: 8px;
+    line-height: 18px;
+    border-radius: 4px;
+    border-width: 0 1px 4px;}
+    .linkbox, .selectbox {
+    border: 1px solid #ddd;}
+    .pull-right {
+    float: right!important;}
+    .pull-left{
+        float: left !important
+    }
+    .mb-1{
+        margin-bottom: 1rem
+    }
+    
 </style>
 @php
     $file_path = $live->sys_value == 1 ? 'public/' : '/';
@@ -27,7 +50,7 @@
 @else
     <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
 @endif
-
+<link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/daterangepicker.css')}}">
 
 <input type="hidden" id="curr_user_name" value="{{Auth::user()->name}}">
 <div class="app-content content">
@@ -75,6 +98,25 @@
             <div class="row match-height">
                 <div class="col-lg-12 col-12">
                     <div class="card card-statistics">
+                        <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;">
+                            <div class="row pull-right">
+                               
+                                <div class="col-md-8">
+
+                                    <div class="d-flex align-items-center pull-left">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar font-medium-2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                        <input type="text" class="form-control flat-picker bg-transparent border-0 shadow-none flatpickr-input active" placeholder="MM-DD-YYYY To MM-DD-YYYY" readonly="readonly" style="width: 250px;">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light pull-left">Filter</button>
+
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <hr>
                         <div class="card-body statistics-body">
                             <div class="row">
                                 <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
@@ -85,12 +127,9 @@
                                             </div>
                                         </div>
                                         <div class="my-auto">
-                                            <a href="{{url('staff-manager')}}">
-                                            <h3 class="fw-bolder mb-0">{{$staff_count}}</h3>
-                                            <p class="card-text font-small-10 mb-0">Total Staff</p>
-
-                                            
-
+                                            <a href="{{url('billing/home')}}">
+                                            <h3 class="fw-bolder mb-0">{{$orders}}</h3>
+                                            <p class="card-text font-small-10 mb-0">Orders</p>
                                             </a>
                                         </div>
                                     </div>
@@ -136,6 +175,69 @@
                                             <a href="{{url('billing/home')}}">
                                             <h3 class="fw-bolder mb-0">{{$orders}}</h3>
                                             <p class="card-text font-small-10 mb-0">Total Orders</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                                    <div class="d-flex flex-row">
+                                        <div class="avatar bg-light-info me-2">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers avatar-icon"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                            </div>
+                                        </div>
+                                        <div class="my-auto">
+                                            <a href="{{url('billing/home')}}">
+                                            <h3 class="fw-bolder mb-0">{{$orders}}</h3>
+                                            <p class="card-text font-small-10 mb-0">Subscriptions</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                                    <div class="d-flex flex-row">
+                                        <div class="avatar bg-light-secondary me-2">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check avatar-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                                            </div>
+                                        </div>
+                                        <div class="my-auto">
+                                            <a href="{{url('billing/home')}}">
+                                            <h3 class="fw-bolder mb-0">{{$orders}}</h3>
+                                            <p class="card-text font-small-10 mb-0">Total Subscriptions</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                                    <div class="d-flex flex-row">
+                                        <div class="avatar bg-light-primary me-2">
+                                            <div class="avatar-content">
+                                               
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sliders avatar-icon"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                                            </div>
+                                        </div>
+                                        <div class="my-auto">
+                                            <a href="{{url('staff-manager')}}">
+                                            <h3 class="fw-bolder mb-0">{{$staff_count}}</h3>
+                                            <p class="card-text font-small-10 mb-0">Total Staff</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-12">
+                                    <div class="d-flex flex-row">
+                                        <div class="avatar bg-light-warning me-2">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-x avatar-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
+                                            </div>
+                                        </div>
+                                        <div class="my-auto">
+                                            <a href="{{url('billing/home')}}">
+                                            <h3 class="fw-bolder mb-0">0</h3>
+                                            <p class="card-text font-small-10 mb-0">Cancellations</p>
                                             </a>
                                         </div>
                                     </div>
@@ -542,7 +644,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-1970-2030.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
-
+<script src="{{asset($file_path . 'app-assets/daterangepicker.js')}}"></script>
 @include('js_files.dashboardjs')
 @include('js_files.help_desk.ticket_manager.flag_ticketJs')
 
@@ -563,6 +665,14 @@ function HmsToSeconds(hms) {
     var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
     return seconds;
 }
+        $('#startDate').daterangepicker({
+          singleDatePicker: true,
+          startDate: moment().subtract(6, 'days')
+        });
 
+        $('#endDate').daterangepicker({
+          singleDatePicker: true,
+          startDate: moment()
+        });
 </script>
 @endsection
