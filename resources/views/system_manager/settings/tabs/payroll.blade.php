@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card card-height">
                         <div class="card-body">
                             <h4 class="card-title mb-3">Payroll Settings</h4>
 
@@ -28,7 +28,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-1">
+                                    {{-- <div class="row mb-1">
                                         <div class="col-md-6">
                                             <div class="form-group my-1 ">
                                                 <label for="security">Selected Staff Members :</label>
@@ -43,7 +43,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="row mt-2" >
                                         <div class="col-12 text-end">

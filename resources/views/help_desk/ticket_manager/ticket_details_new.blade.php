@@ -313,6 +313,14 @@
     .body-hover:hover{
         border: 1px solid #fab81c;
     }
+    .webkit-box1{
+        display: -webkit-box;
+    }
+    @media (max-width: 767.98px){
+        .webkit-box1{
+        display: inline;
+    }
+    }
 </style>
 @endsection
 
@@ -324,7 +332,7 @@
     <div class="content-wrapper container-fluid p-0">
         <input type="hidden" id="current_url" value="{{url()->current()}}">
         <div class="content-header row">
-            <div class="content-header-left col-md-7 col-12 mb-2">
+            <div class="content-header-left col-md-12 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
                         <h2 class="content-header-title float-start mb-0">Ticket Detail</h2>
@@ -504,7 +512,7 @@
                                 <div class="mail-items">
                                     <div class="" role="alert">
                                         <div class="alert-body p-0" >
-                                            <div class="" style="display: -webkit-box">
+                                            <div style="-webkit-box">
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 mt-0 rounded" style="padding:4px; ">
                                                         <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
@@ -527,7 +535,7 @@
                                                                     $user_type = 'User';
                                                                 }
                                                             ?>
-                                                            <div class="" style="display: -webkit-box">
+                                                            <div class="webkit-box1" >
                                                                 <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                                                             </div>
@@ -548,19 +556,19 @@
 
                                                         <!-- <span id="ticket-timestamp" style="font-size:12px; font-weight:400;padding-right: 60px;margin-top:5px"></span> -->
     
-                                                        <a onclick="hung()" class="mx-1" title="View Details" style="position:absolute;right:56px;cursor:pointer;">
+                                                        <a onclick="hung()" class="mx-1" title="View Details" style="position:absolute;right:56px;cursor:pointer;top: 24px;">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
                                                         </a>
     
-                                                        <span class="float-end" style="position:absolute;right:46px;cursor:pointer;" title="Edit Initial Request" id="edit_request_btn">
+                                                        <span class="float-end" style="position:absolute;right:46px;cursor:pointer;top: 24px;" title="Edit Initial Request" id="edit_request_btn">
                                                             <a onclick="editRequest()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
                                                         </span> 
     
-                                                        <span style="float:right;cursor:pointer;display:none;position:absolute;right:50px;cursor:pointer;" title="Save" id="save_request_btn">
+                                                        <span style="float:right;cursor:pointer;display:none;position:absolute;right:50px;cursor:pointer;top: 24px;" title="Save" id="save_request_btn">
                                                             <a onclick="saveRequest()"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-save"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></a>
                                                         </span>
     
-                                                        <span style="float:right; cursor:pointer; display:none;position:absolute;right:34px;cursor:pointer;" title="Cancel" id="cancel_request_btn">
+                                                        <span style="float:right; cursor:pointer; display:none;position:absolute;right:34px;cursor:pointer;top: 24px;" title="Cancel" id="cancel_request_btn">
                                                             <a onclick="cancelEditRequest()"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x text-danger" style="margin-left: 5px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></a>
                                                         </span>
     

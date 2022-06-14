@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card card-height">
                         <div class="card-body">
 
                             <div class="col-md-12 d-flex justify-content-end align-self-center">

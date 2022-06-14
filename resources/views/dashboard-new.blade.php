@@ -98,8 +98,12 @@
             <div class="row match-height">
                 <div class="col-lg-12 col-12">
                     <div class="card card-statistics">
-                        <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;">
+                        <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;" >
                             <div class="row pull-right">
+                                <i class="fas fa-filter" onclick="openfilter()" style="position: relative;right: 10px;cursor: pointer;"></i>
+                                
+                            </div>
+                            <div class="row pull-right openfilter" style="display: none">
                                
                                 <div class="col-md-8">
 
@@ -113,10 +117,11 @@
                                     <button type="button" class="btn btn-primary waves-effect waves-float waves-light pull-left">Filter</button>
 
                                 </div>
+                                
                             </div>
-                           
+                            
                         </div>
-                        <hr>
+                        <hr class="openfilter" style="display: none">
                         <div class="card-body statistics-body">
                             <div class="row">
                                 <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
@@ -492,15 +497,15 @@
                                             <hr>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <h4 class="text-muted fw-bolder">Total Staff</h4>
+                                                    <h4 class="fw-bolder">Total Staff</h4>
                                                     <h3 class="mb-0" style="text-align: center">{{$staff_count}}</h3>
                                                 </div>
                                                 <div>
-                                                    <h4 class="text-muted fw-bolder">Active staff</h4>
+                                                    <h4 class="fw-bolder">Active staff</h4>
                                                     <h3 class="mb-0" style="text-align: center">{{$staff_active_count}}</h3>
                                                 </div>
                                                 <div>
-                                                    <h6 class="text-muted fw-bolder">Off Clock Staff</h6>
+                                                    <h6 class="fw-bolder">Off Clock Staff</h6>
                                                     <h3 class="mb-0" style="text-align: center">{{$staff_inactive_count}}</h3>
                                                 </div>
                                             </div>
@@ -674,5 +679,8 @@ function HmsToSeconds(hms) {
           singleDatePicker: true,
           startDate: moment()
         });
+        function openfilter(){
+            $('.openfilter').toggle('slow');
+        }
 </script>
 @endsection
