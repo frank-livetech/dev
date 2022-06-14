@@ -1330,19 +1330,18 @@ class HelpdeskController extends Controller
         foreach ($details->ticketReplies as $key => $rep) {
             if($rep !=null){
 
-            
-            $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
+                $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
 
-            if( empty($rep['user_id']) ){
-                $user = Customer::where('id', $rep['customer_id'])->first();
-                $rep['name'] = $user['first_name'] . ' ' . $user['last_name'];
-                $rep['user_type'] = 5;
-            }else{
-                $user = User::where('id', $rep['user_id'])->first();
-                $rep['name'] = $user['name'];
-                $rep['user_type'] = $user['user_type'];
+                if( empty($rep['user_id']) ){
+                    $user = Customer::where('id', $rep['customer_id'])->first();
+                    $rep['name'] = $user['first_name'] . ' ' . $user['last_name'];
+                    $rep['user_type'] = 5;
+                }else{
+                    $user = User::where('id', $rep['user_id'])->first();
+                    $rep['name'] = $user['name'];
+                    $rep['user_type'] = $user['user_type'];
+                }
             }
-        }
         }
 
         $sla_plans = SlaPlan::where('sla_status', 1)->where('is_deleted',0)->get();
@@ -1652,6 +1651,12 @@ class HelpdeskController extends Controller
         try {
             
             $replies = TicketReply::where('ticket_id', $id)->with(['replyUser','customerReplies'])->orderBy('created_at', 'DESC')->get();
+
+            foreach ($replies as $key => $rep) {
+                if($rep !=null){
+                    $rep['reply'] = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($rep['reply']));
+                }
+            }
 
             $response['replies'] = $replies;
             $response['status_code'] = 200;
