@@ -2,7 +2,7 @@
 $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 @endphp
-<div class="card">
+<div class="card card-height">
     <div class="card-body">
 
         <h4 class="card-title mb-3">Ticket Settings</h4>
@@ -72,7 +72,46 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-icon rounded-circle mt-1 tkt_btn"  onclick="saveTicketRefreshTime()" > <i data-feather='save'></i>  </button>
+                            <button class="btn btn-primary btn-icon rounded-circle mt-1 tkt_btn"  onclick="saveTicketRefreshTime()" > <i class="fas fa-save"></i>  </button>
+                            <button class="btn btn-primary waves-effect tkt_loader btn-icon rounded-circle mt-1" style="display:none" type="button" disabled="">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span class="visually-hidden">Loading...</span>
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group my-1">
+                                <label for="security">Empty Trash <span class="text-danger small fst-italic">(in days)</span> <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Enter 0 to disable and enter any other number to empty trash" aria-hidden="true" style="cursor: pointer;" ></i> :</label>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group my-1">
+                                <input type="nummber" class="form-control" value="" id="empty_trash" name="empty_trash">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-icon rounded-circle mt-1 tkt_btn"  onclick="" > <i class="fas fa-save"></i>  </button>
+                            <button class="btn btn-primary waves-effect tkt_loader btn-icon rounded-circle mt-1" style="display:none" type="button" disabled="">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span class="visually-hidden">Loading...</span>
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group my-1 ">
+                                <label for="security">Restrict Permissions :</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group my-1 ">
+                                <select class="select2 form-control select2-hidden-accessible" id="selected_staff_members" style="width: 100%;" multiple>
+                                    @foreach ($staff_list as $user)
+                                        <option value="{{$user->id}}" {{in_array($user->id, $selected_staff_members) ? 'selected' : ''}}>{{$user->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-icon rounded-circle mt-1 tkt_btn"  onclick="" > <i class="fas fa-save"></i>  </button>
                             <button class="btn btn-primary waves-effect tkt_loader btn-icon rounded-circle mt-1" style="display:none" type="button" disabled="">
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 <span class="visually-hidden">Loading...</span>

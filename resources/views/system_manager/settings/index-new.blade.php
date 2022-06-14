@@ -27,6 +27,9 @@
     table {
         border:1px solid #ebe9f1 !important;
     }
+    .card-height{
+        min-height: 530px;
+    }
 </style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
