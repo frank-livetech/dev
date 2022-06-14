@@ -103,7 +103,7 @@ $(document).ready(function() {
             url: "add_features",
             data: formData,
             success: function(data) {
-                console.log(data);
+                // console.log(data);
 
                 toastr.success(data.message, { timeOut: 5000 });
                 setTimeout(() => {
@@ -170,7 +170,7 @@ $(document).ready(function() {
             url: "update_feature",
             data: formData,
             success: function(data) {
-                console.log(data, "update ");
+                // console.log(data, "update ");
                 toastr.success(data.message, { timeOut: 5000 });
                 $("#editFeatureModal").modal('hide');
                 get_all_feature_list();
@@ -195,7 +195,7 @@ function get_all_feature_list() {
         },
         success: function(data) {
             var data = data.data;
-            console.log(data, "feature list")
+            // console.log(data, "feature list")
 
             var row = ``;
             var count = 1;
@@ -291,7 +291,7 @@ function show_single_feature_list(id) {
             $(".loader_container").show();
         },
         success: function(data) {
-            console.log(data, "single menu");
+            // console.log(data, "single menu");
 
             $("#edit_title").val(data.title);
             $("#edit_route").val(data.route);

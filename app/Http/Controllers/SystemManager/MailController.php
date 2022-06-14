@@ -3,38 +3,17 @@
 namespace App\Http\Controllers\SystemManager;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\HelpdeskController;
-use App\Http\Controllers\GeneralController;
-use App\Http\Controllers\ActivitylogController;
+use App\Http\Controllers\{HelpdeskController, GeneralController, ActivitylogController};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Crypt;
-use App\Models\Mail;
-use App\Models\Customer;
+use Illuminate\Support\Facades\{DB, Crypt, URL , File};
+use App\Models\{ Mail, Customer, Tickets, TicketStatus, TicketPriority, TicketReply, TicketSettings, Activitylog, AssetForms, SlaPlan, SlaPlanAssoc , SpamUser };
 use App\User;
 use Session;
-// tickets models
-use App\Models\Tickets;
-use App\Models\TicketStatus;
-use App\Models\TicketPriority;
-use App\Models\TicketReply;
-use App\Models\TicketSettings;
-
-use App\Models\Activitylog;
-use App\Models\AssetForms;
-use App\Models\SlaPlan;
-use App\Models\SlaPlanAssoc;
-use App\Models\SpamUser;
 use Throwable;
-use Illuminate\Support\Facades\File;
-
 use Carbon\Carbon;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\{PHPMailer , SMTP , Exception};
 use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
-use Illuminate\Support\Facades\URL;
 
 require 'vendor/autoload.php';
 // require '../vendor/autoload.php';
@@ -227,6 +206,8 @@ class MailController extends Controller
             $mail->is_default = $data['is_default'];
             $mail->updated_by = \Auth::user()->id;
             $mail->save();
+
+            
         }
 
         $response['message'] = 'Mail Updated Successfully!';
@@ -243,6 +224,14 @@ class MailController extends Controller
         try{
             $mail = Mail::findOrFail($data['id']);
 
+            if($mail->is_default == 'yes') {
+                $row = Mail::where([ ['mail_dept_id', $mail->mail_dept_id] , ['is_default', 'no'] , ['is_deleted', 0] ])->get();
+                if( count($row) > 0) {
+                    Mail::where('id', $row[0]['id'])->update([ 'is_default' => 'yes']);
+                }
+                $mail->is_default = 'no';
+            }
+           
             $mail->deleted_at = Carbon::now();
             $mail->updated_by = \Auth::user()->id;
             $mail->deleted_by = \Auth::user()->id;
