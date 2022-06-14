@@ -1225,7 +1225,7 @@ function parseAttachments(){
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">    
                                                             </div>
                                                         </div>
                                                        
@@ -1427,18 +1427,20 @@ function parserReplyEmbeddedImages(reply_id , images){
     var index = 0;
     $('#'+reply_id+' img').each(function () {
         let attchs = '';
+
         
         if(images != null && images != 'null'){
 
             attchs = images.split(',');
             
         }
+
         // console.log(attchs[index])
         if(attchs[index] == undefined || attchs[index] == null){
             $(this).remove();
         }else{
             var classList = $(this).attr("class");
-            if(classList != 'rounded-circle ' && classList != ' attImg'){
+            if(classList != 'rounded-circle' && classList != 'attImg'){
                 $(this).attr('src', "{{asset('storage/tickets-replies')}}/"+ticket_details.id+'/'+attchs[index]);
                 // $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
                 index++;
@@ -1533,7 +1535,7 @@ function listReplies() {
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
                                                                     <div class="">                                                               
-                                                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">    
                                                                     </div>
                                                                 </div>
                                                                
@@ -1670,7 +1672,7 @@ function listReplies() {
                 if(reply.customer_replies != null) {
                     if(reply.customer_replies.avatar_url != null) {
                         let path = root +'/'+ reply.customer_replies.avatar_url;
-                        customer_img += `<img src="${path}" width="40px" height="40px" class="rounded-circle " style="border-radius: 50%;"/>`;
+                        customer_img += `<img src="${path}" width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
                     }else{
                         customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     } 
@@ -1684,7 +1686,7 @@ function listReplies() {
                 if(reply.reply_user != null) {
                     if(reply.reply_user.profile_pic != null) {
                         let path = root + '/' + reply.reply_user.profile_pic;
-                        user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+                        user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle" width="40px" height="40px" />`;
                     }else{
                         user_img += `<img src="${js_path}default_imgs/customer.png" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
@@ -3963,7 +3965,7 @@ function addAttachment(type, olderAttach='') {
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
                                                             <div class="">                                                               
-                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${olderAttach}')}}" class=" attImg"  alt="" style="width:40px;height:30px !important">    
+                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${olderAttach}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">    
                                                             </div>
                                                         </div>
                                                         <div class="more-info">
