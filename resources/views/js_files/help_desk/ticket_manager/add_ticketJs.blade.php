@@ -444,9 +444,9 @@
                             let email_option = ``;
                             for( let item of obj_queue) {
                                 if(item.is_default == 'yes'){
-                                    email_option += `<option value="${item.id}" selected> ${item.mail_queue_address} (${item.from_name}) </option>`;
+                                    email_option += `<option value="${item.id}" selected> ${item.mailserver_username} (${item.from_name}) </option>`;
                                 }else{
-                                    email_option += `<option value="${item.id}"> ${item.mail_queue_address} (${item.from_name}) </option>`;
+                                    email_option += `<option value="${item.id}"> ${item.mailserver_username} (${item.from_name}) </option>`;
                                 }
                             }
                             $("#queue_id").html(email_option);
