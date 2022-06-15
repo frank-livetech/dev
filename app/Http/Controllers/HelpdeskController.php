@@ -1312,7 +1312,7 @@ class HelpdeskController extends Controller
 
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
-
+        $mailQueues = Mail::where('mail_dept_id', $ticket->dept_id)->where('is_deleted', 0)->get();
 
         $total_tickets_count = 0;
         $open_tickets_count = 0;

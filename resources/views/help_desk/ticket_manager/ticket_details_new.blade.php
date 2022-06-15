@@ -939,6 +939,17 @@
                             <div class="mt-5 d-none p-2" id="compose-reply">
                                 <div class="row">
                                     <div class="col-md-4" id="select_customer">
+                                        <label class="form-label">From</label>
+                                        <select class="select2 form-control custom-select dropdown w-100" id="queue_id" style="width:100%">
+                                            <option value="">Select</option>
+                                            @if(!empty($mailQueues))
+                                                @foreach($mailQueues as $queue)
+                                                    <option value="{{$queue->id}}">{{$queue->from_name}} <{{$queue->mailserver_username}}> </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4" id="select_customer">
                                         <label class="form-label">Response Template</label>
                                         <select class="select2 form-control custom-select dropdown w-100" id="res-template" style="width:100%">
                                             <option value="">Select</option>
@@ -949,7 +960,8 @@
                                             @endif
                                         </select>
                                     </div>
-                                    <div class="col-md-8">
+                                    
+                                    <div class="col-md-4">
                                         <div class="d-flex mt-3">
                                             <div class="form-check form-check-primary">
                                                 <input type="checkbox" value="1" class="form-check-input" id="show_cc_email" name="show_cc_email">
