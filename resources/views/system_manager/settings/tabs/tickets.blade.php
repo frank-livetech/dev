@@ -65,6 +65,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             <div class="form-group my-1">
                                 <label for="security">Ticket Data Refresh <span class="text-danger small fst-italic">(in minutes)</span> :</label>
                             </div>
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="form-group my-1">
