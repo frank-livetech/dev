@@ -177,7 +177,7 @@ class MailController extends Controller
             $mail = Mail::find($request->id);
             
             if($data['is_default'] == 'yes') {
-                $mails = Mail::where('mail_dept_id', $data['mail_dept_id'])->where('is_default', 'yes')->get();
+                $mails = Mail::where('mail_dept_id', $data['mail_dept_id'])->where('id','!=',$request->id)->where('is_default', 'yes')->get();
                 foreach ($mails as $key => $value) {
                     $value->is_default = 'no';
                     $value->save();
