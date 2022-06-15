@@ -3878,16 +3878,16 @@ class HelpdeskController extends Controller
         $dept_assigns = DepartmentAssignments::where('dept_id', $request->id)->get()->pluck('user_id')->toArray();
         $users = User::whereIn('id', $dept_assigns)->where('is_deleted',0)->where('status',1)->get();
         //queue object added
-        $default_queue = Mail::where([ ['mail_dept_id',$request->id], ['is_deleted', 0], ['is_default', 'yes'] ])->get();
-        if(!$default_queue){
-            $default_queue = Mail::where([ ['mail_dept_id',$request->id] ,['is_deleted', 0] ])->get();
-        }
+        $queue = Mail::where([ ['mail_dept_id',$request->id], ['is_deleted', 0] ])->get();
+        // if(!$default_queue){
+        //     $default_queue = Mail::where([ ['mail_dept_id',$request->id] ,['is_deleted', 0] ])->get();
+        // }
         $response['message'] = 'Department Status List';
         $response['status'] = 200;
         $response['success'] = true;
         $response['status'] = $status;
         $response['users'] = $users;
-        $response['queue'] = $default_queue;
+        $response['queue'] = $queue;
 
         return response()->json($response);
     }
