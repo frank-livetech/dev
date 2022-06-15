@@ -644,7 +644,7 @@ class MailController extends Controller
                 // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 
-                // $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt , $embed_imges);
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt , $embed_imges);
 
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
@@ -662,7 +662,7 @@ class MailController extends Controller
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
                 // $email_reply = str_replace('//', "<br>", $email_reply);
                 // dd($email_reply);
-                // $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt , $embed_imges);
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt , $embed_imges);
             } catch(Throwable $e) {
                 echo 'Reply Notification! '. $e->getMessage();
             }
@@ -795,7 +795,7 @@ class MailController extends Controller
             
             try {
                 $ticket = Tickets::where('id',$ticket->id)->first();
-                // $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1,'','','','','');
+                $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1,'','','','','');
             } catch(Throwable $e) {
                 echo $e->getMessage();
             }
