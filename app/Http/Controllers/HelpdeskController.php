@@ -3880,7 +3880,7 @@ class HelpdeskController extends Controller
         //queue object added
         $queue = Mail::where([ ['mail_dept_id',$request->id], ['is_deleted', 0] ])->get();
         // if(!$default_queue){
-        //     $default_queue = Mail::where([ ['mail_dept_id',$request->id] ,['is_deleted', 0] ])->get();
+            $default_queue = Mail::where([ ['mail_dept_id',$request->id] ,['is_deleted', 0] ,  ['is_default', 'yes'] ])->get();
         // }
         $response['message'] = 'Department Status List';
         $response['status'] = 200;
@@ -3888,6 +3888,8 @@ class HelpdeskController extends Controller
         $response['status'] = $status;
         $response['users'] = $users;
         $response['queue'] = $queue;
+        $response['default_queue'] = $default_queue;
+
 
         return response()->json($response);
     }
