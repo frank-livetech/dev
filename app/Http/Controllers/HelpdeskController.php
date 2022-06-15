@@ -1221,10 +1221,10 @@ class HelpdeskController extends Controller
                 if($request->has('dd_Arr') && sizeof($request->dd_Arr) > 0){
                     $action = 'ticket_reply_update';
                     $content = $mail_reply;
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
+                    // $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                 }else{
                     $content = $mail_reply;
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
+                    // $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
                 }
             }
 
@@ -2260,8 +2260,8 @@ class HelpdeskController extends Controller
         // $flwup->passed = 1;
         $flwup->save();
         $ticket = Tickets::findOrFail($flwup->ticket_id);
-        $this->sendNotificationMail($ticket->toArray(), 'ticket_note_create', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
-        $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        // $this->sendNotificationMail($ticket->toArray(), 'ticket_note_create', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
+        // $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
         return; 
     }
 
@@ -3350,9 +3350,9 @@ class HelpdeskController extends Controller
                     $email = \Auth::user()->email;
 
                     if($request->template == 'ticket_create') {
-                        $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval , $request->auto_responder , $request->send_details );
+                        // $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval , $request->auto_responder , $request->send_details );
                     }else{
-                        $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval);
+                        // $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval);
                     }
 
                     
@@ -3403,7 +3403,7 @@ class HelpdeskController extends Controller
                     $ticket->save();
                     
                     $ticket = Tickets::where('coustom_id' , $id)->where('is_pending',0)->first();
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
+                    // $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
                     
                 }else{
                     
@@ -3436,7 +3436,7 @@ class HelpdeskController extends Controller
                     $ticket->save();
                     
                     $ticket = Tickets::where('coustom_id' , $id)->where('is_pending',0)->first();
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
+                    // $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
                 }
             }
         }
