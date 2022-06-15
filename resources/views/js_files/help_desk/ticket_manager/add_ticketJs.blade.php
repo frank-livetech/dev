@@ -438,7 +438,7 @@
                         let select = ``;
                         if(obj_queue == '' || obj_queue == null){
                             toastr.error('This department does not have any email queue.', { timeOut: 5000 });
-                            $("#email_queue").html("");
+                            $("#queue_id").html("");
                             return false;
                         }else{
                             let email_option = ``;
@@ -449,7 +449,7 @@
                                     email_option += `<option value="${item.id}"> ${item.mail_queue_address} (${item.from_name}) </option>`;
                                 }
                             }
-                            $("#email_queue").html(email_option);
+                            $("#queue_id").html(email_option);
 
                             $("#status").html('');
                             select = `<option value="">Select Status</option>`;
