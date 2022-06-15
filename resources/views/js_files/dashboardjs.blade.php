@@ -269,6 +269,9 @@
             async: true,
             success: function(data) {
                 console.log(data);
+                atte_data = data.staff_att_data;
+                staff_table_draw();
+
                 if (data.success == true) {
                     $('.clock_btn').remove();
                     let btn = ``;
