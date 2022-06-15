@@ -944,7 +944,13 @@
                                             <option value="">Select</option>
                                             @if(!empty($mailQueues))
                                                 @foreach($mailQueues as $queue)
-                                                    <option value="{{$queue->id}}">{{$queue->from_name}} <{{$queue->mailserver_username}}> </option>
+                                                    @if($queue->id == $details->queue_id)
+                                                        <option value="{{$queue->id}}" selected>{{$queue->from_name}}  ({{$queue->mailserver_username}}) </option>
+                                                    @elseif($queue->is_default == 'yes')
+                                                        <option value="{{$queue->id}}" selected>{{$queue->from_name}}  ({{$queue->mailserver_username}}) </option>
+                                                    @else
+                                                        <option value="{{$queue->id}}" >{{$queue->from_name}}  ({{$queue->mailserver_username}}) </option>
+                                                    @endif
                                                 @endforeach
                                             @endif
                                         </select>
