@@ -433,6 +433,7 @@
                         let obj = data.status;
                         let obj_user = data.users;
                         let obj_queue = data.queue;
+                        let default_queue = data.default_queue;
 
                         let option = ``;
                         let select = ``;
@@ -443,18 +444,24 @@
                         }else{
                             let email_option = ``;
                             for( let item of obj_queue) {
+                                
                                 if(item.is_default == 'yes'){
-                                    email_option += `<option value="${item.id}" selected> ${item.mail_queue_address} (${item.from_name}) </option>`;
+                                    email_option += `<option value="${item.id}" selected> ${item.mailserver_username} (${item.from_name}) </option>`;
                                 }else{
-                                    email_option += `<option value="${item.id}"> ${item.mail_queue_address} (${item.from_name}) </option>`;
+                                    email_option += `<option value="${item.id}"> ${item.mailserver_username} (${item.from_name}) </option>`;
                                 }
                             }
                             $("#queue_id").html(email_option);
 
+                            if(default_queue == null){
+                                default_queue = obj_queue['0'];
+                            }
+                            
+
                             $("#status").html('');
                             select = `<option value="">Select Status</option>`;
                             for(var i =0; i < obj.length; i++) {
-                                if(obj_queue.mail_status_id == obj[i].id){
+                                if(default_queue.mail_status_id == obj[i].id){
                                     option +=`<option value="`+obj[i].id+`" selected>`+obj[i].name+`</option>`;
                                 }else{
                                     option +=`<option value="`+obj[i].id+`">`+obj[i].name+`</option>`;
@@ -462,10 +469,10 @@
                             }
                             $("#status").html(select + option);
                             
-                            $('#priority').val(obj_queue.mail_priority_id);
+                            $('#priority').val(default_queue.mail_priority_id);
                             $("#priority").trigger('change');
 
-                            $('#type').val(obj_queue.mail_type_id);
+                            $('#type').val(default_queue.mail_type_id);
                             $("#type").trigger('change');
 
                             select = `<option value="">Unassigned</option>`;
