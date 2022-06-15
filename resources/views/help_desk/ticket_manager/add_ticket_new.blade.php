@@ -203,7 +203,7 @@
 
                                     <div class="row mt-3">
                                         <div class="col-md-4">
-                                            <label class="form-label">Email Queue</label>
+                                            <label class="form-label">Send From</label>
                                             <select class="select2 form-control custom-select dropdown w-100" id="email_queue" style="width:100%">
                                             </select>
                                         </div>
