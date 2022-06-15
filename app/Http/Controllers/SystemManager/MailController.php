@@ -622,7 +622,7 @@ class MailController extends Controller
         $ticket->updated_at = Carbon::now();
         $open_status = TicketStatus::where('name','Open')->first();
         $ticket->status = $open_status->id;
-        $ticket->save;
+        // $ticket->save;
         $ticket->save();
 
         $ticket = Tickets::where('coustom_id', $ticket->coustom_id)->first();
@@ -637,8 +637,8 @@ class MailController extends Controller
             $name_link = '<a href="'. $url .'">'. $fullname .'</a>';
 
             $user = $staff;
-            $ticket->assigned_to = $sid;
-            $ticket->save();
+            // $ticket->assigned_to = $sid;
+            // $ticket->save();
             try {
                 // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
                 // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
