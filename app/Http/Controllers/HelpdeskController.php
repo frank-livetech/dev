@@ -1183,7 +1183,7 @@ class HelpdeskController extends Controller
             }
 
             $ticket->updated_at = Carbon::now();
-            $ticket->assigned_to = \Auth::user()->id;
+            // $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
 
             $sla_updated = false;

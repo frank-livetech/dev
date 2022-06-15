@@ -58,6 +58,7 @@ $(document).ready(function() {
         emoticons_append: {
     custom_mind_explode: {
       keywords: ['brain', 'mind', 'explode', 'blown'],
+
       char: 'ðŸ¤¯'
     }
   },
@@ -1428,7 +1429,7 @@ function showAttachmentPreview(id , item) {
     $('#image-viewer').show();
 }
 
-function parserReplyEmbeddedImages(reply_id , images){
+function parserReplyEmbeddedImages(reply_id , images , type){
     
     var index = 0;
     $('#'+reply_id+' img').each(function () {
@@ -1443,7 +1444,7 @@ function parserReplyEmbeddedImages(reply_id , images){
         var classList = $(this).attr("class");
         // console.log(attchs[index])
         if(attchs[index] == undefined || attchs[index] == null){
-            if(classList != 'rounded-circle' && classList != 'attImg'){
+            if(classList != 'rounded-circle' && classList != 'attImg' && type == 'cron'){
                 $(this).remove();
             }
         }else{
@@ -1765,7 +1766,7 @@ function listReplies() {
                 }
             }
             $("#ticket-replies").append(replies_html);
-            parserReplyEmbeddedImages(`reply__${index}`,`${reply.embed_attachments}`);
+            parserReplyEmbeddedImages(`reply__${index}`,`${reply.embed_attachments}`,`${reply.type}`);
         });
 
         $('.bor-top').find(' p img').css('width','200px !important');
