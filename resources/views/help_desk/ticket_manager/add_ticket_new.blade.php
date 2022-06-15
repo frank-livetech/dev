@@ -2,10 +2,10 @@
 @section('title', 'Add Ticket')
 @section('body')
 <style>
-    .tox-collection__item-icon{
-        font-size:25px !important;
-    }
-</style>    
+.tox-collection__item-icon {
+    font-size: 25px !important;
+}
+</style>
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
@@ -201,6 +201,14 @@
                                         </div>
                                     </div>
 
+                                    <div class="row mt-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Email Queue</label>
+                                            <select class="select2 form-control custom-select dropdown w-100" id="email_queue" style="width:100%">
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div id="new_customer_form" style="display:none" class="p-3 bg-light mt-2">
                                         <div class="form-group">
                                             <h3 class="font-weight-bold">New Customer</h3>
@@ -241,12 +249,14 @@
                                         <div class="row mt-1">
                                             <div class="col-md-4">
                                                 <label for="example-search-input" class=" col-form-label">Phone Number
-                                                    </label>
-                                                    <div class="d-flex">
-                                                        <div class="country mt-1" style="padding-right: 8px;"></div>
-                                                        <input type="tel" class="tel form-control" name="phone" id="tkt_phone" placeholder="" autofocus>
-                                                    </div>
-                                                    <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                                </label>
+                                                <div class="d-flex">
+                                                    <div class="country mt-1" style="padding-right: 8px;"></div>
+                                                    <input type="tel" class="tel form-control" name="phone"
+                                                        id="tkt_phone" placeholder="" autofocus>
+                                                </div>
+                                                <small class="text-danger">Please add country code before number e.g
+                                                    (+1) for US</small>
                                                 {{-- <div class="">
                                                     <input class="form-control" type="text"
                                                         onkeypress="return event.charCode >= 48 && event.charCode <= 57"
@@ -269,7 +279,8 @@
                                                         <label>Company</label>
                                                         <select
                                                             class="select2-data-array form-select form-control form-control-line"
-                                                            id="company_id" onchange="selectCompany(this.value)" name="company_id">
+                                                            id="company_id" onchange="selectCompany(this.value)"
+                                                            name="company_id">
                                                             <option value="">Select</option>
                                                             @foreach ($companies as $item)
                                                             <option value="{{$item->id}}">{{$item->name}}</option>
@@ -277,7 +288,8 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-2 form-group">
-                                                        <button type="button" onclick="newCompany()" class="btn btn-info"
+                                                        <button type="button" onclick="newCompany()"
+                                                            class="btn btn-info"
                                                             style="margin-top: 20px;position: relative;right:30px">New</button>
                                                     </div>
                                                 </div>
@@ -319,9 +331,12 @@
                                                     <label for="phone" class="small">Phone Number</label>
                                                     <div class="d-flex">
                                                         <div class="country mt-1" style="padding-right: 8px;"></div>
-                                                        <input type="tel" class="tel form-control" name="company_phone_number" id="company_phone_number" placeholder="" autofocus>
+                                                        <input type="tel" class="tel form-control"
+                                                            name="company_phone_number" id="company_phone_number"
+                                                            placeholder="" autofocus>
                                                     </div>
-                                                    <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                                    <small class="text-danger">Please add country code before number e.g
+                                                        (+1) for US</small>
                                                     {{-- <input type="text" class="form-control" name="company_phone_number"
                                                         id="company_phone_number"> --}}
                                                 </div>
