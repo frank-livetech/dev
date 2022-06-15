@@ -4,6 +4,8 @@
     let ticketsList = [];
     let date_format = $("#system_date_format").val();
     let time_zone = "{{Session::get('timezone')}}";
+    let atte_data = {!! json_encode($staff_att_data) !!};
+
     var settings = {
         Color: '',
         LinkColor: '',
@@ -149,11 +151,16 @@
         });
 
         searchFollowUps(true);
-        let atte_data = {!! json_encode($staff_att_data) !!};
         console.log(atte_data)
+        staff_table_draw();
+        
+    });
+
+    function staff_table_draw(){
+
         let tt = $('#staff_table').DataTable({
             ordering: false,
-            data:  {!! json_encode($staff_att_data) !!} ,
+            data:  atte_data ,
             columns: [
                 {
                     render: function (data, type, full, meta) {
@@ -215,7 +222,8 @@
                 cell.innerHTML = i+1;
             } );
         }).draw();
-    });
+
+    }
 
     function ticketLogs() {
         $.ajax({

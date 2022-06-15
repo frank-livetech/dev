@@ -725,6 +725,7 @@ class MailController extends Controller
             // create new ticket
             $ticket = Tickets::create([
                 'dept_id' => $eq_value->mail_dept_id,
+                'queue_id' => $eq_value->id,
                 'priority' => $eq_value->mail_priority_id,
                 'subject' => trim($email_subject),
                 'customer_id' => $customer_id,
@@ -812,6 +813,7 @@ class MailController extends Controller
         // create new ticket
         $ticket = Tickets::create([
             'dept_id' => $eq_value->mail_dept_id,
+            'queue_id' => $eq_value->id,
             'priority' => $eq_value->mail_priority_id,
             'subject' => trim($email_subject),
             'status' => $eq_value->mail_status_id,
@@ -1095,7 +1097,7 @@ class MailController extends Controller
         $count1 = 0; 
         
         foreach ($data as $key =>$value) {
-            
+            $current_timestamp = Carbon::now()->timestamp;
             if($count <= 0){
                 $count = substr_count($value['data'],"Content-Disposition: inline;");
             }
@@ -1110,8 +1112,8 @@ class MailController extends Controller
                     $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
 
                     if(empty($ext)) $ext = 'svg';
-    
-                    $filename = $custom_id.'_R'.$key.'.'.$ext;
+                    
+                    $filename = $custom_id.'_R'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
                         
@@ -1130,7 +1132,7 @@ class MailController extends Controller
 
                     if(empty($ext)) $ext = 'svg';
     
-                    $filename = $custom_id.'_R'.$key.'.'.$ext;
+                    $filename = $custom_id.'_R'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
                         
