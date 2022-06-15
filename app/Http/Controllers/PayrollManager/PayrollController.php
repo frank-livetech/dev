@@ -90,7 +90,7 @@ class PayrollController extends Controller
             }
         }
 
-        $staff_att_data = getAllStaffData();
+        $staff_att_data = $this->getAllStaffData();
         $response['staff_att_data'] = $staff_att_data;
 
         $response['message'] = 'Clocked in!';
@@ -164,7 +164,7 @@ class PayrollController extends Controller
                 }
             }
     
-            $staff_att_data = getAllStaffData();
+            $staff_att_data = $this->getAllStaffData();
 
             $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked;
             $response['status_code'] = 200;
