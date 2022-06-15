@@ -202,6 +202,8 @@ class HelpdeskController extends Controller
         $page_control = 'super';
         $response_categories = RestemplateCat::where("is_deleted","=",0)->get();
 
+        // $mails = Mail::where([ ['created_by', auth()->id()] , ['is_deleted', 0] ])->get();
+
         return view('help_desk.ticket_manager.add_ticket_new', get_defined_vars());
     }
 
@@ -3876,9 +3878,9 @@ class HelpdeskController extends Controller
         $dept_assigns = DepartmentAssignments::where('dept_id', $request->id)->get()->pluck('user_id')->toArray();
         $users = User::whereIn('id', $dept_assigns)->where('is_deleted',0)->where('status',1)->get();
         //queue object added
-        $default_queue = Mail::where('mail_dept_id',$request->id)->where('is_deleted', 0)->where('is_default', 'yes')->first();
+        $default_queue = Mail::where([ ['mail_dept_id',$request->id], ['is_deleted', 0], ['is_default', 'yes'] ])->get();
         if(!$default_queue){
-            $default_queue = Mail::where('mail_dept_id',$request->id)->where('is_deleted', 0)->first();
+            $default_queue = Mail::where([ ['mail_dept_id',$request->id] ,['is_deleted', 0] ])->get();
         }
         $response['message'] = 'Department Status List';
         $response['status'] = 200;

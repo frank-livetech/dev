@@ -16,6 +16,7 @@ let sr_proirity_arr = null;
 let g_priority_arr = null;
 let g_status_arr = null;
 let response_temp_arr = [];
+let email_que_arr = [];
 
 $(document).ready(function() {
     get_mails_table_list();
@@ -256,7 +257,7 @@ $(document).ready(function() {
             data: { data: formData },
             dataType: 'json',
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 if (data.status_code == 200 && data.success == true) {
                     toastr.success(data.message, { timeOut: 5000 });
                 } else {
@@ -458,8 +459,8 @@ $(document).ready(function() {
                 var obj = data.data;
                 response_temp_arr = obj;
                 var html = "";
-                console.log(data, "Category data 2");
-                console.log(obj.length, 'obj');
+                // console.log(data, "Category data 2");
+                // console.log(obj.length, 'obj');
 
                 for (var i = 0; i < obj.length; i++) {
 
@@ -502,7 +503,7 @@ $(document).ready(function() {
 
         var filtertext = $.grep(response_temp_arr , function(object) {
             let re_title = object.title.toLowerCase();
-            console.log(re_title);
+            // console.log(re_title);
             if(re_title != null) {
                 return re_title.includes(value);
             }
@@ -688,7 +689,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 $(this).find('.btn').attr('disabled', false);
-                console.log(data);
+                // console.log(data);
                 if (data.success == true) {
                     toastr.success(data.message, { timeOut: 5000 });
                 } else {
@@ -730,7 +731,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 $(this).find('.btn').attr('disabled', false);
-                console.log(data);
+                // console.log(data);
                 if (data.success == true) {
                     toastr.success(data.message, { timeOut: 5000 });
                 } else {
@@ -1202,7 +1203,7 @@ function sendOnDemandRecap() {
         data: formdata,
         dataType: 'json',
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data.status_code == 200 && data.success == true) {
                 toastr.success(data.message, { timeOut: 5000 });
             } else {
@@ -1227,7 +1228,7 @@ function getAllSLA() {
         },
         success: function(data) {
             var obj = data.data;
-            console.log(data, "sla data");
+            // console.log(data, "sla data");
 
             $("#sla_table").DataTable().destroy();
             $.fn.dataTable.ext.errMode = "none";
@@ -1306,6 +1307,7 @@ function get_mails_table_list() {
 
             if(data.status_code == 200 && data.success == true) {
                 var obj = data.mails;
+                email_que_arr = data.mails;
 
                 $("#ticket-mails-list").DataTable().destroy();
                 $.fn.dataTable.ext.errMode = "none";
@@ -1395,6 +1397,109 @@ function get_mails_table_list() {
     });
 }
 
+function getEmailByID(id) {
+    let item = email_que_arr.find(item => item.id == id);
+    if(item != null) {
+        console.log(item , "item");
+
+        $("#email_id").val(id);
+        $("#edit_email_emp").val(item.mail_queue_address);
+        $("#edit_mailserver_hostname").val(item.mailserver_hostname);
+        $("#edit_mailserver_port").val(item.mailserver_port);
+        $("#edit_mailserver_username").val(item.mailserver_username);
+        $("#edit_mailserver_password").val(item.mailserver_password);
+        $("#edit_from_name").val(item.from_name);
+        $("#edit_from_mail").val(item.from_mail);
+
+        
+        $("#edit_queue_type").val(item.queue_type).trigger('change');
+        $("#edit_protocol").val(item.protocol).trigger('change');
+        $("#edit_queue_template").val(item.queue_template).trigger("change");
+        $("#edit_mail_dept_id").val(item.mail_dept_id).trigger("change");
+        $("#edit_mail_type_id").val(item.mail_type_id).trigger("change");
+
+
+        setTimeout(() => {
+            $("#edit_mail_status_id").val(item.mail_status_id).trigger("change");    
+        }, 1500);
+
+        // 
+        $("#edit_mail_priority_id").val(item.mail_priority_id).trigger("change");
+
+        // checkboxes
+        if (item.registration_required == "yes") {
+            $("#edit_reg").prop("checked", true);
+        } else {
+            $("#edit_reg").prop("checked", false);
+        }
+
+        if (item.is_enabled == "yes") {
+            $("#edit_is_enabled").prop("checked", true);
+            $("#edit_is_enabled_text").html("<span class='text-success'>enabled</span>");
+        } else {
+            $("#edit_is_enabled").prop("checked", false);
+            $("#edit_is_enabled_text").html("<span class='text-danger'>disabled</span>");
+        }
+
+
+        if (item.autosend == "yes") {
+            $("#edit_autosend_ticket").prop("checked", true);
+        } else {
+            $("#edit_autosend_ticket").prop("checked", false);
+        }
+        
+        if (item.is_default == "yes") {
+            $("#edit_is_dept_default").prop("checked", true);
+        } else {
+            $("#edit_is_dept_default").prop("checked", false);
+        }
+        
+        if(item.outbound == 'yes') $("#edit_outbound_ticket").prop("checked", true);
+        else $("#edit_outbound_ticket").prop("checked", false);
+
+        if (item.php_mailer == "yes") {
+            $("#edit_php_mailer").prop("checked", true);
+            $("#edit_email_emp").attr('disabled', true);
+            $("#edit_queue_type").attr('disabled', true);
+
+            $("#edit_protocol").attr('disabled', true);
+            $("#edit_queue_template").attr('disabled', true);
+
+            $("#edit_is_enabled").attr('disabled', true);
+
+            $("#edit_mail_dept_id").attr('disabled', true);
+            $("#edit_mail_type_id").attr('disabled', true);
+
+            $("#edit_mail_status_id").attr('disabled', true);
+            $("#edit_mail_priority_id").attr('disabled', true);
+
+            $("#edit_reg").attr('disabled', true);
+            $("#edit_autosend_ticket").attr('disabled', true);
+
+        } else {
+            $("#edit_php_mailer").prop("checked", false);
+
+            $("#edit_email_emp").attr('disabled', false);
+            $("#edit_queue_type").attr('disabled', false);
+
+            $("#edit_protocol").attr('disabled', false);
+            $("#edit_queue_template").attr('disabled', false);
+
+            $("#edit_is_enabled").attr('disabled', false);
+
+            $("#edit_mail_dept_id").attr('disabled', false);
+            $("#edit_mail_type_id").attr('disabled', false);
+
+            $("#edit_mail_status_id").attr('disabled', false);
+            $("#edit_mail_priority_id").attr('disabled', false);
+
+            $("#edit_reg").attr('disabled', false);
+            $("#edit_autosend_ticket").attr('disabled', false);
+        }
+        $("#edit_email_modal").modal('show');
+    }
+}
+
 function changeEmailQueueStatus( id) {
     let status = '';
     if( $("#customSwitch_"+id).is(":checked")) {
@@ -1462,7 +1567,7 @@ function getAllresTemp() {
         },
         success: function(data) {
             var obj = data.data;
-            console.log(data, "Category data");
+            // console.log(data, "Category data");
             var option = ``;
             for(var i =0 ; i< obj.length; i++) {
                 option += `<option value="`+obj[i].id+`">`+obj[i].name+`</option>`;
@@ -1606,7 +1711,7 @@ $("#brand_settings").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
                 // $("#brand_settings").trigger("reset");
                 // console.log($('#site_footer').val());
@@ -1654,7 +1759,7 @@ function saveSystemDateAndTime() {
             $("#processing").show();
         },
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data.status_code == 200 & data.success == true) {
                 toastr.success(data.message, { timeOut: 5000 });
             } else {
@@ -1683,7 +1788,7 @@ function get_departments_table_list() {
 
             g_depts_arr = data.departments;
             var dept_arr = data.departments;
-            console.log(dept_arr);
+            // console.log(dept_arr);
 
             dept_arr.forEach(element => {
                 $('#department_id').append('<option value="' + element.id + '">' + element.name + '</option>');
@@ -1759,7 +1864,7 @@ function get_status_table_list() {
             g_status_arr = data.statuses;
             var status_arr = data.statuses;
 
-            console.log(data, "ticket status");
+            // console.log(data, "ticket status");
 
             $("#ticket-status-list").DataTable().destroy();
             $.fn.dataTable.ext.errMode = "none";
@@ -1832,7 +1937,7 @@ function get_type_table_list() {
             g_types_arr = data.types;
             var types_arr = data.types;
             st_types = data.types;
-            console.log(types_arr,"Ticket Types array");
+            // console.log(types_arr,"Ticket Types array");
 
 
             $("#ticket-type-list").DataTable().destroy();
@@ -1903,7 +2008,7 @@ function get_customer_type_table_list() {
         success: function(data) {
             g_types_arr = data.types;
             var types_arr = data.types;
-            console.log(types_arr,"Customer Types array");
+            // console.log(types_arr,"Customer Types array");
 
 
             $("#customer-type-list").DataTable().destroy();
@@ -1975,7 +2080,7 @@ function get_dispatch_status_table_list() {
         success: function(data) {
             g_types_arr = data.types;
             var types_arr = data.types;
-            console.log(types_arr,"dispatch Types array");
+            // console.log(types_arr,"dispatch Types array");
 
 
             $("#dispatch-status-list").DataTable().destroy();
@@ -2042,10 +2147,10 @@ function get_project_type_table_list() {
         url: get_project_type_route,
         data: "",
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             g_types_arr = data.types;
             var types_arr = data.types;
-            console.log(types_arr, "project type");
+            // console.log(types_arr, "project type");
 
 
             $("#project-type-list").DataTable().destroy();
@@ -2112,7 +2217,7 @@ function get_priority_table_list() {
         url: get_priorities_route,
         data: "",
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             g_priority_arr = data.priorities;
             var priorities_arr = data.priorities;
             sr_proirity_arr = data.priorities;
@@ -2199,7 +2304,7 @@ $('#nestable-menu').on('click', function(e) {
 
 
 function deleteStatus(id) {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this Status will be removed!",
@@ -2217,7 +2322,7 @@ function deleteStatus(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         Swal.fire({
                             position: 'center',
@@ -2245,7 +2350,7 @@ function deleteStatus(id) {
 }
 
 function deleteType(id) {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this Type will be removed!",
@@ -2263,7 +2368,7 @@ function deleteType(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         Swal.fire({
                             position: 'center',
@@ -2291,7 +2396,7 @@ function deleteType(id) {
 }
 
 function deleteCustomerType(id) {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this Type will be removed!",
@@ -2309,7 +2414,7 @@ function deleteCustomerType(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         Swal.fire({
                             position: 'center',
@@ -2337,7 +2442,7 @@ function deleteCustomerType(id) {
 }
 
 function deleteDispatchStatus(id) {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this Type will be removed!",
@@ -2355,7 +2460,7 @@ function deleteDispatchStatus(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         Swal.fire({
                             position: 'center',
@@ -2383,7 +2488,7 @@ function deleteDispatchStatus(id) {
 }
 
 function deleteProjectType(id) {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this Type will be removed!",
@@ -2401,7 +2506,7 @@ function deleteProjectType(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         Swal.fire({
                             position: 'center',
@@ -2429,7 +2534,7 @@ function deleteProjectType(id) {
 }
 
 function deletePriority(id) {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this priority will be removed!",
@@ -2447,7 +2552,7 @@ function deletePriority(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         Swal.fire({
                             position: 'center',
@@ -2475,7 +2580,7 @@ function deletePriority(id) {
 }
 
 function deleteDepartment(id) {
-    console.log(id);
+    // console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this department will be removed!",
@@ -2493,7 +2598,7 @@ function deleteDepartment(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data) {
                         Swal.fire({
                             position: 'center',
@@ -2564,7 +2669,7 @@ function editResponseTemp(id, title, cat_id, temp_html, view_access) {
 function editStatus(id) {
 
     var item = g_status_arr.find(item => item.id === id);
-    console.log(item , "item");
+    // console.log(item , "item");
     $("#stat").html('Edit Status');
     if(item != null) {
 
@@ -2643,8 +2748,8 @@ function editPriority(id) {
     $("#prior").html('Edit Priority');
 
     var item = sr_proirity_arr.find(item => item.id === id);
-    console.log(item );
-    console.log(id);
+    // console.log(item );
+    // console.log(id);
     if(sr_proirity_arr != null) {
         $('#priority_name').val(item.name);
         $('#priority_id').val(id);
@@ -2798,128 +2903,6 @@ function showPop3Model(type, edit = false, id = '') {
         $('#tickets_area').css('display', 'flex')
     }
     $('#save-mail').modal('show');
-}
-
-
-   
-
-function getEmailByID(id) {
-    $("#email_id").val(id);
-    $("#edit_email_modal").modal('show');
-    $.ajax({
-        type: "POST",
-        url: edit_email_by_id,
-        data: { id: id },
-        beforeSend: function(data) {
-            $(".loader_container").show();
-        },
-        success: function(data) {
-            console.log(data, "sd");
-
-            $("#edit_email_emp").val(data.mail_queue_address);
-            $("#edit_mailserver_hostname").val(data.mailserver_hostname);
-            $("#edit_mailserver_port").val(data.mailserver_port);
-            $("#edit_mailserver_username").val(data.mailserver_username);
-            $("#edit_mailserver_password").val(data.mailserver_password);
-            $("#edit_from_name").val(data.from_name);
-            $("#edit_from_mail").val(data.from_mail);
-
-            // dropdown
-
-            $("#edit_queue_type").val(data.queue_type).trigger('change');
-            $("#edit_protocol").val(data.protocol).trigger('change');
-            $("#edit_queue_template").val(data.queue_template).trigger("change");
-            $("#edit_mail_dept_id").val(data.mail_dept_id).trigger("change");
-            $("#edit_mail_type_id").val(data.mail_type_id).trigger("change");
-
-            setTimeout(() => {
-                $("#edit_mail_status_id").val(data.mail_status_id).trigger("change");    
-            }, 1500);
-            
-            
-            $("#edit_mail_priority_id").val(data.mail_priority_id).trigger("change");
-
-            // checkboxes
-
-            if (data.registration_required == "yes") {
-                $("#edit_reg").prop("checked", true);
-            } else {
-                $("#edit_reg").prop("checked", false);
-            }
-
-            if (data.is_enabled == "yes") {
-                $("#edit_is_enabled").prop("checked", true);
-                $("#edit_is_enabled_text").html("<span class='text-success'>enabled</span>");
-            } else {
-                $("#edit_is_enabled").prop("checked", false);
-                $("#edit_is_enabled_text").html("<span class='text-danger'>disabled</span>");
-            }
-
-
-            if (data.autosend == "yes") {
-                $("#edit_autosend_ticket").prop("checked", true);
-            } else {
-                $("#edit_autosend_ticket").prop("checked", false);
-            }
-            
-            if (data.is_default == "yes") {
-                $("#edit_is_dept_default").prop("checked", true);
-            } else {
-                $("#edit_is_dept_default").prop("checked", false);
-            }
-            
-            if(data.outbound == 'yes') $("#edit_outbound_ticket").prop("checked", true);
-            else $("#edit_outbound_ticket").prop("checked", false);
-
-            if (data.php_mailer == "yes") {
-                $("#edit_php_mailer").prop("checked", true);
-                $("#edit_email_emp").attr('disabled', true);
-                $("#edit_queue_type").attr('disabled', true);
-
-                $("#edit_protocol").attr('disabled', true);
-                $("#edit_queue_template").attr('disabled', true);
-
-                $("#edit_is_enabled").attr('disabled', true);
-
-                $("#edit_mail_dept_id").attr('disabled', true);
-                $("#edit_mail_type_id").attr('disabled', true);
-
-                $("#edit_mail_status_id").attr('disabled', true);
-                $("#edit_mail_priority_id").attr('disabled', true);
-
-                $("#edit_reg").attr('disabled', true);
-                $("#edit_autosend_ticket").attr('disabled', true);
-
-            } else {
-                $("#edit_php_mailer").prop("checked", false);
-
-                $("#edit_email_emp").attr('disabled', false);
-                $("#edit_queue_type").attr('disabled', false);
-
-                $("#edit_protocol").attr('disabled', false);
-                $("#edit_queue_template").attr('disabled', false);
-
-                $("#edit_is_enabled").attr('disabled', false);
-
-                $("#edit_mail_dept_id").attr('disabled', false);
-                $("#edit_mail_type_id").attr('disabled', false);
-
-                $("#edit_mail_status_id").attr('disabled', false);
-                $("#edit_mail_priority_id").attr('disabled', false);
-
-                $("#edit_reg").attr('disabled', false);
-                $("#edit_autosend_ticket").attr('disabled', false);
-            }
-
-
-        },
-        complete: function(data) {
-            $(".loader_container").hide();
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    });
 }
 
 function updateEmailQueue() {
@@ -3078,7 +3061,7 @@ function updateEmailQueue() {
         url: "{{url('update_email')}}",
         data: form_data,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data.status_code == 200 && data.success == true) {
                 $('#edit_email_modal').modal('hide');
                 get_mails_table_list();
@@ -3191,6 +3174,8 @@ function verify_connection(el, value) {
     }
 }
 
+
+// save ticket email queue
 function save_pop3_mail() {
 
     var mail_queue_address = $('#mail_queue_address').val();
@@ -3504,7 +3489,7 @@ function verify_save_pop3_mail() {
         },
         success: function(data) {
             $('#mail-form').closest('.modal-body').find('.btn').attr('disabled', false);
-            console.log(data);
+            // console.log(data);
             if (data.success) {
                 $('#save-mail').modal('hide');
 
@@ -3549,7 +3534,7 @@ function deleteMail(id) {
                     id: id
                 },
                 success: function(data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.status_code == 200 && data.success == true) {
                         Swal.fire({
                             position: 'center',
@@ -3668,7 +3653,7 @@ $("#save_department").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
 
                 $("#save_department").trigger("reset");
@@ -3735,7 +3720,7 @@ $("#save_status").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data.status_code == 200 && data.success == true) {
                 get_status_table_list();
                 $("#save_status").trigger("reset");
@@ -3789,7 +3774,7 @@ $("#save_priority").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
 
                 $("#save_priority").trigger("reset");
@@ -3843,7 +3828,7 @@ $("#save_ticket").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
 
                 $("#save_type").trigger("reset");
@@ -3889,7 +3874,7 @@ $("#save_customer_ticket").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
 
                 $("#save_customer_type").trigger("reset");
@@ -3935,7 +3920,7 @@ $("#save_dispatch_status").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
 
                 $("#save_dispatch_status").trigger("reset");
@@ -3982,7 +3967,7 @@ $("#save_project_type").submit(function(event) {
         enctype: 'multipart/form-data',
         processData: false,
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             if (data['success'] == true) {
 
                 $("#save_project_type").trigger("reset");
@@ -4119,20 +4104,20 @@ function showDepartStatus(id , status_id) {
     });
 }
 
+// open before merge
+// $("#mail_dept_id").on('change' , function() {
+//     let value = $(this).val();
+//     let status_id =  $(this).data('status') ;
 
-$("#mail_dept_id").on('change' , function() {
-    let value = $(this).val();
-    let status_id =  $(this).data('status') ;
+//     showDepartStatus(value , status_id)
+// });
 
-    showDepartStatus(value , status_id)
-});
+// $("#edit_mail_dept_id").on('change' , function() {
+//     let value = $(this).val();
+//     let status_id =  $(this).data('status') ;
 
-$("#edit_mail_dept_id").on('change' , function() {
-    let value = $(this).val();
-    let status_id =  $(this).data('status') ;
-
-    showDepartStatus(value , status_id)
-});
+//     showDepartStatus(value , status_id)
+// });
 
 
 
@@ -4154,7 +4139,7 @@ function getAllBannedUser() {
         success: function(data) {
             var obj = data.banned_users;
             
-            console.log(obj, "banned user");
+            // console.log(obj, "banned user");
 
             $("#banned-user-list").DataTable().destroy();
             $.fn.dataTable.ext.errMode = "none";
@@ -4291,7 +4276,7 @@ function deleteBannedUser() {
             url: '{{route("delete.bannedUser")}}',
             data: {id:banned_id},
             success: function(data) {
-                console.log(data, "a");
+                // console.log(data, "a");
 
                 if(data.status == 200 && data.success == true) {
                     toastr.success(data.message, { timeOut: 5000 });
