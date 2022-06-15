@@ -58,6 +58,7 @@ $(document).ready(function() {
         emoticons_append: {
     custom_mind_explode: {
       keywords: ['brain', 'mind', 'explode', 'blown'],
+
       char: 'ðŸ¤¯'
     }
   },
@@ -1428,7 +1429,7 @@ function showAttachmentPreview(id , item) {
     $('#image-viewer').show();
 }
 
-function parserReplyEmbeddedImages(reply_id , images){
+function parserReplyEmbeddedImages(reply_id , images , type){
     
     var index = 0;
     $('#'+reply_id+' img').each(function () {
@@ -1443,7 +1444,7 @@ function parserReplyEmbeddedImages(reply_id , images){
         var classList = $(this).attr("class");
         // console.log(attchs[index])
         if(attchs[index] == undefined || attchs[index] == null){
-            if(classList != 'rounded-circle' && classList != 'attImg'){
+            if(classList != 'rounded-circle' && classList != 'attImg' && type == 'cron'){
                 $(this).remove();
             }
         }else{
@@ -1765,7 +1766,7 @@ function listReplies() {
                 }
             }
             $("#ticket-replies").append(replies_html);
-            parserReplyEmbeddedImages(`reply__${index}`,`${reply.embed_attachments}`);
+            parserReplyEmbeddedImages(`reply__${index}`,`${reply.embed_attachments}`,`${reply.type}`);
         });
 
         $('.bor-top').find(' p img').css('width','200px !important');
@@ -2483,10 +2484,10 @@ function getTicketFollowUp() {
 
                 if(follow_up_count  != 0) {
                     $('.followup_count').text(follow_up_count);
-                    $('.followup_count').addClass('badge badge-light-danger rounded-pill ms-1');
+                    $('.followup_count').addClass('badge badge-light-danger rounded-pill mx-1');
                 }else{
                     $('.followup_count').text('');
-                    $('.followup_count').removeClass('badge badge-light-danger rounded-pill ms-1');
+                    $('.followup_count').removeClass('badge badge-light-danger rounded-pill mx-1');
                 }
                 
 
@@ -3474,7 +3475,7 @@ function get_ticket_notes() {
         success: function(data) {
             if (data.success) {
                 if(data.notes_count  != 0) {
-                    $('.notes_count').addClass('badge badge-light-danger rounded-pill ms-1');
+                    $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
                     $('.notes_count').text(data.notes_count);
                 }
                 
@@ -3695,7 +3696,7 @@ function setCustomerCompany() {
         $('#cst-company').html('Company : ' + name);
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
 
-        $('#adjustCard1Height').attr('style', 'height: 300px !important');
+        // $('#adjustCard1Height').attr('style', 'height: 300px !important');
         $('#adjustCard2Height').attr('style', 'height: 197px !important; overflow-y:scroll');
         
     } else {

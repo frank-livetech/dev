@@ -1151,7 +1151,7 @@ class HelpdeskController extends Controller
             }
 
             $ticket->updated_at = Carbon::now();
-            $ticket->assigned_to = \Auth::user()->id;
+            // $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
 
             $sla_updated = false;
@@ -1278,7 +1278,7 @@ class HelpdeskController extends Controller
 
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
-
+        $mailQueues = Mail::where('mail_dept_id', $ticket->dept_id)->where('is_deleted', 0)->get();
 
         $total_tickets_count = 0;
         $open_tickets_count = 0;
@@ -3421,7 +3421,13 @@ class HelpdeskController extends Controller
 
         try {
             /*********** dept mail for email notification ***************/
-            $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
+            $sendingMailServer  = '';
+            if($ticket['queue_id'] != NULL){
+                $sendingMailServer = Mail::where('id', $ticket['queue_id'])->where('is_deleted', 0)->first();
+            }
+            if(empty($sendingMailServer)){
+                $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->where('is_default', 'yes')->first();
+            }
             if(empty($sendingMailServer)) {
                 $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->first();
                 
@@ -3431,7 +3437,6 @@ class HelpdeskController extends Controller
                 }
             }
             
-
             $mail_from = $sendingMailServer->mailserver_username;
 
             $notification_message = '';
@@ -3844,16 +3849,18 @@ class HelpdeskController extends Controller
         $dept_assigns = DepartmentAssignments::where('dept_id', $request->id)->get()->pluck('user_id')->toArray();
         $users = User::whereIn('id', $dept_assigns)->where('is_deleted',0)->where('status',1)->get();
         //queue object added
-        $default_queue = Mail::where([ ['mail_dept_id',$request->id], ['is_deleted', 0], ['is_default', 'yes'] ])->get();
-        if(!$default_queue){
-            $default_queue = Mail::where([ ['mail_dept_id',$request->id] ,['is_deleted', 0] ])->get();
-        }
+        $queue = Mail::where([ ['mail_dept_id',$request->id], ['is_deleted', 0] ])->get();
+        // if(!$default_queue){
+            $default_queue = Mail::where([ ['mail_dept_id',$request->id] ,['is_deleted', 0] ,  ['is_default', 'yes'] ])->first();
+        // }
         $response['message'] = 'Department Status List';
         $response['status'] = 200;
         $response['success'] = true;
         $response['status'] = $status;
         $response['users'] = $users;
-        $response['queue'] = $default_queue;
+        $response['queue'] = $queue;
+        $response['default_queue'] = $default_queue;
+
 
         return response()->json($response);
     }

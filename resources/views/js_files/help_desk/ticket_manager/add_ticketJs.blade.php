@@ -147,6 +147,8 @@
                 var status = $('#status').val();
                 var priority = $('#priority').val();
                 var type = $('#type').val();
+                var queue_id = $('#queue_id').val();
+
                 var customer_id = $('#customer_id').val();
                 var assigned_to = $("#assigned_to").val();
                 var deadline = $("#deadline").val();
@@ -165,7 +167,7 @@
                     customer_id:customer_id,
                     type:type,
                     deadline:deadline,
-                    
+                    queue_id:queue_id,
                 };
 
                 // getting response template data
@@ -359,8 +361,8 @@
                         }
                     },
                     complete:function(data ) {
-                        $("#btnSaveTicket").show();
-                        $("#publishing").hide();
+                        // $("#btnSaveTicket").show();
+                        // $("#publishing").hide();
                         $("#status_modal").hide();
                     },
                     failure: function(errMsg) {
@@ -433,24 +435,35 @@
                         let obj = data.status;
                         let obj_user = data.users;
                         let obj_queue = data.queue;
+                        let default_queue = data.default_queue;
 
                         let option = ``;
                         let select = ``;
                         if(obj_queue == '' || obj_queue == null){
                             toastr.error('This department does not have any email queue.', { timeOut: 5000 });
-                            $("#email_queue").html("");
+                            $("#queue_id").html("");
                             return false;
                         }else{
                             let email_option = ``;
                             for( let item of obj_queue) {
-                                email_option += `<option value="${item.id}"> ${item.mail_queue_address} (${item.from_name}) </option>`;
+                                
+                                if(item.is_default == 'yes'){
+                                    email_option += `<option value="${item.id}" selected> ${item.mailserver_username} (${item.from_name}) </option>`;
+                                }else{
+                                    email_option += `<option value="${item.id}"> ${item.mailserver_username} (${item.from_name}) </option>`;
+                                }
                             }
-                            $("#email_queue").html(email_option);
+                            $("#queue_id").html(email_option);
+
+                            if(default_queue == null){
+                                default_queue = obj_queue['0'];
+                            }
+                            
 
                             $("#status").html('');
                             select = `<option value="">Select Status</option>`;
                             for(var i =0; i < obj.length; i++) {
-                                if(obj_queue.mail_status_id == obj[i].id){
+                                if(default_queue.mail_status_id == obj[i].id){
                                     option +=`<option value="`+obj[i].id+`" selected>`+obj[i].name+`</option>`;
                                 }else{
                                     option +=`<option value="`+obj[i].id+`">`+obj[i].name+`</option>`;
@@ -458,10 +471,10 @@
                             }
                             $("#status").html(select + option);
                             
-                            $('#priority').val(obj_queue.mail_priority_id);
+                            $('#priority').val(default_queue.mail_priority_id);
                             $("#priority").trigger('change');
 
-                            $('#type').val(obj_queue.mail_type_id);
+                            $('#type').val(default_queue.mail_type_id);
                             $("#type").trigger('change');
 
                             select = `<option value="">Unassigned</option>`;

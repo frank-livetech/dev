@@ -177,7 +177,7 @@ class MailController extends Controller
             $mail = Mail::find($request->id);
             
             if($data['is_default'] == 'yes') {
-                $mails = Mail::where('mail_dept_id', $data['mail_dept_id'])->where('is_default', 'yes')->get();
+                $mails = Mail::where('mail_dept_id', $data['mail_dept_id'])->where('id','!=',$request->id)->where('is_default', 'yes')->get();
                 foreach ($mails as $key => $value) {
                     $value->is_default = 'no';
                     $value->save();
@@ -622,7 +622,7 @@ class MailController extends Controller
         $ticket->updated_at = Carbon::now();
         $open_status = TicketStatus::where('name','Open')->first();
         $ticket->status = $open_status->id;
-        $ticket->save;
+        // $ticket->save;
         $ticket->save();
 
         $ticket = Tickets::where('coustom_id', $ticket->coustom_id)->first();
@@ -637,8 +637,8 @@ class MailController extends Controller
             $name_link = '<a href="'. $url .'">'. $fullname .'</a>';
 
             $user = $staff;
-            $ticket->assigned_to = $sid;
-            $ticket->save();
+            // $ticket->assigned_to = $sid;
+            // $ticket->save();
             try {
                 // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
                 // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
@@ -725,6 +725,7 @@ class MailController extends Controller
             // create new ticket
             $ticket = Tickets::create([
                 'dept_id' => $eq_value->mail_dept_id,
+                'queue_id' => $eq_value->id,
                 'priority' => $eq_value->mail_priority_id,
                 'subject' => trim($email_subject),
                 'customer_id' => $customer_id,
@@ -812,6 +813,7 @@ class MailController extends Controller
         // create new ticket
         $ticket = Tickets::create([
             'dept_id' => $eq_value->mail_dept_id,
+            'queue_id' => $eq_value->id,
             'priority' => $eq_value->mail_priority_id,
             'subject' => trim($email_subject),
             'status' => $eq_value->mail_status_id,
@@ -1095,7 +1097,7 @@ class MailController extends Controller
         $count1 = 0; 
         
         foreach ($data as $key =>$value) {
-            
+            $current_timestamp = Carbon::now()->timestamp;
             if($count <= 0){
                 $count = substr_count($value['data'],"Content-Disposition: inline;");
             }
@@ -1110,8 +1112,8 @@ class MailController extends Controller
                     $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
 
                     if(empty($ext)) $ext = 'svg';
-    
-                    $filename = $custom_id.'_R'.$key.'.'.$ext;
+                    
+                    $filename = $custom_id.'_R'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
                         
@@ -1130,7 +1132,7 @@ class MailController extends Controller
 
                     if(empty($ext)) $ext = 'svg';
     
-                    $filename = $custom_id.'_R'.$key.'.'.$ext;
+                    $filename = $custom_id.'_R'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
                         
