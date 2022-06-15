@@ -65,10 +65,11 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                             <div class="form-group my-1">
                                 <label for="security">Ticket Data Refresh <span class="text-danger small fst-italic">(in minutes)</span> :</label>
                             </div>
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="form-group my-1">
-                                <input type="nummber" class="form-control" value="{{$ticket_time != 0 ? $ticket_time : ''}}" id="tkt_refresh" name="tkt_refresh">
+                                <input type="number" class="form-control" value="{{$ticket_time != 0 ? $ticket_time : ''}}" id="tkt_refresh" name="tkt_refresh" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -80,13 +81,12 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                         </div>
                         <div class="col-md-3">
                             <div class="form-group my-1">
-                                <label for="security">Empty Trash <span class="text-danger small fst-italic">(in days)</span> <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Enter 0 to disable and enter any other number to empty trash" aria-hidden="true" style="cursor: pointer;" ></i> :</label>
-                                
+                                <label for="security">Empty Trash <span class="text-danger small fst-italic">(in days)</span> <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Enter 0 to disable and enter any other number to empty trash" aria-hidden="true" style="cursor: pointer;" ></i> :</label> 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group my-1">
-                                <input type="nummber" class="form-control" value="" id="empty_trash" name="empty_trash">
+                                <input type="number" id="" class="form-control" name="contact" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -98,7 +98,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                         </div>
                         <div class="col-md-3">
                             <div class="form-group my-1 ">
-                                <label for="security">Restrict Permissions :</label>
+                                <label for="security">Restrict Permissions <i class="fa fa-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Who can't use trash" aria-hidden="true" style="cursor: pointer;" ></i>:</label>
                             </div>
                         </div>
                         <div class="col-md-6">

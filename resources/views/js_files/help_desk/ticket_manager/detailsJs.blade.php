@@ -2484,10 +2484,10 @@ function getTicketFollowUp() {
 
                 if(follow_up_count  != 0) {
                     $('.followup_count').text(follow_up_count);
-                    $('.followup_count').addClass('badge badge-light-danger rounded-pill ms-1');
+                    $('.followup_count').addClass('badge badge-light-danger rounded-pill mx-1');
                 }else{
                     $('.followup_count').text('');
-                    $('.followup_count').removeClass('badge badge-light-danger rounded-pill ms-1');
+                    $('.followup_count').removeClass('badge badge-light-danger rounded-pill mx-1');
                 }
                 
 
@@ -3475,7 +3475,7 @@ function get_ticket_notes() {
         success: function(data) {
             if (data.success) {
                 if(data.notes_count  != 0) {
-                    $('.notes_count').addClass('badge badge-light-danger rounded-pill ms-1');
+                    $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
                     $('.notes_count').text(data.notes_count);
                 }
                 
@@ -3696,7 +3696,7 @@ function setCustomerCompany() {
         $('#cst-company').html('Company : ' + name);
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
 
-        $('#adjustCard1Height').attr('style', 'height: 300px !important');
+        // $('#adjustCard1Height').attr('style', 'height: 300px !important');
         $('#adjustCard2Height').attr('style', 'height: 197px !important; overflow-y:scroll');
         
     } else {

@@ -313,10 +313,13 @@
     .body-hover:hover{
         border: 1px solid #fab81c;
     }
+    span.badge.badge-secondary.type_bdge:hover{
+        color: #fab81c
+    }
     .webkit-box1{
         display: -webkit-box;
     }
-    @media (max-width: 767.98px){
+    @media (max-width: 897.98px){
         .webkit-box1{
         display: inline;
     }
@@ -364,15 +367,38 @@
                                     <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
                                     <a href="javascript:void(0)" onclick="ticketUrlCopy()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
-                                
+                                {{-- <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle waves-effect waves-float waves-light" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button> --}}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                {{-- <i class="fas fa-ellipsis-h dropdown-toggle" aria-hidden="true" data-bs-toggle="dropdown" type="button"></i> --}}
+                                <div class="dropdown-menu dropdown-menu-end" style="">
+                                    <a class="dropdown-item" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3 me-1"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                        <span class="align-middle" onclick="openProModal();">Edit Ticket Properties</span>
+                                    </a>
+                                    <a class="dropdown-item">
+                                       
+                                        @if($details->trashed == 0)
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                        <span class="align-middle" onclick="trashTicket({{$details->id}})">Trash</span>
+                                        @else
+                                        <i class="fas fa-trash-restore me-1"></i>
+                                        <span class="align-middle" onclick="restoreTicket({{$details->id}})">Restore</span>
+                                        @endif
+                                    </a>
+                                    <a class="dropdown-item" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle me-1"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                                        <span class="align-middle">Spam</span>
+                                    </a>
+                                   
+                                    </div>
                                 {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
-                                <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i>
-                                @if($details->trashed == 0)
+                                {{-- <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i> --}}
+                                {{-- @if($details->trashed == 0)
                                 <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="trashTicket({{$details->id}})"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Trash</button>
                                 @else
                                 <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="restoreTicket({{$details->id}})"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg> Restore</button>
-                                @endif
-                                <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:145px;position: absolute" onclick=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Spam</button>
+                                @endif --}}
+                                {{-- <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:145px;position: absolute" onclick=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Spam</button> --}}
                             
                             </h5>
                             <div class="profile-pic mt-2">
@@ -437,7 +463,7 @@
                                         @else
                                             <a href="{{url('profile')}}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
                                         @endif
-                                                <span class="badge badge-secondary type_bdge"> {{$details->is_staff_tkt == 0 ? 'User' : 'Staff'}}  </span> </a></p>
+                                            <span class="badge badge-secondary type_bdge"> {{$details->is_staff_tkt == 0 ? 'User' : 'Staff'}}  </span> </a></p>
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company"></p>
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
@@ -644,7 +670,7 @@
                                         <a class="nav-link active" id="v-pills-notes-tab" data-bs-toggle="tab" href="#v-pills-notes" role="tab" aria-controls="tabVerticalLeft1" aria-selected="true">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
                                                 <span style="display: flex; justify-content: center; align-items: center;">Notes <span class="notes_count"> </span> </span>
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;height: 20px"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Notes" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="openNotesModal()"> </button>
                                             </div>
@@ -653,7 +679,7 @@
                                         <a class="nav-link" id="v-pills-assets-tab" data-bs-toggle="tab" href="#v-pills-assets" role="tab" aria-controls="v-pills-assets" aria-selected="false">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Asset Manager  </span>
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;height: 20px"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Assets" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="ShowAssetModel()"> </button>
                                             </div>
@@ -669,7 +695,7 @@
 
                                                 <span style="display: flex; justify-content: center; align-items: center;"> Follow Up  </span>
 
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;height: 20px"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
 
@@ -679,9 +705,9 @@
                                         <a class="nav-link" id="v-pills-followup-tab" data-bs-toggle="tab" href="#v-pills-followup" role="tab" aria-controls="v-pills-followup" aria-selected="false">
                                             <div class="d-flex justify-content-between w-100 align-self-center">
 
-                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups <span class="badge badge-light-danger rounded-pill ms-1 followup_count"></span></span>
+                                                <span style="display: flex; justify-content: center; align-items: center;"> Follow Ups <span class="badge badge-light-danger rounded-pill mx-1 followup_count"></span></span>
 
-                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;"
+                                                <button class="rounded btn-outline-success waves-effect fa fa-plus" style="margin-right: -12px;height: 20px"
                                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Add Follow Ups" 
                                                     style="padding:5px 10px" data-bs-toggle="modal" onclick="showFollowUpModal()"> </button>
 
