@@ -36,9 +36,6 @@
                     width: '250px',
                     targets: 3
                 },
-                // { width: '110px', targets: [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
-                // { orderable: false, targets: 0 },
-                // { orderable: false, targets: 1 },
                 {
                     targets: [9], // cell target
                     render: function(data, type, full, meta) {
@@ -54,10 +51,6 @@
                     }
                 },
             ],
-            // ,
-            // order: [
-            //     [2, 'asc']
-            // ],
             createdRow: function(row, data, dataIndex) {
                 if ($(data[1]).attr('class') && $(data[1]).attr('class').match('flagged')) {
                     $(row).addClass('flagged-tr');
@@ -307,51 +300,20 @@
     function getCounterTickets(key) {
         in_recycle_mode = false;
         let dept_id = $('#dept').val();
-        // if (dept_id != '' && key == 'total') {
 
-        //     // let new_url = '';
+        $.ajax({
+            type: "get",
+            url: get_tickets_route + '/' + key,
+            async: false,
+            data: "",
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                // console.log(data, "data tickets");
 
-        //     // if (key == 'total') {
-        //     //     new_url = get_tickets_route + '/' + key;
-        //     // } else {
-        //     //     new_url = get_filteredtkt_route + '/' + dept_id;
-        //     // }
-        //     // console.log(dept_id , "dept_id");
-        //     // console.log(new_url , "new_url");
-        //     let ret = $.ajax({
-        //         type: "get",
-        //         // url: new_url,
-        //         url: get_filteredtkt_route + '/' + dept_id,
-        //         async: false,
-        //         data: "",
-        //         dataType: 'json',
-        //         cache: false,
-        //         success: function(data) {
-        //             // console.log(data, "data tickets");
-
-        //             redrawTicketsTable(data.tickets);
-        //         }
-        //     });
-        // } else {
-
-            $.ajax({
-                type: "get",
-                url: get_tickets_route + '/' + key,
-                async: false,
-                data: "",
-                dataType: 'json',
-                cache: false,
-                success: function(data) {
-                    // console.log(data, "data tickets");
-
-                    redrawTicketsTable(data.tickets);
-                }
-            });
-
-            // }
-
-
-        // }
+                redrawTicketsTable(data.tickets);
+            }
+        });
     }
 
     function listTickets(f_key = '') {
@@ -364,7 +326,6 @@
         }
 
         in_recycle_mode = false;
-
         $('#btnMovetotrash').show();
         if (f_key == 'trash') {
         // if (f_key == 'closed' || f_key == 'trash') {
@@ -426,8 +387,11 @@
     function redrawTicketsTable(ticket_arr) {
         tkt_arr = ticket_arr;
         var la_color = ``;
-        tickets_table_list.clear().draw();
-        // console.log(ticket_arr, "ticket_arr");
+        
+        if ( $.fn.dataTable.isDataTable( '#ticket-table-list' ) ) {
+            tickets_table_list.clear().draw();
+        }
+
         $.each(ticket_arr, function(key, val) {
             
             let prior = '<div class="text-center">' + val['priority_name'] + '</div>';

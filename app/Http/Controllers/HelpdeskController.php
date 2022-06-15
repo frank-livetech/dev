@@ -3,56 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\CustomerManager\CustomerlookupController;
-use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
-use App\Models\Departments;
-use App\Models\DepartmentAssignments;
-use App\Models\TicketStatus;
-use App\Models\TicketPriority;
-use App\Models\TicketType;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Hash;
+use App\Models\{Departments , DepartmentAssignments , TicketStatus, TicketPriority ,TicketType, Customer, SpamUser , TicketSharedEmails , Tickets, Vendors , TicketReply , TicketFollowUp , TicketFollowupLogs, TicketNote , TicketView, Assets, Project, SystemSetting, Activitylog, TicketSettings, Company, SlaPlan, SlaPlanAssoc , ResTemplateCat , Country , ResponseTemplate, DepartmentPermissions, Mail};
+use Illuminate\Support\Facades\{Crypt , Hash};
 use App\User;
-use App\Models\Customer;
-use App\Models\SpamUser;
-use App\Models\TicketSharedEmails;
-use App\Models\Tickets;
-use App\Models\Vendors;
-use App\Models\TicketReply;
-use App\Models\TicketFollowUp;
-use App\Models\TicketFollowupLogs;
-use App\Models\TicketNote;
-use App\Models\Assets;
-use App\Models\Project;
-use Illuminate\Support\Facades\DB;
-use App\Models\SystemSetting;
-use App\Models\Activitylog;
-use App\Models\TicketSettings;
-use App\Models\Company;
-use App\Models\SlaPlan;
-use App\Models\SlaPlanAssoc;
-use App\Models\ResTemplateCat;
-use App\Models\Country;
-use App\Models\ResponseTemplate;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\{DB, Auth ,File, URL};
 use Carbon\Carbon;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Exception;
-use App\Models\TicketView;
 use Genert\BBCode\BBCode;
-use App\Models\Mail;
-use App\Http\Controllers\GeneralController;
-use App\Http\Controllers\SystemManager\SettingsController;
+use App\Http\Controllers\{GeneralController, NotifyController, ActivitylogController};
+use App\Http\Controllers\SystemManager\{SettingsController, MailController};
 use App\Http\Controllers\CustomerPanel\HomeController;
-use App\Http\Controllers\SystemManager\MailController;
-use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\ProjectManager\ProjectManagerController;
-use App\Models\DepartmentPermissions;
 use Faker\Calculator\Ean;
 use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
-use Illuminate\Support\Facades\URL;
 use Session;
 
 require 'vendor/autoload.php';
@@ -822,7 +788,7 @@ class HelpdeskController extends Controller
                 if($type == 'closed'){
                     return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status',$closed_status_id]]);
                 }
-                return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.status','!=',$closed_status_id]]);
+                return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] ]);
                 // return $q->where([['tickets.customer_id',$cid], ['tickets.trashed', 0] , ['tickets.is_deleted',0]]);
 
                 // get ticket according to customers
