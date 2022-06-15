@@ -147,6 +147,8 @@
                 var status = $('#status').val();
                 var priority = $('#priority').val();
                 var type = $('#type').val();
+                var queue_id = $('#queue_id').val();
+
                 var customer_id = $('#customer_id').val();
                 var assigned_to = $("#assigned_to").val();
                 var deadline = $("#deadline").val();
@@ -165,7 +167,7 @@
                     customer_id:customer_id,
                     type:type,
                     deadline:deadline,
-                    
+                    queue_id:queue_id,
                 };
 
                 // getting response template data
