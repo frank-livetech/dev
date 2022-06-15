@@ -359,8 +359,8 @@
                         }
                     },
                     complete:function(data ) {
-                        $("#btnSaveTicket").show();
-                        $("#publishing").hide();
+                        // $("#btnSaveTicket").show();
+                        // $("#publishing").hide();
                         $("#status_modal").hide();
                     },
                     failure: function(errMsg) {
