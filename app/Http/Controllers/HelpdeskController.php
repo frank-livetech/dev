@@ -850,7 +850,7 @@ class HelpdeskController extends Controller
             when($statusOrUser == 'customer', function($q) use ($cid) {
                 return $q->where('tickets.customer_id', $cid);
             })
-            ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0]  ])->count();
+            ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
             
         }else{
             $total_tickets_count = Tickets::
@@ -1286,7 +1286,7 @@ class HelpdeskController extends Controller
 
         if($ticket->customer_id != null){
             $total_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
-            $open_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['status','!=',$closed_status->id], ['status',$open_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
+            $open_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['status','!=',$closed_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
             $closed_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],  ['status',$closed_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
         }
         
@@ -2849,9 +2849,18 @@ class HelpdeskController extends Controller
                 if(!is_array($id)) $id = [$id];
     
                 $ticket = Tickets::select('customer_id')->where('id', $id)->first();
-                $customer = Customer::where('id' , $ticket->customer_id)->first();
-                $company_id = $customer->company_id;
+                if($ticket->is_staff_tkt == 1){
+                    $customer = User::where('id' , $ticket->customer_id)->first();
+                }else{
+                    $customer = Customer::where('id' , $ticket->customer_id)->first();
+                }
+                if($customer){
+                    if($ticket->is_staff_tkt != 1){
+                        $company_id = $customer->company_id;
+                    }
+                }
                 $customer_id = $customer->id;
+                
                 if(!is_array($customer)) $customer_id = [$customer_id];
                 if(!is_array($customer)) $company_id = [$company_id];
     

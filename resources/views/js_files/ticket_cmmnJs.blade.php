@@ -254,7 +254,7 @@
         } else {
             url = get_filteredtkt_route + '/' + dept + '/' + sts;
         }
-
+        
         $.ajax({
             type: "get",
             url: url,
@@ -266,7 +266,25 @@
                 date_formate = data.date_format;
                 // console.log(data.tickets);
                 ticketsList = data.tickets;
-                listTickets(url_type);
+                
+                if(get_tickets_route.includes('customer')){
+                    var myArray = get_tickets_route.split("#");
+                    if(myArray.length > 1){
+                        if(myArray[1] == 'closed'){
+                            listTickets('closed');
+                        }else if(myArray[1] == 'active'){
+                            listTickets('active');
+                        }else if(myArray[1] == 'open'){
+                            listTickets('open');
+                        }
+                    }else{
+                        listTickets('active');
+                    }
+                }else{
+                    listTickets(url_type);
+                }
+                
+                
                 if (page_name == 'tickets') ShowCalendarModel();
                 if (data.hasOwnProperty('open_ticket_count')) $('#open_ticket_count').html(data.open_ticket_count);
                 if (data.hasOwnProperty('total_tickets_count')) $('#total_tickets_count').html(data.total_tickets_count);
@@ -340,7 +358,10 @@
                     ticket_arr = ticket_arr.filter(item => item.assigned_to == loggedInUser);
                     break;
                 case 'open':
-                    ticket_arr = ticket_arr.filter(item => item.status_name == 'Open');
+                    ticket_arr = ticket_arr.filter(item => item.status_name != 'Closed');
+                    break;
+                case 'active':
+                    ticket_arr = ticket_arr.filter(item => item.status_name != 'Closed');
                     break;
                 case 'closed':
                     ticket_arr = ticket_arr.filter(item => item.status_name == 'Closed');
@@ -791,9 +812,9 @@
                 // if(key == 'trashed') {
                 //     in_recycle_mode = true;
                 // }
-                console.log(key , "key");
+                // console.log(key , "key");
                 in_recycle_mode = (key == 'trash' ? true : false);
-                console.log(in_recycle_mode , "in_recycle_mode");
+                // console.log(in_recycle_mode , "in_recycle_mode");
                 redrawTicketsTable(data.tickets);
             }
         });
