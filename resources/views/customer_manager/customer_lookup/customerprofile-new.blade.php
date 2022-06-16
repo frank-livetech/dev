@@ -1062,7 +1062,7 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-md-3" id="allTicket">
-                                        <a href="javascript:listTickets('total')" class="card card-hover border-info">
+                                        <a href="javascript:listTickets('active')" class="card card-hover border-info">
                                             <div class="box p-2 rounded info text-center">
                                                 <h1 class="font-weight-light " id="total_tickets_count"></h1>
                                                 <h6 class="text-info">Active</h6>

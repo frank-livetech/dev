@@ -850,7 +850,7 @@ class HelpdeskController extends Controller
             when($statusOrUser == 'customer', function($q) use ($cid) {
                 return $q->where('tickets.customer_id', $cid);
             })
-            ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0]  ])->count();
+            ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
             
         }else{
             $total_tickets_count = Tickets::
@@ -1286,7 +1286,7 @@ class HelpdeskController extends Controller
 
         if($ticket->customer_id != null){
             $total_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
-            $open_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['status','!=',$closed_status->id], ['status',$open_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
+            $open_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['status','!=',$closed_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
             $closed_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],  ['status',$closed_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
         }
         

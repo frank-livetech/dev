@@ -13,7 +13,7 @@
     var subscriptionsList = {!!json_encode($subscriptions) !!};
 
     let customer = {!! json_encode($customer) !!};
-    console.log(customer , "customercustomercustomercustomer");
+    // console.log(customer , "customercustomercustomercustomer");
     let all_customers_emails = {!! json_encode($customers) !!};
 
     let ticket_format = {!!json_encode($ticket_format) !!};
@@ -127,7 +127,7 @@
                 } else {
                     var message = field + " is now Invalid: " + message;
                 }
-                console.log(message);
+                // console.log(message);
             },
             "timeoutDuration" : 2000,
             "timeoutCallback" : function () {
@@ -137,7 +137,7 @@
                 console.log("Collect.js loaded the fields onto the form");
             },
             'callback' : function(response) {
-                console.log(response);
+                // console.log(response);
                 var input = document.createElement("input");
                 $('#card_type').val(response.card.type)
                 $('#cardlastDigits').val(response.card.number)
@@ -200,7 +200,7 @@
                 } else {
                     var message = field + " is now Invalid: " + message;
                 }
-                console.log(message);
+                // console.log(message);
             },
             "timeoutDuration" : 2000,
             "timeoutCallback" : function () {
@@ -210,7 +210,7 @@
                 console.log("Collect.js loaded the fields onto the form");
             },
             'callback' : function(response) {
-                console.log(response);
+                // console.log(response);
                 var input = document.createElement("input");
                 $('#card_type').val(response.card.type)
                 $('#cardlastDigits').val(response.card.number)
@@ -379,7 +379,7 @@
 
         // tickets
         var url  = window.location.href;
-        console.log(url , "url");
+        // console.log(url , "url");
 
         if(url.includes('#tickets')) {
 
@@ -388,6 +388,7 @@
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
+            get_tickets_route = get_tickets_route+'#active';
         }
         if(url.includes('#open')) {
             
@@ -396,7 +397,7 @@
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-
+            get_tickets_route = get_tickets_route+'#open';
             listTickets('open');
         }
         if(url.includes('#closed')) {
@@ -407,7 +408,8 @@
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-
+            
+            get_tickets_route = get_tickets_route+'#closed';
             listTickets('closed');            
         }
 
@@ -506,14 +508,14 @@
 
 
         var googleObject = {!! json_encode($google) !!};
-        console.log(googleObject);
+        // console.log(googleObject);
         if(!$.isEmptyObject(googleObject)){
 
             if( googleObject.hasOwnProperty('api_key')){
 
                 var api_key = googleObject.api_key;
                 $("#google_api_key").val(api_key);
-                console.log(api_key);
+                // console.log(api_key);
                 
                 if(api_key!=''){
 
@@ -770,7 +772,7 @@
                 $("#processing").show();
             },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 if(data.status_code == 200 && data.success == true) {
 
                     values();
@@ -979,7 +981,7 @@
                     timer: 2500
                 });
                 get_cust_card()
-                console.log(data)
+                // console.log(data)
         
             },
             complete: function(data) {
@@ -1037,7 +1039,7 @@
                     // $('#btnSaveTicket').attr('disabled', false);
                     // $('#btnSaveTicket .spinner-border').show();
 
-                    console.log(data, "ticket data");
+                    // console.log(data, "ticket data");
                     if (data.success) {
                         $('#ticketModal').modal('hide');
                         $("#save_tickets").trigger("reset");
@@ -1133,7 +1135,7 @@
                 } else {
                     toastr.error(data.message, { timeOut: 5000});
                 }
-                console.log(data, "data");
+                // console.log(data, "data");
             },
             error: function(e) {
                 console.log(e)
@@ -1187,7 +1189,7 @@
             cache: false,
             success: function(data) {
                 // alert(v_name);
-                console.log(data.types, "data");
+                // console.log(data.types, "data");
                 var cardSet = ``;
                 var data = data.types;
                 var masterCardimg = `<img src="https://secure.merchantonegateway.com/shared/images/brand-mastercard.png" style="width:16%;position: absolute;top: 25px;">`;
@@ -1490,11 +1492,11 @@
                 $(".loader_container").show();
             },
             success: function(data) {
-                console.log(data , "customer order");
+                // console.log(data , "customer order");
                 var date_format = data.date_format;
                 var obj = data.data;
 
-                console.log(obj, "obj");
+                // console.log(obj, "obj");
 
                 $('#customer_order_table').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
@@ -1608,7 +1610,7 @@
     }
 
     function payNowModel(id) {
-        console.log(id)
+        // console.log(id)
         $('#payNow').modal('show');
         var newUrl = "{{url('paypal/ec-checkout')}}/" + id;
         $("#paypalHref").attr("href", newUrl);
