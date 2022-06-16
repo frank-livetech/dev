@@ -2844,11 +2844,12 @@ class HelpdeskController extends Controller
                 if(!$request->has('id')) throw new Exception('Ticket id missing');
             
                 $id = $request->id;
-    
+                $company_id = '';
+                
                 $type = $request->type;
                 if(!is_array($id)) $id = [$id];
     
-                $ticket = Tickets::select('customer_id')->where('id', $id)->first();
+                $ticket = Tickets::where('id', $id)->first();
                 if($ticket->is_staff_tkt == 1){
                     $customer = User::where('id' , $ticket->customer_id)->first();
                 }else{
