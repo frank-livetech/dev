@@ -2849,9 +2849,18 @@ class HelpdeskController extends Controller
                 if(!is_array($id)) $id = [$id];
     
                 $ticket = Tickets::select('customer_id')->where('id', $id)->first();
-                $customer = Customer::where('id' , $ticket->customer_id)->first();
-                $company_id = $customer->company_id;
+                if($ticket->is_staff_tkt == 1){
+                    $customer = User::where('id' , $ticket->customer_id)->first();
+                }else{
+                    $customer = Customer::where('id' , $ticket->customer_id)->first();
+                }
+                if($customer){
+                    if($ticket->is_staff_tkt != 1){
+                        $company_id = $customer->company_id;
+                    }
+                }
                 $customer_id = $customer->id;
+                
                 if(!is_array($customer)) $customer_id = [$customer_id];
                 if(!is_array($customer)) $company_id = [$company_id];
     
