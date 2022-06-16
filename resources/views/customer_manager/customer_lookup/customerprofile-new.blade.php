@@ -45,16 +45,16 @@
 <script id="script1" src="https://secure.merchantonegateway.com/token/Collect.js" data-tokenization-key="zBkgJ9-6r24y2-FeFXkD-Kyxr9P" ></script>
 
 <script>
-   var nmi_integration = {!! json_encode($nmi_integration) !!};
+//    var nmi_integration = {!! json_encode($nmi_integration) !!};
 
-   if(!$.isEmptyObject(nmi_integration)){
-        if( nmi_integration.hasOwnProperty('tokenization_key')){
-            var data_key = nmi_integration.tokenization_key;
-            var scriptTag = document.getElementById("script1");
-            console.log(scriptTag)
-            scriptTag.setAttribute("data-tokenization-key", data_key);
-        }
-   }
+//    if(!$.isEmptyObject(nmi_integration)){
+//         if( nmi_integration.hasOwnProperty('tokenization_key')){
+//             var data_key = nmi_integration.tokenization_key;
+//             var scriptTag = document.getElementById("script1");
+//             console.log(scriptTag)
+//             scriptTag.setAttribute("data-tokenization-key", data_key);
+//         }
+//    }
 </script>
 <div class="app-content content">
     <div class="content-overlay"></div>
