@@ -333,7 +333,7 @@ class MailController extends Controller
             }  
         }
 
-        $html_reply = str_replace("[img]","<img",$html_reply);
+        $html_reply = str_replace("[img]","<img ",$html_reply);
         $html_reply = str_replace("[/img]"," \>",$html_reply);
         $html_reply = str_replace(array("\n", "\r"), '', $html_reply);
 
@@ -497,7 +497,7 @@ class MailController extends Controller
                                             //  $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
                                             $email_reply = str_replace('\r\n', "", $html_reply);
                                         //   dd($email_reply);
-                                            $email_reply = str_replace('//', "", $email_reply);
+                                            $email_reply = str_replace('//', "<br>", $email_reply);
                                             $email_reply = str_replace('[url=', "<a href=", $html_reply);
                                             $email_reply = str_replace('[\url]', "</a>", $html_reply);
                                             $email_reply =  $bbcode->convertToHtml($email_reply);   
@@ -642,8 +642,11 @@ class MailController extends Controller
             try {
                 // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
                 // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
-                $email_reply = str_replace('/\r\n/', "", $email_reply);
-                
+                // $email_reply = str_replace('/\r\n/', "", $email_reply);
+                // $email_reply = str_replace('//', "<br>", $email_reply);
+                $email_reply = $rep->reply;
+                $email_reply = str_replace('/\r\n/', "<br>", $email_reply);
+
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cron', $attaches, $staff->email ,'','','','','', $is_closed , $reset_tkt , $embed_imges);
 
             } catch(Throwable $e) {
@@ -660,7 +663,7 @@ class MailController extends Controller
                 // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
                 // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
                 $email_reply = str_replace('/\r\n/', "", $email_reply);
-                // $email_reply = str_replace('//', "<br>", $email_reply);
+                $email_reply = str_replace('//', "<br>", $email_reply);
                 // dd($email_reply);
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt , $embed_imges);
             } catch(Throwable $e) {
@@ -1095,7 +1098,7 @@ class MailController extends Controller
         $attach_count = 1;
         $count = 0;
         $count1 = 0; 
-        
+        // dd($data);
         foreach ($data as $key =>$value) {
             $current_timestamp = Carbon::now()->timestamp;
             if($count <= 0){
@@ -1110,10 +1113,10 @@ class MailController extends Controller
                 if($emded_count <= $count){
                     
                     $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
-
+                    
                     if(empty($ext)) $ext = 'svg';
                     
-                    $filename = $custom_id.'_R'.$current_timestamp.'.'.$ext;
+                    $filename = $custom_id.'_R_'.$emded_count.'_'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
                         
@@ -1132,7 +1135,7 @@ class MailController extends Controller
 
                     if(empty($ext)) $ext = 'svg';
     
-                    $filename = $custom_id.'_R'.$current_timestamp.'.'.$ext;
+                    $filename = $custom_id.'_R_'.$attach_count.'_'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
                         
