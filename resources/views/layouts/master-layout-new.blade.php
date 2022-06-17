@@ -385,6 +385,9 @@
         const change_theme_url = "{{asset('change_theme_mode')}}";
 
         $(document).ready(function() {
+            $(document).on('select2:open', () => {
+                document.querySelector('.select2-search__field').focus();
+            });
             getAllCounts();
             getNotifications();
             getUnreadMessages();
