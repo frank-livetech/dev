@@ -40,7 +40,9 @@
             vertical-align: baseline;
             border-radius: 0.358rem;
         }
-
+        .section-label{
+            color: #000 !important
+        }
     </style>
 
     <input type="hidden" id="image_url">
@@ -277,7 +279,7 @@
                                             
                                         </span> --}}
 
-                                        <input type="text" id="message" name="message" class="form-control message" placeholder="Type your message or use speech to text" />
+                                        <input type="text" id="message" name="message" class="form-control message" placeholder="  Type your message or use speech to text" />
 
                                         <span class="input-group-text">
                                             <label for="attach-doc" class="attachment-icon form-label mb-0">
@@ -339,7 +341,7 @@
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Forword To</button>
                                     
                                 </div>
-                                <div class="mt-1 text-center">
+                                <div class="mt-1 ">
                                     
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">New Ticket</button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Invite staff</button>

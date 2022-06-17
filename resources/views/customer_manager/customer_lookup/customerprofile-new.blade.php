@@ -1033,9 +1033,9 @@
                                                                 <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
                                                                 <th></th>
                                                                 <th>Asset Title</th>
+                                                                <th> Asset Type </th>
                                                                 <th>Company</th>
                                                                 <th> Customer</th>
-                                                                <th> Asset Type </th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
