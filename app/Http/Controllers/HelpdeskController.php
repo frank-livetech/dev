@@ -773,6 +773,8 @@ class HelpdeskController extends Controller
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
+        $open_status_id = $open_status->id;
+
         $cnd = '!=';
         $is_del = 0;
         if($statusOrUser == 'closed') $cnd = '=';
@@ -884,8 +886,8 @@ class HelpdeskController extends Controller
         $flagged_tickets_count = Tickets::where([ ['is_flagged', 1] , ['is_deleted', 0] ,['tickets.trashed', 0] , ['is_pending' ,0] ,['tickets.status', '!=', $closed_status_id] ])->count();
 
         $open_ticket_count = Tickets::
-        when($statusOrUser == 'customer', function($q) use ($cid , $open_status , $closed_status_id) {
-            return $q->where('tickets.customer_id', $cid)->where('status' ,'!=', $closed_status_id);
+        when($statusOrUser == 'customer', function($q) use ($cid , $open_status_id ) {
+            return $q->where('tickets.customer_id', $cid)->where('status' , $open_status_id);
         })
         ->when($statusOrUser == 'staff', function($q) use ($sid) {
             return $q->where('tickets.assigned_to', $sid);
