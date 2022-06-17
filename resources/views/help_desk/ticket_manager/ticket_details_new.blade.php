@@ -323,6 +323,15 @@
         .webkit-box1{
         display: inline;
     }
+    .drop-dpt{
+        text-align: center
+    }
+    .mail-message{
+        text-align: left
+    }
+    .bor-top img{
+        max-width: 340px
+    }
     }
 </style>
 @endsection
@@ -717,7 +726,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-10" >
-                                    <div class="tab-content wrapper_content" id="v-pills-tabContent style-5" style="overflow-y: auto; height:250px">
+                                    <div class="tab-content wrapper_content" id="v-pills-tabContent style-5" style="overflow-y: auto;">
 
                                         <div class="tab-pane fade show active" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
                                             <!-- <div class="col-12 text-right">
@@ -744,9 +753,9 @@
                                                                 <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
                                                                 <th>ID</th>
                                                                 <th>Asset Title</th>
+                                                                <th>Asset Type </th>
                                                                 <th>Company</th>
                                                                 <th>Customer</th>
-                                                                <th>Asset Type </th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
@@ -805,7 +814,7 @@
                             <div class="card-body p-1" id="ticket-sla-plan">
                                 <div class="row" >
 
-                                    <div class="col-md-9">
+                                    <div class="col-md-9 col-lg-9 col-sm-12">
                                         <p style="font-size: 13px;margin-bottom: unset !important"">
                                             
                                         <span class="sla-selc" id="sla_reply_due">
@@ -821,7 +830,7 @@
                                         </p>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-lg-3 col-sm-12">
                                         <p style="margin-left: 70px;margin-bottom: unset !important">
                                             <a type="button" class="float-right" href="javascript:SlaPlanReset();">Reset</a>
                                             <!-- <a type="button" class="float-right" href="javascript:resetSlaPlan();">Reset</a> -->

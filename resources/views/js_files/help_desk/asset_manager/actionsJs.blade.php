@@ -64,6 +64,20 @@ function get_asset_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
+
+                            if (full.template != null) {
+                                if (full.template.title != null) {
+                                    return full.template.title;
+                                } else {
+                                    return '-';
+                                }
+                            } else {
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
                             if(full.company != null) {
                                 return full.company.name != null ? full.company.name : '-';
                             }else{
@@ -80,21 +94,6 @@ function get_asset_table_list() {
                             }
                         }
                     },
-                    {
-                        "render": function(data, type, full, meta) {
-
-                            if (full.template != null) {
-                                if (full.template.title != null) {
-                                    return full.template.title;
-                                } else {
-                                    return '-';
-                                }
-                            } else {
-                                return '-';
-                            }
-                        }
-                    },
-
                     {
                         "render": function(data, type, full, meta) {
                             return `
