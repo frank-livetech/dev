@@ -358,7 +358,7 @@
                     ticket_arr = ticket_arr.filter(item => item.assigned_to == loggedInUser);
                     break;
                 case 'open':
-                    ticket_arr = ticket_arr.filter(item => item.status_name != 'Closed');
+                    ticket_arr = ticket_arr.filter(item => item.status_name == 'Open');
                     break;
                 case 'active':
                     ticket_arr = ticket_arr.filter(item => item.status_name != 'Closed');
