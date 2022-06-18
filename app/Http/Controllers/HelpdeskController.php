@@ -3618,6 +3618,7 @@ class HelpdeskController extends Controller
                     $action_name = 'ticket_reply';
                 }
             }elseif($action_name == 'cust_cron'){
+                $is_cron = true;
                 $action_name = 'ticket_cus_reply';
                 
             }elseif($action_name == 'Customer Ticket Create'){
@@ -3647,7 +3648,7 @@ class HelpdeskController extends Controller
             } else if($action_name == 'Subject updated') {
                 $attachs = $ticket['attachments'];
                 $pathTo = 'storage/tickets/'.$ticket['id'];
-            } else if($action_name == "ticket_reply") {
+            } else if($action_name == "ticket_reply" || $action_name == 'ticket_cus_reply') {
                 $customer_send = true;
                 $cust_template_code = 'auto_res_ticket_reply';
 
@@ -3685,14 +3686,7 @@ class HelpdeskController extends Controller
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' } Updated by '. $user->name;
                 $notification_title = 'Ticket # { ' . $ticket['coustom_id']. ' } Updated';
 
-            }else if($action_name == 'ticket_cus_reply'){
-                $attachs = $data_id;
-                $pathTo = 'storage/tickets-replies/'.$ticket['id'];
-
-                $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' }  Reply Added by System';
-                $notification_title = 'Reply Added';
-            }
-            else if($action_name == "Type updated") {
+            }else if($action_name == "Type updated") {
                 $notification_message = 'Ticket # { ' . $ticket['coustom_id']. ' } Type Updated by '. $user->name;
                 $notification_title = 'Ticket # { ' . $ticket['coustom_id']. ' } Type Updated';
             }else if($action_name == "Deptartment updated") {
@@ -3769,10 +3763,11 @@ class HelpdeskController extends Controller
             
             $mail_template = DB::table('templates')->where('code', $template_code)->first();
             $cust_template = DB::table('templates')->where('code', $cust_template_code)->first();
-        
-            if(empty($mail_template)) throw new Exception('"'.$template_code.'" Template not found');
-            if($customer_send && empty($cust_template_code)) throw new Exception('"'.$cust_template_code.'" Template not found');
             
+            if(empty($mail_template)) throw new Exception('"'.$template_code.'" Template not found');
+           
+            if($customer_send && empty($cust_template_code)) throw new Exception('"'.$cust_template_code.'" Template not found');
+           
             $template_input = array(
                 array('module' => 'Tech', 'values' => (!empty($tech)) ? $tech->attributesToArray() : []),
                 array('module' => 'Customer', 'values' => (!empty($customer)) ? $customer->attributesToArray() : []),

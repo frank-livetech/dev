@@ -662,8 +662,8 @@ class MailController extends Controller
             try {
                 // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
                 // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
-                $email_reply = str_replace('/\r\n/', "", $email_reply);
-                $email_reply = str_replace('//', "<br>", $email_reply);
+               $email_reply = $rep->reply;
+                $email_reply = str_replace('/\r\n/', "<br>", $email_reply);
                 // dd($email_reply);
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_reply', $email_reply, '', 'cust_cron', $attaches, $customer->email ,'','','','','',$is_closed , $reset_tkt , $embed_imges);
             } catch(Throwable $e) {
