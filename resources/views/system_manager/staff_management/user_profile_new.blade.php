@@ -81,10 +81,10 @@
                                 @if($profile->profile_pic != null)
                                     @if(is_file( getcwd() .'/'. $profile->profile_pic ))
                                     <figure><img src="{{ request()->root() .'/'. $profile->profile_pic }}" class="rounded-circle"
-                                        width="100" height="100" id="profile-user-img" /></figure>
+                                        width="100" height="100" id="profile-user-img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/></figure>
                                     @else
                                     <figure><img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"
-                                        id="profile-user-img" /></figure>
+                                        id="profile-user-img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/></figure>
                                     @endif
                                 @else
                                 <figure><img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100"

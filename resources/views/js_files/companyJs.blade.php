@@ -93,12 +93,15 @@ $(document).ready(function() {
                     console.log(data);
 
                     if (data.status_code == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        toastr['success'](data.message,'Success', { showMethod: 'slideDown',
+                            hideMethod: 'slideUp',
+                            timeOut: 5000,
+                            });
                         get_all_companies();
                         $("#save_company_form")[0].reset();
                         $("#company_model").modal('hide');
                     } else if (data.status_code == 500 && data.success == false) {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        toastr.error(data.message,  { timeOut: 5000 });
                     }
                 },
                 complete: function(data) {
