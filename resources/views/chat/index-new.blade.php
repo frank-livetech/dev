@@ -238,8 +238,8 @@
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <div class="refresh_btn">
-                                                <button onclick="getAllMessages()" class="btn btn-primary btn-sm mx-1">
-                                                    Refresh Chat </button>
+                                                <button onclick="getAllMessages()" class="btn btn-primary btn-sm mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Refresh Chat">
+                                                    <i class="fas fa-sync-alt"></i></button>
                                             </div>
                                             <div class="web_chat" title="web chat" onclick="webChat()">
                                                 <i class="far fa-comment-alt cursor-pointer d-sm-block d-none font-medium-2 me-1"
@@ -288,9 +288,9 @@
                                         </span>
                                         
                                     </div>
-                                    <button type="submit" class="btn btn-primary send">
-                                        <i data-feather="send" class="d-lg-none"></i>
-                                        <span class="d-none d-lg-block">Send</span>
+                                    <button type="submit" class="btn btn-primary send d-flex">
+                                        <i class="fas fa-paper-plane" style="margin-right: 4px"></i>
+                                        <span class="d-none d-lg-block"> Send</span>
                                     </button>
                                 </form>
                                 <!--/ Submit Chat form -->

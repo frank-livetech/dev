@@ -1,6 +1,15 @@
 @extends('layouts.master-layout-new')
 @section('body')
-
+<style>
+    .bootstrap-tagsinput .tag {
+    margin-right: 2px;
+    color: white;
+    background: #3432c7;
+    padding: 0.3rem;
+    border-radius: 5px;
+    line-height: 2;
+    }
+</style>
 @php
     $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
     $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';

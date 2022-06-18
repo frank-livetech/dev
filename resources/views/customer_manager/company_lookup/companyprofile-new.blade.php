@@ -122,17 +122,17 @@
                         @php
                         $path = Session::get('is_live') == 1 ? '/public/' : '/';
                         @endphp
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal" >
                             @if($company->com_logo != null)
                                 @if(is_file( getcwd() .'/'. $company->com_logo ))
-                                    <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" />
+                                    <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
                                 @else
                                 <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
-                                    width="100" height="100" id="company_curr_img" />
+                                    width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
                                 @endif
                             @else
                                 <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
-                                    width="100" height="100" id="company_curr_img" />
+                                    width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
                             @endif
                         </a>
                         <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left:50px;bottom:60px"><i class="fa fa-pencil-alt picEdit"></i></a> -->
