@@ -1903,7 +1903,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                 type: type,
                 attachments: rep_attaches,
                 reply: content,
-                inner_attachments: attachments_src
+                inner_attachments: attachments_src,
                 queue_id:queue_id
             };
             
