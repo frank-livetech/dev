@@ -1154,7 +1154,9 @@ class HelpdeskController extends Controller
 
             $ticket->updated_at = Carbon::now();
             if($ticket->queue_id != $queue_id){
-                $ticket->queue_id = $queue_id;
+                if($queue_id != null && $queue_id != ''){
+                    $ticket->queue_id = $queue_id;
+                }
             }
             // $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
