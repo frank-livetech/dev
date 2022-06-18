@@ -1823,6 +1823,8 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
     $("."+reply_btn_id).attr('style','display:none !important');
 
     var content = tinyMCE.editors.mymce.getContent();
+    var queue_id = $('#queue_id').val();
+
     tinyContentEditor(content, 'tickets-replies').then(function() {
         content = $('#tinycontenteditor').html();
 
@@ -1902,8 +1904,9 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                 attachments: rep_attaches,
                 reply: content,
                 inner_attachments: attachments_src
+                queue_id:queue_id
             };
-
+            
             if (edit_reply_mode !== false) {
                 params.id = ticketReplies[edit_reply_mode].id;
             }
