@@ -2,46 +2,22 @@
 
 namespace App\Http\Controllers\SystemManager;
 use App\Http\Controllers\Controller;
-use App\Models\BrandSettings;
+use App\Models\{BrandSettings,TicketView,Customer,DepartmentAssignments,Departments,DepartmentPermissions,TicketStatus,TicketPriority,StaffLeaves,TicketType,
+TicketSettings,SystemSetting,Tags,Tickets,StaffProfile,Usercertification,Integrations,Tasks,UserDocuments,StaffAttendance};
 use Illuminate\Http\Request;
 use Validator;
 use App\User;
-use Illuminate\Support\Facades\Crypt;
-use App\Models\TicketView;
-use App\Models\Customer;
-use App\Models\DepartmentAssignments;
-use App\Models\Departments;
-use App\Models\DepartmentPermissions;
-use App\Models\TicketStatus;
-use App\Models\TicketPriority;
-use App\Models\StaffLeaves;
-use App\Models\TicketType;
-use Illuminate\Support\Facades\File;
-use App\Models\TicketSettings;
-use App\Models\SystemSetting;
+use Illuminate\Support\Facades\{Crypt,File,DB,Session,Hash,Auth,URL};
 use App\Models\SystemManager\StaffSchedule;
 use App\Http\Controllers\SystemManager\MailController;
-use App\Models\Tags;
-use App\Models\Tickets;
-use App\Models\StaffProfile;
 use Spatie\Permission\Models\Role;
-use App\Models\Usercertification;
-use App\Models\Integrations;
-use App\Models\Tasks;
 use App\Http\Controllers\NotifyController;
-use App\Models\UserDocuments;
-use App\Models\StaffAttendance;
 use Exception;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use PhpParser\Node\Stmt\TryCatch;
-use Illuminate\Support\Facades\Hash;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Auth;
 // use Yajra\Datatables\Datatables;
 
 class UserController extends Controller

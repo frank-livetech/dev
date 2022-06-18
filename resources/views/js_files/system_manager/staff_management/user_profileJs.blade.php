@@ -541,7 +541,7 @@
                     ],
                     columns: [{
                             "render": function(data, type, full, meta) {
-                                return full.user[0] != null ? full.user[0].name : '';
+                                return full.user_clocked != null ? (full.user_clocked.name != null ? full.user_clocked.name : '-') : '-';
                             }
                         },
                         {

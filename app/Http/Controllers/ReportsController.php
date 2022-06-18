@@ -62,14 +62,28 @@ class ReportsController extends Controller
     public function getStaffAttendance(Request $request) { 
 
 
-        $attendance =  StaffAttendance::where('clock_in',">=",$request->start_date)->where('clock_in',"<=",$request->end_date)->where('user_id','=',$request->user_id)->get();
-        // $attendance =  StaffAttendance::whereBetween('clock_in',[$request->start_date, $request->end_date])->where('user_id','=',$request->user_id)->get();
-        // $attendance = DB::select("SELECT * FROM `staff_attendance` where clock_in <= '$request->start_date' OR clock_out <= '$request->end_date' AND user_id = $request->user_id");
+        $attendance =  StaffAttendance::where([ 
+            ['clock_in',">=",$request->start_date], 
+            ['clock_in',"<=",$request->end_date], 
+            ['user_id','=',$request->user_id] ])->with('user_clocked')->get();
+        
 
         foreach($attendance as $att) {
-            $att->user = DB::table("users")->where("id","=",$att->user_id)->select('name')->get();
-        }
+            $date = new \DateTime($att->clock_in);
+            $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+            $att->clock_in = $date->format(system_date_format() .' h:i a');
+            
+            $date2 = new \DateTime($att->clock_out);
+            $date2->setTimezone(new \DateTimeZone( timeZone() ));                            
+            $att->clock_in = $date2->format(system_date_format() .' h:i a');
 
+
+            $date3 = new \DateTime($att->clock_out);
+            $date3->setTimezone(new \DateTimeZone( timeZone() ));                            
+            $att->date = $date3->format(system_date_format());
+            
+        }
+        
         $response['message'] = 'Staff Attendance';
         $response['status_code'] = 200;
         $response['success'] = true;
