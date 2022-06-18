@@ -1007,7 +1007,7 @@ class HelpdeskController extends Controller
     public function save_ticket_reply(Request $request) {
         $data = $request->all();
         $response = array();
-        
+        $queue_id = $request->queue_id;
         // try {
             $ticket = Tickets::findOrFail($data['ticket_id']);
             $customer_role_id = DB::table('roles')->where('name', 'Customer')->value('id');
@@ -1153,6 +1153,11 @@ class HelpdeskController extends Controller
             }
 
             $ticket->updated_at = Carbon::now();
+            if($ticket->queue_id != $queue_id){
+                if($queue_id != null && $queue_id != ''){
+                    $ticket->queue_id = $queue_id;
+                }
+            }
             // $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
 
