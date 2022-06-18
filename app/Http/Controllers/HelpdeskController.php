@@ -1483,12 +1483,12 @@ class HelpdeskController extends Controller
 
             $msg = 'Flagged By';
             $title = 'Ticket Flagged';
-            $flag = 'Flagged ';
+            $flag = 'Flagged';
             if($flag_tkt->is_flagged){
                 $flag_tkt->is_flagged = 0;
                 $msg = 'Flag Removed By';
                 $title = 'Ticket Unflagged';
-                $flag = 'Unflagged ';
+                $flag = 'Unflagged';
             }else{
                 $flag_tkt->is_flagged = 1;
             }
@@ -1517,7 +1517,7 @@ class HelpdeskController extends Controller
 
                 if($flag_tkt->assigned_to != null) {
                     $user = User::where('id', $flag_tkt->assigned_to)->first();
-                    $temp = $this->replaceFlagTicketShortCodes($template->template_html,$flag_tkt->coustom_id , $flag);
+                    $temp = $this->ticketCommonNotificationShortCodes($template->template_html,$flag_tkt , $flag , 'ticket_flag', '');
                     $mail = new MailController();
                     $mail->sendMail( $title , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
                 }
@@ -1536,34 +1536,200 @@ class HelpdeskController extends Controller
         }
     }
 
-    
-    public function replaceFlagTicketShortCodes($html , $ticket_id ,$flag) {
-        $template = htmlentities($html);
-
-        if(str_contains($template, '{Staff-Name}')) {
-            $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
+    public function ticketCommonNotificationShortCodes($templateHtml , $ticket , $flag , $tempType, $notes = '') {
+        
+        $template = htmlentities($templateHtml);
+ 
+        if(str_contains($template, '{Subject}')) {
+            $subject = auth()->user()->name . ' ' . ($tempType =='ticket_flag' ? $flag : ' mentioned you in ') . ' Ticket ' .  $ticket->coustom_id;
+            $template = str_replace('{Subject}', $subject , $template);
         }
 
-        if(str_contains($template, '{Message}')) {
-            $template = str_replace('{Message}', $flag , $template);
+        if(str_contains($template, '{Flag-Image}')) {
+            
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/');
+            $flaggedImage = '<img src="'.$url.'/public/default_imgs/flagged.png" style="width:20px !important; height:20px !important" />';
+            $unflaggedImage = '<img src="'.$url.'/public/default_imgs/unflagged.png" style="width:20px !important; height:20px !important" />';
+
+            $template = str_replace('{Flag-Image}', ($tempType != 'ticket_flag' ? '' : ( $flag =='Flagged' ? $flaggedImage : $unflaggedImage ) ) , $template);
+        }        
+
+        if(str_contains($template, '{Ticket-Subject}')) {
+            $template = str_replace('{Ticket-Subject}', '[User Notification]: ' .  $ticket->subject , $template);
         }
 
-        if(str_contains($template, '{Ticket-ID}')) {
-            $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticket_id , $template);
+        if(str_contains($template, '{Ticket-Detail}')) {
+
+            $date = new \DateTime($ticket['updated_at']);
+            $date->setTimezone(new \DateTimeZone( timeZone() ));
+            $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
+
+            $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
+
+            $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
         }
 
         if(str_contains($template, '{Notes}')) {
-            $template = str_replace('{Notes}', '' , $template);
+            $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
         }
 
         if(str_contains($template, '{Go-To-Ticket}')) {
-            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket_id;
-            // $url = '<a href="{Go-To-Ticket}">Go To Ticket</a>';
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
             $template = str_replace('{Go-To-Ticket}', $url , $template);
         }
 
         return html_entity_decode($template);
     }
+
+    private function getReplyDueAndResolutionDeadLine($ticket) {
+
+        $ticket_reply_deadline = $ticket['reply_deadline'];
+        $ticket_resolution_deadline = $ticket['resolution_deadline'];
+
+        $slaPlan = $this->getTicketSlaPlan($ticket['id']);
+
+        $data = [];
+        $mail = new MailController();
+        $sla = $slaPlan['title'];
+
+        $dateTimeFormat = system_date_format() . ' h:i a';
+
+
+        if($sla !== HelpdeskController::NOSLAPLAN) {
+            $sla_from = $this->getSlaDeadlineFrom($ticket['id']);
+            
+            if(!empty( $ticket_reply_deadline ) && !empty( $ticket_resolution_deadline ) ) {
+                if( $ticket_resolution_deadline != 'cleared'){
+                    $res = Carbon::parse( $ticket_resolution_deadline );
+                }
+                
+                $rep = Carbon::parse($sla_from[1]);
+            } else {
+                
+                if($ticket_resolution_deadline != 'cleared'){
+
+                    $date = new \DateTime($ticket['created_at']);
+                    $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+                    $res = Carbon::parse( $date->format('Y-m-d H:i:s') );
+
+                    $dt = explode('.', $slaPlan['due_deadline']);
+                    $res->addHours($dt[0]);
+                    if(array_key_exists(1, $dt)) $res->addMinutes($dt[1]);
+                }
+                
+                $date = new \DateTime($sla_from[0] . '+00');
+                $date->setTimezone(new \DateTimeZone( timeZone() ));
+                $rep = Carbon::parse( $date->format('Y-m-d H:i:s') );
+                $dt = explode('.', $slaPlan['reply_deadline']);
+                $rep->addHours($dt[0]);
+                if(array_key_exists(1, $dt)) $rep->addMinutes($dt[1]);
+            }
+        }
+
+        // reply due
+        
+        if($ticket_reply_deadline == null) {
+                
+            $dd = new Carbon( now(), timeZone() );
+            
+            $currentDate =strtotime( $dd );
+            $futureDate =strtotime( $rep );
+
+            $diff = $mail->getDiff($futureDate , $currentDate);
+            
+            if( str_contains($diff[0] , '-') ) {
+                $rep = '<span style="color: red  !important">' . $rep->format( $dateTimeFormat ) . ' (Overdue)' . '</span>';
+                $data[0] = $rep;
+            }else{
+                $rep = $rep->format( $dateTimeFormat ) . ' ('.$diff[0].')';
+                $data[0] = '<span style="color:'.$diff[1].' !important"> Reply due: </span>' . $rep;
+            }
+        }else{
+
+            if($ticket_reply_deadline != 'cleared') {
+                
+                $rep_date = Carbon::parse($ticket_reply_deadline);
+
+                $a = strtotime( new Carbon( now(), timeZone() ) );
+                $b = strtotime($rep_date);
+                $remain = $b - $a;
+                
+                $diff = $mail->getDiff($b , $a);
+
+                if(str_contains($diff[0], '-')) {
+                    
+                    $rpd = Carbon::parse($ticket_reply_deadline);
+                    $rep = '<span style="color:red !important">'. $rpd->format( $dateTimeFormat ) .' (Overdue) </span>';
+                    $data[0] = '<span style="color: red !important"> Reply due: </span>' . $rep;
+                    
+                }else{
+                    
+                    $dd = new Carbon( now() , timeZone() );
+                    $ab =  $dd->format( $dateTimeFormat );
+                    $rep = $rep_date->format( $dateTimeFormat ) . ' ('.$diff[0].')' ;
+                    $data[0] = '<span style="color:'.$diff[1].' !important"> Reply due: </span>' . $rep;
+                }
+
+            }else{
+                $rep = '';
+                $data[0] = $rep;
+            } 
+        }
+
+        // resolution deadline
+        if($ticket_resolution_deadline == null) {
+            $dd = new Carbon( now(), timeZone() );
+            
+            $currentDate = strtotime( $dd );
+            $futureDate = strtotime( $res );
+            
+            $diff = $mail->getDiff($futureDate , $currentDate);
+            
+            if( str_contains($diff[0] , '-') ) {
+                $res = '<span style="color: red  !important">' . $res->format( $dateTimeFormat ) . ' (Overdue)' . '</span>';
+                $data[1] = $res;
+            }else{
+                $res = $res->format( $dateTimeFormat ) . ' ('.$diff[0].')';
+                $data[1] = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>' . $res;
+            }
+        }else{
+
+            if( $ticket_resolution_deadline != 'cleared') {
+                
+                $res_date = Carbon::parse( $ticket_resolution_deadline );
+                
+                
+                $a = strtotime( new Carbon( now(), timeZone() ) );
+                $b = strtotime($res_date);
+                $remain = $b - $a;
+                
+                $diff = $mail->getDiff($b , $a);
+                                
+                if(str_contains($diff[0], '-')) {
+                    
+                    $rd = Carbon::parse( $ticket_resolution_deadline );
+                    $res = '<span style="color:red !important">'. $rd->format( $dateTimeFormat ) .' (Overdue) </span>';
+                    $data[1] = '<span style="color:red !important"> Resolution due: </span>' . $res;
+                }else{
+
+                    $dd = new Carbon( now() , timeZone() );
+                    $ab =  $dd->format( $dateTimeFormat );
+                    $res = $res_date->format( $dateTimeFormat ) . ' ('.$diff[0].')';
+                    $data[1] = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>' . $res;
+                }
+                
+            }else{
+                $res = '';
+                $data[1] = $res;
+            }
+        }
+
+        return $data;
+    }
+
+
+
+
   
     public function save_ticket_follow_up(Request $request) {
         $data = $request->all();
@@ -2610,7 +2776,9 @@ class HelpdeskController extends Controller
                         
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
 
-                        $temp = $this->templateReplaceShortCodes($template->template_html , $ticket->coustom_id, $request->note);
+                        // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
+
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'note_mention', $request->note);
                         $mail = new MailController();
                         $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
                     }
@@ -2640,36 +2808,6 @@ class HelpdeskController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }    
-    }
-
-    function templateReplaceShortCodes($template_html, $ticketID , $notes) {
-
-        $template = htmlentities($template_html);
-
-        if(str_contains($template, '{Staff-Name}')) {
-            $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
-        }
-
-        if(str_contains($template, '{Message}')) {
-            $template = str_replace('{Message}', ' mentioned you in ' , $template);
-        }
-
-        if(str_contains($template, '{Ticket-ID}')) {
-            $template = str_replace('{Ticket-ID}', ' Ticket ' .  $ticketID , $template);
-        }
-
-        if(str_contains($template, '{Notes}')) {
-            $template = str_replace('{Notes}', ' Ticket ' .  $notes , $template);
-        }
-
-        if(str_contains($template, '{Go-To-Ticket}')) {
-            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticketID;
-            // $url = '<a href="{Go-To-Ticket}">Go To Ticket</a>';
-            $template = str_replace('{Go-To-Ticket}', $url , $template);
-        }
-
-
-        return html_entity_decode($template);
     }
 
     public function addTicketCustomer(Request $request) {
