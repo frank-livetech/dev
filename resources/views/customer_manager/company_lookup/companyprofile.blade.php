@@ -81,9 +81,9 @@ blockquote {
                 <div class="card-body">
                     <center class="mt-4"> 
                         @if(is_file(public_path('../files/user_photos/Companies/'.$company->com_logo)))
-                            <img src="{{ asset('files/user_photos/Companies/'.$company->com_logo)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" />
+                            <img src="{{ asset('files/user_photos/Companies/'.$company->com_logo)}}" class="rounded-circle" width="100" height="100" id="profile-user-img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
                         @else
-                            <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle shadow-sm" width="100" height="100" id="profile-user-img" />
+                            <img src="{{ asset('files/user_photos/logo.gif')}}" class="rounded-circle shadow-sm" width="100" height="100" id="profile-user-img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
                         @endif
                         <a type="button" data-toggle="modal" data-target="#editPicModal"><i class="fa fa-pencil-alt picEdit"></i></a>
                         <h4 class="card-title mt-2" id="comp_name">{{$company->name}}</h4>
