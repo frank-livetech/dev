@@ -1524,7 +1524,7 @@ class HelpdeskController extends Controller
                     $user = User::where('id', $flag_tkt->assigned_to)->first();
                     $temp = $this->ticketCommonNotificationShortCodes($template->template_html,$flag_tkt , $flag , 'ticket_flag', '');
                     $mail = new MailController();
-                    $mail->sendMail( $title , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
+                    $mail->sendMail( $title , $temp , 'system_flagged@mylive-tech.com', $user->email , $user->name);
                 }
             }
     
