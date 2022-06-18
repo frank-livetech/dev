@@ -4,33 +4,12 @@ namespace App\Http\Controllers\CustomerManager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\{Crypt,DB, Hash, Auth,URL};
 use Illuminate\Contracts\Encryption\DecryptException;
-use App\Models\Departments;
-use App\Models\TicketPriority;
-use App\Models\TicketType;
-use App\Models\CustomerType;
-use App\Models\TicketStatus;
-use App\Models\TicketSettings;
-use App\Models\TicketNote;
-use App\Models\TicketView;
-use App\Models\Customer;
-use App\Models\Company;
-use App\CompanyActivityLog;
+use App\Models\{Departments, TicketPriority,TicketType,CustomerType,TicketStatus,TicketSettings,TicketNote,TicketView,Customer,Company,CustomerCC,Tickets,
+    Subscriptions,BrandSettings,LineItem,Tax,Billing,Shipping,Orders,Integrations,CompanyActivityLog,TicketReply};
 use Illuminate\Support\Facades\File;
-use App\Models\CustomerCC;
-use App\Models\Tickets;
-use App\Models\Subscriptions;
-use App\Models\BrandSettings;
-use App\Models\LineItem;
-use App\Models\Tax;
-use App\Models\Billing;
-use App\Models\Shipping;
-use App\Models\Orders;
-use App\Models\Integrations;
 use App\User;
-use App\Models\TicketReply;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\SystemManager\MailController;
 use App\Http\Controllers\GeneralController;
 use Throwable;
@@ -38,14 +17,9 @@ use Session;
 use Carbon\Carbon;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Claims\Custom;
 use Illuminate\Support\Str;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
-use Illuminate\Support\Facades\URL;
+use PHPMailer\PHPMailer\{PHPMailer, Exception, SMTP};
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
@@ -753,6 +727,44 @@ class CustomerlookupController extends Controller
         return $response;
     }
 
+    public function newCustomerReplaceShortCodes($customer, $templateHtml) {
+        $template = htmlentities($templateHtml);
+ 
+        if(str_contains($template, '{Staff-Name}')) {
+            $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
+        }
+
+        if(str_contains($template, '{Customer-Name}')) {
+            $template = str_replace('{Customer-Name}', $customer->first_name . ' ' . $customer->last_name , $template);
+        }
+
+        if(str_contains($template, '{User-Name}')) {
+            $template = str_replace('{User-Name}', $customer->first_name . ' ' . $customer->last_name , $template);
+        }
+        if(str_contains($template, '{User-Email}')) {
+            $template = str_replace('{User-Email}', $customer->email , $template);
+        }
+        if(str_contains($template, '{User-Organization}')) {
+
+            if($customer->company_id) {
+                $company = Company::where('id', $customer->company_id)->first();
+            }
+            $template = str_replace('{User-Organization}', $customer->company_id == null ? '' : (empty($company) ? '' : $company->name ) , $template);
+        }
+        if(str_contains($template, '{User-Profile-URL}')) {
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/') .'/'. 'customer-profile/'. $customer->id;
+            $template = str_replace('{User-Profile-URL}', $url , $template);
+        }
+        if(str_contains($template, '{Created_at}')) {
+            $date = new \DateTime($customer->created_at);
+            $date->setTimezone(new \DateTimeZone( timeZone() ));
+            $template = str_replace('{Created_at}', $date->format(system_date_format() .' h:i a') , $template);
+        }
+
+
+        return html_entity_decode($template);
+    }
+
     //save customer 
     public function save_customer(Request $request){
         try {
@@ -891,7 +903,7 @@ class CustomerlookupController extends Controller
                 }
             }
 
-            Customer::create($customer_data);
+            $newCustomer = Customer::create($customer_data);
             
             if($request->customer_login == 1) {
                 DB::table("users")->insert([
@@ -906,6 +918,21 @@ class CustomerlookupController extends Controller
                 $mailer = new MailController();
                 $mailer->UserRegisteration($request->email,true,'customer');
             }
+
+            $template = DB::table("templates")->where('code','new_customer_notification_to_admins')->first();
+            if(!empty($template)) {
+                $temp = $this->newCustomerReplaceShortCodes($newCustomer, $template->template_html);
+
+                $mail = new MailController();
+                $users = User::where('user_type', 1)->get();
+                foreach($users as $user) {
+                    $mail->sendMail( 'New Customer Created', $temp, 'system_notification@mylive-tech.com', $user->email, $user->name);
+                }
+
+                // $mail->sendMail( $title , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
+            }
+            
+
 
             return response()->json($response);
         } catch(Exception $e) {
