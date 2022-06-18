@@ -151,7 +151,6 @@
         });
 
         searchFollowUps(true);
-        console.log(atte_data)
         staff_table_draw();
         
     });
@@ -270,7 +269,7 @@
             success: function(data) {
                 console.log(data);
                 atte_data = data.staff_att_data;
-                staff_table_draw();
+                // staff_table_draw();
 
                 if (data.success == true) {
                     $('.clock_btn').remove();
@@ -302,52 +301,58 @@
                     
                     $('.clock_btn_div').append(btn);
 
-                    // var curr_user_name = $("#curr_user_name").val();
-                    // var system_date_format = $("#system_date_format").val();
-                    // var today = new Date();
-                    // let time = moment(today).format('h:mm:ss');
-                    // let date = moment(today).format(system_date_format);
+                    var curr_user_name = $("#curr_user_name").val();
+                    var system_date_format = $("#system_date_format").val();
+                    var today = new Date();
+                    let time = moment(today).format('h:mm:ss');
+                    let date = moment(today).format(system_date_format);
 
-                    // let clock_out_time = ``;
+                    let clock_out_time = ``;
                     
-                    // if( data.hasOwnProperty('clock_out_time') ) {
-                    //     clock_out_time =convertDate( data.clock_out_time );
-                    // }else{
-                    //     clock_out_time = `-`;
-                    // }
+                    if( data.hasOwnProperty('clock_out_time') ) {
+                        clock_out_time =convertDate( data.clock_out_time );
+                    }else{
+                        clock_out_time = `-`;
+                    }
 
-                    // let clock_in_time = ``;
-                    // let clock_in = ``;
+                    let clock_in_time = ``;
+                    let clock_in = ``;
 
-                    // if(btn_text == 'clockin') {
-                    //     clock_in_time = convertDate(new Date());
-                    //     clock_in = `<span class="badge bg-success">Clocked In</span>`;
-                    // }else{
-                    //     clock_in_time = convertDate( data.clock_in_time );
-                    //     clock_in = `<span class="badge bg-danger">Clocked Out</span>`;
-                    // }
+                    if(btn_text == 'clockin') {
+                        clock_in_time = convertDate(new Date());
+                        clock_in = `<span class="badge bg-success">Clocked In</span>`;
+                    }else{
+                        clock_in_time = convertDate( data.clock_in_time );
+                        clock_in = `<span class="badge bg-danger">Clocked Out</span>`;
+                    }
 
-                    // let working_hour = data.hasOwnProperty('worked_time');;
+                    let working_hour = data.hasOwnProperty('worked_time');;
 
-                    // if(working_hour) {
-                    //     working_hour = data.worked_time;
-                    // }else{
-                    //     working_hour = `-`;
-                    // }
+                    if(working_hour) {
+                        working_hour = data.worked_time;
+                    }else{
+                        working_hour = `-`;
+                    }
 
-                    // let trLength = $("#showstaffdata tr").length;
+                    let trLength = $("#showstaffdata tr").length;
 
 
-                    // $("#staff_table tbody").append(
-                    //     `<tr id="new_entry">
-                    //         <td>${trLength+1}</td>
-                    //         <td>${curr_user_name} </td>
-                    //         <td>${clock_in}</td>
-                    //         <td>${date}</td>
-                    //         <td>${clock_in_time}</td>
-                    //         <td>${clock_out_time}</td>
-                    //         <td>${working_hour}</td>
-                    //     </tr>`);
+                    if($("#showstaffdata tr").hasClass('new_entry')){
+                        trLength  = trLength- 1;
+                    }
+
+                    $('.new_entry').remove();
+
+                    $("#staff_table tbody").append(
+                        `<tr id="new_entry" class="new_entry">
+                            <td>${trLength+1}</td>
+                            <td>${curr_user_name} </td>
+                            <td>${clock_in}</td>
+                            <td>${date}</td>
+                            <td>${clock_in_time}</td>
+                            <td>${clock_out_time}</td>
+                            <td>${working_hour}</td>
+                        </tr>`);
 
 
                     if(data.status_code == 201) {
