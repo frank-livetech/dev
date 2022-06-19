@@ -507,8 +507,8 @@
                 $("#total_hours").text(secondsToTime(total_hours));
 
                 var avg_hours = total_hours / obj.length;
-                $("#avg_hours").text(secondsToTime(avg_hours / 7));
-                $("#avg_hours_in_day").text(secondsToTime(total_hours / day_in_month));
+                $("#avg_hours").text(secondsToTime(avg_hours * 7));
+                $("#avg_hours_in_day").text(secondsToTime(avg_hours));
 
 
                 $('#payroll_table').DataTable().destroy();
