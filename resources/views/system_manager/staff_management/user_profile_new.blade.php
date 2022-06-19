@@ -533,7 +533,7 @@
                                         <div class="card border-bottom border-info">
                                             <div class="box p-2 rounded text-center">
                                                 <h5 class="" id="total_hours">00</h5>
-                                                <h6 class="text-info">Total Hours</h6>
+                                                <h6 class="text-info">Total Hours a Month</h6>
                                             </div>
                                         </div>
                                     </div>
