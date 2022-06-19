@@ -2135,9 +2135,10 @@ function getDeptStatuses(value) {
     showDepartStatus(value , 'followup');
 }
 
-
-$('#dept_id').change(function() {
-    var dept_id = $(this).val();
+$('#dept_id').on('select2:selecting', function(e) {
+    console.log('Selecting: ' , e.params.args.data);
+    
+    var dept_id = e.params.args.data.id;
 
     // no dept change to do update
     if (dept_id == ticket.dept_id){
@@ -2150,6 +2151,9 @@ $('#dept_id').change(function() {
                 $("#update_ticket").css("display", "none");
             }
         }
+        showDepartStatus(dept_id , 'nochange');
+        $('#dept_id').val(dept_id).trigger("change");
+        
         return false;
     }
     console.log(update_flag , "update_flag");
@@ -2159,7 +2163,7 @@ $('#dept_id').change(function() {
         id:1,
         data: ticket.department_name, // Saving old value to show in email notification
         new_data:dept_id,
-        new_text:$("#dept_id option:selected").text()
+        new_text:e.params.args.data.text
     }
       
     let item = updates_Arr.filter(item => item.id === 1);
@@ -2168,7 +2172,7 @@ $('#dept_id').change(function() {
         updates_Arr[index].id = 1;
         updates_Arr[index].data = ticket.department_name ; 
         updates_Arr[index].new_data = dept_id ;
-        updates_Arr[index].new_text = $("#dept_id option:selected").text();
+        updates_Arr[index].new_text = e.params.args.data.text;
     }else{
         updates_Arr.push(obj);
     }
@@ -2180,7 +2184,53 @@ $('#dept_id').change(function() {
     }
   
     showDepartStatus(dept_id , 'nochange');
+    
 });
+// $('#dept_id').change(function() {
+//     var dept_id = $(this).val();
+
+//     // no dept change to do update
+//     if (dept_id == ticket.dept_id){
+//         updates_Arr = $.grep(updates_Arr, function(e){ 
+//             return e.id != 1; 
+//         });
+//         if(update_flag > 0){
+//             update_flag--;
+//             if(update_flag == 0){
+//                 $("#update_ticket").css("display", "none");
+//             }
+//         }
+//         return false;
+//     }
+//     console.log(update_flag , "update_flag");
+//     update_flag++;
+//     var obj = {};
+//     obj = {
+//         id:1,
+//         data: ticket.department_name, // Saving old value to show in email notification
+//         new_data:dept_id,
+//         new_text:$("#dept_id option:selected").text()
+//     }
+      
+//     let item = updates_Arr.filter(item => item.id === 1);
+//     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(1);
+//     if(item.length > 0) {
+//         updates_Arr[index].id = 1;
+//         updates_Arr[index].data = ticket.department_name ; 
+//         updates_Arr[index].new_data = dept_id ;
+//         updates_Arr[index].new_text = $("#dept_id option:selected").text();
+//     }else{
+//         updates_Arr.push(obj);
+//     }
+
+//     console.log(updates_Arr , "updates_Arr department_name");
+
+//     if(reply_flag == 0) {
+//         $("#update_ticket").css("display", "block");
+//     }
+  
+//     showDepartStatus(dept_id , 'nochange');
+// });
 
 $('#assigned_to').change(function() {
     var assigned_to = $(this).val() ? $(this).val() : null;
@@ -2378,6 +2428,7 @@ function updateTicket(){
             id: ticket.id,
             dd_Arr:updates_Arr,
             action: 'ticket_detail_update',
+            queue_id : $('#queue_id').val()
             // action_performed: 'Ticket Priority'
         },
         dataType: 'json',
@@ -3823,11 +3874,22 @@ function showDepartStatus(value , type) {
             let option = ``;
             let select = ``;
             let open_sts = '';
+            let obj_queue = data.queue;
+            let default_queue = data.default_queue;
+            
+            if(default_queue == null){
+                default_queue = obj_queue['0'];
+            }       
             for(var i =0; i < obj.length; i++) {
                 if(obj[i].name == 'Open'){
                     open_sts = obj[i].id;
                 }
-                option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
+                if(default_queue.mail_status_id == obj[i].id){
+                    option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`" selected>`+obj[i].name+`</option>`;
+                }else{
+                    option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
+                }
+                // option +=`<option value="`+obj[i].id+`" data-color="`+obj[i].color+`">`+obj[i].name+`</option>`;
             }
             if(type == 'followup') {
 
@@ -3851,14 +3913,32 @@ function showDepartStatus(value , type) {
                     $('#status').val(ticket.status); // Select the option with a value of '1'
                     $('#status').trigger('change');
                     // return false;
-                }else{
-                    $('#status').val(open_sts); // Select the option with a value of '1'
-                    $('#status').trigger('change');
                 }
+                // else{
+                //     $('#status').val(open_sts); // Select the option with a value of '1'
+                //     $('#status').trigger('change');
+                // }
                 
                 if(reply_flag == 0) {
                     $("#update_ticket").css("display", "block");
                 }
+                
+                let email_option = ``;
+                for( let item of obj_queue) {
+                    
+                    if(item.is_default == 'yes'){
+                        email_option += `<option value="${item.id}" selected> ${item.mailserver_username} (${item.from_name}) </option>`;
+                    }else{
+                        email_option += `<option value="${item.id}"> ${item.mailserver_username} (${item.from_name}) </option>`;
+                    }
+                }
+                $("#queue_id").html(email_option);
+                $('#priority').val(default_queue.mail_priority_id);
+                $("#priority").trigger('change');
+
+                $('#type').val(default_queue.mail_type_id);
+                $("#type").trigger('change');
+
                 
 
                 let assigned_to = $('#assigned_to').val();
