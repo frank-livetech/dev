@@ -5,6 +5,7 @@
     let date_format = $("#system_date_format").val();
     let time_zone = "{{Session::get('timezone')}}";
     let atte_data = {!! json_encode($staff_att_data) !!};
+    
 
     var settings = {
         Color: '',
@@ -152,7 +153,7 @@
 
         searchFollowUps(true);
         staff_table_draw();
-        
+
     });
 
     function staff_table_draw(){
@@ -170,7 +171,7 @@
                     render: function (data, type, full, meta) {
                         var name = '---';
                         if(full.name != null) {
-                            name = full.name != null ? full.name : '-';
+                            name = full.name != null ? full.name + '' : '-';
                         }else{
                             name = '-';
                         }
@@ -337,15 +338,17 @@
                     let trLength = $("#showstaffdata tr").length;
 
 
-                    if($("#showstaffdata tr").hasClass('new_entry')){
-                        trLength  = trLength- 1;
-                    }
+                    // if($("#showstaffdata tr").hasClass('new_entry')){
+                    //     trLength  = trLength- 1;
+                    // }
 
-                    $('.new_entry').remove();
+                    // $('.new_entry').remove();
+
+                    $('#staff_table').DataTable().destroy();
 
                     $("#staff_table tbody").append(
                         `<tr id="new_entry" class="new_entry">
-                            <td>${trLength+1}</td>
+                            <td>${trLength + 1}</td>
                             <td>${curr_user_name} </td>
                             <td>${clock_in}</td>
                             <td>${date}</td>
@@ -353,6 +356,8 @@
                             <td>${clock_out_time}</td>
                             <td>${working_hour}</td>
                         </tr>`);
+                        
+                    $('#staff_table').DataTable().draw();
 
 
                     if(data.status_code == 201) {

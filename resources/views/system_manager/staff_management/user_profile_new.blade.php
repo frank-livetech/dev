@@ -1504,7 +1504,7 @@
     var calender;
     var events = @json($leaves);
     console.log(events , "events");
-    
+
     let ticketLengthCount = {!! json_encode($ticketView) !!};
         var url  = window.location.href;
         if(url.includes('#staff-schedule')) {
@@ -1512,14 +1512,29 @@
         }
 
         if(url.includes('#tickets')) {
-
             $("#pills-tickets-tab").click();
             $("#pills-setting-tab").removeClass("active")
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-
         }
+
+        if(url.includes('#open')) {
+            $("#pills-tickets-tab").click();
+            $("#pills-setting-tab").removeClass("active")
+            $("#previous-month").removeClass("show active");
+            $("#pills-tickets-tab").addClass('active');
+            $("#tickets").addClass("show active");
+        }
+
+        if(url.includes('#closed')) {
+            $("#pills-tickets-tab").click();
+            $("#pills-setting-tab").removeClass("active")
+            $("#previous-month").removeClass("show active");
+            $("#pills-tickets-tab").addClass('active');
+            $("#tickets").addClass("show active");
+        }
+
 
         function loadFile(event) {
             $('.modalImg').hide();

@@ -1488,12 +1488,14 @@ class HelpdeskController extends Controller
 
             $msg = 'Flagged By';
             $title = 'Ticket Flagged';
+            $emailSubject = 'Ticket Flagged - [WEB DEV !'.$flag_tkt->coustom_id.'] Email Alert for flagged ticket';
             $flag = 'Flagged';
             if($flag_tkt->is_flagged){
                 $flag_tkt->is_flagged = 0;
                 $msg = 'Flag Removed By';
                 $title = 'Ticket Unflagged';
                 $flag = 'Unflagged';
+                $emailSubject = 'Ticket Unflagged - [WEB DEV !'.$flag_tkt->coustom_id.'] Email Alert for flagged ticket';
             }else{
                 $flag_tkt->is_flagged = 1;
             }
@@ -1524,7 +1526,7 @@ class HelpdeskController extends Controller
                     $user = User::where('id', $flag_tkt->assigned_to)->first();
                     $temp = $this->ticketCommonNotificationShortCodes($template->template_html,$flag_tkt , $flag , 'ticket_flag', '');
                     $mail = new MailController();
-                    $mail->sendMail( $title , $temp , 'system_flagged@mylive-tech.com', $user->email , $user->name);
+                    $mail->sendMail( $emailSubject , $temp , 'system_flagged@mylive-tech.com', $user->email , $user->name);
                 }
             }
     
