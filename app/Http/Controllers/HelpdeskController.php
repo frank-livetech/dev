@@ -176,6 +176,11 @@ class HelpdeskController extends Controller
     public function update_ticket(Request $request) {
         
         $data = $request->all();
+        if($request->has('queue_id')){
+            $queue_id = $data['queue_id'];
+        }
+        
+        
         $response = array();
         try {
             $ticket = Tickets::where('id',$data['id'])->first();
@@ -282,6 +287,11 @@ class HelpdeskController extends Controller
 
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
+                if($ticket->queue_id != $queue_id){
+                    if($queue_id != null && $queue_id != ''){
+                        $ticket->queue_id = $queue_id;
+                    }
+                }
                 $ticket->update($data);
 
                 if($request->has('dd_Arr')){
@@ -1488,14 +1498,12 @@ class HelpdeskController extends Controller
 
             $msg = 'Flagged By';
             $title = 'Ticket Flagged';
-            $emailSubject = 'Ticket Flagged - [WEB DEV !'.$flag_tkt->coustom_id.'] Email Alert for flagged ticket';
             $flag = 'Flagged';
             if($flag_tkt->is_flagged){
                 $flag_tkt->is_flagged = 0;
                 $msg = 'Flag Removed By';
                 $title = 'Ticket Unflagged';
                 $flag = 'Unflagged';
-                $emailSubject = 'Ticket Unflagged - [WEB DEV !'.$flag_tkt->coustom_id.'] Email Alert for flagged ticket';
             }else{
                 $flag_tkt->is_flagged = 1;
             }
@@ -1526,7 +1534,7 @@ class HelpdeskController extends Controller
                     $user = User::where('id', $flag_tkt->assigned_to)->first();
                     $temp = $this->ticketCommonNotificationShortCodes($template->template_html,$flag_tkt , $flag , 'ticket_flag', '');
                     $mail = new MailController();
-                    $mail->sendMail( $emailSubject , $temp , 'system_flagged@mylive-tech.com', $user->email , $user->name);
+                    $mail->sendMail( $title , $temp , 'system_flagged@mylive-tech.com', $user->email , $user->name);
                 }
             }
     
@@ -3765,7 +3773,7 @@ class HelpdeskController extends Controller
             
             $mail_template = DB::table('templates')->where('code', $template_code)->first();
             $cust_template = DB::table('templates')->where('code', $cust_template_code)->first();
-            
+            // dd($cust_template_code);
             if(empty($mail_template)) throw new Exception('"'.$template_code.'" Template not found');
            
             if($customer_send && empty($cust_template_code)) throw new Exception('"'.$cust_template_code.'" Template not found');
