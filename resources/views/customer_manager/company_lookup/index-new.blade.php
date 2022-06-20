@@ -229,6 +229,14 @@
 
     @include('js_files.company_lookup.indexJs')
     @include('js_files.companyJs')
-
+    <script>
+        jQuery(function($){
+          var input = $('[type=tel]')
+          input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+          input.bind('country.mobilePhoneNumber', function(e, country) {
+            $('.country').text(country || '')
+          })
+        });
+      </script>
 @endsection
 @endsection

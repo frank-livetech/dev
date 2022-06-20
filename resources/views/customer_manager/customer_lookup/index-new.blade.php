@@ -291,5 +291,13 @@
 @include('js_files.customer_lookup.indexJs')
 @include('js_files.statesJs')
 @include('js_files.customer_lookup.customerJs')
-    
+<script>
+    jQuery(function($){
+      var input = $('[type=tel]')
+      input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+      input.bind('country.mobilePhoneNumber', function(e, country) {
+        $('.country').text(country || '')
+      })
+    });
+  </script>  
 @endsection

@@ -2151,7 +2151,6 @@
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
         });
-        
     </script>
     <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
@@ -2184,5 +2183,13 @@ function hung(){
 
     get_asset_table_list();
 </script>
-
+<script>
+    jQuery(function($){
+      var input = $('[type=tel]')
+      input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+      input.bind('country.mobilePhoneNumber', function(e, country) {
+        $('.country').text(country || '')
+      })
+    });
+  </script>
 @endsection

@@ -1557,8 +1557,8 @@ class HelpdeskController extends Controller
         if(str_contains($template, '{Flag-Image}')) {
             
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/');
-            $flaggedImage = '<img src="'.$url.'/public/default_imgs/flagged.png" style="width:20px !important; height:20px !important" />';
-            $unflaggedImage = '<img src="'.$url.'/public/default_imgs/unflagged.png" style="width:20px !important; height:20px !important" />';
+            $flaggedImage = '<img src="'.$url.'/public/default_imgs/flagged.png" width="20" style="width:20px !important; height:20px !important" />';
+            $unflaggedImage = '<img src="'.$url.'/public/default_imgs/unflagged.png" width="20" style="width:20px !important; height:20px !important" />';
 
             $template = str_replace('{Flag-Image}', ($tempType != 'ticket_flag' ? '' : ( $flag =='Flagged' ? $flaggedImage : $unflaggedImage ) ) , $template);
         }        

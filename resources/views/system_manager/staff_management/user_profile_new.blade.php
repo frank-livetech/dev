@@ -533,7 +533,7 @@
                                         <div class="card border-bottom border-info">
                                             <div class="box p-2 rounded text-center">
                                                 <h5 class="" id="total_hours">00</h5>
-                                                <h6 class="text-info">Total Hours a Month</h6>
+                                                <h6 class="text-info">Total Hours</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -1504,7 +1504,7 @@
     var calender;
     var events = @json($leaves);
     console.log(events , "events");
-
+    
     let ticketLengthCount = {!! json_encode($ticketView) !!};
         var url  = window.location.href;
         if(url.includes('#staff-schedule')) {
@@ -1512,29 +1512,14 @@
         }
 
         if(url.includes('#tickets')) {
+
             $("#pills-tickets-tab").click();
             $("#pills-setting-tab").removeClass("active")
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-        }
 
-        if(url.includes('#open')) {
-            $("#pills-tickets-tab").click();
-            $("#pills-setting-tab").removeClass("active")
-            $("#previous-month").removeClass("show active");
-            $("#pills-tickets-tab").addClass('active');
-            $("#tickets").addClass("show active");
         }
-
-        if(url.includes('#closed')) {
-            $("#pills-tickets-tab").click();
-            $("#pills-setting-tab").removeClass("active")
-            $("#previous-month").removeClass("show active");
-            $("#pills-tickets-tab").addClass('active');
-            $("#tickets").addClass("show active");
-        }
-
 
         function loadFile(event) {
             $('.modalImg').hide();
@@ -1583,7 +1568,16 @@
         $('.fc-col-header ').attr('style','width:100% !important;');
         $('.fc-scrollgrid-sync-table').attr('style','width:100% !important; height:100% !important');
 </script>
-
+<script>
+    jQuery(function($){
+      var input = $('[type=tel]')
+      input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+      input.bind('country.mobilePhoneNumber', function(e, country) {
+        $('.country').text(country || '')
+      })
+    });
+  </script>
     @include('js_files.ticket_cmmnJs')
     @include('js_files.system_manager.staff_management.user_profileJs')
+
 @endsection

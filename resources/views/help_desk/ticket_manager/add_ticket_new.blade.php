@@ -457,4 +457,13 @@ $(document).on('select2:open', () => {
 <script src="{{asset('app-assets/js/scripts/forms/form-file-uploader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 @include('js_files.help_desk.ticket_manager.add_ticketJs')
+<script>
+    jQuery(function($){
+      var input = $('[type=tel]')
+      input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+      input.bind('country.mobilePhoneNumber', function(e, country) {
+        $('.country').text(country || '')
+      })
+    });
+  </script>
 @endsection

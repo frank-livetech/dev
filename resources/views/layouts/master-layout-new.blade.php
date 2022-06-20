@@ -64,6 +64,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/imagePreview.css')}}">
 
     <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-user.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
 
@@ -299,15 +300,7 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/vendors.min.js')}}"></script>
 
     <!-- BEGIN Vendor JS-->
-    <script>
-        jQuery(function($){
-          var input = $('[type=tel]')
-          input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
-          input.bind('country.mobilePhoneNumber', function(e, country) {
-            $('.country').text(country || '')
-          })
-        });
-      </script>
+    
     <script>
         const colorUrl = "{{asset('get-color')}}";
         const swal_message_time = 5000;
@@ -361,6 +354,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/tagsinput.js')}}"></script>
 
     <!-- BEGIN: Page JS-->
+    <script src="{{asset($file_path . '../../../app-assets/js/scripts/pages/app-user-list.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/charts/chart-apex.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-invoice-list.js')}}"></script>
@@ -385,16 +379,9 @@
         const change_theme_url = "{{asset('change_theme_mode')}}";
 
         $(document).ready(function() {
-            $(document).on('select2:open', (e) => {
-                const selectId = e.target.id
-
-                $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
-                    key,
-                    value,
-                ){
-                    value.focus();
-                })
-            })
+            $(document).on('select2:open', () => {
+                document.querySelector('.select2-search__field').focus();
+            });
             getAllCounts();
             getNotifications();
             getUnreadMessages();
