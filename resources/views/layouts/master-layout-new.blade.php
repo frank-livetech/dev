@@ -354,7 +354,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/tagsinput.js')}}"></script>
 
     <!-- BEGIN: Page JS-->
-    <script src="{{asset($file_path . '../../../app-assets/js/scripts/pages/app-user-list.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-user-list.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/charts/chart-apex.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-invoice-list.js')}}"></script>
