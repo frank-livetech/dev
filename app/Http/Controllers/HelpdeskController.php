@@ -1564,7 +1564,7 @@ class HelpdeskController extends Controller
         }        
 
         if(str_contains($template, '{Ticket-Subject}')) {
-            $template = str_replace('{Ticket-Subject}', '[User Notification]: ' .  $ticket->subject , $template);
+            $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
         }
 
         if(str_contains($template, '{Ticket-Detail}')) {
