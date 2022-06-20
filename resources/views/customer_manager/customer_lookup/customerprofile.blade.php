@@ -2411,6 +2411,15 @@ background-color:rgba(218,165,32,0.3);
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script>
 
 @include('js_files.customer_lookup.customerprofileJs')
+<script>
+    jQuery(function($){
+      var input = $('[type=tel]')
+      input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+      input.bind('country.mobilePhoneNumber', function(e, country) {
+        $('.country').text(country || '')
+      })
+    });
+  </script>
 <style>
     .flagged-tr {
         background-color: #FFE4C4 !important;
