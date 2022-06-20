@@ -926,7 +926,7 @@ class CustomerlookupController extends Controller
                 $mail = new MailController();
                 $users = User::where('user_type', 1)->get();
                 foreach($users as $user) {
-                    $mail->sendMail( 'User Notification: #Live-Tech System New User' . $user->email , $temp, 'system_user@mylive-tech.com', $user->email, $user->name);
+                    $mail->sendMail( 'User Notification: Live-Tech System New User ' . $newCustomer->email , $temp, 'system_user@mylive-tech.com', $user->email, $user->name);
                 }
 
                 // $mail->sendMail( $title , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
