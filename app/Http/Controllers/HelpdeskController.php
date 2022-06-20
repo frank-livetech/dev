@@ -1491,13 +1491,13 @@ class HelpdeskController extends Controller
             $msg = 'Flagged By';
             $title = 'Ticket Flagged';
             $flag = 'Flagged';
-            $emailSubject = 'Ticket Flagged - [WEB DEV !'.$flag_tkt->coustom_id.'] Email Alert for flagged ticket';
+            $emailSubject = 'Ticket Flagged - [WEB DEV !'.$flag_tkt->coustom_id.'] '.$flag_tkt->subject.'';
             if($flag_tkt->is_flagged){
                 $flag_tkt->is_flagged = 0;
                 $msg = 'Flag Removed By';
                 $title = 'Ticket Unflagged';
                 $flag = 'Unflagged';
-                $emailSubject = 'Ticket Unflagged - [WEB DEV !'.$flag_tkt->coustom_id.'] Email Alert for unflagged ticket';
+                $emailSubject = 'Ticket Unflagged - [WEB DEV !'.$flag_tkt->coustom_id.'] '.$flag_tkt->subject.'';
             }else{
                 $flag_tkt->is_flagged = 1;
             }
