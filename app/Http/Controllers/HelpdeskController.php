@@ -176,11 +176,7 @@ class HelpdeskController extends Controller
     public function update_ticket(Request $request) {
         
         $data = $request->all();
-        if($request->has('queue_id')){
-            $queue_id = $data['queue_id'];
-        }
-        
-        
+     
         $response = array();
         try {
             $ticket = Tickets::where('id',$data['id'])->first();
@@ -287,11 +283,7 @@ class HelpdeskController extends Controller
 
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
-                if($ticket->queue_id != $queue_id){
-                    if($queue_id != null && $queue_id != ''){
-                        $ticket->queue_id = $queue_id;
-                    }
-                }
+                
                 $ticket->update($data);
 
                 if($request->has('dd_Arr')){
