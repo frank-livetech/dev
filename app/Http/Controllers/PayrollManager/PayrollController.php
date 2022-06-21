@@ -351,7 +351,7 @@ class PayrollController extends Controller {
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['status', $closeStatus->id], 
+                    ['status','!=', $closeStatus->id], 
                 ])->where('updated_by',auth()->id())->whereDate('updated_at', Carbon::today())->get();
                 
                 $newTicket ='<strong> Updated Tickets </strong>';
