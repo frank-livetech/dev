@@ -62,7 +62,8 @@
                             },
                             {
                                 "render": function (data, type, full, meta) {
-                                    return full.subject != null ? full.subject : '-';
+                                    let link = `<a href="{{url('ticket-details')}}/${full.coustom_id}" style="color:black">${full.subject}</a>`;
+                                    return full.subject != null ? link : '-';
                                 }
                             },
                             {
