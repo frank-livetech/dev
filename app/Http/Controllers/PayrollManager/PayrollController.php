@@ -309,7 +309,6 @@ class PayrollController extends Controller {
                 $todayFlaggedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
-                    ['is_overdue', 0] ,
                     ['trashed', 0] ,
                     ['is_flagged', 1] 
                 ])->whereDate('created_at', Carbon::today())->get();
@@ -332,7 +331,6 @@ class PayrollController extends Controller {
                 $todayClosedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
-                    ['is_overdue', 0] ,
                     ['trashed', 0] ,
                     ['status', $closeStatus->id], 
                 ])->whereDate('created_at', Carbon::today())->get();
