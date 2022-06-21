@@ -1716,7 +1716,7 @@ function listReplies() {
                 if(reply.hasOwnProperty("user_type")) {
                     if(reply.user_type == 5) {
                         if(reply.customer_replies != null) {
-                            link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name} ${reply.customer_replies.last_name} </a>`;
+                            link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name != null ? reply.customer_replies.first_name : ''} ${reply.customer_replies.last_name !=null ? reply.customer_replies.last_name :  ''} </a>`;
                         }
                     }else{
                         if(reply.reply_user != null) {
@@ -1727,7 +1727,7 @@ function listReplies() {
                 }else{
 
                     if(reply.customer_replies != null) {
-                        link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name} ${reply.customer_replies.last_name} </a>`;
+                        link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name != null ? reply.customer_replies.first_name : ''} ${reply.customer_replies.last_name !=null ? reply.customer_replies.last_name :  ''} </a>`;
                     }
                         
                     if(reply.reply_user != null) {
