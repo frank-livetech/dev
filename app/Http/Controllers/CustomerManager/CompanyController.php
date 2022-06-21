@@ -493,7 +493,7 @@ class CompanyController extends Controller
     }
 
     public function get_company_lookup(){
-        $companies = DB::table('companies')->where('is_deleted',0)->orderBy('id','desc')->get();
+        $companies = DB::table('companies')->where('is_deleted',0)->latest('id')->get();
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['companies'] = $companies;

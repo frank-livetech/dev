@@ -6,6 +6,23 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         {{-- <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"> --}}
         <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+        <style>
+           a.user_name.text-truncate {
+    color: #5e50ee;
+    text-decoration: none;}
+    a.user_name.text-truncate:hover{
+        color: #fab81c;
+    }
+    table.dataTable th {
+    padding: 9px 10px !important;
+    vertical-align: middle !important;}
+    td>a{
+        color: #5e50ee !important;
+    }
+    td>a:hover{
+        color: #fab81c !important;
+    }
+        </style>
 @endpush
 @section('body')
 <input type="hidden" id="user_id" value="{{auth()->user()->id}}">
@@ -36,19 +53,20 @@
     </div>
     
     <div class="content-body">
+        <section class="app-user-list">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-md-12" style="text-align:right;">
                         <button type="button"  class="btn btn-success btn-sm rounded"  id="company_add_btn"
             data-bs-toggle="modal" data-bs-target="#company_model"><i class="fa fa-plus-circle" style="padding-right:3px;"></i>Add Company</button>
                         </div>
                         
-                </div>
-                <div class="table-responsive mt-3">
-                    <table id="companyTable" class="companyTable table table-striped table-bordered table-hover text-center w-90">
+                </div> --}}
+                <div class="table-responsive">
+                    <table id="companyTable" class="companyTable table">
                         <thead>
                             <tr>
                                 <th>
@@ -58,12 +76,11 @@
                                     </div>
                                 </th>
                                 <th>Company Name</th>
-                                <th>Owner First Name</th>
-                                <th>Owner Last Name</th>
-                                <th>E-mail</th>
+                                <th>Owner Name</th>
                                 <th>Phone</th>
                                 <th>Address</th>
                                 <th>Created at</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -81,7 +98,9 @@
             </div>
         </div>
     </div>
+</section>
     </div>
+
     <div class="modal fade text-start" id="company_model" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content ">
@@ -176,7 +195,7 @@
                             </div>
                             <div class="col-md-3 form-group">
                                 <label for="zip" class="small">Zip Code</label>
-                                <input type="tel" maxlength="5" class="form-control" id="zip" placeholder="eg. 12345">
+                                <input type="number" maxlength="5" class="form-control" id="zip" placeholder="eg. 12345">
                                 <span class="text-danger small" id="err8"></span>
                             </div>
                             
@@ -208,14 +227,14 @@
             <div class="modal-content">
                 <div class="modal-header d-flex align-items-center">
                     <h4 class="modal-title" >Delete Company</h4>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body text-center">
                     <input type="hidden" id="delete_id">
                 Delete this Company Permanently?
                 </div>
                 <div class="modal-footer text-center" style="display:block;">
-                <button class="btn btn-info btn-sm rounded" data-dismiss="modal"> <i class="fas fa-times"></i> Cancel </button>
+                <button class="btn btn-info btn-sm rounded" data-bs-dismiss="modal"> <i class="fas fa-times"></i> Cancel </button>
                 <button id="delbtn" class="btn btn-danger rounded btn-sm" onclick="deleteRecord()"> <i class="fas fa-trash"></i> Delete </button>
                 <button id="cust_del" style="display:none" class="btn btn-danger btn-sm rounded"
                                                     type="button" disabled><i class="fas fa-circle-notch fa-spin"></i>

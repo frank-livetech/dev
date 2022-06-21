@@ -1,3 +1,4 @@
+
 <script>
 // Company Js Script Blade
 $(document).ready(function() {
@@ -181,7 +182,6 @@ function updateValue(element, column, id, old_value) {
 
 
 }
-
 function get_all_companies() {
     $.ajax({
         type: "GET",
@@ -191,54 +191,162 @@ function get_all_companies() {
             $('.loader_container').show();
         },
         success: function(data) {
-            console.log(data, "data");
+            console.log(data.companies, "data");
             var system_date_format = data.date_format;
-            var row = ``;
-            var count = 1;
-            data = data.companies;
-            for (var i = 0; i < data.length; i++) {
-                console.log(data[i].created_at)
-                var created_at = data[i].created_at != null ? moment(data[i].created_at).format('MMMM Do YYYY, h:mm:ss a') : '-';
+            assetPath = $('body').attr('data-asset-path');
+            userView = assetPath + 'app/user/view';
+            userEdit = assetPath + 'app/user/edit';
+            $('#companyTable').DataTable().destroy();
+            let tt = $('#companyTable').DataTable({
+            data:  data.companies,
+            columns: [
+                {
+                    render: function (data, type, full, meta) {
 
+                return `<div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck_` + full.id + `">
+                            <label class="custom-control-label" for="customCheck_` + full.id + `"></label>
+                        </div>`;
+                }
+                },
+                {
+                    render: function (data, type, full, meta) {
 
-                var address = data[i].address != null ? data[i].address : '';
-                var apt_address = data[i].apt_address != null ? ',' + data[i].apt_address : '';
-
-                var cn_name = data[i].cmp_country == null ? '' : data[i].cmp_country;
-                var st_name = data[i].cmp_state == null ? '' : ',' + data[i].cmp_state;
-                var ct_name = data[i].cmp_city == null ? '' : data[i].cmp_city;
-                var zip = data[i].cmp_zip == null ? '' : ',' + data[i].cmp_zip;
-
-                row += `
-                    <tr id="row_` + data[i].id + `" >
-                        <td>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck_` + data[i].id + `">
-                                <label class="custom-control-label" for="customCheck_` + data[i].id + `"></label>
-                            </div>
-                        </td>
-                        <!--<td>` + count + `</td>-->                        
-                        <td><a href="company-profile/` + (data[i].id != null ? data[i].id : '-') + `">` + (data[i].name != null ? data[i].name : '-') + `</a></td>
-                        <td>` + (data[i].poc_first_name != null ? data[i].poc_first_name : '-') + `</td>
-                        <td>` + (data[i].poc_last_name != null ? data[i].poc_last_name : '-') + `</td>
-                        <td>` + (data[i].email != null ? data[i].email : '-') + `</td>
-                        <td><a href="tel:` + (data[i].phone != null ? data[i].phone : '-') + `">` + (data[i].phone != null ? data[i].phone : '-') + `</a></td>
-                        <td>` + address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</td>
+                        var $name = full.name,
+                        $com_domain = full.domain != null ? `<a href ="` +full.domain+ `">Go To Domain</a>`: '-',
+                        $image = full.com_logo;
+                        if ($image) {
+                        // For Avatar image
+                        var $imgoutput =
+                            '<img src=" ' + js_origin + '' + $image + '" alt="Avatar" height="32" width="32">';
+                        } else {
+                        // For Avatar badge
+                        var stateNum = Math.floor(Math.random() * 6) + 1;
+                        var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+                        var $state = states[stateNum],
+                            $name = full.name,
+                            $initials = $name.match(/\b\w/g) || [];
+                        $initials = (($initials.shift() || '') + ($initials.pop() || '')).toUpperCase();
+                        $imgoutput = '<span class="avatar-content">' + $initials + '</span>';
+                        }
+                        var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
+                        var $row_output =
+                        '<div class="d-flex justify-content-left align-items-center">' +
+                            '<div class="avatar-wrapper">' +
+                            '<div class="avatar ' +
+                            colorClass +
+                            ' me-1">' +
+                            $imgoutput +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="d-flex flex-column">' +
+                            '<a href="company-profile/' + (full.id != null ? full.id : '-') + '" class="user_name text-truncate"><span class="fw-bold">' +
+                            $name +
+                            '</span></a>' +
+                            '<small class="emp_post text-muted">' +
+                            $com_domain +
+                            '</small>' +
+                            '</div>' +
+                        '</div>';
+                        return $row_output;
+                    }
+                },
+                {
+                    render: function (data, type, full, meta) {
+                        let poc_first_name = full.poc_first_name != null ? full.poc_first_name : '-';
+                        let poc_last_name = full.poc_last_name != null ? full.poc_last_name : '-';
+                        return  `<span>` + poc_first_name + ` ` + poc_last_name + `</span>`
+                    }
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return (full.phone != null ? `<a href ="tel:`+full.phone+`">` +full.phone+ `</a>` : '-');
+                    }
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        var address = full.address != null ? full.address : '';
+                        var apt_address = full.apt_address == null ? '' : full.apt_address;
+                        var cn_name = full.cmp_country == null ? '' : full.cmp_country;
+                        var st_name = full.cmp_state == null ? '' : ',' + full.cmp_state;
+                        var ct_name = full.cmp_city == null ? '' : full.cmp_city;
+                        var zip = full.cmp_zip == null ? '' : ',' + full.cmp_zip;
                         
-                        <td>` + moment(data[i].created_at).format(system_date_format) + `</td>
-                        <td>
-                            <button type="button" onclick="showdeleteModal(` + data[i].id + `)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </button>
-                        </td>
-                        </tr>
-                `;
-                count++;
-            }
-
-
-            $('#companyTBody').html(row);
-            var company_table = $('#companyTable').DataTable();
+                        return  `<span>`+ address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</span>`
+                    }
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return (moment(full.created_at).format(system_date_format));
+                    }
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return `<span class="badge text-capitalize badge-light-success badge-pill"> active </span>`;
+                    }
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return `
+                            <div class="dropdown ms-50">
+                                <div role="button" class="dropdown-toggle hide-arrow" id="email_more" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                </div>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="email_more">
+                                    <a href="company-profile/` + (full.id != null ? full.id : '-') + `" class="user_name text-truncate"> <div class="dropdown-item" ><svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text me-50"><path data-v-32017d0f="" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline data-v-32017d0f="" points="14 2 14 8 20 8"></polyline><line data-v-32017d0f="" x1="16" y1="13" x2="8" y2="13"></line><line data-v-32017d0f="" x1="16" y1="17" x2="8" y2="17"></line><polyline data-v-32017d0f="" points="10 9 9 9 8 9"></polyline></svg>Details</div></a>
+                                   
+                                    <div class="dropdown-item" onclick="showdeleteModal(` + full.id + `)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-50"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Delete</div>
+                                </div>
+                            </div>
+                            `;
+                    }
+                },
+                
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
+                '<"col-sm-12 col-md-4 col-lg-6" l>' +
+                '<"col-sm-12 col-md-8 col-lg-6 ps-xl-75 ps-0"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end align-items-center flex-sm-nowrap flex-wrap me-1"<"me-1"f>B>>' +
+                '>t' +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                '>',
+      language: {
+        sLengthMenu: 'Show _MENU_',
+        search: 'Search',
+        searchPlaceholder: 'Search..'
+      },
+      // Buttons with Dropdown
+      buttons: [
+        {
+          text: 'Add New Company',
+          className: 'add-new btn btn-primary mt-50',
+          attr: {
+            'data-bs-toggle': 'modal',
+            'data-bs-target': '#company_model'
+          },
+          init: function (api, node, config) {
+            $(node).removeClass('btn-secondary');
+          }
+        }
+      ],
+      
+      language: {
+        paginate: {
+          // remove previous & next text from pagination
+          previous: '&nbsp;',
+          next: '&nbsp;'
+        }
+      },
+        });
+        // tt.on( 'order.dt search.dt', function () {
+        //     tt.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+        //         cell.innerHTML = i+1;
+        //     } );
+        // }).draw();
+            // $('#companyTBody').html(row);
+            // var company_table = $('#companyTable').DataTable();
 
             // $('#select_column').multipleSelect({
             //     width: 300,
@@ -274,6 +382,98 @@ function get_all_companies() {
         }
     });
 }
+// function get_all_companies() {
+//     $.ajax({
+//         type: "GET",
+//         url: "get_company_lookup",
+//         dataType: 'json',
+//         beforeSend: function(data) {
+//             $('.loader_container').show();
+//         },
+//         success: function(data) {
+//             console.log(data, "data");
+//             var system_date_format = data.date_format;
+//             var row = ``;
+//             var count = 1;
+//             data = data.companies;
+//             for (var i = 0; i < data.length; i++) {
+//                 console.log(data[i].created_at)
+//                 var created_at = data[i].created_at != null ? moment(data[i].created_at).format('MMMM Do YYYY, h:mm:ss a') : '-';
+
+
+//                 var address = data[i].address != null ? data[i].address : '';
+//                 var apt_address = data[i].apt_address != null ? ',' + data[i].apt_address : '';
+
+//                 var cn_name = data[i].cmp_country == null ? '' : data[i].cmp_country;
+//                 var st_name = data[i].cmp_state == null ? '' : ',' + data[i].cmp_state;
+//                 var ct_name = data[i].cmp_city == null ? '' : data[i].cmp_city;
+//                 var zip = data[i].cmp_zip == null ? '' : ',' + data[i].cmp_zip;
+
+//                 row += `
+//                     <tr id="row_` + data[i].id + `" >
+//                         <td>
+//                             <div class="custom-control custom-checkbox">
+//                                 <input type="checkbox" class="custom-control-input" id="customCheck_` + data[i].id + `">
+//                                 <label class="custom-control-label" for="customCheck_` + data[i].id + `"></label>
+//                             </div>
+//                         </td>
+//                         <!--<td>` + count + `</td>-->                        
+//                         <td><a href="company-profile/` + (data[i].id != null ? data[i].id : '-') + `">` + (data[i].name != null ? data[i].name : '-') + `</a></td>
+//                         <td>` + (data[i].poc_first_name != null ? data[i].poc_first_name : '-') + `</td>
+//                         <td>` + (data[i].poc_last_name != null ? data[i].poc_last_name : '-') + `</td>
+//                         <td>` + (data[i].email != null ? data[i].email : '-') + `</td>
+//                         <td><a href="tel:` + (data[i].phone != null ? data[i].phone : '-') + `">` + (data[i].phone != null ? data[i].phone : '-') + `</a></td>
+//                         <td>` + address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</td>
+                        
+//                         <td>` + moment(data[i].created_at).format(system_date_format) + `</td>
+//                         <td>
+//                             <button type="button" onclick="showdeleteModal(` + data[i].id + `)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
+//                                 <i class="fa fa-trash" aria-hidden="true"></i>
+//                             </button>
+//                         </td>
+//                         </tr>
+//                 `;
+//                 count++;
+//             }
+
+
+//             $('#companyTBody').html(row);
+//             var company_table = $('#companyTable').DataTable();
+
+//             // $('#select_column').multipleSelect({
+//             //     width: 300,
+//             //     onClick: function(view) {
+//             //         var selectedItems = $('#select_column').multipleSelect("getSelects");
+//             //         for (var i = 0; i < 11; i++) {
+//             //             columns = company_table.column(i).visible(0);
+//             //         }
+//             //         for (var i = 0; i < selectedItems.length; i++) {
+//             //             var s = selectedItems[i];
+//             //             company_table.column(s).visible(1);
+//             //         }
+
+//             //     },
+//             //     onCheckAll: function() {
+//             //         for (var i = 0; i < 11; i++) {
+//             //             columns = company_table.column(i).visible(1);
+//             //         }
+//             //     },
+//             //     onUncheckAll: function() {
+//             //         for (var i = 0; i < 11; i++) {
+//             //             columns = company_table.column(i).visible(0);
+//             //         }
+
+//             //     }
+//             // });
+//         },
+//         complete: function(data) {
+//             $('.loader_container').hide();
+//         },
+//         error: function(e) {
+//             console.log(e)
+//         }
+//     });
+// }
 
 function checkEmptyFields(input, err) {
     if (input == '') {
