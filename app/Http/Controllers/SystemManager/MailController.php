@@ -1302,7 +1302,7 @@ class MailController extends Controller
         return($attachment);
     }
 
-    public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '',$template_code = '') {
+    public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '',$template_code = '' , $from_name = '') {
         try {
             
             // $mail = new PHPMailer(true);
@@ -1326,16 +1326,18 @@ class MailController extends Controller
             // ];
             // $mail->setFrom(self::$mailserver_username);
 
-            $from_name = '';
-            if (\Auth::user())  {
-                $from_name = auth()->user()->name;
-            }else{
-                if($from_email != null && $from_email != '') {
-                    $user = User::where('email', $from_email)->first();
-                    $from_name = $user->name;
+            if($from_name == ''){
+                if (\Auth::user())  {
+                    $from_name = auth()->user()->name;
+                }else{
+                    if($from_email != null && $from_email != '') {
+                        $user = User::where('email', $from_email)->first();
+                        $from_name = $user->name;
+                    }
+                    
                 }
-                
             }
+            
 
             $mail->setFrom($from , $from_name);
             
