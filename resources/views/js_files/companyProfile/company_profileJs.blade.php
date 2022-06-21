@@ -31,7 +31,7 @@ $(".companyUser").submit(function(event) {
 
             if(data.status_code == 200 && data.success == true){
 
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
 
                 if(data.type == 'customer') {
                     $('#add_staff_model').modal('hide');
@@ -41,7 +41,7 @@ $(".companyUser").submit(function(event) {
 
             }else{
 
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete: function (data) {

@@ -361,21 +361,17 @@
 
 
                     if(data.status_code == 201) {
-                        toastr.warning(data.message, { timeOut: 5000 });
+                        alertNotification('warning', 'Warning' ,data.message );
                     } else {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' ,data.message );
                     }
                 } else {
-                    toastr.error(data.message, {
-                        timeOut: 5000
-                    });
+                    alertNotification('error', 'Error' ,data.message );
                 }
             },
             failure: function(data) {
                 console.log(data);
-                toastr.error(data.message, {
-                    timeOut: 5000
-                });
+                alertNotification('error', 'Error' ,data.message );
             }
         });
     }

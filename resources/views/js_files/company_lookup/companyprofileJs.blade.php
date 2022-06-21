@@ -224,9 +224,9 @@
                     console.log(data);
 
                     if(data.status_code == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                     }else{
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message);
                     }
                 
                 },
@@ -235,7 +235,7 @@
                 }
             });
         }else{
-            toastr.error("Select SLA First", { timeOut: 5000 });
+            alertNotification('error', 'Error' , "Select SLA First");
         }
         
     }
@@ -642,7 +642,7 @@
             processData: false,
             success: function(data) {
                 if(data.status == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message);
                     $("#editPicModal").modal('hide');
                     console.log(js_origin);
                     let path = js_origin + data.img;
@@ -650,7 +650,7 @@
                     $('#company_curr_img').attr('src', path );
                     $('#company_modal_img').attr('src', path );
                 }else{
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message);
                 }
                 console.log(data , "data");
             },
@@ -743,7 +743,7 @@
             if( fb != '') {
                 var FBurl = /^(http|https)\:\/\/facebook.com|facebook.com\/.*/i;
                 if(!fb.match(FBurl)) {
-                    toastr.error('Provide a valid facebook link', { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'Provide a valid facebook link');
                     return false;
                 }
             }
@@ -751,21 +751,21 @@
             if( pin != '') {
                 var FBurl = /^(http|https)\:\/\/pinterest.com|pinterest.com\/.*/i;
                 if(!pin.match(FBurl)) {
-                    toastr.error('Provide a valid Pinterest link', { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'Provide a valid Pinterest link');
                     return false;
                 }
             }
             if( twt != '') {
                 var FBurl = /^(http|https)\:\/\/twitter.com|twitter.com\/.*/i;
                 if(!twt.match(FBurl)) {
-                    toastr.error('Provide a valid Twitter link', { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'Provide a valid Twitter link');
                     return false;
                 }
             }
             if( insta != '') {
                 var FBurl = /^(http|https)\:\/\/instagram.com|instagram.com\/.*/i;
                 if(!insta.match(FBurl)) {
-                    toastr.error('Provide a valid Instagram link', { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'Provide a valid Instagram link');
                     return false;
                 }
             }
@@ -775,7 +775,7 @@
 
             if(website != '') {
                 if(!urlregex.test(website)) {
-                    toastr.error('Provide a valid website link', { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'Provide a valid website link');
                     return false;
                 }
             }
@@ -793,9 +793,8 @@
                 },
                 success: function (data) {
                     console.log(data);
-                    // values();
 
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message);
 
                     $("#comp_name").text($("#name").val());
                     $("#comp_phone").text($("#phone").val());
@@ -838,7 +837,7 @@
                     $("#comp_pro_btn").hide();
                     $("#comp_update_Btn").show();
                     if(e.responseJSON.errors.email) {
-                        toastr.error(e.responseJSON.errors.email[0], { timeOut: 5000 });
+                        alertNotification('error', 'Error' ,e.responseJSON.errors.email[0]);
                     }
                 }
             });
@@ -970,7 +969,7 @@
 
                     if(data.status_code == 200 && data.success == true){
 
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
 
                         if(data.type == 'customer') {
                             $('#add_staff_model').modal('hide');
@@ -980,7 +979,7 @@
 
                     }else{
 
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message);
                     }
                 },
                 complete: function (data) {

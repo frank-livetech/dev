@@ -104,8 +104,7 @@ $(document).ready(function() {
             data: formData,
             success: function(data) {
                 // console.log(data);
-
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' ,data.message );
                 setTimeout(() => {
                     $('#addFeatureModal').modal('hide');
                     $('#addFeatureForm')[0].reset();
@@ -171,7 +170,7 @@ $(document).ready(function() {
             data: formData,
             success: function(data) {
                 // console.log(data, "update ");
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' ,data.message );
                 $("#editFeatureModal").modal('hide');
                 get_all_feature_list();
             },

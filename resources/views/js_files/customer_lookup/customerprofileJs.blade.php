@@ -566,7 +566,7 @@
         if( item != null && item != "" && item != undefined) {
 
             if(item.email == user_email) {
-                toastr.error('The email has already been taken.', { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'The email has already been taken.' );
             }
 
         }
@@ -664,7 +664,7 @@
         let cpwd = $(".user-confirm-password-div input[name='confirm_password']").val();
 
         if (cpwd && cpwd != update_password) {
-            toastr.error('Passwords do not match!', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Passwords do not match!');
             return false;
         }
 
@@ -674,7 +674,7 @@
 
         if (customer.password != update_password) {
             if (cpwd != update_password) {
-                toastr.error('Passwords do not match!', { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'Passwords do not match!');
                 return false;
             }
         }
@@ -696,7 +696,7 @@
         if( fb != '') {
             var FBurl = /^(http|https)\:\/\/facebook.com|facebook.com\/.*/i;
             if(!fb.match(FBurl)) {
-                toastr.error('Provide a valid facebook link', { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'Provide a valid facebook link');
                 return false;
             }
         }
@@ -704,28 +704,28 @@
         if( pin != '') {
             var FBurl = /^(http|https)\:\/\/pinterest.com|pinterest.com\/.*/i;
             if(!pin.match(FBurl)) {
-                toastr.error('Provide a valid Pinterest link', { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'Provide a valid Pinterest link');
                 return false;
             }
         }
         if( twt != '') {
             var FBurl = /^(http|https)\:\/\/twitter.com|twitter.com\/.*/i;
             if(!twt.match(FBurl)) {
-                toastr.error('Provide a valid Twitter link', { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'Provide a valid Twitter link');
                 return false;
             }
         }
         if( insta != '') {
             var FBurl = /^(http|https)\:\/\/instagram.com|instagram.com\/.*/i;
             if(!insta.match(FBurl)) {
-                toastr.error('Provide a valid Instagram link', { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'Provide a valid Instagram link');
                 return false;
             }
         }
         if( link != '') {
             var FBurl = /^(http|https)\:\/\/linkedin.com|linkedin.com\/.*/i;
             if(!link.match(FBurl)) {
-                toastr.error('Provide a valid Linkedin link', { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'Provide a valid Linkedin link');
                 return false;
             }
         }
@@ -776,7 +776,7 @@
                 if(data.status_code == 200 && data.success == true) {
 
                     values();
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message);
 
                     let type = 'Wordpress';
                     let slug = 'customer-lookup';
@@ -814,9 +814,9 @@
                     $("#lkdn").attr('href', $("#prof_linkedin").val());
                     $("#pintrst").attr('href', $("#prof_pinterest").val());
                 }else if(data.status == 201 && data.success == true) {
-                    toastr.warning(data.message, { timeOut: 5000 });
+                    alertNotification('warning', 'Warning' , data.message);
                 }else{
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message);
                 }
             },
             complete: function(data) {
@@ -826,10 +826,10 @@
             error: function(e) {
                 console.log(e);
                 if (e.responseJSON.errors.email != null) {
-                    toastr.error(e.responseJSON.errors.email[0], { timeOut: 5000 });
+                    alertNotification('error', 'Error' , e.responseJSON.errors.email[0] );
                 }
                 if (e.responseJSON.errors.password != null) {
-                    toastr.error(e.responseJSON.errors.password[0], { timeOut: 5000 });
+                    alertNotification('error', 'Error' , e.responseJSON.errors.password[0] );
                 }
 
 
@@ -905,9 +905,8 @@
                     $('.loader_container').show();
                 },
                 success: function(data) {
-                    toastr.success(data.message, {
-                        timeOut: 5000
-                    });
+                    
+                    alertNotification('success', 'Success' , data.message );
 
                     $('#company_id').append('<option value="' + data.result +'" selected>' + $('#companyForm #name').val() + '</option>');
 
@@ -1127,15 +1126,14 @@
             processData: false,
             success: function(data) {
                 if (data.status == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message );
                     $("#editPicModal").modal('hide');
                     let path = js_origin + data.img;
                     $('#customer_curr_img').attr('src', path);
                     $('#customer_modal_img').attr('src', path);
                 } else {
-                    toastr.error(data.message, { timeOut: 5000});
+                    alertNotification('error', 'Error' , data.message );
                 }
-                // console.log(data, "data");
             },
             error: function(e) {
                 console.log(e)

@@ -108,7 +108,7 @@
             },
             success: function(data) {
                 if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message);
 
                     $('#cst-name').html(first_name+' '+last_name);
                     $('#cst-email').html(email);
@@ -117,7 +117,7 @@
                     setCustomerCompany();
                     $("#pro_edit").modal('hide');
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message );
                 }
             },
             complete: function(data) {

@@ -400,7 +400,7 @@ function saveFieldSetting(ev) {
 function saveTemplate() {
 
     if (!$('#tempTitle').val()) {
-        toastr.error('Template Title Required', { timeOut: 5000 });
+        alertNotification('error', 'Error' , 'Template Title Required');
         $('#tempTitle').focus();
         $("#tempTitle").css('border','1px solid red')
         return false;
@@ -474,7 +474,7 @@ function saveTemplate() {
 
 
     }else{
-        toastr.error('Input Field is Required', { timeOut: 5000 });
+        alertNotification('error', 'Error' , 'Input Field is Required');
         return false;
     }
 }

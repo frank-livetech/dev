@@ -877,7 +877,7 @@ function setSlaPlan() {
                             showConfirmButton: false,
                             timer: swal_message_time
                         });
-                        toastr.success('SLA updated Successfully!', { timeOut: 5000 });
+                        alertNotification('success', 'Success' , 'SLA updated Successfully!' );
                     } else {
                         Swal.fire({
                             position: 'center',
@@ -1126,8 +1126,8 @@ function saveRequest() {
 
                     // refresh logs
                     getLatestLogs();
-
-                    toastr.success( 'Initial Request Updated Successfully' , { timeOut: 5000 });
+                    
+                    alertNotification('success', 'Success' , 'Initial Request Updated Successfully');
 
                     $('#ticket_subject_heading').css('display', 'block');
                     $('#ticket_details_p').css('display', 'block');
@@ -1800,10 +1800,10 @@ function deleteReply(id , index) {
                 },
                 success: function(data) {
                     if (data.status_code == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                         $("#reply__"+index).remove();
                     } else {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message);
                     }
                 },
                 complete: function(data) {
@@ -2013,13 +2013,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                             setSlaPlanDeadlines();
                         }
 
-                        // if(updates_Arr.length > 0){
-                        //     updateTicket();
-                        // }
-                        // let msg = 'Added';
-                        // if (edit_reply_mode !== false) msg = 'Updated';
-                        // if (type != 'publish') msg = 'saved as draft';
-                        toastr.success( data.message , { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                         $("#responseTemplateForm").trigger("reset");
                         $("#response_template").is(":checked",false);
                     } else {
@@ -2416,7 +2410,7 @@ $('#priority').change(function() {
 
 function updateTicket(){
     if(updates_Arr.length == 0){
-        toastr.warning( 'There is nothing to update.' , { timeOut: 5000 });
+        alertNotification('warning', 'Warning' , 'There is nothing to update');
         return false;
     }
     $.ajax({
@@ -2501,7 +2495,7 @@ function updateTicket(){
                 $("#dropD ").find("h5").show();
                 selectD();
                 $("#update_ticket").hide();
-                toastr.success( 'Ticket Updated Successfully!' , { timeOut: 5000 });
+                alertNotification('success', 'Success' , 'TIcket Updated Successfully!');
             }
         }
     });
@@ -2903,7 +2897,7 @@ function updateFollowUp(data, ticketNotes = false , ticket_replies = false) {
 
             }else{
                 console.log("failed")
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message);
             }
         }
     });
@@ -2930,7 +2924,7 @@ function deleteFollowup(id) {
                 success: function(data) {
                     if (data.success) {
 
-                        toastr.success( data.message , { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
 
                         // $("#followup-"+id).remove();
                         // send mail notification regarding ticket action
@@ -3471,7 +3465,7 @@ $("#save_ticket_note").submit(function(event) {
             // console.log(data);
             if (data.success) {
 
-                toastr.success( data.message , { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message);
 
                 let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
                 let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm A');
@@ -3504,7 +3498,7 @@ $("#save_ticket_note").submit(function(event) {
                 $('#notes_manager_modal').modal('hide');
 
             } else {
-                toastr.error( data.message , { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete:function(data) {
@@ -3701,8 +3695,7 @@ function deleteTicketNote(ele, id) {
 
                         $(ele).closest('#note-div-' + id).remove();
 
-                        toastr.success( data.message , { timeOut: 5000 });
-
+                        alertNotification('success', 'Success' , data.message);
 
                         let no_counts = $('.notes_count').text();
                         $('.notes_count').text( (no_counts - 1) );
@@ -3778,10 +3771,10 @@ function flagTicket() {
 
                 if (ticket.is_flagged === 0) {
                     ticket.is_flagged = 1;
-                    toastr.success( 'Flagged Successfully!' , { timeOut: 5000 });
+                    alertNotification('success', 'Success' , 'Flagged Successfully!');
                 } else {
                     ticket.is_flagged = 0;
-                    toastr.success( 'Flagged removed Successfully!' , { timeOut: 5000 });
+                    alertNotification('success', 'Success' , 'Flagged removed Successfully!');
                 }
             } else {
                 Swal.fire({
@@ -4326,10 +4319,10 @@ function trashTicket(id) {
         success: function(data) {
 
             if (data.success == true && data.status_code == 200) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message);
                 window.location.href = "{{route('ticket_management.index')}}";
             }else{
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         failure: function(errMsg) {

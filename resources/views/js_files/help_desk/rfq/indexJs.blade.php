@@ -315,13 +315,9 @@
                     $('.sellInstP').show();
                     $(".sellInst").hide();
 
-                    toastr.success(data.message, {
-                        timeOut: 5000
-                    });
+                    alertNotification('success', 'Success' , data.message);
                 } else {
-                    toastr.warning(data.message, {
-                        timeOut: 5000
-                    });
+                    alertNotification('warning', 'Warning' , data.message );
                 }
             }
         });
@@ -360,9 +356,7 @@
         event.preventDefault();
 
         if ($("#comp_id").val() == "Select") {
-            toastr.success("Please Select Ccompany", {
-                timeOut: 5000
-            });
+            alertNotification('error', 'Error' , 'Please Select Company');
         } else {
             var formData = new FormData($(this)[0]);
             var action = $(this).attr('action');

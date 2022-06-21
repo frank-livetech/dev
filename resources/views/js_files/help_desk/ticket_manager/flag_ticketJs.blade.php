@@ -87,11 +87,11 @@
                             ],
                         });
                     }else{
-                        toastr.error( 'Something Went Wrong' , { timeOut: 5000 });
+                        alertNotification('error', 'Error' , 'Something Went Wrong');
                     }
                 },
                 error:function(e) {
-                    toastr.error( 'Something Went Wrong' , { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'Something Went Wrong');
                 }
             });
 
@@ -109,7 +109,7 @@
                         $(ele).closest('tr').toggleClass('flagged-tr');
                         flagged_tickets .getTickets()
 
-                        toastr.success( data.message , { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                     } else {
                         Swal.fire({
                             position: 'center',

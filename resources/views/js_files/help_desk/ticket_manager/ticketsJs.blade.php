@@ -622,7 +622,7 @@
             success: function(data) {
                 console.log(data);
                 if(data.status_code == 200 && data.success == true) {
-                    toastr.success( 'Table length Saved Successfully' , { timeOut: 5000 });
+                    alertNotification('success', 'Success' , 'Table length Saved Successfully');
                 }
                 
             },

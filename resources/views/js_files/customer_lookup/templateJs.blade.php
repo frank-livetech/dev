@@ -323,9 +323,7 @@
     function saveTemplate() {
 
         if (!$('#tempTitle').val()) {
-            toastr.error('Template Title Required', {
-                timeOut: 5000
-            });
+            alertNotification('error', 'Error' , 'Template Title Required' );
             $('#tempTitle').focus();
             return false;
         }
@@ -397,9 +395,7 @@
 
 
         } else {
-            toastr.error('Input Field is Required', {
-                timeOut: 5000
-            });
+            alertNotification('error', 'Error' , 'Input Field is Required' );
             return false;
         }
     }

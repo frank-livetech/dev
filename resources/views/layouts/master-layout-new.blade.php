@@ -851,6 +851,13 @@
             clockInTimer(clockintime);
         }, 100);
         
+        function alertNotification(type , heading , message) {
+            toastr[type]( message , heading , {
+                showMethod: 'slideDown',
+                hideMethod: 'slideUp',
+                timeOut: 5000,
+            });
+        }
     </script>
     @include('js_files.chat.pusher')
     @include('js_files.pusher_notification.notification')

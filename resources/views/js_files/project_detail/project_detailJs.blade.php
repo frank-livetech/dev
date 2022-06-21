@@ -176,14 +176,14 @@ $(document).ready(function() {
             success: function(data) {
                 
                 if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message );
                     $("#new-task-modal").modal('hide');
                     $("#save-task")[0].reset();
 
                     get_all_project_task();
 
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message );
                 }
             },
             complete: function(data) {
@@ -275,9 +275,9 @@ function saveTitle() {
         success: function(data) {
             console.log(data)
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         failure: function(errMsg) {
@@ -335,9 +335,9 @@ function saveCustomer() {
         success: function(data) {
             console.log(data)
             if (data) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         failure: function(errMsg) {
@@ -389,9 +389,9 @@ function saveManager() {
         success: function(data) {
             console.log(data)
             if (data) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         failure: function(errMsg) {
@@ -938,10 +938,10 @@ function deleteTask(id) {
                 success: function(data) {
                     console.log(data);
                     if (data.status_code == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message );
                         getAllProjectTasks();
                     } else {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message );
                     }
                 }
             });
@@ -1392,14 +1392,14 @@ function updateAssets() {
         success: function(data) {
             console.log(data, "asset updated");
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
                 $("#update_asset_modal").modal('hide');
                 get_asset_table_list();
                 // location.reload();
 
                 if (asset_ticket_id) ticket_notify('ticket_update', 'T_asset_update');
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         error: function(f) {
@@ -1427,9 +1427,9 @@ function saveProjectDescription() {
         success: function (data) {
             console.log(data)
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete:function(data) {
@@ -1478,11 +1478,11 @@ function saveProjectNotes() {
         success: function (data) {
             console.log(data)
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
                 $("#add_notes").modal('hide');
                 getAllProjectNotes();
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete:function(data) {
@@ -1593,10 +1593,10 @@ function deleteProjectNotes(id) {
         success: function (data) {
             console.log(data)
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
                 getAllProjectNotes();
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete:function(data) {
@@ -1639,11 +1639,11 @@ function updateProjectNotes() {
         success: function (data) {
             console.log(data)
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
                 $("#edit_notes").modal('hide');
                 getAllProjectNotes();
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete:function(data) {

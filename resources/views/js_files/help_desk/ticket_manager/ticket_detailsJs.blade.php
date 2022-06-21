@@ -249,7 +249,7 @@
                     },
                     success: function(data) {
                         if (data.status_code == 200 && data.success == true) {
-                            toastr.success(data.message, { timeOut: 5000 });
+                            alertNotification('success', 'Success' , data.message);
 
                             ticket_customer = data.data;
                             temp_sel_customer = ticket_customer.id;
@@ -263,7 +263,7 @@
                             setCustomerCompany();
                             $("#pro_edit").modal('hide');
                         } else {
-                            toastr.error(data.message, { timeOut: 5000 });
+                            alertNotification('error', 'Error' , data.message);
                         }
                     },
                     complete: function(data) {
@@ -353,7 +353,7 @@
                 processData: false,
                 success: function(data) {
                     if (data.success) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
 
                         ticket_customer = data.data;
 
@@ -369,7 +369,7 @@
                         newCustomer('cancel');
                         $('#save_newtickcust_form').trigger('reset');
                     } else {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                     }
                 },
                 failure: function(errMsg) {
@@ -491,7 +491,7 @@
                         },
                         success: function(data) {
                             if (data.status_code == 200 && data.success == true) {
-                                toastr.success(data.message, { timeOut: 5000 });
+                                alertNotification('success', 'Success' , data.message);
                                 $("#pro_edit").modal('hide');
                                 ticket_customer = data.data;
                                 temp_sel_customer = ticket_customer.id;
@@ -506,7 +506,7 @@
                                 setCustomerCompany();
                                 
                             } else {
-                                toastr.error(data.message, { timeOut: 5000 });
+                                alertNotification('error', 'Error' , data.message );
                             }
                         },
                         complete: function(data) {
@@ -561,7 +561,7 @@
                             // send mail notification regarding ticket action
                             ticket_notify(tickets[tickets.length - 1], 'ticket_update', 'Restored');
 
-                            toastr.success( 'Recycled Successfully!' , { timeOut: 5000 });
+                            alertNotification('success', 'Success' , 'Recycled Successfully!');
                             window.location.href = "{{route('ticket_management.index')}}";
 
                         } else {

@@ -28,9 +28,9 @@
                 success: function(data) {
                     console.log(data);
                     if(data.status_code == 200 & data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' ,data.message );
                     }else{
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' ,data.message );
                     }
 
                     $("#closingRemarks").modal('hide');
@@ -49,8 +49,7 @@
             });
 
         }else{
-
-            toastr.error( "Please Provide Closing Remarks", { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Please Provide Closing Remarks');
         }
 
        
@@ -267,9 +266,9 @@
                 success: function(data) {
                     console.log(data);
                     if(data.status_code == 200 & data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' ,data.message );
                     }else{
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' ,data.message );
                     }
                     get_all_tasks();
 
@@ -300,9 +299,9 @@
             success: function(data) {
                 console.log(data);
                 if(data.status_code == 200 & data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' ,data.message );
                 }else{
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' ,data.message );
                 }
                 get_all_tasks();
 
