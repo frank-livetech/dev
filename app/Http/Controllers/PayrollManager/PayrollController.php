@@ -343,6 +343,29 @@ class PayrollController extends Controller {
                 $template = str_replace('{Flagged-Tickets}', count($todayFlaggedTickets) > 0 ? $newTicket : '' , $template);
             }
 
+            if(str_contains($template, '{Update-Tickets}')) {
+            
+                // $updatedTickets = TicketStatus::where('slug','closed')->first();
+                
+                $todayUpdatedTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['trashed', 0] ,
+                    ['status', $closeStatus->id], 
+                ])->where('updated_by',auth()->id())->whereDate('updated_at', Carbon::today())->get();
+                
+                $newTicket ='<strong> Updated Tickets </strong>';
+                
+                foreach($todayUpdatedTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($todayUpdatedTickets).'</p>';
+                $template = str_replace('{Update-Tickets}', count($todayUpdatedTickets) > 0 ? $newTicket : '' , $template);
+
+            }
+            
             if(str_contains($template, '{Closed-Tickets}')) {
 
                 $closeStatus = TicketStatus::where('slug','closed')->first();
