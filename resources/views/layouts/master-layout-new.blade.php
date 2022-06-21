@@ -100,21 +100,6 @@
     <!-- END: Material Design CDNS-->
 
     <style>
-        ::-webkit-input-placeholder {
-            color: #000 !important;
-        }
-        :-moz-placeholder{
-            color: #000 !important;
-        }
-        ::-moz-placeholder{
-            color: #000 !important;
-        }
-        :-ms-input-placeholder{
-            color: #000 !important;
-        }
-        ::placeholder{
-            color: #000 !important;
-        }
         .loading__ {
             background: white !important;
             width: 100%;
