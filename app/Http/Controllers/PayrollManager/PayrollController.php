@@ -300,7 +300,7 @@ class PayrollController extends Controller {
 
             }
 
-            $template = str_replace('{Flagged-Tickets}', '' , $template);
+            $template = str_replace('{Update-Tickets}', '' , $template);
             $template = str_replace('{Closed-Tickets}', '' , $template);
 
         }else{
