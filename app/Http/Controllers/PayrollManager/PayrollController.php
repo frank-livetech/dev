@@ -277,12 +277,15 @@ class PayrollController extends Controller {
                 $template = str_replace('{Overdue-Tickets}', count($overdueTickets) > 0 ? $newTicket : '' , $template);
             }
             if(str_contains($template, '{Flagged-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
             
                 $flaggedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['is_flagged', 1] 
+                    ['is_flagged', 1] ,
+                    ['status','!=', $closeStatus->id], 
+
                 ])->get();
 
                 $newTicket ='<strong> Flagged Tickets </strong>';
@@ -327,12 +330,15 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{Flagged-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
                 
                 $todayFlaggedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['is_flagged', 1] 
+                    ['is_flagged', 1] ,
+                    ['status','!=', $closeStatus->id], 
+
                 ])->get();
 
                 $newTicket ='<strong> Flagged Tickets </strong>';
