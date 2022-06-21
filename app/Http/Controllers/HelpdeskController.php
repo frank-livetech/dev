@@ -3818,8 +3818,24 @@ class HelpdeskController extends Controller
                         if($user->user_type == 5){
 
                         }else{
-                            $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
+                            if($action_name != 'ticket_cus_reply'){
+                                $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
     
+                                if(!empty($reply_content)) {
+                                    // this is a reply
+                                    // $subject = 'Re: '.$subject;
+                                }
+                                
+                                if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
+                                    if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param ,'', $sendingMailServer->from_name );
+                                }
+                            }
+                            
+                        }
+                    }else{
+                        if($action_name != 'ticket_cus_reply'){
+                            $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
+
                             if(!empty($reply_content)) {
                                 // this is a reply
                                 // $subject = 'Re: '.$subject;
@@ -3828,17 +3844,6 @@ class HelpdeskController extends Controller
                             if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
                                 if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param ,'', $sendingMailServer->from_name );
                             }
-                        }
-                    }else{
-                        $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
-    
-                        if(!empty($reply_content)) {
-                            // this is a reply
-                            // $subject = 'Re: '.$subject;
-                        }
-                        
-                        if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
-                            if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param ,'', $sendingMailServer->from_name );
                         }
                     }
                     
