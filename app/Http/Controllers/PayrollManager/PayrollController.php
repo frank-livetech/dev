@@ -284,13 +284,13 @@ class PayrollController extends Controller {
 
                 $newTicket ='<strong> Flagged Tickets </strong>';
 
-                foreach($todayFlaggedTickets as $tk) {
+                foreach($flaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
                     $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
                 }
 
-                $newTicket .='<p>Total Count '. count($todayFlaggedTickets).'</p>';
-                $template = str_replace('{Flagged-Tickets}', count($todayFlaggedTickets) > 0 ? $newTicket : '' , $template);
+                $newTicket .='<p>Total Count '. count($flaggedTickets).'</p>';
+                $template = str_replace('{Flagged-Tickets}', count($flaggedTickets) > 0 ? $newTicket : '' , $template);
 
             }
 
