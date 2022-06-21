@@ -259,7 +259,7 @@ class PayrollController extends Controller {
                     ['is_deleted', 0] ,
                     ['is_overdue', 1] ,
                     ['trashed', 0] 
-                ])->whereDate('created_at', Carbon::today())->get();
+                ])->get();
 
                 $newTicket ='<strong> Overdue Tickets </strong>';
 
@@ -273,7 +273,26 @@ class PayrollController extends Controller {
                 
                 $template = str_replace('{Overdue-Tickets}', count($overdueTickets) > 0 ? $newTicket : '' , $template);
             }
+            if(str_contains($template, '{Flagged-Tickets}')) {
+            
+                $flaggedTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['trashed', 0] ,
+                    ['is_flagged', 1] 
+                ])->get();
 
+                $newTicket ='<strong> Flagged Tickets </strong>';
+
+                foreach($todayFlaggedTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($todayFlaggedTickets).'</p>';
+                $template = str_replace('{Flagged-Tickets}', count($todayFlaggedTickets) > 0 ? $newTicket : '' , $template);
+
+            }
 
             $template = str_replace('{Flagged-Tickets}', '' , $template);
             $template = str_replace('{Closed-Tickets}', '' , $template);
@@ -311,7 +330,7 @@ class PayrollController extends Controller {
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
                     ['is_flagged', 1] 
-                ])->whereDate('created_at', Carbon::today())->get();
+                ])->get();
 
                 $newTicket ='<strong> Flagged Tickets </strong>';
 
@@ -333,7 +352,7 @@ class PayrollController extends Controller {
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
                     ['status', $closeStatus->id], 
-                ])->whereDate('created_at', Carbon::today())->get();
+                ])->whereDate('updated_at', Carbon::today())->get();
 
                 $newTicket ='<strong> Closed Tickets </strong>';
 
