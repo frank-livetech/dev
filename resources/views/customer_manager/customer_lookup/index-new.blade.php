@@ -192,7 +192,7 @@
                         </div>
                         <div class="col-md-3 form-group">
                             <label for="zip" class="small">Zip Code</label>
-                            <input type="tel" maxlength="5" name="cust_zip" class="form-control" id="zip">
+                            <input type="number" maxlength="5" name="cust_zip" class="form-control" id="zip">
                             <span class="text-danger small" id="err10"></span>
                         </div>
                         

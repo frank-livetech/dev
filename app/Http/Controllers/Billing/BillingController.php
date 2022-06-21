@@ -153,11 +153,11 @@ class BillingController extends Controller
             $customer_info = DB::table("customers")->where('id', $order->customer_id)->first();
             $order_line_items = DB::table("line_items")->where("order_id", $order->custom_id)->get();
 
-            return view('billing.invoice_maker.index',compact('customers','google','gooogle','billing_statuses','countries','order','id','customer_info','order_line_items','currency_symbol'));
+            return view('billing.invoice_maker.index_new',compact('customers','google','gooogle','billing_statuses','countries','order','id','customer_info','order_line_items','currency_symbol'));
         } else {
             $order_line_items = '';
             $customer_info = '';
-            return view('billing.invoice_maker.index',compact('customers','google','gooogle','billing_statuses','countries','id','order','customer_info','order_line_items','currency_symbol'));
+            return view('billing.invoice_maker.index_new',compact('customers','google','gooogle','billing_statuses','countries','id','order','customer_info','order_line_items','currency_symbol'));
         }
     }
 

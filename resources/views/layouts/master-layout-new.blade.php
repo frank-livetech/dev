@@ -72,7 +72,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-invoice-list.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
-
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-invoice.css')}}">
     <!-- <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/calendars/fullcalendar.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-calendar.css')}}"> -->
 
@@ -354,6 +354,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/tagsinput.js')}}"></script>
 
     <!-- BEGIN: Page JS-->
+    <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-invoice.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-user-list.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/charts/chart-apex.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
