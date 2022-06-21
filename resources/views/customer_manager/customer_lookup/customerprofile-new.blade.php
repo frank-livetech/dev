@@ -145,13 +145,13 @@
                             </h4>
                             <span>#{{substr(str_repeat(0, 4).$customer->id, - 4)}}</span>
                             @if($customer->created_at != null)
-                                <div class="customer_from mt-2 fw-bolder">
+                                <div class="customer_from mt-2">
                                     @php
                                         $date = new \DateTime($customer->created_at);
                                         $date->setTimezone(new \DateTimeZone( timeZone() ));                            
                                         $created_at =  $date->format(system_date_format() .' h:i a');
                                     @endphp
-                                    <p> Client Since: {{$created_at}} </p>
+                                    <p class="small"> Client Since: {{$created_at}} </p>
                                 </div>
                             @endif
                         </center>

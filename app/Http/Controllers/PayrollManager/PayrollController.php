@@ -5,29 +5,29 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Models\StaffAttendance;
-use App\Models\Tasks;
-use App\Models\SystemSetting;
-use Validator;
-use Throwable;
-use App\Models\Notification;
+use App\Models\{StaffAttendance,Tasks,SystemSetting,Notification,Tickets, TicketStatus};
 use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\SystemManager\MailController;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Schema;
 use DB;
 use Session;
 use Exception;
 use SystemSettings;
 
-class PayrollController extends Controller
-{
+class PayrollController extends Controller {
+
     public function __construct() {
         $this->middleware('auth');
     }
 
     public function clockin() {
+
+        // return Tickets::where([ 
+        //     ['assigned_to', auth()->id()], 
+        //     ['is_deleted', 0] ,
+        //     ['is_overdue', 0] ,
+        //     ['trashed', 0] 
+        // ])->whereDate('created_at', Carbon::today())->get();
 
         $currentDate = Carbon::now();
         $currentDate = $currentDate->format('Y-m-d');
@@ -231,10 +231,122 @@ class PayrollController extends Controller
                 $template = str_replace('{Worked_hours}','', $template);
                 $template = str_replace('Worked hours:','', $template);
             }
+
+            if(str_contains($template, '{New-Tickets}')) {
+                
+                $todayTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['is_overdue', 0] ,
+                    ['trashed', 0] 
+                ])->whereDate('created_at', Carbon::today())->get();
+
+                $newTicket ='<strong> New Tickets </strong>';
+
+                foreach($todayTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
+                $template = str_replace('{New-Tickets}', count($todayTickets) > 0 ? $newTicket : '' , $template);
+            }
+
+            if(str_contains($template, '{Overdue-Tickets}')) {
+                
+                $overdueTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['is_overdue', 1] ,
+                    ['trashed', 0] 
+                ])->whereDate('created_at', Carbon::today())->get();
+
+                $newTicket ='<strong> Overdue Tickets </strong>';
+
+                foreach($overdueTickets as $tk) {
+
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - $tk->status_name - $tk->priority_name</p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($overdueTickets).'</p>';
+                
+                $template = str_replace('{Overdue-Tickets}', count($overdueTickets) > 0 ? $newTicket : '' , $template);
+            }
+
+
+            $template = str_replace('{Flagged-Tickets}', '' , $template);
+            $template = str_replace('{Closed-Tickets}', '' , $template);
+
         }else{
             if(str_contains($template, '{Worked_hours}')) {
                 $template = str_replace('{Worked_hours}', $totalWorkingHour , $template);
             } 
+            $template = str_replace('{Overdue-Tickets}', '' , $template);
+
+            if(str_contains($template, '{New-Tickets}')) {
+                
+                $todayTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['is_overdue', 0] ,
+                    ['trashed', 0] 
+                ])->whereDate('created_at', Carbon::today())->get();
+
+                $newTicket ='<strong> New Tickets </strong>';
+
+                foreach($todayTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
+                $template = str_replace('{New-Tickets}', count($todayTickets) > 0 ? $newTicket : '' , $template);
+            }
+
+            if(str_contains($template, '{Flagged-Tickets}')) {
+                
+                $todayFlaggedTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['is_overdue', 0] ,
+                    ['trashed', 0] ,
+                    ['is_flagged', 1] 
+                ])->whereDate('created_at', Carbon::today())->get();
+
+                $newTicket ='<strong> Flagged Tickets </strong>';
+
+                foreach($todayFlaggedTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($todayFlaggedTickets).'</p>';
+                $template = str_replace('{Flagged-Tickets}', count($todayFlaggedTickets) > 0 ? $newTicket : '' , $template);
+            }
+
+            if(str_contains($template, '{Closed-Tickets}')) {
+
+                $closeStatus = TicketStatus::where('slug','closed')->first();
+                
+                $todayClosedTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['is_overdue', 0] ,
+                    ['trashed', 0] ,
+                    ['status', $closeStatus->id], 
+                ])->whereDate('created_at', Carbon::today())->get();
+
+                $newTicket ='<strong> Closed Tickets </strong>';
+
+                foreach($todayClosedTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($todayClosedTickets).'</p>';
+                $template = str_replace('{Closed-Tickets}', count($todayClosedTickets) > 0 ? $newTicket : '' , $template);
+            }
         }
 
         return html_entity_decode($template);
