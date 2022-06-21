@@ -176,7 +176,7 @@ br + br { display: none; }
                                                     }
                                                 ?>
                                                 <div class="" style="display: -webkit-box">
-                                                    <h6 class="mb-0"> {{$ticket->creator_name != null ? $ticket->creator_name : $ticket->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
+                                                    <h6 class="mb-0"> {{$ticket->creator_name != null ? $ticket->creator_name : '---'}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                                     <span style="margin-left: 9px;">Posted on <span id="tkt_created_at"></span>
                                                 </div>
                                                 <div class="first" >
@@ -230,15 +230,15 @@ br + br { display: none; }
             <div class="row">
                 <div class="col-md-2 p-2" id="dep-label">
                     <label class="control-label col-sm-12 end_padding text-white"><strong>Department</strong></label>
-                    <h5 class="text-white"> {{ $department->name != null ? $department->name : '-' }} </h5>
+                    <h5 class="text-white"> {{ $ticket->department_name != null ? $ticket->department_name : '-' }} </h5>
                 </div>
                 <div class="col-md-2 p-2" id="tech-label">
                     <label class="control-label col-sm-12 end_padding text-white"><strong> Owner</strong></label>
-                    <h5 class="text-white"> Owner Name </h5>
+                    <h5 class="text-white"> {{$ticket->assignee_name != null ? $ticket->assignee_name : '---'}} </h5>
                 </div>
                 <div class="col-md-2 p-2" id="type-label">
                     <label class="control-label col-sm-12 end_padding text-white"><strong> Type</strong></label>
-                    <h5 class="text-white"> {{ $type->name != null ? $type->name : '-' }} </h5>
+                    <h5 class="text-white"> {{ $ticket->type_name != null ? $ticket->type_name : '-' }} </h5>
                 </div>
                 <div class="col-md-2 p-2">
                     <label class="control-label col-sm-12 end_padding text-white"><strong> Status</strong></label>
