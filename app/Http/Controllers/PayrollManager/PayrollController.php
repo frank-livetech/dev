@@ -345,7 +345,7 @@ class PayrollController extends Controller {
 
             if(str_contains($template, '{Update-Tickets}')) {
             
-                // $updatedTickets = TicketStatus::where('slug','closed')->first();
+                $closeStatus = TicketStatus::where('slug','closed')->first();
                 
                 $todayUpdatedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
