@@ -245,7 +245,7 @@ class PayrollController extends Controller {
 
                 foreach($todayTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> &nbsp; Status:  <span style='color:$tk->status_color'>$tk->status_name</span> &nbsp; Priority:  <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
@@ -269,7 +269,7 @@ class PayrollController extends Controller {
                 foreach($overdueTickets as $tk) {
 
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - $tk->status_name - $tk->priority_name</p>";
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($overdueTickets).'</p>';
@@ -277,19 +277,22 @@ class PayrollController extends Controller {
                 $template = str_replace('{Overdue-Tickets}', count($overdueTickets) > 0 ? $newTicket : '' , $template);
             }
             if(str_contains($template, '{Flagged-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
             
                 $flaggedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['is_flagged', 1] 
+                    ['is_flagged', 1] ,
+                    ['status','!=', $closeStatus->id], 
+
                 ])->get();
 
                 $newTicket ='<strong> Flagged Tickets </strong>';
 
                 foreach($flaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($flaggedTickets).'</p>';
@@ -319,7 +322,7 @@ class PayrollController extends Controller {
 
                 foreach($todayTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
@@ -327,19 +330,22 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{Flagged-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
                 
                 $todayFlaggedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['is_flagged', 1] 
+                    ['is_flagged', 1] ,
+                    ['status','!=', $closeStatus->id], 
+
                 ])->get();
 
                 $newTicket ='<strong> Flagged Tickets </strong>';
 
                 foreach($todayFlaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($todayFlaggedTickets).'</p>';
@@ -361,7 +367,7 @@ class PayrollController extends Controller {
                 
                 foreach($todayUpdatedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($todayUpdatedTickets).'</p>';
@@ -384,7 +390,7 @@ class PayrollController extends Controller {
 
                 foreach($todayClosedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p>";
+                    $newTicket .= "<p><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($todayClosedTickets).'</p>';
