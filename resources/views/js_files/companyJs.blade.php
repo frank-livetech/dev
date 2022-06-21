@@ -215,7 +215,7 @@ function get_all_companies() {
                         if ($image) {
                         // For Avatar image
                         var $imgoutput =
-                            '<img src=" ' + js_origin + '' + $image + '" alt="Avatar" height="32" width="32">';
+                            '<img src=" ' + root + '/' + $image + '" alt="Avatar" height="32" width="32">';
                         } else {
                         // For Avatar badge
                         var stateNum = Math.floor(Math.random() * 6) + 1;
@@ -257,7 +257,11 @@ function get_all_companies() {
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return (full.phone != null ? `<a href ="tel:`+full.phone+`">` +full.phone+ `</a>` : '-');
+                        const phone = full.phone;
+                        let newPhone = phone.replace(/[()\s-+]/g, '');
+                        let copynumber= phone != null ? `<svg xmlns="http://www.w3.org/2000/svg" onclick="copyToClipBoard(` +newPhone+ `)" style="cursor: pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>` : '-';
+                        let phonenumber = phone != null ? `<a href ="tel:`+phone+`">` +phone+ `</a>` : '-';
+                        return ('<span>' + phonenumber + ' ' +copynumber+ '</span>');
                     }
                 },
                 {
@@ -573,6 +577,17 @@ function wp_data() {
             console.log(e);
         }
     });
+}
+function copyToClipBoard(text) {
+    
+    let $input = $("<input>");
+    $('body').append($input);
+
+    $input.val(text).select();
+    document.execCommand('copy');
+    $input.remove();
+
+    toastr.success('Phone Number Copied!', { timeOut: 5000 });
 }
 </script>
 

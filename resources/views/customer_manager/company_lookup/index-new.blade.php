@@ -16,10 +16,10 @@
     table.dataTable th {
     padding: 9px 10px !important;
     vertical-align: middle !important;}
-    td>a{
+    td>span>a{
         color: #5e50ee !important;
     }
-    td>a:hover{
+    td>span>a:hover{
         color: #fab81c !important;
     }
         </style>
@@ -142,9 +142,9 @@
                                 <label for="phone" class="small">Phone</label>
                                 <div class="d-flex">
                                     <div class="country mt-1" style="padding-right: 8px;"></div>
-                                    <input type="tel" class="tel form-control" name="phone" id="phone" placeholder="" autofocus>
+                                    <input type="tel" value="+" class="tel form-control" name="phone" id="phone" placeholder="" autofocus>
                                 </div>
-                                <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                                 {{-- <input type="tel" class="form-control" id="phone" placeholder="ed. 123456789">
                                 <span class="text-danger small" id="err4"></span> --}}
                             </div>
