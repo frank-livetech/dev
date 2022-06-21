@@ -253,12 +253,15 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{Overdue-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
                 
                 $overdueTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
                     ['is_overdue', 1] ,
-                    ['trashed', 0] 
+                    ['trashed', 0] ,
+                    ['status','!=', $closeStatus->id], 
+
                 ])->get();
 
                 $newTicket ='<strong> Overdue Tickets </strong>';
