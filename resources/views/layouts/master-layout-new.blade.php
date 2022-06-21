@@ -167,8 +167,8 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-            
-        @if( session()->get('clockin') == 0 && session()->get('clockin') == NULL)
+        
+        @if( session()->get('clockin') != 0 && session()->get('clockin') == NULL)
         <div class="d-flex w-100 fw-bolder clock_in_section">
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
@@ -236,7 +236,7 @@
                                 <span class="user-status"></span>
                             @endif
 
-                            @if( session()->get('clockin') == 1 || session()->get('clockin') != null)
+                            @if( session()->get('clockin') == 1 || session()->get('clockin') != null && session()->get('clockin') != 0)
                             <span class="badge bg-success clockin_timer" style="margin-top:4px"></span>
                             @endif
                         </div>
@@ -415,8 +415,6 @@
         var parser_url = "{{url('save-inbox-replies')}}";
         let clockintime = "{{session()->get('clockin_time')}}";
         let clockinStatus = "{{session()->get('clockin')}}";
-        console.log(clockintime , "clockintime");
-        console.log(clockinStatus , "clockinStatus");
 
         function sendNotification(type,slug,icon,title,description) {
             $.ajax({
@@ -672,6 +670,7 @@
 
         function renderClockIn(data) {
             // if data is null then its clock in 
+            // alert("a");
             if(data == null || data.clock_out != null) {
 
                 let clockinbtn = `
