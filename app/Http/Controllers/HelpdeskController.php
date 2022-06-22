@@ -287,56 +287,59 @@ class HelpdeskController extends Controller
                 
                 $ticket->update($data);
 
-                if($request->has('dd_Arr')){
+                // if($request->has('dd_Arr')){
 
-                //     $dd_values = $request->dd_Arr;
-                //     for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
+                // //     $dd_values = $request->dd_Arr;
+                // //     for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
 
-                //         if($dd_values[$dd]['id'] == 1){
-                //             $data['action_performed'] = 'Department Updated';
-                //         }elseif($dd_values[$dd]['id'] == 2){
-                //             $data['action_performed'] = 'Tech Lead Updated';
-                //         }elseif($dd_values[$dd]['id'] == 3){
-                //             $data['action_performed'] = 'Type Updated';
-                //         }elseif($dd_values[$dd]['id'] == 4){
-                //             $data['action_performed'] = 'Status Updated';
-                //         }elseif($dd_values[$dd]['id'] == 5){
-                //             $data['action_performed'] = 'Priority Updated';
-                //         }
+                // //         if($dd_values[$dd]['id'] == 1){
+                // //             $data['action_performed'] = 'Department Updated';
+                // //         }elseif($dd_values[$dd]['id'] == 2){
+                // //             $data['action_performed'] = 'Tech Lead Updated';
+                // //         }elseif($dd_values[$dd]['id'] == 3){
+                // //             $data['action_performed'] = 'Type Updated';
+                // //         }elseif($dd_values[$dd]['id'] == 4){
+                // //             $data['action_performed'] = 'Status Updated';
+                // //         }elseif($dd_values[$dd]['id'] == 5){
+                // //             $data['action_performed'] = 'Priority Updated';
+                // //         }
 
-                //         // // save activity logs
-                //         // $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                //         // $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+                // //         // // save activity logs
+                // //         // $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+                // //         // $action_perform = 'Ticket ID # <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
 
-                //         // $log = new ActivitylogController();
-                //         // $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+                // //         // $log = new ActivitylogController();
+                // //         // $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
 
+                // //     }
+
+                // }else{
+                //     // save activity logs
+                //     $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+                //     $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+
+                //     $log = new ActivitylogController();
+                //     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+
+                //     // send notification
+                //     if($request->action == 'ticket_detail_update') {
+                //         $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                //         $type = 'ticket_updated';
+                //         $title = 'Ticked Updated';
+                //         $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
+                //         sendNotificationToAdmins($slug , $type , $title ,  $desc);
                 //     }
+                // }
 
-                }else{
-                    // save activity logs
-                    $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
-
-                    $log = new ActivitylogController();
-                    $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
-
-                    // send notification
-                    if($request->action == 'ticket_detail_update') {
-                        $slug = url('ticket-details') .'/'.$ticket->coustom_id;
-                        $type = 'ticket_updated';
-                        $title = 'Ticked Updated';
-                        $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>' . ($request->action_performed == null || $request->action_performed == "" ? ' Initial Request Updated' : $request->action_performed) . ' by ' . auth()->user()->name;
-                        sendNotificationToAdmins($slug , $type , $title ,  $desc);
-                    }
-                }
-
+                $dept_assignments = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
+                $allusers = User::whereIn('id',$dept_assignments)->where('user_type','!=',4)->where('user_type','!=',5)->where('status',1)->where('is_deleted',0)->get();
 
                 
                 
 
                 $response['message'] = 'Ticket Updated Successfully!';
                 $response['status_code'] = 200;
+                $response['allusers'] = $allusers;
                 $response['success'] = true;
                 return response()->json($response);
             }
@@ -782,10 +785,11 @@ class HelpdeskController extends Controller
         $is_del = 0;
         if($statusOrUser == 'closed') $cnd = '=';
         if($statusOrUser == 'trash') $is_del = 1;
-
+        $dept_assignments = DepartmentAssignments::where('user_id', \Auth::user()->id)->get()->pluck('dept_id')->toArray();
+        
         if(\Auth::user()->user_type == 1) {
 
-            $tickets = Tickets::select("*")
+            $tickets = Tickets::select("*")->whereIn('dept_id',$dept_assignments)
             ->when($statusOrUser == 'self', function($q) use($closed_status_id) {
                 return $q->where('tickets.assigned_to', \Auth::user()->id)->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
@@ -1285,10 +1289,11 @@ class HelpdeskController extends Controller
         if(empty($ticket)) {
             return view('help_desk.ticket_manager.ticket_404');
         }
-        
+  
         // dd($ticket->dept_id);
         $dept_assignments = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
         $allusers = User::whereIn('id',$dept_assignments)->where('user_type','!=',4)->where('user_type','!=',5)->where('status',1)->where('is_deleted',0)->get();
+
 
         $id = $ticket->id;
         // $details = Tickets::with('ticketReplies')->where('id', $id)->first();
