@@ -269,7 +269,7 @@ function copyToClipBoard(text) {
     document.execCommand('copy');
     $input.remove();
 
-    toastr.success('Text copied', { timeOut: 5000 });
+    alertNotification('success', 'Success' , 'Text copied' );
 }
 
 function get_asset_temp_table_list() {
@@ -513,14 +513,14 @@ function updateAssets() {
         success: function(data) {
             console.log(data, "asset updated");
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
                 $("#update_asset_modal").modal('hide');
                 get_asset_table_list();
                 // location.reload();
 
                 if (asset_ticket_id) ticket_notify('ticket_update', 'T_asset_update');
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message);
             }
         },
         error: function(f) {
@@ -767,7 +767,7 @@ $("#save_asset_form").submit(function (event) {
 
 
         if($("#company_id").val() == '' || $("#customer_id").val() == "") {
-            toastr.error( 'Company or Customer field is required' , { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Company or Customer field is required');
             return false;
         }
 

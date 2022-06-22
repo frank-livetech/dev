@@ -100,7 +100,7 @@
             success: function(data) {
                 console.log(data);
                 if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message);
 
                     $("#asset_title_text").text(asset_title);
 
@@ -120,7 +120,7 @@
                     }
 
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message);
                 }
             },
             error: function(error) {

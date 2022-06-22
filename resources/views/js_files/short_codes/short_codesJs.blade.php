@@ -31,7 +31,7 @@
             success: function(data) {
                 console.log(data);
                 if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' ,data.message );
 
                     setTimeout(() => {
                         $("#ShowModal").modal('hide');
@@ -43,7 +43,7 @@
                     $("#processing").hide();
                     $("#save").show();
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' ,data.message );
                     $("#processing").hide();
                     $("#save").show();
                 }
@@ -171,7 +171,7 @@ function updateRecord(id) {
             success: function(data) {
                 console.log(data);
                 if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' ,data.message );
 
                     setTimeout(() => {
                         $("#ShowUpdateModal").modal('hide');
@@ -183,7 +183,7 @@ function updateRecord(id) {
                     $("#update_processing").hide();
                     $("#update").show();
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' ,data.message );
                     $("#update_processing").hide();
                     $("#update").show();
                 }
@@ -218,10 +218,10 @@ function deleteRecord(id) {
             console.log(data);
 
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' ,data.message );
                 getAllCodes();
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' ,data.message );
             }
 
         },

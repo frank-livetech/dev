@@ -198,14 +198,14 @@
             success: function(data) {
                 
                 if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message );
                     $("#new-task-modal").modal('hide');
                     $("#save-task")[0].reset();
 
                     project_details.getTasks();
 
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message );
                 }
             },
             complete: function(data) {

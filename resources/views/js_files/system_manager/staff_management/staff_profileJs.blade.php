@@ -231,21 +231,10 @@ $("#update_user").submit(function (event) {
     let cpwd = $("#confirm_password").val();
 
     if(update_password != cpwd) {
-        toastr.error( 'Passwords do not match!' , { timeOut: 5000 });
+        alertNotification('error', 'Error' , 'Passwords do not match!');
         return false;
     }
-
-    // if(!update_password) {
-    //     update_password = user_profile.alt_pwd;
-    // }
-
-    // if(user_profile.alt_pwd != update_password) {
-    //     if(cpwd != update_password) {
-    //         toastr.error( 'Passwords do not match!' , { timeOut: 5000 });
-    //         return false;
-    //     }
-    // }
-
+    
     var fb = $("#update_fb").val();
     var pin = $("#update_pinterest").val();
     var twt = $("#update_twt").val();
@@ -256,7 +245,7 @@ $("#update_user").submit(function (event) {
     if( fb != '') {
         var FBurl = /^(http|https)\:\/\/www.facebook.com|facebook.com\/.*/i;
         if(!fb.match(FBurl)) {
-            toastr.error('Provide a valid facebook link', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Provide a valid facebook link');
             return false;
         }
     }
@@ -264,28 +253,28 @@ $("#update_user").submit(function (event) {
     if( pin != '') {
         var FBurl = /^(http|https)\:\/\/www.pinterest.com|pinterest.com\/.*/i;
         if(!pin.match(FBurl)) {
-            toastr.error('Provide a valid Pinterest link', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Provide a valid Pinterest link');
             return false;
         }
     }
     if( twt != '') {
         var FBurl = /^(http|https)\:\/\/www.twitter.com|twitter.com\/.*/i;
         if(!twt.match(FBurl)) {
-            toastr.error('Provide a valid Twitter link', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Provide a valid Twitter link');
             return false;
         }
     }
     if( insta != '') {
         var FBurl = /^(http|https)\:\/\/www.instagram.com|instagram.com\/.*/i;
         if(!insta.match(FBurl)) {
-            toastr.error('Provide a valid Instagram link', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Provide a valid Instagram link');
             return false;
         }
     }
     if( link != '') {
         var FBurl = /^(http|https)\:\/\/www.linkedin.com|linkedin.com\/.*/i;
         if(!link.match(FBurl)) {
-            toastr.error('Provide a valid Linkedin link', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Provide a valid :Linkedin link');
             return false;
         }
     }
@@ -328,7 +317,7 @@ $("#update_user").submit(function (event) {
             // console.log(data);
             if(data.code == 200 && data.success == true) {
                 values();
-                toastr.success( data.message , { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message);
 
                 // hide change password row & uncheck password checkbox
                 if($('.change_password_checkbox').is(":checked")){ 
@@ -363,7 +352,7 @@ $("#update_user").submit(function (event) {
 
 
             }else{
-                toastr.error( data.message , { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message);
             }
         },
         complete:function(data) {
@@ -382,7 +371,7 @@ $("#update_user").submit(function (event) {
             $("#usr_lnk_loader").hide();
 
             if (e.responseJSON.errors.password != null) {
-                toastr.error( e.responseJSON.errors.password[0], { timeOut: 5000 });
+                alertNotification('error', 'Error' , e.responseJSON.errors.password[0]);
             }
         }
     });
@@ -708,10 +697,10 @@ $("#ticketGeneralForm").submit(function (event) {
         success: function (data) {
             // console.log(data);
             if(data.status_code == 200 && data.success == true) {
-                toastr.success( data.message , { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message);
 
             }else{
-                toastr.error( data.message , { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message);
             }
         },
         complete:function(data) {

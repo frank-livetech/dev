@@ -125,12 +125,12 @@
             success: function(data) {
                 if(data.status_code == 200 && data.success == true) {
 
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message );
 
                     get_all_leaves();
 
                 }else{
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message );
                 }
             },
             error: function(e) {
