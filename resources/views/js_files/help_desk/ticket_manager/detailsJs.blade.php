@@ -2432,7 +2432,12 @@ function updateTicket(){
         success: function(data) {
             // console.log(data)
             if (data.success == true) {
-
+                all_users = data.allusers;
+                userlist = [];
+                all_users.forEach(element => {
+                    userlist.push(element.name + ' (' + element.email + ')');
+                });
+                
                 let closeStatus = updates_Arr.find(item => item.new_text == 'Closed');
                 if(closeStatus != null) {
                     let closetkt = $('.closeCounter').text();
@@ -2487,9 +2492,7 @@ function updateTicket(){
 
                 }
                 updateTicketDate();
-                data.all_users.forEach(element => {
-                    userlist.push(element.name + ' (' + element.email + ')');
-                });
+                
 
                 $('#note').atwho({
                     at: "@",
