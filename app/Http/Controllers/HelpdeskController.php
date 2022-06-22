@@ -250,6 +250,7 @@ class HelpdeskController extends Controller
                             if($os && $os->name == 'Closed'){
                                 $data['reply_deadline'] = 'cleared';
                                 $data['resolution_deadline'] = 'cleared';
+                                $data['is_overdue'] = 0;
                             }
                         }elseif($dd_values[$dd]['id'] == 5){
                             $data['priority'] = $dd_values[$dd]['new_data'] ;
@@ -1136,6 +1137,8 @@ class HelpdeskController extends Controller
 
                             $ticket->reply_deadline = 'cleared';
                             $ticket->resolution_deadline = 'cleared';
+                            $ticket->is_overdue = 0;
+
                         }
                     }elseif($dd_values[$dd]['id'] == 5){
                         $ticket->priority = $dd_values[$dd]['new_data'] ;
