@@ -182,7 +182,7 @@ $.ajax({
                     $('.loader_container').show();
                 },
                 success: function(data) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' ,data.message );
                     setTimeout(() => {
                         location.reload();
                     }, 1000);

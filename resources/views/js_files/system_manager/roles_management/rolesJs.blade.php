@@ -75,7 +75,7 @@ function add_role() {
                 success: function(data) {
                     console.log(data);
                     get_all_roles();
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' ,data.message );
                     $('#addRoleForm')[0].reset();
                     setTimeout(() => {
                         $('#addRoleModal').modal('hide');
@@ -160,7 +160,7 @@ function updateRecord(id) {
                 success: function(data) {
                     console.log(data);
                     get_all_roles();
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' ,data.message );
                     setTimeout(() => {
                         $('#editRoleModal').modal('hide');
                     }, 800);
@@ -181,7 +181,7 @@ function deleteRole(id) {
         success: function(data) {
             console.log(data);
             get_all_roles();
-            toastr.success(data.message, { timeOut: 5000 });
+            alertNotification('success', 'Success' ,data.message );
         },
         error: function(e) {
             console.log(e)

@@ -105,12 +105,7 @@
             $("#save_tickets").submit(function(event) {
                 event.preventDefault();
 
-                var ticket_detail = $('#ticket_detail').val();                
-                // if( ticket_detail.includes('&nbsp;') ) {
-                //     toastr.error('Please Remove spaces from problem details', { timeOut: 5000 });
-                //     return false;
-                // }
-
+                var ticket_detail = $('#ticket_detail').val();
                 let fileSizeErr = false;
                 $('.ticket_attaches').each(function(index) {
                     console.log(this.files);
@@ -345,7 +340,7 @@
                                     async:false,
                                     success: function(res) {
                                         ticket_notify(data.id, 'ticket_create');
-                                        toastr.success(data.message, { timeOut: 5000 });
+                                        alertNotification('success', 'Success' , data.message);
                                         window.location.href = "{{route('ticket_management.index')}}";
                                     }
                                 });
@@ -440,7 +435,7 @@
                         let option = ``;
                         let select = ``;
                         if(obj_queue == '' || obj_queue == null){
-                            toastr.error('This department does not have any email queue.', { timeOut: 5000 });
+                            alertNotification('error', 'Error' , 'This department does not have any email queue.');
                             $("#queue_id").html("");
                             return false;
                         }else{

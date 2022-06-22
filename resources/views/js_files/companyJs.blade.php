@@ -94,15 +94,12 @@ $(document).ready(function() {
                     console.log(data);
 
                     if (data.status_code == 200 && data.success == true) {
-                        toastr['success'](data.message,'Success', { showMethod: 'slideDown',
-                            hideMethod: 'slideUp',
-                            timeOut: 5000,
-                            });
+                        alertNotification('success', 'Success' ,data.message );
                         get_all_companies();
                         $("#save_company_form")[0].reset();
                         $("#company_model").modal('hide');
                     } else if (data.status_code == 500 && data.success == false) {
-                        toastr.error(data.message,  { timeOut: 5000 });
+                        alertNotification('error', 'Error' ,data.message );
                     }
                 },
                 complete: function(data) {
@@ -114,7 +111,7 @@ $(document).ready(function() {
                     console.log(e)
                     $('#savebtn').show();
                     $('#processing').hide();
-                    toastr.error(e.responseJSON.errors.email[0], { timeOut: 5000 });
+                    alertNotification('error', 'Error' , e.responseJSON.errors.email[0] );
                 }
             });
 
@@ -169,7 +166,7 @@ function updateValue(element, column, id, old_value) {
             },
             success: function(data) {
                 console.log(data);
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' ,data.message );
             },
             complete: function(data) {
                 $('.loader_container').hide();
@@ -529,11 +526,11 @@ function deleteRecord() {
         success: function(data) {
             console.log(data);
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' ,data.message );
                 get_all_companies();
                 $("#delete_company_model").modal('hide');
             } else if (data.status_code == 500 && data.success == false) {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' ,data.message );
             }
         },
         complete: function(data) {

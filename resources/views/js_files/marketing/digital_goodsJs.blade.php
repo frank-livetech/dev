@@ -34,16 +34,14 @@
                 processData: false,
                 success: function(data) {
                     if (data.status == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message );
 
                         setTimeout(() => {
                             location.href = document.referrer;
                         }, 1500);
 
                     } else {
-                        toastr.error(data.message, {
-                            timeOut: 5000
-                        });
+                        alertNotification('error', 'Error' , data.message );
                     }
                     console.log(data, "data");
                 },

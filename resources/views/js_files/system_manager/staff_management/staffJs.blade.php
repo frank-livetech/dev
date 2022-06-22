@@ -196,12 +196,12 @@ function UserImgValidation() {
         imgValidate = imgValidate[0];
         let ext = imgValidate.name.substring(imgValidate.name.lastIndexOf('.') + 1).toLowerCase();
         if (ext != 'jpeg' && ext != 'png' && ext != 'jpg') {
-            toastr.error('File type not allowed! Only jpeg/jpg/png Allowed', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'File type not allowed! Only jpeg/jpg/png Allowed');
             return false;
         }
 
         if (Math.round(imgValidate.size / (1024 * 1024)) > 2) {
-            toastr.error('File size exceeds 2MB!', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'File size exceeds 2MB!');
             return false;
         }
     }
@@ -221,12 +221,12 @@ $("#save_user").submit(function(event) {
         imgValidate = imgValidate[0];
         let ext = imgValidate.name.substring(imgValidate.name.lastIndexOf('.') + 1).toLowerCase();
         if (ext != 'jpeg' && ext != 'png' && ext != 'jpg') {
-            toastr.error('File type not allowed! Only jpeg/jpg/png Allowed', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'File type not allowed! Only jpeg/jpg/png Allowed');
             return false;
         }
 
         if (Math.round(imgValidate.size / (1024 * 1024)) > 2) {
-            toastr.error('File size exceeds 2MB!', { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'File size exceeds 2MB!');
             return false;
         }
     }
@@ -280,10 +280,10 @@ $("#save_user").submit(function(event) {
             if (data['success'] == true) {
                 $('#addNewUser').modal('hide');
                 get_all_staff_members();
-                toastr.success(data['message'], { timeOut: 5000 });
+                alertNotification('success', 'Success' , data['message']);
                 $("#phone_error").html("");
             } else {
-                toastr.error(data['message'], { timeOut: 5000 });
+                alertNotification('error', 'Error' , data['message']);
             }
         },
         complete: function(data) {

@@ -139,7 +139,7 @@ $(function() {
             success: function(data) {
                 console.log(data);
                 if (data.status == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message );
                     $("#save_customer_form")[0].reset();
                     $("#addCustomerModal").modal('hide');
                     get_all_customers();
@@ -155,13 +155,13 @@ $(function() {
                     closeModal();
 
                 }else if(data.status == 201 && data.success == true) {
-                    toastr.warning(data.message, { timeOut: 5000 });
+                    alertNotification('warning', 'Warning' , data.message );
                     $("#save_customer_form")[0].reset();
                     $("#addCustomerModal").modal('hide');
                     get_all_customers();
                     get_all_companies();
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message );
                 }
             },
             complete: function(data) {
@@ -174,7 +174,7 @@ $(function() {
                 $("#custsvebtn").show();
                 $("#custprocessbtn").hide();
                 let emailerr = error.responseJSON.errors != null ? error.responseJSON.errors.email[0] : '-';
-                toastr.error(emailerr, { timeOut: 5000 });
+                alertNotification('error', 'Error' , emailerr);
             }
         });
 
@@ -347,7 +347,7 @@ function updateValue(element, column, id, old_value) {
             dataType: 'json',
             success: function(data) {
                 console.log(data);
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
             },
             complete: function(data) {
                 $('.loader_container').fadeOut(500);
@@ -453,7 +453,7 @@ function deleteRecord() {
         success: function(data) {
             console.log(data);
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
                 $('#row_' + id).remove();
                 $("#delete_customer_model").modal('hide');
 
@@ -464,7 +464,7 @@ function deleteRecord() {
                 let desc = 'WP Customer Deleted by' + $("#curr_user_name").val();
                 sendNotification(type,slug,icon,title,desc);
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete: function(data) {

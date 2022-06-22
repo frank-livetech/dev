@@ -269,7 +269,8 @@
                 success: function(data) {
                     if(data.status_code == 200 && data.success == true) {
                         get_all_leaves();
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
+                        
                         $("#leaveModal").modal('hide');
                     
                         let event = {
@@ -282,7 +283,7 @@
                         calendar.addEvent( event );
 
                     }else{
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message);
                     }
                 },
                 complete: function(data) {
@@ -321,11 +322,11 @@
                 success: function(data) {
                     if(data.status_code == 200 && data.success == true) {
 
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                         $("#scheduleModal").modal('hide');
 
                     }else{
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message);
                     }
                 },
                 complete: function(data) {
@@ -375,12 +376,12 @@
                 imgValidate = imgValidate[0];
                 let ext = imgValidate.name.substring(imgValidate.name.lastIndexOf('.') + 1).toLowerCase();
                 if (ext != 'jpeg' && ext != 'png' && ext != 'jpg') {
-                    toastr.error('File type not allowed! Only jpeg/jpg/png Allowed', { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'File type not allowed! Only jpeg/jpg/png Allowed');
                     return false;
                 }
 
                 if (Math.round(imgValidate.size / (1024 * 1024)) > 2  ) {
-                    toastr.error('File size exceeds 2MB!', { timeOut: 5000 });
+                    alertNotification('error', 'Error' , 'File size exceeds 2MB!');
                     return false;
                 }
             }
@@ -399,7 +400,7 @@
                 success: function(data) {
 
                     if (data.status == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                         $("#editPicModal").modal('hide');
                         
                         let path = root + '/' + data.img;
@@ -414,7 +415,7 @@
                             $('#modal_profile_user_img').attr('src', path);
                         }                
                     } else {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message);
                     }
                 },
                 error: function(e) {
@@ -450,9 +451,9 @@
                         $('#'+$('#attendance_id').val()+'-hw').html($('#worked_hours_value').val());
                         $('#workHoursModal').modal('hide');
                         $(this).trigger('reset');
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message);
                     } else {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message);
                     }
                 },
                 complete: function() {
@@ -461,7 +462,7 @@
                 error: function(e) {
                     $(this).find('.btn').attr('disabled', false);
                     console.log(e);
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message);
                 }
             });
         });
@@ -651,7 +652,7 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data) {
-                toastr.success( data['message'] , { timeOut: 5000 });
+                alertNotification('success', 'Success' , data['message']);
             }
         });
     }
@@ -724,7 +725,7 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: function(data) {
-                toastr.success( data['message'] , { timeOut: 5000 });
+                alertNotification('success', 'Success' , data['message']);
             }
         });
     }
@@ -743,7 +744,7 @@
             },  
             success: function(data) {
                 // console.log(data);
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message);
             },
             complete:function(data) {
                 $("#per_sve_btn").show();
@@ -1233,12 +1234,12 @@
             success: function(data) {
                 if(data.status_code == 200 && data.success == true) {
 
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message);
 
                     get_all_leaves();
 
                 }else{
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message);
                 }
             },
             error: function(e) {

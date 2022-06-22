@@ -211,11 +211,9 @@ $(document).ready(function () {
 
         var customer_list = $("#customer_list").val();
         if (customer_list == 0) {
-            toastr.error("Select Customer First", { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Select Customer First');
         } else if (item_name == "") {
-            toastr.error("Please Add Atleast One Order Item", {
-                timeOut: 5000,
-            });
+            alertNotification('error', 'Error' , 'Please Add Atleast One Order Item');
         } else {
             var status_text = $("#status option:selected").text();
             var form_data = new FormData(this);
@@ -253,7 +251,7 @@ $(document).ready(function () {
 
                     $("#pdf_btn").removeClass("disabled");
                     if ((data.status_code == 200) & (data.success == true)) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message );
                         $("#publishBtn").prop("disabled", false);
                         $("#savebtn").prop("disabled", true);
                         $("#add_fees").prop("disabled", true);
@@ -265,7 +263,7 @@ $(document).ready(function () {
 
                         $("#payAsCustomer").attr("href", checkout +"/" + $("#customer_id").val() +"/" + edit_order_id);
                     } else {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message );
                     }
 
                     $("#savebtn").show();
@@ -327,13 +325,13 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log(data, "submit");
                     if (data.status_code == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message );
                         $(this).find("#save").show();
                         $(this).find("#processing").hide();
 
                         getCustomerDetail(customer.id, 'updated');
                     } else {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message );
                         $(this).find("#save").show();
                         $(this).find("#processing").hide();
                     }
@@ -372,7 +370,7 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data, "submit");
                 if (data.status_code == 200 && data.success == true) {
-                    toastr.success(data.message, { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message );
                     $("#save").show();
                     $("#processing").hide();
 
@@ -389,7 +387,7 @@ $(document).ready(function () {
                     getCustomerDetail(customer.id, 'updated');
                     cancelAddress(data.type);
                 } else {
-                    toastr.error(data.message, { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message );
                     $("#save").show();
                     $("#processing").hide();
                 }
@@ -873,10 +871,10 @@ function publishOrder() {
         success: function (data) {
             console.log(data, "data");
             if ((data.status_code == 200) & (data.success == true)) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message );
                 window.location = billingHomePage;
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message );
             }
         },
         complete: function (data) {

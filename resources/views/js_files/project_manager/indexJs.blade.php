@@ -91,7 +91,7 @@
                 if (data['success'] == true) {
 
                     $("#save_folder").trigger("reset");
-                    toastr.success(data['message'], { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data['message'] );
 
                     if(acting_id != -1){
                         $('#nestable-menu').find('li[data-id="'+acting_id+'"]').find('.dd-handle').find('label').html(data.result.name);
@@ -108,7 +108,7 @@
                         </li>`);
                     }
                 } else {
-                    toastr.success(data['message'], { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data['message'] );
                 }
             },
             complete: function (data) {
@@ -150,10 +150,10 @@
                     success: function (data) {
                         console.log(data)
                         if (data.success==true) {
-                            toastr.success( data['message'] , { timeOut: 5000 });
+                            alertNotification('success', 'Success' , data['message'] );
                             $("#main_folder_"+ id).remove();
                         } else {
-                            toastr.error( data['message'] , { timeOut: 5000 });
+                            alertNotification('error', 'Error' , data['message'] );
                         }
                     },
                     failure: function (errMsg) {
@@ -221,7 +221,7 @@
  		            $('#folder_id').val('').trigger("change");
         	        $('#project_type').val('').trigger("change");
 		            $("#new-project-add").trigger("reset");
-                    toastr.success(data['message'], { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data['message'] );
 
                 } else {
                     Swal.fire({
@@ -274,10 +274,10 @@
                     success: function (data) {
                         console.log(data)
                         if (data.success==true) {
-                            toastr.success( data['message'] , { timeOut: 5000 });
+                            alertNotification('success', 'Success' , data['message'] );
                             $("#project_"+ id).remove();
                         } else {
-                            toastr.error( data['message'] , { timeOut: 5000 });
+                            alertNotification('error', 'Error' , data['message'] );
                         }
                     },
                     failure: function (errMsg) {
@@ -772,7 +772,7 @@
         let user_id = $("#users").val();
 
         if(from == '' || to == '') {
-            toastr.error("please Select the Date", { timeOut: 5000 });
+            alertNotification('error', 'Error' , 'Please select the date' );
         }else{
             getAllTasks(from,to,user_id);
 

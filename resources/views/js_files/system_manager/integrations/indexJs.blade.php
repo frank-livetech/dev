@@ -90,11 +90,11 @@
                 success: function(data) {
                     if (data.status_code == 200 && data.success == true) {
 
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' ,data.message );
                         $("#submitBtn").removeAttr('disabled');                 
         
                     } else {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' ,data.message );
                     }
                 },
                 complete: function(data) {
@@ -102,13 +102,13 @@
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     if (XMLHttpRequest.readyState == 4) {
-                        toastr.error("Verfication Failed Check your Credentials...!", { timeOut: 5000 });
+                        alertNotification('error', 'Error' , "Verfication Failed Check your Credentials...!" );
                     }
                     else if (XMLHttpRequest.readyState == 0) {
-                        toastr.error("fail to connect, please check your connection", { timeOut: 5000 });
+                        alertNotification('error', 'Error' , "fail to connect, please check your connection" );
                     }
                     else {
-                        toastr.error(errorThrown, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , errorThrown );
                     }
                 }
             });
@@ -182,7 +182,7 @@
                         
                     }else{
 
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' ,data.message );
                     }
                 
                 },
@@ -200,16 +200,17 @@
                     $("#"+ loadertext).hide().text(" ");
                     
                     if (textStatus == 'timeout') {
-                        toastr.error(textStatus, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , textStatus);
                     }
                     if (XMLHttpRequest.readyState == 4) {
-                        toastr.error(readyState, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , readyState);
                     }
                     else if (XMLHttpRequest.readyState == 0) {
-                        toastr.error("fail to connect, please check your connection", { timeOut: 5000 });
+                        alertNotification('error', 'Error' , "fail to connect, please check your connection");
+
                     }
                     else {
-                        toastr.error(errorThrown, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , errorThrown);
                     }
                 }
             });
@@ -260,7 +261,7 @@
                             getWpORders(data.page_index);
                         }else{
 
-                            toastr.success(data.message, { timeOut: 5000 });
+                            alertNotification('success', 'Success' ,data.message );
                             
                             let type = 'Wordpress';
                             let slug = 'billing/home';
@@ -283,7 +284,7 @@
                         }
                     }else{
 
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' ,data.message );
                     }
                 
                 },
@@ -313,16 +314,16 @@
                     $("#"+ loadertext).hide().text(" ");
                     
                     if (textStatus == 'timeout') {
-                        toastr.error(textStatus, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , textStatus);
                     }
                     if (XMLHttpRequest.readyState == 4) {
-                        toastr.error(readyState, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , readyState);
                     }
                     else if (XMLHttpRequest.readyState == 0) {
-                        toastr.error("fail to connect, please check your connection", { timeOut: 5000 });
+                        alertNotification('error', 'Error' , "fail to connect, please check your connection");
                     }
                     else {
-                        toastr.error(errorThrown, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , errorThrown);
                     }
                 }
             });
@@ -491,9 +492,9 @@
                     success: function(data) {
                         
                         if(data.status_code == 200 && data.success == true) {
-                            toastr.success(data.message, { timeOut: 5000 });                    
+                            alertNotification('success', 'Success' ,data.message );                    
                         }else{
-                            toastr.error(data.message, { timeOut: 5000 });
+                            alertNotification('error', 'Error' ,data.message );
                         }
                         
                     },
