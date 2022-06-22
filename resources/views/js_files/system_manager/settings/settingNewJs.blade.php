@@ -1205,9 +1205,9 @@ function sendOnDemandRecap() {
         success: function(data) {
             // console.log(data);
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message);
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message);
             }
         },
         error: function(data) {
@@ -1515,10 +1515,10 @@ function changeEmailQueueStatus( id) {
         dataType: 'json',
         success: function(data) {
             if(data.status_code == 200 && data.success == true) {
-                toastr.success( data.message , { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message)
                 // get_mails_table_list() 
             }else{
-                toastr.error( data.message , { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message)
             }
         },
         error: function(e) {
@@ -1648,10 +1648,10 @@ function deleteCatRecord(id) {
                 success: function(data) {
                     
                     if (data.status_code == 200 && data.success == true) {
-                        toastr.success(data.message, { timeOut: 5000 });
+                        alertNotification('success', 'Success' , data.message)
                         getAllresTemp();
                     } else {
-                        toastr.error(data.message, { timeOut: 5000 });
+                        alertNotification('error', 'Error' , data.message)
                     }
                 },
                 error: function(e) {
@@ -1761,9 +1761,9 @@ function saveSystemDateAndTime() {
         success: function(data) {
             // console.log(data);
             if (data.status_code == 200 & data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message)
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message)
             }
         },
         complete: function(data) {
@@ -3337,9 +3337,9 @@ function save_pop3_mail() {
                 $('#save-mail').modal('hide');
                 $('#mail-form').trigger('reset');
                 get_mails_table_list();
-                toastr.success( data.message , { timeOut: 5000 });
+                alertNotification('success', 'Success' , data.message)
             } else {
-                toastr.error( data.message , { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message)
             }
         },
         complete: function() {
@@ -4054,9 +4054,9 @@ const saveTicketRefreshTime  = ()  => {
             },
             success: function(data) {
                 if(data.status_code == 200 && data.success == true)  {
-                    toastr.success( data.message , { timeOut: 5000 });
+                    alertNotification('success', 'Success' , data.message)
                 }else{
-                    toastr.error( data.message , { timeOut: 5000 });
+                    alertNotification('error', 'Error' , data.message)
                 }
             },
             complete : function (data) {
@@ -4066,11 +4066,11 @@ const saveTicketRefreshTime  = ()  => {
             failure: function(errMsg) {
                 $('.tkt_btn').show();
                 $('.tkt_loader').hide();
-                toastr.error( 'Somthing went wrong' , { timeOut: 5000 });
+                alertNotification('error', 'Error' , 'Somthing went wrong')
             }
         });
     }else{
-        toastr.error( 'Ticket Data Refresh field is required..' , { timeOut: 5000 });
+        alertNotification('error', 'Error' , 'Ticket Data Refresh field is required..')
     }
 
 }
@@ -4245,14 +4245,13 @@ $("#save_banned_user").submit(function(event) {
         processData: false,
         success: function(data) {
             if (data.status_code == 200 && data.success == true) {
-                toastr.success(data.message, { timeOut: 5000 });
-
+                alertNotification('success', 'Success' , data.message)
                 $("#save_banned_user")[0].reset();
                 $("#banned-user").modal('hide');
                 getAllBannedUser();
 
             } else {
-                toastr.error(data.message, { timeOut: 5000 });
+                alertNotification('error', 'Error' , data.message)
             }
         },
         error: function(e) {
