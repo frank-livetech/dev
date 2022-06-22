@@ -176,7 +176,7 @@ class HelpdeskController extends Controller
     public function update_ticket(Request $request) {
         
         $data = $request->all();
-     
+
         $response = array();
         try {
             $ticket = Tickets::where('id',$data['id'])->first();
@@ -1110,7 +1110,7 @@ class HelpdeskController extends Controller
                 $action_perf = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
             } else {
 
-                $data['reply'] = replaceBodyShortCodes($data['reply'] , $ticket);
+                $data['reply'] = $this->replaceBodyShortCodes($data['reply'] , $ticket);
 
                 $save_reply = TicketReply::create($data);
 
@@ -1246,8 +1246,9 @@ class HelpdeskController extends Controller
     }
 
     public function replaceBodyShortCodes($data , $ticket){
-
-        if(str_contains($data, '{Customer-Name}')) {      
+        
+        if(str_contains($data, '{Customer-Name}')) {  
+            
             if(!empty($ticket)){
                 $customer = '';
                 if($ticket->is_staff_tkt == 1){
@@ -1255,14 +1256,16 @@ class HelpdeskController extends Controller
                     $name = $customer->name;
                 }else{
                     $customer = Customer::where('id',$ticket->customer_id)->first();
-                    $name = $customer->firstname;
+                    $name = $customer->first_name.' '.$customer->last_name ;
                 }
                 if($customer) {
-                    $data = str_replace('{Customer-Name}', $customer->name , $data);
+                    // dd($customer);
+                    $data = str_replace('{Customer-Name}', $name , $data);
                 }else{
                    $data = str_replace('Customer Name:', '' , $data); 
                    $data = str_replace('{Customer-Name}', '' , $data); 
                 }
+                // dd($data);
             }else{
                 $data = str_replace('Customer Name:', '' , $data);
                 $data = str_replace('{Customer-Name}', '' , $data); 
