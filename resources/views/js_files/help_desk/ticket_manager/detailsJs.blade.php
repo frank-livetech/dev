@@ -2487,6 +2487,14 @@ function updateTicket(){
 
                 }
                 updateTicketDate();
+                data.all_users.forEach(element => {
+                    userlist.push(element.name + ' (' + element.email + ')');
+                });
+
+                $('#note').atwho({
+                    at: "@",
+                    data:userlist,
+                });
                 // // send mail notification regarding ticket action
                 ticket_notify('ticket_update', 'Ticket Updated','', updates_Arr);
                 updates_Arr = [];
