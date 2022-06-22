@@ -1109,6 +1109,9 @@ class HelpdeskController extends Controller
 
                 $action_perf = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
             } else {
+
+                $data['reply'] = replaceBodyShortCodes($data['reply'] , $ticket);
+
                 $save_reply = TicketReply::create($data);
 
                 $action_perf = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
@@ -1240,6 +1243,34 @@ class HelpdeskController extends Controller
         //     $response['success'] = false;
         //     return response()->json($response);
         // }
+    }
+
+    public function replaceBodyShortCodes($data , $ticket){
+
+        if(str_contains($data, '{Customer-Name}')) {      
+            if(!empty($ticket)){
+                $customer = '';
+                if($ticket->is_staff_tkt == 1){
+                    $customer = User::where('id',$ticket->customer_id)->first();
+                    $name = $customer->name;
+                }else{
+                    $customer = Customer::where('id',$ticket->customer_id)->first();
+                    $name = $customer->firstname;
+                }
+                if($customer) {
+                    $data = str_replace('{Customer-Name}', $customer->name , $data);
+                }else{
+                   $data = str_replace('Customer Name:', '' , $data); 
+                   $data = str_replace('{Customer-Name}', '' , $data); 
+                }
+            }else{
+                $data = str_replace('Customer Name:', '' , $data);
+                $data = str_replace('{Customer-Name}', '' , $data); 
+            }
+        }
+
+        return $data;
+
     }
 
     public function get_details($id) {
