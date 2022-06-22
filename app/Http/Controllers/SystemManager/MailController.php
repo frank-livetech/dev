@@ -1988,8 +1988,6 @@ class MailController extends Controller
                 }
             }
             
-            
-
             if($ticket_reply_deadline == null) {
                 
                 $dd = new Carbon( now(), $tm_name);
@@ -2061,8 +2059,6 @@ class MailController extends Controller
                     $template = str_replace('Reply due:', $rep, $template);
                 } 
             }
-
-
             if($ticket_resolution_deadline == null) {
                 $dd = new Carbon( now(), $tm_name);
                 
@@ -2131,8 +2127,6 @@ class MailController extends Controller
                 }
             }
             
-
-
             $template = str_replace('{Ticket-SLA}', $sla, $template);
             $template = str_replace('{Ticket-Reply-Due}', $rep, $template);
             $template = str_replace('{Ticket-Resolution-Due}', $res , $template);
@@ -2153,6 +2147,8 @@ class MailController extends Controller
                 $template = str_replace($value->code, '', $template);
             }
         }
+
+        $template = $this->bodyShortCodes($template , $ticket);
 
         return html_entity_decode($template);
 
@@ -2549,6 +2545,28 @@ class MailController extends Controller
                 }
             }
         
+        }
+    }
+
+    function bodyShortCodes(&$template , $ticket){
+        if(str_contains($template, '{Customer-Name}')) {      
+            if(!empty($ticket)){
+                $customer = '';
+                if($ticket->is_staff_tkt == 1){
+                    $customer = User::where('id',$ticket->customer_id)->first();
+                }else{
+                    $customer = Customer::where('id',$ticket->customer_id)->first();
+                }
+                if($customer) {
+                    $template = str_replace('{Customer-Name}', $customer->name , $template);
+                }else{
+                   $template = str_replace('Customer Name:', '' , $template); 
+                   $template = str_replace('{Customer-Name}', '' , $template); 
+                }
+            }else{
+                $template = str_replace('Customer Name:', '' , $template);
+                $template = str_replace('{Customer-Name}', '' , $template); 
+            }
         }
     }
 
