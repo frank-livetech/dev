@@ -371,29 +371,31 @@
 
             $('#res-template').change(function() {
                 if( $(this).val() == "" ) {
-                    tinyMCE.activeEditor.setContent('');
+                    // tinyMCE.activeEditor.setContent('');
                 }else{
                     let content = tinyMCE.activeEditor.getContent();
                     let res = res_templates_list.filter(item => item.id == $(this).val());
                     if(res.length) {
-                        if(!content && content != '<p></p>') {
-                            tinyMCE.activeEditor.setContent(res[0].temp_html ? res[0].temp_html : '');
-                        } else {
-                            Swal.fire({
-                                title: 'Are you sure?',
-                                text: 'All template changes will be lost!',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Yes'
-                            }).then((result) => {
-                                if (result.value) {
-                                    tinyMCE.activeEditor.setContent('');
-                                    tinyMCE.activeEditor.setContent(res[0].temp_html ? res[0].temp_html : '');
-                                }
-                            });
-                        }
+                        // if(!content && content != '<p></p>') {
+                        tinymce.activeEditor.execCommand('mceInsertContent', false, `<p>${res[0].temp_html}</p>`);
+                        $('#res-template').val('').trigger('change');
+                            // tinyMCE.activeEditor.setContent(res[0].temp_html ? res[0].temp_html : '');
+                        // } else {
+                        //     Swal.fire({
+                        //         title: 'Are you sure?',
+                        //         text: 'All template changes will be lost!',
+                        //         icon: 'warning',
+                        //         showCancelButton: true,
+                        //         confirmButtonColor: '#3085d6',
+                        //         cancelButtonColor: '#d33',
+                        //         confirmButtonText: 'Yes'
+                        //     }).then((result) => {
+                        //         if (result.value) {
+                        //             tinyMCE.activeEditor.setContent('');
+                        //             tinyMCE.activeEditor.setContent(res[0].temp_html ? res[0].temp_html : '');
+                        //         }
+                        //     });
+                        // }
                     }
                 }
             });

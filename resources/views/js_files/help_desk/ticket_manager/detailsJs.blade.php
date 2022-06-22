@@ -300,26 +300,28 @@ function ticket_attachemnt_view() {
 
 $('#res-template').change(function() {
     if( $(this).val() == "" ) {
-        tinymce.activeEditor.setContent('');
+        // tinymce.activeEditor.setContent('');
     }else{
         let content = tinymce.activeEditor.getContent();
         let res = res_templates_list.find(item => item.id == $(this).val());
-        if(content.length == 0)  {
-            tinymce.activeEditor.setContent(`<p>${res.temp_html}</p>`);
-        }
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'All template changes will be lost!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.value) {
-                tinymce.activeEditor.setContent(res.temp_html ? res.temp_html : '');
-            }
-        });
+        // if(content.length == 0)  {
+            // tinymce.activeEditor.setContent(`<p>${res.temp_html}</p>`);
+            tinymce.activeEditor.execCommand('mceInsertContent', false, `<p>${res.temp_html}</p>`);
+            $('#res-template').val('').trigger('change');
+        // }
+        // Swal.fire({
+        //     title: 'Are you sure?',
+        //     text: 'All template changes will be lost!',
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Yes'
+        // }).then((result) => {
+        //     if (result.value) {
+        //         tinymce.activeEditor.setContent(res.temp_html ? res.temp_html : '');
+        //     }
+        // });
     }
 });
 
