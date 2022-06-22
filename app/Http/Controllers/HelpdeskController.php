@@ -1248,7 +1248,7 @@ class HelpdeskController extends Controller
     public function replaceBodyShortCodes($data , $ticket){
         
         if(str_contains($data, '{Customer-Name}')) {  
-            
+
             if(!empty($ticket)){
                 $customer = '';
                 if($ticket->is_staff_tkt == 1){
@@ -1285,8 +1285,11 @@ class HelpdeskController extends Controller
         if(empty($ticket)) {
             return view('help_desk.ticket_manager.ticket_404');
         }
-        $allusers = User::where('user_type','!=',4)->where('user_type','!=',5)->where('is_deleted',0)->get();
         
+        // dd($ticket->dept_id);
+        $dept_assignments = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
+        $allusers = User::whereIn('id',$dept_assignments)->where('user_type','!=',4)->where('user_type','!=',5)->where('status',1)->where('is_deleted',0)->get();
+
         $id = $ticket->id;
         // $details = Tickets::with('ticketReplies')->where('id', $id)->first();
         $details = Tickets::where('id', $id)->with('ticket_created_by')->first();
