@@ -261,7 +261,7 @@ class HelpdeskController extends Controller
                     $desc = '<div>
                         <strong>Ticket Detail Section Improvements</strong> <br>
                         '. $message .' <br>
-                        Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] . ' by ' . auth()->user()->name .'
+                        Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Updated by ' . auth()->user()->name .'
                     </div>';
                     sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
