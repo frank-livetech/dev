@@ -2463,7 +2463,7 @@ class MailController extends Controller
                     }
                 }
             } else if($data['module'] == 'User') {
-                dd($data['values']);
+                
                 if(str_contains($template, '{User-Name}')) {
                     $template = str_replace('{User-Name}', $data['values']['name'], $template);
                 }
