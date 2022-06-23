@@ -2457,6 +2457,7 @@ function updateTicket(){
                         $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
                     }else if(updates_Arr[i]['id'] == 2){
                         ticket.assigned_to = updates_Arr[i]['new_data'];
+                        ticket.assignee_name = updates_Arr[i]['new_text'];
                         $('#follow_up_assigned_to').val(ticket.assigned_to).trigger("change");
                     }else if(updates_Arr[i]['id'] == 3){
 
