@@ -116,17 +116,6 @@ class CompanyController extends Controller
 
         if($check_company) {
 
-  
-            if($check_company->is_deleted == 0) {
-
-                return response()->json([
-                    "message" =>  'Email Already Taken try another one!',
-                    "status_code" => 500,
-                    "success" => false,
-                ]);
-
-            }else{
-
                 DB::table("companies")->where('email',$request->email)->where('deleted_at', '!=', null)->delete();
 
                 if($request->is_default == 1) {
@@ -134,14 +123,13 @@ class CompanyController extends Controller
                     $check_company = Company::where("is_default","=",1)->first();
         
                     if(empty($check_company)) {
-                        $request->validate([
-                            "email" => "required|email|unique:companies",
-                        ]);
+                        
                         $company = new Company();
                         $company->poc_first_name = $request->poc_first_name;
                         $company->poc_last_name = $request->poc_last_name;
                         $company->name = $request->name;
-                        $company->email = $request->email;
+                        //$company->email = $request->email;
+                        $company->domain = $request->domain;
                         $company->phone = $request->phone;
                         $company->cmp_country = $request->country;
                         $company->cmp_state = $request->state;
@@ -180,15 +168,14 @@ class CompanyController extends Controller
                     }
                     
                 }else{
-                    $request->validate([
-                        "email" => "required|email|unique:companies",
-                    ]);
+                    
                     $company = new Company();
                     $company->poc_first_name = $request->poc_first_name;
                     $company->poc_last_name = $request->poc_last_name;
                     $company->name = $request->name;
-                    $company->email = $request->email;
+                    //$company->email = $request->email;
                     $company->phone = $request->phone;
+                    $company->domain = $request->domain;
                     $company->cmp_country = $request->country;
                     $company->cmp_state = $request->state;
                     $company->cmp_city = $request->city;
@@ -219,7 +206,7 @@ class CompanyController extends Controller
                         return response()->json($response);
                     }
                 }
-            }
+            
             
         }else{
             if($request->is_default == 1) {
@@ -227,14 +214,15 @@ class CompanyController extends Controller
                 $check_company = Company::where("is_default","=",1)->first();
     
                 if(empty($check_company)) {
-                    $request->validate([
-                        "email" => "required|email|unique:companies",
-                    ]);
+                    // $request->validate([
+                    //     "email" => "required|email|unique:companies",
+                    // ]);
                     $company = new Company();
                     $company->poc_first_name = $request->poc_first_name;
                     $company->poc_last_name = $request->poc_last_name;
                     $company->name = $request->name;
-                    $company->email = $request->email;
+                    //$company->email = $request->email;
+                    $company->domain = $request->domain;
                     $company->phone = $request->phone;
                     $company->cmp_country = $request->country;
                     $company->cmp_state = $request->state;
@@ -273,14 +261,15 @@ class CompanyController extends Controller
                 }
                 
             }else{
-                $request->validate([
-                    "email" => "required|email|unique:companies",
-                ]);
+                // $request->validate([
+                //     "email" => "required|email|unique:companies",
+                // ]);
                 $company = new Company();
                 $company->poc_first_name = $request->poc_first_name;
                 $company->poc_last_name = $request->poc_last_name;
                 $company->name = $request->name;
-                $company->email = $request->email;
+                //$company->email = $request->email;
+                $company->domain = $request->domain;
                 $company->phone = $request->phone;
                 $company->cmp_country = $request->country;
                 $company->cmp_state = $request->state;
@@ -353,7 +342,7 @@ class CompanyController extends Controller
             $response['success'] = true;
             if($request->input('action') == 'edit'){
                 $company->address = $request->input('address');
-                $company->email = $request->input('email');
+                // $company->email = $request->input('email');
                 $company->phone = $request->input('phone');
                 $response['message'] = 'Company details Update Successfully!';
                 $response['action'] = 'edit';
@@ -539,7 +528,8 @@ class CompanyController extends Controller
             "poc_first_name" => $request->poc_first_name,
             "poc_last_name" => $request->poc_last_name,
             "name" => $request->name,
-            "email" => $request->email,
+            // "email" => $request->email,
+            "domain" => $request->domain,
             "phone" => $request->phone,
 
             "cmp_country" => $request->cmp_country,
@@ -577,7 +567,7 @@ class CompanyController extends Controller
 
                 $company = Company::find($request->cmp_id);
             
-                if($company->email == $request->email) {
+                // if($company->email == $request->email) {
 
                     Company::where('id',$request->cmp_id)->update($data);
         
@@ -586,20 +576,20 @@ class CompanyController extends Controller
                     $response['success'] = true;
                     return response()->json($response);
     
-                }else{
+                // }else{
     
-                    $request->validate([
-                        "email" => "required|email|unique:companies",
-                    ]);
+                    // $request->validate([
+                    //     "email" => "required|email|unique:companies",
+                    // ]);
                     
-                    Company::where('id',$request->cmp_id)->update($data);
+                    // Company::where('id',$request->cmp_id)->update($data);
         
-                    $response['message'] = 'Company Profile Updated Successfully';
-                    $response['status_code'] = 200;
-                    $response['success'] = true;
-                    return response()->json($response);
+                    // $response['message'] = 'Company Profile Updated Successfully';
+                    // $response['status_code'] = 200;
+                    // $response['success'] = true;
+                    // return response()->json($response);
     
-                }
+                // }
             }else{
                 $response['message'] = 'Default Company Already Set!';
                 $response['status_code'] = 500;
@@ -610,7 +600,20 @@ class CompanyController extends Controller
         }else{
             $company = Company::find($request->cmp_id);
             
-            if($company->email == $request->email) {
+            // if($company->email == $request->email) {
+
+                // Company::where('id',$request->cmp_id)->update($data);
+    
+                // $response['message'] = 'Company Profile Updated Successfully';
+                // $response['status_code'] = 200;
+                // $response['success'] = true;
+                // return response()->json($response);
+
+            // }else{
+
+                // $request->validate([
+                //     "email" => "required|email|unique:companies",
+                // ]);
 
                 Company::where('id',$request->cmp_id)->update($data);
     
@@ -619,20 +622,7 @@ class CompanyController extends Controller
                 $response['success'] = true;
                 return response()->json($response);
 
-            }else{
-
-                $request->validate([
-                    "email" => "required|email|unique:companies",
-                ]);
-
-                Company::where('id',$request->cmp_id)->update($data);
-    
-                $response['message'] = 'Company Profile Updated Successfully';
-                $response['status_code'] = 200;
-                $response['success'] = true;
-                return response()->json($response);
-
-            }
+            // }
         }
       
     }
