@@ -1129,10 +1129,14 @@ class HelpdeskController extends Controller
                         $data['type'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
                         $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
+                        $ticket->type = $dd_values[$dd]['new_data'];
+
                     }elseif($dd_values[$dd]['id'] == 4){
                         $data['status'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) status changed from: '. $ticket->status_name .' to: '. $dd_values[$dd]['new_text'];
-                        $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';  
+                        $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';
+                        $ticket->status = $dd_values[$dd]['new_data'];
+
                         $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
                         if($os && $os->name == 'Closed'){
                             $data['reply_deadline'] = 'cleared';
@@ -1143,6 +1147,8 @@ class HelpdeskController extends Controller
                         $data['priority'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) priority changed from: '. $ticket->priority_name .' to: '.  $dd_values[$dd]['new_text'];
                         $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
+                        $ticket->priority = $dd_values[$dd]['new_data'];
+
                     }
 
                     // save activity logs
