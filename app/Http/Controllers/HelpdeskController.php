@@ -1023,7 +1023,7 @@ class HelpdeskController extends Controller
 
                     // save activity logs
                     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Recycled By by '. $name_link;
+                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Restored by '. $name_link;
 
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
@@ -1111,40 +1111,39 @@ class HelpdeskController extends Controller
                 for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
 
                     if($dd_values[$dd]['id'] == 1){
-                        $ticket->dept_id = $dd_values[$dd]['new_data'] ;
-                        $data['action_performed'] = 'Department Updated';
+                        $data['dept_id'] = $dd_values[$dd]['new_data'] ;
+                        $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) department changed from: '.$ticket->department_name.' to: '.$dd_values[$dd]['new_text'];
+                        // $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';  
                     }elseif($dd_values[$dd]['id'] == 2){
-                        $ticket->assigned_to = $dd_values[$dd]['new_data'] ;
-                        $data['action_performed'] = 'Tech Lead Updated';
+                        $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
+                        $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
+                        // $message .= '<strong> Tech :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';  
                     }elseif($dd_values[$dd]['id'] == 3){
-                        $ticket->type = $dd_values[$dd]['new_data'] ;
-                        $data['action_performed'] = 'Type Updated';
+                        $data['type'] = $dd_values[$dd]['new_data'] ;
+                        $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
+                        // $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
                     }elseif($dd_values[$dd]['id'] == 4){
-                        $ticket->status = $dd_values[$dd]['new_data'] ;
-                        $data['action_performed'] = 'Status Updated';
+                        $data['status'] = $dd_values[$dd]['new_data'] ;
+                        $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) status changed from: '. $ticket->status_name .' to: '. $dd_values[$dd]['new_text'];
+                        // $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';  
                         $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
                         if($os && $os->name == 'Closed'){
                             $data['reply_deadline'] = 'cleared';
                             $data['resolution_deadline'] = 'cleared';
-
-                            $ticket->reply_deadline = 'cleared';
-                            $ticket->resolution_deadline = 'cleared';
-                            $ticket->is_overdue = 0;
-
+                            $data['is_overdue'] = 0;
                         }
                     }elseif($dd_values[$dd]['id'] == 5){
-                        $ticket->priority = $dd_values[$dd]['new_data'] ;
-                        $data['action_performed'] = 'Priority Updated';
-                        
+                        $data['priority'] = $dd_values[$dd]['new_data'] ;
+                        $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) priority changed from: '. $ticket->priority_name .' to: '.  $dd_values[$dd]['new_text'];
+                        // $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
                     }
 
                     // save activity logs
                     $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+                    $action_perform = $data['action_performed'] .' By '. $name_link;
 
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
-
                 }
 
             }
@@ -1415,7 +1414,7 @@ class HelpdeskController extends Controller
                 
                 // Add Delete log
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Permanently Deleted By '. $name_link;
+                $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Deleted By '. $name_link;
                 
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
@@ -1489,7 +1488,7 @@ class HelpdeskController extends Controller
                 $del_tkt->save();
                 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Recycled By '. $name_link;
+                $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Restored By '. $name_link;
 
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
