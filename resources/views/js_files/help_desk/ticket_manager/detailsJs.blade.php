@@ -1987,6 +1987,49 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
 
                         $('#tinycontenteditor').html('');
 
+                        for(var i = 0 ; i < updates_Arr.length ; i++){
+
+                            if(updates_Arr[i]['id'] == 1){
+                                ticket.dept_id = updates_Arr[i]['new_data'];
+                                $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
+                            }else if(updates_Arr[i]['id'] == 2){
+                                ticket.assigned_to = updates_Arr[i]['new_data'];
+                                ticket.assignee_name = updates_Arr[i]['new_text'];
+                                $('#follow_up_assigned_to').val(ticket.assigned_to).trigger("change");
+                            }else if(updates_Arr[i]['id'] == 3){
+
+                                ticket.type = updates_Arr[i]['new_data'];
+                                $('#follow_up_type').val(ticket.type).trigger("change");
+
+                            }else if(updates_Arr[i]['id'] == 4){
+
+                                if(updates_Arr[i]['new_text'] == 'Closed') {
+                                    $("#sla_reply_due").hide();
+                                    $("#sla_res_due").hide();
+
+                                    if(ticket != null) {
+                                        ticket.reply_deadline = 'cleared';
+                                        ticket.resolution_deadline = 'cleared';
+                                    }
+                                
+                                }
+
+                                ticket.status = updates_Arr[i]['new_data'];
+                                // $("#dropD").css('background-color' ,color + ' !important');
+                                $('#follow_up_status').val(ticket.status).trigger("change");
+
+                            }else if(updates_Arr[i]['id'] == 5){
+
+                                ticket.priority = updates_Arr[i]['new_data'];
+                                // $("#prio-label").css('background-color' ,color + ' !important');
+                                $('#follow_up_priority').val(ticket.priority).trigger("change");
+
+                            }
+
+                            console.log(updates_Arr , "updates_Arr");
+
+                        }
+
                         getTicketReplies(ticket.id);
 
                         // let draft = false;
