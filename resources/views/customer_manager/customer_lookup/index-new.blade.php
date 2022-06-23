@@ -16,7 +16,17 @@
     table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before{
         display: none !important
     }
-    
+    .user_name {
+        color: #5e50ee;
+        text-decoration: none;
+    }
+
+    .user_name:hover{
+        color: #fab81c;
+    }
+    .emp_post{
+        color: #000;
+    }
     </style>
 @section('body')
 <div class="app-content content">
@@ -56,7 +66,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12" style="text-align:right;">
-                                <button id="customer_add_btn" data-bs-toggle="modal" data-bs-target="#addCustomerModal"  class="float-right rounded btn btn-success"><i class="fa fa-plus-circle"></i> New Customer </button>
+                                {{-- <button id="customer_add_btn" data-bs-toggle="modal" data-bs-target="#addCustomerModal"  class="float-right rounded btn btn-success"><i class="fa fa-plus-circle"></i> New Customer </button> --}}
     
                             @if($wp_value == 1)
                                 <button class="float-right btn-sm rounded btn btn-info mr-3"><i class="fas fa-sync"></i> Sync WP Customers  </button>
@@ -73,13 +83,13 @@
                                                 <label class="custom-control-label" for="customCheck1"></label>
                                             </div>
                                         </th>
-                                        <th class="cust_first">First Name</th>
-                                        <th class="cust_first">Last Name</th>
+                                        <th class="cust_first">Name</th>
                                         <th>E-mail</th>
                                         <th>Phone</th>
                                         <th>Company</th>
                                         <th>Address</th>
                                         <th>Created at</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -137,9 +147,9 @@
                             <!-- <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="phone" id="phone" placeholder="eg. 3334445555"> -->
                             <div class="d-flex">
                                 <div class="country mt-1" style="padding-right: 8px;"></div>
-                                <input type="tel" class="tel form-control" name="phone" id="phone" placeholder="" autofocus>
+                                <input type="tel" class="tel form-control" value="+" name="phone" id="phone" placeholder="" autofocus>
                             </div>
-                            <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                            <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                             {{-- {{-- <input type="text" class="form-control" name="phone" id="phone" placeholder="eg. 3334445555"> --}}
                             <span class="text-danger small" id="phone_error"></span> 
                         </div>
@@ -241,7 +251,8 @@
                                     </div> -->
                                     <div class="col-md-6 form-group">
                                         <label for="phone" class="small">Phone</label>
-                                        <input type="tel" class="form-control" id="cmp_phone">
+                                        <input type="tel" class="form-control" id="cmp_phone"> 
+                                        <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                                         <span class="text-danger small" id="cmp_phone_error"></span>
                                     </div>
                                 </div>

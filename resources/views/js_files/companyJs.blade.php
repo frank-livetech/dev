@@ -43,7 +43,7 @@ $(document).ready(function() {
         var a = checkEmptyFields(poc_first_name, $("#err"));
         var b = checkEmptyFields(poc_last_name, $("#err1"));
         var c = checkEmptyFields(name, $("#err2"));
-        var d = checkValidEmail(email, $("#err3"));
+        // var d = checkValidEmail(email, $("#err3"));
 
 
         if ($("#set_default").is(":checked")) {
@@ -59,13 +59,13 @@ $(document).ready(function() {
         //     return false;
         // }
 
-        if (a && b && c && d == true) {
+        if (a && b && c == true) {
 
             var formData = {
                 poc_first_name: poc_first_name,
                 poc_last_name: poc_last_name,
                 name: name,
-                email: email,
+                domain: domain,
                 phone: phone,
                 country: country,
                 state: state,
@@ -190,9 +190,6 @@ function get_all_companies() {
         success: function(data) {
             console.log(data.companies, "data");
             var system_date_format = data.date_format;
-            assetPath = $('body').attr('data-asset-path');
-            userView = assetPath + 'app/user/view';
-            userEdit = assetPath + 'app/user/edit';
             $('#companyTable').DataTable().destroy();
             let tt = $('#companyTable').DataTable({
             data:  data.companies,
@@ -313,68 +310,35 @@ function get_all_companies() {
                 '<"col-sm-12 col-md-6"i>' +
                 '<"col-sm-12 col-md-6"p>' +
                 '>',
-      language: {
-        sLengthMenu: 'Show _MENU_',
-        search: 'Search',
-        searchPlaceholder: 'Search..'
-      },
-      // Buttons with Dropdown
-      buttons: [
-        {
-          text: 'Add New Company',
-          className: 'add-new btn btn-primary mt-50',
-          attr: {
-            'data-bs-toggle': 'modal',
-            'data-bs-target': '#company_model'
-          },
-          init: function (api, node, config) {
-            $(node).removeClass('btn-secondary');
-          }
-        }
-      ],
-      
-      language: {
-        paginate: {
-          // remove previous & next text from pagination
-          previous: '&nbsp;',
-          next: '&nbsp;'
-        }
-      },
+            language: {
+                sLengthMenu: 'Show _MENU_',
+                search: 'Search',
+                searchPlaceholder: 'Search..'
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                text: 'Add New Company',
+                className: 'add-new btn btn-primary mt-50',
+                attr: {
+                    'data-bs-toggle': 'modal',
+                    'data-bs-target': '#company_model'
+                },
+                init: function (api, node, config) {
+                    $(node).removeClass('btn-secondary');
+                }
+                }
+            ],
+            
+            language: {
+                paginate: {
+                // remove previous & next text from pagination
+                previous: '&nbsp;',
+                next: '&nbsp;'
+                }
+            },
         });
-        // tt.on( 'order.dt search.dt', function () {
-        //     tt.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-        //         cell.innerHTML = i+1;
-        //     } );
-        // }).draw();
-            // $('#companyTBody').html(row);
-            // var company_table = $('#companyTable').DataTable();
-
-            // $('#select_column').multipleSelect({
-            //     width: 300,
-            //     onClick: function(view) {
-            //         var selectedItems = $('#select_column').multipleSelect("getSelects");
-            //         for (var i = 0; i < 11; i++) {
-            //             columns = company_table.column(i).visible(0);
-            //         }
-            //         for (var i = 0; i < selectedItems.length; i++) {
-            //             var s = selectedItems[i];
-            //             company_table.column(s).visible(1);
-            //         }
-
-            //     },
-            //     onCheckAll: function() {
-            //         for (var i = 0; i < 11; i++) {
-            //             columns = company_table.column(i).visible(1);
-            //         }
-            //     },
-            //     onUncheckAll: function() {
-            //         for (var i = 0; i < 11; i++) {
-            //             columns = company_table.column(i).visible(0);
-            //         }
-
-            //     }
-            // });
-        },
+    },
         complete: function(data) {
             $('.loader_container').hide();
         },
@@ -486,20 +450,20 @@ function checkEmptyFields(input, err) {
     }
 }
 
-function checkValidEmail(input, err) {
-    var pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+// function checkValidEmail(input, err) {
+//     var pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
 
-    if (input == '') {
-        err.html("This field is required");
-        return false;
-    } else if (!pattern.test(input)) {
-        err.html("please provide valid email");
-        return false;
-    } else {
-        err.html("");
-        return true;
-    }
-}
+//     if (input == '') {
+//         err.html("This field is required");
+//         return false;
+//     } else if (!pattern.test(input)) {
+//         err.html("please provide valid email");
+//         return false;
+//     } else {
+//         err.html("");
+//         return true;
+//     }
+// }
 
 
 function showdeleteModal(id) {

@@ -7,7 +7,7 @@
         {{-- <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"> --}}
         <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
         <style>
-           a.user_name.text-truncate {
+    a.user_name.text-truncate {
     color: #5e50ee;
     text-decoration: none;}
     a.user_name.text-truncate:hover{
@@ -134,9 +134,9 @@
 
                         <div class="row mt-1">
                             <div class="col-md-6 form-group">
-                                <label for="email" class="small">Email <span class="fa fa-asterisk field-icon text-danger" aria-hidden="true"></span></label>
-                                <input type="text" class="form-control" id="email" placeholder="Email Address">
-                                <span class="text-danger small" id="err3"></span>
+                                <label for="domain" class="small">Domain <span class="fa fa-asterisk field-icon text-danger" aria-hidden="true"></span></label>
+                                <input type="text" class="form-control" id="domain" placeholder="Enter domain">
+                                {{-- <span class="text-danger small" id="err3"></span> --}}
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="phone" class="small">Phone</label>
