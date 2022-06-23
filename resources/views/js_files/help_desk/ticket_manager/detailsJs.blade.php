@@ -2227,10 +2227,12 @@ $('#dept_id').on('select2:selecting', function(e) {
   
 //     showDepartStatus(dept_id , 'nochange');
 // });
+$('#assigned_to').on('select2:selecting', function(e) {
 
-$('#assigned_to').change(function() {
-    var assigned_to = $(this).val() ? $(this).val() : null;
-
+    // var assigned_to = $(this).val() ? $(this).val() : null;
+    console.log('Selecting owner: ' , e.params.args.data);
+    
+    var assigned_to = e.params.args.data.id;
     // no change to do update
     if (assigned_to == ticket.assigned_to){
         updates_Arr = $.grep(updates_Arr, function(e){ 
@@ -2252,7 +2254,7 @@ $('#assigned_to').change(function() {
         id:2,
         data: ticket.assignee_name, // Saving old value to show in email notification
         new_data:assigned_to,
-        new_text:$("#assigned_to option:selected").text()
+        new_text:e.params.args.data.text
     }
 
     let item = updates_Arr.filter(item => item.id === 2);
@@ -2261,7 +2263,7 @@ $('#assigned_to').change(function() {
         updates_Arr[index].id = 2;
         updates_Arr[index].data = ticket.assignee_name ; 
         updates_Arr[index].new_data = assigned_to ;
-        updates_Arr[index].new_text = $("#assigned_to option:selected").text();
+        updates_Arr[index].new_text = e.params.args.data.text;
     }else{
         updates_Arr.push(obj);
     }
@@ -2270,11 +2272,59 @@ $('#assigned_to').change(function() {
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
     }
-   
+
 });
 
-$('#type').change(function() {
-    var type = $(this).val();
+// $('#assigned_to').change(function() {
+//     var assigned_to = $(this).val() ? $(this).val() : null;
+
+//     // no change to do update
+//     if (assigned_to == ticket.assigned_to){
+//         updates_Arr = $.grep(updates_Arr, function(e){ 
+//             return e.id != 2; 
+//         });
+//         if(update_flag > 0){
+//             update_flag--;
+//             if(update_flag == 0){
+//                 $("#update_ticket").css("display", "none");
+//             }
+//         }
+//         return false;
+//     }
+//     console.log(update_flag , "update_flag");
+
+//     update_flag++;
+//     var obj = {};
+//     obj = {
+//         id:2,
+//         data: ticket.assignee_name, // Saving old value to show in email notification
+//         new_data:assigned_to,
+//         new_text:$("#assigned_to option:selected").text()
+//     }
+
+//     let item = updates_Arr.filter(item => item.id === 2);
+//     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
+//     if(item.length > 0) {
+//         updates_Arr[index].id = 2;
+//         updates_Arr[index].data = ticket.assignee_name ; 
+//         updates_Arr[index].new_data = assigned_to ;
+//         updates_Arr[index].new_text = $("#assigned_to option:selected").text();
+//     }else{
+//         updates_Arr.push(obj);
+//     }
+
+//     console.log(updates_Arr , "updates_Arr assignee_name");
+//     if(reply_flag == 0) {
+//         $("#update_ticket").css("display", "block");
+//     }
+   
+// });
+$('#type').on('select2:selecting', function(e) {
+
+    // var type = $(this).val();
+    console.log('Selecting type: ' , e.params.args.data);
+    
+    var type = e.params.args.data.id;
     // no change to do update
     if (type == ticket.type){
         updates_Arr = $.grep(updates_Arr, function(e){ 
@@ -2295,7 +2345,7 @@ $('#type').change(function() {
         id:3,
         data: ticket.type_name, // Saving old value to show in email notification
         new_data:type,
-        new_text:$("#type option:selected").text()
+        new_text:e.params.args.data.text
 
     }
 
@@ -2305,7 +2355,7 @@ $('#type').change(function() {
         updates_Arr[index].id = 3;
         updates_Arr[index].data = ticket.type_name ; 
         updates_Arr[index].new_data = type ;
-        updates_Arr[index].new_text = $("#type option:selected").text();
+        updates_Arr[index].new_text = e.params.args.data.text;
     }else{
         updates_Arr.push(obj);
     }
@@ -2314,12 +2364,58 @@ $('#type').change(function() {
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
     }
-    
-    
-});
 
-$('#status').change(function() {
-    var status = $(this).val();
+});
+// $('#type').change(function() {
+//     var type = $(this).val();
+//     // no change to do update
+//     if (type == ticket.type){
+//         updates_Arr = $.grep(updates_Arr, function(e){ 
+//             return e.id != 3; 
+//         });
+//         if(update_flag > 0){
+//             update_flag--;
+//             if(update_flag == 0){
+//                 $("#update_ticket").css("display", "none");
+//             }
+//         }
+//         return false;
+//     }
+//     console.log(update_flag , "update_flag");
+//     update_flag++;
+//     var obj = {};
+//     obj = {
+//         id:3,
+//         data: ticket.type_name, // Saving old value to show in email notification
+//         new_data:type,
+//         new_text:$("#type option:selected").text()
+
+//     }
+
+//     let item = updates_Arr.filter(item => item.id === 3);
+//     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(3);
+//     if(item.length > 0) {
+//         updates_Arr[index].id = 3;
+//         updates_Arr[index].data = ticket.type_name ; 
+//         updates_Arr[index].new_data = type ;
+//         updates_Arr[index].new_text = $("#type option:selected").text();
+//     }else{
+//         updates_Arr.push(obj);
+//     }
+
+//     console.log(updates_Arr , "updates_Arr type");
+//     if(reply_flag == 0) {
+//         $("#update_ticket").css("display", "block");
+//     }
+    
+    
+// });
+$('#status').on('select2:selecting', function(e) {
+
+    // var status = $(this).val();
+    console.log('Selecting type: ' , e.params.args.data);
+    var status = e.params.args.data.id;
+
     var color = $('#status option:selected').data('color');
     $('.drop-dpt').attr('style', 'background-color: ' + color + ' !important');
 
@@ -2343,7 +2439,7 @@ $('#status').change(function() {
         id:4,
         data: ticket.status_name, // Saving old value to show in email notification
         new_data:status,
-        new_text:$("#status option:selected").text()
+        new_text:e.params.args.data.text
 
     }
 
@@ -2353,7 +2449,7 @@ $('#status').change(function() {
         updates_Arr[index].id = 4;
         updates_Arr[index].data = ticket.status_name ; 
         updates_Arr[index].new_data = status ;
-        updates_Arr[index].new_text = $("#status option:selected").text();
+        updates_Arr[index].new_text = e.params.args.data.text;
     }else{
         updates_Arr.push(obj);
     }
@@ -2363,9 +2459,57 @@ $('#status').change(function() {
     }
 
 });
+// $('#status').change(function() {
+//     var status = $(this).val();
+//     var color = $('#status option:selected').data('color');
+//     $('.drop-dpt').attr('style', 'background-color: ' + color + ' !important');
 
-$('#priority').change(function() {
-    var priority = $(this).val();
+//     // no change to do update
+//     if (status == ticket.status) {
+//         updates_Arr = $.grep(updates_Arr, function(e){ 
+//             return e.id != 4; 
+//         });
+//         if(update_flag > 0){
+//             update_flag--;
+//             if(update_flag == 0){
+//                 $("#update_ticket").css("display", "none");
+//             }
+//         }
+//         return false;
+//     }
+//     console.log(update_flag , "update_flag");
+//     update_flag++;
+//     var obj = {};
+//     obj = {
+//         id:4,
+//         data: ticket.status_name, // Saving old value to show in email notification
+//         new_data:status,
+//         new_text:$("#status option:selected").text()
+
+//     }
+
+//     let item = updates_Arr.filter(item => item.id === 4);
+//     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(4);
+//     if(item.length > 0) {
+//         updates_Arr[index].id = 4;
+//         updates_Arr[index].data = ticket.status_name ; 
+//         updates_Arr[index].new_data = status ;
+//         updates_Arr[index].new_text = $("#status option:selected").text();
+//     }else{
+//         updates_Arr.push(obj);
+//     }
+//     console.log(updates_Arr , "updates_Arr status");
+//     if(reply_flag == 0) {
+//         $("#update_ticket").css("display", "block");
+//     }
+
+// });
+
+$('#priority').on('select2:selecting', function(e) {
+
+    console.log('Selecting type: ' , e.params.args.data);
+    var priority = e.params.args.data.id;
+
     var color = $('#priority option:selected').data('color');
     $('#prio-label').css('background-color',color);
     // no change to do update
@@ -2390,7 +2534,7 @@ $('#priority').change(function() {
         id:5,
         data: ticket.priority_name, // Saving old value to show in email notification
         new_data:priority,
-        new_text:$("#priority option:selected").text()
+        new_text:e.params.args.data.text
 
     }
 
@@ -2400,15 +2544,62 @@ $('#priority').change(function() {
         updates_Arr[index].id = 5;
         updates_Arr[index].data = ticket.priority_name ; 
         updates_Arr[index].new_data = priority ;
-        updates_Arr[index].new_text = $("#priority option:selected").text();
+        updates_Arr[index].new_text = e.params.args.data.text;
     }else{
         updates_Arr.push(obj);
     }
     console.log(updates_Arr , "updates_Arr priority");
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
-    }    
+    }   
+
 });
+
+// $('#priority').change(function() {
+//     var priority = $(this).val();
+//     var color = $('#priority option:selected').data('color');
+//     $('#prio-label').css('background-color',color);
+//     // no change to do update
+//     if (priority == ticket.priority){
+//         updates_Arr = $.grep(updates_Arr, function(e){ 
+//             return e.id != 5; 
+//         });
+//         if(update_flag > 0){
+//             update_flag--;
+//             if(update_flag == 0){
+//                 $("#update_ticket").css("display", "none");
+//             }
+//         }
+//         return false;
+//     }
+    
+//     console.log(update_flag , "update_flag");
+
+//     update_flag++;
+//     var obj = {};
+//     obj = {
+//         id:5,
+//         data: ticket.priority_name, // Saving old value to show in email notification
+//         new_data:priority,
+//         new_text:$("#priority option:selected").text()
+
+//     }
+
+//     let item = updates_Arr.filter(item => item.id === 5);
+//     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(5);
+//     if(item.length > 0) {
+//         updates_Arr[index].id = 5;
+//         updates_Arr[index].data = ticket.priority_name ; 
+//         updates_Arr[index].new_data = priority ;
+//         updates_Arr[index].new_text = $("#priority option:selected").text();
+//     }else{
+//         updates_Arr.push(obj);
+//     }
+//     console.log(updates_Arr , "updates_Arr priority");
+//     if(reply_flag == 0) {
+//         $("#update_ticket").css("display", "block");
+//     }    
+// });
 
 function updateTicket(){
     if(updates_Arr.length == 0){
