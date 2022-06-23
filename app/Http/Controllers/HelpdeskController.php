@@ -257,9 +257,10 @@ class HelpdeskController extends Controller
                     $slug = url('ticket-details') .'/'.$ticket->coustom_id;
                     $type = 'ticket_updated';
                     $title = 'Ticked Updated';
-
+                    $subject = $ticket->subject;
+                    $subject = \Str::of($subject)->limit(20);
                     $desc = '<div>
-                        <strong>Ticket Detail Section Improvements</strong> <br>
+                        <strong>'.$subject.'</strong> <br>
                         '. $message .' <br>
                         Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Updated by ' . auth()->user()->name .'
                     </div>';
