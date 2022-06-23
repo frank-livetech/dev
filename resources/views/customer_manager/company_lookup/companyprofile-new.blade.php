@@ -218,7 +218,11 @@
                 <!-- Tabs -->
                 <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="pills-timeline-tab" data-bs-toggle="tab" href="#current-month"
+                        <a class="nav-link active" id="pills-profile-tab" data-bs-toggle="tab" href="#comp_profile" role="tab"
+                            aria-controls="pills-profile" aria-selected="false">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="pills-timeline-tab" data-bs-toggle="tab" href="#current-month"
                             role="tab" aria-controls="pills-timeline" aria-selected="true">History</a>
                     </li>
                     <!--<li class="nav-item">-->
@@ -246,10 +250,7 @@
                         <a class="nav-link" id="pills-tickets-tab" data-bs-toggle="tab" href="#tickets" role="tab"
                             aria-controls="pills-tickets" aria-selected="false">Tickets</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="pills-profile-tab" data-bs-toggle="tab" href="#comp_profile" role="tab"
-                            aria-controls="pills-profile" aria-selected="false">Profile</a>
-                    </li>
+                   
                     <li class="nav-item">
                         <a class="nav-link" id="pills-staff-tab" data-bs-toggle="tab" href="#staff" role="tab"
                             aria-controls="pills-staff" aria-selected="false">Staff</a>
@@ -273,7 +274,7 @@
                 <!-- Tabs -->
                 <div class="tab-content" id="pills-tabContent">
 
-                    <div class="tab-pane fade show active" id="current-month" role="tabpanel"
+                    <div class="tab-pane fade " id="current-month" role="tabpanel"
                         aria-labelledby="pills-timeline-tab">
                         <hr>
                         <div class="card-body">
@@ -1041,7 +1042,7 @@
                     </div> --}}
                 </div>
 
-                <div class="tab-pane fade" id="comp_profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <div class="tab-pane fade show active" id="comp_profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <hr>
                     <div class="card-body">
                         <form id="update_company" onsubmit="return false">
@@ -1077,16 +1078,16 @@
                                         <div class="country mt-1" style="padding-right: 8px;"></div>
                                         <input type="tel" class="tel form-control" name="phone" id="phone" value="{{$company->phone}}" placeholder="" autofocus>
                                     </div>
-                                    <small class="text-danger">Please add country code before number e.g (+1) for US</small>
+                                    <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                                     {{-- <input type="text" id="phone" name="phone" value="{{$company->phone}}"
                                         class="form-control">
                                     {{-- <span class="text-danger small" id="err4"></span> --}} 
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="profile_email">Email</label>
-                                    <input type="text" id="email" class="form-control" name="email"
-                                        value="{{$company->email}}">
-                                    <span class="text-danger" id="err3"></span>
+                                    <label for="domain">Domain</label>
+                                    <input type="text" id="domain" class="form-control" name="domain"
+                                        value="{{$company->domain}}">
+                                    {{-- <span class="text-danger" id="err3"></span> --}}
                                 </div>
                             </div>
 

@@ -1222,12 +1222,14 @@ function parserIntitialRequestEmbeddedImages(reply_id , images ,id){
         // console.log(attchs[index])
         if(attchs[index] == undefined || attchs[index] == null){
             if(classList != 'rounded-circle' && classList != 'attImg' && classList != 'img-fluid' && type == 'cron'){
+                
                 $(this).remove();
             }
         }else{
             
             if(classList != 'rounded-circle' && classList != 'attImg'){
                 $(this).attr('src', "{{asset('storage/tickets')}}/"+id+'/'+attchs[index]);
+                $(this).css("width", "400px");
                 // $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
                 index++;
             }
@@ -1256,6 +1258,7 @@ function parserReplyEmbeddedImages(reply_id , images , type,id){
             
             if(classList != 'rounded-circle' && classList != 'attImg'){
                 $(this).attr('src', "{{asset('storage/tickets-replies')}}/"+id+'/'+attchs[index]);
+                $(this).css("width", "400px");
                 // $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
                 index++;
             }
