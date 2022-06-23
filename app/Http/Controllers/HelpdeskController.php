@@ -258,7 +258,7 @@ class HelpdeskController extends Controller
                     $type = 'ticket_updated';
                     $title = 'Ticked Updated';
                     $subject = $ticket->subject;
-                    $subject = \Str::of($subject)->limit(20);
+                    $subject = \Str::of($subject)->limit(30);
                     $desc = '<div>
                         <strong>'.$subject.'</strong> <br>
                         '. $message .' <br>
