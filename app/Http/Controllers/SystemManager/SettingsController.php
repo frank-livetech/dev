@@ -1370,11 +1370,11 @@ class SettingsController extends Controller
 
     public function showAllNotifications(){
 
-        if( auth()->user()->user_type == 1) {
-            $notifications = Notification::whereNotNull('noti_title')->orderbyDesc('id')->get();
-        }else{
+        // if( auth()->user()->user_type == 1) {
+        //     $notifications = Notification::whereNotNull('noti_title')->orderbyDesc('id')->get();
+        // }else{
             $notifications = Notification::whereNotNull('noti_title')->where('receiver_id', auth()->id() )->orderbyDesc('id')->get();
-        }
+        // }
 
         Notification::where('receiver_id', auth()->id() )->update(['read_at' => Carbon::now()]);
         
