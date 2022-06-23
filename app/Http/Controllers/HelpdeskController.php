@@ -1110,7 +1110,7 @@ class HelpdeskController extends Controller
             $slug = '';
             $note_type = '';
             $title = '';
-
+            $message = '';
             if($request->has('dd_Arr')){
                 $dd_values = $request->dd_Arr;
                 for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
@@ -1118,19 +1118,19 @@ class HelpdeskController extends Controller
                     if($dd_values[$dd]['id'] == 1){
                         $data['dept_id'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) department changed from: '.$ticket->department_name.' to: '.$dd_values[$dd]['new_text'];
-                        // $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';  
+                        $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';  
                     }elseif($dd_values[$dd]['id'] == 2){
                         $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
-                        // $message .= '<strong> Tech :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';  
+                        $message .= '<strong> Tech :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';  
                     }elseif($dd_values[$dd]['id'] == 3){
                         $data['type'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
-                        // $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
+                        $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
                     }elseif($dd_values[$dd]['id'] == 4){
                         $data['status'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) status changed from: '. $ticket->status_name .' to: '. $dd_values[$dd]['new_text'];
-                        // $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';  
+                        $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';  
                         $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
                         if($os && $os->name == 'Closed'){
                             $data['reply_deadline'] = 'cleared';
@@ -1140,7 +1140,7 @@ class HelpdeskController extends Controller
                     }elseif($dd_values[$dd]['id'] == 5){
                         $data['priority'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) priority changed from: '. $ticket->priority_name .' to: '.  $dd_values[$dd]['new_text'];
-                        // $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
+                        $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
                     }
 
                     // save activity logs
@@ -1160,7 +1160,7 @@ class HelpdeskController extends Controller
                 $desc = '<div>
                     <strong>'.$subject.'</strong> <br>
                     '. $message .' <br>
-                    Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Updated by ' . auth()->user()->name .'
+                    Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added & Updated by ' . auth()->user()->name .'
                 </div>';
                 
 
