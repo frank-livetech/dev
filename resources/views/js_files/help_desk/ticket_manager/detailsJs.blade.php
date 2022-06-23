@@ -4148,7 +4148,7 @@ function showDepartStatus(value , type) {
 
                 console.log(value +'========'+ticket.dept_id)
                 if (value == ticket.dept_id){
-                    alert('asd');
+                    // alert('asd');
                     updates_Arr = $.grep(updates_Arr, function(e){ 
                         return e.id != 1; 
                     });
