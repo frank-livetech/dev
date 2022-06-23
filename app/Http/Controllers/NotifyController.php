@@ -13,25 +13,28 @@ class NotifyController extends Controller
 
     public function sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc) {
 
-        $data = array(
-            "sender_id" => $sender_id ,
-            "receiver_id" => $receiver_id ,
-            "slug" => $slug,
-            "noti_type" => $type ,
-            "noti_data" => $data ,
-            "noti_title" => $title, 
-            "noti_icon" => $icon ,
-            "btn_class" => $class ,
-            "noti_desc" => $desc ,
-        );
-
-        $notify = Notification::create($data);
-        $sender = User::where('id' , $sender_id)->first();
-
-        if($notify) {
-            $notificationJob = (new NotificationJob($receiver_id, $sender, $data));
-            dispatch($notificationJob);
+        if($title != '' && $title !=null){
+            $data = array(
+                "sender_id" => $sender_id ,
+                "receiver_id" => $receiver_id ,
+                "slug" => $slug,
+                "noti_type" => $type ,
+                "noti_data" => $data ,
+                "noti_title" => $title, 
+                "noti_icon" => $icon ,
+                "btn_class" => $class ,
+                "noti_desc" => $desc ,
+            );
+    
+            $notify = Notification::create($data);
+            $sender = User::where('id' , $sender_id)->first();
+    
+            if($notify) {
+                $notificationJob = (new NotificationJob($receiver_id, $sender, $data));
+                dispatch($notificationJob);
+            }
         }
+        
     }
 
 
