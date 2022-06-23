@@ -234,7 +234,7 @@
                                             <label>Phone No </label>
                                             <div class="d-flex">
                                                 <div class="country mt-1" style="padding-right: 8px;"></div>
-                                                <input type="tel" class="tel form-control" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="" autofocus>
+                                                <input type="tel" class="tel form-control" name="phone" id="phone" value="{{$profile->phone_number != NULL ? $profile->phone_number : '+' }}" placeholder="" autofocus>
                                             </div>
                                             <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                                             {{-- <input type="number" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control"> --}}
