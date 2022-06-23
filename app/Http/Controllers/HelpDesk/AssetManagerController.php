@@ -380,12 +380,12 @@ class AssetManagerController extends Controller
             });
         }
 
-        if($request->has('ticket_id')) {
-            $t_id = $request->ticket_id;
-            $query->when(!empty($t_id), function($q) use($t_id) {
-                return $q->where('ticket_id', $t_id);
-            });
-        }
+        // if($request->has('ticket_id')) {
+        //     $t_id = $request->ticket_id;
+        //     $query->when(!empty($t_id), function($q) use($t_id) {
+        //         return $q->where('ticket_id', $t_id);
+        //     });
+        // }
         
         $assets = $query->where('is_deleted', 0)->with(['template','asset_fields','customer','company'])->get();
 

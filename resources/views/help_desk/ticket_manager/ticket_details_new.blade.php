@@ -1850,24 +1850,40 @@
 <div id="update_asset_modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-info p-2">
-                <span>
-                    <h4 style="color:#fff !important;" id="headinglabel"> Update - <span id="modal-title"></span>  </h4>
-                    <button type="button" class="btn-close ml-auto" onclick="closeAssetModal()"></button>
-               
-                </span>
+            <div class="modal-header">
+                    <h4 id="headinglabel"> Update - <span id="modal-title"></span>  </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="update_assets_form" enctype="multipart/form-data" onsubmit="return false">
                     <div class="form-group">
-                        <label for="select">Asset Title</label> <span class="text-danger">*</span>
-                        <input class="form-control" type="text" id="up_asset_title" required>
+                        <!-- <label for="select">Asset Title</label> <span class="text-danger">*</span>
+                        <input class="form-control" type="text" id="up_asset_title" required> -->
                         <input class="form-control" type="hidden" id="asset_title_id" required>
-                        
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label> Customer </label>
+                            <select name="asset_customer_id" onchange="selectCustomer(this.value)" class="select2 customerValue asset_customer_id">
+                                <option value=""> Choose </option>
+                                @foreach($all_customers as $c)
+                                    <option value="{{$c->id}}"> {{$c->first_name}} {{$c->last_name}} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label> Company </label>
+                            <select name="asset_company_id" class="select2 companyValue asset_company_id">
+                                <option value=""> Choose </option>
+                                @foreach($all_companies as $comp)
+                                    <option value="{{$comp->id}}"> {{$comp->name}} </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="input_fields"></div>
                     <div class="address_fields"></div>
-                    <div class="form-group text-right mt-3">
+                    <div class="form-group text-end mt-3">
                         <button class="btn btn-rounded btn-success" onclick="updateAssets()" id="sve" type="submit">Save</button>
                         <button class="btn btn-rounded btn-danger" type="button" data-dismiss="modal">Close</button>
                     </div>
@@ -2128,32 +2144,22 @@
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
+<script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 
 
-@include('js_files.atwho.atwhoJs')
-@include('js_files.atwho.caretJs')
-
-@include('js_files.help_desk.ticket_manager.ticket_detailsJs')
-
-<!-- <script type="text/javascript" src="{{asset('public/js/help_desk/ticket_manager/details.js').'?ver='.rand()}}"></script> -->
-@include('js_files.help_desk.ticket_manager.detailsJs')
-
-{{-- Linked Assets JS --}}
-<!-- <script src="{{asset('public/js/help_desk/asset_manager/actions.js').'?ver='.rand()}}"></script> -->
-<!-- {{-- <script src="{{asset('public/js/help_desk/ticket_manager/tickets.js').'?ver='.rand()}}"></script> --}} -->
-
-<!-- <script src="{{asset('public/js/help_desk/asset_manager/asset.js').'?ver='.rand()}}"></script> -->
+    @include('js_files.atwho.atwhoJs')
+    @include('js_files.atwho.caretJs')
+    @include('js_files.help_desk.ticket_manager.ticket_detailsJs')
+    @include('js_files.help_desk.ticket_manager.detailsJs')
 
     @include('js_files.help_desk.asset_manager.actionsJs')
     {{-- @include('js_files.help_desk.ticket_manager.ticketsJs') --}}
     @include('js_files.help_desk.asset_manager.assetJs')
+
     <script>
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
         });
-    </script>
-    <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
-<script>
         $('[data-dismiss=modal]').on('click', function(e) {
         var $t = $(this),
             target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
@@ -2165,31 +2171,51 @@
             .find("input[type=checkbox], input[type=radio]")
             .prop("checked", "")
             .end();
-    });
+        });
 
-    $(".meta_tags").tagsinput('items');
+        $(".meta_tags").tagsinput('items');
 
-function hung(){
-    $("#viewFullDetails2").modal("show");
-    $(this).find("col-md-3").addClass("col-md-6");
-    $(this).find("col-md-6").removeClass("col-md-3");
-}
+        function hung(){
+            $("#viewFullDetails2").modal("show");
+            $(this).find("col-md-3").addClass("col-md-6");
+            $(this).find("col-md-6").removeClass("col-md-3");
+        }
 
-    $("#resizable").resizable({
-        alsoResize : '.wrapper_content',
-    });
+        function selectCustomer(value) {
+            $(".companyValue").empty();
+            let root = `<option value="">Choose</option>`;
+            if(value != '') {
+                let item = customers.find(item => item.id == value );
+                if(item != null) {
+                    if(item.company_id != null) {
+                        let company = companies.find(com => com.id == item.company_id);
+                        let option = `<option value="${company.id}"> ${company.name} </option>`;
+                        $(".companyValue").append(root + option).trigger('change');
+                    }
+                }
+            }else{
+                let option = ``;
+                for(let data of companies)  {
+                    option += `<option value="${data.id}"> ${data.name} </option>`;
+                }
+                $(".companyValue").append(root + option).trigger('change');
+            }
+        }
 
-    $('#follow_up').draggable();  
+        $("#resizable").resizable({
+            alsoResize : '.wrapper_content',
+        });
 
-    get_asset_table_list();
-</script>
-<script>
-    jQuery(function($){
-      var input = $('[type=tel]')
-      input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
-      input.bind('country.mobilePhoneNumber', function(e, country) {
-        $('.country').text(country || '')
-      })
-    });
+        $('#follow_up').draggable();  
+
+        get_asset_table_list();
+
+        jQuery(function($){
+            var input = $('[type=tel]')
+            input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
+            input.bind('country.mobilePhoneNumber', function(e, country) {
+                $('.country').text(country || '')
+            })
+        });
   </script>
 @endsection

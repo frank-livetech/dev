@@ -46,8 +46,8 @@
     var get_ticket_latest_log = "{{asset('/get_ticket_log')}}";
     var route_searchEmails = "{{asset('/searchEmails')}}";
     var templates = null;
-    var asset_customer_uid = '';
-    var asset_company_id = '';
+    var asset_customer_uid = ticket_customer.id;
+    var asset_company_id = ticket_customer.company_id;
     var asset_project_id = '';
     var asset_ticket_id = ticket.id;
 
