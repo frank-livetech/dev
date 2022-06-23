@@ -4165,6 +4165,7 @@ function showDepartStatus(value , type) {
                 //     $('#status').val(open_sts); // Select the option with a value of '1'
                 //     $('#status').trigger('change');
                 // }
+                $('#status').trigger('select');
                 
                 if(reply_flag == 0) {
                     $("#update_ticket").css("display", "block");
@@ -4181,10 +4182,10 @@ function showDepartStatus(value , type) {
                 }
                 $("#queue_id").html(email_option);
                 $('#priority').val(default_queue.mail_priority_id);
-                $("#priority").trigger('change');
+                $("#priority").trigger('select');
 
                 $('#type').val(default_queue.mail_type_id);
-                $("#type").trigger('change');
+                $("#type").trigger('select');
 
                 
 
