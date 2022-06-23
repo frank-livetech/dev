@@ -1991,6 +1991,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
 
                             if(updates_Arr[i]['id'] == 1){
                                 ticket.dept_id = updates_Arr[i]['new_data'];
+                                ticket.department_name  = updates_Arr[i]['new_text'];
                                 $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
                             }else if(updates_Arr[i]['id'] == 2){
                                 ticket.assigned_to = updates_Arr[i]['new_data'];
@@ -1999,6 +2000,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                             }else if(updates_Arr[i]['id'] == 3){
 
                                 ticket.type = updates_Arr[i]['new_data'];
+                                ticket.type_name = updates_Arr[i]['new_text'];
                                 $('#follow_up_type').val(ticket.type).trigger("change");
 
                             }else if(updates_Arr[i]['id'] == 4){
@@ -2015,12 +2017,14 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                                 }
 
                                 ticket.status = updates_Arr[i]['new_data'];
+                                ticket.status_name = updates_Arr[i]['new_text'];
                                 // $("#dropD").css('background-color' ,color + ' !important');
                                 $('#follow_up_status').val(ticket.status).trigger("change");
 
                             }else if(updates_Arr[i]['id'] == 5){
 
                                 ticket.priority = updates_Arr[i]['new_data'];
+                                ticket.priority_name = updates_Arr[i]['new_text'];
                                 // $("#prio-label").css('background-color' ,color + ' !important');
                                 $('#follow_up_priority').val(ticket.priority).trigger("change");
 
@@ -2694,6 +2698,7 @@ function updateTicket(){
 
                     if(updates_Arr[i]['id'] == 1){
                         ticket.dept_id = updates_Arr[i]['new_data'];
+                        ticket.department_name = updates_Arr[i]['new_text'];
                         $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
                     }else if(updates_Arr[i]['id'] == 2){
                         ticket.assigned_to = updates_Arr[i]['new_data'];
@@ -2702,6 +2707,7 @@ function updateTicket(){
                     }else if(updates_Arr[i]['id'] == 3){
 
                         ticket.type = updates_Arr[i]['new_data'];
+                        ticket.type_name = updates_Arr[i]['new_text'];
                         $('#follow_up_type').val(ticket.type).trigger("change");
 
                     }else if(updates_Arr[i]['id'] == 4){
@@ -2718,12 +2724,14 @@ function updateTicket(){
                         }
  
                         ticket.status = updates_Arr[i]['new_data'];
+                        ticket.status_name = updates_Arr[i]['new_text'];
                         // $("#dropD").css('background-color' ,color + ' !important');
                         $('#follow_up_status').val(ticket.status).trigger("change");
 
                     }else if(updates_Arr[i]['id'] == 5){
 
                         ticket.priority = updates_Arr[i]['new_data'];
+                        ticket.priority_name = updates_Arr[i]['new_text'];
                         // $("#prio-label").css('background-color' ,color + ' !important');
                         $('#follow_up_priority').val(ticket.priority).trigger("change");
 
