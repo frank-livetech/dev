@@ -85,11 +85,15 @@ class HomeController extends Controller {
         // $staff_att_data = StaffAttendance::with('user_clocked')->orderBy('id', 'DESC')->groupBy('user_id')->get();
         $users = User::where('is_deleted', 0)->where('status',1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
         $staff_att_data = array();
-        
+        $staff_active_count = 0;
+
         foreach($users as $user){
             // $staffData = StaffAttendance::where('user_id',$user->id)->where('date','>=',date_format(Carbon::yesterday(),"Y-m-d"))->orderByDesc('id')->first();
             $staffData = StaffAttendance::where('user_id',$user->id)->orderByDesc('id')->first();
             if($staffData){
+                if($staffData->clock_out == NULL){
+                    $staff_active_count++;
+                }
                 $staffData->name = $user->name;
                 array_push($staff_att_data,$staffData);
             }
@@ -97,8 +101,8 @@ class HomeController extends Controller {
         }
         
         // $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
-        $staff_active_count = StaffAttendance::where('clock_out',NULL)->orderBy('id', 'DESC')->groupBy('user_id')->get();
-        $staff_active_count = $staff_active_count->count();
+        // $staff_active_count = StaffAttendance::where('clock_out',NULL)->orderBy('id', 'DESC')->groupBy('user_id')->get();
+        // $staff_active_count = $staff_active_count->count();
         $staff_inactive_count = $staff_count - $staff_active_count;
 
         $ticket_follow_ups = TicketFollowUp::where('created_by', auth()->id() )
