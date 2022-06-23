@@ -100,13 +100,8 @@
             </div>
         </div>
     </div>
-    {{-- @if($date_format) 
-            <input type="hidden" id="system_date_format" value="{{$date_format}}">
-        @else
-            <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
-        @endif --}}
 
-        <input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
+    <input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
     <div class="content-body">
         <div class="row" style="padding-bottom: 17px">
                                 
@@ -340,7 +335,7 @@
                                         <div class="col-md-4 form-group">
                                             <div class="form-group">
                                                 <label> Customer </label>
-                                                <select name="customer_id" id="customer_id" class="select2">
+                                                <select name="customer_id" id="customer_id" onchange="selectCustomer(this.value)" class="select2 customerValue">
                                                     <option value=""> Choose </option>
                                                     @foreach($customers as $customer)
                                                         <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
@@ -351,7 +346,7 @@
                                         <div class="col-md-4 form-group">
                                             <div class="form-group">
                                                 <label> Company </label>
-                                                <select name="company_id" id="company_id" class="select2">
+                                                <select name="company_id" id="company_id" class="select2 companyValue">
                                                     <option value=""> Choose </option>
                                                     @foreach($companies as $company)
                                                         <option value="{{$company->id}}"> {{$company->name}} </option>
@@ -498,10 +493,34 @@
             <div class="modal-body">
                 <form id="update_assets_form" enctype="multipart/form-data" onsubmit="return false">
                     <div class="form-group mt-1">
-                        <label for="select">Asset Title</label> <span class="text-danger">*</span>
-                        <input class="form-control" type="text" id="up_asset_title" required>
+                        <!-- <label for="select">Asset Title</label> <span class="text-danger">*</span> -->
+                        <!-- <input class="form-control" type="text" id="up_asset_title" required> -->
                         <input class="form-control" type="hidden" id="asset_title_id" required>
                         
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Customer </label>
+                                <select name="asset_customer_id" onchange="selectCustomer(this.value)" class="select2 customerValue asset_customer_id">
+                                    <option value=""> Choose </option>
+                                    @foreach($customers as $customer)
+                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Company </label>
+                                <select name="asset_company_id" class="select2 companyValue asset_company_id">
+                                    <option value=""> Choose </option>
+                                    @foreach($companies as $company)
+                                        <option value="{{$company->id}}"> {{$company->name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="input_fields mt-1"></div>
                     <div class="address_fields mt-1"></div>

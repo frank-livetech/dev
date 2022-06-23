@@ -630,6 +630,8 @@ class AssetManagerController extends Controller
         try {
             $asset =  Assets::find($request->asset_id);
             $asset->asset_title = $request->asset_title;
+            $asset->company_id = ($request->asset_company_id != null ? $request->asset_company_id : $asset->company_id);
+            $asset->customer_id = ($request->asset_customer_id != null ? $request->asset_customer_id : $asset->customer_id);
             $asset->save();
 
             for($i = 0 ; $i <sizeof($request->data); $i++ ) {

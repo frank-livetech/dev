@@ -2133,22 +2133,41 @@
     <div id="update_asset_modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-info p-2">
-                    <span>
-                        <h4 style="color:#fff !important;" id="headinglabel"> Update - <span id="modal-title"></span>  </h4>
-                    </span>
+                <div class="modal-header">
+                    <h4 id="headinglabel"> Update - <span id="modal-title"></span>  </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="update_assets_form" enctype="multipart/form-data" onsubmit="return false">
-                        <div class="form-group">
-                            <label for="select">Asset Title</label> <span class="text-danger">*</span>
-                            <input class="form-control" type="text" id="up_asset_title" required>
-                            <input class="form-control" type="hidden" id="asset_title_id" required>
-                            
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label> Customer </label>
+                                <select name="asset_customer_id" onchange="selectCustomer(this.value)" class="select2 customerValue asset_customer_id">
+                                    <option value=""> Choose </option>
+                                    @foreach($all_customers as $c)
+                                        <option value="{{$c->id}}"> {{$c->first_name}} {{$c->last_name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label> Company </label>
+                                <select name="asset_company_id" class="select2 companyValue asset_company_id">
+                                    <option value=""> Choose </option>
+                                    @foreach($all_companies as $comp)
+                                        <option value="{{$comp->id}}"> {{$comp->name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
+                        <div class="form-group">
+                            <!-- <label for="select">Asset Title</label> <span class="text-danger">*</span>
+                            <input class="form-control" type="text" id="up_asset_title" required> -->
+                            <input class="form-control" type="hidden" id="asset_title_id" required>
+                        </div>
+                        
                         <div class="input_fields"></div>
                         <div class="address_fields"></div>
-                        <div class="form-group text-right mt-3">
+                        <div class="form-group text-end mt-3">
                             <button class="btn btn-rounded btn-success" onclick="updateAssets()" id="sve" type="submit">Save</button>
                             <button class="btn btn-rounded btn-danger" type="button" data-dismiss="modal">Close</button>
                         </div>
@@ -2230,6 +2249,26 @@
             }
         }
     });
+    function selectCustomer(value) {
+        $(".companyValue").empty();
+        let root = `<option value="">Choose</option>`;
+        if(value != '') {
+            let item = customers.find(item => item.id == value );
+            if(item != null) {
+                if(item.company_id != null) {
+                    let company = companies.find(com => com.id == item.company_id);
+                    let option = `<option value="${company.id}"> ${company.name} </option>`;
+                    $(".companyValue").append(root + option).trigger('change');
+                }
+            }
+        }else{
+            let option = ``;
+            for(let data of companies)  {
+                option += `<option value="${data.id}"> ${data.name} </option>`;
+            }
+            $(".companyValue").append(root + option).trigger('change');
+        }
+    }
 </script>
 
 @include('js_files.help_desk.asset_manager.templateJs')
