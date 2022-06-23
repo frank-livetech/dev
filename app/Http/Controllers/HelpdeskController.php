@@ -194,21 +194,6 @@ class HelpdeskController extends Controller
                         mkdir($target_dir, 0777, true);
                     }
 
-                    // removed files after update
-                    // foreach (File::allFiles($target_dir) as $i => $valueO) {
-                    //     $found = false;
-                    //     foreach ($data['attachments'] as $j => $valueI) {
-                    //         if($valueO->getRelativePathname() == basename($valueI[1])) {
-                    //             $found = true;
-                    //             unset($data['attachments'][$j]);
-                    //         }
-                    //     }
-
-                    //     if(!$found) {
-                    //         File::delete($target_dir.'/'.$valueO->getRelativePathname());
-                    //     }
-                    // }
-
                     // set files
                     foreach ($data['attachments'] as $key => $value) {
                         if (filter_var($value[1], FILTER_VALIDATE_URL)) { 
@@ -225,27 +210,28 @@ class HelpdeskController extends Controller
                 unset($data['id']);
                 unset($data['attachments']);
 
+                $message = '';
+
                 if($request->has('dd_Arr')){
                     $dd_values = $request->dd_Arr;
                     for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
 
                         if($dd_values[$dd]['id'] == 1){
                             $data['dept_id'] = $dd_values[$dd]['new_data'] ;
-                            $data['action_performed'] = 'Department Updated';
-                            $message = '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';  
+                            $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) department changed from: '.$ticket->department_name.' to: '.$dd_values[$dd]['new_text'];
+                            $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')\n';  
                         }elseif($dd_values[$dd]['id'] == 2){
                             $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
-                            $data['action_performed'] = 'Tech Lead Updated';
-                            $message = '<strong> Tech :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';  
+                            $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
+                            $message .= '<strong> Tech :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')\n';  
                         }elseif($dd_values[$dd]['id'] == 3){
                             $data['type'] = $dd_values[$dd]['new_data'] ;
-                            $data['action_performed'] = 'Type Updated';
-                            $message = '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
+                            $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
+                            $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')\n';  
                         }elseif($dd_values[$dd]['id'] == 4){
-
                             $data['status'] = $dd_values[$dd]['new_data'] ;
-                            $data['action_performed'] = 'Status Updated';
-                            $message = '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';  
+                            $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) status changed from: '. $ticket->status_name .' to: '. $dd_values[$dd]['new_text'];
+                            $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')\n';  
                             $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
                             if($os && $os->name == 'Closed'){
                                 $data['reply_deadline'] = 'cleared';
@@ -254,31 +240,30 @@ class HelpdeskController extends Controller
                             }
                         }elseif($dd_values[$dd]['id'] == 5){
                             $data['priority'] = $dd_values[$dd]['new_data'] ;
-                            $data['action_performed'] = 'Priority Updated';
-                            $message = '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
+                            $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) priority changed from: '. $ticket->priority_name .' to: '.  $dd_values[$dd]['new_text'];
+                            $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')\n';  
                         }
 
                         // save activity logs
                         $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                        $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+                        $action_perform = $data['action_performed'] .' By '. $name_link;
 
                         $log = new ActivitylogController();
                         $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
 
-
-                        // send notification
-                        $slug = url('ticket-details') .'/'.$ticket->coustom_id;
-                        $type = 'ticket_updated';
-                        $title = 'Ticked Updated';
-
-                        $desc = '<div>
-                            <strong>Ticket Detail Section Improvements</strong> <br>
-                            '. $message .' <br>
-                            Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] . ' by ' . auth()->user()->name .'
-                        </div>';
-                        sendNotificationToAdmins($slug , $type , $title ,  $desc);
-
                     }
+
+                    // send notification
+                    $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                    $type = 'ticket_updated';
+                    $title = 'Ticked Updated';
+
+                    $desc = '<div>
+                        <strong>Ticket Detail Section Improvements</strong> <br>
+                        '. $message .' <br>
+                        Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] . ' by ' . auth()->user()->name .'
+                    </div>';
+                    sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
                 }
 
