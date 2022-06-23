@@ -2244,6 +2244,8 @@ $('#assigned_to').on('select2:selecting', function(e) {
                 $("#update_ticket").css("display", "none");
             }
         }
+        $('#assigned_to').val(assigned_to).trigger("change");
+
         return false;
     }
     console.log(update_flag , "update_flag");
@@ -2336,6 +2338,8 @@ $('#type').on('select2:selecting', function(e) {
                 $("#update_ticket").css("display", "none");
             }
         }
+        $('#type').val(type).trigger("change");
+
         return false;
     }
     console.log(update_flag , "update_flag");
@@ -2430,6 +2434,8 @@ $('#status').on('select2:selecting', function(e) {
                 $("#update_ticket").css("display", "none");
             }
         }
+        $('#status').val(status).trigger("change");
+
         return false;
     }
     console.log(update_flag , "update_flag");
