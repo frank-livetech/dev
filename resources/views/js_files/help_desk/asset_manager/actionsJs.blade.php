@@ -79,7 +79,8 @@ function get_asset_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             if(full.company != null) {
-                                return full.company.name != null ? full.company.name : '-';
+                                let url = `<a href="${root}/company-profile/${full.company.id}">${full.company.name}</a>`;
+                                return full.company.name != null ? url : '-';
                             }else{
                                 return '-';
                             }
@@ -88,7 +89,7 @@ function get_asset_table_list() {
                     {
                         "render": function(data, type, full, meta) {
                             if(full.customer != null) {
-                                return full.customer.first_name +' '+ full.customer.last_name;
+                                return `<a href="${root}/customer-profile/${full.customer.id}">${full.customer.first_name} ${full.customer.last_name}</a>`;
                             }else{
                                 return '-';
                             }
@@ -358,9 +359,28 @@ function editAsset(id) {
         success: function(data) {
             console.log(data, "data");
 
-            $("#modal-title").text(data.AssetForm.title);
-            $("#up_asset_title").val(data.asset.asset_title);
-            $("#asset_title_id").val(data.asset.id);
+            if(data.AssetForm != null) {
+                $("#modal-title").text(data.AssetForm.title);
+            }
+            
+            if(data.asset != null) {
+                $("#up_asset_title").val(data.asset.asset_title);
+                $("#asset_title_id").val(data.asset.id);
+
+                if(data.asset.customer_id != null) {
+                    $('.asset_customer_id').val(data.asset.customer_id).trigger('change');
+                }else{
+                    $('.asset_customer_id').val("").trigger('change');
+                }
+                
+                if(data.asset.company_id != null) {
+                    $('.asset_company_id').val(data.asset.company_id).trigger('change');
+                }else{
+                    $('.asset_company_id').val("").trigger('change');
+                }
+                
+            }
+            
 
             var html_input = ``;
             var add_html = ``;
@@ -470,6 +490,8 @@ function updateAssets() {
     var complete_address = [];
 
     var asset_title = $("#up_asset_title").val()
+    let asset_customer_id = $(".asset_customer_id").val()
+    let asset_company_id = $(".asset_company_id").val()
 
     $(".fields_id").each(function() {
         var field_id = $(this).val();
@@ -503,6 +525,8 @@ function updateAssets() {
         asset_title: asset_title,
         data: asset_data,
         complete_address: complete_address,
+        asset_customer_id : asset_customer_id,
+        asset_company_id : asset_company_id,
     }
 
     $.ajax({

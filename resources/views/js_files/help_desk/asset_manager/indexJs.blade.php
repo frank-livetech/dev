@@ -183,17 +183,16 @@
         });
     }
 
-
-    $("#customer_id").on("change" , function() {
-        $("#company_id").empty();
+    function selectCustomer(value) {
+        $(".companyValue").empty();
         let root = `<option value="">Choose</option>`;
-        if($(this).val() != '') {
-            let item = customers.find(item => item.id == $(this).val() );
+        if(value != '') {
+            let item = customers.find(item => item.id == value );
             if(item != null) {
                 if(item.company_id != null) {
                     let company = companies.find(com => com.id == item.company_id);
                     let option = `<option value="${company.id}"> ${company.name} </option>`;
-                    $("#company_id").append(root + option).trigger('change');
+                    $(".companyValue").append(root + option).trigger('change');
                 }
             }
         }else{
@@ -201,10 +200,30 @@
             for(let data of companies)  {
                 option += `<option value="${data.id}"> ${data.name} </option>`;
             }
-            $("#company_id").append(root + option).trigger('change');
+            $(".companyValue").append(root + option).trigger('change');
         }
+    }
+    // $("#customer_id").on("change" , function() {
+    //     $("#company_id").empty();
+    //     let root = `<option value="">Choose</option>`;
+    //     if($(this).val() != '') {
+    //         let item = customers.find(item => item.id == $(this).val() );
+    //         if(item != null) {
+    //             if(item.company_id != null) {
+    //                 let company = companies.find(com => com.id == item.company_id);
+    //                 let option = `<option value="${company.id}"> ${company.name} </option>`;
+    //                 $("#company_id").append(root + option).trigger('change');
+    //             }
+    //         }
+    //     }else{
+    //         let option = ``;
+    //         for(let data of companies)  {
+    //             option += `<option value="${data.id}"> ${data.name} </option>`;
+    //         }
+    //         $("#company_id").append(root + option).trigger('change');
+    //     }
 
-    });
+    // });
   
 
 </script>

@@ -4,28 +4,16 @@ namespace App\Http\Controllers\CustomerManager;
 
 use App\CompanyActivityLog;
 use App\Http\Controllers\Controller;
-use App\Models\Activitylog;
+use App\Models\{Activitylog,Customer,Company,Integrations,TicketNote,Tickets,TicketSettings,Tags,SlaPlan};
 use Illuminate\Http\Request;
-use App\Models\Customer;
-use App\Models\Company;
-use App\Models\Integrations;
-use App\Models\TicketNote;
-use App\Models\Tickets;
-use App\Models\TicketSettings;
-use App\Models\Tags;
-use Illuminate\Support\Facades\File;
-use App\Models\SlaPlan;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\{File,Hash,Crypt,DB,Auth};
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Collection;
 use App\User;
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 
@@ -388,6 +376,7 @@ class CompanyController extends Controller
     }
 
     public function company_profile($id){
+        
         $company = Company::with('staff_members')->with('staffs')->findOrFail($id);
         $customer = Customer::where('company_id', $id)->first();
 
@@ -443,6 +432,9 @@ class CompanyController extends Controller
         //     }
         // }
         $notesCount = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$id)->count();
+
+        $all_customers = Customer::all();
+        $all_companies = Company::all();
 
         return view('customer_manager.company_lookup.companyprofile-new', get_defined_vars());
     }
