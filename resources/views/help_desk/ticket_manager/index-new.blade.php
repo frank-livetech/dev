@@ -969,7 +969,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                             &nbsp;                            
                             <br>
                             <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ${ time } </span> 
-                            <div class="my-1 bor-top" id="reply-html-4"> ${item.last_reply.reply} </div>
+                            <div class="my-1 bor-top" id="reply-html-${id}"> ${item.last_reply.reply} </div>
                         </div>
                         
                     </li>
@@ -983,11 +983,9 @@ $('.content').on('mouseenter', '.ticket_name', function() {
             let path = root + '/' + item.user_pic;
             let content = item.ticket_detail;
 
-            if(item.tkt_crt_type == 'cron'){
-                content = content.replace(/<img[^>]*>/g,"");
-            }else{
+            
                 content = content;
-            }
+            
 
             // Attchments of initial request
 
@@ -1190,7 +1188,7 @@ $('.content').on('mouseenter', '.ticket_name', function() {
                         </div>
                         <div class="card-body p-0">
                             <div class="mail-message">
-                                <div class="row" id="ticket_details_p"><div class="col-12" id="editor_div"> ${content} </div>
+                                <div class="row" id="ticket_details_p_${id}"><div class="col-12" id="editor_div"> ${content} </div>
                             </div>
                         </div>
                     </div>`;
@@ -1199,12 +1197,73 @@ $('.content').on('mouseenter', '.ticket_name', function() {
             last_reply = html;
         }
         $('.hover_content_' + id).html(last_reply);
+        if (item.last_reply != null) {
+            parserReplyEmbeddedImages(`reply-html-${id}`,`${item.last_reply.embed_attachments}`,`${item.last_reply.type}`,`${id}`);
+        }else{
+            parserIntitialRequestEmbeddedImages(`ticket_details_p_${id}`,`${item.embed_attachments}`,`${id}`);
+        }
     }
     $('.hover_content_' + id).show();
 }).on('mouseleave', '.ticket_name', function() {
     let id = $(this).data('id');
     $('.hover_content_' + id).hide();
 });
+
+function parserIntitialRequestEmbeddedImages(reply_id , images ,id){
+    
+    var index = 0;
+    $('#'+reply_id+' img').each(function () {
+        let attchs = '';
+
+        if(images != null && images != 'null'){
+            attchs = images.split(',');
+        }
+        var classList = $(this).attr("class");
+        // console.log(attchs[index])
+        if(attchs[index] == undefined || attchs[index] == null){
+            if(classList != 'rounded-circle' && classList != 'attImg' && classList != 'img-fluid' && type == 'cron'){
+                $(this).remove();
+            }
+        }else{
+            
+            if(classList != 'rounded-circle' && classList != 'attImg'){
+                $(this).attr('src', "{{asset('storage/tickets')}}/"+id+'/'+attchs[index]);
+                // $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
+                index++;
+            }
+        }
+    });
+    
+}
+
+
+function parserReplyEmbeddedImages(reply_id , images , type,id){
+    
+    var index = 0;
+    $('#'+reply_id+' img').each(function () {
+        let attchs = '';
+
+        if(images != null && images != 'null'){
+            attchs = images.split(',');
+        }
+        var classList = $(this).attr("class");
+        // console.log(attchs[index])
+        if(attchs[index] == undefined || attchs[index] == null){
+            if(classList != 'rounded-circle' && classList != 'attImg' && classList != 'img-fluid' && type == 'cron'){
+                $(this).remove();
+            }
+        }else{
+            
+            if(classList != 'rounded-circle' && classList != 'attImg'){
+                $(this).attr('src', "{{asset('storage/tickets-replies')}}/"+id+'/'+attchs[index]);
+                // $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
+                index++;
+            }
+        }
+    });
+    
+}
+
 
 function getExt(filename) {
     var ext = filename.split('.').pop();
