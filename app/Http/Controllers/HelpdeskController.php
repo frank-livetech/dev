@@ -1107,6 +1107,10 @@ class HelpdeskController extends Controller
                 $action_perf = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
             }
 
+            $slug = '';
+            $note_type = '';
+            $title = '';
+
             if($request->has('dd_Arr')){
                 $dd_values = $request->dd_Arr;
                 for($dd = 0 ; $dd < sizeof($dd_values) ; $dd++){
@@ -1146,6 +1150,19 @@ class HelpdeskController extends Controller
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
                 }
+
+                // send notification
+                $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                $note_type = 'ticket_updated';
+                $title = 'Ticked Updated';
+                $subject = $ticket->subject;
+                $subject = \Str::of($subject)->limit(20);
+                $desc = '<div>
+                    <strong>'.$subject.'</strong> <br>
+                    '. $message .' <br>
+                    Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Updated by ' . auth()->user()->name .'
+                </div>';
+                
 
             }
 
@@ -1191,6 +1208,7 @@ class HelpdeskController extends Controller
                 if($request->has('dd_Arr') && sizeof($request->dd_Arr) > 0){
                     $action = 'ticket_reply_update';
                     $content = $mail_reply;
+                    sendNotificationToAdmins($slug , $note_type , $title ,  $desc);
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                 }else{
                     $content = $mail_reply;
@@ -3945,26 +3963,31 @@ class HelpdeskController extends Controller
                     if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param,$template_code);
                 }
                 $allwd_users = [];
+                if($action_name != 'ticket_reply_update'){
 
-                try {
-                    $notify = new NotifyController();
-                    foreach ($users_list as $key => $value) {
-                        $allwd_users[] = [$value['email'], $value['name']];
-                        $sender_id = auth()->id();
-                        $receiver_id = $value['id'];
-                        $slug = url('ticket-details/'.$ticket['coustom_id']);
-                        $type = 'Tickets';
-                        $data = 'data';
-                        $title = $notification_title;
-                        $icon = 'calendar';
-                        $class = 'btn-success';
-                        $desc = $notification_message;
-                        
-                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
-                    }
-                } catch(Exception $e) {
-                    // ignore for now
-                } 
+                    try {
+                        $notify = new NotifyController();
+                        foreach ($users_list as $key => $value) {
+                            $allwd_users[] = [$value['email'], $value['name']];
+                            $sender_id = auth()->id();
+                            $receiver_id = $value['id'];
+                            $slug = url('ticket-details/'.$ticket['coustom_id']);
+                            $type = 'Tickets';
+                            $data = 'data';
+                            $title = $notification_title;
+                            $icon = 'calendar';
+                            $class = 'btn-success';
+                            $desc = $notification_message;
+                            
+                            $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        }
+                    } catch(Exception $e) {
+                        // ignore for now
+                    } 
+
+                }
+
+                
             }
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
