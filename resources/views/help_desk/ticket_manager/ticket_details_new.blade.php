@@ -2140,6 +2140,35 @@
         </div>
     </div>
     <!-- image preview Modal -->
+    <!-- Edit reply Modal -->
+    <div class="modal fade text-start" id="editreply" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel1">Edit Reply</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="mymce" class="mymce mt-2" name="reply"></textarea>
+                    <div class="d-flex mt-3">
+                        <div class="form-check form-check-primary">
+                            <input type="checkbox" value="1" class="form-check-input" id="send_email" name="send_email" checked>
+                            <label class="custom-form-label" for="send_email"> Send mail to customer </label>
+                        </div>
+                        <div class="form-check form-check-primary ms-2">
+                            <input type="checkbox" value="1" class="form-check-input" id="response_template" name="response_template">
+                            <label class="custom-form-label" for="response_template"> Save Response </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit reply Modal -->
 @endsection
 
 @section('scripts')

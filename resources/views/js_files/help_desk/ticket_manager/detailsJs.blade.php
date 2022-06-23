@@ -1821,6 +1821,7 @@ function deleteReply(id , index) {
 }
 
 function publishReply(ele, reply_btn_id , type = 'publish') {
+    
     console.log(reply_btn_id , "reply_btn_id");
     $("."+reply_btn_id).attr('style','display:none !important');
 
@@ -2110,8 +2111,10 @@ function composeReply() {
     }
 }
 
-function editReply(rindex) {publishReply(this)
-    tinyMCE.editors.mymce.setContent(ticketReplies[rindex].reply);
+function editReply(rindex) {
+    // publishReply(this)
+    $('#editreply').modal('show');
+     tinyMCE.editors.mymce.setContent(ticketReplies[rindex].reply);
 
     // if(ticketReplies[rindex].attachments) {
     //     let attchs = ticketReplies[rindex].attachments.split(',');
@@ -2124,10 +2127,10 @@ function editReply(rindex) {publishReply(this)
     //     });
     // }
 
-    $('#draft-rply').hide();
-    if(ticketReplies[rindex].is_published == 1) $('#cancel-rply').show();
+    // $('#draft-rply').hide();
+    // if(ticketReplies[rindex].is_published == 1) $('#cancel-rply').show();
 
-    document.getElementById('compose-reply').classList.remove('d-none');
+    // document.getElementById('compose-reply').classList.remove('d-none');
 
     edit_reply_mode = rindex;
 }
