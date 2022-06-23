@@ -301,6 +301,26 @@ class PayrollController extends Controller {
 
             }
 
+            if(str_contains($template, '{UnAssigned-Tickets}')) {
+            
+                $UnassginedTickets = Tickets::where([ 
+                    ['assigned_to', null], 
+                    ['is_deleted', 0] ,
+                    ['trashed', 0] ,
+                ])->get();
+
+                $newTicket ='<strong> Unassigned Tickets </strong>';
+
+                foreach($UnassginedTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= "<p class='tkt_details'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='margin-top:-8px !important'>$tk->subject</p>";
+                }
+
+                $newTicket .='<p>Total Count '. count($UnassginedTickets).'</p>';
+                $template = str_replace('{UnAssigned-Tickets}', count($UnassginedTickets) > 0 ? $newTicket : '' , $template);
+
+            }
+
             $template = str_replace('{Update-Tickets}', '' , $template);
             $template = str_replace('{Closed-Tickets}', '' , $template);
 
@@ -309,6 +329,7 @@ class PayrollController extends Controller {
                 $template = str_replace('{Worked_hours}', $totalWorkingHour , $template);
             } 
             $template = str_replace('{Overdue-Tickets}', '' , $template);
+            $template = str_replace('{UnAssigned-Tickets}', '' , $template);
 
             if(str_contains($template, '{New-Tickets}')) {
                 
