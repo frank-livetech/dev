@@ -484,9 +484,9 @@ function get_all_customers() {
                             '</div>' +
                             '<div class="d-flex flex-column">' +
                             '<a href="customer-profile/' + (full.id != null ? full.id : '-') + '" class="user_name text-truncate"><span class="fw-bold">' +
-                            full.first_name + ' ' + full.last_name +
+                                (full.first_name != null ? full.first_name : '-') + ' ' + (full.last_name != null ? full.last_name : '-') +
                             '</span></a>' +
-                            '<small class="emp_post text-muted"><a href="company-profile/' + (full.company != null ? full.company.name : '-') + '" class="user_name text-truncate"><span class="fw-bold">'
+                            '<small class="emp_post text-muted"><a href="company-profile/' + (full.company != null ? full.company.id : '-') + '" class="user_name text-truncate"><span class="fw-bold">'
                                 + (full.company != null ? full.company.name : '-') +
                             '</span>'  
                             '</a></small>' +
@@ -498,7 +498,7 @@ function get_all_customers() {
                 {
                     render: function (data, type, full, meta) {
                         
-                        return full.email;
+                        return (full.email != null ? full.email : '-');
                     }
                 },
                 {
