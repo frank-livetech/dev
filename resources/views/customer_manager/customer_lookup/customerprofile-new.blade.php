@@ -1201,7 +1201,7 @@
                                             <label>Phone No</label>
                                             <div class="d-flex">
                                                 <div class="country mt-1" style="padding-right: 8px;"></div>
-                                                <input type="tel" class="tel form-control" name="prof_phone" id="prof_phone" value="{{$customer->phone}}" placeholder="" autofocus>
+                                                <input type="tel" class="tel form-control" name="prof_phone" id="prof_phone" value="{{$customer->phone != Null ? $customer->phone : '+'}}" placeholder="" autofocus>
                                             </div>
                                             <small class="text-danger">Please add country code before number e.g (+1) for US</small>
                                             {{-- <input type="text" id="prof_phone" name="prof_phone"
