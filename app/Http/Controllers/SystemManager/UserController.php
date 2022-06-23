@@ -201,7 +201,7 @@ class UserController extends Controller
                     if($user_profile) {
                         $response['message'] = 'User Saved Successfully!';
                         // email send code
-                        $mailer->UserRegisteration($data['email']);
+                        $mailer->UserRegisteration($data['email'],false);
 
                     }else{
                         $response['message'] = 'Some error ocurred while saving!';
