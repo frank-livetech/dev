@@ -511,11 +511,11 @@ class HelpdeskController extends Controller
             }  
             
             // send notification
-            $slug = url('ticket-details') .'/'.$ticket->coustom_id;
-            $type = 'ticket_created';
-            $title = 'New Ticket Alert';
-            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Created by ' . auth()->user()->name;
-            sendNotificationToAdmins($slug , $type , $title ,  $desc);
+            // $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+            // $type = 'ticket_created';
+            // $title = 'New Ticket Alert';
+            // $desc = 'Ticket <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Created by ' . auth()->user()->name;
+            // sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             // return false;
             $response['id'] = $ticket->id;
