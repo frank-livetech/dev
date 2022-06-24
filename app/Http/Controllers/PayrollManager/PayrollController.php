@@ -302,11 +302,14 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{UnAssigned-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
             
                 $UnassginedTickets = Tickets::where([ 
                     ['assigned_to', null], 
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
+                    ['status','!=', $closeStatus->id], 
+
                 ])->get();
 
                 $newTicket ='<strong> Unassigned Tickets </strong>';
