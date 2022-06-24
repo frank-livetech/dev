@@ -15,8 +15,8 @@ use PHPMailer\PHPMailer\{PHPMailer , SMTP , Exception};
 use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 
-//require 'vendor/autoload.php';
- require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
