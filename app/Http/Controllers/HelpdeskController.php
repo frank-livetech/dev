@@ -1520,15 +1520,15 @@ class HelpdeskController extends Controller
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
 
-                // send notification
-                $slug = url('ticket-details') .'/'.$del_tkt->coustom_id;
-                $type = 'ticket_retore';
-                $title = 'Ticket Restore';
-                $desc = 'Ticket <a href="'.url('ticket-details').'/' .$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Restored by ' .auth()->user()->name;
-                sendNotificationToAdmins($slug , $type , $title ,  $desc);
+                // // send notification
+                // $slug = url('ticket-details') .'/'.$del_tkt->coustom_id;
+                // $type = 'ticket_retore';
+                // $title = 'Ticket Restore';
+                // $desc = 'Ticket <a href="'.url('ticket-details').'/' .$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a> Restored by ' .auth()->user()->name;
+                // sendNotificationToAdmins($slug , $type , $title ,  $desc);
             }
 
-            $response['message'] = 'Data Recycled Successfully!';
+            $response['message'] = 'Data Restored Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);

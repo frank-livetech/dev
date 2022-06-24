@@ -234,7 +234,7 @@ $("#btnRecycle").click(function () {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Recycled Successfully!',
+                    title: 'Restored Successfully!',
                     showConfirmButton: false,
                     timer: 2500
                 })
