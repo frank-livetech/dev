@@ -100,6 +100,9 @@
     <!-- END: Material Design CDNS-->
 
     <style>
+    #clock_btny{
+        color: #ea5455 !important;
+    }
         .loading__ {
             background: white !important;
             width: 100%;
@@ -158,7 +161,7 @@
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
             <div class="d-flex">
-                <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger">Ignore</a>
+                <a href="#" class="mx-1 text-danger " id="clock_btny" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger" id="clock_btny">Ignore</a>
             </div>
         </div>
         @else
@@ -669,7 +672,7 @@
                     <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
                     <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
                     <div class="d-flex">
-                        <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger">Ignore</a>
+                        <a href="#" class="mx-1 text-danger" id="clock_btny" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger" id="clock_btny">Ignore</a>
                     </div>
                 </div>`;
 
