@@ -838,9 +838,11 @@
         
         function alertNotification(type , heading , message) {
             toastr[type]( message , heading , {
+                positionClass: 'toast-bottom-right',
+                progressBar: true,
                 showMethod: 'slideDown',
                 hideMethod: 'slideUp',
-                timeOut: 5000,
+                timeOut: 10000,
             });
         }
     </script>
