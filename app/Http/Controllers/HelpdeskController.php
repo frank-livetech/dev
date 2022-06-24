@@ -223,7 +223,7 @@ class HelpdeskController extends Controller
                         }elseif($dd_values[$dd]['id'] == 2){
                             $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
-                            $message .= '<strong> Tech :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';  
+                            $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->assignee_name .')';  
                         }elseif($dd_values[$dd]['id'] == 3){
                             $data['type'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
