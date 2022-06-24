@@ -202,7 +202,7 @@
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
-                                title: 'Recycled Successfully!',
+                                title: 'Restored Successfully!',
                                 showConfirmButton: false,
                                 timer: swal_message_time
                             })
