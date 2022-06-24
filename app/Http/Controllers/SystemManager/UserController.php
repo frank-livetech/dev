@@ -1349,15 +1349,15 @@ class UserController extends Controller
                     ]);
                 }else{
                     // if(password_verify($data['old_password'], auth()->user()->password)) {
-                        if (Hash::check($data['old_password'] , $user->password )) {
+                        // if (Hash::check($data['old_password'] , $user->password )) {
                             $user->password = Hash::make($data['password']);
-                        }else{
-                            return response()->json([
-                                "code" => 500,
-                                "success" => false,
-                                "message" => 'Old password not match!',
-                            ]);
-                        } 
+                        // }else{
+                        //     return response()->json([
+                        //         "code" => 500,
+                        //         "success" => false,
+                        //         "message" => 'Old password not match!',
+                        //     ]);
+                        // } 
                     // }else{
                     //     return response()->json([
                     //         "code" => 500,

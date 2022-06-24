@@ -265,7 +265,7 @@
                                     </div>
                                     
                                     <div class="row mt-1 change_password_row" style="display:none">
-                                        <div class="col-md-4 form-group">
+                                        {{-- <div class="col-md-4 form-group">
                                             <label>Old Password</label>
                                             <div class=" input-group form-password-toggle input-group-merge">
                                                 <input type="password" name="old_password" id="old_password" class="form-control">
@@ -273,7 +273,7 @@
                                                     <i data-feather="eye"></i>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-4 form-group">
                                             <label>New Password</label> <span class="text-danger">*</span>
                                             <div class=" input-group form-password-toggle input-group-merge">
