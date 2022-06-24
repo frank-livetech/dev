@@ -454,7 +454,7 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 
                                     <button type="button" class="btn btn-primary waves-effect waves-float waves-light"
                                         id="show-clndr"><i class="fas fa-calendar" aria-hidden="true"></i>&nbsp;
-                                        Calender</button>
+                                        Calendar</button>
 
                                     <a href="{{url('add-ticket')}}" type="button"
                                         class="btn btn-success waves-effect waves-float waves-light">
