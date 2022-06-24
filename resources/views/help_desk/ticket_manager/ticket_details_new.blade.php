@@ -380,21 +380,24 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                                 {{-- <i class="fas fa-ellipsis-h dropdown-toggle" aria-hidden="true" data-bs-toggle="dropdown" type="button"></i> --}}
                                 <div class="dropdown-menu dropdown-menu-end" style="">
-                                    <a class="dropdown-item" >
+                                    <a class="dropdown-item" onclick="openProModal();" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3 me-1"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-                                        <span class="align-middle" onclick="openProModal();">Edit Ticket Properties</span>
+                                        <span class="align-middle" >Edit Ticket Properties</span>
                                     </a>
-                                    <a class="dropdown-item">
-                                       
-                                        @if($details->trashed == 0)
+                                    @if($details->trashed == 0)
+                                    
+                                    <a class="dropdown-item" onclick="trashTicket({{$details->id}})">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                        <span class="align-middle" onclick="trashTicket({{$details->id}})">Trash</span>
-                                        @else
+                                        <span class="align-middle" >Trash</span>
+                                    </a>   
+                                    @else
+                                    <a class="dropdown-item" onclick="restoreTicket({{$details->id}})">
                                         <i class="fas fa-trash-restore me-1"></i>
-                                        <span class="align-middle" onclick="restoreTicket({{$details->id}})">Restore</span>
-                                        @endif
+                                        <span class="align-middle" >Restore</span>
                                     </a>
-                                    <a class="dropdown-item" >
+                                    @endif
+                                   
+                                    <a class="dropdown-item" onclick="">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle me-1"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                                         <span class="align-middle">Spam</span>
                                     </a>
@@ -1671,7 +1674,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row mt-1">
                             <div class="form-group form-group-default required">
                                 <label>BCC</label>
@@ -1683,6 +1685,13 @@
                                         <input id="tkt_bcc" class="meta_tags" size="2" type="text">
                                     @endif
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="form-group form-group-default required">
+                                <label class="form-label">Merge Ticket</label>
+                                <input type="text-secondary" class="form-control">
+                                <small class>Note: The ID of the ticket to merge into</small>
                             </div>
                         </div>
                     </div>

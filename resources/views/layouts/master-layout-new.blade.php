@@ -100,6 +100,9 @@
     <!-- END: Material Design CDNS-->
 
     <style>
+    #clock_btny{
+        color: #ea5455 !important;
+    }
         .loading__ {
             background: white !important;
             width: 100%;
@@ -135,6 +138,23 @@
         .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:before, .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:after {
             opacity: 0.5; margin-top: 10px;
         }
+
+        @media (min-width: 992px) {
+            .header-navbar{display: table-row-group;} 
+            .content-header.row{padding-top: 10px !important} 
+        }
+        @media (min-width: 1200px) {
+            .header-navbar{display: flex;}  
+            
+        }
+        @media (max-width: 992px) {
+            .content-header.row{padding-top: 30px !important} 
+        }
+        @media (max-width: 616px) {
+            .content-header.row{padding-top: 30px !important} 
+        }
+
+
     </style>
 
     @stack('css')
@@ -158,7 +178,7 @@
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
             <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
             <div class="d-flex">
-                <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger">Ignore</a>
+                <a href="#" class="mx-1 text-danger " id="clock_btny" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger" id="clock_btny">Ignore</a>
             </div>
         </div>
         @else
@@ -669,7 +689,7 @@
                     <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
                     <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
                     <div class="d-flex">
-                        <a href="#" class="mx-1 text-danger" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger">Ignore</a>
+                        <a href="#" class="mx-1 text-danger" id="clock_btny" onclick="sessionClockIn('clockin')"> Yes </a> | <a href="#" onclick="checkClockIn('ignore')" class="ms-1 text-danger" id="clock_btny">Ignore</a>
                     </div>
                 </div>`;
 
