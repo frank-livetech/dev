@@ -138,6 +138,23 @@
         .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:before, .dark-layout .dataTables_wrapper .table.dataTable thead .sorting:after {
             opacity: 0.5; margin-top: 10px;
         }
+
+        @media (min-width: 992px) {
+            .header-navbar{display: table-row-group;} 
+            .content-header.row{padding-top: 10px !important} 
+        }
+        @media (min-width: 1200px) {
+            .header-navbar{display: flex;}  
+            
+        }
+        @media (max-width: 992px) {
+            .content-header.row{padding-top: 30px !important} 
+        }
+        @media (max-width: 616px) {
+            .content-header.row{padding-top: 30px !important} 
+        }
+
+
     </style>
 
     @stack('css')
