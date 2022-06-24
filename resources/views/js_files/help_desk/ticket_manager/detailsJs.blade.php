@@ -50,18 +50,12 @@ $(document).ready(function() {
         plugins: [
             "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
             "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-            "save table contextmenu directionality emoticons template paste textcolor"
+            "save table contextmenu directionality emoticons template paste textcolor ","tb_variables"
         ],
         
         contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
-        emoticons_append: {
-    custom_mind_explode: {
-      keywords: ['brain', 'mind', 'explode', 'blown'],
-
-      char: 'ðŸ¤¯'
-    }
-  },
+        toolbar: "tb_variables | insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
+        
         spellchecker_callback: function (method, text, success, failure) {
             var words = text.match(this.getWordCharPattern());
             if (method === "spellcheck") {
@@ -111,6 +105,9 @@ $(document).ready(function() {
     }).catch(function(error) {
         listReplies();
     });
+    
+    getAllCodes();
+
 
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );
@@ -251,6 +248,92 @@ $("#show_bcc_emails").click(function() {
     }
 });
 
+function getAllCodes() {
+    $.ajax({
+        type: "GET",
+        url: get_codes_route,
+        dataType: 'json',
+        success: function(data) {
+            var obj = data.data;
+            // tinymce custom variables plugin
+            addVaribalesPlugin(obj);
+            console.log(data, "data");
+
+        },
+        complete: function(data) {
+            $('.loader_container').hide();
+        },
+        error: function(e) {
+            console.log(e)
+        }
+    });
+}
+
+function addVaribalesPlugin(options) {
+    let items = [];
+    for (let i in options) {
+        items.push({ text: options[i].code, value: options[i].code });
+    }
+
+    tinymce.PluginManager.add('tb_variables', function(editor, url) {
+        var openDialog = function() {
+            return editor.windowManager.open({
+                title: 'Template Builder Short Codes',
+                body: {
+                    type: 'panel',
+                    items: [{
+                        type: 'selectbox',
+                        name: 'variable',
+                        label: 'Select',
+                        items: items,
+                        flex: true
+                    }]
+                },
+                buttons: [{
+                        type: 'cancel',
+                        text: 'Close'
+                    },
+                    {
+                        type: 'submit',
+                        text: 'Save',
+                        primary: true
+                    }
+                ],
+                onSubmit: function(api) {
+                    var data = api.getData();
+                    /* Insert content when the window form is submitted */
+                    editor.insertContent(data.variable);
+                    api.close();
+                }
+            });
+        };
+        /* Add a button that opens a window */
+        editor.ui.registry.addButton('tb_variables', {
+            text: '{Short Codes}',
+            onAction: function() {
+                /* Open window */
+                openDialog();
+            }
+        });
+        /* Adds a menu item, which can then be included in any menu via the menu/menubar configuration */
+        editor.ui.registry.addMenuItem('tb_variables', {
+            text: 'Template Builder Short Codes',
+            onAction: function() {
+                /* Open window */
+                openDialog();
+            }
+        });
+        /* Return the metadata for the help plugin */
+        return {
+            getMetadata: function() {
+                return {
+                    name: 'Template Builder Short Codes',
+                    url: 'http://exampleplugindocsurl.com'
+                };
+            }
+        };
+    });
+}
 
 
 function ticket_attachemnt_view() {

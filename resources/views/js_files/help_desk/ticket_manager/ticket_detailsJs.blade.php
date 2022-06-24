@@ -19,6 +19,8 @@
     var gl_color_notes = 'rgb(255, 230, 177)';
     var user_photo_url = "{{ URL::asset('files/user_photos/user-photo.jpg') }}";
     var update_ticket_route = "{{asset('update_ticket')}}";
+    let get_codes_route = "{{asset('/get_all_short_codes')}}";
+
     // var ticket_attach_path = `{{asset('public/files')}}`;
     // var ticket_attach_path_search = 'public/files';
     var ticket_attach_path = `{{asset('storage')}}`;
