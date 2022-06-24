@@ -245,7 +245,7 @@ class PayrollController extends Controller {
 
                 foreach($todayTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details'><a href='$tkUrl'>$tk->coustom_id</a> &nbsp; Status:  <span style='color:$tk->status_color'>$tk->status_name</span> &nbsp; Priority:  <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> &nbsp; Status:  <span style='color:$tk->status_color'>$tk->status_name</span> &nbsp; Priority:  <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
                 }
 
                 $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
