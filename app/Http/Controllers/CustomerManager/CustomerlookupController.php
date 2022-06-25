@@ -290,7 +290,7 @@ class CustomerlookupController extends Controller
     }
 
     public function customer_lookup(){
-        $customers = Customer::with('company')->where('is_deleted', 0)->where('is+_banned',0)->get();
+        $customers = Customer::with('company')->where('is_deleted', 0)->where('is_banned',0)->get();
 
         $google_key = 0;
         $brand = BrandSettings::first();
