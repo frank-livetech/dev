@@ -3183,6 +3183,11 @@ class HelpdeskController extends Controller
 
                     $customer->is_banned = 1;
                     $customer->save();
+                    $data = array(
+                        "is_deleted" => 1, 
+                       
+                    );
+                    $tickets = Tickets::where('customer_id', $customer->id)->update($data);
                     
                 }else{
                     $response['message'] = 'Cannot spam this ticket.';
@@ -3191,12 +3196,12 @@ class HelpdeskController extends Controller
                     return response()->json($response);
                 }
                 
-                $ticket->trashed = 1;
-                $ticket->updated_at = Carbon::now();
-                $ticket->updated_by = \Auth::user()->id;
-                $ticket->save();
+                // $ticket->trashed = 1;
+                // $ticket->updated_at = Carbon::now();
+                // $ticket->updated_by = \Auth::user()->id;
+                // $ticket->save();
                 
-                $response['message'] = 'User spammed and ticket trashed.';
+                $response['message'] = 'User spammed and tickets Deleted.';
                 $response['success'] = true;
             } else {
                 $response['message'] = 'Missing some parameter!';
