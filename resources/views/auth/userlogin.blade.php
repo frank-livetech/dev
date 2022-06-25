@@ -1,202 +1,158 @@
 <!DOCTYPE html>
-<html dir="ltr">
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
 
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Favicon icon -->
-    @if($settings != null && $settings != " " && $settings->site_favicon != null && $settings->site_favicon !=  " ")
-        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('files/brand_files')}}/{{$settings->site_favicon}}">
-    @endif
-
-    @if($settings != null && $settings != " " && $settings->site_title != null && $settings->site_title !=  " ")
-        <title>{{$settings->site_title}}</title>
-    @else
-        <title>Login Page</title>
-    @endif
-	<link rel="canonical" href="https://www.wrappixel.com/templates/monsteradmin/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+    <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="author" content="PIXINVENT">
+    <title>Customer Login</title>
     @php
         $file_path = $is_live == 1 ? 'public/' : '/';
         $path = $is_live == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
+    <link rel="apple-touch-icon" href="{{asset($file_path . 'files/brand_files')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset($file_path . 'files/brand_files')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+    
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/vendors/css/vendors.min.css')}}">
+    <!-- END: Vendor CSS-->
 
-    <!-- Custom CSS -->
-    <link href="{{asset($path .'css/style.min.css')}}" rel="stylesheet">
-    <style>
-        .footer{
-            position:absolute;
-            bottom:0px;
-            width:100%;
-        }
-        .auth-wrapper .auth-box {
-            box-shadow: none !important;
-        }
-        .auth-wrapper .auth-box #loginform{
-            box-shadow: 1px 0 20px rgb(0 0 0 / 8%) !important;
-        }
-        .checkbox label::before {
-            border:1px solid #a2a2a2ee;
-        }
-    </style>
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/bootstrap-extended.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/colors.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/components.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/themes/dark-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/themes/bordered-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/themes/semi-dark-layout.css')}}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/plugins/forms/form-validation.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/pages/authentication.css')}}">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/css/style.css')}}">
+    <!-- END: Custom CSS-->
+    
 </head>
+<!-- END: Head-->
 
-<body>
-        
-    <div class="main-wrapper">
-        <div class="preloader">
-            <div class="lds-ripple">
-                <div class="lds-pos"></div>
-                <div class="lds-pos"></div>
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static   menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
+    <!-- BEGIN: Content-->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+            <div class="content-header row">
             </div>
-        </div>
-        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" >
-            <div class="auth-box ">
-
-            
-            @if($settings != null && $settings != "")
-                @if($settings->login_logo != null && $settings->login_logo != "")
-                    <img src="{{asset('public/files/brand_files')}}/{{$settings->login_logo}}" class="img-fluid d-block mx-auto" alt="">
-                @else
-                    <img src="{{ asset('files/user_photos/logo.gif')}}" class="img-fluid d-block mx-auto" style="width:100%; height:150px" />
-                @endif
-            @else
-                <img src="{{ asset('files/user_photos/logo.gif')}}" class="img-fluid d-block mx-auto" style="width:100%; height:150px" />
-            @endif
-                
-            <div id="loginform" class="p-4 bg-white rounded">
-                    <div class="logo">
-                        <h4 class="box-title mb-3 font-weight-bold">Sign In </h4>
-                    </div>
-                    @if(Session::has('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                            {{ Session::get('success') }}
+            <div class="content-body">
+                <div class="auth-wrapper auth-cover">
+                    <div class="auth-inner row m-0">
+                        <!-- Brand logo--><a class="brand-logo" href="#">
+                            <img src="{{asset($file_path . 'default_imgs/logo.png')}}" alt="" height="45">
+                            <h2 class="brand-text text-primary ms-1 " style="margin-bottom: 0px;margin-top: 8px">Mylive-Tech</h2>
+                        </a>
+                        <!-- /Brand logo-->
+                        <!-- Left Text-->
+                        <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+                            <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="../../../app-assets/images/pages/login-v2.svg" alt="Login V2" /></div>
                         </div>
-                    @endif
-                    <!-- Form -->
-                    <div class="row" >
-                        <div class="col-12 p-0">
-                            <form class="form-horizontal mt-3 form-material" method="POST" action="{{url('user-login')}}">
-                                @csrf
-                                <div class="form-group mb-3">
-                                    <input name="fcm_token" id="fcm_token" type="hidden">
-                                    <input class="form-control @error('email') is-invalid @enderror" type="email" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-
-                                </div>
-                                <div class="form-group mb-3 d-flex">
-                                    <div class="checkbox checkbox-info float-left pt-0 ml-2 mb-3">
-                                        <input id="checkbox-signup" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <label for="checkbox-signup" class="text-dark pt-1"> Remember me </label>
-                                    </div> 
-                                    <a href="{{url('forgetPassword')}}" id="to-recover" class="text-dark ml-auto mb-3"><i class="fa fa-lock mr-1"></i> Forgot pwd?</a> 
-                                </div>
-                                <div class="form-group text-center">
-                                    <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Log In</button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <p>OR</p>
+                        <!-- /Left Text-->
+                        <!-- Login-->
+                        <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+                            <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+                                <h2 class="card-title fw-bold mb-1">Welcome to Mylive-Tech! 👋</h2>
+                                <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
+                                @if(Session::has('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        {{ Session::get('success') }}
                                     </div>
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-group">
-                                            <a class="oauth-container btn darken-4 white black-text w-100" href="{{url('auth/google')}}" style="text-transform:none">
-                                                <div class="left">
-                                                    <img width="20px" style="" alt="Google sign-in" 
-                                                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-                                                </div>
-                                                Login with Google
-                                            </a>
+                                @endif
+                                <form class="auth-login-form mt-2" action="{{url('user-login')}}" method="POST">
+                                    @csrf
+                                    <div class="mb-1">
+                                        <input name="fcm_token" id="fcm_token" type="hidden">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" placeholder="john@example.com" aria-describedby="email" autocomplete="email" autofocus="" tabindex="1" />
+                                    </div>
+                                    <div class="mb-1">
+                                        <div class="d-flex justify-content-between">
+                                            <label class="form-label" for="login-password">Password</label><a href="{{url('forgetPassword')}}"><small>Forgot Password?</small></a>
+                                        </div>
+                                        <div class="input-group input-group-merge form-password-toggle">
+                                            <input class="form-control form-control-merge @error('password') is-invalid @enderror" id="password" type="password" name="password" placeholder="············" aria-describedby="login-password" autocomplete="current-password" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-group">
-                                            <a class="oauth-container btn darken-4 white black-text w-100" href="{{url('auth/google')}}" style="text-transform:none">
-                                                <div class="left">
-                                                    <img width="20px" style="" alt="Google sign-in" 
-                                                        src="https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/100px-Facebook_f_logo_%282021%29.svg.png" />
-                                                </div>
-                                                Login with Facebook
-                                            </a>
+                                    <div class="mb-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="remember-me" type="checkbox" tabindex="3" />
+                                            <label class="form-check-label" for="remember-me"> Remember Me</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-group">
-                                            <a class="oauth-container btn darken-4 white black-text w-100" href="{{url('auth/google')}}" style="text-transform:none">
-                                                <div class="left">
-                                                    <img width="20px" style="" alt="Google sign-in" 
-                                                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg/69px-Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg.png" />
-                                                </div>
-                                                Login with Outlook 365
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 p-0">
-                                        <div class="form-group mb-3 d-flex">
-                                            <div class=" float-left pt-0 ml-2 mb-3">
-                                                
-                                                <label for="" class="text-dark pt-1"> Don't have an account? </label>
-                                            </div> 
-                                            <a href="{{url('user-register')}}" id="to-recover" class="text-dark ml-auto mb-3"><i class="fa fa-lock mr-1"></i> Register Now</a> 
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-primary w-100" tabindex="4">Sign in</button>
+                                </form>
+                                <p class="text-center mt-2"><span>New on our platform?</span><a href="{{ url('user-register') }}"><span>&nbsp;Create an account</span></a></p>
+                                <div class="divider my-2">
+                                    <div class="divider-text">or</div>
                                 </div>
-                            </form>
+                                <div class="auth-footer-btn d-flex justify-content-center"><a class="btn btn-google" href="{{url('auth/google')}}"><i class="fab fa-google"></i></a><a class="btn btn-facebook white" href="{{url('auth/google')}}"><i data-feather="facebook"></i></a><a class="btn btn-google" href="{{url('auth/google')}}"><i data-feather="mail"></i></a><a class="btn btn-github" href="{{url('auth/google')}}"><i data-feather="github"></i></a></div>
+                            </div>
                         </div>
+                        <!-- /Login-->
                     </div>
                 </div>
             </div>
         </div>
-        
     </div>
+    <!-- END: Content-->
 
-    <footer class="footer">
-        <div class="row">
-            <div class="container">
-                <p class="m-0 text-center">Copyright ©2021 Powered by Live-Tech Company Management System | Our support line number is 1 (888) 361-8511</p>
-            </div>
-        </div>
-    </footer>
-    <script src="{{asset($path . 'js/jquery.min.js')}}"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="{{asset($path . 'js/popper.min.js')}}"></script>
-    <script src="{{asset($path . 'js/firebase.js')}}"></script>
-    <script src="{{asset($path . 'js/bootstrap.min.js')}}"></script>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-messaging.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
 
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!-- BEGIN: Vendor JS-->
+    <script src="{{asset($file_path . 'app-assets/vendors/js/vendors.min.js')}}"></script>
+    <!-- BEGIN Vendor JS-->
 
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
- 
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{{asset($file_path . 'app-assets/vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{{asset($file_path . 'app-assets/js/core/app-menu.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/js/core/app.js')}}"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="{{asset($file_path . 'app-assets/js/scripts/pages/auth-login.js')}}"></script>
+    <!-- END: Page JS-->
+
     <script>
-    $('[data-toggle="tooltip"]').tooltip();
-    $(".preloader").fadeOut();
-
+        $(window).on('load', function() {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
     </script>
 </body>
+<!-- END: Body-->
 
 </html>
