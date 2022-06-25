@@ -584,4 +584,43 @@
             }
         });
     }
+    
+    function spamUser(id){
+        
+        Swal.fire({
+            title: 'Are you sure you want to spam this user? Tickets related will also be trashed!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: 'post',
+                    url: "{{url('spam_user')}}",
+                    data: {
+                        ticket_id:id
+                    },
+                    success: function(data) {
+
+                        if (data.success) {
+                            alertNotification('success', 'Success' , data.message);
+                            window.location.href = "{{route('ticket_management.index')}}";
+                            console.log(data);
+
+                        } else {
+                            
+                        }
+                    },
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                    }
+
+                })
+            }
+        });
+        
+    }
+    
 </script>
