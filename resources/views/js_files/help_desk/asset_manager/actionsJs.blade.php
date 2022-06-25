@@ -1,5 +1,6 @@
 <script type="text/javascript">
     let asset_arr = [];
+    let assetFlag = false;
 
 function get_asset_table_list() {
     $.ajax({
@@ -346,6 +347,7 @@ $("#pass_icon").on('click', function() {
 
 function editAsset(id) {
 
+    console.log(id , 'id');
     $("#update_asset_modal").modal('show');
 
     $.ajax({
@@ -366,17 +368,17 @@ function editAsset(id) {
             if(data.asset != null) {
                 $("#up_asset_title").val(data.asset.asset_title);
                 $("#asset_title_id").val(data.asset.id);
-
-                if(data.asset.customer_id != null) {
-                    $('.asset_customer_id').val(data.asset.customer_id).trigger('change');
-                }else{
-                    $('.asset_customer_id').val("").trigger('change');
-                }
                 
                 if(data.asset.company_id != null) {
                     $('.asset_company_id').val(data.asset.company_id).trigger('change');
                 }else{
                     $('.asset_company_id').val("").trigger('change');
+                }
+
+                if(data.asset.customer_id != null) {
+                    $('.asset_customer_id').val(data.asset.customer_id).trigger('change');
+                }else{
+                    $('.asset_customer_id').val("").trigger('change');
                 }
                 
             }
@@ -962,5 +964,62 @@ function getAssetDetails(id=1) {
 
 // }
 
+
+
+function selectCustomer(value , customerId , companyId) {
+        
+        let root = `<option value="">All</option>`;
+        if (value != '') {
+            $("#"+companyId).empty();
+            let item = customers.find(item => item.id == value);
+            if(item != null) {
+                if(item.company_id != null) {
+                    if(assetFlag) {
+                        $("#"+companyId).empty();
+                        let option = `<option value="${item.company_id}"> ${item.company_name} </option>`;
+                        $("#"+companyId).html(option);
+                    }else{
+                        let option = `<option value="${item.company_id}"> ${item.company_name} </option>`;
+                        $("#"+companyId).html(root+option);
+                    }
+                }
+            }
+        } else {
+            assetFlag = false;
+            $('#'+customerId).empty();
+            let option = ``;
+            for (let data of customers) {
+                option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
+            }
+            $("#"+customerId).html(option);
+        }
+    }
+
+
+    function selectCompany(value , customerId , companyId) {
+        let root = `<option value="">All</option>`;
+
+        if(value != '') {
+            assetFlag = true;
+            let custs = customers.filter(item => item.company_id == value);
+            if(custs.length > 0) {
+                let option = ``;
+                for (let data of custs) {
+                    option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
+                }
+                $('#'+customerId).empty();
+                $("#"+customerId).html(root + option);
+            }
+
+        }else{
+            assetFlag = false;
+            $('#'+companyId).empty();
+            let option = ``;
+            for (let data of companies) {
+                option += `<option value="${data.id}"> ${data.name} </option>`;
+            }
+            $("#"+companyId).html(root + option);
+        }
+    }
 
 </script>

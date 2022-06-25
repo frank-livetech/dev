@@ -335,7 +335,7 @@
                                         <div class="col-md-4 form-group">
                                             <div class="form-group">
                                                 <label> Customer </label>
-                                                <select name="customer_id" id="allCustomer" onchange="selectCustomer(this.value)" class="select2 customerValue">
+                                                <select name="customer_id" id="asset_customer" onchange="selectCustomer(this.value , 'asset_customer','asset_company')" class="select2 customerValue">
                                                     <option value=""> Choose </option>
                                                     @foreach($customers as $customer)
                                                         <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
@@ -346,7 +346,7 @@
                                         <div class="col-md-4 form-group">
                                             <div class="form-group">
                                                 <label> Company </label>
-                                                <select name="company_id" id="allCompany" onchange="selectCompany(this.value)" class="select2 companyValue">
+                                                <select name="company_id" id="asset_company" onchange="selectCompany(this.value , 'asset_customer','asset_company')" class="select2 companyValue">
                                                     <option value=""> Choose </option>
                                                     @foreach($companies as $company)
                                                         <option value="{{$company->id}}"> {{$company->name}} </option>
@@ -502,7 +502,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label> Customer </label>
-                                <select name="asset_customer_id" id="allCustomer1" class="select2 asset_customer_id">
+                                <select name="asset_customer_id" onchange="selectCustomer(this.value , 'edit_asset_customer','edit_asset_company')" id="edit_asset_customer" class="select2 asset_customer_id">
                                     <option value=""> Choose </option>
                                     @foreach($customers as $customer)
                                         <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
@@ -513,7 +513,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label> Company </label>
-                                <select name="asset_company_id" id="allCompany1" class="select2 asset_company_id">
+                                <select name="asset_company_id" onchange="selectCompany(this.value , 'edit_asset_customer','edit_asset_company')" id="edit_asset_company" class="select2 asset_company_id">
                                     <option value=""> Choose </option>
                                     @foreach($companies as $company)
                                         <option value="{{$company->id}}"> {{$company->name}} </option>
