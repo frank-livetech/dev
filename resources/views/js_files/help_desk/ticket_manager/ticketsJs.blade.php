@@ -112,6 +112,67 @@
         })
     });
 
+    function spamTickets(){
+
+        var tickets = [];
+        $("tbody input:checked").each(function() {
+            tickets.push($(this).val());
+        });
+        if (!tickets.length) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'No ticket selected!',
+                showConfirmButton: false,
+                timer: swal_message_time
+            })
+            return false;
+        }
+
+        Swal.fire({
+            title: 'Move selected tickets to trash?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!',
+            showLoaderOnConfirm: true,
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: 'post',
+                    url: move_to_trash_route,
+                    data: {
+                        tickets
+                    },
+                    success: function(data) {
+
+                        if (data.success) {
+                            get_ticket_table_list();
+
+                            // // send mail notification regarding ticket action
+                            // ticket_notify(tickets[tickets.length - 1], 'ticket_update', 'Trashed');
+                        }
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: (data.success) ? 'success' : 'error',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: swal_message_time
+                        });
+
+                        $('.show_tkt_btns').hide();
+                    },
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                    }
+                })
+            }
+        });
+
+    }
+
     function moveToTrash() {
         if (in_recycle_mode) return false;
 

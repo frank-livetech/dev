@@ -65,7 +65,7 @@ class HelpdeskController extends Controller
         $priorities = TicketPriority::all();
         $types = TicketType::all();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
-        $customers = Customer::where('is_deleted', 0)->where('is_banned',0)->get();
+        $customers = Customer::where('is_deleted', 0)->get();
         $ticket_format = TicketSettings::where('tkt_key','ticket_format')->first();
 
         $tickets_followups = TicketFollowUp::where('passed', 0)->where('is_deleted', 0)->get();
@@ -113,7 +113,7 @@ class HelpdeskController extends Controller
         $priorities = TicketPriority::all();
         $types = TicketType::all();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
-        $customers = Customer::where('is_deleted', 0)->where('is_banned',0)->get();
+        $customers = Customer::where('is_deleted', 0)->get();
         $ticket_format = TicketSettings::where('tkt_key','ticket_format')->first();
 
         $tickets_followups = TicketFollowUp::where('passed', 0)->where('is_deleted', 0)->get();
@@ -150,7 +150,7 @@ class HelpdeskController extends Controller
         $types = TicketType::all();
         $companies = Company::all();
         $users = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
-        $customers = Customer::where('is_deleted', 0)->where('is_banned',0)->get();
+        $customers = Customer::where('is_deleted', 0)->get();
 
         $responseTemplates = ResponseTemplate::all();
 
@@ -3157,6 +3157,60 @@ class HelpdeskController extends Controller
         }
     }
 
+    public function spamTickets(Request $request){
+
+        $data  = $request->tickets;
+        $cust_arr = array();
+        try{
+            for($i=0; $i< sizeof($data);$i++) {
+                
+                $del_tkt = Tickets::where('id',$data[$i])->first();
+                $del_tkt->is_deleted = 1;
+                $del_tkt->save();
+
+                $customer = Customer::where('id',$del_tkt->customer_id)->first();
+                $customer->is_deleted = 1;
+                $customer->save();
+
+                if(!array_filter($cust_arr,$customer->id)){
+                    array_push($cust_arr,$customer->id);
+                }
+
+            }
+
+            for($j=0; $j< sizeof($cust_arr);$j++){
+
+                $customer = Customer::where('id',$cust_arr[$i])->first();
+
+                $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+                $action_perform = 'Customer ('.$customer->email.') deleted By '. $name_link;
+                
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Customer' , 'customers' , $customer->id , auth()->id() , $action_perform);
+                
+                // send notification
+                $slug = '';
+                $type = 'Customer Deleted';
+                $title = 'Customer Deleted';
+                $desc = 'Customer ('.$customer->email.') deleted by ' .auth()->user()->name;
+                sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
+            }
+
+            $response['message'] = 'User removed successfully!';
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            return response()->json($response);
+        } catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+
+
+    }
+
     public function spamUser(Request $request){
         
         try {
@@ -3180,15 +3234,13 @@ class HelpdeskController extends Controller
                             "banned_by" => \Auth::user()->id,
                         ]);
                     } 
-
-                    $customer->is_banned = 1;
+                    $customer->is_deleted = 1;
                     $customer->save();
                     $data = array(
                         "is_deleted" => 1, 
                        
                     );
                     $tickets = Tickets::where('customer_id', $customer->id)->update($data);
-                    
                 }else{
                     $response['message'] = 'Cannot spam this ticket.';
                     $response['status_code'] = 500;

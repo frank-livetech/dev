@@ -19,7 +19,7 @@ class Customer extends Model
         'business_residential','cust_type','created_at','updated_at',
         'has_account','deleted_at','is_deleted','cust_state','cust_city','cust_zip',
         'bill_st_add','bill_apt_add','bill_add_country','bill_add_city','bill_add_state',
-        'bill_add_zip','is_bill_add','fb','twitter','insta','pinterest','linkedin', 'po','is_banned'
+        'bill_add_zip','is_bill_add','fb','twitter','insta','pinterest','linkedin', 'po'
     ];
     
     public function user() {
