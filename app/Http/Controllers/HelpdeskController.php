@@ -3180,6 +3180,9 @@ class HelpdeskController extends Controller
                             "banned_by" => \Auth::user()->id,
                         ]);
                     } 
+
+                    $customer->is_banned = 1;
+                    $customer->save();
                     
                 }else{
                     $response['message'] = 'Cannot spam this ticket.';
