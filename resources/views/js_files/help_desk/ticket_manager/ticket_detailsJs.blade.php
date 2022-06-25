@@ -588,7 +588,7 @@
     function spamUser(id){
         
         Swal.fire({
-            title: 'Are you sure you want to spam this user? Data related will also be removed!',
+            title: 'Are you sure you want to spam this user? All data will be removed!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
