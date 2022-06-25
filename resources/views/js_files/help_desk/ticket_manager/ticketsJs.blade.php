@@ -79,8 +79,8 @@
             if (result.value) {
                 $.ajax({
                     type: 'post',
-                    url: move_to_trash_route,
-                    data: { tickets , tkt_del : 1},
+                    url: spam_tickets_route,
+                    data: { tickets },
                     success: function(data) {
 
                         if (data.success) {
