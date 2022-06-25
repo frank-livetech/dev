@@ -65,12 +65,12 @@
                         </a>
                         <!-- /Brand logo-->
                         <!-- Left Text-->
-                        <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+                        <div class="d-none d-lg-flex col-lg-7 align-items-center p-5">
                             <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="{{asset($file_path . 'app-assets/images/pages/register-v2.svg')}}" alt="Register V2" /></div>
                         </div>
                         <!-- /Left Text-->
                         <!-- Register-->
-                        <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+                        <div class="d-flex col-lg-5 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                                 <h2 class="card-title fw-bold mb-1">Adventure starts here 🚀</h2>
                                 <p class="card-text mb-2">Make your app management easy and fun!</p>
