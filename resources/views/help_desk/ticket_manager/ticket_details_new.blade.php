@@ -330,7 +330,7 @@
         text-align: left
     }
     .bor-top img{
-        max-width: 340px
+        max-width: 340px !important
     }
     }
 </style>
