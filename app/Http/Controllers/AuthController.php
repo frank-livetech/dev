@@ -680,68 +680,12 @@ class AuthController extends Controller
                 return redirect()->to('user-login')->with(['success' => 'Registration Completed Successfully']);
             }
         } 
-        // $company = [];
-
-        // $request->validate([
-        //     'first_name' => 'required',
-        //     'last_name' => 'required',
-        //     'email' => 'required|unique:users|email',
-        //     'password' => 'required|required_with:confirm_password|same:confirm_password|min:8',
-        //     'confirm_password' => 'required|min:8',
-        // ]);
-        // $password = Hash::make($request->password);
-        // $alt_pwd = Crypt::encryptString($request->password);
-
-        // $customer = array(
-        //     "name" => $request->first_name .' '. $request->last_name,
-        //     "email" => $request->email,
-        //     "password" => $password,
-        //     "alt_pwd" => $alt_pwd,
-        //     "status" => 1,
-        //     "user_type" => 5,
-        //     "privacy_policy" => ($request->remember == "on" ? 1 : 0),
-        // );
-
-        // $user = User::create($customer);
-
-        // $user_id = $user->id;
-        // $random_no = mt_rand(100000,999999); 
-        // $account_id = $random_no . $user_id;
         
-        // $user->account_id = $account_id;
-        // $user->save();
-
-        // $customer_data = [
-        //     "account_id" => $account_id,
-        //     "first_name" => $request->first_name,
-        //     "last_name" => $request->last_name,
-        //     "email" => $request->email,     
-        //     "username" => $request->email,
-        //     "has_account" => 1
-        // ];
-
-        // Customer::create($customer_data);
-
-        // if($request->company_name != null && $request->company_name != "") {
-        //     $company['name'] = $request->company_name;
-        // }
-        // if($request->address != null && $request->address != "") {
-        //     $company['address'] = $request->address;
-        // }
-        // if($request->phone != null && $request->phone != "") {
-        //     $company['phone'] = $request->phone;
-        // }
-        // if($request->city != null && $request->city != "") {
-        //     $company['cmp_city'] = $request->city;
-        // }
-
-        // if(count($company) > 0) {
-        //     Company::create($company);
-        // }
-
-        // $custCont = new MailController();
-        // $custCont->UserRegisteration($request->email);
-
-        // return redirect()->to('user-login')->with(['success' => 'Registration Completed Successfully']);
-    }
+        public function customerforgetpassword(){
+            $settings = BrandSettings::first();
+            $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            return view('auth.userforgetpassword' , get_defined_vars());
+        }
+    }  
 
