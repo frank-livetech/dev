@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-    <title>Forget Password</title>
+    <title>Reset Password</title>
     <link rel="apple-touch-icon" href=" <link rel="icon" type="image/png" sizes="16x16" href="{{asset('files/brand_files')}}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('files/brand_files')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
