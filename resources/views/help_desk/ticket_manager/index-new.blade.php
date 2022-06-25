@@ -434,7 +434,7 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                                 aria-hidden="true"></i>&nbsp; Merge</button>
                                     </span>
 
-                                    <button type="button" class="btn btn-danger btnDelete" id="btnDelete"
+                                    <button type="button" class="btn btn-danger btnDelete d-none" id="btnDelete"
                                         style="display: none;">
                                         <i class="fas fa-trash-alt"></i>&nbsp;Delete Permanently</button>
 
@@ -467,7 +467,11 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                         <div class="row mt-2">
                             <div class="col-12">
                                 <div class="table-responsive" style="overflow: hidden;">
-                                    <span class="fw-bolder"> <span class="total_tickets">0</span>  ticket selected</span>
+                                    <span class="fw-bolder"> 
+                                        <div class="total_selected_tkts d-none">
+                                            <span class="total_tickets">0</span>  ticket selected</span>
+                                        </div>
+
                                     <table id="ticket-table-list"
                                         class="table table-bordered display mb-0 ticket-table-list">
                                         <thead>

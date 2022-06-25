@@ -86,14 +86,41 @@
             let totalSelectedTickets = $('#ticket-table-list tbody input[type="checkbox"]').length;
 
             let selectedCount = $('.total_tickets').text();
+
+            console.log(totalSelectedTickets , "totalSelectedTickets");
             
             $('#ticket-table-list tbody input[type="checkbox"]').each(function() {
+                
                 if (chck == true) {
                     $(this).prop('checked', true);
-                    $('.total_tickets').text( parseInt(selectedCount) + totalSelectedTickets );
+                    $('.total_tickets').text( totalSelectedTickets );
+                    $('.total_selected_tkts').removeClass('d-none');
+
+                    if(in_recycle_mode) {
+                        $('.btnDelete').removeClass('d-none');
+                        $('#btnSpam').hide();
+                        $('#btnMerge').hide();
+                    }else { 
+                        $('#btnSpam').show();
+                        $('#btnMerge').show();
+                        $('.btnDelete').addClass('d-none')
+                    };
+
                 } else {
                     $(this).prop('checked', false);
-                    $('.total_tickets').text( parseInt(selectedCount) - totalSelectedTickets );
+                    $('.total_tickets').text( 0 );
+
+                    if(in_recycle_mode) {
+                        $('.btnDelete').removeClass('d-none');
+                        $('#btnSpam').hide();
+                        $('#btnMerge').hide();
+                    }else { 
+                        $('#btnSpam').show();
+                        $('#btnMerge').show();
+                        $('.btnDelete').addClass('d-none')
+                    };
+                    $('.btnDelete').addClass('d-none')
+
                 } 
             });
         });
@@ -105,11 +132,27 @@
 
         let selectedCount = $('.total_tickets').text();
 
+        if(in_recycle_mode) {
+            $('.btnDelete').removeClass('d-none');
+            $('#btnSpam').hide();
+            $('#btnMerge').hide();
+        }else { 
+            $('#btnSpam').show();
+            $('#btnMerge').show();
+            $('.btnDelete').addClass('d-none')
+        };
+
+        $('.total_selected_tkts').removeClass('d-none');
+
         if (chck == true) {
             $('.show_tkt_btns').show()
             $('.total_tickets').text( parseInt(selectedCount) + 1);
+            $('.btnDelete').removeClass('d-none');
         }else{
             $('.total_tickets').text( parseInt(selectedCount) - 1);
+            $('.btnDelete').addClass('d-none');
+
+            $('#select-all').prop("checked",false);
         }
 
         var checked_tkt = jQuery(".chkd").length;
@@ -203,6 +246,8 @@
                         toastr.success(data.message, {
                             timeOut: 5000
                         });
+
+                        $('.total_tickets').text('0');
 
                         getLatestLogs();
 
@@ -801,6 +846,7 @@
     }
 
     function getClosedOrTrashedTickets(key) {
+        console.log(key);
         let ret = $.ajax({
             type: "get",
             url: get_tickets_route + '/' + key,
