@@ -65,12 +65,12 @@
                         </a>
                         <!-- /Brand logo-->
                         <!-- Left Text-->
-                        <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+                        <div class="d-none d-lg-flex col-lg-7 align-items-center p-5">
                             <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="{{asset($file_path . 'app-assets/images/pages/login-v2.svg')}}" alt="Login V2" /></div>
                         </div>
                         <!-- /Left Text-->
                         <!-- Login-->
-                        <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+                        <div class="d-flex col-lg-5 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                                 <h2 class="card-title fw-bold mb-1">Welcome to Mylive-Tech! 👋</h2>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
@@ -118,7 +118,7 @@
                                 <div class="divider my-2">
                                     <div class="divider-text">or</div>
                                 </div>
-                                <div class="auth-footer-btn d-flex justify-content-center"><a class="btn btn-google" href="{{url('auth/google')}}"><i class="fab fa-google"></i></a><a class="btn btn-facebook white" href="{{url('auth/google')}}"><i data-feather="facebook"></i></a><a class="btn btn-google" href="{{url('auth/google')}}"><i data-feather="mail"></i></a><a class="btn btn-github" href="{{url('auth/google')}}"><i data-feather="github"></i></a></div>
+                                <div class="auth-footer-btn d-flex justify-content-center"><a class="btn btn-google" href="#"><i class="fab fa-google"></i></a><a class="btn btn-facebook white" href="#"><i data-feather="facebook"></i></a><a class="btn btn-google" href="#"><i data-feather="mail"></i></a><a class="btn btn-github" href="#"><i data-feather="github"></i></a></div>
                             </div>
                         </div>
                         <!-- /Login-->
