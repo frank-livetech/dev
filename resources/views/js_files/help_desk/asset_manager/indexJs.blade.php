@@ -1,7 +1,6 @@
 <script>
-
     // Asset Manager Index SCript Blade
-    
+
     let get_assets_route = "{{asset('/get-assets')}}";
     let del_asset_route = "{{asset('/delete-asset')}}";
     let save_asset_records_route = "{{asset('/save-asset-records')}}";
@@ -21,8 +20,8 @@
 <script src="{{asset('public/js/help_desk/asset_manager/asset.js').'?ver='.rand()}}"></script>
 <script src="{{asset('public/js/help_desk/asset_manager/template.js').'?ver='.rand()}}"></script> -->
 @include('js_files.help_desk.asset_manager.templateJs')
-    @include('js_files.help_desk.asset_manager.actionsJs')
-    @include('js_files.help_desk.asset_manager.assetJs')
+@include('js_files.help_desk.asset_manager.actionsJs')
+@include('js_files.help_desk.asset_manager.assetJs')
 
 <script>
     $(document).ready(function() {
@@ -31,7 +30,7 @@
             alias: "ip",
             greedy: false
         });
-        
+
         getAllTemplate();
     })
 
@@ -50,43 +49,42 @@
                     "pageLength": 10,
                     "bInfo": false,
                     "paging": true,
-                    "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-                        $(nRow).attr('id', 'row__'+aData.id);
+                    "fnCreatedRow": function(nRow, aData, iDataIndex) {
+                        $(nRow).attr('id', 'row__' + aData.id);
                     },
-                    columns: [
+                    columns: [{
+                            "render": function(data, type, full, meta) {
+                                return '-';
+                            }
+                        }, {
+                            "data": null,
+                            "defaultContent": ""
+                        },
                         {
-                        "render": function (data, type, full, meta) {
-                            return '-';
-                        }
-                    },{
-                        "data": null,
-                        "defaultContent": ""
-                    },
-                    {
-                        "render": function (data, type, full, meta) {
-                            return full.title != null ? full.title : '-';
-                        }
-                    },
-                    {
-                        "render": function (data, type, full, meta) {
-                            return `
+                            "render": function(data, type, full, meta) {
+                                return full.title != null ? full.title : '-';
+                            }
+                        },
+                        {
+                            "render": function(data, type, full, meta) {
+                                return `
                                 <div class="d-flex justify-content-center">
                                     <button onclick="editTemplate(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                     <i class="fas fa-pencil-alt"></i></button>&nbsp;
                                     <button onclick="deleteTemplate(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                     <i class="fa fa-trash"></i></button>
                                 </div>`;
-                        }
-                    },
+                            }
+                        },
 
                     ],
                 });
 
-                tbl.on('order.dt search.dt', function () {
+                tbl.on('order.dt search.dt', function() {
                     tbl.column(1, {
                         search: 'applied',
                         order: 'applied'
-                    }).nodes().each(function (cell, i) {
+                    }).nodes().each(function(cell, i) {
                         cell.innerHTML = i + 1;
                     });
                 }).draw();
@@ -104,14 +102,14 @@
         console.log(item, "this");
         let single_input = ``;
         let row = ``;
-        if(item != null) {
+        if (item != null) {
 
-            if(item.fields != null && item.fields.length != 0) {
+            if (item.fields != null && item.fields.length != 0) {
 
                 fields_list_data = item.fields;
 
-                for(let data of item.fields) {
-                    
+                for (let data of item.fields) {
+
                     single_input += `
                         <div class="appends ui-sortable-handle col-md-${data.col_width}" data-id="2" data-col="12" style="opacity: 1;">
                             <div class="card card-hover m-1 style=" box-shadow:="" 0="" 12px="" 24px="" rgb(34="" 41="" 47="" 32%)="" !important;""="">
@@ -129,11 +127,11 @@
                                 </div>
                             </div>
                         </div>`;
-                    
-                    if(data.col_width != 12) {
+
+                    if (data.col_width != 12) {
                         row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
-                    }else{
-                        row =  `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
+                    } else {
+                        row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
                     }
 
                 }
@@ -143,7 +141,7 @@
 
             }
 
-            
+
 
         }
     }
@@ -164,15 +162,17 @@
                     },
                     type: "POST",
                     url: "{{route('delete.assetTemplate')}}",
-                    data: { id:id },
+                    data: {
+                        id: id
+                    },
                     dataType: 'json',
                     success: function(data) {
 
                         if (data.status == 200 && data.success == true) {
-                            alertNotification('success', 'Success' , data.message);
-                            $("#row__"+id).remove();
+                            alertNotification('success', 'Success', data.message);
+                            $("#row__" + id).remove();
                         } else {
-                            alertNotification('error', 'Error' , data.message);
+                            alertNotification('error', 'Error', data.message);
                         }
                     },
                     error: function(e) {
@@ -184,25 +184,57 @@
     }
 
     function selectCustomer(value) {
-        $(".companyValue").empty();
-        let root = `<option value="">Choose</option>`;
-        if(value != '') {
-            let item = customers.find(item => item.id == value );
+        
+        // let root = `<option value="">All</option>`;
+        if (value != '') {
+            $(".companyValue").empty();
+            let item = customers.find(item => item.id == value);
+            console.log(item, "select customer function");
             if(item != null) {
                 if(item.company_id != null) {
-                    let company = companies.find(com => com.id == item.company_id);
-                    let option = `<option value="${company.id}"> ${company.name} </option>`;
-                    $(".companyValue").append(root + option).trigger('change');
+                    
+                    let option = `<option value="${item.company_id}"> ${item.company_name} </option>`;
+                    $(".companyValue").html(option);
+                    $(".companyValue").val(item.company_id).trigger("change");
                 }
             }
-        }else{
+        } else {
+            $('.customerValue').empty();
             let option = ``;
-            for(let data of companies)  {
-                option += `<option value="${data.id}"> ${data.name} </option>`;
+            for (let data of customers) {
+                option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
             }
-            $(".companyValue").append(root + option).trigger('change');
+            $(".customerValue").html(option);
         }
     }
+
+
+    function selectCompany(value) {
+        // let root = `<option value="">All</option>`;
+
+        if(value != '') {
+
+            let custs = customers.filter(item => item.company_id == value);
+            if(custs.length > 0) {
+                let option = ``;
+                for (let data of custs) {
+                    option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
+                }
+                $('.customerValue').empty();
+                $(".customerValue").html( option);
+            }
+
+        }else{
+            $('.companyValue').empty();
+            let option = ``;
+            for (let data of companies) {
+                option += `<option value="${data.id}"> ${data.name} </option>`;
+            }
+            $(".companyValue").html( option);
+        }
+    }
+
+
     // $("#customer_id").on("change" , function() {
     //     $("#company_id").empty();
     //     let root = `<option value="">Choose</option>`;
@@ -224,6 +256,4 @@
     //     }
 
     // });
-  
-
 </script>
