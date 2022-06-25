@@ -19,8 +19,8 @@
     @endif
 
     @php
-        $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
-        $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+        $file_path = $live->sys_value == 1 ? 'public/' : '/';
+        $path = $live->sys_value == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
@@ -52,9 +52,7 @@
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
     <!-- BEGIN: Content-->
-    @php
-        $file_path = $live->sys_value == 1 ? 'public/' : '/';
-    @endphp
+    
     <div class="app-content content ">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
@@ -80,7 +78,7 @@
                             @endif
                             <div id="loginform" class="pt-1">
 
-                                <h4 class="card-title mb-1">Welcome to Mylive-Tech! 👋</h4>
+                                <h4 class="card-title mb-1">Welcome to Mylive-Tech! ðŸ‘‹</h4>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
 
                                 <form class="auth-login-form mt-2" action="{{url('login')}}" method="POST">
