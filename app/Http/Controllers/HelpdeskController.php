@@ -3157,6 +3157,60 @@ class HelpdeskController extends Controller
         }
     }
 
+    public function spamUser(Request $request){
+        
+        try {
+            if($request->has('ticket_id')) {
+                $id = $request->ticket_id;
+                $ticket = Tickets::where('id', $id)->where('is_deleted', 0)->where('trashed',0)->first();
+                if($ticket->is_staff_tkt == 1){
+                    $response['message'] = 'Staff tickets cannot be spammed!';
+                    $response['status_code'] = 500;
+                    $response['success'] = false;
+                    return response()->json($response);
+                }
+                $customer_id = $ticket->customer_id;
+                $customer = Customer::where('id',$customer_id)->first();
+                if($customer){
+                    
+                    $user = SpamUser::where('email',$customer->email)->first();
+                    if(!$user){
+                        SpamUser::create([
+                            "email" => $customer->email ,
+                            "banned_by" => \Auth::user()->id,
+                        ]);
+                    } 
+                    
+                }else{
+                    $response['message'] = 'Cannot spam this ticket.';
+                    $response['status_code'] = 500;
+                    $response['success'] = false;
+                    return response()->json($response);
+                }
+                
+                $ticket->trashed = 1;
+                $ticket->updated_at = Carbon::now();
+                $ticket->updated_by = \Auth::user()->id;
+                $ticket->save();
+                
+                $response['message'] = 'User spammed and ticket trashed.';
+                $response['success'] = true;
+            } else {
+                $response['message'] = 'Missing some parameter!';
+                $response['success'] = false;
+            }
+
+            $response['status_code'] = 200;
+            return response()->json($response);
+        } catch (Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+        
+    }
+
     public function mergeTickets(Request $request) {
         try {
             if($request->has('tickets')) {
