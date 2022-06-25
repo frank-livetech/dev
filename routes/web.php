@@ -45,6 +45,9 @@ Route::post('/login', 'AuthController@postLogin');
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/forgetPassword', 'AuthController@forgetPassword');
+Route::get('/resetpassword', 'AuthController@reset_password');
+Route::get('/user-resetpassword', 'AuthController@userresetpassword');
+
 Route::post('/recoverPassword','AuthController@recoverPassword');
 Route::get('/activate/{email}/{code}','AuthController@changePasswordPage');
 Route::post('/reset_password','AuthController@ResetPassword');
