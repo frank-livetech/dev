@@ -130,7 +130,7 @@
         }
 
         Swal.fire({
-            title: 'Move selected tickets to trash?',
+            title: 'Are you sure you want to spam this user? All data will be removed!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
