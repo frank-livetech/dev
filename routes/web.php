@@ -33,6 +33,7 @@ Route::get('/user-login', 'AuthController@userLogin')->name('user-login');
 Route::post('/user-login', 'AuthController@userPostLogin');
 
 Route::get('/user-register', 'AuthController@userRegister')->name('user-register');
+Route::get('/user-forgetpassword', 'AuthController@customerforgetpassword')->name('user-forgetpassword');
 
 Route::post('/save-user-register', 'AuthController@saveUserDetails')->name('user.register');
 
