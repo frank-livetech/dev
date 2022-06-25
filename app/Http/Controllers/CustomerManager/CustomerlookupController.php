@@ -290,7 +290,7 @@ class CustomerlookupController extends Controller
     }
 
     public function customer_lookup(){
-        $customers = Customer::with('company')->where('is_deleted', 0)->where('is_banned',0)->get();
+        $customers = Customer::with('company')->where('is_deleted', 0)->get();
 
         $google_key = 0;
         $brand = BrandSettings::first();
@@ -323,7 +323,7 @@ class CustomerlookupController extends Controller
     }
 
     public function customersList(){
-        $customers = Customer::with('company')->where('is_deleted', 0)->where('is_banned',0)->orderBy('id','desc')->get();
+        $customers = Customer::with('company')->where('is_deleted', 0)->orderBy('id','desc')->get();
         $response['message'] = 'List Fetched.';
         $response['status_code'] = 200;
         $response['success'] = true;
@@ -470,7 +470,7 @@ class CustomerlookupController extends Controller
 
         $date_format = Session('system_date');
 
-        $customers = Customer::where('id','!=', $customer_id)->where('is_banned',0)->select('email')->get()->toArray();
+        $customers = Customer::where('id','!=', $customer_id)->select('email')->get()->toArray();
 
         $notesCount = 0;
 

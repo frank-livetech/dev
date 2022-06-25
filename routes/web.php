@@ -559,6 +559,7 @@ Route::Post('/get_department_status','HelpdeskController@getDepartmentStatus');
 Route::get('/invoices','HelpdeskController@invoices');
 
 Route::post('/move_to_trash_tkt','HelpdeskController@move_to_trash_tkt');
+Route::post('/spam_tickets','HelpdeskController@spamTickets');
 Route::post('/spam_user','HelpdeskController@spamUser');
 Route::post('/del_tkt','HelpdeskController@del_tkt');
 Route::post('/recycle_tickets','HelpdeskController@recycle_tickets');
