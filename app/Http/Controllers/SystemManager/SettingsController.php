@@ -1430,8 +1430,15 @@ class SettingsController extends Controller
 
     public function delete_banned_users(Request $request) {
         // return dd($request->all());
-        $data   = SpamUser::whereIn('id',$request->id)->get();
-        if( count($data) > 0) {
+        $users   = SpamUser::whereIn('id',$request->id)->get();
+        if( count($users) > 0) {
+            foreach($users as $user){
+                $customer = Customer::where('email',$user->email)->first();
+                if($customer){
+                    $customer->is_banned = 0;
+                    $customer->save();
+                }
+            }
             SpamUser::whereIn('id',$request->id)->delete();
             return response()->json([
                 "status" => 200 , 

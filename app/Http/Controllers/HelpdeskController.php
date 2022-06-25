@@ -65,7 +65,7 @@ class HelpdeskController extends Controller
         $priorities = TicketPriority::all();
         $types = TicketType::all();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
-        $customers = Customer::where('is_deleted', 0)->get();
+        $customers = Customer::where('is_deleted', 0)->where('is_banned',0)->get();
         $ticket_format = TicketSettings::where('tkt_key','ticket_format')->first();
 
         $tickets_followups = TicketFollowUp::where('passed', 0)->where('is_deleted', 0)->get();
@@ -113,7 +113,7 @@ class HelpdeskController extends Controller
         $priorities = TicketPriority::all();
         $types = TicketType::all();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
-        $customers = Customer::where('is_deleted', 0)->get();
+        $customers = Customer::where('is_deleted', 0)->where('is_banned',0)->get();
         $ticket_format = TicketSettings::where('tkt_key','ticket_format')->first();
 
         $tickets_followups = TicketFollowUp::where('passed', 0)->where('is_deleted', 0)->get();
@@ -150,7 +150,7 @@ class HelpdeskController extends Controller
         $types = TicketType::all();
         $companies = Company::all();
         $users = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
-        $customers = Customer::where('is_deleted', 0)->get();
+        $customers = Customer::where('is_deleted', 0)->where('is_banned',0)->get();
 
         $responseTemplates = ResponseTemplate::all();
 
