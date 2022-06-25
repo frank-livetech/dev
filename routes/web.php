@@ -2,8 +2,15 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-// use App\Models\BrandSettings;
+use App\Events\TestPusher;
 
+Route::get('/optimize',function(){
+    Artisan::call('optimize');
+});
+
+Route::get('/config-clear',function(){
+    Artisan::call('config:clear');
+});
 
 Route::get('/', function () {
     if (Auth::user()) {
@@ -16,13 +23,17 @@ Route::get('/', function () {
         return redirect()->intended('/login');
     }
 });
-Route::get('/pusher', 'HomeController@pusher');
+Route::get('/pusher', function(){
+    event(new TestPusher('Im here'));
+});
+
 Route::get('/', 'InstallationController@index');
 Route::post('/installation-data', 'InstallationController@saveInstallation');
 Route::get('/user-login', 'AuthController@userLogin')->name('user-login');
 Route::post('/user-login', 'AuthController@userPostLogin');
 
 Route::get('/user-register', 'AuthController@userRegister')->name('user-register');
+Route::get('/user-forgetpassword', 'AuthController@customerforgetpassword')->name('user-forgetpassword');
 
 Route::post('/save-user-register', 'AuthController@saveUserDetails')->name('user.register');
 
@@ -34,6 +45,9 @@ Route::post('/login', 'AuthController@postLogin');
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/forgetPassword', 'AuthController@forgetPassword');
+Route::get('/resetpassword', 'AuthController@reset_password');
+Route::get('/user-resetpassword', 'AuthController@userresetpassword');
+
 Route::post('/recoverPassword','AuthController@recoverPassword');
 Route::get('/activate/{email}/{code}','AuthController@changePasswordPage');
 Route::post('/reset_password','AuthController@ResetPassword');
@@ -60,10 +74,13 @@ Route::get('/wizard', 'HomeController@wizard');
 
 Route::group ( ['namespace' => 'Chat','middleware' => ['auth','admin']], function () {
     Route::get('/chat', 'LiveChatController@index')->name('chats.index');
+
     Route::post('/send_messages', 'LiveChatController@sendMessage')->name('message.index');
     Route::post('/get_whatapp_messages', 'LiveChatController@getWhatsAppMessage')->name('whatapp.get');
+
     Route::post('/get_web_messages', 'LiveChatController@getWebMessage')->name('webchat.get');
     Route::post('/send_web_messages', 'LiveChatController@sendWebMessages')->name('send.webchat');
+
     Route::get('/get_unread_message', 'LiveChatController@unreadMessages')->name('unread.message');
 });
 // new routes
@@ -542,6 +559,8 @@ Route::Post('/get_department_status','HelpdeskController@getDepartmentStatus');
 Route::get('/invoices','HelpdeskController@invoices');
 
 Route::post('/move_to_trash_tkt','HelpdeskController@move_to_trash_tkt');
+Route::post('/spam_tickets','HelpdeskController@spamTickets');
+Route::post('/spam_user','HelpdeskController@spamUser');
 Route::post('/del_tkt','HelpdeskController@del_tkt');
 Route::post('/recycle_tickets','HelpdeskController@recycle_tickets');
 Route::post('/flag_ticket','HelpdeskController@flag_ticket');
@@ -637,5 +656,5 @@ Route::get('/coming-sOon','DispatchController@coming_soon');
 Route::get('/coming-soon','DispatchController@coming_soon1');
 Route::get('/subscriptions-sync','SubscriptionsController@syncSubscriptions');
 Route::get('/orders-sync','OrdersController@syncOrders');
-//>>>>>>> e0fb9b63fdfd12714214a28014ccac3494e9ed07
+
 Route::post('save-watch','DispatchController@save_watch');

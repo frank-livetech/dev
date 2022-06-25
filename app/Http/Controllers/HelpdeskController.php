@@ -3157,6 +3157,120 @@ class HelpdeskController extends Controller
         }
     }
 
+    public function spamTickets(Request $request){
+
+        $data  = $request->tickets;
+        $cust_arr = array();
+        try{
+            for($i=0; $i< sizeof($data);$i++) {
+                
+                $del_tkt = Tickets::where('id',$data[$i])->first();
+                $del_tkt->is_deleted = 1;
+                $del_tkt->save();
+
+                $customer = Customer::where('id',$del_tkt->customer_id)->first();
+                $customer->is_deleted = 1;
+                $customer->save();
+
+                if(!array_filter($cust_arr,$customer->id)){
+                    array_push($cust_arr,$customer->id);
+                }
+
+            }
+
+            for($j=0; $j< sizeof($cust_arr);$j++){
+
+                $customer = Customer::where('id',$cust_arr[$i])->first();
+
+                $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+                $action_perform = 'Customer ('.$customer->email.') deleted By '. $name_link;
+                
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Customer' , 'customers' , $customer->id , auth()->id() , $action_perform);
+                
+                // send notification
+                $slug = '';
+                $type = 'Customer Deleted';
+                $title = 'Customer Deleted';
+                $desc = 'Customer ('.$customer->email.') deleted by ' .auth()->user()->name;
+                sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
+            }
+
+            $response['message'] = 'User removed successfully!';
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            return response()->json($response);
+        } catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+
+
+    }
+
+    public function spamUser(Request $request){
+        
+        try {
+            if($request->has('ticket_id')) {
+                $id = $request->ticket_id;
+                $ticket = Tickets::where('id', $id)->where('is_deleted', 0)->where('trashed',0)->first();
+                if($ticket->is_staff_tkt == 1){
+                    $response['message'] = 'Staff tickets cannot be spammed!';
+                    $response['status_code'] = 500;
+                    $response['success'] = false;
+                    return response()->json($response);
+                }
+                $customer_id = $ticket->customer_id;
+                $customer = Customer::where('id',$customer_id)->first();
+                if($customer){
+                    
+                    $user = SpamUser::where('email',$customer->email)->first();
+                    if(!$user){
+                        SpamUser::create([
+                            "email" => $customer->email ,
+                            "banned_by" => \Auth::user()->id,
+                        ]);
+                    } 
+                    $customer->is_deleted = 1;
+                    $customer->save();
+                    $data = array(
+                        "is_deleted" => 1, 
+                       
+                    );
+                    $tickets = Tickets::where('customer_id', $customer->id)->update($data);
+                }else{
+                    $response['message'] = 'Cannot spam this ticket.';
+                    $response['status_code'] = 500;
+                    $response['success'] = false;
+                    return response()->json($response);
+                }
+                
+                // $ticket->trashed = 1;
+                // $ticket->updated_at = Carbon::now();
+                // $ticket->updated_by = \Auth::user()->id;
+                // $ticket->save();
+                
+                $response['message'] = 'User spammed and tickets Deleted.';
+                $response['success'] = true;
+            } else {
+                $response['message'] = 'Missing some parameter!';
+                $response['success'] = false;
+            }
+
+            $response['status_code'] = 200;
+            return response()->json($response);
+        } catch (Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+        
+    }
+
     public function mergeTickets(Request $request) {
         try {
             if($request->has('tickets')) {

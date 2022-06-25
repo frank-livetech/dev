@@ -1299,7 +1299,7 @@
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>Zip Code</label>
-                                            <input type="tel" maxlength="5" class="form-control" value="{{$customer->cust_zip}}" id="prof_zip">
+                                            <input type="number" maxlength="5" class="form-control" value="{{$customer->cust_zip}}" id="prof_zip">
                                         </div>
     
                                         <div class="col-md-3 form-group">

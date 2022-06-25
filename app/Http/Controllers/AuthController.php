@@ -107,7 +107,9 @@ class AuthController extends Controller
     }
 
     public function forgetPassword() {
-        return view('auth.passwords.reset');
+        $settings = BrandSettings::first();
+        $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+        return view('auth.passwords.reset',  get_defined_vars());
     }
 
     public function recoverPassword(Request $request) {
@@ -634,85 +636,71 @@ class AuthController extends Controller
     public function userRegister() {
 
         $settings = BrandSettings::first();
-        return view('auth.userRegistration', compact('settings'));
+        $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+        $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+        return view('auth.userRegistration', get_defined_vars());
     }
 
 
     public function saveUserDetails(Request $request) {
-        try {
-            $cust = new CustomerlookupController();
-            $res = $cust->save_customer($request);
+        
+            $request->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:8'
+            ]);
 
-            if($res->original['status'] == 500) {
-                return redirect()->to('user-register')->with(['message' => $res->original['message']]);
+            $customer_data = $request->all();
+            $check_customer = DB::table("customers")->where('email', $request->email)->where('is_deleted', 0)->first();
+
+            $check_user = DB::table("users")->where('email', $request->email)->where('is_deleted', 0)->first();
+
+            if(!empty($check_customer) || !empty($check_user)) {
+                return redirect()->to('user-register')->with(['message' => 'Email already taken']);
+            }
+
+            $newCustomer = Customer::create($customer_data);
+
+            DB::table("users")->insert([
+                "name" => $request->first_name . " " . $request->last_name,
+                "email" => $request->email,
+                "password" => Hash::make($request->password),
+                "alt_pwd" => Crypt::encryptString($request->password),
+                "user_type" => 5,
+                "status" => 1
+            ]);
+
+            // $cust = new CustomerlookupController();
+            // $res = $cust->save_customer($request);
+
+            if('status' == 500) {
+                return redirect()->to('user-register')->with(['message' => 'Registration UnSuccessfull']);
             } else {
                 return redirect()->to('user-login')->with(['success' => 'Registration Completed Successfully']);
             }
-        } catch(Exception $e) {
-            return redirect()->to('user-register')->with(['message' => $e->getMessage()]);
-        }
-        // $company = [];
-
-        // $request->validate([
-        //     'first_name' => 'required',
-        //     'last_name' => 'required',
-        //     'email' => 'required|unique:users|email',
-        //     'password' => 'required|required_with:confirm_password|same:confirm_password|min:8',
-        //     'confirm_password' => 'required|min:8',
-        // ]);
-        // $password = Hash::make($request->password);
-        // $alt_pwd = Crypt::encryptString($request->password);
-
-        // $customer = array(
-        //     "name" => $request->first_name .' '. $request->last_name,
-        //     "email" => $request->email,
-        //     "password" => $password,
-        //     "alt_pwd" => $alt_pwd,
-        //     "status" => 1,
-        //     "user_type" => 5,
-        //     "privacy_policy" => ($request->remember == "on" ? 1 : 0),
-        // );
-
-        // $user = User::create($customer);
-
-        // $user_id = $user->id;
-        // $random_no = mt_rand(100000,999999); 
-        // $account_id = $random_no . $user_id;
+        } 
         
-        // $user->account_id = $account_id;
-        // $user->save();
+        public function customerforgetpassword(){
 
-        // $customer_data = [
-        //     "account_id" => $account_id,
-        //     "first_name" => $request->first_name,
-        //     "last_name" => $request->last_name,
-        //     "email" => $request->email,     
-        //     "username" => $request->email,
-        //     "has_account" => 1
-        // ];
+            $settings = BrandSettings::first();
+            $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            return view('auth.userforgetpassword' , get_defined_vars());
+        }
+        public function reset_password(){
 
-        // Customer::create($customer_data);
+            $settings = BrandSettings::first();
+            $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            return view('auth.reset' , get_defined_vars());
+        }
+        public function userresetpassword(){
 
-        // if($request->company_name != null && $request->company_name != "") {
-        //     $company['name'] = $request->company_name;
-        // }
-        // if($request->address != null && $request->address != "") {
-        //     $company['address'] = $request->address;
-        // }
-        // if($request->phone != null && $request->phone != "") {
-        //     $company['phone'] = $request->phone;
-        // }
-        // if($request->city != null && $request->city != "") {
-        //     $company['cmp_city'] = $request->city;
-        // }
+            $settings = BrandSettings::first();
+            $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            return view('auth.userResetpassword' , get_defined_vars());
+        }
+    }  
 
-        // if(count($company) > 0) {
-        //     Company::create($company);
-        // }
-
-        // $custCont = new MailController();
-        // $custCont->UserRegisteration($request->email);
-
-        // return redirect()->to('user-login')->with(['success' => 'Registration Completed Successfully']);
-    }
-}

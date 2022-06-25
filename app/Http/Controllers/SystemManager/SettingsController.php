@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Spatie\Permission\Models\Role;
 use App\Models\SystemManager\Feature;
-use App\Models\{SystemSetting , TicketSettings , SlaPlan , ProjectType , BrandSettings , Departments, TicketStatus, TicketPriority, TicketType, CustomerType, ResponseTemplate , ResTemplateCat, Notification, SpamUser, DispatchStatus, Tasks,Tickets, DepartmentAssignments};
+use App\Models\{SystemSetting ,Customer, TicketSettings , SlaPlan , ProjectType , BrandSettings , Departments, TicketStatus, TicketPriority, TicketType, CustomerType, ResponseTemplate , ResTemplateCat, Notification, SpamUser, DispatchStatus, Tasks,Tickets, DepartmentAssignments};
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\{Session, DB , Auth, Http};
@@ -1430,8 +1430,8 @@ class SettingsController extends Controller
 
     public function delete_banned_users(Request $request) {
         // return dd($request->all());
-        $data   = SpamUser::whereIn('id',$request->id)->get();
-        if( count($data) > 0) {
+        $users   = SpamUser::whereIn('id',$request->id)->get();
+        if( count($users) > 0) {
             SpamUser::whereIn('id',$request->id)->delete();
             return response()->json([
                 "status" => 200 , 

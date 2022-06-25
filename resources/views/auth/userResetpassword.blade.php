@@ -9,7 +9,7 @@
     <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Customer Register</title>
+    <title>Reset Password</title>
     @php
         $file_path = $is_live == 1 ? 'public/' : '/';
         $path = $is_live == 1 ? 'public/system_files/' : 'system_files/';
@@ -48,8 +48,8 @@
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static   menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
-    <!-- BEGIN: Content-->
-    <div class="app-content content ">
+     <!-- BEGIN: Content-->
+     <div class="app-content content ">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper">
@@ -58,8 +58,8 @@
             <div class="content-body">
                 <div class="auth-wrapper auth-cover">
                     <div class="auth-inner row m-0">
-                        <!-- Brand logo-->
-                        <a class="brand-logo" href="#">
+                         <!-- Brand logo-->
+                         <a class="brand-logo" href="#">
                             <img src="{{asset($file_path . 'default_imgs/logo.png')}}" alt="" height="45">
                             <h2 class="brand-text text-primary ms-1 " style="margin-bottom: 0px;margin-top: 8px">Mylive-Tech</h2>
                         </a>
@@ -70,73 +70,35 @@
                         </div>
                         <!-- /Left Text-->
                         <!-- Register-->
+                
+                        <!-- Reset password-->
                         <div class="d-flex col-lg-5 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-                                <h2 class="card-title fw-bold mb-1">Adventure starts here 🚀</h2>
-                                <p class="card-text mb-2">Make your app management easy and fun!</p>
-                                @if(Session::has('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                        {{ Session::get('success') }}
-                                    </div>
-                                @endif
-                                @if(Session::has('message'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                        {{ Session::get('message') }}
-                                    </div>
-                                @endif
-                                <form class="auth-register-form mt-2" id="registerForm" action="{{route('user.register')}}" method="POST">
-                                    @csrf
+                                <h2 class="card-title fw-bold mb-1">Reset Password 🔒</h2>
+                                <p class="card-text mb-2">Your new password must be different from previously used passwords</p>
+                                <form class="auth-reset-password-form mt-2" action="auth-login-cover.html" method="POST">
                                     <div class="mb-1">
-                                        <input type="hidden" name="customer_login" value="1" required>
-                                        <input type="hidden" name="has_account" value="1" required>
-                                        <label class="form-label" for="first_name">First Name</label>
-                                        <input class="form-control" id="first_name" type="text" name="first_name" placeholder="john" aria-describedby="first_name" autofocus="" tabindex="1" />
-                                        @error('first_name')
-                                            <div class="small text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-1">
-                                        <label class="form-label" for="last_name">Last Name</label>
-                                        <input class="form-control" id="last_name" type="text" name="last_name" placeholder="doe" aria-describedby="last_name" autofocus="" tabindex="1" />
-                                        @error('last_name')
-                                            <div class="small text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-1">
-                                        <label class="form-label" for="email">Email</label>
-                                        <input class="form-control" id="email" type="text" name="email" placeholder="john@example.com" aria-describedby="email" tabindex="2" />
-                                        @error('email')
-                                            <div class="small text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-1">
-                                        <label class="form-label" for="password">Password</label>
+                                        <div class="d-flex justify-content-between">
+                                            <label class="form-label" for="reset-password-new">New Password</label>
+                                        </div>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge" id="password" type="password" name="password" placeholder="············" aria-describedby="password" tabindex="3" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            <input class="form-control form-control-merge" id="reset-password-new" type="password" name="reset-password-new" placeholder="············" aria-describedby="reset-password-new" autofocus="" tabindex="1" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         </div>
                                     </div>
                                     <div class="mb-1">
-                                        <div class="form-check">
-                                            <input class="form-check-input" id="register-privacy-policy" type="checkbox" tabindex="4" />
-                                            <label class="form-check-label" for="register-privacy-policy">I agree to<a href="#">&nbsp;privacy policy & terms</a></label>
+                                        <div class="d-flex justify-content-between">
+                                            <label class="form-label" for="reset-password-confirm">Confirm Password</label>
+                                        </div>
+                                        <div class="input-group input-group-merge form-password-toggle">
+                                            <input class="form-control form-control-merge" id="reset-password-confirm" type="password" name="reset-password-confirm" placeholder="············" aria-describedby="reset-password-confirm" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary w-100" tabindex="5" type="submit">Sign up</button>
+                                    <button class="btn btn-primary w-100" tabindex="3">Set New Password</button>
                                 </form>
-                                <p class="text-center mt-2"><span>Already have an account?</span><a href="{{ url('user-login') }}"><span>&nbsp;Sign in instead</span></a></p>
-                                <div class="divider my-2">
-                                    <div class="divider-text">or</div>
-                                </div>
-                                <div class="auth-footer-btn d-flex justify-content-center"><a class="btn btn-facebook" href="#"><i data-feather="facebook"></i></a><a class="btn btn-twitter white" href="#"><i data-feather="twitter"></i></a><a class="btn btn-google" href="#"><i data-feather="mail"></i></a><a class="btn btn-github" href="#"><i data-feather="github"></i></a></div>
+                                <p class="text-center mt-2"><a href="{{ url('user-login') }}"><i data-feather="chevron-left"></i> Back to login</a></p>
                             </div>
                         </div>
-                        <!-- /Register-->
+                        <!-- /Reset password-->
                     </div>
                 </div>
             </div>

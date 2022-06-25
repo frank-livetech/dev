@@ -426,7 +426,7 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 
                                         <button type="button"
                                             class="btn btn-warning waves-effect waves-float waves-light" id="btnSpam"
-                                            onclick="moveToTrash()"><i class="far fa-question-circle"
+                                            onclick="spamTickets()"><i class="far fa-question-circle"
                                                 aria-hidden="true"></i>&nbsp; Spam</button>
 
                                         <button type="button" class="btn btn-info waves-effect waves-float waves-light"
@@ -881,6 +881,8 @@ let loggedInUser =  @json($loggedInUser);
 let date_format = $('#system_date_format').val();
 
 let move_to_trash_route = "{{asset('/move_to_trash_tkt')}}";
+let spam_tickets_route = "{{asset('/spam_tickets')}}";
+
 let del_ticket_route = "{{asset('/del_tkt')}}";
 let rec_ticket_route = "{{asset('/recycle_tickets')}}";
 let flag_ticket_route = "{{asset('/flag_ticket')}}";
