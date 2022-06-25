@@ -107,7 +107,9 @@ class AuthController extends Controller
     }
 
     public function forgetPassword() {
-        return view('auth.passwords.reset');
+        $settings = BrandSettings::first();
+        $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+        return view('auth.passwords.reset',  get_defined_vars());
     }
 
     public function recoverPassword(Request $request) {
