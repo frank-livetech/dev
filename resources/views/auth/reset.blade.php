@@ -15,7 +15,7 @@
     @if($settings != null && $settings != " " && $settings->site_title != null && $settings->site_title !=  " ")
         <title>{{$settings->site_title}}</title>
     @else
-        <title>Login Page</title>
+        <title>Reset Password</title>
     @endif
 
     @php
