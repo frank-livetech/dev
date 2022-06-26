@@ -27,6 +27,9 @@
     .emp_post{
         color: #000;
     }
+    .dtr-bs-modal .modal-header {
+    flex-direction: unset !important;
+    }
     </style>
 @section('body')
 <div class="app-content content">
@@ -74,22 +77,14 @@
                             </div>      
                         </div>
                         <div class="table-responsive">
-                            <table id="customerTable" class="companyTable table table-striped table-hover table-bordered">
+                            <table id="customerTable" class="companyTable table">
                                 <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                <label class="custom-control-label" for="customCheck1"></label>
-                                            </div>
-                                        </th>
+                                    <tr class="table-light">
+                                        <th></th>
                                         <th class="cust_first">Name</th>
-                                        <th>E-mail</th>
-                                        <th>Phone</th>
                                         <th>Company</th>
-                                        <th>Address</th>
+                                        <th>Phone</th>
                                         <th>Created at</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

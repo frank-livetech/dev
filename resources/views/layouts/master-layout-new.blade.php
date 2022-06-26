@@ -62,7 +62,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/themes/semi-dark-layout.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/imagePreview.css')}}">
-
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css')}}">
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-user.css')}}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet" type="text/css">
@@ -314,6 +315,11 @@
     {{-- phone validation --}}
     <script src="{{asset($file_path . 'app-assets/jquery.caret.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/jquery.mobilePhoneNumber.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/jszip.min.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/pdfmake.min.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/buttons.print.min.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
@@ -323,7 +329,9 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js')}}"></script>
+    {{-- <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js')}}"></script> --}}
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js')}}"></script>
+
     <script src="{{asset($file_path . 'app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/pickers/pickadate/picker.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/pickers/pickadate/picker.date.js')}}"></script>
@@ -331,6 +339,7 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/pickers/pickadate/legacy.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/file-uploaders/dropzone.min.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/buttons.print.min.js')}}"></script>
 
     <!-- <script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
@@ -366,12 +375,14 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-invoice-list.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/cards/card-statistics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/tables/table-datatables-advanced.js')}}"></script>
+    <script src="{{asset($file_path . 'app-assets/js/scripts/tables/table-datatables-basic.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/ui/ui-feather.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/form-select2.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-navs.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script>
-    <!-- END: Page JS-->
+    <!-- END: Page JS-->    
+    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js')}}"></script>
 
     <script src="{{asset($file_path . 'app-assets/js/scripts/extensions/ext-component-toastr.js')}}"></script>
 
