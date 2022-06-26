@@ -170,6 +170,11 @@ class PayrollController extends Controller {
                 $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked;
                 $response['status_code'] = 200;
                 $response['success'] = true;
+                $response['clock_in_time'] = $startTime;
+                $response['clock_out_time'] = Carbon::now();
+                $response['worked_time'] = $clock_in->hours_worked;
+                $response['staff_att_data'] = $staff_att_data;
+        
                 return response()->json($response);
 
             }else{
