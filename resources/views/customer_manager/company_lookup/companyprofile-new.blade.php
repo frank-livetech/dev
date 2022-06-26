@@ -1697,7 +1697,7 @@
                     <div class="row mb-2">
                         <div class="col-md-6">
                             <label> Customer </label>
-                            <select name="asset_customer_id" onchange="selectCustomer(this.value)" class="select2 customerValue asset_customer_id">
+                            <select name="asset_customer_id" onchange="selectCustomer(this.value , 'edit_asst_cust_profile','edit_asst_comp_profile')" id="edit_asst_cust_profile" class="select2 asset_customer_id">
                                 <option value=""> Choose </option>
                                 @foreach($all_customers as $c)
                                     <option value="{{$c->id}}"> {{$c->first_name}} {{$c->last_name}} </option>
@@ -1706,7 +1706,7 @@
                         </div>
                         <div class="col-md-6">
                             <label> Company </label>
-                            <select name="asset_company_id" class="select2 companyValue asset_company_id">
+                            <select name="asset_company_id" onchange="selectCompany(this.value , 'edit_asst_cust_profile','edit_asst_comp_profile')" id="edit_asst_comp_profile" class="select2 companyValue asset_company_id">
                                 <option value=""> Choose </option>
                                 @foreach($all_companies as $comp)
                                     <option value="{{$comp->id}}"> {{$comp->name}} </option>
@@ -1828,26 +1828,6 @@ function loadFile(event) {
         URL.revokeObjectURL(output.src) // free memory
     }
 };
-function selectCustomer(value) {
-    $(".companyValue").empty();
-    let root = `<option value="">Choose</option>`;
-    if(value != '') {
-        let item = customers.find(item => item.id == value );
-        if(item != null) {
-            if(item.company_id != null) {
-                let company = companies.find(com => com.id == item.company_id);
-                let option = `<option value="${company.id}"> ${company.name} </option>`;
-                $(".companyValue").append(root + option).trigger('change');
-            }
-        }
-    }else{
-        let option = ``;
-        for(let data of companies)  {
-            option += `<option value="${data.id}"> ${data.name} </option>`;
-        }
-        $(".companyValue").append(root + option).trigger('change');
-    }
-}
 </script>
 
 @include('js_files.help_desk.asset_manager.templateJs')
