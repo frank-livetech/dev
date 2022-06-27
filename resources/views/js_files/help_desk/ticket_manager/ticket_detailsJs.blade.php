@@ -462,6 +462,7 @@
             var tkt_cc = $("#tkt_cc").val();
             var tkt_bcc = $("#tkt_bcc").val();
             var cust_id = $("#tkt_cust_id").val();
+            var tkt_merge_id = $("#tkt_merge_id").val();
 
             if(!cust_id && temp_sel_customer) cust_id = temp_sel_customer;
 
@@ -485,6 +486,7 @@
                             customer_id : cust_id,
                             tkt_cc: tkt_cc,
                             tkt_bcc: tkt_bcc,
+                            tkt_merge_id:tkt_merge_id
                         },
                         dataType: 'json',
                         beforeSend: function(data) {
