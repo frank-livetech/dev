@@ -5,7 +5,6 @@
 <style>
     a:link, span.MsoHyperlink {
         mso-style-priority: 99;
-        color: inherit !important;
         font-weight: inherit !important;
         text-decoration: none;
     }
@@ -22,10 +21,6 @@
     padding-right: 0 !important;
 }
 
-table.dataTable th {
-    padding: 20px 10px !important;
-    vertical-align: middle !important;
-}
 
 table.dataTable .custom {
     padding-right: 186px !important;
