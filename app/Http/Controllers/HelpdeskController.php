@@ -2960,7 +2960,7 @@ class HelpdeskController extends Controller
     public function update_ticket_customer(Request $request) {
         try {
             $data = $request->all();
-            if($data['tkt_merge_id'] != null){
+            if($data['tkt_merge_id'] == null || empty($data['tkt_merge_id'])){
                 if(isset($data['new_customer'])) {
                     $data['customer_id'] = $this->addTicketCustomer($request);
                     $customer = Customer::find($data["customer_id"]);
