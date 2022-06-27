@@ -41,12 +41,6 @@ body.dark-layout {
 .dark-layout h6 {
   color: #d0d2d6; }
 
-.dark-layout h5.note-head{
-  color: black !important;}
-
- .dark-layout span.text-primary{
-    color: #fff !important;
- } 
 .dark-layout .border,
 .dark-layout .border-top,
 .dark-layout .border-end,
@@ -54,11 +48,8 @@ body.dark-layout {
 .dark-layout .border-start {
   border-color: #3b4253 !important; }
 
-.dark-layout a {
-    color: #fff !important; }
-
 .dark-layout a:hover {
-  color: #fff; }
+  color: #7367f0; }
 
 .dark-layout label {
   color: #d0d2d6; }
@@ -254,7 +245,7 @@ body.dark-layout {
   background-color: #161d31; }
 
 .dark-layout .main-menu .collapse-toggle-icon {
-  color: #fff !important; }
+  color: #7367f0 !important; }
 
 .dark-layout .ps__thumb-x,
 .dark-layout .ps__thumb-y {
@@ -437,52 +428,14 @@ body.dark-layout {
   background-color: #242b3d; }
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item.active .page-link {
-  background-color: #0075be; }
+  background-color: #7367f0; }
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item.active .page-link:hover {
   color: #fff; }
 
-.dark-layout td>a{
-  color: cornflowerblue !important
-}
-.dark-layout td>a:hover{
-  color: white !important
-}
-.dark-layout .main-menu .navbar-header .navbar-brand .brand-text{
-  color:white !important;
-}
 .dark-layout .pagination:not([class*='pagination-']) .page-item .page-link {
   background-color: #242b3d;
   color: #b4b7bd; }
-  .dark-layout #card-sla{
-    color: unset !important;
-    background-color: #283046 !important;
-  }
-.dark-layout .note-class{
-  color: black
-}
-.dark-layout .note-details{
-  color: black
-}
-.dark-layout .drop-dpt{
-background-color: #283046 !important ;
-}
-.dark-layout .tox-menubar{
-  color: white !important;
-  background-color: #283046 !important;
-}
-.dark-layout .tox-mbtn{
-  color: white !important;
-}
-.dark-layout .tox-toolbar{
-  background-color: #283046 !important;
-}
-.dark-layout .tox-tbtn {
-  color: white !important;
-}
-.dark-layout .tox .tox-tbtn svg{
-  fill: white !important; ;
-}
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item .page-link:hover {
   color: #7367f0; }
@@ -805,6 +758,9 @@ background-color: #283046 !important ;
 .dark-layout .counter-value {
   color: #fff; }
 
+.dark-layout .custom-option-item-check:not(:checked) + .custom-option-item {
+  border-color: #3b4253; }
+
 .dark-layout .table td,
 .dark-layout .table th {
   color: #b4b7bd;
@@ -870,12 +826,6 @@ background-color: #283046 !important ;
 .dark-layout .table.table-hover tbody tr th,
 .dark-layout .table.table-hover tbody tr td {
   background-color: unset; }
-
-.dark-layout .table.table-hover-animation tbody tr {
-  background-color: #283046; }
-
-.dark-layout .table.table-hover-animation tbody tr:hover {
-  box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.24); }
 
 .dark-layout .table.table-striped tbody tr:nth-of-type(odd) {
   --bs-table-accent-bg: #242b3d; }
@@ -961,6 +911,9 @@ background-color: #283046 !important ;
 .dark-layout .list-group-circle .list-group-item-action:focus,
 .dark-layout .list-group-circle .list-group-item-action:active {
   background-color: transparent !important; }
+
+.dark-layout .pricing-card .card.basic-pricing, .dark-layout .pricing-card .card.enterprise-pricing, .dark-layout .pricing-card .card.standard-pricing {
+  border-color: #3b4253; }
 
 .dark-layout .content-area-wrapper {
   border-color: #3b4253 !important; }
@@ -1378,9 +1331,6 @@ background-color: #283046 !important ;
 .dark-layout .app-user-view .plan-card {
   border-color: #7367f0 !important; }
 
-.dark-layout .app-user-edit .form-control.error {
-  border-color: #ea5455 !important; }
-
 .dark-layout .customizer {
   background-color: #283046; }
 
@@ -1447,6 +1397,3 @@ background-color: #283046 !important ;
 
 .dark-layout .horizontal-layout .main-menu-content .navbar-nav > li.active .dropdown-menu li.open.active > a {
   color: #b4b7bd !important; }
-.dark-layout div.dataTables_wrapper .dataTables_info{
-  color: #ffffff;
-}

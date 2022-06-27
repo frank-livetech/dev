@@ -113,7 +113,7 @@ $(window).on('load', function () {
   };
 
   statisticsBar = new ApexCharts(statisticsBarChart, statisticsBarChartOptions);
-  // statisticsBar.render();
+  statisticsBar.render();
 
   //------------ Statistics Line Chart ------------
   //-----------------------------------------------
@@ -204,7 +204,7 @@ $(window).on('load', function () {
   };
 
   statisticsLine = new ApexCharts(statisticsLineChart, statisticsLineChartOptions);
-  // statisticsLine.render();
+  statisticsLine.render();
 
   // Subscribed Gained Chart
   // ----------------------------------
@@ -272,7 +272,7 @@ $(window).on('load', function () {
   };
 
   gainedChart = new ApexCharts(lineAreaChart1, gainedChartOptions);
-  // gainedChart.render();
+  gainedChart.render();
 
   // Revenue Generated Chart
   // ----------------------------------
@@ -340,7 +340,7 @@ $(window).on('load', function () {
   };
 
   revenueChart = new ApexCharts(lineAreaChart2, revenueChartOptions);
-  // revenueChart.render();
+  revenueChart.render();
 
   // Quaterly Sales Chart
   // ----------------------------------
@@ -408,7 +408,7 @@ $(window).on('load', function () {
   };
 
   salesChart = new ApexCharts(lineAreaChart3, salesChartOptions);
-  // salesChart.render();
+  salesChart.render();
 
   // Order Received Chart
   // ----------------------------------
@@ -476,7 +476,7 @@ $(window).on('load', function () {
   };
 
   orderChart = new ApexCharts(lineAreaChart4, orderChartOptions);
-  // orderChart.render();
+  orderChart.render();
 
   // Site Traffic Chart
   // ----------------------------------
@@ -552,7 +552,7 @@ $(window).on('load', function () {
   };
 
   trafficChart = new ApexCharts(lineAreaChart5, trafficChartOptions);
-  // trafficChart.render();
+  trafficChart.render();
 
   // Active Users Chart
   // ----------------------------------
@@ -628,7 +628,7 @@ $(window).on('load', function () {
   };
 
   userChart = new ApexCharts(lineAreaChart6, userChartOptions);
-  // userChart.render();
+  userChart.render();
 
   // News Letter Chart
   // ----------------------------------
@@ -704,5 +704,5 @@ $(window).on('load', function () {
   };
 
   newsletterChart = new ApexCharts(lineAreaChart7, newsletterChartOptions);
-  // newsletterChart.render();
+  newsletterChart.render();
 });

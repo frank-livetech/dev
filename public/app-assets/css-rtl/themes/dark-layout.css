@@ -939,6 +939,10 @@ body.dark-layout {
   color : #FFFFFF;
 }
 
+.dark-layout .custom-option-item-check:not(:checked) + .custom-option-item {
+  border-color : #3B4253;
+}
+
 .dark-layout .table td, .dark-layout .table th {
   color : #B4B7BD;
   border-color : #3B4253 !important;
@@ -1004,14 +1008,6 @@ body.dark-layout {
 
 .dark-layout .table.table-hover tbody tr th, .dark-layout .table.table-hover tbody tr td {
   background-color : unset;
-}
-
-.dark-layout .table.table-hover-animation tbody tr {
-  background-color : #283046;
-}
-
-.dark-layout .table.table-hover-animation tbody tr:hover {
-  box-shadow : 0 4px 24px 0 rgba(34, 41, 47, 0.24);
 }
 
 .dark-layout .table.table-striped tbody tr:nth-of-type(odd) {
@@ -1101,6 +1097,10 @@ body.dark-layout {
 
 .dark-layout .list-group-circle .list-group-item:not([class*='list-group-item-']):hover, .dark-layout .list-group-circle .list-group-item:not([class*='list-group-item-']):focus, .dark-layout .list-group-circle .list-group-item:not([class*='list-group-item-']):active, .dark-layout .list-group-circle .list-group-item-action:hover, .dark-layout .list-group-circle .list-group-item-action:focus, .dark-layout .list-group-circle .list-group-item-action:active {
   background-color : transparent !important;
+}
+
+.dark-layout .pricing-card .card.basic-pricing, .dark-layout .pricing-card .card.enterprise-pricing, .dark-layout .pricing-card .card.standard-pricing {
+  border-color : #3B4253;
 }
 
 .dark-layout .content-area-wrapper {
@@ -1597,10 +1597,6 @@ body.dark-layout {
 
 .dark-layout .app-user-view .plan-card {
   border-color : #7367F0 !important;
-}
-
-.dark-layout .app-user-edit .form-control.error {
-  border-color : #EA5455 !important;
 }
 
 .dark-layout .customizer {

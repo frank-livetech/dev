@@ -194,16 +194,16 @@ $(function () {
             return (
               '<div class="d-flex align-items-center col-actions">' +
               '<a class="me-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Send Mail">' +
-              feather.icons['send'].toSvg({ class: 'font-medium-2' }) +
+              feather.icons['send'].toSvg({ class: 'font-medium-2 text-body' }) +
               '</a>' +
-              '<a class="me-1" href="' +
+              '<a class="me-25" href="' +
               invoicePreview +
               '" data-bs-toggle="tooltip" data-bs-placement="top" title="Preview Invoice">' +
-              feather.icons['eye'].toSvg({ class: 'font-medium-2' }) +
+              feather.icons['eye'].toSvg({ class: 'font-medium-2 text-body' }) +
               '</a>' +
               '<div class="dropdown">' +
-              '<a class="btn btn-sm btn-icon px-0" data-bs-toggle="dropdown">' +
-              feather.icons['more-vertical'].toSvg({ class: 'font-medium-2' }) +
+              '<a class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">' +
+              feather.icons['more-vertical'].toSvg({ class: 'font-medium-2 text-body' }) +
               '</a>' +
               '<div class="dropdown-menu dropdown-menu-end">' +
               '<a href="#" class="dropdown-item">' +
@@ -267,19 +267,26 @@ $(function () {
             }
           }),
           type: 'column',
-          renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-            tableClass: 'table',
-            columnDefs: [
-              {
-                targets: 2,
-                visible: false
-              },
-              {
-                targets: 3,
-                visible: false
-              }
-            ]
-          })
+          renderer: function (api, rowIdx, columns) {
+            var data = $.map(columns, function (col, i) {
+              return col.columnIndex !== 2 // ? Do not show row in modal popup if title is blank (for check box)
+                ? '<tr data-dt-row="' +
+                    col.rowIdx +
+                    '" data-dt-column="' +
+                    col.columnIndex +
+                    '">' +
+                    '<td>' +
+                    col.title +
+                    ':' +
+                    '</td> ' +
+                    '<td>' +
+                    col.data +
+                    '</td>' +
+                    '</tr>'
+                : '';
+            }).join('');
+            return data ? $('<table class="table"/>').append('<tbody>' + data + '</tbody>') : false;
+          }
         }
       },
       initComplete: function () {

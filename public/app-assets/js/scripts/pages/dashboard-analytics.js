@@ -35,17 +35,17 @@ $(window).on('load', function () {
   var isRtl = $('html').attr('data-textdirection') === 'rtl';
 
   // On load Toast
-  // setTimeout(function () {
-  //   toastr['success'](
-  //     'You have successfully logged in to Vuexy. Now you can start to explore!',
-  //     '👋 Welcome John Doe!',
-  //     {
-  //       closeButton: true,
-  //       tapToDismiss: false,
-  //       rtl: isRtl
-  //     }
-  //   );
-  // }, 2000);
+  setTimeout(function () {
+    toastr['success'](
+      'You have successfully logged in to Vuexy. Now you can start to explore!',
+      '👋 Welcome John Doe!',
+      {
+        closeButton: true,
+        tapToDismiss: false,
+        rtl: isRtl
+      }
+    );
+  }, 2000);
 
   // Subscribed Gained Chart
   // ----------------------------------
@@ -112,7 +112,7 @@ $(window).on('load', function () {
     }
   };
   gainedChart = new ApexCharts($gainedChart, gainedChartOptions);
-  // gainedChart.render();
+  gainedChart.render();
 
   // Order Received Chart
   // ----------------------------------
@@ -179,7 +179,7 @@ $(window).on('load', function () {
     }
   };
   orderChart = new ApexCharts($orderChart, orderChartOptions);
-  // orderChart.render();
+  orderChart.render();
 
   // Average Session Chart
   // ----------------------------------
@@ -231,7 +231,7 @@ $(window).on('load', function () {
     }
   };
   avgSessionsChart = new ApexCharts($avgSessionsChart, avgSessionsChartOptions);
-  // avgSessionsChart.render();
+  avgSessionsChart.render();
 
   // Support Tracker Chart
   // -----------------------------
@@ -288,7 +288,7 @@ $(window).on('load', function () {
     labels: ['Completed Tickets']
   };
   supportTrackerChart = new ApexCharts($supportTrackerChart, supportTrackerChartOptions);
-  // supportTrackerChart.render();
+  supportTrackerChart.render();
 
   // Sales Chart
   // -----------------------------
@@ -365,5 +365,5 @@ $(window).on('load', function () {
     }
   };
   salesVisitChart = new ApexCharts($salesVisitChart, salesVisitChartOptions);
-  // salesVisitChart.render();
+  salesVisitChart.render();
 });
