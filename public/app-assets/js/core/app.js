@@ -427,20 +427,20 @@ window.colors = {
       $('#dropdown-flag .flag-icon').removeClass().addClass(selectedFlag);
     }
   } else {
-    // i18next.use(window.i18nextXHRBackend).init(
-    //   {
-    //     debug: false,
-    //     fallbackLng: 'en',
-    //     backend: {
-    //       loadPath: assetPath + 'data/locales/{{lng}}.json'
-    //     },
-    //     returnObjects: true
-    //   },
-    //   function (err, t) {
-    //     // resources have been loaded
-    //     jqueryI18next.init(i18next, $);
-    //   }
-    // );
+    i18next.use(window.i18nextXHRBackend).init(
+      {
+        debug: false,
+        fallbackLng: 'en',
+        backend: {
+          loadPath: assetPath + 'data/locales/{{lng}}.json'
+        },
+        returnObjects: true
+      },
+      function (err, t) {
+        // resources have been loaded
+        jqueryI18next.init(i18next, $);
+      }
+    );
 
     // change language according to data-language of dropdown item
     $('.dropdown-language .dropdown-item').on('click', function () {
@@ -962,29 +962,6 @@ window.colors = {
 
   // Navbar Dark / Light Layout Toggle Switch
   $('.nav-link-style').on('click', function () {
-    
-    let find_class = $(this).find(".feather").attr("class");
-    let mood = ``;
-    if(find_class == `feather feather-moon ficon`) {
-      mood = `dark`;
-    }else{
-      mood = `light`;
-    }
-
-    console.log(mood , "mood");
-
-    $.ajax({
-      url: change_theme_url,
-      type: "POST",
-      data: { theme: mood  },
-      dataType: 'json',
-      cache: false,
-      success: function(data) {},
-      failure: function(errMsg) {
-        console.log(errMsg);
-      }
-    });
-
     var currentLayout = getCurrentLayout(),
       switchToLayout = '',
       prevLayout = localStorage.getItem(dataLayout + '-prev-skin', currentLayout);
@@ -995,7 +972,12 @@ window.colors = {
       switchToLayout = 'dark-layout';
     } else {
       // Switch to light
-      switchToLayout = prevLayout ? prevLayout : 'light-layout';
+      // switchToLayout = prevLayout ? prevLayout : 'light-layout';
+      if (currentLayout === prevLayout) {
+        switchToLayout = 'light-layout';
+      } else {
+        switchToLayout = prevLayout ? prevLayout : 'light-layout';
+      }
     }
     // Set Previous skin in local db
     localStorage.setItem(dataLayout + '-prev-skin', currentLayout);

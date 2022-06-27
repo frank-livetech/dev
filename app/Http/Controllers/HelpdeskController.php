@@ -3172,15 +3172,15 @@ class HelpdeskController extends Controller
                 $customer->is_deleted = 1;
                 $customer->save();
 
-                if(!array_filter($cust_arr,$customer->id)){
+                if(!in_array($customer->id, $cust_arr)){
                     array_push($cust_arr,$customer->id);
                 }
-
+                
             }
 
             for($j=0; $j< sizeof($cust_arr);$j++){
 
-                $customer = Customer::where('id',$cust_arr[$i])->first();
+                $customer = Customer::where('id',$cust_arr[$j])->first();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
                 $action_perform = 'Customer ('.$customer->email.') deleted By '. $name_link;
@@ -3197,7 +3197,7 @@ class HelpdeskController extends Controller
 
             }
 
-            $response['message'] = 'User removed successfully!';
+            $response['message'] = 'User(s) removed successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);

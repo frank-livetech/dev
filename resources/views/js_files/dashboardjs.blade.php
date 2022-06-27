@@ -366,6 +366,23 @@
                         alertNotification('success', 'Success' ,data.message );
                     }
                 } else {
+                    $('.clock_btn').remove();
+
+                    btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
+
+                        $('.clockin_timer').hide();
+                        $('.clock_in_section').removeAttr('style');
+
+                        let clockSection = `<div class="d-flex w-100 fw-bolder clock_in_section">
+                            <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
+                            <h5 class="mx-2 fw-bolder text-danger">Do you wish to clock in Now?</h5>
+                            <div class="d-flex">
+                                <a href="#" class="mx-1 text-danger" onclick="staffatt('clockin')"> Yes </a> | <a href="#" class="ms-1 text-danger">Ignore</a>
+                            </div>
+                        </div>`;
+                        $('.clock_btn_div').append(btn);
+
+                        $('.showClockInSection').html(clockSection);
                     alertNotification('error', 'Error' ,data.message );
                 }
             },

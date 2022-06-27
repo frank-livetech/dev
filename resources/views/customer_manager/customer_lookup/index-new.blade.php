@@ -6,16 +6,7 @@
     .float-right{
         float: right
     }
-    table.dataTable>thead>tr>th:not(.sorting_disabled), table.dataTable>thead>tr>td:not(.sorting_disabled){
-        padding-right: unset !important
-    }
-    .cust_first{
-        width: 158px !important;
-    }
-    table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after,
-    table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before{
-        display: none !important
-    }
+   
     .user_name {
         color: #5e50ee;
         text-decoration: none;
@@ -26,6 +17,9 @@
     }
     .emp_post{
         color: #000;
+    }
+    .dtr-bs-modal .modal-header {
+    flex-direction: unset !important;
     }
     </style>
 @section('body')
@@ -73,27 +67,20 @@
                             @endif
                             </div>      
                         </div>
-                        <div class="table-responsive">
-                            <table id="customerTable" class="companyTable table table-striped table-hover table-bordered">
+                    </div>
+                        <div class="card-datatable table-responsive pt-0 table-responsive">
+                            <table id="customerTable" class="companyTable table">
                                 <thead>
-                                    <tr>
-                                        <th>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                <label class="custom-control-label" for="customCheck1"></label>
-                                            </div>
-                                        </th>
+                                    <tr class="table-light">
+                                        <th></th>
                                         <th class="cust_first">Name</th>
-                                        <th>E-mail</th>
-                                        <th>Phone</th>
                                         <th>Company</th>
-                                        <th>Address</th>
+                                        <th>Phone</th>
                                         <th>Created at</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="customerTbody" class="small">
+                                <tbody id="customerTbody" >
                                 
                                 </tbody>
                             </table>
@@ -101,7 +88,7 @@
                                 <div class="loader"></div>
                             </div>
                         </div>
-                    </div>
+                    
                 </div>         
             </div>
         </div>

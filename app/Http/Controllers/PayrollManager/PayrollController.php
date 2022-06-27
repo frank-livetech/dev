@@ -103,78 +103,89 @@ class PayrollController extends Controller {
     public function clockout() {
         try{
             $clock_in = StaffAttendance::where('user_id',\Auth::user()->id)->where('clock_out', NULL)->orderBy('created_at', 'desc')->first();
-            
-            $clock_in->clock_out = Carbon::now();
-            $startTime = Carbon::parse($clock_in->clock_in);
-            $totalDuration = (array) $clock_in->clock_out->diff($startTime);
-    
-            $clock_in->hours_worked = sprintf("%02s:%02s:%02s", ($totalDuration['d']*24)+$totalDuration['h'], $totalDuration['i'], $totalDuration['s']);
-            $clock_in->clocked_out_by = 'user';
-    
-            $clock_in->save();
+            if($clock_in){
 
-            Session::put('clockin',0);
-            Session::put('clockin_time', null );
-            Session::put('staff_data', null );
-            
-            $get_tsk_lst = Tasks::where('task_status','default')->where('assign_to', \Auth::user()->id)->get();
-
-            $template = DB::table("templates")->where('code','staff_clockin')->first();
-
-            foreach($get_tsk_lst as $task){
+                $clock_in->clock_out = Carbon::now();
+                $startTime = Carbon::parse($clock_in->clock_in);
+                $totalDuration = (array) $clock_in->clock_out->diff($startTime);
+        
+                $clock_in->hours_worked = sprintf("%02s:%02s:%02s", ($totalDuration['d']*24)+$totalDuration['h'], $totalDuration['i'], $totalDuration['s']);
+                $clock_in->clocked_out_by = 'user';
+        
+                $clock_in->save();
     
-                $strt_time =  $task->started_at; 
-                $wrk_time = $task->worked_time;
-          
-                $end    = Carbon::now();
-                $startTime = Carbon::parse($strt_time);
-                $endTime = Carbon::parse($end);
-          
-                $total_sec = $startTime->diffInSeconds($endTime)  + $wrk_time;
-    
-                $task->task_status = 'danger';
-                $task->worked_time = $total_sec;
-                $task->save();
+                Session::put('clockin',0);
+                Session::put('clockin_time', null );
+                Session::put('staff_data', null );
                 
-            }
+                // $get_tsk_lst = Tasks::where('task_status','default')->where('assign_to', \Auth::user()->id)->get();
     
-            $notify = new NotifyController();
-            $users_list = User::where('user_type','=',1)->where('is_deleted',0)->get();
-            foreach ($users_list as $key => $value) {
-                $sender_id = \Auth::user()->id;
-                $receiver_id = $value['id'];
-                $slug = 'dashboard';
-                $type = 'attendance';
-                $data = 'data';
-                $title = 'Clock Out';
-                $icon = 'ti-calendar';
-                $class = 'btn-success';
-                $desc = 'Clock Out by '.\Auth::user()->name;
-                
-                $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
-                if(!empty($template)) {
-
-                    $detail = $value['email'] != auth()->user()->email ? 
-                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked out' : 
-                    'Hey, you just clocked out from LT-CMS, here are the details';
+                $template = DB::table("templates")->where('code','staff_clockin')->first();
+    
+                // foreach($get_tsk_lst as $task){
+        
+                //     $strt_time =  $task->started_at; 
+                //     $wrk_time = $task->worked_time;
+              
+                //     $end    = Carbon::now();
+                //     $startTime = Carbon::parse($strt_time);
+                //     $endTime = Carbon::parse($end);
+              
+                //     $total_sec = $startTime->diffInSeconds($endTime)  + $wrk_time;
+        
+                //     $task->task_status = 'danger';
+                //     $task->worked_time = $total_sec;
+                //     $task->save();
                     
-                    $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
-                    $mail = new MailController();
-                    $mail->sendMail( auth()->user()->name .' Clock out' , $temp , 'system_notification@mylive-tech.com', $value['email'], $value['name']);
+                // }
+        
+                $notify = new NotifyController();
+                $users_list = User::where('user_type','=',1)->where('is_deleted',0)->get();
+                foreach ($users_list as $key => $value) {
+                    $sender_id = \Auth::user()->id;
+                    $receiver_id = $value['id'];
+                    $slug = 'dashboard';
+                    $type = 'attendance';
+                    $data = 'data';
+                    $title = 'Clock Out';
+                    $icon = 'ti-calendar';
+                    $class = 'btn-success';
+                    $desc = 'Clock Out by '.\Auth::user()->name;
+                    
+                    $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                    if(!empty($template)) {
+    
+                        $detail = $value['email'] != auth()->user()->email ? 
+                        'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked out' : 
+                        'Hey, you just clocked out from LT-CMS, here are the details';
+                        
+                        $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
+                        $mail = new MailController();
+                        $mail->sendMail( auth()->user()->name .' Clock out' , $temp , 'system_notification@mylive-tech.com', $value['email'], $value['name']);
+                    }
                 }
-            }
+        
+                $staff_att_data = $this->getAllStaffData();
     
-            $staff_att_data = $this->getAllStaffData();
+                $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked;
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                $response['clock_in_time'] = $startTime;
+                $response['clock_out_time'] = Carbon::now();
+                $response['worked_time'] = $clock_in->hours_worked;
+                $response['staff_att_data'] = $staff_att_data;
+        
+                return response()->json($response);
 
-            $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked;
-            $response['status_code'] = 200;
-            $response['success'] = true;
-            $response['clock_in_time'] = $startTime;
-            $response['clock_out_time'] = Carbon::now();
-            $response['worked_time'] = $clock_in->hours_worked;
-            $response['staff_att_data'] = $staff_att_data;
-    
-            return response()->json($response);
+            }else{
+                $response['message'] = 'Already Clocked out!';
+                $response['status_code'] = 500;
+                $response['success'] = false;
+                $response['clock_in_time'] = '';
+                $response['clock_out_time'] = '';
+                return response()->json($response);
+            }
+
         }catch(Exception $e) {
             $response['message'] = $e->getMessage();
             $response['status_code'] = 500;

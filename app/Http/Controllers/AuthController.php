@@ -779,7 +779,12 @@ class AuthController extends Controller
                 return redirect()->to('user-register')->with(['message' => 'Email already taken']);
             }
 
-            $newCustomer = Customer::create($customer_data);
+            DB::table("customers")->insert([
+                "first_name" => $request->first_name,
+                "last_name" => $request->last_name,
+                "email" => $request->email,
+                "username"=> $request->email,
+            ]);
 
             DB::table("users")->insert([
                 "name" => $request->first_name . " " . $request->last_name,
