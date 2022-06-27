@@ -856,15 +856,8 @@ class AuthController extends Controller
                 }
             }
 
-
-            Mail::html($template_html, function( $message ) use($request){
-                $message->to($request->email);
-                $message->subject('Reset Password');
-             });
-
             $mail = new MailController();
             $mail->sendMail("Forget Password", $template_html, 'password-reset@mylive-tech.com', $user->email, $user->name);
-
 
             return back()->with('message', 'We have e-mailed your password reset link!');
         }
