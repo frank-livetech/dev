@@ -33,10 +33,13 @@ Route::get('/user-login', 'AuthController@userLogin')->name('user-login');
 Route::post('/user-login', 'AuthController@userPostLogin');
 
 Route::get('/user-register', 'AuthController@userRegister')->name('user-register');
-Route::get('/user-forgetpassword', 'AuthController@customerforgetpassword')->name('user-forgetpassword');
-Route::get('/user-expiredlink', 'AuthController@expiredlink')->name('expiredlink');
-
 Route::post('/save-user-register', 'AuthController@saveUserDetails')->name('user.register');
+
+Route::get('/user-forgetpassword', 'AuthController@customerforgetpassword')->name('user-forgetpassword');
+Route::post('/user-forgetpassword', 'AuthController@submitCustomerForgetPasswordForm')->name('user-resetpassword');
+Route::get('/user-reset-password/{mail}/{token}', 'AuthController@showCustomerResetPasswordForm')->name('user.reset.password.get');
+Route::post('/user-reset-password', 'AuthController@submitCustomerResetPasswordForm')->name('user.reset.password.post');
+
 
 
 //Auth::routes();
@@ -45,8 +48,14 @@ Route::post('/login', 'AuthController@postLogin');
 
 Route::get('/logout', 'AuthController@logout')->name('logout');
 
-Route::get('/forgetPassword', 'AuthController@forgetPassword');
+Route::get('/forgetPassword', 'AuthController@forgetPassword')->name('forgetpassword');
+Route::post('/forgetpassword', 'AuthController@submitForgetPasswordForm')->name('resetpassword');
+Route::get('/reset-password/{mail}/{token}', 'AuthController@showResetPasswordForm')->name('reset.password.get');
+Route::post('/reset-password', 'AuthController@submitResetPasswordForm')->name('reset.password.post');
+
+
 Route::get('/resetpassword', 'AuthController@reset_password');
+
 Route::get('/user-resetpassword', 'AuthController@userresetpassword');
 
 Route::post('/recoverPassword','AuthController@recoverPassword');
@@ -411,7 +420,7 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
 });
 
-Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth']], function () {
+Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth','customer']], function () {
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
     Route::post('/save_profile_img','HomeController@saveProfileImage')->name('customer.saveProfileImage');

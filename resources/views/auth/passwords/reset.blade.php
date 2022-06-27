@@ -66,7 +66,7 @@
                                 <h4 class="card-title mb-1 mt-1">Forgot Password? 🔒</h4>
                                 <p class="card-text mb-2">Enter your email and we'll send you instructions to reset your password</p>
 
-                                <form class="auth-forgot-password-form mt-2" action="{{url('recoverPassword')}}" method="POST">
+                                <form class="auth-forgot-password-form mt-2" action="{{route('resetpassword')}}" method="POST">
                                     @csrf
                                     <div class="mb-1">
                                         <input name="fcm_token" id="fcm_token" type="hidden">
@@ -76,12 +76,15 @@
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
-                                        @enderror 
-                                        @if (\Session::has('success'))
-                                            <span class="text-success small">
-                                                {!! \Session::get('success') !!}
+                                        @enderror
+                                        @foreach (['warning','success','danger'] as $session)
+                                            @if (\Session::has($session))
+                                            <span class="text-{{$session}} small">
+                                                {{ Session::get($session) }}
                                             </span>
-                                        @endif
+                                            @endif
+                                        @endforeach
+
                                     </div>
                                     <button class="btn btn-primary w-100" tabindex="2" type="submit">Send reset link</button>
                                 </form>
