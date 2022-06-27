@@ -56,7 +56,7 @@ use App\Models\Activitylog;
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
-class HomeController 
+class HomeController
 {
 
      // *************   PROPERTIES   ****************
@@ -74,18 +74,18 @@ class HomeController
         $user = User::where('id', \Auth::user()->id)->first();
         $customer_id = Customer::where('email',$user->email)->first();
         $customer = Customer::with('company')->where('id',$customer_id->id)->first();
-        if(!empty($customer)) {
-            $credential = User::where('email', $customer->email)->first();
-            if(!empty($credential->alt_pwd)) {
-                $customer->password = Crypt::decryptString($credential->alt_pwd);
-            }
-        }
-        
+        // if(!empty($customer)) {
+        //     $credential = User::where('email', $customer->email)->first();
+        //     if(!empty($credential->alt_pwd)) {
+        //         $customer->password = Crypt::decryptString($credential->alt_pwd);
+        //     }
+        // }
+
         $company = Company::get(['id','name']);
         if($type == 'json'){
             return response()->json(['customer' => $customer, 'company' => $company]);
         }
-        
+
         $subscriptions = Subscriptions::where('customer_id', $customer_id->id)->get();
 
         foreach($subscriptions as $key=>$value){
@@ -121,11 +121,11 @@ class HomeController
         $google = DB::Table("integrations")->where("slug","=","google-api")->where('status', 1)->first();
         if(!empty($google)) {
             if($google->details != null & $google->details != '') {
-                
+
                 $detail_values = explode(",",$google->details);
                 $api = substr($detail_values[1], 1, -1);
                 $explode_key = explode(":",$api);
-                $key = substr($explode_key[1], 1, -1);   
+                $key = substr($explode_key[1], 1, -1);
 
                 if($key != null && $key != "" && $key != "null") $google_key = 1;
             }
@@ -133,7 +133,7 @@ class HomeController
 
         $countries = [];
         if($google_key === 0) $countries = DB::Table('countries')->get();
-        
+
         // return view('customer_manager.customer_lookup.customerprofile',compact('prof_state','customer','company', 'countries' , 'states' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format'));
         // return view('customer_manager.customer_lookup.custProfile',compact('prof_state','customer','company', 'countries' , 'states' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format'));
         // return view('customer_manager.customer_lookup.custProfile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
@@ -141,34 +141,34 @@ class HomeController
     }
 
     public function change_theme_mode(Request $request){
-    
+
         $data = $request->all();
-      
+
         try{
             $user = \Auth::user();
             if($data['theme'] == 'light'){
-                
+
                 $user->theme = 'light';
                 $user->save();
-                
+
             }else{
-                
+
                 $user->theme = 'dark';
                 $user->save();
-                
+
             }
             $response['message'] = 'Theme Changed Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);
-            
+
         }catch(Exception $e){
-            
+
             $response['message'] = 'Something Went wrong!';
             $response['status_code'] = 500;
             $response['success'] = false;
             return response()->json($response);
-                
+
         }
     }
 
@@ -202,10 +202,10 @@ class HomeController
     // save ticket
     function saveTicket(Request $request) {
         $customer = Customer::where('email' , auth()->user()->email)->first();
-        
+
         $data = array(
-            "subject" => $request->subject , 
-            "priority" => $request->priority , 
+            "subject" => $request->subject ,
+            "priority" => $request->priority ,
             "dept_id" => $request->dept_id,
             "ticket_detail" => $request->ticket_detail,
             "customer_id" => $customer->id,
@@ -228,7 +228,7 @@ class HomeController
         }
 
         $tkt = Tickets::create($data);
-        
+
         $newG = new GeneralController();
         $tkt->coustom_id = $newG->randomStringFormat(self::CUSTOMID_FORMAT);
         $lt = Tickets::orderBy('created_at', 'desc')->first();
@@ -262,10 +262,10 @@ class HomeController
         $name_link = '<a href="'.url('customer-profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
         $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Created By '. $name_link;
         $log = new ActivitylogController();
-        $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
+        $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
 
         // $helpDesk = new HelpdeskController();
-        
+
         // try {
         //     $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Customer Ticket Create');
         // } catch(Throwable $e) {
@@ -273,8 +273,8 @@ class HomeController
         // }
 
         return response()->json([
-            "status_code" => 200 , 
-            "success" => true , 
+            "status_code" => 200 ,
+            "success" => true ,
             "id" =>  $tkt->id,
             "message" => "Ticket Created Successfully!",
         ]);
@@ -302,7 +302,7 @@ class HomeController
                     if($request->module == 'tickets') {
                         if(!empty($ticket->attachments)) $ticket->attachments .= ','.$request->fileName.'.'.$file->getClientOriginalExtension();
                         else $ticket->attachments = $request->fileName.'.'.$file->getClientOriginalExtension();
-        
+
                         // $response['tkt_updated_at'] = $ticket->attachments;
                         // $response['attachments'] = $ticket->attachments;
 
@@ -340,7 +340,7 @@ class HomeController
         $ticket = Tickets::where('id' , $request->ticket_id)->first();
         $name_link = "";
         $action_perform = "";
-        
+
         if($ticket) {
 
             if($ticket->trashed === 1) {
@@ -359,21 +359,21 @@ class HomeController
                     // }
 
                     $target_dir = 'storage/tickets-replies/'.$req_data['ticket_id'];
-                    
+
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
-    
+
                     // set files
                     foreach ($req_data['inner_attachments'] as $key => $value) {
-                        if (filter_var($value[1], FILTER_VALIDATE_URL)) { 
+                        if (filter_var($value[1], FILTER_VALIDATE_URL)) {
                             $file = file_get_contents($value[1]);
                         }else{
                             $file = base64_decode($value[1]);
                         }
-                        
+
                         $target_src = $target_dir.'/'.$value[0];
-                            
+
                         file_put_contents($target_src, $file);
                     }
                 }
@@ -392,14 +392,14 @@ class HomeController
                     TicketReply::where('id' , $request->id)->update($data);
                     $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
                 }else{
-                    TicketReply::create($data); 
+                    TicketReply::create($data);
                     $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
                 }
 
                 $log = new ActivitylogController();
                 $helpDesk = new HelpdeskController();
 
-                $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);  
+                $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
                 $content = $data['reply'];
                 $action = 'ticket_cus_reply';
 
@@ -424,11 +424,11 @@ class HomeController
                 "success" => false,
             ]);
         }
-    }   
+    }
 
-    // update ticket 
+    // update ticket
     public function cstUpdateTicket(Request $request) {
-        
+
         $data = array();
 
         $ticket = Tickets::find($request->tkt_id);
@@ -465,7 +465,7 @@ class HomeController
                 "tkt_updated_at" => Carbon::now(),
                 "success" => true,
             ]);
-            
+
         }else{
             return response()->json([
                 "message" => 'Something went wrong!',
@@ -478,11 +478,11 @@ class HomeController
 
     // get ticket replies
     public function getTktReplies(Request $request) {
-        
+
         try {
-            
+
             $ticket_replies = TicketReply::where('ticket_id' , $request->id)->with('replyUser')->orderByDesc('id')->get();
-            
+
             $bbcode = new BBCode();
 
             foreach ($ticket_replies as $key => $rep) {
@@ -500,23 +500,23 @@ class HomeController
             }
 
             return response()->Json([
-                "status_code" => 200 , 
-                "success" => true , 
+                "status_code" => 200 ,
+                "success" => true ,
                 "ticket_replies" => $ticket_replies,
             ]);
 
         } catch(Exception $e) {
             return response()->Json([
-                "status_code" => 400 , 
-                "success" => false , 
+                "status_code" => 400 ,
+                "success" => false ,
                 "message" => $e->getMessage(),
             ]);
-            
+
         }
     }
 
     public function getCustomerTickets() {
-        
+
         $customer =  Customer::where('email' , auth()->user()->email)->first();
 
         $open_status = TicketStatus::where('name','Open')->first();
@@ -566,7 +566,7 @@ class HomeController
             $value->lastActivity = Activitylog::where('module', 'Tickets')->where('ref_id', $value->id)->orderBy('created_at', 'desc')->value('created_at');
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
-            
+
             $dd = $this->getSlaDeadlineFrom($value->id);
             $value->sla_rep_deadline_from = $dd[0];
             $value->sla_res_deadline_from = $dd[1];
@@ -593,14 +593,14 @@ class HomeController
                         }
 
                         // $timediff = $nowDate->diffInSeconds($rep, false);
-                        
+
                         // if($timediff < 0){
                         //     $lcnt = true;
                         // }
-                        
+
                     }
                 }
-    
+
                 if(!$lcnt) {
                     if($value->resolution_deadline != 'cleared') {
                         $nowDate = Carbon::now();
@@ -625,14 +625,14 @@ class HomeController
                     }
                 }
             }
-            
+
             $value->is_overdue = 0;
             if($lcnt) {
                 $late_tickets_count++;
                 $value->is_overdue = 1;
             }
         }
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
@@ -644,7 +644,7 @@ class HomeController
     }
 
     public function get_tkt_details($id) {
-        
+
         if(auth()->user()->user_type == 1) {
             return view('unauth');
         }
@@ -668,7 +668,7 @@ class HomeController
         // dd($ticket);
 
         return view('customer.customer_tkt.cust_tkt_details',get_defined_vars());
-     
+
     }
 
     public function getTicketSlaPlan($ticketID) {
@@ -680,7 +680,7 @@ class HomeController
                 "due_deadline" => "",
                 "bg_color" => "#fff"
             );
-    
+
             $settings = $this->getTicketSettings(['default_reply_time_deadline', 'default_resolution_deadline', 'overdue_ticket_background_color']);
 
             $sla_plan['bg_color'] = $settings['overdue_ticket_background_color'];
@@ -696,11 +696,11 @@ class HomeController
 
                     // use default set deadlines in case of empty
                     if(empty($sla_plan['reply_deadline'])) $sla_plan['reply_deadline'] = $settings['default_reply_time_deadline'];
-                    
+
                     if(empty($sla_plan['due_deadline'])) $sla_plan['due_deadline'] = $settings['default_resolution_deadline'];
                 }
             }
-    
+
             return $sla_plan;
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
@@ -739,7 +739,7 @@ class HomeController
 
             $logs = Activitylog::where('ref_id', $ticketID)->where('module', 'Tickets')->where('table_ref', 'sla_res_deadline_from')->orderBy('created_at', 'desc')->first();
             $deadlines[1] = empty($logs) ? $ticket->created_at : $logs->created_at;
-            
+
             return $deadlines;
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
@@ -810,7 +810,7 @@ class HomeController
             "is_bill_add" => $request->is_bill_add,
 
         );
-        
+
         $customer = Customer::find($request->customer_id);
         $old_email = $customer->email;
 
@@ -847,7 +847,7 @@ class HomeController
         $customer = Customer::where('id', $request->customer_id)->update($data);
         if($customer) {
             $is_user = User::where("email", $old_email)->first();
-            
+
             $pwd = Str::random(15);
             if($request->has('password')) {
                 if(!empty($request->password)) {
@@ -883,43 +883,43 @@ class HomeController
                             "user_type" => 5,
                             "status" => 1
                         ]);
-                        
+
                     }
                 }
             }
         }
-            
+
         return response()->json([
-            'status_code' => 200, 
-            'success' => true, 
+            'status_code' => 200,
+            'success' => true,
             'message' => 'Customer updated successfully!',
         ]);
     }
 
     // update customer profile pic
     public function saveProfileImage(Request $request) {
-        
+
         if($request->profile_img != null) {
             if($request->hasFile('profile_img')){
 
-                $customer = Customer::where('email', auth()->user()->email)->first();               
-                
+                $customer = Customer::where('email', auth()->user()->email)->first();
+
                 if($customer) {
 
                     $image = $request->file('profile_img');
                     $imageName = $_FILES['profile_img']['name'];
-    
+
                     $imageName = strtolower($imageName);
                     $imageName = str_replace(" ","_",$imageName);
-                
+
                     $target_dir = 'storage/customers';
-    
+
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
-    
+
                     $image->move($target_dir, $imageName);
-                                        
+
                     $customer->avatar_url = $target_dir . '/' . $imageName;
                     $customer->save();
 

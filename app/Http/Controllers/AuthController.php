@@ -53,34 +53,34 @@ class AuthController extends Controller
     public function handleGoogleCallback()
     {
         try {
-    
+
             $user = Socialite::driver('google')->stateless()
             ->setHttpClient(new \GuzzleHttp\Client(['verify' => false]))
             ->user();
-     
-            
+
+
             $finduser = User::where('google_id', $user->id)->first();
-     
+
             if($finduser){
-     
+
                 Auth::login($finduser);
-    
+
                 return redirect()->intended('home');
-     
+
             }else{
-                
 
-                
-                
 
-               
-                                    
+
+
+
+
+
                     $url = $user->avatar_original;
                     $contents = file_get_contents($url);
                     $folder ='files/user_photos/';
                     $name = $folder.time().'.jpg';
                     Storage::disk('public')->put($name, $contents,'public');
-              
+
 
 
                 $newUser = User::create([
@@ -91,26 +91,145 @@ class AuthController extends Controller
                     'user_type' => 5,
                     'password' => bcrypt('123456dummy')
                 ]);
-                
-    
+
+
                 Auth::login($newUser);
-                
+
                 return redirect()->intended('myprofile/' . $user->name);
-     
+
                 // return redirect('/home');
             }
-    
+
         } catch (Exception $e) {
             $settings = BrandSettings::first();
             return view('auth.login', compact('settings'));
         }
     }
 
-    public function forgetPassword() {
+    public function forgetPassword()
+    {
         $settings = BrandSettings::first();
         $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
         return view('auth.passwords.reset',  get_defined_vars());
     }
+
+    /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function submitForgetPasswordForm(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+        ]);
+
+        $token = \Str::random(64);
+
+        $resetLink = DB::table('password_resets')
+                            ->where([
+                                'email' => $request->email,
+                            ])->get();
+
+        if(count($resetLink) != 0){
+            return redirect()->back()->with('danger', 'We have already e-mailed you password reset link!');
+        }
+
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        $mail_template = DB::table('templates')->where('code','reset_password')->first();
+        if(empty($mail_template)) {
+            throw new Exception('Template not found');
+        }
+
+        $template_html = '';
+        if(!empty($mail_template->template_html)) {
+            if(str_contains($mail_template->template_html, '{User-Name}')) {
+                $link = '<a href="'.route("reset.password.get",[$request->email,$token]).'">Reset Password</a>';
+                $template_html =  str_replace('{User-Name}', User::where('email',$request->email)->first()->name ?? '', $mail_template->template_html);
+                $template_html =  str_replace('{User-forget-link}',$link , $template_html);
+            }
+        }
+
+
+        Mail::html($template_html, function( $message ) use($request){
+            $message->to($request->email);
+            $message->subject('Reset Password');
+            });
+
+
+        return back()->with('success', 'We have e-mailed your password reset link!');
+    }
+
+        /**
+     * Show customer reset password form
+     *
+     * @return response()
+     */
+    public function showResetPasswordForm($email,$token)
+    {
+        $tokenCreated = DB::table('password_resets')
+                            ->where([
+                                'email' => $email,
+                                'token' => $token
+                            ]);
+
+
+        if(count($tokenCreated->get())!=0){
+
+            $expired = Carbon::parse($tokenCreated->get()[0]->created_at)->addSeconds(config('auth.passwords.users.expire')*60)->isPast();
+
+            if($expired){
+                $tokenCreated->delete();
+                dd('d');
+                return view();
+            }
+
+            return view('auth.userResetpassword', ['token' => $token,'email' => $email, 'is_live' => 0]);
+        }
+
+        return redirect()->to('user-login');
+
+    }
+
+    /**
+     * customer passowrd reset
+     *
+     * @return response()
+     */
+    public function submitResetPasswordForm(Request $request)
+    {
+
+        $request->validate([
+            'email' => 'required|email|exists:users',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required'
+        ]);
+
+        $updatePassword = DB::table('password_resets')
+                            ->where([
+                                'email' => $request->email,
+                                'token' => $request->token
+                            ])
+                            ->first();
+
+        if(!$updatePassword){
+            return back()->withInput()->with('error', 'Invalid token!');
+        }
+
+        $user = User::where('email', $request->email)
+                    ->update(['password' => Hash::make($request->password)]);
+
+        DB::table('password_resets')->where(['email'=> $request->email])->delete();
+
+        return redirect('/login')->with('message', 'Your password has been changed!');
+    }
+
+
 
     public function recoverPassword(Request $request) {
 
@@ -171,7 +290,7 @@ class AuthController extends Controller
 
         if(str_contains($template, '{User-Name}')) {
             $content = DB::table('templates')->where('code', 'reset_password')->first();
-            
+
             if(!empty($content)) {
                 $content = $content->template_html;
                 $this->replaceShortCodes($data_list, $content,$user, $token);
@@ -186,14 +305,14 @@ class AuthController extends Controller
             if(str_contains($template, $value->code)) {
                 $template = str_replace($value->code," ", $template);
             }
-        }    
-        return html_entity_decode($template);          
+        }
+        return html_entity_decode($template);
     }
 
     public function replaceShortCodes($data_list, &$template, $user, $token) {
 
         $reset_btn = '<a href="' . URL::to('/') . '/' . 'activate/' . $user->email . '/ ' . $token . '">Click Here</a>';
-        
+
         foreach ($data_list as $key => $data) {
 
             if($data['module'] == 'User' && str_contains($template, '{User-Name}')) {
@@ -214,7 +333,7 @@ class AuthController extends Controller
                 $k = str_replace('_', ' ', $key);
                 $k = ucwords($k);
                 $k = str_replace(' ', '-', $k);
-    
+
                 if(!is_array($value) && !is_object($value)) {
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
                 }
@@ -326,7 +445,7 @@ class AuthController extends Controller
                 if (Auth::attempt($credentials, $request->has('remember'))) {
                     // Authentication passed...
                     if (isset($request->fcm_token)) {
-                        
+
                         if ($user->device_token != NULL && $user->device_token != '') {
                             $fcm_array = json_decode($user->device_token);
                             $token = $request->fcm_token;
@@ -395,7 +514,7 @@ class AuthController extends Controller
 
                     $depts = $this->listPermissions(\Auth::user()->id);
                     Session::put('depts', $depts);
-                    
+
                     Session::put('menus', $role_features->sortBy('sequence'));
 
                     $currentDate = Carbon::now();
@@ -441,46 +560,46 @@ class AuthController extends Controller
                     }
 
                     $visuals = DB::table("visual_settings")->where('created_by',\Auth::user()->id)->get();
-        
+
                     $light_key = array();
                     $light_value = array();
-            
+
                     $dark_key = array();
                     $dark_value = array();
-            
+
                     $button_key = array();
                     $button_value = array();
-            
+
                     if($visuals) {
-            
+
                         foreach($visuals as $visual) {
-            
+
                             if($visual->mode == "Light") {
                                 array_push($light_key, $visual->vs_key);
                                 array_push($light_value, $visual->vs_value);
-                            } 
-                            
+                            }
+
                             if($visual->mode == "dark") {
                                 array_push($dark_key, $visual->vs_key);
                                 array_push($dark_value, $visual->vs_value);
-                            } 
-            
+                            }
+
                             if($visual->mode == "button") {
                                 array_push($button_key, $visual->vs_key);
                                 array_push($button_value, $visual->vs_value);
-                            } 
-            
+                            }
+
                         }
 
                         $light_mode = array_combine($light_key, $light_value);
                         $dark_mode = array_combine($dark_key, $dark_value);
                         $button = array_combine($button_key, $button_value);
-    
+
                         Session::put('light_mode',$light_mode);
                         Session::put('dark_mode',$dark_mode);
                         Session::put('button',$button);
                     }
-            
+
                     return redirect()->intended('home');
                 } else {
                     return back()->withInput()->withErrors(['email' => 'Invalid credentials.']);
@@ -490,12 +609,12 @@ class AuthController extends Controller
             return back()->withInput()->withErrors(['email' => 'No such user exist.']);
         }
     }
-    
+
     private function listPermissions($uid) {
-    
+
         $dept_assignments = DepartmentAssignments::where('user_id', $uid)->get()->pluck('dept_id')->toArray();
-        // return $dept_assignments;   
-        $departments = Departments::all();    
+        // return $dept_assignments;
+        $departments = Departments::all();
         $statuses = TicketStatus::orderBy('seq_no', 'Asc')->get();
         $assigned_depts = array();
         foreach ($departments as $dept) {
@@ -511,12 +630,12 @@ class AuthController extends Controller
                 }
                 $dept->statuses = $detp_statuses;
                 array_push($assigned_depts,$dept);
-                
+
             }else{
 
             }
         }
-            
+
         return $assigned_depts;
     }
 
@@ -532,6 +651,7 @@ class AuthController extends Controller
 
         // $remember = ($request->remember == 'on') ? true : false;
         $user = User::where('email', $request->email)->first();
+        // $user = Customer::where('email', $request->email)->first();
         if ($user) {
             if ($user->is_deleted == 1) {
                 return back()->withInput()->withErrors(['email' => 'No such user exist.']);
@@ -605,7 +725,7 @@ class AuthController extends Controller
                     if (\Auth::user()->user_type == 5) {
                         return redirect()->intended('myprofile/' . $user->account_id);
                     }
-                    
+
                 } else {
                     return back()->withInput()->withErrors(['email' => 'Invalid credentials.']);
                 }
@@ -618,32 +738,31 @@ class AuthController extends Controller
     public function logout(Request $request) {
 
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
-        
         Session::flush();
         if( Auth::check()){
             Auth::logout();
         }
-        
-        return redirect()->route($route);
+
+        return redirect()->to($route);
     }
 
     public function userLogin() {
         $settings = BrandSettings::first();
         $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
-        $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+        $is_live  = $live != null ?  (int)$live->sys_value : 0;
         return view('auth.userlogin', get_defined_vars());
     }
     public function userRegister() {
 
         $settings = BrandSettings::first();
         $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
-        $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+        $is_live  = $live != null ?  (int)$live->sys_value : 0;
         return view('auth.userRegistration', get_defined_vars());
     }
 
 
     public function saveUserDetails(Request $request) {
-        
+
             $request->validate([
                 'first_name' => 'required',
                 'last_name' => 'required',
@@ -679,28 +798,146 @@ class AuthController extends Controller
             } else {
                 return redirect()->to('user-login')->with(['success' => 'Registration Completed Successfully']);
             }
-        } 
-        
+        }
+
         public function customerforgetpassword(){
 
             $settings = BrandSettings::first();
             $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
-            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            $is_live  = $live != null ?  (int)$live->sys_value : 0;
+
             return view('auth.userforgetpassword' , get_defined_vars());
         }
+         /**
+         * Write code on Method
+         *
+         * @return response()
+         */
+        public function submitCustomerForgetPasswordForm(Request $request)
+        {
+            // dd($request->all());
+            $request->validate([
+                'email' => 'required|email|exists:users',
+            ]);
+
+            $token = \Str::random(64);
+
+            $resetLink = DB::table('password_resets')
+                                ->where([
+                                    'email' => $request->email,
+                                ])->get();
+
+            if(count($resetLink) != 0){
+                return redirect()->back()->with('error', 'We have already e-mailed you password reset link!');
+            }
+
+            DB::table('password_resets')->insert([
+                'email' => $request->email,
+                'token' => $token,
+                'created_at' => Carbon::now()
+            ]);
+
+            $mail_template = DB::table('templates')->where('code','reset_password')->first();
+            if(empty($mail_template)) {
+                throw new Exception('Template not found');
+            }
+
+            $template_html = '';
+            if(!empty($mail_template->template_html)) {
+                if(str_contains($mail_template->template_html, '{User-Name}')) {
+                    $link = '<a href="'.route("user.reset.password.get",[$request->email,$token]).'">Reset Password</a>';
+                    $template_html =  str_replace('{User-Name}', User::where('email',$request->email)->first()->name ?? '', $mail_template->template_html);
+                    $template_html =  str_replace('{User-forget-link}',$link , $template_html);
+                }
+            }
+
+
+            Mail::html($template_html, function( $message ) use($request){
+                $message->to($request->email);
+                $message->subject('Reset Password');
+             });
+
+
+            return back()->with('message', 'We have e-mailed your password reset link!');
+        }
+
+         /**
+         * Show customer reset password form
+         *
+         * @return response()
+         */
+        public function showCustomerResetPasswordForm($email,$token)
+        {
+            $tokenCreated = DB::table('password_resets')
+                                ->where([
+                                    'email' => $email,
+                                    'token' => $token
+                                ]);
+
+            if(count($tokenCreated->get())!=0){
+
+                $expired = Carbon::parse($tokenCreated->get()[0]->created_at)->addSeconds(config('auth.passwords.users.expire')*.10)->isPast();
+
+                if($expired){
+                    $tokenCreated->delete();
+                    return view();
+                }
+
+                return view('auth.userResetpassword', ['token' => $token,'email' => $email, 'is_live' => 0]);
+            }
+
+            return redirect()->to('user-login');
+
+        }
+
+        /**
+       * customer passowrd reset
+       *
+       * @return response()
+       */
+        public function submitCustomerResetPasswordForm(Request $request)
+        {
+
+            $request->validate([
+                'email' => 'required|email|exists:users',
+                'password' => 'required|string|min:6|confirmed',
+                'password_confirmation' => 'required'
+            ]);
+
+            $updatePassword = DB::table('password_resets')
+                                ->where([
+                                    'email' => $request->email,
+                                    'token' => $request->token
+                                ])
+                                ->first();
+
+            if(!$updatePassword){
+                return back()->withInput()->with('error', 'Invalid token!');
+            }
+
+            $user = User::where('email', $request->email)
+                        ->update(['password' => Hash::make($request->password)]);
+
+            DB::table('password_resets')->where(['email'=> $request->email])->delete();
+
+            return redirect('/user-login')->with('message', 'Your password has been changed!');
+        }
+
         public function reset_password(){
 
             $settings = BrandSettings::first();
             $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
-            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            $is_live  = $live != null ?  (int)$live->sys_value : 0;
             return view('auth.reset' , get_defined_vars());
         }
         public function userresetpassword(){
 
             $settings = BrandSettings::first();
             $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
-            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            $is_live  = $live != null ?  (int)$live->sys_value : 0;
             return view('auth.userResetpassword' , get_defined_vars());
         }
-    }  
+
+
+    }
 

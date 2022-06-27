@@ -65,12 +65,16 @@
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
                                 <h2 class="card-title fw-bold mb-1">Forgot Password? 🔒</h2>
                                 <p class="card-text mb-2">Enter your email and we'll send you instructions to reset your password</p>
-                                <form class="auth-forgot-password-form mt-2" action="auth-reset-password-cover.html" method="POST">
+                                <form class="auth-forgot-password-form mt-2" action="{{route('user-resetpassword')}}" method="POST">
+                                    @csrf
                                     <div class="mb-1">
                                         <label class="form-label" for="forgot-password-email">Email</label>
-                                        <input class="form-control" id="forgot-password-email" type="text" name="forgot-password-email" placeholder="john@example.com" aria-describedby="forgot-password-email" autofocus="" tabindex="1" />
+                                        <input class="form-control" id="forgot-password-email" name="email" type="email" name="forgot-password-email" placeholder="john@example.com" aria-describedby="forgot-password-email" autofocus="" tabindex="1" />
+                                        @if (Session::has('message'))
+                                            <p class="text-success">{{Session::get('message')}}</p>
+                                        @endif
                                     </div>
-                                    <button class="btn btn-primary w-100" tabindex="2">Send reset link</button>
+                                    <button class="btn btn-primary w-100" type="submit" tabindex="2">Send reset link</button>
                                 </form>
                                 <p class="text-center mt-2"><a href="{{ url('user-login') }}"><i data-feather="chevron-left"></i> Back to login</a></p>
                             </div>

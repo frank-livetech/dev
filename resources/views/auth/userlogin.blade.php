@@ -17,7 +17,7 @@
     <link rel="apple-touch-icon" href="{{asset($file_path . 'files/brand_files')}}">
     <link rel="shortcut icon" type="image/x-icon" href="{{asset($file_path . 'files/brand_files')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
-    
+
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/vendors/css/vendors.min.css')}}">
     <!-- END: Vendor CSS-->
@@ -41,7 +41,7 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/css/style.css')}}">
     <!-- END: Custom CSS-->
-    
+
 </head>
 <!-- END: Head-->
 
@@ -75,7 +75,7 @@
                                 <h2 class="card-title fw-bold mb-1">Welcome to Mylive-Tech! 👋</h2>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
                                 @if(Session::has('success'))
-                                    
+
                                         <div class="demo-spacing-0">
                                             <div class="alert alert-primary alert-dismissible fade show" role="alert">
                                                 <div class="alert-body">
@@ -84,7 +84,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                             </div>
                                         </div>
-                                    
+
                                 @endif
                                 <form class="auth-login-form mt-2" action="{{url('user-login')}}" method="POST">
                                     @csrf
@@ -108,7 +108,7 @@
                                     </div>
                                     <div class="mb-1">
                                         <div class="form-check">
-                                            <input class="form-check-input" id="remember-me" type="checkbox" tabindex="3" />
+                                            <input class="form-check-input" name="remember" id="remember-me" type="checkbox" tabindex="3" />
                                             <label class="form-check-label" for="remember-me"> Remember Me</label>
                                         </div>
                                     </div>
