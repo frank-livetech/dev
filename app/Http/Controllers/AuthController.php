@@ -26,6 +26,7 @@ use App\Models\Departments;
 use App\Models\DepartmentAssignments;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\StaffAttendance;
+use App\Models\SystemSetting;
 use Carbon\Carbon;
 // use DB;
 
@@ -185,8 +186,7 @@ class AuthController extends Controller
 
             if($expired){
                 $tokenCreated->delete();
-                dd('d');
-                return view();
+                return view('auth.userexpired',['url' => 'login','live' =>  SystemSetting::where('sys_key','is_live')->first()]);
             }
 
             return view('auth.userResetpassword', ['token' => $token,'email' => $email, 'is_live' => 0]);
@@ -820,7 +820,6 @@ class AuthController extends Controller
          */
         public function submitCustomerForgetPasswordForm(Request $request)
         {
-            // dd($request->all());
             $request->validate([
                 'email' => 'required|email|exists:users',
             ]);
@@ -880,12 +879,10 @@ class AuthController extends Controller
                                 ]);
 
             if(count($tokenCreated->get())!=0){
-
-                $expired = Carbon::parse($tokenCreated->get()[0]->created_at)->addSeconds(config('auth.passwords.users.expire')*.10)->isPast();
-
+                $expired = Carbon::parse($tokenCreated->get()[0]->created_at)->addSeconds(config('auth.passwords.users.expire')*60)->isPast();
                 if($expired){
                     $tokenCreated->delete();
-                    return view();
+                    return view('auth.userexpired',['url' => 'user-login','live' => SystemSetting::where('sys_key','is_live')->first()]);
                 }
 
                 return view('auth.userResetpassword', ['token' => $token,'email' => $email, 'is_live' => 0]);
