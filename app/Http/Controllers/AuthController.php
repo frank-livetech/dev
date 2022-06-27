@@ -693,6 +693,12 @@ class AuthController extends Controller
             $is_live  = $live != null ?  (int)$live->sys_value : 0; 
             return view('auth.userforgetpassword' , get_defined_vars());
         }
+        public function expiredlink(){
+            $settings = BrandSettings::first();
+            $live = DB::table("sys_settings")->where('sys_key','is_live')->first();
+            $is_live  = $live != null ?  (int)$live->sys_value : 0; 
+            return view('auth.userexpired' , get_defined_vars());
+        }
         public function reset_password(){
 
             $settings = BrandSettings::first();
