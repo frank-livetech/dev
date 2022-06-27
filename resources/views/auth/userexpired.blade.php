@@ -66,7 +66,7 @@
                             <h2 class="mb-1">Reset link expired! 🔐</h2>
                             <p class="mb-2">
                                 Link expired please try again or login.
-                            </p><a class="btn btn-primary mb-1 btn-sm-block" href="{{ url('user-login') }}">Back to login</a><img class="img-fluid" src="{{asset($file_path . 'app-assets/images/pages/not-authorized.svg')}}" alt="Not authorized page" />
+                            </p><a class="btn btn-primary mb-1 btn-sm-block" href="{{ url($url) }}">Back to login</a><img class="img-fluid" src="{{asset($file_path . 'app-assets/images/pages/not-authorized.svg')}}" alt="Not authorized page" />
                         </div>
                     </div>
                 </div>
