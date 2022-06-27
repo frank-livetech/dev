@@ -34,6 +34,7 @@ Route::post('/user-login', 'AuthController@userPostLogin');
 
 Route::get('/user-register', 'AuthController@userRegister')->name('user-register');
 Route::get('/user-forgetpassword', 'AuthController@customerforgetpassword')->name('user-forgetpassword');
+Route::get('/user-expiredlink', 'AuthController@expiredlink')->name('expiredlink');
 
 Route::post('/save-user-register', 'AuthController@saveUserDetails')->name('user.register');
 

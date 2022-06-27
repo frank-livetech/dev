@@ -711,7 +711,7 @@
                 <span class="text-dark"><a href="${ticket_details_route}/${val['coustom_id']}" class="text-body">${custom_id}</a></span>
             </td>
             <td class='text-center'>${prior}</td>
-            <td><a href="customer-profile/${val['customer_id']}" style="color:black">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
+            <td><a href="customer-profile/${val['customer_id']}" class="text-body">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
             <td>${ val['lastReplier'] != null ? val['lastReplier'] : val['creator_name']}</td>
             <td class='text-center'>${replies}</td>
             <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
