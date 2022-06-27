@@ -120,7 +120,7 @@ $(function () {
   if (userProfileToggle.length) {
     userProfileToggle.on('click', function () {
       userProfileSidebar.addClass('show');
-      // overlay.addClass('show');
+      overlay.addClass('show');
     });
   }
 
@@ -160,11 +160,7 @@ $(function () {
 
   // auto scroll to bottom of Chat area
   chatsUserList.find('li').on('click', function () {
-
-    console.log(userChats , "chat");
-    console.log(userChats[0].scrollHeight , "height");
-
-    userChats.animate({ scrollTop: userChats[0].scrollHeight }, 1000);
+    userChats.animate({ scrollTop: userChats[0].scrollHeight }, 400);
   });
 
   // Main menu toggle should hide app menu

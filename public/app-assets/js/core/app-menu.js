@@ -7,11 +7,6 @@
   Author: Pixinvent
   Author URL: hhttp://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
-
-
-/* checking comment */
-
-
 (function (window, document, $) {
   'use strict';
 
@@ -541,6 +536,7 @@
         // If Dropdown Menu
         dropdownMenu.removeClass('dropdown').addClass('has-sub');
         dropdownMenu.find('a').removeClass('dropdown-toggle nav-link');
+        dropdownMenu.find('a').attr('data-bs-toggle', '');
         dropdownMenu.children('ul').find('a').removeClass('dropdown-item');
         dropdownMenu.find('ul').removeClass('dropdown-menu');
         dropdownSubMenu.removeClass().addClass('has-sub');
@@ -811,29 +807,19 @@
       }
 
       $('.main-menu-content').on('mouseleave', function () {
-        // alert();
         if ($body.hasClass('menu-collapsed')) {
           $('.main-menu-content').children('span.menu-title').remove();
           $('.main-menu-content').children('a.menu-title').remove();
           $('.main-menu-content').children('ul.menu-content').remove();
-          
         }
         $('.hover', '.navigation-main').removeClass('hover');
       });
 
       // If list item has sub menu items then prevent redirection.
-      // $('.navigation-main li.has-sub').on('click', function (e) {
-      //   $(this).addClass('navbarCustomBorder');
-      // });
-
       $('.navigation-main li.has-sub > a').on('click', function (e) {
         e.preventDefault();
       });
     },
-
-
-
-    
 
     /**
      * Ensure an admin submenu is within the visual viewport.
@@ -895,7 +881,6 @@
 
       $.app.nav._bindAnimationEndEvent($listItem, function () {
         $listItem.removeClass('open');
-        // $listItem.removeClass('navbarCustomBorder');
         $.app.nav._clearItemStyle($listItem);
       });
 

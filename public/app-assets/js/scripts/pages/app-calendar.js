@@ -12,7 +12,7 @@
 
 // RTL Support
 var direction = 'ltr',
-  assetPath = '/app-assets/';
+  assetPath = '../../../app-assets/';
 if ($('html').data('textdirection') == 'rtl') {
   direction = 'rtl';
 }

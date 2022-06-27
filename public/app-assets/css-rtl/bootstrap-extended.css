@@ -203,30 +203,6 @@ pre code {
   cursor : pointer;
 }
 
-.table-hover-animation {
-  background-color : #F8F8F8;
-}
-
-.table-hover-animation thead th {
-  border-bottom : 0;
-}
-
-.table-hover-animation th, .table-hover-animation td {
-  border : 0;
-}
-
-.table-hover-animation tbody tr {
-  -webkit-transition : all 0.25s ease;
-          transition : all 0.25s ease;
-  background-color : #FFFFFF;
-}
-
-.table-hover-animation tbody tr:hover {
-  -webkit-transform : translateY(-4px);
-      -ms-transform : translateY(-4px);
-          transform : translateY(-4px);
-}
-
 .card .table {
   margin-bottom : 0;
   border-bottom-right-radius : 0.357rem;
@@ -245,10 +221,12 @@ pre code {
   border-bottom-left-radius : 0.357rem;
 }
 
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .table-hover-animation tr:hover {
-    border-bottom-color : #EBE9F1;
-  }
+.table.table-flush-spacing thead tr > td:first-child, .table.table-flush-spacing tbody tr > td:first-child {
+  padding-right : 0;
+}
+
+.table.table-flush-spacing thead tr > td:last-child, .table.table-flush-spacing tbody tr > td:last-child {
+  padding-left : 0;
 }
 
 .col-form-label, .col-form-label-lg, .col-form-label-sm {
@@ -467,7 +445,6 @@ textarea.form-control-lg {
 
 .form-switch .form-check-label .switch-text-left, .form-switch .form-check-label .switch-text-right, .form-switch .form-check-label .switch-icon-left, .form-switch .form-check-label .switch-icon-right {
   position : absolute;
-  cursor : pointer;
   -webkit-user-select : none;
      -moz-user-select : none;
       -ms-user-select : none;
@@ -643,6 +620,12 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
 
 .btn.waves-input-wrapper {
   padding : 0;
+}
+
+.btn-pinned {
+  position : absolute;
+  top : 1.2rem;
+  left : 0.7rem;
 }
 
 @media (max-width: 767.98px) {
@@ -3040,6 +3023,20 @@ ul.list-inline.list-inline-pipe > li + li:before {
     margin-left : 0.2rem !important;
     margin-right : 0.2rem;
     margin-bottom : 3rem;
+  }
+}
+
+.modal-refer-earn .modal-refer-earn-step svg {
+  height : 2.5rem;
+  width : 2.5rem;
+}
+
+@media (max-width: 991.98px) {
+  #shareProject .list-group .dropdown-toggle {
+    padding : 0.5rem;
+  }
+  #shareProject .list-group .dropdown-toggle::after {
+    right : 0;
   }
 }
 

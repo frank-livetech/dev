@@ -494,13 +494,12 @@ function get_all_customers() {
                             '</div>' +
                             '</div>' +
                             '<div class="d-flex flex-column">' +
-                            '<a href="customer-profile/' + (full.id != null ? full.id : '-') + '" class="user_name text-truncate"><span class="fw-bold">' +
+                            '<a href="customer-profile/' + (full.id != null ? full.id : '-') + '" class="user_name text-truncate text-body"><span class="fw-bolder">' +
                                 (full.first_name != null ? full.first_name : '-') + ' ' + (full.last_name != null ? full.last_name : '-') +
                             '</span></a>' +
-                            '<small class="emp_post text-muted"><a href="mailto:' + (full.email != null ? full.email : '-') + '" class="user_name text-truncate"><span class="fw-bold">'
-                                + (full.email != null ? full.email : '-') +
-                            '</span>'  
-                            '</a></small>' +
+                            '<small class="emp_post text-muted">'
+                                + (full.email != null ? full.email : '-') +  
+                            '</small>' +
                             '</div>' +
                         '</div>';
                         return $row_output;
@@ -586,19 +585,19 @@ function get_all_customers() {
               extend: 'csv',
               text: feather.icons['file-text'].toSvg({ class: 'font-small-4 me-50' }) + 'Csv',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [1, 2, 3, 4] }
             },
             {
               extend: 'excel',
               text: feather.icons['file'].toSvg({ class: 'font-small-4 me-50' }) + 'Excel',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [1, 2, 3, 4] }
             },
             {
               extend: 'copy',
               text: feather.icons['copy'].toSvg({ class: 'font-small-4 me-50' }) + 'Copy',
               className: 'dropdown-item',
-              exportOptions: { columns: [1, 2, 3, 4, 5] }
+              exportOptions: { columns: [1, 2, 3, 4] }
             }
           ],
           init: function (api, node, config) {
