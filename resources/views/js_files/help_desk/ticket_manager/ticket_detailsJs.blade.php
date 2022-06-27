@@ -495,19 +495,28 @@
                         },
                         success: function(data) {
                             if (data.status_code == 200 && data.success == true) {
-                                alertNotification('success', 'Success' , data.message);
-                                $("#pro_edit").modal('hide');
-                                ticket_customer = data.data;
-                                temp_sel_customer = ticket_customer.id;
-                                $("#staff_as_customer").css('display','none');
-                                $(".type_bdge").text('User')
-                                // $("#tkt_cust_id").val(cid);
-                                $('#cst-name').text(ticket_customer.first_name+' '+ticket_customer.last_name);
-                                $('#cst-email').text(ticket_customer.email);
-                                $('#cst-direct-line').text(ticket_customer.phone);
+                                if(data.message == 'Ticket merged successfully'){
 
-                                // ticket_customer.company_id = comp;
-                                setCustomerCompany();
+                                    alertNotification('success', 'Success' , data.message);
+                                    window.location.href = "{{route('ticket_management.index')}}";
+
+                                }else{
+
+                                    alertNotification('success', 'Success' , data.message);
+                                    $("#pro_edit").modal('hide');
+                                    ticket_customer = data.data;
+                                    temp_sel_customer = ticket_customer.id;
+                                    $("#staff_as_customer").css('display','none');
+                                    $(".type_bdge").text('User')
+                                    // $("#tkt_cust_id").val(cid);
+                                    $('#cst-name').text(ticket_customer.first_name+' '+ticket_customer.last_name);
+                                    $('#cst-email').text(ticket_customer.email);
+                                    $('#cst-direct-line').text(ticket_customer.phone);
+
+                                    // ticket_customer.company_id = comp;
+                                    setCustomerCompany();
+
+                                }
                                 
                             } else {
                                 alertNotification('error', 'Error' , data.message );
