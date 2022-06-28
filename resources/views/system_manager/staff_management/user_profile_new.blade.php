@@ -1494,6 +1494,8 @@
 @section('scripts')
     
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
+
     <!-- <script src="{{asset( $file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
 
     @include('js_files.system_manager.staff_management.staff_profileJs')
