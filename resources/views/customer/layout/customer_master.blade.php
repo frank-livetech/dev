@@ -84,7 +84,12 @@
     <!-- <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
   <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script> -->
     <!-- END: Material Design CDNS-->
-
+<style>
+    .nav-toggle {
+    position: absolute;
+    top: -17px;
+    right: 0;}
+</style>
     @stack('css')
 </head>
 <!-- END: Head-->

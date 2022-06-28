@@ -69,7 +69,7 @@
                                     @csrf
                                     <div class="mb-1">
                                         <label class="form-label" for="forgot-password-email">Email</label>
-                                        <input class="form-control" id="forgot-password-email" name="email" type="email" name="forgot-password-email" placeholder="" aria-describedby="forgot-password-email" autofocus="" tabindex="1" />
+                                        <input class="form-control" id="forgot-password-email" name="email" type="email" name="forgot-password-email" aria-describedby="forgot-password-email" autofocus="" tabindex="1" />
                                         @if (Session::has('message'))
                                             <p class="text-success">{{Session::get('message')}}</p>
                                         @endif
