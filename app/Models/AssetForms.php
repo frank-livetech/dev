@@ -12,6 +12,6 @@ class AssetForms extends Model
     ];
 
     public function fields() {
-        return $this->hasMany(AssetFields::class);
+        return $this->hasMany(AssetFields::class)->where('is_deleted',0);
     }
 }
