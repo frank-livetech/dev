@@ -148,8 +148,8 @@ class HomeController
     }
     public function getasset(){
         $query = Assets::query();
-        
-        $assets = $query->where('is_deleted', 0)->where('customer_id', Auth::user()->id)->with(['template','asset_fields','customer','company'])->get();
+        $customer = Customer::where('email',Auth::user()->email)->first();
+        $assets = $query->where('is_deleted', 0)->where('customer_id', $customer->id)->with(['template','asset_fields','customer','company'])->get();
 
         foreach($assets as $asset) {
             $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->first();
