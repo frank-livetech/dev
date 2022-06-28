@@ -219,8 +219,9 @@ function showAssetDetails(id) {
 
                     asset_field_tr += `
                         <tr>
-                            <td class="fw-bolder"> ${data.label} </td>
-                            <td>${key != null ? key : '-'} ${key != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+key+'`)" style="float:right"></i>': ''}</td>
+                            <td class="fw-bolder" width="170"> ${data.label} </td>
+                            <td width="300px">${key != null ? key : '-'}</td>
+                            <td>${key != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+key+'`)" style="float:left"></i>': ''}</td>
                         </tr>`;
 
                 }
@@ -235,9 +236,9 @@ function showAssetDetails(id) {
                                 <tbody>
                                    
                                     <tr>
-                                        <td class="fw-bolder"> Asset Type </td>
-                                        <td>${item.template.title != null ? item.template.title : '---'} ${item.template.title != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.template.title+'`)" style="float:right"></i>': ''}</td>
-                                        
+                                        <td class="fw-bolder" width="170"> Asset Type </td>
+                                        <td width="300px">${item.template.title != null ? item.template.title : '---'} </td>
+                                        <td>${item.template.title != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.template.title+'`)" style="float:left"></i>': ''}</td>
                                     </tr>
                                     ${asset_field_tr}
                                 </tbody>
