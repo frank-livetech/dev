@@ -295,8 +295,10 @@ $("#update_user").submit(function (event) {
   
 
     // var formData = $("#update_user").serialize()  + "&user_id=" + user_id;
+    var content = tinyMCE.activeEditor.getContent();
     var formData = new FormData(this);
     formData.append('user_id' , user_id);
+    formData.append('signature' , content);
 
     $.ajax({
         type: $(this).attr('method'),
