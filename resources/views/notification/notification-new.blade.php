@@ -131,5 +131,9 @@ svg {
 
 @endsection
 @section('scripts')
+<script>
 
+feather.replace();
+
+</script>
 @endsection

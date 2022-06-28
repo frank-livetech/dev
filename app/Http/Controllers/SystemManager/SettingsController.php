@@ -1373,7 +1373,7 @@ class SettingsController extends Controller
         // if( auth()->user()->user_type == 1) {
         //     $notifications = Notification::whereNotNull('noti_title')->orderbyDesc('id')->get();
         // }else{
-            $notifications = Notification::whereNotNull('noti_title')->where('receiver_id', auth()->id() )->orderbyDesc('id')->get();
+            $notifications = Notification::whereNotNull('noti_title')->where('receiver_id', auth()->id() )->orderbyDesc('id')->paginate(50);
         // }
 
         Notification::where('receiver_id', auth()->id() )->update(['read_at' => Carbon::now()]);
