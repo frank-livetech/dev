@@ -85,7 +85,7 @@
                                             <label class="form-label" for="reset-password-new">New Password</label>
                                         </div>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge" id="reset-password-new" type="password" name="password" placeholder="············" aria-describedby="reset-password-new" autofocus="" tabindex="1" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            <input class="form-control form-control-merge" id="reset-password-new" type="password" name="password" aria-describedby="reset-password-new" autofocus="" tabindex="1" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                             @if ($errors->has('password'))
                                                 <span class="text-danger">{{ $errors->first('password') }}</span>
                                             @endif

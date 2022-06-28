@@ -91,7 +91,7 @@
                                     <div class="mb-1">
                                         <input name="fcm_token" id="fcm_token" type="hidden">
                                         <label class="form-label" for="email">Email</label>
-                                        <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" placeholder="john@example.com" aria-describedby="email" autocomplete="email" autofocus="" tabindex="1" />
+                                        <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="email" autocomplete="email" autofocus="" tabindex="1" />
                                     </div>
                                     <div class="mb-1">
                                         <div class="d-flex justify-content-between">
