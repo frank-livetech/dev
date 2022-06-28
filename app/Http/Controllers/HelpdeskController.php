@@ -2835,7 +2835,7 @@ class HelpdeskController extends Controller
                         $type = 'ticket_notes';
                         $data = 'data';
                         $title = \Auth::user()->name.' mentioned You ';
-                        $icon = 'fa fa-tag';
+                        $icon = 'at-sign';
                         $class = 'btn-success';
                         $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
                         
