@@ -602,7 +602,6 @@ Route::post('/update_asset_manager','HelpDesk\AssetManagerController@editAssetMa
 Route::get('/get-all-templates','HelpDesk\AssetManagerController@getAllTemplates');
 Route::post('/delete-template','HelpDesk\AssetManagerController@deleteTemplates')->name('delete.assetTemplate');
 
-Route::post('/save-asset-template','HelpDesk\AssetManagerController@save_form');
 Route::Post('/publish-ticket-reply','HelpdeskController@save_ticket_reply');
 Route::post('/delete-ticket-reply','HelpdeskController@delete_ticket_reply');
 
@@ -651,6 +650,7 @@ Route::post('/delete-asset','HelpDesk\AssetManagerController@delete_asset');
 Route::get('/get-asset-templates','HelpDesk\AssetManagerController@get_templates');
 Route::post('/get-asset-templates-by-id','HelpDesk\AssetManagerController@get_templates_by_id');
 Route::post('/save-asset-template','HelpDesk\AssetManagerController@save_form');
+Route::post('/update-asset-template','HelpDesk\AssetManagerController@update_form');
 
 /*Permission ROute */
 Route::get('/permissions','PermissionController@index');
