@@ -845,22 +845,18 @@ class AuthController extends Controller
             if(empty($mail_template)) {
                 throw new Exception('Template not found');
             }
-
+            $user = User::where('email',$request->email)->first();
             $template_html = '';
             if(!empty($mail_template->template_html)) {
                 if(str_contains($mail_template->template_html, '{User-Name}')) {
                     $link = '<a href="'.route("user.reset.password.get",[$request->email,$token]).'">Reset Password</a>';
-                    $template_html =  str_replace('{User-Name}', User::where('email',$request->email)->first()->name ?? '', $mail_template->template_html);
+                    $template_html =  str_replace('{User-Name}', $user->name ?? '', $mail_template->template_html);
                     $template_html =  str_replace('{User-forget-link}',$link , $template_html);
                 }
             }
 
-
-            Mail::html($template_html, function( $message ) use($request){
-                $message->to($request->email);
-                $message->subject('Reset Password');
-             });
-
+            $mail = new MailController();
+            $mail->sendMail("Forget Password", $template_html, 'password-reset@mylive-tech.com', $user->email, $user->name);
 
             return back()->with('message', 'We have e-mailed your password reset link!');
         }

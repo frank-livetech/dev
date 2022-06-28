@@ -1690,7 +1690,7 @@
                         <div class="row mt-1">
                             <div class="form-group form-group-default required">
                                 <label class="form-label">Merge Ticket</label>
-                                <input type="text-secondary" class="form-control">
+                                <input type="text-secondary" class="form-control" id="tkt_merge_id" name="tkt_merge_id">
                                 <small class>Note: The ID of the ticket to merge into</small>
                             </div>
                         </div>

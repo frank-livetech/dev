@@ -2835,7 +2835,7 @@ class HelpdeskController extends Controller
                         $type = 'ticket_notes';
                         $data = 'data';
                         $title = \Auth::user()->name.' mentioned You ';
-                        $icon = 'fa fa-tag';
+                        $icon = 'at-sign';
                         $class = 'btn-success';
                         $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
                         
@@ -2960,31 +2960,113 @@ class HelpdeskController extends Controller
     public function update_ticket_customer(Request $request) {
         try {
             $data = $request->all();
+            if($data['tkt_merge_id'] == null || empty($data['tkt_merge_id'])){
+                if(isset($data['new_customer'])) {
+                    $data['customer_id'] = $this->addTicketCustomer($request);
+                    $customer = Customer::find($data["customer_id"]);
+    
+                    if($data['new_company'] != 0) {
+                        Company::create([ 
+                            "name" => $data['company_name'] != null ? $data['company_name']  : '',
+                            "poc_first_name" => $data['cmp_first_name'] != null ? $data['cmp_first_name']  : '',
+                            "poc_last_name" => $data['cmp_last_name'] != null ? $data['cmp_last_name']  : '',
+                            "phone" => $data['cmp_phone'] != null ? $data['cmp_phone']  : '',
+                        ]);
+                    }
+    
+                } else {
+                    $customer = Customer::find($data["customer_id"]);
+    
+                    $tkt_share = array();
+    
+                    if($data['tkt_cc'] != null && $data['tkt_cc'] != "") {
+                        $tkt_share['email'] = $data['tkt_cc'];
+                        $tkt_share['mail_type'] = 1;
+                        $tkt_share['ticket_id'] = $data['ticket_id'];
+    
+                        $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 1)->first();
+    
+                        if($shared_emails) {
+                            $shared_emails->email = $data['tkt_cc'];
+                            $shared_emails->save();
+                        }else{
+                            TicketSharedEmails::create($tkt_share);
+                        }
+                    }
+    
+                    if($data['tkt_bcc'] != null && $data['tkt_bcc'] != "") {
+                        $tkt_share['email'] = $data['tkt_bcc'];
+                        $tkt_share['mail_type'] = 2;
+                        $tkt_share['ticket_id'] = $data['ticket_id'];
+    
+                        $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 2)->first();
+                        if($shared_emails) {
+                            $shared_emails->email = $data['tkt_bcc'];
+                            $shared_emails->save();
+                        }else{
+                            TicketSharedEmails::create($tkt_share);
+                        }
+    
+                    }
+                }
+    
+                $ticket = Tickets::find($data["ticket_id"]);
+                
+                $ticket->customer_id = $customer->id;
+                $ticket->is_staff_tkt = 0;
+    
+                $ticket->save();
+            }else{
 
-            if(isset($data['new_customer'])) {
-                $data['customer_id'] = $this->addTicketCustomer($request);
-                $customer = Customer::find($data["customer_id"]);
 
-                if($data['new_company'] != 0) {
-                    Company::create([ 
-                        "name" => $data['company_name'] != null ? $data['company_name']  : '',
-                        "poc_first_name" => $data['cmp_first_name'] != null ? $data['cmp_first_name']  : '',
-                        "poc_last_name" => $data['cmp_last_name'] != null ? $data['cmp_last_name']  : '',
-                        "phone" => $data['cmp_phone'] != null ? $data['cmp_phone']  : '',
-                    ]);
+                $ticket_into_merge = Tickets::where('coustom_id', $data['tkt_merge_id'])->where('is_deleted', 0)->first();
+                $ticket = Tickets::where('id', $data['ticket_id'])->where('is_deleted', 0)->first();
+
+                if($ticket_into_merge->trashed == 1) {
+                    $response['message'] = 'Please restore ticket to merge';
+                    $response['status_code'] = 500;
+                    $response['success'] = false;
+                    return response()->json($response);
                 }
 
-            } else {
-                $customer = Customer::find($data["customer_id"]);
+                TicketReply::create([
+                    'ticket_id' => $ticket_into_merge->id,
+                    'user_id' => $ticket_into_merge->created_by,
+                    'reply' => $ticket->ticket_detail,
+                    'created_at' =>  Carbon::now(),
+                    'updated_at' =>  Carbon::now()
+                ]);
 
-                $tkt_share = array();
+                $followups = TicketFollowUp::where('ticket_id', $data['ticket_id'])->get();
 
-                if($data['tkt_cc'] != null && $data['tkt_cc'] != "") {
-                    $tkt_share['email'] = $data['tkt_cc'];
+                foreach ($followups as $j => $item) {
+                    $item->ticket_id = $ticket_into_merge->id;
+                    $item->save();
+                }
+
+                $notes = TicketNote::where('ticket_id', $data['ticket_id'])->get();
+
+                foreach ($notes as $j => $item) {
+                    $item->ticket_id = $ticket_into_merge->id;
+                    $item->save();
+                }
+
+                $replies = TicketReply::where('ticket_id', $data['ticket_id'])->get();
+
+                foreach ($replies as $j => $item) {
+                    $item->ticket_id = $ticket_into_merge->id;
+                    $item->save();
+                }
+
+                if($ticket->customer_id != $ticket_into_merge->customer_id){
+
+                    $customer = Customer::where('id',$ticket->customer_id)->first();
+
+                    $tkt_share['email'] = $customer->email;
                     $tkt_share['mail_type'] = 1;
-                    $tkt_share['ticket_id'] = $data['ticket_id'];
+                    $tkt_share['ticket_id'] = $ticket_into_merge->id;
 
-                    $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 1)->first();
+                    $shared_emails = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 1)->first();
 
                     if($shared_emails) {
                         $shared_emails->email = $data['tkt_cc'];
@@ -2992,36 +3074,24 @@ class HelpdeskController extends Controller
                     }else{
                         TicketSharedEmails::create($tkt_share);
                     }
+
+                    $ticket->is_deleted = 1;
+                    $ticket->save();
                 }
 
-                if($data['tkt_bcc'] != null && $data['tkt_bcc'] != "") {
-                    $tkt_share['email'] = $data['tkt_bcc'];
-                    $tkt_share['mail_type'] = 2;
-                    $tkt_share['ticket_id'] = $data['ticket_id'];
+                $response['message'] = 'Ticket merged successfully';
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                return response()->json($response);
 
-                    $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 2)->first();
-                    if($shared_emails) {
-                        $shared_emails->email = $data['tkt_bcc'];
-                        $shared_emails->save();
-                    }else{
-                        TicketSharedEmails::create($tkt_share);
-                    }
-
-                }
             }
-
-            $ticket = Tickets::find($data["ticket_id"]);
-            
-            $ticket->customer_id = $customer->id;
-            $ticket->is_staff_tkt = 0;
-
-            $ticket->save();
 
             $response['message'] = 'Ticket Customer Changed Successfully';
             $response['status_code'] = 200;
             $response['data'] = $customer;
             $response['success'] = true;
             return response()->json($response);
+
         } catch(Exception $e) {
             $response['message'] = $e->getMessage();
             $response['status_code'] = 500;
@@ -3288,7 +3358,7 @@ class HelpdeskController extends Controller
                 array_splice($ids, array_search($ticket->id, $ids), 1);
 
                 $tickets = Tickets::whereIn('id', $ids)->where('is_deleted', 0)->get();
-
+                
                 foreach ($tickets as $i => $value) {
                     if($value->trashed == 1) {
                         $response['message'] = 'Please restore tickets to merge';
@@ -3333,6 +3403,27 @@ class HelpdeskController extends Controller
                         $item->save();
                     }
 
+                    // if($ticket->customer_id != $ticket_into_merge->customer_id){
+
+                    //     $customer = Customer::where('id',$ticket->customer_id)->first();
+    
+                    //     $tkt_share['email'] = $customer->email;
+                    //     $tkt_share['mail_type'] = 1;
+                    //     $tkt_share['ticket_id'] = $ticket_into_merge->id;
+    
+                    //     $shared_emails = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 1)->first();
+    
+                    //     if($shared_emails) {
+                    //         $shared_emails->email = $data['tkt_cc'];
+                    //         $shared_emails->save();
+                    //     }else{
+                    //         TicketSharedEmails::create($tkt_share);
+                    //     }
+    
+                    //     $ticket->is_deleted = 1;
+                    //     $ticket->save();
+                    // }
+
                     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
                     $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$value->coustom_id.'">'.$value->coustom_id.'</a> merged into ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> By '. $name_link;
         
@@ -3346,7 +3437,7 @@ class HelpdeskController extends Controller
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
                 
-                $response['message'] = 'Tickets Merged Successfully!';
+                $response['message'] = 'Ticket(s) Merged Successfully!';
                 $response['success'] = true;
             } else {
                 $response['message'] = 'Missing ids parameter!';

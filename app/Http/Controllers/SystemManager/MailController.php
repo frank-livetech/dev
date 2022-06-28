@@ -2398,6 +2398,11 @@ class MailController extends Controller
                     $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{URL}', $url , $template);
                 }
+                if(str_contains($template, '{Customer-Ticket-URL}')) {
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
+                    $template = str_replace('{Customer-Ticket-URL}', $url , $template);
+                }
+                
                 // ends here
 
                 
