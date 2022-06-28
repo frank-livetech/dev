@@ -190,31 +190,7 @@
                     <div class="content-header-left col-md-12 col-12 mb-2">
                         <div class="row breadcrumbs-top">
                             <div class="col-12">
-                                <h2 class="content-header-title float-start mb-0">Dashboard</h2>
-                                <div class="breadcrumb-wrapper">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item active"><a href="">
-                                            
-                                            @if(request()->is('myprofile'))
-                                                Profile
-
-                                            @elseif(request()->is('view-asset'))
-                                                My Asset
-
-                                            @elseif(request()->is('add-tkt'))
-                                                Submit Ticket
-                                           
-                                            @elseif(request()->is('view-tkt'))
-                                                My Ticket
-                                           
-                                            @else
-                                                Ticket Details
-                                           
-                                            @endif
-                                        </a>
-                                        </li>
-                                    </ol>
-                                </div>
+                                @yield('breadcrumb')
                             </div>
                         </div>
                     </div>
