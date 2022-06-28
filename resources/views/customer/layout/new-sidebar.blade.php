@@ -31,9 +31,9 @@
                     </a>
                 </li>
                 <li class=" nav-item  {{ (request()->is('view-asset')) ? 'active' : '' }}">
-                    <a class="d-flex align-items-center" href="{{ route('customer.myProfile') }}">
-                        <span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> </span>
-                        <span class="menu-title text-truncate" data-i18n="Profile">Profile</span>
+                    <a class="d-flex align-items-center" href="{{ route('customer.myasset') }}">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg> </span>
+                        <span class="menu-title text-truncate" data-i18n="Asset">My Assets</span>
                     </a>
                 </li>
                 <li class=" nav-item {{ (request()->is('view-tkt')) ? 'active' : '' }}">

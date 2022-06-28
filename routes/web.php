@@ -423,8 +423,8 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth','customer']], function () {
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
-    Route::get('/myasset','HomeController@asset')->name('customer.myasset');
-
+    Route::get('/get-customer-asset','HomeController@getasset');
+    Route::get('/user/assets','HomeController@asset')->name('customer.myasset');
     Route::post('/save_profile_img','HomeController@saveProfileImage')->name('customer.saveProfileImage');
     Route::get('/submitTicket','HomeController@addTicketPage')->name('customer.addTicket');
     Route::get('/viewTicketList','HomeController@viewTicketPage')->name('customer.tickets');
@@ -602,6 +602,7 @@ Route::post('/update_asset_manager','HelpDesk\AssetManagerController@editAssetMa
 Route::get('/get-all-templates','HelpDesk\AssetManagerController@getAllTemplates');
 Route::post('/delete-template','HelpDesk\AssetManagerController@deleteTemplates')->name('delete.assetTemplate');
 
+Route::post('/save-asset-template','HelpDesk\AssetManagerController@save_form');
 Route::Post('/publish-ticket-reply','HelpdeskController@save_ticket_reply');
 Route::post('/delete-ticket-reply','HelpdeskController@delete_ticket_reply');
 
@@ -650,7 +651,6 @@ Route::post('/delete-asset','HelpDesk\AssetManagerController@delete_asset');
 Route::get('/get-asset-templates','HelpDesk\AssetManagerController@get_templates');
 Route::post('/get-asset-templates-by-id','HelpDesk\AssetManagerController@get_templates_by_id');
 Route::post('/save-asset-template','HelpDesk\AssetManagerController@save_form');
-Route::post('/update-asset-template','HelpDesk\AssetManagerController@update_form');
 
 /*Permission ROute */
 Route::get('/permissions','PermissionController@index');

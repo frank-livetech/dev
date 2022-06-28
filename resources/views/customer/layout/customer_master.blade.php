@@ -197,7 +197,10 @@
                                             
                                             @if(request()->is('myprofile'))
                                                 Profile
-                                            
+
+                                            @elseif(request()->is('view-asset'))
+                                                My Asset
+
                                             @elseif(request()->is('add-tkt'))
                                                 Submit Ticket
                                            
