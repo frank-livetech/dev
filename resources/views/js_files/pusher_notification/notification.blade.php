@@ -74,6 +74,7 @@ console.log(channel)
         </div>`;
 
         $('.list_all_notifications').prepend(html);
+        feather.replace();
     }
 
 </script>
