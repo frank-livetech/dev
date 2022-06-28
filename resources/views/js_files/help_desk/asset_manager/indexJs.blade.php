@@ -109,7 +109,7 @@
             if (item.fields != null && item.fields.length != 0) {
                 fields_list_data = item.fields;
 
-                for (let data of item.fields) {
+                for (let [i,data] of item.fields.entries()) {
 
                     single_input += `
                         <div class="appends ui-sortable-handle col-md-${data.col_width}" data-id="2" data-col="12" style="opacity: 1;">
@@ -128,6 +128,12 @@
                                 </div>
                             </div>
                         </div>`;
+                        console.log(i)
+                    if(item.fields.length  ==  i){
+                        single_input +=`<div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
+                                <div class="appends d-none"></div>
+                            </div>`
+                    }
 
                     if (data.col_width != 12) {
                         row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
@@ -136,6 +142,8 @@
                     }
 
                 }
+
+
 
 
                 $('.tail').html(row);
