@@ -2371,11 +2371,14 @@ class MailController extends Controller
                             if($data['values']['embed_attachments'] != NULL){
                                 if($tags){
                                     foreach ($tags as $tag) {
-                                        $old_src = $tag->getAttribute('src');
-                                        $new_src_url = $url.$attaches[$atch_count];
-                                        $tag->setAttribute('src', $new_src_url);
-                                        $tag->setAttribute('style', 'width:100%;');
-                                        $atch_count++;
+                                        if($atch_count < sizeof($attaches)){
+                                            $old_src = $tag->getAttribute('src');
+                                            $new_src_url = $url.$attaches[$atch_count];
+                                            $tag->setAttribute('src', $new_src_url);
+                                            $tag->setAttribute('style', 'width:100%;');
+                                            $atch_count++;
+                                        }
+                                        
                                     }
                                     $content = $doc->saveHTML();
                                 }
