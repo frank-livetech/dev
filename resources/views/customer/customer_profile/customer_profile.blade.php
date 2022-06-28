@@ -1,5 +1,16 @@
 
 @extends('customer.layout.customer_master')
+@section('breadcrumb')
+    <h2 class="content-header-title float-start mb-0">Dashboard</h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="">
+                    My Profile
+            </a>
+            </li>
+        </ol>
+    </div>
+@endsection
 @section('body')
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap" rel="stylesheet">
