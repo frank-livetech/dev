@@ -423,6 +423,8 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth','customer']], function () {
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
+    Route::get('/myasset','HomeController@asset')->name('customer.myasset');
+
     Route::post('/save_profile_img','HomeController@saveProfileImage')->name('customer.saveProfileImage');
     Route::get('/submitTicket','HomeController@addTicketPage')->name('customer.addTicket');
     Route::get('/viewTicketList','HomeController@viewTicketPage')->name('customer.tickets');
