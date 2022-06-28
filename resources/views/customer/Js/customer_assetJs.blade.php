@@ -10,7 +10,7 @@
     function get_cust_asset_table_list() {
         $.ajax({
             type: "GET",
-            url: "{{url('/get-customer-asset')}}",
+            url: "{{url('/user/get-customer-asset')}}",
             dataType: 'json',
             success: function(data) {
                 var obj = data.assets;
