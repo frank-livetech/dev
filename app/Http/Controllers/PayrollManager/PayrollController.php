@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Models\{StaffAttendance,Tasks,SystemSetting,Notification,Tickets, TicketStatus};
+use App\Models\{StaffAttendance,Tasks,SystemSetting,Notification,Activitylog, Tickets, TicketStatus};
 use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\SystemManager\MailController;
 use Carbon\Carbon;
@@ -238,6 +238,7 @@ class PayrollController extends Controller {
         }
 
         if($type == 'clockin') {
+
             if(str_contains($template, '{Worked_hours}')) {
                 $template = str_replace('{Worked_hours}','', $template);
                 $template = str_replace('Worked hours:','', $template);
@@ -337,6 +338,7 @@ class PayrollController extends Controller {
 
             $template = str_replace('{Update-Tickets}', '' , $template);
             $template = str_replace('{Closed-Tickets}', '' , $template);
+            $template = str_replace('{ActivityLogs}', '' , $template);
 
         }else{
             if(str_contains($template, '{Worked_hours}')) {
@@ -431,6 +433,20 @@ class PayrollController extends Controller {
 
                 $newTicket .='<p>Total Count '. count($todayClosedTickets).'</p>';
                 $template = str_replace('{Closed-Tickets}', count($todayClosedTickets) > 0 ? $newTicket : '' , $template);
+            }
+
+            if(str_contains($template, '{ActivityLogs}')) {
+
+                $logs = Activitylog::where('created_by', auth()->id() )->whereDate('created_at', Carbon::today())->get();
+
+                $logList ='<strong> Activity Logs </strong>';
+
+                foreach($logs as $log) {
+                    $logList .= '<p> '.$log->action_perform.' </p>';
+                } 
+
+                
+                $template = str_replace('{ActivityLogs}', count($logs) > 0 ? $logList : '' , $template);
             }
         }
 
