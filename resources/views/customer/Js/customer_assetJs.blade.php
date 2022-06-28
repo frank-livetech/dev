@@ -2,16 +2,15 @@
     $(document).ready(function() {
         get_cust_asset_table_list();
     });
-    </script>
+</script>
     
-    <script>
+<script>
      let asset_arr = [];
      
     function get_cust_asset_table_list() {
         $.ajax({
             type: "GET",
             url: "{{url('/get-customer-asset')}}",
-           
             dataType: 'json',
             success: function(data) {
                 var obj = data.assets;
@@ -276,4 +275,4 @@
     
         alertNotification('success', 'Success' , 'Text copied' );
     }
-    </script>
+</script>
