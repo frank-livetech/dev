@@ -596,7 +596,7 @@ Route::get('/detail-asset-template', 'HelpdeskController@detail_asset_template')
 Route::get('/field-set', 'HelpdeskController@field_set');
 Route::get('/asset_template_manager','HelpDesk\AssetManagerController@index')->name('asset_template_manager');
 Route::get('/asset-manager','HelpDesk\AssetManagerController@asset_manager')->name('asset_manager.index');
-
+Route::post('/update-asset-template','HelpDesk\AssetManagerController@update_form');
 Route::post('/update_asset_manager','HelpDesk\AssetManagerController@editAssetManager');
 
 Route::get('/get-all-templates','HelpDesk\AssetManagerController@getAllTemplates');
