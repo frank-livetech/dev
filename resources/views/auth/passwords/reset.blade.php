@@ -71,7 +71,7 @@
                                     <div class="mb-1">
                                         <input name="fcm_token" id="fcm_token" type="hidden">
                                         <label for="forgot-password-email" class="form-label">Email</label>
-                                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" autocomplete="email" placeholder="john@example.com" aria-describedby="forgot-password-email" tabindex="1" autofocus />
+                                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" autocomplete="email" aria-describedby="forgot-password-email" tabindex="1" autofocus />
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
