@@ -45,6 +45,7 @@ $(document).ready(function() {
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
+        auto_focus : "mymce",
         height: 300,
         file_picker_types: 'image',
         plugins: [
