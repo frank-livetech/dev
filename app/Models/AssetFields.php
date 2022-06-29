@@ -15,6 +15,7 @@ class AssetFields extends Model
         'description',
         'required',
         'is_multi',
+        'copy_icon',
         'options',
         'col_width',
         'created_at',

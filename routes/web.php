@@ -423,6 +423,8 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth','customer']], function () {
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
+    Route::get('/user/get-customer-asset','HomeController@getasset');
+    Route::get('/user/assets','HomeController@asset')->name('customer.myasset');
     Route::post('/save_profile_img','HomeController@saveProfileImage')->name('customer.saveProfileImage');
     Route::get('/submitTicket','HomeController@addTicketPage')->name('customer.addTicket');
     Route::get('/viewTicketList','HomeController@viewTicketPage')->name('customer.tickets');
@@ -594,7 +596,7 @@ Route::get('/detail-asset-template', 'HelpdeskController@detail_asset_template')
 Route::get('/field-set', 'HelpdeskController@field_set');
 Route::get('/asset_template_manager','HelpDesk\AssetManagerController@index')->name('asset_template_manager');
 Route::get('/asset-manager','HelpDesk\AssetManagerController@asset_manager')->name('asset_manager.index');
-
+Route::post('/update-asset-template','HelpDesk\AssetManagerController@update_form');
 Route::post('/update_asset_manager','HelpDesk\AssetManagerController@editAssetManager');
 
 Route::get('/get-all-templates','HelpDesk\AssetManagerController@getAllTemplates');

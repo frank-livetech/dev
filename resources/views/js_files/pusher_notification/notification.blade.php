@@ -35,7 +35,7 @@ console.log(channel)
                 $('.noti_count').addClass('badge rounded-pill bg-danger badge-up ');
 
 
-                appendNotification(notify.icon , notify.noti_title , notify.noti_desc)
+                appendNotification(notify.noti_icon , notify.noti_title , notify.noti_desc)
 
                 // if(notify.noti_desc != null && notify.noti_title != null) {
                     toastr['info']( notify.noti_desc , notify.noti_title, {
@@ -74,6 +74,7 @@ console.log(channel)
         </div>`;
 
         $('.list_all_notifications').prepend(html);
+        feather.replace();
     }
 
 </script>

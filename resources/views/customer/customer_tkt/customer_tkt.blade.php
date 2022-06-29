@@ -1,4 +1,15 @@
 @extends('customer.layout.customer_master')
+@section('breadcrumb')
+    <h2 class="content-header-title float-start mb-0">Dashboard</h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="">
+                    Submit A Ticket
+            </a>
+            </li>
+        </ol>
+    </div>
+@endsection
 @section('body')
 
 @php

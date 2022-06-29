@@ -2371,11 +2371,14 @@ class MailController extends Controller
                             if($data['values']['embed_attachments'] != NULL){
                                 if($tags){
                                     foreach ($tags as $tag) {
-                                        $old_src = $tag->getAttribute('src');
-                                        $new_src_url = $url.$attaches[$atch_count];
-                                        $tag->setAttribute('src', $new_src_url);
-                                        $tag->setAttribute('style', 'width:100%;');
-                                        $atch_count++;
+                                        if($atch_count < sizeof($attaches)){
+                                            $old_src = $tag->getAttribute('src');
+                                            $new_src_url = $url.$attaches[$atch_count];
+                                            $tag->setAttribute('src', $new_src_url);
+                                            $tag->setAttribute('style', 'width:100%;');
+                                            $atch_count++;
+                                        }
+                                        
                                     }
                                     $content = $doc->saveHTML();
                                 }
@@ -2398,6 +2401,11 @@ class MailController extends Controller
                     $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{URL}', $url , $template);
                 }
+                if(str_contains($template, '{Customer-Ticket-URL}')) {
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
+                    $template = str_replace('{Customer-Ticket-URL}', $url , $template);
+                }
+                
                 // ends here
 
                 

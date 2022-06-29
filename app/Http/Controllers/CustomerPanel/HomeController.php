@@ -53,6 +53,8 @@ use App\Models\SlaPlanAssoc;
 use App\Http\Controllers\ActivitylogController;
 use App\Http\Controllers\GeneralController;
 use App\Models\Activitylog;
+use App\Models\Assets;
+
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
@@ -138,6 +140,27 @@ class HomeController
         // return view('customer_manager.customer_lookup.custProfile',compact('prof_state','customer','company', 'countries' , 'states' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format'));
         // return view('customer_manager.customer_lookup.custProfile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
         return view('customer.customer_profile.customer_profile',compact('google','nmi_integration','customer','company', 'countries','subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
+    }
+
+    public function asset() {
+        
+        return view('customer.customer_asset.index');
+    }
+    public function getasset(){
+        $query = Assets::query();
+        $customer = Customer::where('email',Auth::user()->email)->first();
+        $assets = $query->where('is_deleted', 0)->where('customer_id', $customer->id)->with(['template','asset_fields','customer','company'])->get();
+
+        foreach($assets as $asset) {
+            $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->first();
+        }
+        
+        $response['message'] = 'Success';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        $response['assets']= $assets;
+        
+        return response()->json($response);
     }
 
     public function change_theme_mode(Request $request){

@@ -1,11 +1,14 @@
 <script>
-    // template Blade Script
-    let counter = 0;
+// template Blade Script
+let counter = 0;
 let g_count = 1;
 let g_obj_key = null;
 let g_temp_code = null;
 let temp_fields_list = [];
 let fields_list_data = [];
+let check_action = null;
+let template_id = null;
+let active_edit_field_id = 0;
 let template = {
     text: {
         title: 'Input ',
@@ -83,6 +86,7 @@ let template = {
     }
 }
 
+
 $(function() {
     try {
         var btnContainer = document.getElementById("modalContainer");
@@ -104,6 +108,7 @@ $(function() {
     } catch (err) {
         console.log(err)
     }
+
 
     $('#fields-form').on('submit', saveFieldSetting);
 
@@ -160,7 +165,7 @@ function fieldAdd(code) {
                             <h5 class="card-title small mb-0"><i class="fas fa-grip-vertical pr-2" style="color:grey;"></i> ${template[code].title}</h5>
                         </div>
                         <div class="actions" style="position:absolute; top:18px;right:8px">
-                            <i onclick="removeField(${g_count}, this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>
+                            <i onclick="removeField(${g_count},null, this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>
                             <a href="javascript:templateSetting('${code}', ${g_count})" class="float-right">
                             <i class="fas fa-cog"></i></a>
                         </div>
@@ -202,14 +207,15 @@ function fieldAdd(code) {
 
 function templateSetting(code, obj_key , action = null , id = null) {
 
-    console.log(action , "action");
     if(action != null) {
-
-        // console.log(fields_list_data , "fields_list_data");
-
+        check_action = action
+        active_edit_field_id = id
+        g_temp_code = code;
+        g_obj_key = obj_key;
         let item = fields_list_data.find(item => item.id == id);
+
         if(item != null) {
-            
+
             $("#lbl").val( item.label );
             $("#ph").val( item.placeholder );
             $("#desc").val( item.description );
@@ -219,12 +225,17 @@ function templateSetting(code, obj_key , action = null , id = null) {
             }else{
                 $("#is_required").prop("checked", false);
             }
+
+            if(item.copy_icon == 1) {
+                $("#copy_icon").prop("checked", true);
+            }else{
+                $("#copy_icon").prop("checked", false);
+            }
+
             let dropdown_options = ``;
             if(item.options != null) {
 
                 let options = item.options.split('|');
-                console.log(options , "12");
-                
                 if(options.length > 0) {
 
                     for(let data of options) {
@@ -279,6 +290,7 @@ function templateSetting(code, obj_key , action = null , id = null) {
         $('#fields-modal').modal('show');
 
     }else{
+
         g_obj_key = obj_key;
         g_temp_code = code;
 
@@ -327,9 +339,8 @@ function templateSetting(code, obj_key , action = null , id = null) {
     }
 }
 
-function removeField(f_ind, el) {
-    delete fields_list_data[f_ind];
-
+function removeField(f_ind,el_id=null,el) {
+    // delete fields_list_data[f_ind];
     if ($(el).closest('.connectedSortable').find('.appends').length == 1) {
         $(el).closest('.connectedSortable').remove();
     } else {
@@ -337,6 +348,29 @@ function removeField(f_ind, el) {
         $(el).closest('.appends').remove();
         setRowAppends(e);
     }
+
+    $.ajax({
+        type: 'post',
+        url: template_update_submit_route,
+        data: {form_field:true,field_id:el_id},
+        success: function(data) {
+            if (data.success) {
+                getAllTemplate();
+                getFormsTemplates();
+                $("#fields-modal").modal('hide');
+            }
+            Swal.fire({
+                position: 'center',
+                icon: (data.success) ? 'success' : 'error',
+                title: data.message,
+                showConfirmButton: false,
+                timer: swal_message_time,
+            });
+        },
+        failure: function(errMsg) {
+            console.log(errMsg);
+        }
+    });
 }
 
 function setRowAppends(el) {
@@ -367,37 +401,167 @@ function setRowAppends(el) {
     });
 }
 
+function updateFieldSetting(field_id,temp_id,form=null){
+
+    if(form != null){
+
+        var formData = {};
+        formData['exisited_template'] = temp_id;
+        formData['field_id'] = field_id;
+        formData['code'] = g_temp_code;
+        formData['template_id'] = template_id;
+        formData['label'] = $('#fields-modal #lbl').val();
+        formData['placeholder'] = $('#fields-modal #ph').val();
+        formData['desc'] = $('#fields-modal #desc').val();
+
+        if ($('#fields-modal #is_required').prop('checked')) formData['required'] = 1;
+        else formData['required'] =  0;
+
+        if ($('#fields-modal #copy_icon').prop('checked')) formData['copy_icon'] = 1;
+        else formData['copy_icon'] =  0;
+
+        if ($('#fields-modal #is_multi').prop('checked')) formData['is_multi'] = 1;
+        else formData['is_multi'] = 0;
+
+        if (g_temp_code == 'selectbox') {
+        var selec_option = [];
+            $('#fields-modal').find('.optVals').each(element => {
+                selec_option.push($('#fields-modal').find('.optVals')[element].value);
+            });
+
+            formData['selec_option'] = selec_option;
+        }
+
+
+        $.ajax({
+            type: 'post',
+            url: template_update_submit_route,
+            data: formData,
+            success: function(data) {
+                if (data.success) {
+                    $("#fields-modal").modal('hide');
+                    fields_list_data = data.data;
+                    getAllTemplate();
+                    templateSetting(item.type,item.asset_forms_id,'update',item.id)
+
+                }
+                Swal.fire({
+                    position: 'center',
+                    icon: (data.success) ? 'success' : 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: swal_message_time,
+                });
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
+        });
+
+        check_action = null;
+
+    }else{
+        var formData = {};
+        formData['field_id'] = field_id;
+        formData['template_id'] = temp_id;
+        formData['label'] = $('#fields-modal #lbl').val();
+        formData['placeholder'] = $('#fields-modal #ph').val();
+        formData['desc'] = $('#fields-modal #desc').val();
+
+        if ($('#fields-modal #is_required').prop('checked')) formData['required'] = 1;
+        else formData['required'] =  0;
+
+        if ($('#fields-modal #copy_icon').prop('checked')) formData['copy_icon'] = 1;
+        else formData['copy_icon'] =  0;
+
+        if ($('#fields-modal #is_multi').prop('checked')) formData['is_multi'] = 1;
+        else formData['is_multi'] = 0;
+
+        if (g_temp_code == 'selectbox') {
+        var selec_option = [];
+            $('#fields-modal').find('.optVals').each(element => {
+                selec_option.push($('#fields-modal').find('.optVals')[element].value);
+            });
+
+            formData['selec_option'] = selec_option;
+        }
+
+
+        $.ajax({
+            type: 'post',
+            url: template_update_submit_route,
+            data: formData,
+            success: function(data) {
+
+                getAllTemplate();
+                editTemplate(template_id)
+                $("#fields-modal").modal('hide');
+
+                fields_list_data = data.data;
+                getAllTemplate();
+                templateSetting(item.type,item.asset_forms_id,'update',item.id)
+
+                Swal.fire({
+                    position: 'center',
+                    icon: (data.success) ? 'success' : 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: swal_message_time,
+                });
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
+        });
+
+
+    }
+
+
+}
+
 function saveFieldSetting(ev) {
     ev.preventDefault();
     ev.stopPropagation();
 
-    fields_list_data[g_obj_key].type = g_temp_code;
-    if ($('#fields-modal #is_multi').prop('checked')) fields_list_data[g_obj_key].is_multi = 1;
-    else fields_list_data[g_obj_key].is_multi = 0;
+    if(check_action != null){
+        updateFieldSetting(active_edit_field_id,g_obj_key, new FormData(this));
+    }else{
+        //check action variable will be null after save fields
+        check_action = null;
+        fields_list_data[g_obj_key].type = g_temp_code;
+        if ($('#fields-modal #is_multi').prop('checked')) fields_list_data[g_obj_key].is_multi = 1;
+        else fields_list_data[g_obj_key].is_multi = 0;
 
-    fields_list_data[g_obj_key].label = $('#fields-modal #lbl').val();
-    fields_list_data[g_obj_key].placeholder = $('#fields-modal #ph').val();
-    fields_list_data[g_obj_key].description = $('#fields-modal #desc').val();
-    if ($('#fields-modal #is_required').prop('checked')) fields_list_data[g_obj_key].required = 1
-    else fields_list_data[g_obj_key].required = 0;
+        fields_list_data[g_obj_key].label = $('#fields-modal #lbl').val();
+        fields_list_data[g_obj_key].placeholder = $('#fields-modal #ph').val();
+        fields_list_data[g_obj_key].description = $('#fields-modal #desc').val();
+        if ($('#fields-modal #is_required').prop('checked')) fields_list_data[g_obj_key].required = 1
+        else fields_list_data[g_obj_key].required = 0;
 
-    if (g_temp_code == 'selectbox') {
-        fields_list_data[g_obj_key].options = [];
-        $('#fields-modal').find('.optVals').each(element => {
-            fields_list_data[g_obj_key].options.push($('#fields-modal').find('.optVals')[element].value);
-        });
+        if ($('#fields-modal #copy_icon').prop('checked')) fields_list_data[g_obj_key].copy_icon = 1;
+        else fields_list_data[g_obj_key].copy_icon =  0;
+
+        if (g_temp_code == 'selectbox') {
+            fields_list_data[g_obj_key].options = [];
+            $('#fields-modal').find('.optVals').each(element => {
+                fields_list_data[g_obj_key].options.push($('#fields-modal').find('.optVals')[element].value);
+            });
+        }
+        // update the labeled card
+        $('#card-colors').find('div[data-id="' + g_obj_key + '"]').find('.card-title').html('<i class="fas fa-grip-vertical pr-2" style="color:grey;"></i>' + $('#fields-modal #lbl').val());
+
+        // settings set change background to white
+        $('#card-colors').find('div[data-id="' + g_obj_key + '"]').find('.card').css('background-color', 'white');
+
+        $('#fields-modal').modal('hide');
+        $('#fields-form').trigger('reset');
     }
-    // update the labeled card
-    $('#card-colors').find('div[data-id="' + g_obj_key + '"]').find('.card-title').html('<i class="fas fa-grip-vertical pr-2" style="color:grey;"></i>' + $('#fields-modal #lbl').val());
 
-    // settings set change background to white
-    $('#card-colors').find('div[data-id="' + g_obj_key + '"]').find('.card').css('background-color', 'white');
-
-    $('#fields-modal').modal('hide');
-    $('#fields-form').trigger('reset');
 }
 
-function saveTemplate() {
+function saveTemplate(action=null) {
+
 
     if (!$('#tempTitle').val()) {
         alertNotification('error', 'Error' , 'Template Title Required');
@@ -427,7 +591,7 @@ function saveTemplate() {
     let value = $("#sortable-row-start").next().attr('class');
 
     if( value.includes("firstfield")  ) {
-        
+
         $.ajax({
             type: 'post',
             url: template_submit_route,

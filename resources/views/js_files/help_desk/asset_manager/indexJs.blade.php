@@ -6,6 +6,7 @@
     let save_asset_records_route = "{{asset('/save-asset-records')}}";
     let templates_fetch_route = "{{asset('/get-asset-templates')}}";
     let template_submit_route = "{{asset('/save-asset-template')}}";
+    let template_update_submit_route = "{{asset('/update-asset-template')}}";
     let general_info_route = "{{asset('/general-info')}}";
     var show_asset = "{{asset('/show-single-assets')}}";
     var update_asset = "{{asset('/update-assets')}}";
@@ -42,6 +43,7 @@
             success: function(data) {
                 var obj = data.data;
                 asset_type_arr = data.data;
+
                 $('#asset-temp-table-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#asset-temp-table-list').DataTable({
@@ -98,17 +100,17 @@
 
     function editTemplate(id) {
         let item = asset_type_arr.find(item => item.id == id);
-
-        console.log(item, "this");
         let single_input = ``;
         let row = ``;
+        template_id = id
+        //check action variable set id to update template
+        check_action = id;
         if (item != null) {
 
             if (item.fields != null && item.fields.length != 0) {
-
                 fields_list_data = item.fields;
 
-                for (let data of item.fields) {
+                for (let [i,data] of item.fields.entries()) {
 
                     single_input += `
                         <div class="appends ui-sortable-handle col-md-${data.col_width}" data-id="2" data-col="12" style="opacity: 1;">
@@ -119,7 +121,7 @@
                                             <h5 class="card-title small mb-0"><i class="fas fa-grip-vertical pr-2" style="color:grey;"></i> ${data.label}</h5>
                                         </div>
                                         <div class="actions" style="position:absolute; top:18px;right:8px">
-                                            <i onclick="removeField(${data.asset_forms_id}, this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>
+                                            <i onclick="removeField(${data.asset_forms_id},${data.id},this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>
                                             <a href="javascript:templateSetting('${data.type}', ${data.asset_forms_id} , 'update' , ${data.id})" class="float-right">
                                             <i class="fas fa-cog"></i></a>
                                         </div>
@@ -128,6 +130,12 @@
                             </div>
                         </div>`;
 
+                        if(item.fields.length-1 ==  i){
+                            single_input +=`<div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
+                                                <div class="appends d-none"></div>
+                                            </div>`
+                        }
+
                     if (data.col_width != 12) {
                         row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
                     } else {
@@ -135,6 +143,8 @@
                     }
 
                 }
+
+
 
 
                 $('.tail').html(row);

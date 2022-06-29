@@ -30,6 +30,12 @@
                         <span class="menu-title text-truncate" data-i18n="Profile">Profile</span>
                     </a>
                 </li>
+                <li class=" nav-item  {{ (request()->is('view-asset')) ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('customer.myasset') }}">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg> </span>
+                        <span class="menu-title text-truncate" data-i18n="Asset">My Assets</span>
+                    </a>
+                </li>
                 <li class=" nav-item {{ (request()->is('view-tkt')) ? 'active' : '' }}">
                     <a class="d-flex align-items-center" href="{{route('customer.tickets')}}">
                         <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>

@@ -26,21 +26,23 @@ use Carbon\Carbon;
 
 use App\Models\Mail;
 use App\Http\Controllers\SystemManager\MailController;
+use Illuminate\Support\Facades\Auth;
 
 class AssetManagerController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
     }
-    
+
     public function index(){
-        return view('help_desk.asset_template_manager.index');        
+        return view('help_desk.asset_template_manager.index');
     }
 
     public function asset_manager(){
-        
+
         $customers = customer::all();
         $companies = Company::with('staff_members')->get();
+
         return view('help_desk.asset_manager.index-new',compact('customers','companies'));
     }
 
@@ -144,13 +146,13 @@ class AssetManagerController extends Controller
     }
 
     // public function save_asset_category(Request $request){
-         
+
     //     $data = $request->all();
     //     $response = array();
-        
+
     //     try{
     //         $data['created_by'] = \Auth::user()->id;
-        
+
     //         $save_category = Assetcategory::create($data);
     //         $response['message'] = 'Category Added Successfully!';
     //         $response['status_code'] = 200;
@@ -211,9 +213,9 @@ class AssetManagerController extends Controller
                 $ref = 'ticket_asset_created';
 
                 $ticket = Tickets::findOrFail($asset['ticket_id']);
-                
+
                 $sendingMailServer = Mail::where('mail_dept_id', $ticket->dept_id)->first();
-                
+
                 if(empty($sendingMailServer)) {
                     throw new Exception('Ticket department email not found!');
                 }
@@ -244,12 +246,12 @@ class AssetManagerController extends Controller
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = auth()->id() ;
                 $ticket->save();
-                
+
                 $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset added By '. $name_link;
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' ,  $ticket->ticket_id , auth()->id() , $action_perform);
             }
-            
+
             unset($data['customer_id']);
             unset($data['company_id']);
             unset($data['project_id']);
@@ -321,6 +323,63 @@ class AssetManagerController extends Controller
         }
     }
 
+    public function update_form(Request $request) {
+        try {
+
+            // dd($request->all());
+            if($request->has('form_field')){
+                AssetFields::find($request->field_id)->update([
+                    'is_deleted' => 1,
+                ]);
+
+                $response['message'] = 'Asset Deleted Successfully!';
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                $response['data'] = AssetFields::where('id',$request->field_id)->where("is_deleted",0)->first();
+                return response()->json($response);
+            }else{
+                if($request->has('field_id') && $request->field_id == 0){
+
+                    AssetFields::create([
+                        'label' => $request->label,
+                        'placeholder' => $request->placeholder,
+                        'asset_forms_id' => $request->template_id,
+                        'description' => $request->desc,
+                        'required' => $request->required,
+                        'is_multi' => $request->is_multi,
+                        'copy_icon' => $request->copy_icon,
+                        'type' => $request->code,
+                        'created_by' => Auth::id(),
+                    ]);
+                }else{
+                    AssetFields::find($request->field_id)->update([
+                        'label' => $request->label,
+                        'placeholder' => $request->placeholder,
+                        'description' => $request->desc,
+                        'required' => $request->required,
+                        'is_multi' => $request->is_multi,
+                        'copy_icon' => $request->copy_icon,
+                    ]);
+                }
+
+
+
+                $response['message'] = 'Asset Type Update Successfully!';
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                // $response['data'] = AssetFields::where('id',$request->field_id)->where("is_deleted",0)->first();
+                $response['data'] = AssetForms::with('fields')->where('is_deleted', 0)->get();
+                return response()->json($response);
+            }
+
+        } catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
     public function delete_asset(Request $request){
         $data = $request->all();
         $response = array();
@@ -338,7 +397,7 @@ class AssetManagerController extends Controller
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
-            
+
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
             $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset deleted By '. $name_link;
             $log = new ActivitylogController();
@@ -348,17 +407,17 @@ class AssetManagerController extends Controller
         $action_perform = ' Asset # '.$data['id'].' Deleted By '. $name_link;
         $log = new ActivitylogController();
         $log->saveActivityLogs('Asset Deleted' , 'asset_templates_form' , $data['id'] , auth()->id() , $action_perform);
-   
+
         $response['message'] = 'Asset Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-        
+
     }
 
     public function getAssets(Request $request) {
         $query = Assets::query();
-        
+
         if($request->has('customer_id')) {
             $cid = $request->customer_id;
             $query->when(!empty($cid), function($q) use($cid) {
@@ -386,18 +445,18 @@ class AssetManagerController extends Controller
         //         return $q->where('ticket_id', $t_id);
         //     });
         // }
-        
+
         $assets = $query->where('is_deleted', 0)->with(['template','asset_fields','customer','company'])->get();
 
         foreach($assets as $asset) {
             $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->first();
         }
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['assets']= $assets;
-        
+
         return response()->json($response);
     }
 
@@ -431,13 +490,13 @@ class AssetManagerController extends Controller
             $response['status_code'] = 200;
             $response['success'] = true;
             $response['details']= $details;
-            
+
             return response()->json($response);
         } catch(Exception $e) {
             $response['message'] = $e->getMessage();
             $response['status_code'] = 500;
             $response['success'] = false;
-            
+
             return response()->json($response);
         }
     }
@@ -446,23 +505,23 @@ class AssetManagerController extends Controller
     private function sendNotificationMail($ticket, $template_code){
         try{
             $user = DB::table('users')->where('id', \Auth::user()->id)->first();
-            
+
             $tech = null;
             if(!empty($ticket['assigned_to'])) {
                 $tech = User::where('id', $ticket['assigned_to'])->first();
             }
-            
+
             $customer = null;
             if(!empty($ticket['customer_id'])) {
                 $customer = Customer::where('id', $ticket['customer_id'])->first();
             }
-            
+
             $mail_template = DB::table('templates')->where('code', $template_code)->first();
-            
+
             if(empty($mail_template)) {
                 throw new Exception('Template not found');
             }
-            
+
             $template_input = array(
                 array('module' => 'User', 'values' => $user),
                 array('module' => 'Creator', 'values' => $user),
@@ -472,9 +531,9 @@ class AssetManagerController extends Controller
             );
 
             $mailer = new MailController();
-            
+
             $message = $mailer->template_parser($template_input, $mail_template->template_html);
-            
+
             // echo $message;
 
             if(!empty($message)) {
@@ -488,7 +547,7 @@ class AssetManagerController extends Controller
                     $mailer->sendMail($subject, $message, 'web_dev2@mylive-tech.com', $tech->email, $tech->name);
                     // $retval = mail ($tech->email, $subject, $message, $header);
                 }
-                
+
                 if(!empty($customer)) $mailer->sendMail($subject, $message, 'web_dev2@mylive-tech.com', $customer->email, $customer->first_name.' '.$customer->last_name);
             }
         }catch(Exception $e){
@@ -526,14 +585,14 @@ class AssetManagerController extends Controller
                 DB::table("asset_records_".$request->asset_forms_id)->where("asset_id","=",$request->asset_id)->update([
                     "fl_" . $request->field_id[$i] => $request->data[$i],
                 ]);
-            } 
-                
+            }
+
             // DB::table("assets")->where("asset_forms_id","=",$request->asset_forms_id)->update([
             //     "asset_title" => $request->asset_title,
             // ]);
 
             $asset = DB::table("assets")->where("asset_forms_id","=",$request->asset_forms_id)->first();
-            
+
             $asset->asset_title = $request->asset_title;
             $asset->updated_at = Carbon::now();
             $asset->updated_by = \Auth::user()->id;
@@ -566,7 +625,7 @@ class AssetManagerController extends Controller
                     "asset_title" => $request->asset_title,
                 ]);
             }
-    
+
             $response['message'] = 'Record Updated Successfully';
             $response['status_code'] = 200;
             $response['success'] = true;
@@ -576,18 +635,18 @@ class AssetManagerController extends Controller
     }
 
     public function gen_info($id){
-        
+
         $field_data = array();
-        
+
         //assets table
         $asset = Assets::where('id',$id)->with(['created_by_user','updated_by_user'])->first();
-        
+
         //asset_templates_fields
         $asset_templates_fields =  DB::table("asset_templates_fields")->where("asset_forms_id","=",$asset->asset_forms_id)->get();
-        
+
         //asset_templates_form
         $asset_templates_form =  DB::table("asset_templates_form")->where("id","=",$asset->asset_forms_id)->get();
-        
+
         $records = DB::table("asset_records_". $asset->asset_forms_id)->where("asset_id","=",$id)->get();
 
         foreach($records as $record) {
@@ -622,7 +681,7 @@ class AssetManagerController extends Controller
 
         $customer = DB::table("customers")->where("id","=",$asset->customer_id)->first();
         $company = DB::table("companies")->where("id","=",$asset->company_id)->first();
-        
+
         return view('help_desk.asset_manager.gen_info',compact('asset','asset_templates_form','asset_templates_fields','customer','company'));
     }
 
@@ -649,7 +708,7 @@ class AssetManagerController extends Controller
             $module = $request->has('module') ? $request->module : 'Assets';
             $table_ref = $request->has('ref') ? $request->ref : 'Assets';
             $action_perform = ' '. $request->module .' # '. $request->asset_id.' Updated By '. $name_link;
-            
+
             $log = new ActivitylogController();
             $log->saveActivityLogs( $module , $table_ref , $request->asset_id , auth()->id() , $action_perform);
 

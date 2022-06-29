@@ -91,14 +91,14 @@
                                     <div class="mb-1">
                                         <input name="fcm_token" id="fcm_token" type="hidden">
                                         <label class="form-label" for="email">Email</label>
-                                        <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" placeholder="john@example.com" aria-describedby="email" autocomplete="email" autofocus="" tabindex="1" />
+                                        <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="email" autocomplete="email" autofocus="" tabindex="1" />
                                     </div>
                                     <div class="mb-1">
                                         <div class="d-flex justify-content-between">
                                             <label class="form-label" for="login-password">Password</label><a href="{{url('user-forgetpassword')}}"><small>Forgot Password?</small></a>
                                         </div>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge @error('password') is-invalid @enderror" id="password" type="password" name="password" placeholder="············" aria-describedby="login-password" autocomplete="current-password" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            <input class="form-control form-control-merge @error('password') is-invalid @enderror" id="password" type="password" name="password" aria-describedby="login-password" autocomplete="current-password" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
