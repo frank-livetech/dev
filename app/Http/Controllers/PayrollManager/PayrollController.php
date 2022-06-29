@@ -444,8 +444,12 @@ class PayrollController extends Controller {
 
                 foreach($logs as $log) {
                     $dd = new Carbon( $log['created_at'] , timeZone() ); 
-                    $lg = Str::lower($log->action_perform);
-                    $logList .= '<p> '.Str::before($lg ,'by').' - '. Carbon::parse( $dd->format('g:i') )->format('g:i A') .' </p>';
+                    if(str_contains($log->action_perform, 'by')) {
+                        $logList .= '<p> '. Str::before($log->action_perform ,'by') .' - '. Carbon::parse( $dd->format('g:i') )->format('g:i A') .' </p>';
+                    }else if(str_contains($log->action_perform, 'By')) {
+                        $logList .= '<p> '. Str::before($log->action_perform ,'By') .' - '. Carbon::parse( $dd->format('g:i') )->format('g:i A') .' </p>';
+                    }
+                    
                 } 
 
                 $logList .='<p>Total Count '. count($logs).'</p>';

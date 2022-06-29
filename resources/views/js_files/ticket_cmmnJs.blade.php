@@ -380,6 +380,10 @@
                 }else{
                     totalPage = (data.ticket_view == null ? 10 : (data.ticket_view.per_page !=null ? data.ticket_view.per_page : 10))
                     $('select[name=ticket-table-list_length]').val(data.ticket_view.per_page);
+
+                    let txt = $("#ticket-table-list_info").text();
+                    let a = txt.replace("0"+ticket_view, ticket_view);
+                    $("#ticket-table-list_info").text(a);
                 }
 
                 $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');
