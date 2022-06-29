@@ -43,6 +43,7 @@
             success: function(data) {
                 var obj = data.data;
                 asset_type_arr = data.data;
+
                 $('#asset-temp-table-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#asset-temp-table-list').DataTable({
@@ -101,7 +102,7 @@
         let item = asset_type_arr.find(item => item.id == id);
         let single_input = ``;
         let row = ``;
-
+        template_id = id
         //check action variable set id to update template
         check_action = id;
         if (item != null) {
@@ -128,12 +129,12 @@
                                 </div>
                             </div>
                         </div>`;
-                        console.log(i)
-                    if(item.fields.length  ==  i){
-                        single_input +=`<div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
-                                <div class="appends d-none"></div>
-                            </div>`
-                    }
+
+                        if(item.fields.length-1 ==  i){
+                            single_input +=`<div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
+                                                <div class="appends d-none"></div>
+                                            </div>`
+                        }
 
                     if (data.col_width != 12) {
                         row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;

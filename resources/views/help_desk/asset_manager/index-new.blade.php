@@ -122,7 +122,7 @@
                                                     <div class="row p-1">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label for="tempTitle">Template Title</label>
+                                                                <label for="tempTitle">Title</label>
                                                                 <input class="form-control" type="text" id="tempTitle" required="" placeholder="Title">
                                                             </div>
                                                         </div>
@@ -466,6 +466,12 @@
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="is_required">
                             <label class="custom-control-label" for="is_required">Set Required </label>
+                        </div>
+                    </div>
+                    <div class="form-group mt-1">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="copy_icon">
+                            <label class="custom-control-label" for="copy_icon">Copy Icon</label>
                         </div>
                     </div>
                     <div class="form-group text-center mt-1">

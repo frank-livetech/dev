@@ -26,6 +26,7 @@ use Carbon\Carbon;
 
 use App\Models\Mail;
 use App\Http\Controllers\SystemManager\MailController;
+use Illuminate\Support\Facades\Auth;
 
 class AssetManagerController extends Controller
 {
@@ -324,6 +325,8 @@ class AssetManagerController extends Controller
 
     public function update_form(Request $request) {
         try {
+
+            // dd($request->all());
             if($request->has('form_field')){
                 AssetFields::find($request->field_id)->update([
                     'is_deleted' => 1,
@@ -332,19 +335,40 @@ class AssetManagerController extends Controller
                 $response['message'] = 'Asset Deleted Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
+                $response['data'] = AssetFields::where('id',$request->field_id)->where("is_deleted",0)->first();
                 return response()->json($response);
             }else{
-                AssetFields::find($request->field_id)->update([
-                    'label' => $request->label,
-                    'placeholder' => $request->placeholder,
-                    'description' => $request->desc,
-                    'required' => $request->required,
-                    'is_multi' => $request->is_multi,
-                ]);
+                if($request->has('field_id') && $request->field_id == 0){
 
-                $response['message'] = 'Asset Update Successfully!';
+                    AssetFields::create([
+                        'label' => $request->label,
+                        'placeholder' => $request->placeholder,
+                        'asset_forms_id' => $request->template_id,
+                        'description' => $request->desc,
+                        'required' => $request->required,
+                        'is_multi' => $request->is_multi,
+                        'copy_icon' => $request->copy_icon,
+                        'type' => $request->code,
+                        'created_by' => Auth::id(),
+                    ]);
+                }else{
+                    AssetFields::find($request->field_id)->update([
+                        'label' => $request->label,
+                        'placeholder' => $request->placeholder,
+                        'description' => $request->desc,
+                        'required' => $request->required,
+                        'is_multi' => $request->is_multi,
+                        'copy_icon' => $request->copy_icon,
+                    ]);
+                }
+
+
+
+                $response['message'] = 'Asset Type Update Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
+                // $response['data'] = AssetFields::where('id',$request->field_id)->where("is_deleted",0)->first();
+                $response['data'] = AssetForms::with('fields')->where('is_deleted', 0)->get();
                 return response()->json($response);
             }
 

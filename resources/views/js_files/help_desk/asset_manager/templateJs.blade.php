@@ -7,6 +7,7 @@ let g_temp_code = null;
 let temp_fields_list = [];
 let fields_list_data = [];
 let check_action = null;
+let template_id = null;
 let active_edit_field_id = 0;
 let template = {
     text: {
@@ -212,6 +213,7 @@ function templateSetting(code, obj_key , action = null , id = null) {
         g_temp_code = code;
         g_obj_key = obj_key;
         let item = fields_list_data.find(item => item.id == id);
+
         if(item != null) {
 
             $("#lbl").val( item.label );
@@ -223,6 +225,13 @@ function templateSetting(code, obj_key , action = null , id = null) {
             }else{
                 $("#is_required").prop("checked", false);
             }
+
+            if(item.copy_icon == 1) {
+                $("#copy_icon").prop("checked", true);
+            }else{
+                $("#copy_icon").prop("checked", false);
+            }
+
             let dropdown_options = ``;
             if(item.options != null) {
 
@@ -392,55 +401,121 @@ function setRowAppends(el) {
     });
 }
 
-function updateFieldSetting(field_id,template_id){
+function updateFieldSetting(field_id,temp_id,form=null){
 
-    var formData = {};
-    formData['field_id'] = field_id;
-    formData['template_id'] = template_id;
-    formData['label'] = $('#fields-modal #lbl').val();
-    formData['placeholder'] = $('#fields-modal #ph').val();
-    formData['desc'] = $('#fields-modal #desc').val();
+    if(form != null){
 
-    if ($('#fields-modal #is_required').prop('checked')) formData['required'] = 1;
-    else formData['required'] =  0;
+        var formData = {};
+        formData['exisited_template'] = temp_id;
+        formData['field_id'] = field_id;
+        formData['code'] = g_temp_code;
+        formData['template_id'] = template_id;
+        formData['label'] = $('#fields-modal #lbl').val();
+        formData['placeholder'] = $('#fields-modal #ph').val();
+        formData['desc'] = $('#fields-modal #desc').val();
 
-    if ($('#fields-modal #is_multi').prop('checked')) formData['is_multi'] = 1;
-    else formData['is_multi'] = 0;
+        if ($('#fields-modal #is_required').prop('checked')) formData['required'] = 1;
+        else formData['required'] =  0;
 
-    if (g_temp_code == 'selectbox') {
-       var selec_option = [];
-        $('#fields-modal').find('.optVals').each(element => {
-            selec_option.push($('#fields-modal').find('.optVals')[element].value);
+        if ($('#fields-modal #copy_icon').prop('checked')) formData['copy_icon'] = 1;
+        else formData['copy_icon'] =  0;
+
+        if ($('#fields-modal #is_multi').prop('checked')) formData['is_multi'] = 1;
+        else formData['is_multi'] = 0;
+
+        if (g_temp_code == 'selectbox') {
+        var selec_option = [];
+            $('#fields-modal').find('.optVals').each(element => {
+                selec_option.push($('#fields-modal').find('.optVals')[element].value);
+            });
+
+            formData['selec_option'] = selec_option;
+        }
+
+
+        $.ajax({
+            type: 'post',
+            url: template_update_submit_route,
+            data: formData,
+            success: function(data) {
+                if (data.success) {
+                    $("#fields-modal").modal('hide');
+                    fields_list_data = data.data;
+                    getAllTemplate();
+                    templateSetting(item.type,item.asset_forms_id,'update',item.id)
+
+                }
+                Swal.fire({
+                    position: 'center',
+                    icon: (data.success) ? 'success' : 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: swal_message_time,
+                });
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
         });
 
-        formData['selec_option'] = selec_option;
-    }
+        check_action = null;
 
+    }else{
+        var formData = {};
+        formData['field_id'] = field_id;
+        formData['template_id'] = temp_id;
+        formData['label'] = $('#fields-modal #lbl').val();
+        formData['placeholder'] = $('#fields-modal #ph').val();
+        formData['desc'] = $('#fields-modal #desc').val();
 
-    $.ajax({
-        type: 'post',
-        url: template_update_submit_route,
-        data: formData,
-        success: function(data) {
-            console.log(data)
-            if (data.success) {
-                getAllTemplate();
-                getFormsTemplates();
-                $("#fields-modal").modal('hide');
-            }
-            Swal.fire({
-                position: 'center',
-                icon: (data.success) ? 'success' : 'error',
-                title: data.message,
-                showConfirmButton: false,
-                timer: swal_message_time,
+        if ($('#fields-modal #is_required').prop('checked')) formData['required'] = 1;
+        else formData['required'] =  0;
+
+        if ($('#fields-modal #copy_icon').prop('checked')) formData['copy_icon'] = 1;
+        else formData['copy_icon'] =  0;
+
+        if ($('#fields-modal #is_multi').prop('checked')) formData['is_multi'] = 1;
+        else formData['is_multi'] = 0;
+
+        if (g_temp_code == 'selectbox') {
+        var selec_option = [];
+            $('#fields-modal').find('.optVals').each(element => {
+                selec_option.push($('#fields-modal').find('.optVals')[element].value);
             });
-        },
-        failure: function(errMsg) {
-            console.log(errMsg);
-        }
-    });
 
+            formData['selec_option'] = selec_option;
+        }
+
+
+        $.ajax({
+            type: 'post',
+            url: template_update_submit_route,
+            data: formData,
+            success: function(data) {
+
+                getAllTemplate();
+                editTemplate(template_id)
+                $("#fields-modal").modal('hide');
+
+                fields_list_data = data.data;
+                getAllTemplate();
+                templateSetting(item.type,item.asset_forms_id,'update',item.id)
+
+                Swal.fire({
+                    position: 'center',
+                    icon: (data.success) ? 'success' : 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: swal_message_time,
+                });
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
+        });
+
+
+    }
 
 
 }
@@ -450,7 +525,7 @@ function saveFieldSetting(ev) {
     ev.stopPropagation();
 
     if(check_action != null){
-        updateFieldSetting(active_edit_field_id,g_obj_key);
+        updateFieldSetting(active_edit_field_id,g_obj_key, new FormData(this));
     }else{
         //check action variable will be null after save fields
         check_action = null;
@@ -463,6 +538,9 @@ function saveFieldSetting(ev) {
         fields_list_data[g_obj_key].description = $('#fields-modal #desc').val();
         if ($('#fields-modal #is_required').prop('checked')) fields_list_data[g_obj_key].required = 1
         else fields_list_data[g_obj_key].required = 0;
+
+        if ($('#fields-modal #copy_icon').prop('checked')) fields_list_data[g_obj_key].copy_icon = 1;
+        else fields_list_data[g_obj_key].copy_icon =  0;
 
         if (g_temp_code == 'selectbox') {
             fields_list_data[g_obj_key].options = [];
@@ -482,7 +560,8 @@ function saveFieldSetting(ev) {
 
 }
 
-function saveTemplate() {
+function saveTemplate(action=null) {
+
 
     if (!$('#tempTitle').val()) {
         alertNotification('error', 'Error' , 'Template Title Required');
