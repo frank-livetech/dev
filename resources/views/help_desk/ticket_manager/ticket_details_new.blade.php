@@ -2199,6 +2199,11 @@
 
     <script>
         $(document).on('select2:open', () => {
+            var element = document.querySelector('[aria-controls="select2-tkt_all_customers-results"]');
+        
+            if(element){
+                element.focus(); 
+            }
             document.querySelector('.select2-search__field').focus();
         });
         $('[data-dismiss=modal]').on('click', function(e) {
