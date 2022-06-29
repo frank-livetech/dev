@@ -13,6 +13,7 @@ use DB;
 use Session;
 use Exception;
 use SystemSettings;
+use Illuminate\Support\Str;
 
 class PayrollController extends Controller {
 
@@ -442,9 +443,11 @@ class PayrollController extends Controller {
                 $logList ='<strong> Activity Logs </strong>';
 
                 foreach($logs as $log) {
-                    $logList .= '<p> '.$log->action_perform.' </p>';
+                    $dd = new Carbon( $log['created_at'] , timeZone() ); 
+                    $logList .= '<p> '.Str::before($log->action_perform ,'By').' - '. Carbon::parse( $dd->format('g:i') )->format('g:i A') .' </p>';
                 } 
 
+                $logList .='<p>Total Count '. count($logs).'</p>';
                 
                 $template = str_replace('{ActivityLogs}', count($logs) > 0 ? $logList : '' , $template);
             }
