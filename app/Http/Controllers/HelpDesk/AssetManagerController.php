@@ -333,7 +333,7 @@ class AssetManagerController extends Controller
                     'title' => $request->title,
                 ]);
 
-                $response['message'] = 'Asset Template Title Updated Successfully!';
+                $response['message'] = 'Asset Type Updated Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
                 $response['data'] = AssetForms::find($request->template_id);
@@ -345,7 +345,7 @@ class AssetManagerController extends Controller
                     'is_deleted' => 1,
                 ]);
 
-                $response['message'] = 'Asset Deleted Successfully!';
+                $response['message'] = 'Form Field Removed Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
                 $response['data'] = AssetFields::where('asset_forms_id', $request->template_id)->get();

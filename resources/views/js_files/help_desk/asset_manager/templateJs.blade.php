@@ -501,7 +501,7 @@ function updateFieldSetting(field_id,temp_id,form=null){
 
                 fields_list_data = data.data;
                 item = data.data;
-                getAllTemplate();
+
                 templateSetting(item.type,item.asset_forms_id,'update',item.id)
 
                 Swal.fire({
