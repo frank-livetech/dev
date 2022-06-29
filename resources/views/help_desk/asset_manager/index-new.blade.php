@@ -334,17 +334,6 @@
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <div class="form-group">
-                                                <label> Customer </label>
-                                                <select name="customer_id" id="asset_customer" onchange="selectCustomer(this.value , 'asset_customer','asset_company')" class="select2 customerValue">
-                                                    <option value=""> Choose </option>
-                                                    @foreach($customers as $customer)
-                                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 form-group">
-                                            <div class="form-group">
                                                 <label> Company </label>
                                                 <select name="company_id" id="asset_company" onchange="selectCompany(this.value , 'asset_customer','asset_company')" class="select2 companyValue">
                                                     <option value=""> Choose </option>
@@ -354,6 +343,18 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-md-4 form-group">
+                                            <div class="form-group">
+                                                <label> Customer </label>
+                                                <select name="customer_id" id="asset_customer" onchange="selectCustomer(this.value , 'asset_customer','asset_company')" class="select2 customerValue">
+                                                    <option value=""> Choose </option>
+                                                    @foreach($customers as $customer)
+                                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
 
                                     </div>
                                 </div>

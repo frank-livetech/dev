@@ -43,7 +43,6 @@
             success: function(data) {
                 var obj = data.data;
                 asset_type_arr = data.data;
-
                 $('#asset-temp-table-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#asset-temp-table-list').DataTable({

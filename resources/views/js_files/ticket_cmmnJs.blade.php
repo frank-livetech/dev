@@ -712,7 +712,7 @@
                     ${restore_flag_btn} ${val['tkt_notes'] > 0 ? notes_icon : ''}
                 </div>
             </td>
-            <td class='text-center'>${status} - ${val['id']}</td>
+            <td class='text-center'>${status}</td>
             <td class="ticketName" id="${val['id']}">
                 <div class="d-flex justify-content-between">
 
