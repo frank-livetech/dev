@@ -846,7 +846,7 @@ class AuthController extends Controller
                 return view('auth.userexpired',['url' => 'user-login','live' => SystemSetting::where('sys_key','is_live')->first()]);
             }
 
-            return view('auth.userResetpassword', ['token' => $token,'email' => $email, 'is_live' => 0]);
+            return view('auth.userResetpassword', ['token' => $token,'email' => $email, 'is_live' => Session::get('is_live')]);
         }
 
         return redirect()->to('user-login');
