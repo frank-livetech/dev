@@ -975,14 +975,14 @@ $("#asset_customer").change(function(){
                 option_company += `<option value="${data.id}"> ${data.name} </option>`;
                 // option_company += {id: data.id, text: data.name}+',' ;
         }
-                var data = {
+        var data = {
             id: 1,
             text: 'Barn owl'
         };
 
         var newOption = new Option(data.text, data.id, false, false);
         $('#asset_company').append(newOption).trigger('change');
-        console.log(option_company)
+        console.log(newOption)
 
         $("#asset_company").html(option_company);
         $('#asset_company').select2().trigger('change');
