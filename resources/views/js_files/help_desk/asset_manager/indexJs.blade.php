@@ -106,6 +106,7 @@
         //check action variable set id to update template
         check_action = id;
         if (item != null) {
+            $("#tempTitle").val(item.title)
 
             if (item.fields != null && item.fields.length != 0) {
                 fields_list_data = item.fields;

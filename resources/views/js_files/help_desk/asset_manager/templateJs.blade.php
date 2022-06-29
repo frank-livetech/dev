@@ -441,7 +441,9 @@ function updateFieldSetting(field_id,temp_id,form=null){
                 if (data.success) {
                     $("#fields-modal").modal('hide');
                     fields_list_data = data.data;
-                    getAllTemplate();
+                    item = data.data;
+                    // getAllTemplate();
+
                     templateSetting(item.type,item.asset_forms_id,'update',item.id)
 
                 }
@@ -493,11 +495,12 @@ function updateFieldSetting(field_id,temp_id,form=null){
             data: formData,
             success: function(data) {
 
-                getAllTemplate();
-                editTemplate(template_id)
+                // getAllTemplate();
+                // editTemplate(template_id)
                 $("#fields-modal").modal('hide');
 
                 fields_list_data = data.data;
+                item = data.data;
                 getAllTemplate();
                 templateSetting(item.type,item.asset_forms_id,'update',item.id)
 

@@ -5,6 +5,7 @@
     var system_date_format = $("#system_date_format").val();
     var usrtimeZone = $("#usrtimeZone").val();
     let ticketDataTableLength = 10;
+    let ticket_id_arr = [];
 
     function initializeTicketTable(p_name = '') {
         page_name = p_name;
@@ -85,13 +86,12 @@
             // 
             let totalSelectedTickets = $('#ticket-table-list tbody input[type="checkbox"]').length;
 
-            let selectedCount = $('.total_tickets').text();
-
-            console.log(totalSelectedTickets , "totalSelectedTickets");
-            
+            let check = false;
+                  
             $('#ticket-table-list tbody input[type="checkbox"]').each(function() {
                 
                 if (chck == true) {
+                    check = true;
                     $(this).prop('checked', true);
                     $('.total_tickets').text( totalSelectedTickets );
                     $('.total_selected_tkts').removeClass('d-none');
@@ -107,6 +107,8 @@
                     };
 
                 } else {
+                    check = false;
+                    // ticket_id_arr = [];
                     $(this).prop('checked', false);
                     $('.total_tickets').text( 0 );
 
@@ -123,10 +125,22 @@
 
                 } 
             });
+
+            if(check) {
+                $("input:checkbox[name=select_all]:checked").each(function() {
+                    ticket_id_arr.push({'id' : $(this).val()});
+                });    
+            }else{
+                ticket_id_arr = [];
+            }
+            
         });
     }
 
     function selectSingle(id) {
+        let find = ticket_id_arr.find(item => item.id == id);
+        let findIndex = ticket_id_arr.findIndex(item => item.id == id);
+
         let chck = $("#select_single_" + id).prop('checked');
         $("#select_single_" + id).toggleClass('chkd');
 
@@ -145,10 +159,21 @@
         $('.total_selected_tkts').removeClass('d-none');
 
         if (chck == true) {
+            
+            if(find == null) {
+                ticket_id_arr.push({'id' : id}); 
+            }
+
             $('.show_tkt_btns').show()
             $('.total_tickets').text( parseInt(selectedCount) + 1);
             $('.btnDelete').removeClass('d-none');
         }else{
+
+            if(find != null)  {
+                if (findIndex !== -1) {
+                    ticket_id_arr.splice(findIndex, 1);
+                }
+            }
             $('.total_tickets').text( parseInt(selectedCount) - 1);
             $('.btnDelete').addClass('d-none');
 
@@ -687,7 +712,7 @@
                     ${restore_flag_btn} ${val['tkt_notes'] > 0 ? notes_icon : ''}
                 </div>
             </td>
-            <td class='text-center'>${status}</td>
+            <td class='text-center'>${status} - ${val['id']}</td>
             <td class="ticketName" id="${val['id']}">
                 <div class="d-flex justify-content-between">
 
