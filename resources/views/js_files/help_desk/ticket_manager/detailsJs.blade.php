@@ -3166,7 +3166,7 @@ function executeFollowUps(check_followup) {
                         </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp; <br>
 
                     <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span> 
-                    <div class="my-1 bor-top" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
+                    <div class="my-1 bor-top reply-htm" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
                 </div>
             </li>
             <hr>`;
