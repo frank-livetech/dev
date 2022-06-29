@@ -4085,12 +4085,12 @@ function closeAssetModal() {
 function setCustomerCompany() {
     let cust_cmp = companies_list.filter(item => { return item.id == ticket_customer.company_id });
     if (cust_cmp.length) {
-        let name = `<a href="{{url('company-profile')}}/${cust_cmp[0].id}"> ${cust_cmp[0].name} </a>`;
+        let name = `<a class="text-body" href="{{url('company-profile')}}/${cust_cmp[0].id}"> ${cust_cmp[0].name} </a>`;
         $('#cst-company').html('Company : ' + name);
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
 
         // $('#adjustCard1Height').attr('style', 'height: 300px !important');
-        $('#adjustCard2Height').attr('style', 'height: 197px !important; overflow-y:scroll');
+        $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
         
     } else {
         $('#cst-company').html('');

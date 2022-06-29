@@ -111,8 +111,8 @@ $(window).on('load', function () {
       x: { show: false }
     }
   };
-  gainedChart = new ApexCharts($gainedChart, gainedChartOptions);
-  gainedChart.render();
+  // gainedChart = new ApexCharts($gainedChart, gainedChartOptions);
+  // gainedChart.render();
 
   // Order Received Chart
   // ----------------------------------
@@ -178,8 +178,8 @@ $(window).on('load', function () {
       x: { show: false }
     }
   };
-  orderChart = new ApexCharts($orderChart, orderChartOptions);
-  orderChart.render();
+  // orderChart = new ApexCharts($orderChart, orderChartOptions);
+  // orderChart.render();
 
   // Average Session Chart
   // ----------------------------------
@@ -230,8 +230,8 @@ $(window).on('load', function () {
       type: 'numeric'
     }
   };
-  avgSessionsChart = new ApexCharts($avgSessionsChart, avgSessionsChartOptions);
-  avgSessionsChart.render();
+  // avgSessionsChart = new ApexCharts($avgSessionsChart, avgSessionsChartOptions);
+  // avgSessionsChart.render();
 
   // Support Tracker Chart
   // -----------------------------
@@ -287,8 +287,8 @@ $(window).on('load', function () {
     series: [83],
     labels: ['Completed Tickets']
   };
-  supportTrackerChart = new ApexCharts($supportTrackerChart, supportTrackerChartOptions);
-  supportTrackerChart.render();
+  // supportTrackerChart = new ApexCharts($supportTrackerChart, supportTrackerChartOptions);
+  // supportTrackerChart.render();
 
   // Sales Chart
   // -----------------------------
@@ -364,6 +364,6 @@ $(window).on('load', function () {
       }
     }
   };
-  salesVisitChart = new ApexCharts($salesVisitChart, salesVisitChartOptions);
-  salesVisitChart.render();
+  // salesVisitChart = new ApexCharts($salesVisitChart, salesVisitChartOptions);
+  // salesVisitChart.render();
 });
