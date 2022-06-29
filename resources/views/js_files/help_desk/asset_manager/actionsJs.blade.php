@@ -30,7 +30,7 @@ function get_asset_table_list() {
                     {
                         'targets': 1,
                         'createdCell':  function (td, cellData, rowData, row, col) {
-                            $(td).attr('id',rowData.id); 
+                            $(td).attr('id',rowData.id);
                         }
                     }
                 ],
@@ -47,7 +47,7 @@ function get_asset_table_list() {
                         "defaultContent": ''
                     },
                     {
-                        
+
                         "render": function(data, type, full, meta) {
                             if(full.asset_fields != null) {
                                 let general_field = full.asset_fields[0]['id'];
@@ -166,7 +166,7 @@ function showAssetDetails(id) {
         //                         <tr>
         //                             <td class="fw-bolder"> Phone </td>
         //                             <td> ${item.customer.phone != null ? item.customer.phone : '---' } ${item.customer.phone!= null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.customer.phone+'`)" style="float:right"></i>': ''}</td>
-        //                         </tr>                                                        
+        //                         </tr>
         //                     </tbody>
         //                 </table>
         //             </div>
@@ -179,7 +179,7 @@ function showAssetDetails(id) {
         //     company_html = `
         //     <div class="col-md-6 text-start rounded">
         //         <div class="bg-light p-2 rounded">
-                    
+
         //             <div class="d-flex justify-content-between">
         //                 <h4 class="fw-bolder"> Company Detail </h4>
         //                 <span class="small text-success fw-bolder url_copy_${item.id}"></span>
@@ -199,7 +199,7 @@ function showAssetDetails(id) {
         //                         <tr>
         //                             <td class="fw-bolder"> Phone </td>
         //                             <td> ${item.company.phone != null ? item.company.phone : '---'} ${item.company.phone != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.company.phone+'`)" style="float:right"></i>': ''}</td>
-        //                         </tr>                                                        
+        //                         </tr>
         //                     </tbody>
         //                 </table>
         //             </div>
@@ -230,11 +230,11 @@ function showAssetDetails(id) {
             asset_field_html += `
                 <div class="col-md-12 text-start rounded">
                     <div class="bg-light p-2 rounded">
-                        
+
                         <div>
                             <table class="table table -hover table-hover">
                                 <tbody>
-                                   
+
                                     <tr>
                                         <td class="fw-bolder" width="170"> Asset Type </td>
                                         <td width="300px">${item.template.title != null ? item.template.title : '---'} </td>
@@ -256,15 +256,15 @@ function showAssetDetails(id) {
             ${item.asset_fields != null ? asset_field_html : ''}
         </div>
         <div class="row p-1">
-            ${template_html}            
-            ${customer_html}            
-            ${company_html}            
+            ${template_html}
+            ${customer_html}
+            ${company_html}
         </div>
         `;
 }
 
 function copyToClipBoard(text) {
-    
+
     let $input = $("<input>");
     $('body').append($input);
 
@@ -365,11 +365,11 @@ function editAsset(id) {
             if(data.AssetForm != null) {
                 $("#modal-title").text(data.AssetForm.title);
             }
-            
+
             if(data.asset != null) {
                 $("#up_asset_title").val(data.asset.asset_title);
                 $("#asset_title_id").val(data.asset.id);
-                
+
                 if(data.asset.company_id != null) {
                     $('.asset_company_id').val(data.asset.company_id).trigger('change');
                 }else{
@@ -381,9 +381,9 @@ function editAsset(id) {
                 }else{
                     $('.asset_customer_id').val("").trigger('change');
                 }
-                
+
             }
-            
+
 
             var html_input = ``;
             var add_html = ``;
@@ -407,12 +407,12 @@ function editAsset(id) {
                         <input type='text' value="` + split_address[0] + `" id="address_` + data.AssetFields[i].id + `" class="form-control mt-2" ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
                         <input type='text' value="` + split_address[1] + `" id="aprt_` + data.AssetFields[i].id + `" class="form-control mt-2" ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
                         <input type='text' value="` + split_address[2] + `" id="city_` + data.AssetFields[i].id + `" class="form-control mt-2" ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
-                        
+
                         <select class="select2 form-control mt-2" id="state_` + data.AssetFields[i].id + `" ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `>
                         </select>
 
                         <input type='text' value="` + split_address[4] + `" id="zipcode_` + data.AssetFields[i].id + `" class="form-control mt-2" ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
-                        
+
                         <select class="select2 form-control mt-2" id="country_` + data.AssetFields[i].id + `" ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `>
                         </select>
                     </div>
@@ -649,11 +649,11 @@ function getFields(id) {
 
         fields += `<div class="col-md-${data[i].col_width} form-group">
             <label>${data[i].label}</label> ${(data[i].required == 1 ? `<span class="text-danger">*</span>` : '')}`;
-        
+
 
         switch(data[i].type) {
             case 'ipv4':
-                fields += `<input type="${data[i].type}" id="ipv4" class="form-control" name="fl_${data[i].id}" placeholder="${placeholder}" ${required}/>`;                
+                fields += `<input type="${data[i].type}" id="ipv4" class="form-control" name="fl_${data[i].id}" placeholder="${placeholder}" ${required}/>`;
                 break;
             case 'textbox':
                 fields += `<textarea class="form-control" name="fl_${data[i].id}" placeholder="${placeholder}" ${required}></textarea>`;
@@ -728,10 +728,10 @@ function getFields(id) {
         fields += `</div>`;
     }
     $("#form-fields").html(fields);
-    
+
     $('.selected2').select2();
 
- 
+
 
 
 
@@ -784,7 +784,7 @@ $("#save_asset_form").submit(function (event) {
     var action = $(this).attr('action');
     var method = $(this).attr('method');
 
-    
+
     formData.append('project_id', asset_project_id);
     formData.append('ticket_id', asset_ticket_id);
 
@@ -820,19 +820,19 @@ $("#save_asset_form").submit(function (event) {
     if(demo_address == 123) {
 
         $('.keysss').each(function(){
-    
+
             var fl_address = $("#fl_address_" + $(this).val()).val();
             var fl_aprt = $("#fl_aprt_"+ $(this).val()).val();
             var fl_city = $("#fl_city_"+ $(this).val()).val();
             var all_states = $("#all_states_" + $(this).val()).val();
             var fl_zip_code = $("#fl_zip_code_"+ $(this).val()).val();
             var all_countries = $("#all_countries_" + $(this).val()).val();
-    
+
             var value = fl_address + "|" + fl_aprt + "|" + fl_city + "|" + all_states + "|" + fl_zip_code + "|" + all_countries ;
-    
+
             formData.append("fl_"+$(this).val(), value);
          });
-      
+
 
     }else{
         console.log(formData , "formData");
@@ -852,11 +852,11 @@ $("#save_asset_form").submit(function (event) {
                 $("#save_asset_form").trigger("reset");
                 $("#form-fields").html("");
                 $('#asset').modal('hide');
-                
+
                 if(typeof assets_table_list != "undefined") get_asset_table_list();
 
                 if(asset_ticket_id) ticket_notify('ticket_update', 'T_asset_add');
-                
+
                 $("#templateTitle").removeAttr('style');
                 $("#templateTitle").attr('style','display:none !important');
             }
@@ -876,7 +876,7 @@ function getAssetDetails(id=1) {
         type: 'get',
         url: get_asset_details_route+'/'+id,
         success: function (data) {
-            
+
         }
     });
 }
@@ -967,9 +967,32 @@ function getAssetDetails(id=1) {
 
 
 
+$("#asset_customer").change(function(){
+    console.log($('#asset_customer :selected').text())
+    if($('#asset_customer :selected').text() == 'All'){
+        let option_company = [];
+        for (const data of companies) {
+                option_company += `<option value="${data.id}"> ${data.name} </option>`;
+                // option_company += {id: data.id, text: data.name}+',' ;
+        }
+                var data = {
+            id: 1,
+            text: 'Barn owl'
+        };
+
+        var newOption = new Option(data.text, data.id, false, false);
+        $('#asset_company').append(newOption).trigger('change');
+        console.log(option_company)
+
+        $("#asset_company").html(option_company);
+        $('#asset_company').select2().trigger('change');
+
+    }
+});
+
 function selectCustomer(value , customerId , companyId) {
-        
-        let root = `<option value="">All</option>`;
+
+        let root = `<option value="all">All</option>`;
         if (value != '') {
             $("#"+companyId).empty();
             let item = customers.find(item => item.id == value);
@@ -979,6 +1002,9 @@ function selectCustomer(value , customerId , companyId) {
                         $("#"+companyId).empty();
                         let option = `<option value="${item.company_id}"> ${item.company_name} </option>`;
                         $("#"+companyId).html(option);
+
+
+
                     }else{
                         let option = `<option value="${item.company_id}"> ${item.company_name} </option>`;
                         $("#"+companyId).html(root+option);
@@ -998,7 +1024,7 @@ function selectCustomer(value , customerId , companyId) {
 
 
     function selectCompany(value , customerId , companyId) {
-        let root = `<option value="">All</option>`;
+        let root = `<option value="all">All</option>`;
 
         if(value != '') {
             assetFlag = true;
@@ -1008,6 +1034,17 @@ function selectCustomer(value , customerId , companyId) {
                 for (let data of custs) {
                     option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
                 }
+
+                if($('#'+customerId+' :selected').text() == 'All'){
+                    let option_company = '';
+                    for (const data of companies) {
+                            option_company += `<option value="${data.company_id}"> ${data.company_name} </option>`;
+                    }
+
+                    $("#"+companyId).html(option_company);
+                }
+
+
                 $('#'+customerId).empty();
                 $("#"+customerId).html(root + option);
             }

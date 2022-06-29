@@ -327,6 +327,19 @@ class AssetManagerController extends Controller
         try {
 
             // dd($request->all());
+
+            if($request->has('title')){
+                AssetForms::find($request->template_id)->update([
+                    'title' => $request->title,
+                ]);
+
+                $response['message'] = 'Asset Template Title Updated Successfully!';
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                $response['data'] = AssetForms::find($request->template_id);
+                return response()->json($response);
+            }
+
             if($request->has('form_field')){
                 AssetFields::find($request->field_id)->update([
                     'is_deleted' => 1,

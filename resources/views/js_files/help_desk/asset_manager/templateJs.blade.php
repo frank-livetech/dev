@@ -565,39 +565,96 @@ function saveFieldSetting(ev) {
 
 function saveTemplate(action=null) {
 
+        if (!$('#tempTitle').val()) {
+                alertNotification('error', 'Error' , 'Template Title Required');
+                $('#tempTitle').focus();
+                $("#tempTitle").css('border','1px solid red')
+                    return false;
+        }
 
-    if (!$('#tempTitle').val()) {
-        alertNotification('error', 'Error' , 'Template Title Required');
-        $('#tempTitle').focus();
-        $("#tempTitle").css('border','1px solid red')
-        return false;
-    }
+        for (let i in fields_list_data) {
+            if (!fields_list_data[i].hasOwnProperty('label')) {
+                $('#card-colors').find('div[data-id="' + i + '"]').find('.card').css('background-color', 'rgb(255, 200, 0, 0.43)');
+                return false;
+            }
+        }
 
-    for (let i in fields_list_data) {
-        if (!fields_list_data[i].hasOwnProperty('label')) {
-            $('#card-colors').find('div[data-id="' + i + '"]').find('.card').css('background-color', 'rgb(255, 200, 0, 0.43)');
+        let fields_in_seq = [];
+        $('#card-colors').find('.appends').each(function(item) {
+            if ($(this).data('id') >= 0) fields_in_seq.push(fields_list_data[$(this).data('id')]);
+        });
+
+        if (!fields_in_seq.length) fields_in_seq = fields_list_data;
+
+
+    if(check_action == null)
+    {
+
+        let formData = new FormData();
+        formData.append('title', $('#tempTitle').val());
+        formData.append('fields', JSON.stringify(fields_in_seq));
+
+        let value = $("#sortable-row-start").next().attr('class');
+
+        if( value.includes("firstfield")  ) {
+
+            $.ajax({
+                type: 'post',
+                url: template_submit_route,
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                success: function(data) {
+                    $("#tempTitle").removeAttr('style');
+                    if (data.success) {
+                        getFormsTemplates();
+                        getAllTemplate();
+                        $('.connectedSortable').each(function() {
+                            if ($(this).attr('id') == 'sortable-row-start' || $(this).attr('id') == 'sortable-row-last') {
+                                $(this).find('.appends').each(function(i) {
+                                    if (i > 0) {
+                                        $(this).remove();
+                                    }
+                                })
+                            } else {
+                                $(this).remove();
+                            }
+                        });
+                        fields_list_data = [];
+                        g_obj_key = null;
+                        g_temp_code = null;
+                        g_count = 0;
+                        $('#tempTitle').val('');
+                    }
+                    Swal.fire({
+                        position: 'center',
+                        icon: (data.success) ? 'success' : 'error',
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: swal_message_time,
+                    });
+                },
+                failure: function(errMsg) {
+                    console.log(errMsg);
+                }
+            });
+
+
+        }else{
+            alertNotification('error', 'Error' , 'Input Field is Required');
             return false;
         }
-    }
-
-    let fields_in_seq = [];
-    $('#card-colors').find('.appends').each(function(item) {
-        if ($(this).data('id') >= 0) fields_in_seq.push(fields_list_data[$(this).data('id')]);
-    });
-
-    if (!fields_in_seq.length) fields_in_seq = fields_list_data;
-
-    let formData = new FormData();
-    formData.append('title', $('#tempTitle').val());
-    formData.append('fields', JSON.stringify(fields_in_seq));
-
-    let value = $("#sortable-row-start").next().attr('class');
-
-    if( value.includes("firstfield")  ) {
+    }else{
+        let formData = new FormData();
+        formData.append('title', $('#tempTitle').val());
+        formData.append('template_id', template_id);
 
         $.ajax({
             type: 'post',
-            url: template_submit_route,
+            url: template_update_submit_route,
             data: formData,
             async: false,
             cache: false,
@@ -609,22 +666,6 @@ function saveTemplate(action=null) {
                 if (data.success) {
                     getFormsTemplates();
                     getAllTemplate();
-                    $('.connectedSortable').each(function() {
-                        if ($(this).attr('id') == 'sortable-row-start' || $(this).attr('id') == 'sortable-row-last') {
-                            $(this).find('.appends').each(function(i) {
-                                if (i > 0) {
-                                    $(this).remove();
-                                }
-                            })
-                        } else {
-                            $(this).remove();
-                        }
-                    });
-                    fields_list_data = [];
-                    g_obj_key = null;
-                    g_temp_code = null;
-                    g_count = 0;
-                    $('#tempTitle').val('');
                 }
                 Swal.fire({
                     position: 'center',
@@ -638,11 +679,7 @@ function saveTemplate(action=null) {
                 console.log(errMsg);
             }
         });
-
-
-    }else{
-        alertNotification('error', 'Error' , 'Input Field is Required');
-        return false;
     }
+
 }
 </script>
