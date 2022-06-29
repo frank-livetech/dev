@@ -333,7 +333,7 @@
         text-align: left
     }
     .bor-top img{
-        max-width: 240px !important
+        max-width: 160px !important
     }
     }
 </style>
@@ -779,7 +779,7 @@
                                             <div class="col-md-12 audit-log">
                                                 <div class="table-responsive">
                                                     <table id="ticket-logs-list"
-                                                        class="table table-striped table-bordered no-wrap ticket-table-list w-100">
+                                                        class="table ticket-table-list w-100">
                                                         <thead>
                                                             <tr>
                                                                 <th class="d-none">ID</th>
