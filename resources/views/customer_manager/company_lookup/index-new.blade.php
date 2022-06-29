@@ -69,12 +69,7 @@
                     <table id="companyTable" class="companyTable table">
                         <thead>
                             <tr>
-                                <th>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1"></label>
-                                    </div>
-                                </th>
+                                
                                 <th>Company Name</th>
                                 <th>Owner Name</th>
                                 <th>Phone</th>
