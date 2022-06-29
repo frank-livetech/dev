@@ -1846,7 +1846,7 @@ function listReplies() {
                             </div>
                             
                             <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
-                            <div class="my-1 bor-top" id="reply-html-` + reply.id + `"> ${content} </div>
+                            <div class="my-1 bor-top reply-htm" id="reply-html-` + reply.id + `"> ${content} </div>
                             </div>
                             
                         </div>
