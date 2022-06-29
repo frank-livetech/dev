@@ -43,7 +43,6 @@
             success: function(data) {
                 var obj = data.data;
                 asset_type_arr = data.data;
-
                 $('#asset-temp-table-list').DataTable().destroy();
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#asset-temp-table-list').DataTable({
@@ -106,6 +105,7 @@
         //check action variable set id to update template
         check_action = id;
         if (item != null) {
+            $("#tempTitle").val(item.title)
 
             if (item.fields != null && item.fields.length != 0) {
                 fields_list_data = item.fields;

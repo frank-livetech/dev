@@ -22,7 +22,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
 require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+//require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -1438,6 +1438,9 @@ class HelpdeskController extends Controller
                 $del_tkt->is_deleted = 1;
                 $del_tkt->deleted_at = Carbon::now();
                 $del_tkt->save();
+
+                $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
+                $replies = TicketReply::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
                 
                 // Add Delete log
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
@@ -1472,6 +1475,8 @@ class HelpdeskController extends Controller
 
                 if($request->tkt_del) {
                     $del_tkt->is_deleted = 1;
+                    $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
+                    $replies = TicketReply::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
                 }
 
 
@@ -3237,6 +3242,9 @@ class HelpdeskController extends Controller
                 $del_tkt = Tickets::where('id',$data[$i])->first();
                 $del_tkt->is_deleted = 1;
                 $del_tkt->save();
+
+                $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
+                $replies = TicketReply::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
 
                 $customer = Customer::where('id',$del_tkt->customer_id)->first();
                 $customer->is_deleted = 1;
