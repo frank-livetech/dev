@@ -960,7 +960,7 @@
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title mb-0">Ticket Replies </h4>
                                 <div>
-                                    <a href="#v-pills-tab" id="compose_btn" class="btn btn-success float-right" onclick="composeReply()" style="color: #fff !important">
+                                    <a id="compose_btn" class="btn btn-success float-right" onclick="composeReply()" style="color: #fff !important">
                                         Compose 
                                     </a>                               
                                     <a id="update_ticket" style="display:none" class="btn btn-success float-right mx-2" onclick="updateTicket()">
