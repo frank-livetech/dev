@@ -23,11 +23,11 @@
 
 
 table.dataTable .custom {
-    padding-right: 186px !important;
+    padding-right: 230px !important;
 }
 
-.pr-ticket {
-    min-width: 89px !important;
+table.dataTable .pr-ticket {
+    min-width: 69px !important;
 }
 
 .pr-replies {
@@ -50,19 +50,12 @@ table.dataTable .custom {
 table.dataTable .custom-cst {
     padding-right: 37px !important;
 }
-
+table.dataTable th {
+    padding: 0.2rem 1.5rem;
+}
 table.dataTable td {
     padding: 7px !important;
     font-size: 12px;
-}
-
-table.dataTable thead .sorting:before,
-table.dataTable thead .sorting_asc:before,
-table.dataTable thead .sorting_desc:before,
-table.dataTable thead .sorting:after,
-table.dataTable thead .sorting_asc:after,
-table.dataTable thead .sorting_desc:after {
-    display: none;
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
@@ -472,24 +465,24 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    <div class="text-center">
-                                                        <input type="checkbox" name="select_all[]" id="select-all">
+                                                    <div class="" style="width:30px">
+                                                        <input type="checkbox" name="select_all[]" id="select-all" style="position: relative;right: 3px;">
                                                     </div>
                                                 </th>
                                                 <th></th>
                                                 <th>Status</th>
                                                 <th class='custom'>Subject</th>
-                                                <th class='pr-ticket' style="padding:7px !important">Ticket ID</th>
+                                                <th class='pr-ticket'>Ticket ID</th>
                                                 <th>Priority</th>
                                                 <th class='custom-cst'>Customer</th>
                                                 <th class='pr-replies custom-cst'>Last Replier</th>
                                                 <th>Replies</th>
-                                                <th class='pr-activity' style="padding:7px !important">Last Activity
+                                                <th class='pr-activity' >Last Activity
                                                 </th>
                                                 <th class='pr-ticket'>Reply Due</th>
-                                                <th class='pr-due' style="padding:7px !important">Resolution Due</th>
+                                                <th class='pr-due'>Resolution Due</th>
                                                 <th class='pr-tech custom-cst'>Assigned Staff</th>
-                                                <th class='custom-cst' style="padding:7px !important">Department</th>
+                                                <th class='custom-cst'>Department</th>
                                                 <!-- <th class='pr-tech custom-cst'>Creation Date</th> -->
                                             </tr>
                                         </thead>
