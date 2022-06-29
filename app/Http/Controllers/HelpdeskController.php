@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-require 'vendor/autoload.php';
-//require '../vendor/autoload.php';
+//require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
