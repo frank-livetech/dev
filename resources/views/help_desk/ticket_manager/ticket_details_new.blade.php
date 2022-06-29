@@ -319,6 +319,9 @@
     .webkit-box1{
         display: -webkit-box;
     }
+    table.dataTable td, table.dataTable th {
+    padding: 0.72rem 0.5rem !important;
+}
     @media (max-width: 897.98px){
         .webkit-box1{
         display: inline;
@@ -330,7 +333,7 @@
         text-align: left
     }
     .bor-top img{
-        max-width: 340px !important
+        max-width: 240px !important
     }
     }
 </style>
@@ -373,7 +376,7 @@
                     <div class="card">
                         <div class="card-body" id="adjustCard1Height" style="overflow: hidden;">
                             <h5 class="card-title mb-0">Ticket ID: 
-                                    <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
+                                    <a class="text-body" href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
                                     <a href="javascript:void(0)" onclick="ticketUrlCopy()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 {{-- <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle waves-effect waves-float waves-light" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button> --}}
@@ -471,16 +474,16 @@
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px; ">Name : 
                                         @if($details->is_staff_tkt== 0)
-                                            <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
+                                            <a class="text-body" href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
                                         @else
-                                            <a href="{{url('profile')}}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
+                                            <a class="text-body" href="{{url('profile')}}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
                                         @endif
                                             <span class="badge badge-secondary type_bdge"> {{$details->is_staff_tkt == 0 ? 'User' : 'Staff'}}  </span> </a></p>
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company"></p>
-                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line" class="text-body">{{ $phone }}</a> </p>
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company-name"></p>
-                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Email : <a href="mailto:{{ $email }}" id="cst-email">{{ $email }}</a>  </p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Email : <a href="mailto:{{ $email }}" id="cst-email" class="text-body">{{ $email }}</a>  </p>
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;">Client Since : <span id="cust-creation-date"></span></p>
                                     </div>
                                 </div>
@@ -580,7 +583,7 @@
                                                             <div class="first" >
                                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                                
-                                                                <span id="tkt-subject" class="tkt-subject" style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
+                                                                <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$details->subject}} </span> 
                                                                 @if($details->attachments != null)
                                                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
                                                                 @endif
@@ -750,10 +753,10 @@
                                             <div class="col-12 px-0 my-2">
                                                 <div class="table-responsive" width='200px'>
                                                     <table id="asset-table-list"
-                                                        class="table w-100 table-bordered no-wrap asset-table-list">
+                                                        class="table asset-table-list">
                                                         <thead>
                                                             <tr>
-                                                                <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
+                                                                <th><div class="" style="width:0px"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
                                                                 <th>ID</th>
                                                                 <th>Asset Title</th>
                                                                 <th>Asset Type </th>
@@ -780,7 +783,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th class="d-none">ID</th>
-                                                                <th style="height:35px;">Activity</th>
+                                                                <th>Activity</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody></tbody>
@@ -2108,7 +2111,7 @@
                             <div class="first" >
                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                 
-                                <span  style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
+                                <span  style="font-size:20px"> {{$details->subject}} </span> 
                                 @if($details->attachments != null)
                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
                                 @endif
@@ -2196,6 +2199,11 @@
 
     <script>
         $(document).on('select2:open', () => {
+            var element = document.querySelector('[aria-controls="select2-tkt_all_customers-results"]');
+        
+            if(element){
+                element.focus(); 
+            }
             document.querySelector('.select2-search__field').focus();
         });
         $('[data-dismiss=modal]').on('click', function(e) {
