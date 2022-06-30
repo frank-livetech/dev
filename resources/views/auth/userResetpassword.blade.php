@@ -3,40 +3,40 @@
 <!-- BEGIN: Head-->
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
     <title>Reset Password</title>
-    @php
+    {{-- @php
         $file_path = $is_live == 1 ? 'public/' : '/';
         $path = $is_live == 1 ? 'public/system_files/' : 'system_files/';
-    @endphp
-    <link rel="apple-touch-icon" href="{{asset($file_path . 'files/brand_files')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset($file_path . 'files/brand_files')}}">
+    @endphp --}}
+    <link rel="apple-touch-icon" href="{{asset('public/files/brand_files')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('public/files/brand_files')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/vendors/css/vendors.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/vendors/css/vendors.min.css')}}">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/bootstrap.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/bootstrap-extended.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/colors.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/components.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/themes/dark-layout.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/themes/bordered-layout.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/themes/semi-dark-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/bootstrap-extended.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/colors.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/components.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/themes/dark-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/themes/bordered-layout.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/themes/semi-dark-layout.css')}}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/plugins/forms/form-validation.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/pages/authentication.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/plugins/forms/form-validation.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('public/app-assets/css/pages/authentication.css')}}">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/css/style.css')}}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'assets/css/style.css')}}"> --}}
     <!-- END: Custom CSS-->
 
 </head>
@@ -93,7 +93,7 @@
                                             <label class="form-label" for="reset-password-confirm">Confirm Password</label>
                                         </div>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge" id="reset-password-confirm" type="password" name="password_confirmation" placeholder="············" aria-describedby="reset-password-confirm" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            <input class="form-control form-control-merge" id="reset-password-confirm" type="password" name="password_confirmation" aria-describedby="reset-password-confirm" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                             @if ($errors->has('password_confirmation'))
                                             <span class="text-danger">{{ $errors->first('password_confirmation') }}</span>
                                             @endif
@@ -114,20 +114,20 @@
 
 
     <!-- BEGIN: Vendor JS-->
-    <script src="{{asset($file_path . 'app-assets/vendors/js/vendors.min.js')}}"></script>
+    <script src="{{asset('public/app-assets/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset($file_path . 'app-assets/vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('public/app-assets/vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="{{asset($file_path . 'app-assets/js/core/app-menu.js')}}"></script>
-    <script src="{{asset($file_path . 'app-assets/js/core/app.js')}}"></script>
+    <script src="{{asset('public/app-assets/js/core/app-menu.js')}}"></script>
+    <script src="{{asset('public/app-assets/js/core/app.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
-    <script src="{{asset($file_path . 'app-assets/js/scripts/pages/auth-register.js')}}"></script>
+    <script src="{{asset('public/app-assets/js/scripts/pages/auth-register.js')}}"></script>
     <!-- END: Page JS-->
 
     <script>
