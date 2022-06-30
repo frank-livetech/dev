@@ -57,13 +57,13 @@
                     <div class="auth-inner row m-0">
                          <!-- Brand logo-->
                          <a class="brand-logo" href="#">
-                            <img src="{{asset($file_path . 'default_imgs/logo.png')}}" alt="" height="45">
+                            <img src="{{asset('public/default_imgs/logo.png')}}" alt="" height="45">
                             <h2 class="brand-text text-primary ms-1 " style="margin-bottom: 0px;margin-top: 8px">Mylive-Tech</h2>
                         </a>
                         <!-- /Brand logo-->
                         <!-- Left Text-->
                         <div class="d-none d-lg-flex col-lg-7 align-items-center p-5">
-                            <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="{{asset($file_path . 'app-assets/images/pages/register-v2.svg')}}" alt="Register V2" /></div>
+                            <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="{{asset('public/app-assets/images/pages/register-v2.svg')}}" alt="Register V2" /></div>
                         </div>
                         <!-- /Left Text-->
                         <!-- Register-->
