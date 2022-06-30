@@ -23,7 +23,7 @@
         .mt-10{
             margin-top: 81px
         }
-        
+
         .badge-secondary {
             color: #fff;
             background-color: #868e96;
@@ -86,7 +86,7 @@
                                 </small>
                             </div>
                         </div>
-                        
+
                         <!-- User Details end -->
                     </div>
                     <!--/ Admin user profile area -->
@@ -129,13 +129,13 @@
                             <h4 class="chat-list-title">Chats</h4>
                             <ul class="chat-users-list chat-list media-list">
                                 @foreach ($users as $user)
-                                    @if (Auth::id() != $user->id)                                           
+                                    @if (Auth::id() != $user->id)
                                     <li data-id="{{ $user->id }}" onclick="showActiveUserChat(this)"
                                         data_nm="{{ $user->name }}" data-wp="{{ $user->whatsapp }}"
                                         data-pc="{{$user->profile_pic}}"
                                         data-job="{{ $user->job_title }}"
                                         data-about="{{ $user->notes }}">
-                                        
+
                                         <span class="avatar">
                                             @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
                                             @if($user->profile_pic != null)
@@ -162,9 +162,9 @@
                                             </p>
                                         </div>
                                         <div class="chat-meta text-nowrap">
-                                            
+
                                                 <small>  </small>
-                                            
+
                                             <div class="col-md-12 mt-2" id="unread_specific_user_{{$user->id}}">
                                                 @if ($user->unread > 0)
                                                     <span id="unread_{{$user->id}}" style="margin-left: 20px !important;" class="badge bg-danger rounded-pill ms-auto me-1">{{ $user->unread }}</span>
@@ -276,7 +276,7 @@
                                             <i class="fas fa-plus-circle"></i>
                                         </button>
                                         {{-- <span class="speech-to-text input-group-text">
-                                            
+
                                         </span> --}}
 
                                         <input type="text" id="message" name="message" class="form-control message" placeholder="  Type your message or use speech to text" />
@@ -286,7 +286,7 @@
                                             <i data-feather="image" class="cursor-pointer text-secondary"></i>
                                             <input type="file"  onchange="loadFile(event)" id="attach-doc" hidden /> </label>
                                         </span>
-                                        
+
                                     </div>
                                     <button type="submit" class="btn btn-primary send d-flex">
                                         <i class="fas fa-paper-plane" style="margin-right: 4px"></i>
@@ -314,12 +314,12 @@
                                         <span class="avatar-status-busy avatar-status-lg"></span>
                                     </div>
                                     <div class="d-flex">
-                                        <h4 style=" "> 
-                                            <a href="" class="chat-user-name"></a>  
+                                        <h4 style=" ">
+                                            <a href="" class="chat-user-name"></a>
                                                 <span class="badge badge-secondary type_bdge" style="font-size: 11px"></span> </h4>
                                         {{-- <h4 class="chat-user-name"></h4> --}}
                                     </div>
-                                    
+
                                     <span class="user-post">UI/UX Designer 👩🏻‍💻</span>
                                     <div class="text-center my-1">
                                         <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="FACEBOOK"><i class="fab fa-facebook-square" style="font-size: 18px;"></i></button>
@@ -333,16 +333,16 @@
                             </header>
                             <div class="user-profile-sidebar-area">
                                 <!-- About User -->
-                                
+
                                 <h6 class="section-label mb-1">Quick Actions</h6>
                                 <div class="">
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect " >Send Transcript</button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Ban</button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Forword To</button>
-                                    
+
                                 </div>
                                 <div class="mt-1 ">
-                                    
+
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">New Ticket</button>
                                     <button type="button" class="btn btn-sm btn-outline-secondary round waves-effect ">Invite staff</button>
                                 </div>
@@ -488,7 +488,7 @@
     @endsection
 
     @section('scripts')
-    
+
     <script>
         $(document).ready(function(){
             $('[data-toggle="popover"]').popover({
@@ -496,8 +496,8 @@
             content:function(){
             return ('<span><i class="fad fa-microphone" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-image" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-file" style="padding-right: 4px;"></i>&nbsp&nbsp&nbsp<i class="fas fa-smile"></i></span>');
             },
-         });   
-    });
+         });
+        });
         let users_arr = {!! json_encode($users) !!};
         //Message Types  1 = Whatsapp,2 = Webchat
         var message_type = 2;
@@ -519,25 +519,24 @@
             let user_id = $(tag).data("id");
             let user = users_arr.find(item => item.id == user_id);
             let clicktocall=  `<a href="{{asset('tel:'.'${user.phone_number}')}}">${user.phone_number}</a>`;
-               
-            console.log(user);
+
             if(user != null) {
-            
+
                 $("#active_user_name").text( user.name );
                 $('.currentChatUserName').text(user.name);
                 if(user.phone_number != null){
-                    $('.currentChatUserNumber').html(clicktocall); 
+                    $('.currentChatUserNumber').html(clicktocall);
                 }else{
-                    $('.currentChatUserNumber').html('No phone Number Added'); 
+                    $('.currentChatUserNumber').html('No phone Number Added');
                 }
-                
+
                 $('.currentChatUserEmail').text(user.email);
                 $('.currentChatUserCreated').text(user.created_at);
                 $('.currentChatUserdesignation').text(user.job_title);
                 $('.currentChatUserProfile').text(user_id);
                 $('.user-profile-sidebar').addClass('show');
                 // $('.body-content-overlay').addClass('show');
-                
+
             }
             if(user.user_type == 1){
                 $(".type_bdge").text( 'Staff' );
@@ -546,7 +545,7 @@
             }
 
             let imgsrc = $('.user_image_'+user_id).attr('src');
-            $("#active_user_img").attr('src', imgsrc);  
+            $("#active_user_img").attr('src', imgsrc);
 
             let profileLink =  js_origin + 'profile/' + user_id;
             $("#profileLink").addClass('sideModalImg_'+user_id);
@@ -567,7 +566,7 @@
             webChat();
 
             $(".header-profile-sidebar .avatar img").attr('src',src)
-            
+
             $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .chat-user-name").text($(tag).attr("data_nm"))
             $(".user-profile-sidebar .user-profile-header .header-profile-sidebar .user-post").text($(tag).data("job"))
             $(".user-profile-sidebar .user-profile-sidebar-area p").text($(tag).data("about"))
@@ -804,7 +803,7 @@
                 }else{
                     $("#unread_specific_user_" + sender.id).html(badge);
                 }
-                
+
             }
 
             if(message.msg_type == 'text') {
@@ -813,7 +812,7 @@
                 let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>`;
                 $("#last_msg_"+sender.id).html( svg + ' Photo' );
             }
-            
+
             let msg = ``;
             if(message.type == 'file'){
                 msg = `<div  class="chat-content ${message.type == 'file' ? 'p-0' : ''}"> ${message.msg_body} </div>`;
@@ -880,7 +879,7 @@
                         // });
 
                         is_open = 0;
-                        
+
                         $("#attach-doc").removeAttr('name','file');
 
                         $("#message").val("");

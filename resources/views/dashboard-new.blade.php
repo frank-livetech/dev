@@ -572,12 +572,12 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                 <h4 class="card-title">Staff Manager</h4>
                             </div>
                             <div class="card-body">
-                                <div class="row px-2">
+                                <div class="row px-2" id="active-users">
                                     @foreach($users as $user)
                                     <div class="col-md-1 col-sm-3 col-3 mb-1" style="margin-right: 1rem">
                                         @if($user->profile_pic != "" && $user->profile_pic != null)
                                         @if(file_exists( getcwd() .'/'. $user->profile_pic ))
-                                        <span class="avatar">
+                                        <span class="avatar" id="user-{{$user->id}}">
                                             <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip"
                                                 data-placement="top" title="{{$user->name}}">
                                                 <img src="{{ request()->root() .'/'. $user->profile_pic}}"
@@ -586,7 +586,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                             {{-- <span class="avatar-status-online"></span>--}}
                                         </span>
                                         @else
-                                        <span class="avatar">
+                                        <span class="avatar" id="user-{{$user->id}}">
                                             <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip"
                                                 data-placement="top" title="{{$user->name}}">
                                                 <img src="{{asset($file_path . 'default_imgs/customer.png')}}"
@@ -777,15 +777,64 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
 <!-- <script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-utils.min.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-1970-2030.min.js">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-1970-2030.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
 <script src="{{asset($file_path . 'app-assets/daterangepicker.js')}}"></script>
 @include('js_files.dashboardjs')
 @include('js_files.help_desk.ticket_manager.flag_ticketJs')
+
+{{-- <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script> --}}
+<script type="text/javascript">
+    var pusher = new Pusher("{{ pusherCredentials('key') }}", {
+        cluster: "{{ pusherCredentials('cluster') }}",
+    });
+    // Enter a unique channel you wish your users to be subscribed in.
+    var channel = pusher.subscribe('online-user');
+    // bind the server event to get the response data and append it to the message div
+
+    $.ajax({
+        url: "{{route('make.online.user')}}",
+        dataType: "json",
+        type: "Post",
+        async: true,
+        data: { _token: "{{csrf_token()}}",online:true},
+        success: function (data) {
+
+        },
+
+    });
+
+    channel.bind("online-user-event", (data) => {
+        var user = data.user;
+        console.log(data)
+        if(data.status == true){
+            var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
+                        data-placement="top" title="`+user.name+`">
+                        <img src="http://dev.test/storage/users/birmingham_favicon.png"
+                            alt="'s Photo" class="rounded-circle" width="50" height="50">
+                        <span class="avatar-status-online"></span>
+                    </a>
+                   `;
+
+            $("#user-"+user.id).html(html);
+        }
+        elseif(data.status == false){
+            var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
+                        data-placement="top" title="`+user.name+`">
+                        <img src="http://dev.test/storage/users/birmingham_favicon.png"
+                            alt="'s Photo" class="rounded-circle" width="50" height="50">
+                        <span class="avatar-status-offline"></span>
+                    </a>
+                   `;
+
+            $("#user-"+user.id).html(html);
+        }
+
+    });
+
+
+</script>
 
 
 <script type="text/javascript">

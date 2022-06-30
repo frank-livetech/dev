@@ -741,6 +741,7 @@ class AuthController extends Controller
         Session::flush();
         if( Auth::check()){
             Auth::logout();
+            session()->put('is_offline',true);
         }
 
         return redirect()->to($route);
