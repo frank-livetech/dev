@@ -1206,6 +1206,42 @@ class HelpdeskController extends Controller
                 }
             }
 
+            // Set cc and bcc mails if any
+
+            $tkt_share = array();
+    
+            if($data['cc'] != null && $data['cc'] != "") {
+                $tkt_share['email'] = $data['cc'];
+                $tkt_share['mail_type'] = 1;
+                $tkt_share['ticket_id'] = $data['ticket_id'];
+
+                $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 1)->first();
+
+                if($shared_emails) {
+                    $shared_emails->email = $data['cc'];
+                    $shared_emails->save();
+                }else{
+                    TicketSharedEmails::create($tkt_share);
+                }
+            }
+
+            if($data['bcc'] != null && $data['bcc'] != "") {
+                $tkt_share['email'] = $data['bcc'];
+                $tkt_share['mail_type'] = 2;
+                $tkt_share['ticket_id'] = $data['ticket_id'];
+
+                $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 2)->first();
+                if($shared_emails) {
+                    $shared_emails->email = $data['bcc'];
+                    $shared_emails->save();
+                }else{
+                    TicketSharedEmails::create($tkt_share);
+                }
+
+            }
+
+            ////////////////////////////
+
 
             if($type == 'publish') {
             
@@ -1313,7 +1349,6 @@ class HelpdeskController extends Controller
         $shared_emails = TicketSharedEmails::where('ticket_id',$details->id)->get()->toArray();
         $shared_bcc_emails = TicketSharedEmails::where('mail_type',2)->where('ticket_id',$details->id)->get()->toArray();
         $shared_cc_emails = TicketSharedEmails::where('mail_type',1)->where('ticket_id',$details->id)->get()->toArray();
-
 
         $current_status = TicketStatus::where('id' , $details->status)->first();
         $current_priority= TicketPriority::where('id' , $details->priority)->first();

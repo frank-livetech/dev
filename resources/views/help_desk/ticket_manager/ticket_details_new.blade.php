@@ -1028,10 +1028,10 @@
                                     <div class="col-md-6 cc_email_field" style="display:none">
                                         <div class="" style="margin-top: 10px;">
                                             <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
-                                            @if( array_key_exists(0 , $shared_emails) )
+                                            @if( !empty($shared_cc_emails))
                                                 <input type="text" id="to_mails" name="to_mails"
                                                  class="form-control" placeholder="Email" 
-                                                 data-role="tagsinput" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}" required>                                                
+                                                 data-role="tagsinput" value="{{$shared_cc_emails[0]['email']}}" required>                                                
                                             @else
                                                 <input type="text" id="to_mails" name="to_mails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
                                             @endif
@@ -1040,15 +1040,10 @@
                                     <div class="col-md-6 bcc_email_field" style="display:none">
                                         <div class="" style="margin-top: 10px;">
                                             <label for="bcc_emails">BCC <span class="help"> e.g. "example@gmail.com"</span></label>
-                                            @if( array_key_exists(0 , $shared_emails) )
-
-                                                @if( array_search(2, array_column($shared_emails, 'mail_type')) )
-                                                    <input type="text" id="bcc_emails" name="bcc_emails"
-                                                    class="form-control" placeholder="Email" 
-                                                    data-role="tagsinput" value="{{$shared_emails[1]['mail_type'] == 2 ? $shared_emails[1]['email'] : '' }}" required>
-                                                @else
-                                                    <input type="text" id="bcc_emails" name="bcc_emails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
-                                                @endif
+                                            @if( !empty($shared_bcc_emails))
+                                                <input type="text" id="bcc_emails" name="bcc_emails"
+                                                class="form-control" placeholder="Email" 
+                                                data-role="tagsinput" value="{{$shared_bcc_emails[0]['email']}}" required>
                                             @else
                                                 <input type="text" id="bcc_emails" name="bcc_emails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
                                             @endif
