@@ -811,7 +811,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
         if(data.status == true){
             var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
                         data-placement="top" title="`+user.name+`">
-                        <img src="http://dev.test/storage/users/birmingham_favicon.png"
+                        <img src="`+user.profile_pic+`"
                             alt="'s Photo" class="rounded-circle" width="50" height="50">
                         <span class="avatar-status-online"></span>
                     </a>
@@ -821,7 +821,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
         }else if(data.status == false){
             var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
                         data-placement="top" title="`+user.name+`">
-                        <img src="http://dev.test/storage/users/birmingham_favicon.png"
+                        <img src="`+user.profile_pic+`"
                             alt="'s Photo" class="rounded-circle" width="50" height="50">
                         <span class="avatar-status-offline"></span>
                     </a>

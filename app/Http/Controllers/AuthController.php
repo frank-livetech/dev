@@ -660,7 +660,7 @@ class AuthController extends Controller
             }else if ($user->user_type != 5) {
                 return back()->withInput()->withErrors(['email' => 'Contact your admin.']);
             } else {
-                if (Auth::attempt($credentials, $request->has('remember'))) {
+                if (Auth::attempt($credentials, $request->has('remember') ? true : false )) {
                     // Authentication passed...
                     if (isset($request->fcm_token)) {
                         if ($user->device_token != NULL && $user->device_token != '') {
