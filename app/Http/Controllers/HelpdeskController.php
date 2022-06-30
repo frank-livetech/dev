@@ -1314,7 +1314,6 @@ class HelpdeskController extends Controller
         $shared_bcc_emails = TicketSharedEmails::where('mail_type',2)->where('ticket_id',$details->id)->get()->toArray();
         $shared_cc_emails = TicketSharedEmails::where('mail_type',1)->where('ticket_id',$details->id)->get()->toArray();
 
-
         $current_status = TicketStatus::where('id' , $details->status)->first();
         $current_priority= TicketPriority::where('id' , $details->priority)->first();
 
