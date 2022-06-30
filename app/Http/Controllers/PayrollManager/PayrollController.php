@@ -258,7 +258,11 @@ class PayrollController extends Controller {
 
                 foreach($todayTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> &nbsp; Status:  <span style='color:$tk->status_color'>$tk->status_name</span> &nbsp; Priority:  <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
@@ -282,7 +286,11 @@ class PayrollController extends Controller {
                 foreach($overdueTickets as $tk) {
 
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($overdueTickets).'</p>';
@@ -306,7 +314,11 @@ class PayrollController extends Controller {
 
                 foreach($flaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($flaggedTickets).'</p>';
@@ -329,7 +341,11 @@ class PayrollController extends Controller {
 
                 foreach($UnassginedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($UnassginedTickets).'</p>';
@@ -361,7 +377,11 @@ class PayrollController extends Controller {
 
                 foreach($todayTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
@@ -384,7 +404,11 @@ class PayrollController extends Controller {
 
                 foreach($todayFlaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($todayFlaggedTickets).'</p>';
@@ -406,7 +430,11 @@ class PayrollController extends Controller {
                 
                 foreach($todayUpdatedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($todayUpdatedTickets).'</p>';
@@ -429,7 +457,11 @@ class PayrollController extends Controller {
 
                 foreach($todayClosedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= "<p class='tkt_details' style='line-height: 18px !important;margin-bottom: 0 !important;'><a href='$tkUrl'>$tk->coustom_id</a> - <span style='color:$tk->status_color'>$tk->status_name</span> - <span style='color:$tk->priority_color'>$tk->priority_name</span></p><p style='line-height: 18px !important;margin-bottom: 0.3rem !important;'>$tk->subject</p>";
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
                 }
 
                 $newTicket .='<p>Total Count '. count($todayClosedTickets).'</p>';
@@ -460,6 +492,11 @@ class PayrollController extends Controller {
         }
 
         return html_entity_decode($template);
+    }
+
+    function converDateTime($date) {
+        $dd = new Carbon( $date , timeZone() ); 
+        return $dd->format( system_date_format() . ' g:i A' );
     }
 
     function convertFormat($format) {
