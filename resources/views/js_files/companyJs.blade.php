@@ -190,11 +190,30 @@ function get_all_companies() {
         success: function(data) {
             console.log(data.companies, "data");
             var system_date_format = data.date_format;
+            select = $('.select2'),
+            select.each(function () {
+            var $this = $(this);
+            $this.wrap('<div class="position-relative"></div>');
+            $this.select2({
+            // the following code is used to disable x-scrollbar when click in select input and
+            // take 100% width in responsive also
+            dropdownAutoWidth: true,
+            width: '100%',
+            dropdownParent: $this.parent()
+            });
+            });
             $('#companyTable').DataTable().destroy();
             let tt = $('#companyTable').DataTable({
             data:  data.companies,
             columns: [
-               
+                {
+                    className: 'control',
+                    responsivePriority: 2,
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return '';
+                    }
+                },
                 {
                     render: function (data, type, full, meta) {
 
@@ -216,6 +235,8 @@ function get_all_companies() {
                         $imgoutput = '<span class="avatar-content">' + $initials + '</span>';
                         }
                         var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
+                        let poc_first_name = full.poc_first_name != null ? full.poc_first_name : '-';
+                        let poc_last_name = full.poc_last_name != null ? full.poc_last_name : '-';
                         var $row_output =
                         '<div class="d-flex justify-content-left align-items-center">' +
                             '<div class="avatar-wrapper">' +
@@ -226,11 +247,11 @@ function get_all_companies() {
                             '</div>' +
                             '</div>' +
                             '<div class="d-flex flex-column">' +
-                            '<a href="company-profile/' + (full.id != null ? full.id : '-') + '" class="user_name text-truncate"><span class="fw-bold">' +
+                            '<a href="company-profile/' + (full.id != null ? full.id : '-') + '" class="user_name text-truncate text-body"><span class="fw-bolder">' +
                             $name +
                             '</span></a>' +
-                            '<small class="emp_post text-muted">' +
-                            $com_domain +
+                            '<small class="emp_post text-muted">' 
+                                 + poc_first_name + ' ' + poc_last_name + 
                             '</small>' +
                             '</div>' +
                         '</div>';
@@ -238,43 +259,36 @@ function get_all_companies() {
                     }
                 },
                 {
-                    render: function (data, type, full, meta) {
-                        let poc_first_name = full.poc_first_name != null ? full.poc_first_name : '-';
-                        let poc_last_name = full.poc_last_name != null ? full.poc_last_name : '-';
-                        return  `<span>` + poc_first_name + ` ` + poc_last_name + `</span>`
-                    }
-                },
-                {
                     render: function(data, type, full, meta) {
                         const phone = full.phone;
                         let newPhone = phone.replace(/[()\s-+]/g, '');
                         let copynumber= phone != null ? `<svg xmlns="http://www.w3.org/2000/svg" onclick="copyToClipBoard(` +newPhone+ `)" style="cursor: pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>` : '-';
-                        let phonenumber = phone != null ? `<a href ="tel:`+phone+`">` +phone+ `</a>` : '-';
-                        return ('<span>' + phonenumber + ' ' +copynumber+ '</span>');
+                        let phonenumber = phone != null ? `<a href ="tel:`+phone+`" class="text-body">` +phone+ `</a>` : '-';
+                        return ('<span>' + phonenumber + '</span>');
                     }
                 },
-                {
-                    render: function(data, type, full, meta) {
-                        var address = full.address != null ? full.address : '';
-                        var apt_address = full.apt_address == null ? '' : full.apt_address;
-                        var cn_name = full.cmp_country == null ? '' : full.cmp_country;
-                        var st_name = full.cmp_state == null ? '' : ',' + full.cmp_state;
-                        var ct_name = full.cmp_city == null ? '' : full.cmp_city;
-                        var zip = full.cmp_zip == null ? '' : ',' + full.cmp_zip;
+                // {
+                //     render: function(data, type, full, meta) {
+                //         var address = full.address != null ? full.address : '';
+                //         var apt_address = full.apt_address == null ? '' : full.apt_address;
+                //         var cn_name = full.cmp_country == null ? '' : full.cmp_country;
+                //         var st_name = full.cmp_state == null ? '' : ',' + full.cmp_state;
+                //         var ct_name = full.cmp_city == null ? '' : full.cmp_city;
+                //         var zip = full.cmp_zip == null ? '' : ',' + full.cmp_zip;
                         
-                        return  `<span>`+ address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</span>`
-                    }
-                },
+                //         return  `<span>`+ address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</span>`
+                //     }
+                // },
                 {
                     render: function(data, type, full, meta) {
                         return (moment(full.created_at).format(system_date_format));
                     }
                 },
-                {
-                    render: function(data, type, full, meta) {
-                        return `<span class="badge text-capitalize badge-light-success badge-pill"> active </span>`;
-                    }
-                },
+                // {
+                //     render: function(data, type, full, meta) {
+                //         return `<span class="badge text-capitalize badge-light-success badge-pill"> active </span>`;
+                //     }
+                // },
                 {
                     render: function(data, type, full, meta) {
                         return `
@@ -295,8 +309,8 @@ function get_all_companies() {
             ],
             dom:
                 '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
-                '<"col-sm-12 col-md-4 col-lg-6" l>' +
-                '<"col-sm-12 col-md-8 col-lg-6 ps-xl-75 ps-0"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end align-items-center flex-sm-nowrap flex-wrap me-1"<"me-1"f>B>>' +
+                '<"col-sm-12 col-md-4 col-lg-4" l>' +
+                '<"col-sm-12 col-md-8 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end align-items-center flex-sm-nowrap flex-wrap me-1"<"me-1"f>B>>' +
                 '>t' +
                 '<"d-flex justify-content-between mx-2 row mb-1"' +
                 '<"col-sm-12 col-md-6"i>' +
@@ -310,8 +324,40 @@ function get_all_companies() {
             // Buttons with Dropdown
             buttons: [
                 {
-                text: 'Add New Company',
-                className: 'add-new btn btn-primary mt-50',
+                extend: 'collection',
+                className: 'btn btn-outline-secondary dropdown-toggle me-2',
+                text: feather.icons['external-link'].toSvg({ class: 'font-small-4 me-50' }) + 'Export',
+                buttons: [
+                    {
+                    extend: 'csv',
+                    text: feather.icons['file-text'].toSvg({ class: 'font-small-4 me-50' }) + 'Csv',
+                    className: 'dropdown-item',
+                    exportOptions: { columns: [1, 2, 3, 4] }
+                    },
+                    {
+                    extend: 'excel',
+                    text: feather.icons['file'].toSvg({ class: 'font-small-4 me-50' }) + 'Excel',
+                    className: 'dropdown-item',
+                    exportOptions: { columns: [1, 2, 3, 4] }
+                    },
+                    {
+                    extend: 'copy',
+                    text: feather.icons['copy'].toSvg({ class: 'font-small-4 me-50' }) + 'Copy',
+                    className: 'dropdown-item',
+                    exportOptions: { columns: [1, 2, 3, 4] }
+                    }
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass('btn-secondary');
+                    $(node).parent().removeClass('btn-group');
+                    setTimeout(function () {
+                    $(node).closest('.dt-buttons').removeClass('btn-group').addClass('d-inline-flex mt-50');
+                    }, 50);
+                }
+                },
+                {
+                text: 'Add New Customer',
+                className: 'add-new btn btn-primary',
                 attr: {
                     'data-bs-toggle': 'modal',
                     'data-bs-target': '#company_model'
@@ -321,7 +367,37 @@ function get_all_companies() {
                 }
                 }
             ],
-            
+            responsive: {
+                details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function (row) {
+                    var data = row.data();
+                    return 'Details  '  ;
+                    }
+                }),
+                type: 'column',
+                renderer: function (api, rowIdx, columns) {
+                    var data = $.map(columns, function (col, i) {
+                    return col.columnIndex !== 6 // ? Do not show row in modal popup if title is blank (for check box)
+                        ? '<tr data-dt-row="' +
+                            col.rowIdx +
+                            '" data-dt-column="' +
+                            col.columnIndex +
+                            '">' +
+                            '<td>' +
+                            col.title +
+                            ':' +
+                            '</td> ' +
+                            '<td>' +
+                            col.data +
+                            '</td>' +
+                            '</tr>'
+                        : '';
+                    }).join('');
+                    return data ? $('<table class="table"/>').append('<tbody>' + data + '</tbody>') : false;
+                }
+                }
+            },
             language: {
                 paginate: {
                 // remove previous & next text from pagination
