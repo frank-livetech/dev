@@ -785,55 +785,6 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
 @include('js_files.help_desk.ticket_manager.flag_ticketJs')
 
 {{-- <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script> --}}
-<script type="text/javascript">
-    var pusher = new Pusher("{{ pusherCredentials('key') }}", {
-        cluster: "{{ pusherCredentials('cluster') }}",
-    });
-    // Enter a unique channel you wish your users to be subscribed in.
-    var channel = pusher.subscribe('online-user');
-    // bind the server event to get the response data and append it to the message div
-
-    $.ajax({
-        url: "{{route('make.online.user')}}",
-        dataType: "json",
-        type: "Post",
-        async: true,
-        data: { _token: "{{csrf_token()}}",online:true},
-        success: function (data) {
-
-        },
-
-    });
-
-    channel.bind("online-user-event", (data) => {
-        var user = data.user;
-        console.log(data)
-        if(data.status == true){
-            var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
-                        data-placement="top" title="`+user.name+`">
-                        <img src="`+user.profile_pic+`"
-                            alt="'s Photo" class="rounded-circle" width="50" height="50">
-                        <span class="avatar-status-online"></span>
-                    </a>
-                   `;
-
-            $("#user-"+user.id).html(html);
-        }else if(data.status == false){
-            var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
-                        data-placement="top" title="`+user.name+`">
-                        <img src="`+user.profile_pic+`"
-                            alt="'s Photo" class="rounded-circle" width="50" height="50">
-                        <span class="avatar-status-offline"></span>
-                    </a>
-                   `;
-
-            $("#user-"+user.id).html(html);
-        }
-
-    });
-
-
-</script>
 
 
 <script type="text/javascript">

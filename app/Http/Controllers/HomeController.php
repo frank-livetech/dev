@@ -46,7 +46,6 @@ class HomeController extends Controller {
      */
     public function index() {
 
-        session()->put('is_online',Auth::user() ?? null);
 
         $user_type = 1;
         $customers = Customer::count();
