@@ -137,18 +137,18 @@
         }
 
         @media (min-width: 992px) {
-            .header-navbar{display: table-row-group;} 
-            .content-header.row{padding-top: 10px !important} 
+            .header-navbar{display: table-row-group;}
+            .content-header.row{padding-top: 10px !important}
         }
         @media (min-width: 1200px) {
-            .header-navbar{display: flex;}  
-            
+            .header-navbar{display: flex;}
+
         }
         @media (max-width: 992px) {
-            .content-header.row{padding-top: 30px !important} 
+            .content-header.row{padding-top: 30px !important}
         }
         @media (max-width: 616px) {
-            .content-header.row{padding-top: 30px !important} 
+            .content-header.row{padding-top: 30px !important}
         }
 
 
@@ -169,7 +169,7 @@
         </audio>
     </div>
     <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-shadow container-fluid {{auth()->user()->theme == 'dark' ? 'navbar-dark' : 'navbar-light'}}">
-        
+
         @if( session()->get('clockin') != 0 && session()->get('clockin') == NULL)
         <div class="d-flex w-100 fw-bolder clock_in_section">
             <h5 class="ms-1 fw-bolder text-danger">You are not clocked in!</h5>
@@ -273,7 +273,7 @@
         </div>
     </nav>
 
-    
+
     <!-- END: Header-->
     @include('layouts.new-sidebar')
 
@@ -302,7 +302,7 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/vendors.min.js')}}"></script>
 
     <!-- BEGIN Vendor JS-->
-    
+
     <script>
         const colorUrl = "{{asset('get-color')}}";
         const swal_message_time = 5000;
@@ -377,7 +377,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/forms/pickers/form-pickers.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-navs.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/components/components-modals.js')}}"></script>
-    <!-- END: Page JS-->    
+    <!-- END: Page JS-->
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js')}}"></script>
 
     <script src="{{asset($file_path . 'app-assets/js/scripts/extensions/ext-component-toastr.js')}}"></script>
@@ -606,7 +606,7 @@
                             for(var i = 0 ; i < notifications.length ; i++){
 
 
-                                if(notifications[i].noti_desc != "") {                                
+                                if(notifications[i].noti_desc != "") {
 
                                     if(notifications[i].sender != null) {
 
@@ -681,7 +681,7 @@
         }
 
         function renderClockIn(data) {
-            // if data is null then its clock in 
+            // if data is null then its clock in
             // alert("a");
             if(data == null || data.clock_out != null) {
 
@@ -703,7 +703,7 @@
 
                 if(clockinStatus != 'ignore') {
                     $('.showClockInSection').html(clockSection);
-                }                
+                }
 
             }else{
 
@@ -773,7 +773,7 @@
                         let date = moment(today).format(system_date_format);
 
                         let clock_out_time = ``;
-                        
+
                         if( data.hasOwnProperty('clock_out_time') ) {
                             clock_out_time =convertDate( data.clock_out_time );
                         }else{
@@ -838,8 +838,8 @@
                     });
                 }
             });
-        }    
-        
+        }
+
         function clockInTimer(clockintime) {
             let clock_in_time = moment(clockintime , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
             let today = moment.utc().format("YYYY-MM-DD HH:mm:ss");
@@ -862,7 +862,7 @@
         window.setInterval(() => {
             clockInTimer(clockintime);
         }, 100);
-        
+
         function alertNotification(type , heading , message) {
             toastr[type]( message , heading , {
                 positionClass: 'toast-bottom-right',
@@ -877,5 +877,54 @@
     @include('js_files.pusher_notification.notification')
     @include('js_files.pusher_notification.user_status')
     @yield('scripts')
+    <script type="text/javascript">
+        var pusher = new Pusher("{{ pusherCredentials('key') }}", {
+            cluster: "{{ pusherCredentials('cluster') }}",
+        });
+        // Enter a unique channel you wish your users to be subscribed in.
+        var channel = pusher.subscribe('online-user');
+        // bind the server event to get the response data and append it to the message div
+
+        $.ajax({
+            url: "{{route('make.online.user')}}",
+            dataType: "json",
+            type: "Post",
+            async: true,
+            data: { _token: "{{csrf_token()}}",online:true},
+            success: function (data) {
+
+            },
+
+        });
+
+        channel.bind("online-user-event", (data) => {
+            var user = data.user;
+            if(data.status == true){
+                var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
+                            data-placement="top" title="`+user.name+`">
+                            <img src="`+user.profile_pic+`"
+                                alt="'s Photo" class="rounded-circle" width="50" height="50">
+                            <span class="avatar-status-online"></span>
+                        </a>
+                       `;
+
+                $("#user-"+user.id).html(html);
+            }else if(data.status == false){
+                var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
+                            data-placement="top" title="`+user.name+`">
+                            <img src="`+user.profile_pic+`"
+                                alt="'s Photo" class="rounded-circle" width="50" height="50">
+                            <span class="avatar-status-offline"></span>
+                        </a>
+                       `;
+
+                $("#user-"+user.id).html(html);
+            }
+
+        });
+
+
+    </script>
+
 </body>
 </html>
