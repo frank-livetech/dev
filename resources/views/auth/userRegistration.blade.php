@@ -6,9 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-    <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <meta name="author" content="PIXINVENT">
+    
     <title>Customer Register</title>
     @php
         $file_path = $is_live == 1 ? 'public/' : '/';
@@ -96,21 +94,21 @@
                                         <input type="hidden" name="customer_login" value="1" required>
                                         <input type="hidden" name="has_account" value="1" required>
                                         <label class="form-label" for="first_name">First Name</label>
-                                        <input class="form-control" id="first_name" type="text" name="first_name" placeholder="john" aria-describedby="first_name" autofocus="" tabindex="1" />
+                                        <input class="form-control" id="first_name" type="text" name="first_name"  aria-describedby="first_name" autofocus="" tabindex="1" />
                                         @error('first_name')
                                             <div class="small text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-1">
                                         <label class="form-label" for="last_name">Last Name</label>
-                                        <input class="form-control" id="last_name" type="text" name="last_name" placeholder="doe" aria-describedby="last_name" autofocus="" tabindex="1" />
+                                        <input class="form-control" id="last_name" type="text" name="last_name" aria-describedby="last_name" autofocus="" tabindex="1" />
                                         @error('last_name')
                                             <div class="small text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="mb-1">
                                         <label class="form-label" for="email">Email</label>
-                                        <input class="form-control" id="email" type="text" name="email" placeholder="john@example.com" aria-describedby="email" tabindex="2" />
+                                        <input class="form-control" id="email" type="text" name="email" aria-describedby="email" tabindex="2" />
                                         @error('email')
                                             <div class="small text-danger">{{ $message }}</div>
                                         @enderror
@@ -118,7 +116,7 @@
                                     <div class="mb-1">
                                         <label class="form-label" for="password">Password</label>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge" id="password" type="password" name="password" placeholder="············" aria-describedby="password" tabindex="3" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            <input class="form-control form-control-merge" id="password" type="password" name="password" aria-describedby="password" tabindex="3" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                         </div>
                                     </div>
                                     <div class="mb-1">

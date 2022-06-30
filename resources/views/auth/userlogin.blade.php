@@ -6,9 +6,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
-    <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
-    <meta name="author" content="PIXINVENT">
     <title>Customer Login</title>
     @php
         $file_path = $is_live == 1 ? 'public/' : '/';
@@ -72,7 +69,7 @@
                         <!-- Login-->
                         <div class="d-flex col-lg-5 align-items-center auth-bg px-2 p-lg-5">
                             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-                                <h2 class="card-title fw-bold mb-1">Welcome to Mylive-Tech! 👋</h2>
+                                <h2 class="card-title fw-bold mb-1">Welcome to Live-Tech System 👋</h2>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
                                 @if(Session::has('success'))
 
@@ -91,14 +88,14 @@
                                     <div class="mb-1">
                                         <input name="fcm_token" id="fcm_token" type="hidden">
                                         <label class="form-label" for="email">Email</label>
-                                        <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" placeholder="john@example.com" aria-describedby="email" autocomplete="email" autofocus="" tabindex="1" />
+                                        <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="email" autocomplete="email" autofocus="" tabindex="1" />
                                     </div>
                                     <div class="mb-1">
                                         <div class="d-flex justify-content-between">
                                             <label class="form-label" for="login-password">Password</label><a href="{{url('user-forgetpassword')}}"><small>Forgot Password?</small></a>
                                         </div>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input class="form-control form-control-merge @error('password') is-invalid @enderror" id="password" type="password" name="password" placeholder="············" aria-describedby="login-password" autocomplete="current-password" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            <input class="form-control form-control-merge @error('password') is-invalid @enderror" id="password" type="password" name="password" aria-describedby="login-password" autocomplete="current-password" tabindex="2" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

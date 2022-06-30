@@ -574,7 +574,6 @@ function get_all_customers() {
                 searchPlaceholder: 'Search..'
             },
             // Buttons with Dropdown
-            // Buttons with Dropdown
       buttons: [
         {
           extend: 'collection',

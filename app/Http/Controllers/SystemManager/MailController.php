@@ -677,7 +677,7 @@ class MailController extends Controller
 
         $tkt_url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/'.$ticket->coustom_id;
         
-        $action_perform = 'Ticket ID <a href="'. $tkt_url.'">'.$ticket->coustom_id.'</a> Reply added by '. $name_link;
+        $action_perform = 'Ticket (<a href="'. $tkt_url.'">'.$ticket->coustom_id.'</a>) Reply added by '. $name_link;
 
         // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
         $log = new ActivitylogController();
@@ -792,7 +792,7 @@ class MailController extends Controller
 
 
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/' .$ticket->coustom_id;
-            $action_perform = 'Ticket ID <a href="'. $url .'">'.$ticket->coustom_id.'</a> Created By CRON';
+            $action_perform = 'Ticket (<a href="'. $url .'">'.$ticket->coustom_id.'</a>) Created By CRON';
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
             
@@ -2371,11 +2371,14 @@ class MailController extends Controller
                             if($data['values']['embed_attachments'] != NULL){
                                 if($tags){
                                     foreach ($tags as $tag) {
-                                        $old_src = $tag->getAttribute('src');
-                                        $new_src_url = $url.$attaches[$atch_count];
-                                        $tag->setAttribute('src', $new_src_url);
-                                        $tag->setAttribute('style', 'width:100%;');
-                                        $atch_count++;
+                                        if($atch_count < sizeof($attaches)){
+                                            $old_src = $tag->getAttribute('src');
+                                            $new_src_url = $url.$attaches[$atch_count];
+                                            $tag->setAttribute('src', $new_src_url);
+                                            $tag->setAttribute('style', 'width:100%;');
+                                            $atch_count++;
+                                        }
+                                        
                                     }
                                     $content = $doc->saveHTML();
                                 }

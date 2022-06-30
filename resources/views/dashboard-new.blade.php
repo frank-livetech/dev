@@ -62,7 +62,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
 @else
 <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
 @endif
-<link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/daterangepicker.css')}}">
+{{-- <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/daterangepicker.css')}}"> --}}
 
 <input type="hidden" id="curr_user_name" value="{{Auth::user()->name}}">
 <div class="app-content content">
@@ -116,15 +116,13 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                     <div class="col-lg-12 col-12">
                         <div class="card card-statistics">
                             <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;">
-                                <div class="row pull-right">
-                                    <i class="fas fa-filter" onclick="openfilter()"
-                                        style="position: relative;right: 10px;cursor: pointer;"></i>
-
-                                </div>
-                                <div class="row pull-right openfilter" style="display: none">
-
-                                    <div class="col-md-8">
-
+                                
+                                   <div class="col-md-12">
+                                    <i class="fas fa-filter pull-right" onclick="openfilter()"
+                                    style="position: relative;right: 10px;cursor: pointer;"></i>
+                                   </div>
+                                    <div class="col-md-12">
+                                        <div class="row pull-right openfilter" style="display: none">
                                         <div class="d-flex align-items-center pull-left">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -139,15 +137,17 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                                 class="form-control flat-picker bg-transparent border-0 shadow-none flatpickr-input active"
                                                 placeholder="MM-DD-YYYY To MM-DD-YYYY" readonly="readonly"
                                                 style="width: 250px;">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <button type="button"
+                                                <button type="button"
                                             class="btn btn-primary waves-effect waves-float waves-light pull-left">Filter</button>
 
-                                    </div>
+                                        </div>
+                                    
 
+                                    <div class="col-md-2">
+                                        
+
+                                    </div>
+                                </div>
                                 </div>
 
                             </div>
@@ -780,7 +780,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-1970-2030.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
-<script src="{{asset($file_path . 'app-assets/daterangepicker.js')}}"></script>
+{{-- <script src="{{asset($file_path . 'app-assets/daterangepicker.js')}}"></script> --}}
 @include('js_files.dashboardjs')
 @include('js_files.help_desk.ticket_manager.flag_ticketJs')
 
@@ -803,15 +803,6 @@ function HmsToSeconds(hms) {
     var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
     return seconds;
 }
-$('#startDate').daterangepicker({
-    singleDatePicker: true,
-    startDate: moment().subtract(6, 'days')
-});
-
-$('#endDate').daterangepicker({
-    singleDatePicker: true,
-    startDate: moment()
-});
 
 function openfilter() {
     $('.openfilter').toggle('slow');

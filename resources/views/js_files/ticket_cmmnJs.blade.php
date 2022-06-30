@@ -5,6 +5,7 @@
     var system_date_format = $("#system_date_format").val();
     var usrtimeZone = $("#usrtimeZone").val();
     let ticketDataTableLength = 10;
+    let ticket_id_arr = [];
 
     function initializeTicketTable(p_name = '') {
         page_name = p_name;
@@ -85,13 +86,12 @@
             // 
             let totalSelectedTickets = $('#ticket-table-list tbody input[type="checkbox"]').length;
 
-            let selectedCount = $('.total_tickets').text();
-
-            console.log(totalSelectedTickets , "totalSelectedTickets");
-            
+            let check = false;
+                  
             $('#ticket-table-list tbody input[type="checkbox"]').each(function() {
                 
                 if (chck == true) {
+                    check = true;
                     $(this).prop('checked', true);
                     $('.total_tickets').text( totalSelectedTickets );
                     $('.total_selected_tkts').removeClass('d-none');
@@ -107,6 +107,8 @@
                     };
 
                 } else {
+                    check = false;
+                    // ticket_id_arr = [];
                     $(this).prop('checked', false);
                     $('.total_tickets').text( 0 );
 
@@ -123,10 +125,22 @@
 
                 } 
             });
+
+            if(check) {
+                $("input:checkbox[name=select_all]:checked").each(function() {
+                    ticket_id_arr.push({'id' : $(this).val()});
+                });    
+            }else{
+                ticket_id_arr = [];
+            }
+            
         });
     }
 
     function selectSingle(id) {
+        let find = ticket_id_arr.find(item => item.id == id);
+        let findIndex = ticket_id_arr.findIndex(item => item.id == id);
+
         let chck = $("#select_single_" + id).prop('checked');
         $("#select_single_" + id).toggleClass('chkd');
 
@@ -145,10 +159,21 @@
         $('.total_selected_tkts').removeClass('d-none');
 
         if (chck == true) {
+            
+            if(find == null) {
+                ticket_id_arr.push({'id' : id}); 
+            }
+
             $('.show_tkt_btns').show()
             $('.total_tickets').text( parseInt(selectedCount) + 1);
             $('.btnDelete').removeClass('d-none');
         }else{
+
+            if(find != null)  {
+                if (findIndex !== -1) {
+                    ticket_id_arr.splice(findIndex, 1);
+                }
+            }
             $('.total_tickets').text( parseInt(selectedCount) - 1);
             $('.btnDelete').addClass('d-none');
 
@@ -347,9 +372,18 @@
                 if (ticket_view != 10 && ticket_view != 25 && ticket_view != 50 && ticket_view != 100) {
                     let option = `<option value="${ticket_view}" selected> ${ticket_view} </option>`;
                     $('select[name=ticket-table-list_length]').append(option);
+
+                    let txt = $("#ticket-table-list_info").text();
+                    let a = txt.replace("0"+ticket_view, ticket_view);
+                    $("#ticket-table-list_info").text(a);
+
                 }else{
                     totalPage = (data.ticket_view == null ? 10 : (data.ticket_view.per_page !=null ? data.ticket_view.per_page : 10))
                     $('select[name=ticket-table-list_length]').val(data.ticket_view.per_page);
+
+                    let txt = $("#ticket-table-list_info").text();
+                    let a = txt.replace("0"+ticket_view, ticket_view);
+                    $("#ticket-table-list_info").text(a);
                 }
 
                 $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');

@@ -13,8 +13,10 @@ let edit_reply_mode = false;
 let attachments_src = [];
 let ticket_attachments_count = 1;
 let date_format = {!! json_encode($date_format) !!};
+let mails = {!! json_encode($shared_emails) !!};
 let update_flag = 0;
 let updates_Arr = [];
+console.log(mails)
 // var ticket_attach_path = `{{asset('public/files')}}`;
 // var ticket_attach_path_search = 'public/files';
 
@@ -45,6 +47,7 @@ $(document).ready(function() {
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
+        auto_focus : "mymce",
         height: 300,
         file_picker_types: 'image',
         plugins: [
@@ -1801,11 +1804,11 @@ function listReplies() {
                 if(reply.hasOwnProperty("user_type")) {
                     if(reply.user_type == 5) {
                         if(reply.customer_replies != null) {
-                            link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name != null ? reply.customer_replies.first_name : ''} ${reply.customer_replies.last_name !=null ? reply.customer_replies.last_name :  ''} </a>`;
+                            link = `<a href="{{url('customer-profile')}}/${reply.customer_id}" class="text-body"> ${reply.customer_replies.first_name != null ? reply.customer_replies.first_name : ''} ${reply.customer_replies.last_name !=null ? reply.customer_replies.last_name :  ''} </a>`;
                         }
                     }else{
                         if(reply.reply_user != null) {
-                            link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
+                            link = `<a href="{{url('profile')}}/${reply.reply_user.id}" class="text-body"> ${reply.reply_user.name} </a>`;
                         }
                         
                     }
@@ -1829,11 +1832,23 @@ function listReplies() {
                             <h5 class="mt-0"><span class="text-primary">
                                 ${link}
                                 </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
-                            &nbsp; <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" style="cursor: pointer;position:absolute;right:63px;" onclick="editReply('${index}')"></span>&nbsp;&nbsp;<span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash" onclick="deleteReply(${reply.id},${index})" style="cursor: pointer;cursor: pointer;position:absolute;right:23px;" ></span>&nbsp;</h5> 
+                            &nbsp; <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="position: absolute;right: 21px;"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                            <div class="dropdown-menu dropdown-menu-end" style="">
+                                    <a class="dropdown-item" onclick="editReply('${index}')" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3 me-1"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                        <span class="align-middle" >Edit</span>
+                                    </a>
+                                    
+                                    <a class="dropdown-item" onclick="deleteReply(${reply.id},${index})" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                        <span class="align-middle" >Delete</span>
+                                    </a>   
+                                   
+                                </h5> 
+                            </div>
                             
-
                             <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
-                            <div class="my-1 bor-top" id="reply-html-` + reply.id + `"> ${content} </div>
+                            <div class="my-1 bor-top reply-htm" id="reply-html-` + reply.id + `"> ${content} </div>
                             </div>
                             
                         </div>
@@ -1985,6 +2000,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
 
             let params = {
                 cc: $('#to_mails').val(),
+                bcc: $('#bcc_emails').val(),
                 ticket_id: ticket.id,
                 type: type,
                 attachments: rep_attaches,
@@ -3153,7 +3169,7 @@ function executeFollowUps(check_followup) {
                         </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp; <br>
 
                     <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span> 
-                    <div class="my-1 bor-top" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
+                    <div class="my-1 bor-top reply-htm" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
                 </div>
             </li>
             <hr>`;
@@ -4085,19 +4101,19 @@ function closeAssetModal() {
 function setCustomerCompany() {
     let cust_cmp = companies_list.filter(item => { return item.id == ticket_customer.company_id });
     if (cust_cmp.length) {
-        let name = `<a href="{{url('company-profile')}}/${cust_cmp[0].id}"> ${cust_cmp[0].name} </a>`;
+        let name = `<a class="text-body" href="{{url('company-profile')}}/${cust_cmp[0].id}"> ${cust_cmp[0].name} </a>`;
         $('#cst-company').html('Company : ' + name);
         $('#cst-company-name').html('Company Line : ' + cust_cmp[0].phone);
 
         // $('#adjustCard1Height').attr('style', 'height: 300px !important');
-        $('#adjustCard2Height').attr('style', 'height: 197px !important; overflow-y:scroll');
+        $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
         
     } else {
         $('#cst-company').html('');
         $('#cst-company-name').html('');
 
         // $('#adjustCard1Height').attr('style', 'height: 260px !important');
-        $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
+        $('#adjustCard2Height').attr('style', 'height: 120px !important; overflow-y:scroll');
     }
 }
 
