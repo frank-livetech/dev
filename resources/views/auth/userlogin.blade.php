@@ -143,6 +143,7 @@
     <!-- BEGIN: Page JS-->
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/auth-login.js')}}"></script>
     <!-- END: Page JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
         $(window).on('load', function() {
@@ -153,6 +154,16 @@
                 });
             }
         })
+
+            if($.cookie('login_email') && $.cookie('login_pass')){
+                $("#email").val($.cookie('login_email'));
+                $("#password").val($.cookie('login_pass'));
+                $("#remember-me").prop('checked', true);
+            }else{
+                $("#email").val('');
+                $("#password").val('');
+                $("#remember-me").prop('checked', false);
+            }
     </script>
 </body>
 <!-- END: Body-->
