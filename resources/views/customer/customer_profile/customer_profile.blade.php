@@ -1,5 +1,16 @@
 
 @extends('customer.layout.customer_master')
+@section('breadcrumb')
+    <h2 class="content-header-title float-start mb-0">Dashboard</h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="">
+                    My Profile
+            </a>
+            </li>
+        </ol>
+    </div>
+@endsection
 @section('body')
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap" rel="stylesheet">
@@ -544,7 +555,7 @@ blockquote {
                             </div>
                         </div> -->
 
-                        @if($customer->has_account == 0)
+                        {{-- @if($customer->has_account == 0)
                         <div class="row mb-2 mt-2">
                             <div class="custom-control custom-checkbox mr-sm-2">
                                 <input type="checkbox" class="custom-control-input" id="customer_login">
@@ -552,7 +563,7 @@ blockquote {
                                     Account</label>
                             </div>
                         </div>
-                        @endif
+                        @endif --}}
 
                         <input type="hidden" name="customer_id" value="{{$customer->id}}">
 

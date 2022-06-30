@@ -227,13 +227,16 @@ $("#update_user").submit(function (event) {
 
     let user_id = $("#user_id").val()
 
-    var update_password = $('#update_password').val();
-    let cpwd = $("#confirm_password").val();
+    if($('.change_password_checkbox').is(":checked")){ 
+        var update_password = $('#update_password').val();
+        let cpwd = $("#confirm_password").val();
 
-    if(update_password != cpwd) {
-        alertNotification('error', 'Error' , 'Passwords do not match!');
-        return false;
+        if(update_password != cpwd) {
+            alertNotification('error', 'Error' , 'Passwords do not match!');
+            return false;
+        }
     }
+    
     
     var fb = $("#update_fb").val();
     var pin = $("#update_pinterest").val();
@@ -295,8 +298,10 @@ $("#update_user").submit(function (event) {
   
 
     // var formData = $("#update_user").serialize()  + "&user_id=" + user_id;
+    var content = tinyMCE.activeEditor.getContent();
     var formData = new FormData(this);
     formData.append('user_id' , user_id);
+    formData.append('signature' , content);
 
     $.ajax({
         type: $(this).attr('method'),

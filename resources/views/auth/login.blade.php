@@ -78,7 +78,7 @@
                             @endif
                             <div id="loginform" class="pt-1">
 
-                                <h4 class="card-title mb-1">Welcome to Mylive-Tech!</h4>
+                                <h4 class="card-title mb-1">Welcome to Live-Tech System</h4>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
 
                                 <form class="auth-login-form mt-2" action="{{url('login')}}" method="POST">
@@ -86,7 +86,7 @@
                                     <div class="mb-1">
                                         <input name="fcm_token" id="fcm_token" type="hidden">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="john@example.com" aria-describedby="email" tabindex="1" autofocus required/>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" aria-describedby="email" tabindex="1" autofocus required/>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -102,7 +102,7 @@
                                             </a>
                                         </div>
                                         <div class="input-group input-group-merge form-password-toggle">
-                                            <input type="password" class="form-control form-control-merge @error('password') is-invalid @enderror" id="password" name="password" tabindex="2" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="login-password" required autocomplete="current-password"/>
+                                            <input type="password" class="form-control form-control-merge @error('password') is-invalid @enderror" id="password" name="password" tabindex="2" aria-describedby="login-password" required autocomplete="current-password"/>
                                             <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
 
                                         </div>

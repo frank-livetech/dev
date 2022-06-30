@@ -319,8 +319,11 @@
     .webkit-box1{
         display: -webkit-box;
     }
+    table.dataTable td, table.dataTable th {
+    padding: 0.72rem 0.5rem !important;
+}
     @media (max-width: 897.98px){
-        .webkit-box1{
+    .webkit-box1{
         display: inline;
     }
     .drop-dpt{
@@ -330,7 +333,36 @@
         text-align: left
     }
     .bor-top img{
-        max-width: 340px !important
+        max-width: 160px !important
+    }
+    
+    }
+    @media (max-width: 650px){
+    #sub-tkt{
+        margin-top: 6px !important
+    }
+    .bor-top img{
+        max-width: 160px !important
+    }
+    .ticket-timestamp3 {
+        margin-left: unset !important
+    }
+    .modal-slide-in .modal-dialog.sidebar-lg {
+        width: 24rem !important
+    
+    }
+    .time-stamp{
+        display: inline !important;
+    }
+    #v-pills-notes-list{
+        padding-right: unset !important
+    }
+    button#rply ,button#draft-rply,button#cancel-rply{
+        width: unset !important
+    }
+    .reply-htm{
+        position: relative;
+        right: 53px;
     }
     }
 </style>
@@ -373,11 +405,12 @@
                     <div class="card">
                         <div class="card-body" id="adjustCard1Height" style="overflow: hidden;">
                             <h5 class="card-title mb-0">Ticket ID: 
-                                    <a href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
+                                    <a class="text-body" href="{{asset('/ticket-details')}}/{{$details->coustom_id}}">{{$details->coustom_id}}</a>
                                     <a href="javascript:void(0)" onclick="ticketUrlCopy()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 {{-- <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle waves-effect waves-float waves-light" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button> --}}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                <i class="fal fa-ellipsis-v dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"></i>
+                                {{-- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg> --}}
                                 {{-- <i class="fas fa-ellipsis-h dropdown-toggle" aria-hidden="true" data-bs-toggle="dropdown" type="button"></i> --}}
                                 <div class="dropdown-menu dropdown-menu-end" style="">
                                     <a class="dropdown-item" onclick="openProModal();" >
@@ -471,16 +504,16 @@
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px; ">Name : 
                                         @if($details->is_staff_tkt== 0)
-                                            <a href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
+                                            <a class="text-body" href="{{ asset('customer-profile') }}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
                                         @else
-                                            <a href="{{url('profile')}}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
+                                            <a class="text-body" href="{{url('profile')}}/{{$ticket_customer->id}}" id="cst-name"> {{ $name }}  
                                         @endif
                                             <span class="badge badge-secondary type_bdge"> {{$details->is_staff_tkt == 0 ? 'User' : 'Staff'}}  </span> </a></p>
 
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company"></p>
-                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line">{{ $phone }}</a> </p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a href="tel:{{ $phone }}" id="cst-direct-line" class="text-body">{{ $phone }}</a> </p>
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company-name"></p>
-                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Email : <a href="mailto:{{ $email }}" id="cst-email">{{ $email }}</a>  </p>
+                                        <p style="margin-bottom: 0.2rem !important; font-size:13px;">Email : <a href="mailto:{{ $email }}" id="cst-email" class="text-body">{{ $email }}</a>  </p>
                                         <p style="margin-bottom: 0.2rem !important; font-size:13px;">Client Since : <span id="cust-creation-date"></span></p>
                                     </div>
                                 </div>
@@ -577,10 +610,10 @@
                                                                 <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                                                             </div>
-                                                            <div class="first" >
+                                                            <div class="first" id="sub-tkt">
                                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                                
-                                                                <span id="tkt-subject" class="tkt-subject" style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
+                                                                <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$details->subject}} </span> 
                                                                 @if($details->attachments != null)
                                                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
                                                                 @endif
@@ -750,10 +783,10 @@
                                             <div class="col-12 px-0 my-2">
                                                 <div class="table-responsive" width='200px'>
                                                     <table id="asset-table-list"
-                                                        class="table w-100 table-bordered no-wrap asset-table-list">
+                                                        class="table asset-table-list">
                                                         <thead>
                                                             <tr>
-                                                                <th><div class="text-center"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
+                                                                <th><div class="" style="width:0px"><input type="checkbox" id="checkAll" name="assets[]" value="0"></div></th>
                                                                 <th>ID</th>
                                                                 <th>Asset Title</th>
                                                                 <th>Asset Type </th>
@@ -776,11 +809,11 @@
                                             <div class="col-md-12 audit-log">
                                                 <div class="table-responsive">
                                                     <table id="ticket-logs-list"
-                                                        class="table table-striped table-bordered no-wrap ticket-table-list w-100">
+                                                        class="table ticket-table-list w-100">
                                                         <thead>
                                                             <tr>
                                                                 <th class="d-none">ID</th>
-                                                                <th style="height:35px;">Activity</th>
+                                                                <th>Activity</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody></tbody>
@@ -927,7 +960,7 @@
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title mb-0">Ticket Replies </h4>
                                 <div>
-                                    <a href="#v-pills-tab" id="compose_btn" class="btn btn-success float-right" onclick="composeReply()" style="color: #fff !important">
+                                    <a id="compose_btn" class="btn btn-success float-right" onclick="composeReply()" style="color: #fff !important">
                                         Compose 
                                     </a>                               
                                     <a id="update_ticket" style="display:none" class="btn btn-success float-right mx-2" onclick="updateTicket()">
@@ -936,7 +969,7 @@
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-end mt-2 p-1 reply_btns reply-btns" style="display:none !important">
+                            <div class="d-flex justify-content-end mt-2 reply_btns reply-btns" style="display:none !important">
                                 <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this , 'ticket_reply_btns')">
                                     <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
                                         <span class="sr-only">Loading...</span>
@@ -995,10 +1028,10 @@
                                     <div class="col-md-6 cc_email_field" style="display:none">
                                         <div class="" style="margin-top: 10px;">
                                             <label for="to_mails">CC <span class="help"> e.g. "example@gmail.com"</span></label>
-                                            @if( array_key_exists(0 , $shared_emails) )
+                                            @if( !empty($shared_cc_emails))
                                                 <input type="text" id="to_mails" name="to_mails"
                                                  class="form-control" placeholder="Email" 
-                                                 data-role="tagsinput" value="{{$shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}" required>                                                
+                                                 data-role="tagsinput" value="{{$shared_cc_emails[0]['email']}}" required>                                                
                                             @else
                                                 <input type="text" id="to_mails" name="to_mails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
                                             @endif
@@ -1007,15 +1040,10 @@
                                     <div class="col-md-6 bcc_email_field" style="display:none">
                                         <div class="" style="margin-top: 10px;">
                                             <label for="bcc_emails">BCC <span class="help"> e.g. "example@gmail.com"</span></label>
-                                            @if( array_key_exists(0 , $shared_emails) )
-
-                                                @if( array_search(2, array_column($shared_emails, 'mail_type')) )
-                                                    <input type="text" id="bcc_emails" name="bcc_emails"
-                                                    class="form-control" placeholder="Email" 
-                                                    data-role="tagsinput" value="{{$shared_emails[1]['mail_type'] == 2 ? $shared_emails[1]['email'] : '' }}" required>
-                                                @else
-                                                    <input type="text" id="bcc_emails" name="bcc_emails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
-                                                @endif
+                                            @if( !empty($shared_bcc_emails))
+                                                <input type="text" id="bcc_emails" name="bcc_emails"
+                                                class="form-control" placeholder="Email" 
+                                                data-role="tagsinput" value="{{$shared_bcc_emails[0]['email']}}" required>
                                             @else
                                                 <input type="text" id="bcc_emails" name="bcc_emails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
                                             @endif
@@ -2101,14 +2129,14 @@
                                     $user_type = 'User';
                                 }
                             ?>
-                            <div class="" style="display: -webkit-box">
+                            <div class="time-stamp" style="display: -webkit-box">
                                 <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                             </div>
-                            <div class="first" >
+                            <div class="first" id="sub-tkt">
                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                 
-                                <span  style="word-break: break-all;font-size:20px"> {{$details->subject}} </span> 
+                                <span  style="font-size:20px"> {{$details->subject}} </span> 
                                 @if($details->attachments != null)
                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
                                 @endif
@@ -2196,6 +2224,11 @@
 
     <script>
         $(document).on('select2:open', () => {
+            var element = document.querySelector('[aria-controls="select2-tkt_all_customers-results"]');
+        
+            if(element){
+                element.focus(); 
+            }
             document.querySelector('.select2-search__field').focus();
         });
         $('[data-dismiss=modal]').on('click', function(e) {

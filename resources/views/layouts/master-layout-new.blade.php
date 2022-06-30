@@ -314,11 +314,11 @@
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/jszip.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/pdfmake.min.js')}}"></script>
-    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/buttons.print.min.js')}}"></script>
-    <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js')}}"></script>
+    {{-- <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/buttons.print.min.js')}}"></script> --}}
+    {{-- <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js')}}"></script> --}}
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
+    {{-- <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script> --}}
     <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
     <!-- <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/moment.min.js')}}"></script> -->
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js')}}"></script>
@@ -341,7 +341,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
 
-    <script src="{{asset($file_path . 'app-assets/js/scripts/imagePreview.js')}}"></script>
+    {{-- <script src="{{asset($file_path . 'app-assets/js/scripts/imagePreview.js')}}"></script> --}}
 
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
@@ -369,7 +369,7 @@
     <script src="{{asset($file_path . 'app-assets/js/scripts/charts/chart-apex.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-invoice-list.js')}}"></script>
-    <script src="{{asset($file_path . 'app-assets/js/scripts/cards/card-statistics.js')}}"></script>
+    {{-- <script src="{{asset($file_path . 'app-assets/js/scripts/cards/card-statistics.js')}}"></script> --}}
     <script src="{{asset($file_path . 'app-assets/js/scripts/tables/table-datatables-advanced.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/tables/table-datatables-basic.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/ui/ui-feather.js')}}"></script>

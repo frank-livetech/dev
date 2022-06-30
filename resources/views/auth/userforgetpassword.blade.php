@@ -3,11 +3,10 @@
 <!-- BEGIN: Head-->
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
     <title>Forget Password</title>
-    <link rel="apple-touch-icon" href=" <link rel="icon" type="image/png" sizes="16x16" href="{{asset('files/brand_files')}}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('files/brand_files')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
     @php
@@ -69,7 +68,7 @@
                                     @csrf
                                     <div class="mb-1">
                                         <label class="form-label" for="forgot-password-email">Email</label>
-                                        <input class="form-control" id="forgot-password-email" name="email" type="email" name="forgot-password-email" placeholder="john@example.com" aria-describedby="forgot-password-email" autofocus="" tabindex="1" />
+                                        <input class="form-control" id="forgot-password-email" name="email" type="email" name="forgot-password-email" aria-describedby="forgot-password-email" autofocus="" tabindex="1" />
                                         @if (Session::has('message'))
                                             <p class="text-success">{{Session::get('message')}}</p>
                                         @endif

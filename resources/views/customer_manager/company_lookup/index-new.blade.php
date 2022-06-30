@@ -13,15 +13,7 @@
     a.user_name.text-truncate:hover{
         color: #fab81c;
     }
-    table.dataTable th {
-    padding: 9px 10px !important;
-    vertical-align: middle !important;}
-    td>span>a{
-        color: #5e50ee !important;
-    }
-    td>span>a:hover{
-        color: #fab81c !important;
-    }
+    
         </style>
 @endpush
 @section('body')
@@ -69,22 +61,16 @@
                     <table id="companyTable" class="companyTable table">
                         <thead>
                             <tr>
-                                <th>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1"></label>
-                                    </div>
-                                </th>
+                                <th></th>
                                 <th>Company Name</th>
-                                <th>Owner Name</th>
                                 <th>Phone</th>
-                                <th>Address</th>
+                                {{-- <th>Address</th> --}}
                                 <th>Created at</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="companyTBody" class="small">
+                        <tbody id="companyTBody">
                         
                         </tbody>
                     </table>
