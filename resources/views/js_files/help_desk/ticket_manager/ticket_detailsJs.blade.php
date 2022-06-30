@@ -512,8 +512,8 @@
                                     $('#cst-name').text(ticket_customer.first_name+' '+ticket_customer.last_name);
                                     $('#cst-email').text(ticket_customer.email);
                                     $('#cst-direct-line').text(ticket_customer.phone);
-                                    $('#to_mails').val(tkt_cc);
-                                    $('#bcc_emails').val(tkt_bcc);
+                                    $('#to_mails').val($("#tkt_cc").val());
+                                    $('#bcc_emails').val($("#tkt_bcc").val());
 
                                     // ticket_customer.company_id = comp;
                                     setCustomerCompany();

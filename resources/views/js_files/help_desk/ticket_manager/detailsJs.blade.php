@@ -13,10 +13,12 @@ let edit_reply_mode = false;
 let attachments_src = [];
 let ticket_attachments_count = 1;
 let date_format = {!! json_encode($date_format) !!};
-let mails = {!! json_encode($shared_emails) !!};
+let shared_cc_emails = {!! json_encode($shared_cc_emails) !!};
+let shared_bcc_emails = {!! json_encode($shared_bcc_emails) !!};
+
 let update_flag = 0;
 let updates_Arr = [];
-console.log(mails)
+console.log(shared_cc_emails)
 // var ticket_attach_path = `{{asset('public/files')}}`;
 // var ticket_attach_path_search = 'public/files';
 
@@ -36,6 +38,15 @@ $.ajaxSetup({
 });
 
 $(document).ready(function() {
+
+    if(shared_cc_emails != '' && shared_cc_emails != null){
+        $('.cc_email_field').show();
+        $('#show_cc_email').prop('checked', true);
+    }
+    if(shared_bcc_emails != '' && shared_bcc_emails != null){
+        $('.bcc_email_field').show();
+        $('#show_bcc_emails').prop('checked', true);
+    }
 
     if(currentTime.length == 0) {
         let regiondate = convertDate(ticket.created_at);
