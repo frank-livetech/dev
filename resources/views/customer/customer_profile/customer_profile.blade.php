@@ -555,7 +555,7 @@ blockquote {
                             </div>
                         </div> -->
 
-                        @if($customer->has_account == 0)
+                        {{-- @if($customer->has_account == 0)
                         <div class="row mb-2 mt-2">
                             <div class="custom-control custom-checkbox mr-sm-2">
                                 <input type="checkbox" class="custom-control-input" id="customer_login">
@@ -563,7 +563,7 @@ blockquote {
                                     Account</label>
                             </div>
                         </div>
-                        @endif
+                        @endif --}}
 
                         <input type="hidden" name="customer_id" value="{{$customer->id}}">
 

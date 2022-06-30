@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\StaffAttendance;
 use App\Models\SystemSetting;
 use Carbon\Carbon;
+use Illuminate\Contracts\Session\Session as SessionSession;
+
 // use DB;
 
 class AuthController extends Controller
@@ -608,6 +610,16 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        if($request->remember===null){
+            setcookie('login_email',$request->email,100);
+            setcookie('login_pass',$request->password,100);
+         }
+         else{
+            setcookie('login_email',$request->email,time()+60*60*24*100);
+            setcookie('login_pass',$request->password,time()+60*60*24*100);
+
+         }
+
         // $remember = ($request->remember == 'on') ? true : false;
         $user = User::where('email', $request->email)->first();
         // $user = Customer::where('email', $request->email)->first();
@@ -619,7 +631,7 @@ class AuthController extends Controller
             }else if ($user->user_type != 5) {
                 return back()->withInput()->withErrors(['email' => 'Contact your admin.']);
             } else {
-                if (Auth::attempt($credentials, $request->has('remember'))) {
+                if (Auth::attempt($credentials, $request->has('remember') ? true : false )) {
                     // Authentication passed...
                     if (isset($request->fcm_token)) {
                         if ($user->device_token != NULL && $user->device_token != '') {
@@ -697,9 +709,10 @@ class AuthController extends Controller
     public function logout(Request $request) {
 
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
-        Session::flush();
+        \Session::forget('user_session');
         if( Auth::check()){
             Auth::logout();
+            session()->put('is_offline',true);
         }
 
         return redirect()->to($route);

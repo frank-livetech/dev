@@ -283,7 +283,7 @@ class HomeController
         $ticket = Tickets::where('id',$tkt->id)->first();
 
         $name_link = '<a href="'.url('customer-profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-        $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Created By '. $name_link;
+        $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
         $log = new ActivitylogController();
         $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
 
@@ -413,10 +413,10 @@ class HomeController
 
                 if($request->has('id')) {
                     TicketReply::where('id' , $request->id)->update($data);
-                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
+                    $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Reply updated by '. $name_link;
                 }else{
                     TicketReply::create($data);
-                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Reply updated by '. $name_link;
+                    $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Reply updated by '. $name_link;
                 }
 
                 $log = new ActivitylogController();
@@ -477,7 +477,7 @@ class HomeController
             $ticket->save();
 
             $name_link = '<a href="'.url('customer-profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-            $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> Status & Priority Updated By '. $name_link;
+            $action_perform = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Status & Priority Updated By '. $name_link;
 
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $request->tkt_id , auth()->id() , $action_perform);

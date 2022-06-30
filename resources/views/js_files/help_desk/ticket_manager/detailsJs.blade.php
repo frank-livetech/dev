@@ -13,8 +13,10 @@ let edit_reply_mode = false;
 let attachments_src = [];
 let ticket_attachments_count = 1;
 let date_format = {!! json_encode($date_format) !!};
+let mails = {!! json_encode($shared_emails) !!};
 let update_flag = 0;
 let updates_Arr = [];
+console.log(mails)
 // var ticket_attach_path = `{{asset('public/files')}}`;
 // var ticket_attach_path_search = 'public/files';
 

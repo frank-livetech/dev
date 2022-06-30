@@ -247,7 +247,7 @@ class AssetManagerController extends Controller
                 $ticket->updated_by = auth()->id() ;
                 $ticket->save();
 
-                $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset added By '. $name_link;
+                $action_perform = 'Ticket (<a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset added By '. $name_link;
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' ,  $ticket->ticket_id , auth()->id() , $action_perform);
             }
@@ -380,7 +380,7 @@ class AssetManagerController extends Controller
                 $response['message'] = 'Asset Type Update Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
-                // $response['data'] = AssetFields::where('id',$request->field_id)->where("is_deleted",0)->first();
+                $response['form_field'] = AssetFields::find($request->field_id);
                 $response['data'] = AssetFields::where('asset_forms_id', $request->template_id)->get();
                 return response()->json($response);
             }
@@ -412,7 +412,7 @@ class AssetManagerController extends Controller
             $ticket->save();
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset deleted By '. $name_link;
+            $action_perform = 'Ticket (<a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset deleted By '. $name_link;
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->ticket_id , auth()->id() , $action_perform);
         }
@@ -618,7 +618,7 @@ class AssetManagerController extends Controller
                 $ticket->save();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-                $action_perform = 'Ticket ID <a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> asset updated By '. $name_link;
+                $action_perform = 'Ticket (<a href="ticket-details/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) asset updated By '. $name_link;
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'ticket_replies' , $asset->ticket_id , auth()->id() , $action_perform);
             }
