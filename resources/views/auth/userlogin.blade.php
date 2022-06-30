@@ -148,8 +148,8 @@
     <!-- END: Page JS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js" integrity="sha512-aUhL2xOCrpLEuGD5f6tgHbLYEXRpYZ8G5yD+WlFrXrPy2IrWBlu6bih5C9H6qGsgqnU6mgx6KtU8TreHpASprw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @php
-        $login_email = isset($_COOKIE['login_email']) ? base64_decode($_COOKIE['login_email']) : null;
-        $login_pass = isset($_COOKIE['login_pass']) ? base64_decode($_COOKIE['login_pass']): null;
+        $login_email = isset($_COOKIE['livetech_ml']) ? base64_decode($_COOKIE['livetech_ml']) : null;
+        $login_pass = isset($_COOKIE['livetech_ps']) ? base64_decode($_COOKIE['livetech_ps']): null;
     @endphp
     <script>
         $(window).on('load', function() {

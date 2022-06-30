@@ -652,12 +652,12 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if($request->remember===null){
-            setcookie('login_email',base64_encode($request->email),100);
-            setcookie('login_pass',base64_encode($request->password),100);
+            setcookie('livetech_ml',base64_encode($request->email),100);
+            setcookie('livetech_ps',base64_encode($request->password),100);
          }
          else{
-            setcookie('login_email',base64_encode($request->email),time()+60*60*24*100);
-            setcookie('login_pass',base64_encode($request->password),time()+60*60*24*100);
+            setcookie('livetech_ml',base64_encode($request->email),time()+60*60*24*100);
+            setcookie('livetech_ps',base64_encode($request->password),time()+60*60*24*100);
 
          }
 
@@ -839,14 +839,14 @@ class AuthController extends Controller
 
             $token = \Str::random(64);
 
-            $resetLink = DB::table('password_resets')
-                                ->where([
-                                    'email' => $request->email,
-                                ])->get();
+            // $resetLink = DB::table('password_resets')
+            //                     ->where([
+            //                         'email' => $request->email,
+            //                     ])->get();
 
-            if(count($resetLink) != 0){
-                return redirect()->back()->with('error', 'We have already e-mailed you password reset link!');
-            }
+            // if(count($resetLink) != 0){
+            //     return redirect()->back()->with('error', 'We have already e-mailed you password reset link!');
+            // }
 
             DB::table('password_resets')->insert([
                 'email' => $request->email,
