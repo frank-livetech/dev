@@ -1225,7 +1225,7 @@ class HelpdeskController extends Controller
                 }
             }
 
-            if($data['bcc'] != null && $data['bcc'] != "") {
+            if(isset($data['bcc']) && $data['bcc'] != null && $data['bcc'] != "") {
                 $tkt_share['email'] = $data['bcc'];
                 $tkt_share['mail_type'] = 2;
                 $tkt_share['ticket_id'] = $data['ticket_id'];

@@ -2000,6 +2000,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
 
             let params = {
                 cc: $('#to_mails').val(),
+                bcc: $('#bcc_emails').val(),
                 ticket_id: ticket.id,
                 type: type,
                 attachments: rep_attaches,
