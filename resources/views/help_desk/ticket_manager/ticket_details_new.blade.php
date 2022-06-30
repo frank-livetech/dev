@@ -1031,7 +1031,7 @@
                                             @if( !empty($shared_cc_emails))
                                                 <input type="text" id="to_mails" name="to_mails"
                                                  class="form-control" placeholder="Email" 
-                                                 data-role="tagsinput" value="{{$shared_cc_emails[0]['email']}}" required>                                                
+                                                 data-role="tagsinput" value="{{$shared_cc_emails['email']}}" required>                                                
                                             @else
                                                 <input type="text" id="to_mails" name="to_mails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
                                             @endif
@@ -1043,7 +1043,7 @@
                                             @if( !empty($shared_bcc_emails))
                                                 <input type="text" id="bcc_emails" name="bcc_emails"
                                                 class="form-control" placeholder="Email" 
-                                                data-role="tagsinput" value="{{$shared_bcc_emails[0]['email']}}" required>
+                                                data-role="tagsinput" value="{{$shared_bcc_emails['email']}}" required>
                                             @else
                                                 <input type="text" id="bcc_emails" name="bcc_emails" class="form-control" placeholder="Email"  data-role="tagsinput" value="" required>
                                             @endif
