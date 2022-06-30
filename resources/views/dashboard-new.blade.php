@@ -818,8 +818,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                    `;
 
             $("#user-"+user.id).html(html);
-        }
-        elseif(data.status == false){
+        }else if(data.status == false){
             var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
                         data-placement="top" title="`+user.name+`">
                         <img src="http://dev.test/storage/users/birmingham_favicon.png"
