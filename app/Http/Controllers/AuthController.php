@@ -799,7 +799,7 @@ class AuthController extends Controller
                             ])->get();
 
         if(count($resetLink) != 0){
-            return redirect()->back()->with('error', 'We have already e-mailed you password reset link!');
+            return redirect()->back()->with('danger', 'We have already e-mailed you password reset link!');
         }
 
         DB::table('password_resets')->insert([
