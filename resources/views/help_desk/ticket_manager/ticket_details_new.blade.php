@@ -323,7 +323,7 @@
     padding: 0.72rem 0.5rem !important;
 }
     @media (max-width: 897.98px){
-        .webkit-box1{
+    .webkit-box1{
         display: inline;
     }
     .drop-dpt{
@@ -334,6 +334,35 @@
     }
     .bor-top img{
         max-width: 160px !important
+    }
+    
+    }
+    @media (max-width: 650px){
+    #sub-tkt{
+        margin-top: 6px !important
+    }
+    .bor-top img{
+        max-width: 160px !important
+    }
+    .ticket-timestamp3 {
+        margin-left: unset !important
+    }
+    .modal-slide-in .modal-dialog.sidebar-lg {
+        width: 24rem !important
+    
+    }
+    .time-stamp{
+        display: inline !important;
+    }
+    #v-pills-notes-list{
+        padding-right: unset !important
+    }
+    button#rply ,button#draft-rply,button#cancel-rply{
+        width: unset !important
+    }
+    .reply-htm{
+        position: relative;
+        right: 53px;
     }
     }
 </style>
@@ -380,7 +409,8 @@
                                     <a href="javascript:void(0)" onclick="ticketUrlCopy()"> 
                                 <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url" style="display:none">Url Copied</span>   
                                 {{-- <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle waves-effect waves-float waves-light" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button> --}}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                <i class="fal fa-ellipsis-v dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"></i>
+                                {{-- <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="float:right"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg> --}}
                                 {{-- <i class="fas fa-ellipsis-h dropdown-toggle" aria-hidden="true" data-bs-toggle="dropdown" type="button"></i> --}}
                                 <div class="dropdown-menu dropdown-menu-end" style="">
                                     <a class="dropdown-item" onclick="openProModal();" >
@@ -580,7 +610,7 @@
                                                                 <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                                                             </div>
-                                                            <div class="first" >
+                                                            <div class="first" id="sub-tkt">
                                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                                
                                                                 <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$details->subject}} </span> 
@@ -930,7 +960,7 @@
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title mb-0">Ticket Replies </h4>
                                 <div>
-                                    <a href="#v-pills-tab" id="compose_btn" class="btn btn-success float-right" onclick="composeReply()" style="color: #fff !important">
+                                    <a id="compose_btn" class="btn btn-success float-right" onclick="composeReply()" style="color: #fff !important">
                                         Compose 
                                     </a>                               
                                     <a id="update_ticket" style="display:none" class="btn btn-success float-right mx-2" onclick="updateTicket()">
@@ -939,7 +969,7 @@
                                 </div>
                             </div>
                             
-                            <div class="d-flex justify-content-end mt-2 p-1 reply_btns reply-btns" style="display:none !important">
+                            <div class="d-flex justify-content-end mt-2 reply_btns reply-btns" style="display:none !important">
                                 <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right" onclick="publishReply(this , 'ticket_reply_btns')">
                                     <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
                                         <span class="sr-only">Loading...</span>
@@ -2104,11 +2134,11 @@
                                     $user_type = 'User';
                                 }
                             ?>
-                            <div class="" style="display: -webkit-box">
+                            <div class="time-stamp" style="display: -webkit-box">
                                 <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                             </div>
-                            <div class="first" >
+                            <div class="first" id="sub-tkt">
                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                 
                                 <span  style="font-size:20px"> {{$details->subject}} </span> 

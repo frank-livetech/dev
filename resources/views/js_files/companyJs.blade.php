@@ -194,15 +194,7 @@ function get_all_companies() {
             let tt = $('#companyTable').DataTable({
             data:  data.companies,
             columns: [
-                {
-                    render: function (data, type, full, meta) {
-
-                return `<div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck_` + full.id + `">
-                            <label class="custom-control-label" for="customCheck_` + full.id + `"></label>
-                        </div>`;
-                }
-                },
+               
                 {
                     render: function (data, type, full, meta) {
 

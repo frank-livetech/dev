@@ -372,9 +372,18 @@
                 if (ticket_view != 10 && ticket_view != 25 && ticket_view != 50 && ticket_view != 100) {
                     let option = `<option value="${ticket_view}" selected> ${ticket_view} </option>`;
                     $('select[name=ticket-table-list_length]').append(option);
+
+                    let txt = $("#ticket-table-list_info").text();
+                    let a = txt.replace("0"+ticket_view, ticket_view);
+                    $("#ticket-table-list_info").text(a);
+
                 }else{
                     totalPage = (data.ticket_view == null ? 10 : (data.ticket_view.per_page !=null ? data.ticket_view.per_page : 10))
                     $('select[name=ticket-table-list_length]').val(data.ticket_view.per_page);
+
+                    let txt = $("#ticket-table-list_info").text();
+                    let a = txt.replace("0"+ticket_view, ticket_view);
+                    $("#ticket-table-list_info").text(a);
                 }
 
                 $('select[name=ticket-table-list_length]').attr('onchange','ticketTableLength(this.value)');
