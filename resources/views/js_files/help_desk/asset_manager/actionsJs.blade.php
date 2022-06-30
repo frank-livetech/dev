@@ -968,27 +968,33 @@ function getAssetDetails(id=1) {
 
 
 $("#asset_customer").change(function(){
-    console.log($('#asset_customer :selected').text())
+
     if($('#asset_customer :selected').text() == 'All'){
         let option_company = [];
         for (const data of companies) {
-                option_company += `<option value="${data.id}"> ${data.name} </option>`;
-                // option_company += {id: data.id, text: data.name}+',' ;
+            option_company += `<option value="${data.id}"> ${data.name} </option>`;
         }
-        var data = {
-            id: 1,
-            text: 'Barn owl'
-        };
-
-        var newOption = new Option(data.text, data.id, false, false);
-        $('#asset_company').append(newOption).trigger('change');
-        console.log(newOption)
-
+        $('#asset_customer').empty();
         $("#asset_company").html(option_company);
-        $('#asset_company').select2().trigger('change');
+        $('#asset_company').trigger('change');
 
     }
 });
+
+$("#asset_company").change(function(){
+
+    if($('#asset_company :selected').text() == 'All'){
+        let option_company = [];
+        for (const data of companies) {
+            option_company += `<option value="${data.id}"> ${data.name} </option>`;
+        }
+        $('#asset_company').empty();
+        $("#asset_customer").html(option_company);
+        $('#asset_customer').trigger('change');
+
+    }
+});
+
 
 function selectCustomer(value , customerId , companyId) {
 
