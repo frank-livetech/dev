@@ -18,6 +18,7 @@ use Session;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HelpdeskController;
+use Pusher\Pusher;
 
 class HomeController extends Controller {
 
@@ -33,6 +34,9 @@ class HomeController extends Controller {
             return $next($request);
         });
 
+
+
+
     }
 
     /**
@@ -41,6 +45,8 @@ class HomeController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index() {
+
+        session()->put('is_online',Auth::user() ?? null);
 
         $user_type = 1;
         $customers = Customer::count();
@@ -64,7 +70,7 @@ class HomeController extends Controller {
 
         $late_tickets_count = Tickets::where('is_overdue',1)
         ->where([ ['is_overdue',1] ,  ['is_deleted', 0], ['tickets.trashed', 0] , ['tickets.status', '!=', $closed_status_id] , ['is_pending' , 0] ])->count();
-                                
+
 
 
         $clockin = StaffAttendance::with('user_clocked')
@@ -97,9 +103,9 @@ class HomeController extends Controller {
                 $staffData->name = $user->name;
                 array_push($staff_att_data,$staffData);
             }
-            
+
         }
-        
+
         // $staff_active_count = StaffAttendance::where('date',date_format(Carbon::now(),"Y-m-d"))->where('clock_out',NULL)->count();
         // $staff_active_count = StaffAttendance::where('clock_out',NULL)->orderBy('id', 'DESC')->groupBy('user_id')->get();
         // $staff_active_count = $staff_active_count->count();
@@ -118,6 +124,34 @@ class HomeController extends Controller {
         $followUps = TicketFollowUp::where('is_deleted', 0)->where('passed', 0)->with('ticket')->get();
 
         return view('dashboard-new', get_defined_vars());
+    }
+
+    public function onlineUser(Request $request)
+    {
+        $pusher = new Pusher(
+            pusherCredentials('key'),
+            pusherCredentials('secret'),
+            pusherCredentials('id'),
+            [
+            'cluster' => pusherCredentials('cluster'),
+            'useTLS' => true
+            ]
+        );
+
+
+        if(session()->has('is_online') && !session()->has('is_offline')){
+            $data = [
+               "user" => session()->get('is_online'),
+               "status" => true
+           ];
+        }elseif(session()->has('is_offline')){
+            $data = [
+                "user" => session()->get('is_online'),
+                "status" => false
+            ];
+        }
+
+        $pusher->trigger('online-user', 'online-user-event', $data);
     }
 
     public function getAllStaffAttendance() {
@@ -168,7 +202,7 @@ class HomeController extends Controller {
         // $currentDate = Carbon::now();
         // $staffData = StaffAttendance::where([ ['date', $currentDate->format('Y-m-d')], ['clock_out', null], ['user_id',auth()->user()->id] ])->orderByDesc('id')->first();
         $staffData = StaffAttendance::where('user_id',auth()->user()->id)->orderByDesc('id')->first();
-        
+
         $response['message'] = 'Notification List';
         $response['status_code'] = 200;
         $response['success'] = true;

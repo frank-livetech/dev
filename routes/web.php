@@ -40,7 +40,7 @@ Route::post('/user-forgetpassword', 'AuthController@submitCustomerForgetPassword
 Route::get('/user-reset-password/{mail}/{token}', 'AuthController@showCustomerResetPasswordForm')->name('user.reset.password.get');
 Route::post('/user-reset-password', 'AuthController@submitCustomerResetPasswordForm')->name('user.reset.password.post');
 
-
+Route::post('/online-user', 'HomeController@onlineUser')->name('make.online.user');
 
 //Auth::routes();
 Route::get('/login', 'AuthController@index')->name('login');

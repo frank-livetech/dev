@@ -285,6 +285,8 @@ function templateSetting(code, obj_key , action = null , id = null) {
 
         }
 
+        console.log(code)
+
         $('#fields-modal #headinglabel').html(template[code].title + ' Setting');
         $('#fields-modal #lbl').focus();
         $('#fields-modal').modal('show');
@@ -441,10 +443,9 @@ function updateFieldSetting(field_id,temp_id,form=null){
                 if (data.success) {
                     $("#fields-modal").modal('hide');
                     fields_list_data = data.data;
-                    item = data.data;
-                    // getAllTemplate();
+                    item = data.form_field;
 
-                    templateSetting(item.type,item.asset_forms_id,'update',item.id)
+                    templateSetting(item.type, item.asset_forms_id,'update',item.id)
 
                 }
                 Swal.fire({
@@ -494,13 +495,9 @@ function updateFieldSetting(field_id,temp_id,form=null){
             url: template_update_submit_route,
             data: formData,
             success: function(data) {
-
-                // getAllTemplate();
-                // editTemplate(template_id)
                 $("#fields-modal").modal('hide');
-
                 fields_list_data = data.data;
-                item = data.data;
+                item = data.form_field;
 
                 templateSetting(item.type,item.asset_forms_id,'update',item.id)
 
