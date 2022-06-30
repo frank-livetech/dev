@@ -258,7 +258,7 @@ class PayrollController extends Controller {
 
                 foreach($todayTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
@@ -286,7 +286,7 @@ class PayrollController extends Controller {
                 foreach($overdueTickets as $tk) {
 
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
@@ -314,7 +314,7 @@ class PayrollController extends Controller {
 
                 foreach($flaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
@@ -341,7 +341,7 @@ class PayrollController extends Controller {
 
                 foreach($UnassginedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
@@ -377,7 +377,7 @@ class PayrollController extends Controller {
 
                 foreach($todayTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
@@ -404,7 +404,7 @@ class PayrollController extends Controller {
 
                 foreach($todayFlaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
@@ -430,7 +430,7 @@ class PayrollController extends Controller {
                 
                 foreach($todayUpdatedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
@@ -457,7 +457,7 @@ class PayrollController extends Controller {
 
                 foreach($todayClosedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket = '
+                    $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
                             <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
                             <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
