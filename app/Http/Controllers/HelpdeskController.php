@@ -1206,6 +1206,42 @@ class HelpdeskController extends Controller
                 }
             }
 
+            // Set cc and bcc mails if any
+
+            $tkt_share = array();
+    
+            if($data['cc'] != null && $data['cc'] != "") {
+                $tkt_share['email'] = $data['cc'];
+                $tkt_share['mail_type'] = 1;
+                $tkt_share['ticket_id'] = $data['ticket_id'];
+
+                $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 1)->first();
+
+                if($shared_emails) {
+                    $shared_emails->email = $data['cc'];
+                    $shared_emails->save();
+                }else{
+                    TicketSharedEmails::create($tkt_share);
+                }
+            }
+
+            if($data['bcc'] != null && $data['bcc'] != "") {
+                $tkt_share['email'] = $data['bcc'];
+                $tkt_share['mail_type'] = 2;
+                $tkt_share['ticket_id'] = $data['ticket_id'];
+
+                $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 2)->first();
+                if($shared_emails) {
+                    $shared_emails->email = $data['bcc'];
+                    $shared_emails->save();
+                }else{
+                    TicketSharedEmails::create($tkt_share);
+                }
+
+            }
+
+            ////////////////////////////
+
 
             if($type == 'publish') {
             
