@@ -263,7 +263,7 @@
                         @endif
                         <a class="dropdown-item" onclick="run_parser()"><i class="me-50" data-feather="refresh-ccw"></i> Run Parser</a>
 
-                        <a class="dropdown-item" type="button" id="logout" type="button" href="javascript:void(0)">
+                        <a class="dropdown-item" type="button" href="{{ route('logout') }}">
                             <i class="me-50" data-feather="power"></i>  Logout
                         </a>
 
@@ -904,6 +904,7 @@
         //                     async: true,
         //                     data: { _token: "{{csrf_token()}}"},
         //                 });
+
 
         //                 // channelUser.bind("online-user-event", (data) => {
         //                 //     if(data.status == true){
