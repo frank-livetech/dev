@@ -4,7 +4,7 @@
     var channel = pusher.subscribe('notification.'+`{{Auth::id()}}`);
     // var presenceChannel = pusher.subscribe('presenceChannelName');
     console.log(channel);
-    if(is_online_notif == 0){
+    // if(is_online_notif == 0){
         $.ajax({
             url: "{{route('make.online.user')}}",
             dataType: "json",
@@ -15,18 +15,18 @@
                 console.log(data)
             },
         });
-    }else if(is_online_notif == ''){
-        $.ajax({
-            url: "{{route('make.online.user')}}",
-            dataType: "json",
-            type: "Post",
-            async: true,
-            data: { _token: "{{csrf_token()}}",online:false},
-            success: function (data) {
-                console.log(data)
-            },
-        });
-    }
+    // }else if(is_online_notif == ''){
+    //     $.ajax({
+    //         url: "{{route('make.online.user')}}",
+    //         dataType: "json",
+    //         type: "Post",
+    //         async: true,
+    //         data: { _token: "{{csrf_token()}}",online:false},
+    //         success: function (data) {
+    //             console.log(data)
+    //         },
+    //     });
+    // }
 
 
     channel.bind("notification-event", (data) => {
