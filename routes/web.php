@@ -41,13 +41,13 @@ Route::get('/user-reset-password/{mail}/{token}', 'AuthController@showCustomerRe
 Route::post('/user-reset-password', 'AuthController@submitCustomerResetPasswordForm')->name('user.reset.password.post');
 
 Route::post('/online-user', 'HomeController@onlineUser')->name('make.online.user');
-Route::post('/all-users', 'HomeController@showAllUser')->name('show.all.user');
+Route::get('/all-users', 'HomeController@showAllUser')->name('show.all.user');
 
 //Auth::routes();
 Route::get('/login', 'AuthController@index')->name('login');
 Route::post('/login', 'AuthController@postLogin');
 
-Route::get('/logout', 'AuthController@logout')->name('logout');
+Route::post('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/forgetPassword', 'AuthController@forgetPassword')->name('forgetpassword');
 Route::post('/forgetpassword', 'AuthController@submitForgetPasswordForm')->name('resetpassword');

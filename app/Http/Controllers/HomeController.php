@@ -127,27 +127,25 @@ class HomeController extends Controller {
 
     public function onlineUser(Request $request)
     {
-        $pusher = new Pusher(
-            pusherCredentials('key'),
-            pusherCredentials('secret'),
-            pusherCredentials('id'),
-            [
-            'cluster' => pusherCredentials('cluster'),
-            'useTLS' => true
-            ]
-        );
-        $users = User::select('id','name','is_online')->get('10');
-        $data = [
-            "users" =>null,
-            "status" => true
-        ];
 
-        $pusher->trigger('online-user', 'online-user-event', $data);
+        $notify = new NotifyController();
+        $sender_id = Auth::user()->id;
+        $receiver_id = 1;
+        $data = User::where('is_deleted',0)->where('is_online',1)->get();
+        $slug = 'dashboard';
+        $type = 'online_user';
+        $title = 'LoggedInUser';
+        $icon = 'ti-calendar';
+        $class = 'btn-success';
+        $desc = 'Clock In by '.Auth::user()->name;
+        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+
+
     }
 
     public function showAllUser(Request $request)
     {
-        return User::where('is_deleted',0)->where('is_online',$request->status)->get();
+        return User::where('is_deleted',0)->where('is_online',1)->get();
     }
     public function getAllStaffAttendance() {
         $staff_count = User::where('is_deleted',0)->where('user_type','!=',5)->where('user_type','!=',4)->where('status',1)->count();

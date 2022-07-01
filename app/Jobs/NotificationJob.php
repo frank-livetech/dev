@@ -13,7 +13,7 @@ class NotificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    
+
     private $receiver,$sender , $message;
 
     public function __construct($receiver , $sender , $message)
@@ -23,7 +23,7 @@ class NotificationJob implements ShouldQueue
         $this->message = $message;
     }
 
-  
+
     public function handle()
     {
         $pusher = new Pusher(
