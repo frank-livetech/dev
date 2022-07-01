@@ -905,23 +905,23 @@
                             data: { _token: "{{csrf_token()}}"},
                         });
 
-                        channelUser.bind("online-user-event", (data) => {
-                            if(data.status == true){
-                                $.ajax({
-                                    url: "{{route('show.all.user')}}",
-                                    dataType: "json",
-                                    type: "get",
-                                    async: true,
-                                    success: function (users) {
-                                        for (const user of users) {
-                                            $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
-                                        }
-                                    },
+                        // channelUser.bind("online-user-event", (data) => {
+                        //     if(data.status == true){
+                        //         $.ajax({
+                        //             url: "{{route('show.all.user')}}",
+                        //             dataType: "json",
+                        //             type: "get",
+                        //             async: true,
+                        //             success: function (users) {
+                        //                 for (const user of users) {
+                        //                     $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
+                        //                 }
+                        //             },
 
-                                });
-                            }
+                        //         });
+                        //     }
 
-                        });
+                        // });
 
                     // window.location = data
                 },
