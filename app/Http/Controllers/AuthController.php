@@ -715,13 +715,13 @@ class AuthController extends Controller
     public function logout(Request $request) {
 
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
-        
+        $user_type = auth()->user()->user_type;
         \Session::forget('user_session');
         User::find(Auth::id())->update(['is_online' => 1]);
         if( Auth::check()){
             Auth::logout();
         }
-        if(auth()->user()->user_type != 5 && auth()->user()->user_type != 4 ){
+        if($user_type != 5 && $user_type != 4 ){
             User::find(\Auth::user()->id)->update([
                 'is_online' => 0
             ]);
