@@ -476,9 +476,11 @@ class AuthController extends Controller
                     $depts = $this->listPermissions(\Auth::user()->id);
                     Session::put('depts', $depts);
 
+
                     User::find(Auth::id())->update([
                         'is_online' => 1
                     ]);
+
 
                     Session::put('menus', $role_features->sortBy('sequence'));
 
@@ -797,14 +799,14 @@ class AuthController extends Controller
 
         $token = \Str::random(64);
 
-        // $resetLink = DB::table('password_resets')
-        //                     ->where([
-        //                         'email' => $request->email,
-        //                     ])->get();
+        $resetLink = DB::table('password_resets')
+                            ->where([
+                                'email' => $request->email,
+                            ])->get();
 
-        // if(count($resetLink) != 0){
-        //     return redirect()->back()->with('error', 'We have already e-mailed you password reset link!');
-        // }
+        if(count($resetLink) != 0){
+            return redirect()->back()->with('danger', 'We have already e-mailed you password reset link!');
+        }
 
         DB::table('password_resets')->insert([
             'email' => $request->email,
