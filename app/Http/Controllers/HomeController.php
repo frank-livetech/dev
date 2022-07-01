@@ -165,6 +165,11 @@ class HomeController extends Controller {
     {
         return User::where('is_deleted',0)->where('is_online',1)->get();
     }
+
+    public function showAllOfflineUser(){
+        return User::where('is_deleted',0)->where('is_online',0)->get();
+    }
+
     public function getAllStaffAttendance() {
         $staff_count = User::where('is_deleted',0)->where('user_type','!=',5)->where('user_type','!=',4)->where('status',1)->count();
         // $staff_att_data = StaffAttendance::with('user_clocked')->where('date',date_format(Carbon::now(),"Y-m-d"))->get();

@@ -57,7 +57,7 @@
                     
                 }else if(notify.noti_title == 'LoggedOutUser'){
                     $.ajax({
-                        url: "{{route('show.all.user')}}",
+                        url: "{{route('show.all.offline.user')}}",
                         dataType: "json",
                         type: "get",
                         async: true,
