@@ -715,12 +715,37 @@ class AuthController extends Controller
     public function logout(Request $request) {
 
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
+        
         \Session::forget('user_session');
         User::find(Auth::id())->update(['is_online' => 1]);
         if( Auth::check()){
             Auth::logout();
         }
+        if(auth()->user()->user_type != 5 && auth()->user()->user_type != 4 ){
+            User::find(\Auth::user()->id)->update([
+                'is_online' => 0
+            ]);
 
+            $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',1)->get()->toArray();
+    
+            $notify = new NotifyController();
+    
+            foreach ($admin_users as $key => $value) {
+    
+                $sender_id = \Auth::user()->id;
+                $receiver_id = $value['id'];
+                $data = '';
+                $slug = 'dashboard';
+                $type = 'online_user';
+                $title = 'LoggedInUser';
+                $icon = 'ti-calendar';
+                $class = 'btn-success';
+                $desc = 'Login In by '.Auth::user()->name;
+                
+                $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+            }
+
+        }
         return redirect()->to($route);
     }
 
