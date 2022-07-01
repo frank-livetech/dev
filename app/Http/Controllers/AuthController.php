@@ -725,7 +725,7 @@ class AuthController extends Controller
             Auth::logout();
         }
         if($user_type != 5 && $user_type != 4 ){
-            User::find(\Auth::user()->id)->update([
+            User::find($id)->update([
                 'is_online' => 0
             ]);
 
