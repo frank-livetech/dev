@@ -49,7 +49,7 @@
                         async: true,
                         success: function (users) {
                             for (const user of users) {
-                                $('#user-status-'+notify.sender_id).html('<span class="avatar-status-online"></span>');
+                                $('#user-status-'+user.id).html('<span class="avatar-status-online"></span>');
                             }
                         },
 
