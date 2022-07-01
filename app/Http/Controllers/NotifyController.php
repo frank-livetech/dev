@@ -30,7 +30,7 @@ class NotifyController extends Controller
             $sender = User::where('id' , $sender_id)->first();
     
             if($notify) {
-                $notificationJob = (new NotificationJob($receiver_id, $sender, $data));
+                $notificationJob = (new NotificationJob($receiver_id, $sender_id, $data));
                 dispatch($notificationJob);
             }
         }
