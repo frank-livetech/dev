@@ -62,7 +62,6 @@
 
     $( document ).ready(function() {
        
-
         $("#dropD ").find(".select2").hide();
         $("#dropD ").find("h5").show();
         selectD();
@@ -501,7 +500,7 @@
                                     window.location.href = "{{route('ticket_management.index')}}";
 
                                 }else{
-
+                                    console.log('here')
                                     alertNotification('success', 'Success' , data.message);
                                     $("#pro_edit").modal('hide');
                                     ticket_customer = data.data;
@@ -512,9 +511,45 @@
                                     $('#cst-name').text(ticket_customer.first_name+' '+ticket_customer.last_name);
                                     $('#cst-email').text(ticket_customer.email);
                                     $('#cst-direct-line').text(ticket_customer.phone);
+                                    var cc_vals = $("#tkt_cc").val();
+                                    var bcc_vals = $("#tkt_bcc").val();
+                                    
+                                    if(cc_vals != '' || cc_vals != null || cc_vals != undefined){
+                                        $('#to_mails').tagsinput()[0].removeAll();
+                                        cc_vals = cc_vals.split(",");
+                                        var tagInputEle = $('#to_mails');
+                                        tagInputEle.tagsinput();
+                                        
+                                        for(var i = 0; i<cc_vals.length;i++){
+                                            tagInputEle.tagsinput('add', cc_vals[i]);
+                                        }
+                                            $('.cc_email_field').show();
+                                            $('#show_cc_email').prop('checked', true);
+                                            
+                                    }
+                                    if(bcc_vals != '' || bcc_vals != null || bcc_vals != undefined){
+                                        $('#bcc_emails').tagsinput()[0].removeAll();
+                                        bcc_vals = bcc_vals.split(",");
+                                        var tagInputEle = $('#bcc_emails');
+                                        tagInputEle.tagsinput();
+                                        
+                                        for(var i = 0; i<bcc_vals.length;i++){
+                                            tagInputEle.tagsinput('add', bcc_vals[i]);
+                                        }
+                                        $('.bcc_email_field').show();
+                                        $('#show_bcc_emails').prop('checked', true);
+                                    }
+                                    if($("#tkt_cc").val() == ''){
+                                        $('.cc_email_field').hide();
+                                        $('#show_cc_email').prop('checked', false);
+                                    }
+                                    if($("#tkt_bcc").val() == ''){
+                                        $('.bcc_email_field').hide();
+                                        $('#show_bcc_emails').prop('checked', false);
+                                    }
+                                    
                                     $('#to_mails').val($("#tkt_cc").val());
                                     $('#bcc_emails').val($("#tkt_bcc").val());
-
                                     // ticket_customer.company_id = comp;
                                     setCustomerCompany();
 

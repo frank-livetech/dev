@@ -405,32 +405,32 @@ class AuthController extends Controller
             } else {
                 if (Auth::attempt($credentials, $request->has('remember'))) {
                     // Authentication passed...
-                    if (isset($request->fcm_token)) {
+                    // if (isset($request->fcm_token)) {
 
-                        if ($user->device_token != NULL && $user->device_token != '') {
-                            $fcm_array = json_decode($user->device_token);
-                            $token = $request->fcm_token;
-                            $entry = current(array_filter($fcm_array, function ($e) use ($token) {
-                                return $e->token == $token;
-                            }));
-                            if ($entry === false) {
-                                $fcm_data = array();
-                                $fcm_data['token'] = $request->fcm_token;
-                                $fcm_data['device'] = 'Windows';
-                                array_push($fcm_array, $fcm_data);
-                                $user->device_token = $fcm_array;
-                                $user->save();
-                            }
-                        } else {
-                            $fcm_data = array();
-                            $fcm_array = array();
-                            $fcm_data['token'] = $request->fcm_token;
-                            $fcm_data['device'] = 'Windows';
-                            array_push($fcm_array, $fcm_data);
-                            $user->device_token = json_encode($fcm_array);
-                            $user->save();
-                        }
-                    }
+                    //     if ($user->device_token != NULL && $user->device_token != '') {
+                    //         $fcm_array = json_decode($user->device_token);
+                    //         $token = $request->fcm_token;
+                    //         $entry = current(array_filter($fcm_array, function ($e) use ($token) {
+                    //             return $e->token == $token;
+                    //         }));
+                    //         if ($entry === false) {
+                    //             $fcm_data = array();
+                    //             $fcm_data['token'] = $request->fcm_token;
+                    //             $fcm_data['device'] = 'Windows';
+                    //             array_push($fcm_array, $fcm_data);
+                    //             $user->device_token = $fcm_array;
+                    //             $user->save();
+                    //         }
+                    //     } else {
+                    //         $fcm_data = array();
+                    //         $fcm_array = array();
+                    //         $fcm_data['token'] = $request->fcm_token;
+                    //         $fcm_data['device'] = 'Windows';
+                    //         array_push($fcm_array, $fcm_data);
+                    //         $user->device_token = json_encode($fcm_array);
+                    //         $user->save();
+                    //     }
+                    // }
 
                     $settings = BrandSettings::first();
 
@@ -639,31 +639,31 @@ class AuthController extends Controller
             } else {
                 if (Auth::attempt($credentials, $request->has('remember') ? true : false )) {
                     // Authentication passed...
-                    if (isset($request->fcm_token)) {
-                        if ($user->device_token != NULL && $user->device_token != '') {
-                            $fcm_array = json_decode($user->device_token);
-                            $token = $request->fcm_token;
-                            $entry = current(array_filter($fcm_array, function ($e) use ($token) {
-                                return $e->token == $token;
-                            }));
-                            if ($entry === false) {
-                                $fcm_data = array();
-                                $fcm_data['token'] = $request->fcm_token;
-                                $fcm_data['device'] = 'Windows';
-                                array_push($fcm_array, $fcm_data);
-                                $user->device_token = $fcm_array;
-                                $user->save();
-                            }
-                        } else {
-                            $fcm_data = array();
-                            $fcm_array = array();
-                            $fcm_data['token'] = $request->fcm_token;
-                            $fcm_data['device'] = 'Windows';
-                            array_push($fcm_array, $fcm_data);
-                            $user->device_token = json_encode($fcm_array);
-                            $user->save();
-                        }
-                    }
+                    // if (isset($request->fcm_token)) {
+                    //     if ($user->device_token != NULL && $user->device_token != '') {
+                    //         $fcm_array = json_decode($user->device_token);
+                    //         $token = $request->fcm_token;
+                    //         $entry = current(array_filter($fcm_array, function ($e) use ($token) {
+                    //             return $e->token == $token;
+                    //         }));
+                    //         if ($entry === false) {
+                    //             $fcm_data = array();
+                    //             $fcm_data['token'] = $request->fcm_token;
+                    //             $fcm_data['device'] = 'Windows';
+                    //             array_push($fcm_array, $fcm_data);
+                    //             $user->device_token = $fcm_array;
+                    //             $user->save();
+                    //         }
+                    //     } else {
+                    //         $fcm_data = array();
+                    //         $fcm_array = array();
+                    //         $fcm_data['token'] = $request->fcm_token;
+                    //         $fcm_data['device'] = 'Windows';
+                    //         array_push($fcm_array, $fcm_data);
+                    //         $user->device_token = json_encode($fcm_array);
+                    //         $user->save();
+                    //     }
+                    // }
 
                     $settings = BrandSettings::first();
 
