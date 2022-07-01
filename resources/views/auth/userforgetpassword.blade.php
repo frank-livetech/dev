@@ -72,6 +72,13 @@
                                         @if (Session::has('message'))
                                             <p class="text-success">{{Session::get('message')}}</p>
                                         @endif
+                                        @foreach (['warning','success','danger'] as $session)
+                                            @if (\Session::has($session))
+                                            <span class="text-{{$session}} small">
+                                                {{ Session::get($session) }}
+                                            </span>
+                                            @endif
+                                        @endforeach
                                     </div>
                                     <button class="btn btn-primary w-100" type="submit" tabindex="2">Send reset link</button>
                                 </form>
