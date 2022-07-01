@@ -387,6 +387,7 @@
     <script src="https://cdn.jsdelivr.net/npm/moment-precise-range-plugin@1.3.0/moment-precise-range.js"></script>
     <script>
         const org_path = "{{Session::get('is_live')}}";
+        let is_online_notif = "{{Session::get('is_online_notif')}}";
         const root = "{{request()->root()}}";
         const js_origin  = root + (org_path == 1 ? '/public/' : '/');
         const change_theme_url = "{{asset('change_theme_mode')}}";
@@ -881,53 +882,37 @@
         // Enter a unique channel you wish your users to be subscribed in.
         var channel = pusher.subscribe('default.'+`{{Auth::id()}}`);
 
-
     </script>
     @include('js_files.chat.pusher')
     @include('js_files.pusher_notification.notification')
     @include('js_files.pusher_notification.user_status')
     @yield('scripts')
     <script>
-        // $("#logout").click(function(){
 
-        //     $.ajax({
-        //         url: "{{ route('logout') }}",
-        //         dataType: "json",
-        //         type: "Post",
-        //         async: true,
-        //         data: { _token: "{{csrf_token()}}",status:1},
-        //         success: function (data) {
-        //                 $.ajax({
-        //                     url: "{{route('make.online.user')}}",
-        //                     dataType: "json",
-        //                     type: "Post",
-        //                     async: true,
-        //                     data: { _token: "{{csrf_token()}}"},
-        //                 });
+        if(is_online_notif == 0){
+            $.ajax({
+                url: "{{route('make.online.user')}}",
+                dataType: "json",
+                type: "Post",
+                async: true,
+                data: { _token: "{{csrf_token()}}",online:true},
+                success: function (data) {
+                    console.log(data)
+                },
+            });
+        }else if(is_online_notif == ''){
+            $.ajax({
+                url: "{{route('make.online.user')}}",
+                dataType: "json",
+                type: "Post",
+                async: true,
+                data: { _token: "{{csrf_token()}}",online:false},
+                success: function (data) {
+                    console.log(data)
+                },
+            });
+        }
 
-        //                 // channelUser.bind("online-user-event", (data) => {
-        //                 //     if(data.status == true){
-        //                 //         $.ajax({
-        //                 //             url: "{{route('show.all.user')}}",
-        //                 //             dataType: "json",
-        //                 //             type: "get",
-        //                 //             async: true,
-        //                 //             success: function (users) {
-        //                 //                 for (const user of users) {
-        //                 //                     $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
-        //                 //                 }
-        //                 //             },
-
-        //                 //         });
-        //                 //     }
-
-        //                 // });
-
-        //             // window.location = data
-        //         },
-
-        //     });
-        // });
     </script>
 </body>
 </html>

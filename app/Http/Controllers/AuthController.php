@@ -477,11 +477,11 @@ class AuthController extends Controller
                     Session::put('depts', $depts);
 
 
-                    User::find(Auth::id())->update([
+                    User::find(\Auth::user()->id)->update([
                         'is_online' => 1
                     ]);
 
-
+                    Session::put('is_online_notif', 0);
                     Session::put('menus', $role_features->sortBy('sequence'));
 
                     $currentDate = Carbon::now();
