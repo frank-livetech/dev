@@ -900,25 +900,11 @@
         channel.bind("online-user-event", (data) => {
             var user = data.user;
             if(data.status == true){
-                var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
-                            data-placement="top" title="`+user.name+`">
-                            <img src="`+user.profile_pic+`"
-                                alt="'s Photo" class="rounded-circle" width="50" height="50">
-                            <span class="avatar-status-online"></span>
-                        </a>
-                       `;
-
-                $("#user-"+user.id).html(html);
+                $("#user-"+user.id).removeClass('avatar-status-offline');
+                $("#user-"+user.id).addClass('avatar-status-online');
             }else if(data.status == false){
-                var html = `<a href="{{url('profile')}}/`+user.id+`" data-bs-toggle="tooltip"
-                            data-placement="top" title="`+user.name+`">
-                            <img src="`+user.profile_pic+`"
-                                alt="'s Photo" class="rounded-circle" width="50" height="50">
-                            <span class="avatar-status-offline"></span>
-                        </a>
-                       `;
-
-                $("#user-"+user.id).html(html);
+                $("#user-"+user.id).removeClass('avatar-status-online');
+                $("#user-"+user.id).addClass('avatar-status-offline');
             }
 
         });
