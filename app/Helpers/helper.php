@@ -10,9 +10,9 @@ use App\Http\Controllers\NotifyController;
 if(!function_exists('pusherCredentials')){
     function pusherCredentials($key){
         $pusher = [
-                'id' => '1431388',
-                'key' => 'f0eada6eb91fa3741824',
-                'secret' => '467da0a95a6d00decc3a',
+                'id' => '1387883',
+                'key' => 'e73e6b100edacfb69dc4',
+                'secret' => '0b750d9e56ccc50e28cd',
                 'cluster' => 'mt1',
         ];
 

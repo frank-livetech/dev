@@ -475,7 +475,13 @@ class AuthController extends Controller
 
                     $depts = $this->listPermissions(\Auth::user()->id);
                     Session::put('depts', $depts);
-                    Session::put('is_online',Auth::user() ?? null);
+
+
+                    User::find(Auth::id())->update([
+                        'is_online' => 1
+                    ]);
+
+
                     Session::put('menus', $role_features->sortBy('sequence'));
 
                     $currentDate = Carbon::now();
@@ -711,8 +717,10 @@ class AuthController extends Controller
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
         \Session::forget('user_session');
         if( Auth::check()){
+            User::find(Auth::id())->update([
+                'is_online' => 1
+            ]);
             Auth::logout();
-            session()->put('is_offline',true);
         }
 
         return redirect()->to($route);
@@ -785,7 +793,7 @@ class AuthController extends Controller
 
         return view('auth.userforgetpassword' , get_defined_vars());
     }
-    
+
     public function submitCustomerForgetPasswordForm(Request $request){
         $request->validate([
             'email' => 'required|email|exists:users',
@@ -866,7 +874,7 @@ class AuthController extends Controller
         return redirect()->to('user-login');
 
     }
-    
+
     public function submitCustomerResetPasswordForm(Request $request) {
 
         $request->validate([
