@@ -41,7 +41,7 @@
                 $(".noti_count").text( parseInt(msg_counter) + 1 );
                 $('.noti_count').addClass('badge rounded-pill bg-danger badge-up ');
 
-                if($notify.noti_title == 'LoggedInUser'){
+                if(notify.noti_title == 'LoggedInUser'){
                     $.ajax({
                         url: "{{route('show.all.user')}}",
                         dataType: "json",
