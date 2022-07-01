@@ -20,7 +20,7 @@ class NotifyController extends Controller
                 "slug" => $slug,
                 "noti_type" => $type ,
                 "noti_data" => $data ,
-                "noti_title" => $title,
+                "noti_title" => $title, 
                 "noti_icon" => $icon ,
                 "btn_class" => $class ,
                 "noti_desc" => $desc ,
@@ -28,13 +28,12 @@ class NotifyController extends Controller
 
             $notify = Notification::create($data);
             $sender = User::where('id' , $sender_id)->first();
-
             if($notify) {
                 $notificationJob = (new NotificationJob($receiver_id, $sender_id, $data));
                 dispatch($notificationJob);
             }
         }
-
+        
     }
 
 
