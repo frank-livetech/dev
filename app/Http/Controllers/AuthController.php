@@ -716,6 +716,9 @@ class AuthController extends Controller
 
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
         $user_type = auth()->user()->user_type;
+        $id = auth()->user()->id;
+        $name = auth()->user()->name;
+
         \Session::forget('user_session');
         User::find(Auth::id())->update(['is_online' => 1]);
         if( Auth::check()){
@@ -732,7 +735,7 @@ class AuthController extends Controller
     
             foreach ($admin_users as $key => $value) {
     
-                $sender_id = \Auth::user()->id;
+                $sender_id = $id;
                 $receiver_id = $value['id'];
                 $data = '';
                 $slug = 'dashboard';
@@ -740,7 +743,7 @@ class AuthController extends Controller
                 $title = 'LoggedInUser';
                 $icon = 'ti-calendar';
                 $class = 'btn-success';
-                $desc = 'Login In by '.Auth::user()->name;
+                $desc = 'Login In by '.$name;
                 
                 $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
             }
