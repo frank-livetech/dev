@@ -128,6 +128,13 @@ class HomeController extends Controller {
     public function onlineUser(Request $request)
     {
 
+        if($request->online == false){
+            User::find(\Auth::user()->id)->update([
+                'is_online' => 1
+            ]);
+        }
+        Session::put('is_online_notif', 1);
+
         $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',0)->get()->toArray();
     
         $notify = new NotifyController();
