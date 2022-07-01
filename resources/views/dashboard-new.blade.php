@@ -116,7 +116,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                     <div class="col-lg-12 col-12">
                         <div class="card card-statistics">
                             <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;">
-                                
+
                                    <div class="col-md-12">
                                     <i class="fas fa-filter pull-right" onclick="openfilter()"
                                     style="position: relative;right: 10px;cursor: pointer;"></i>
@@ -141,10 +141,10 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                             class="btn btn-primary waves-effect waves-float waves-light pull-left">Filter</button>
 
                                         </div>
-                                    
+
 
                                     <div class="col-md-2">
-                                        
+
 
                                     </div>
                                 </div>
@@ -577,13 +577,13 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                     <div class="col-md-1 col-sm-3 col-3 mb-1" style="margin-right: 1rem">
                                         @if($user->profile_pic != "" && $user->profile_pic != null)
                                         @if(file_exists( getcwd() .'/'. $user->profile_pic ))
-                                        <span class="avatar" id="user-{{$user->id}}">
+                                        <span class="avatar" >
                                             <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip"
                                                 data-placement="top" title="{{$user->name}}">
                                                 <img src="{{ request()->root() .'/'. $user->profile_pic}}"
                                                     alt="'s Photo" class="rounded-circle" width="50" height="50">
                                             </a>
-                                            {{-- <span class="avatar-status-online"></span>--}}
+                                            <span class="avatar-status-offline" id="user-{{$user->id}}"></span>
                                         </span>
                                         @else
                                         <span class="avatar" id="user-{{$user->id}}">
@@ -593,7 +593,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                                     alt="'s Photo" class="rounded-circle avatar" width="50px"
                                                     height="50">
                                             </a>
-                                            {{-- <span class="avatar-status-online"></span> --}}
+                                            <span class="avatar-status-offline" id="user-{{$user->id}}"></span>
                                         </span>
                                         @endif
                                         @else
@@ -604,7 +604,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                                     alt="'s Photo" class="rounded-circle avatar" width="50px"
                                                     height="50">
                                             </a>
-                                            {{-- <span class="avatar-status-online"></span> --}}
+                                            <span class="avatar-status-offline" id="user-{{$user->id}}"></span>
                                         </span>
                                         @endif
 
