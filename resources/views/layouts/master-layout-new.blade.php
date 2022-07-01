@@ -888,46 +888,46 @@
     @include('js_files.pusher_notification.user_status')
     @yield('scripts')
     <script>
-        $("#logout").click(function(){
+        // $("#logout").click(function(){
 
-            $.ajax({
-                url: "{{ route('logout') }}",
-                dataType: "json",
-                type: "Post",
-                async: true,
-                data: { _token: "{{csrf_token()}}",status:1},
-                success: function (data) {
-                        $.ajax({
-                            url: "{{route('make.online.user')}}",
-                            dataType: "json",
-                            type: "Post",
-                            async: true,
-                            data: { _token: "{{csrf_token()}}"},
-                        });
+        //     $.ajax({
+        //         url: "{{ route('logout') }}",
+        //         dataType: "json",
+        //         type: "Post",
+        //         async: true,
+        //         data: { _token: "{{csrf_token()}}",status:1},
+        //         success: function (data) {
+        //                 $.ajax({
+        //                     url: "{{route('make.online.user')}}",
+        //                     dataType: "json",
+        //                     type: "Post",
+        //                     async: true,
+        //                     data: { _token: "{{csrf_token()}}"},
+        //                 });
 
-                        // channelUser.bind("online-user-event", (data) => {
-                        //     if(data.status == true){
-                        //         $.ajax({
-                        //             url: "{{route('show.all.user')}}",
-                        //             dataType: "json",
-                        //             type: "get",
-                        //             async: true,
-                        //             success: function (users) {
-                        //                 for (const user of users) {
-                        //                     $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
-                        //                 }
-                        //             },
+        //                 // channelUser.bind("online-user-event", (data) => {
+        //                 //     if(data.status == true){
+        //                 //         $.ajax({
+        //                 //             url: "{{route('show.all.user')}}",
+        //                 //             dataType: "json",
+        //                 //             type: "get",
+        //                 //             async: true,
+        //                 //             success: function (users) {
+        //                 //                 for (const user of users) {
+        //                 //                     $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
+        //                 //                 }
+        //                 //             },
 
-                        //         });
-                        //     }
+        //                 //         });
+        //                 //     }
 
-                        // });
+        //                 // });
 
-                    // window.location = data
-                },
+        //             // window.location = data
+        //         },
 
-            });
-        });
+        //     });
+        // });
     </script>
 </body>
 </html>
