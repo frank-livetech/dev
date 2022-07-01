@@ -42,7 +42,7 @@ class NotifyController extends Controller
 
 
             if($notify) {
-                $notificationJob = (new NotificationJob($receiver_id, $sender, $data));
+                $notificationJob = (new NotificationJob($receiver_id, $sender_id, $data));
                 dispatch($notificationJob);
             }
         }

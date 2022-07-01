@@ -1210,7 +1210,7 @@ class HelpdeskController extends Controller
 
             $tkt_share = array();
     
-            if($data['cc'] != null && $data['cc'] != "") {
+            // if($data['cc'] != null && $data['cc'] != "") {
                 $tkt_share['email'] = $data['cc'];
                 $tkt_share['mail_type'] = 1;
                 $tkt_share['ticket_id'] = $data['ticket_id'];
@@ -1223,9 +1223,9 @@ class HelpdeskController extends Controller
                 }else{
                     TicketSharedEmails::create($tkt_share);
                 }
-            }
+            // }
 
-            if(isset($data['bcc']) && $data['bcc'] != null && $data['bcc'] != "") {
+            // if(isset($data['bcc']) && $data['bcc'] != null && $data['bcc'] != "") {
                 $tkt_share['email'] = $data['bcc'];
                 $tkt_share['mail_type'] = 2;
                 $tkt_share['ticket_id'] = $data['ticket_id'];
@@ -1238,7 +1238,7 @@ class HelpdeskController extends Controller
                     TicketSharedEmails::create($tkt_share);
                 }
 
-            }
+            // }
 
             ////////////////////////////
 
@@ -3022,7 +3022,7 @@ class HelpdeskController extends Controller
     
                     $tkt_share = array();
     
-                    if($data['tkt_cc'] != null && $data['tkt_cc'] != "") {
+                    // if($data['tkt_cc'] != null && $data['tkt_cc'] != "") {
                         $tkt_share['email'] = $data['tkt_cc'];
                         $tkt_share['mail_type'] = 1;
                         $tkt_share['ticket_id'] = $data['ticket_id'];
@@ -3035,9 +3035,9 @@ class HelpdeskController extends Controller
                         }else{
                             TicketSharedEmails::create($tkt_share);
                         }
-                    }
+                    // }
     
-                    if($data['tkt_bcc'] != null && $data['tkt_bcc'] != "") {
+                    // if($data['tkt_bcc'] != null && $data['tkt_bcc'] != "") {
                         $tkt_share['email'] = $data['tkt_bcc'];
                         $tkt_share['mail_type'] = 2;
                         $tkt_share['ticket_id'] = $data['ticket_id'];
@@ -3050,7 +3050,7 @@ class HelpdeskController extends Controller
                             TicketSharedEmails::create($tkt_share);
                         }
     
-                    }
+                    // }
                 }
     
                 $ticket = Tickets::find($data["ticket_id"]);
