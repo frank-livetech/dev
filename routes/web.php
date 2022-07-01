@@ -42,7 +42,7 @@ Route::post('/user-reset-password', 'AuthController@submitCustomerResetPasswordF
 
 Route::post('/online-user', 'HomeController@onlineUser')->name('make.online.user');
 Route::get('/all-users', 'HomeController@showAllUser')->name('show.all.user');
-
+Route::get('/all-offline-users', 'HomeController@showAllOfflineUser')->name('show.all.offline.user');
 //Auth::routes();
 Route::get('/login', 'AuthController@index')->name('login');
 Route::post('/login', 'AuthController@postLogin');
