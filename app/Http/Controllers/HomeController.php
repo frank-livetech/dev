@@ -135,7 +135,7 @@ class HomeController extends Controller {
         }
         Session::put('is_online_notif', 1);
 
-        $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',0)->get()->toArray();
+        $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',1)->get()->toArray();
     
         $notify = new NotifyController();
 
