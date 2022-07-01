@@ -136,23 +136,19 @@ class HomeController extends Controller {
             'useTLS' => true
             ]
         );
-
-
-        if(session()->has('is_online') && !session()->has('is_offline')){
-            $data = [
-               "user" => session()->get('is_online'),
-               "status" => true
-           ];
-        }elseif(session()->has('is_offline')){
-            $data = [
-                "user" => session()->get('is_online'),
-                "status" => false
-            ];
-        }
+        $users = User::select('id','name','is_online')->get('10');
+        $data = [
+            "users" =>null,
+            "status" => true
+        ];
 
         $pusher->trigger('online-user', 'online-user-event', $data);
     }
 
+    public function showAllUser(Request $request)
+    {
+        return User::where('is_deleted',0)->where('is_online',$request->status)->get();
+    }
     public function getAllStaffAttendance() {
         $staff_count = User::where('is_deleted',0)->where('user_type','!=',5)->where('user_type','!=',4)->where('status',1)->count();
         // $staff_att_data = StaffAttendance::with('user_clocked')->where('date',date_format(Carbon::now(),"Y-m-d"))->get();

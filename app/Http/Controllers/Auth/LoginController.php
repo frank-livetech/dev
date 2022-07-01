@@ -63,7 +63,6 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            session()->put('is_online',Auth::user() ?? null);
             return $this->sendLoginResponse($request);
         }
 

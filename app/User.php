@@ -24,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'account_id',
-        'name', 
+        'name',
         'email',
         'password',
         'user_type',
@@ -37,7 +37,7 @@ class User extends Authenticatable implements JWTSubject
         'sms','whatsapp','address','apt_address','phone_number','country','state','city','twitter',
         'pinterest','fb','insta','job_title','zip','notes','alt_pwd','website','is_support_staff',
         'created_at','updated_at','device_token', 'signature',
-    'linkedin','google_id','company_id','privacy_policy','phone_type'
+    'linkedin','google_id','company_id','privacy_policy','phone_type','is_online'
     ];
 
     protected $appends = ['role','staffTags'];
@@ -71,7 +71,7 @@ class User extends Authenticatable implements JWTSubject
     public function getCreatedAtAttribute($value) {
         if($value != null) {
             $date = new \DateTime($value);
-            $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+            $date->setTimezone(new \DateTimeZone( timeZone() ));
             return $date->format(system_date_format() .' h:i a');
         }
     }
@@ -85,22 +85,22 @@ class User extends Authenticatable implements JWTSubject
     public function staffProfile() {
         return $this->hasOne(Models\StaffProfile::class);
     }
-    
+
     public function manager() {
         return $this->belongsTo(Models\Project::class);
     }
-    
+
     public function ticketreplyuser() {
         return $this->belongsTo(Models\TicketReply::class);
     }
-    
+
     public function company() {
         return $this->belongsToMany('App\Models\Company','company_user');
     }
     public function tickets(){
         return $this->hasMany(Models\Tickets::class,'assigned_to','id');
     }
-    
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
