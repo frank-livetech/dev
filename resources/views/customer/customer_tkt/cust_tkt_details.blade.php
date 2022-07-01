@@ -1,4 +1,15 @@
 @extends('customer.layout.customer_master')
+@section('breadcrumb')
+    <h2 class="content-header-title float-start mb-0">Dashboard</h2>
+    <div class="breadcrumb-wrapper">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="">
+                    Ticket Details
+            </a>
+            </li>
+        </ol>
+    </div>
+@endsection
 @section('body')
 
 <style>
@@ -18,7 +29,22 @@
     /* width:auto !important; */
 }
 br + br { display: none; }
-
+#dropD {
+        padding-left: 15px;
+    }
+    .mt-0{
+        margin: unset
+    }
+    .badge-primary{
+        background-color:#4eafcb
+    }
+    .card-body.drop-dpt{
+        padding: 0 !important;
+    }
+    span.select2-container.select2-container--default.select2-container--open{
+        top: 3.9844px !important;
+        left:0px !important
+    }
 .bootstrap-tagsinput {
     display: flex !important;
     margin-top: 5px !important;
@@ -26,6 +52,23 @@ br + br { display: none; }
     flex-wrap: wrap !important;
     /* border:0px; */
 }
+#adjustCard2Height::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+    #adjustCard2Height::-webkit-scrollbar {
+        width: 3px;
+        height: 10px;
+        background-color: #F5F5F5;
+    }
+
+    #adjustCard2Height::-webkit-scrollbar-thumb {
+        background-color: #0ae;
+        
+        background-image: -webkit-gradient(linear, 0 0, 0 100%,
+                        color-stop(.5, rgba(255, 255, 255, .2)),
+                        color-stop(.5, transparent), to(transparent));
+    }
 .label-info {
     background-color: #6d5eac !important;
 }
@@ -103,6 +146,36 @@ br + br { display: none; }
     color: #fff;
     background-color: #868e96;
     }
+    @media (max-width: 1060px) {
+    .more-info {
+        width:40rem !important; } 
+    }
+    @media (max-width: 548px) {
+    .more-info {
+        display: block;
+        width: 32rem !important; } 
+    .webkit-box-sub{
+        display:inline-table !important;
+    }
+    .float-start{
+        margin-top:0px !important;
+    }
+    .dept-center{
+        text-align: center !important
+    }
+    #priority_html{
+        width: 494px !important;
+        margin-left:14px !important
+     }
+     .posted_date{
+        margin-left: 0% !important
+     }
+     .drop-dpt {
+        text-align: center;
+    }
+    
+    }
+
 </style>
 
 <div class="content-body">
@@ -115,7 +188,7 @@ br + br { display: none; }
     <input type="hidden" id="p_id" >
     <input type="hidden" id="s_id" >
 
-    <h1>View Ticket : {{$ticket->coustom_id}}</h1>
+    <h4>Ticket Details : <a class="text-body" href="javascript:window.location.reload()">{{$ticket->coustom_id}}</a></h4>
     
     {{-- <div class="row">
         <div class="col-md-8">
@@ -152,8 +225,8 @@ br + br { display: none; }
                     <div class="mail-items">
                         <div class="" role="alert">
                             <div class="alert-body p-0" >
-                                <div class="" style="display: -webkit-box">
-                                    <div class="modal-first w-100">
+                                <div class="" style="display: -webkit-box;">
+                                    <div class="">
                                         <div class="mt-0 mt-0 rounded" style="padding:4px; ">
                                             <div class="float-start rounded me-1 bg-none" style="margin-top:5px">
                                                 <div class="">
@@ -167,7 +240,7 @@ br + br { display: none; }
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="more-info">
+                                            <div class="more-info" style="width: 70rem;">
                                                 <?php
                                                     if($ticket->ticket_created_by != null) {
                                                         $user_type = $ticket->ticket_created_by->user_type == 5 ? 'User' : 'Staff';
@@ -175,14 +248,14 @@ br + br { display: none; }
                                                         $user_type = 'User';
                                                     }
                                                 ?>
-                                                <div class="" style="display: -webkit-box">
+                                                <div class="webkit-box-sub" style="display: -webkit-box">
                                                     <h6 class="mb-0"> {{$ticket->creator_name != null ? $ticket->creator_name : '---'}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
-                                                    <span style="margin-left: 9px;">Posted on <span id="tkt_created_at"></span>
+                                                    <span class="posted_date" style="margin-left: 9px;">Posted on <span id="tkt_created_at"></span>
                                                 </div>
                                                 <div class="first" >
                                                     <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                    
-                                                    <span id="tkt-subject" class="tkt-subject" style="word-break: break-all;font-size:20px"> {{$ticket->subject}} </span> 
+                                                    <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$ticket->subject}} </span> 
                                                     @if($ticket->attachments != null)
                                                     <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
                                                     @endif
@@ -225,9 +298,68 @@ br + br { display: none; }
             </div> --}}
         </div>  
     </div>
-    <div class="card">
+    <div class="card" >
+        <div class="card-body drop-dpt" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color . ' !important' : ' ')}}; border-radius: 8px;">
+            <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
+                <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
+                    <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
+                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5">{{ $ticket->department_name != null ? $ticket->department_name : '-' }}</h5>
+                    {{-- <select class="select2 form-select form-control form-control-line" id="dept_id" name="dept_id" style="width: 100%; height:36px;">
+                        
+                        @foreach($departments as $department)
+                            <option  value="{{$department->id}}" {{ $department->id == $details->dept_id ? 'selected' : '' }} >{{$department->name}}</option>
+                        @endforeach
+                    </select> --}}
+                </div>
+                <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
+                    <label class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
+                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5">{{$ticket->assignee_name != null ? $ticket->assignee_name : '---'}}</h5>
+                    {{-- <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
+                        <option value="">Unassigned</option>
+                        @foreach($users as $user)
+                            <option value="{{$user->id}}" {{ $user->id == $details->assigned_to ? 'selected' : '' }}>{{$user->name}}</option>
+                        @endforeach
+                    </select> --}}
+                </div>
+                <div class="col-md-2 br-white" id="type-label" style="border-right: 1px solid white;padding: 12px;">
+                    <label class="control-label col-sm-12 end_padding text-white "><strong>Type</strong></label>
+                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="type-h5">{{ $ticket->type_name != null ? $ticket->type_name : '-' }}</h5>
+                    {{-- <select class="select2 form-control " id="type" name="type" style="width: 100%; height:36px;">
+                        @foreach($types as $type)
+                            <option value="{{$type->id}}" {{ $type->id == $details->type ? 'selected' : '' }}>{{$type->name}}</option>
+                        @endforeach
+                    </select> --}}
+                </div>
+                <div class="col-md-2 br-white" id="status-label" style="border-right: 1px solid white;padding: 12px;">
+                    <label class="control-label col-sm-12 end_padding text-white "><strong>Status</strong></label>
+                    <select class="select2 form-control" onchange="ticketDetail.updateTktType('status', this.value)" id="status" name="status">
+                        @foreach($statuses as $status)
+                        <option value="{{$status->id}}" data-color="{{$status->color}}" {{ $status->id == $ticket->status ? 'selected' : '' }}>{{$status->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white;;padding: 12px;background-color:{{($current_priority == null) ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ')}}">
+                    <label class="control-label col-sm-12 end_padding text-white " ><strong>Priority</strong></label>
+                    <div id="priority_field">
+                        <select class="select2 form-control "  onchange="ticketDetail.updateTktType('priority', this.value)" id="priority" name="priority" style="display:none">
+                            @foreach($priorities as $priority)
+                                <option value="{{$priority->id}}" data-color="{{$priority->priority_color}}" {{$priority->id == $ticket->priority ? 'selected' : ''}}>{{$priority->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- <div clas="row" style="text-align:right">
+                <div class="col-lg-12">
+                    <small>*All dropdown saved automatically on change</small>
+                </div>    
+            </div>     -->
+
+        </div>
+    </div>
+    {{-- <div class="card">
         <div class="card-body p-0" id="status_html" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color : ' ')}}">
-            <div class="row">
+            <div class="row dept-center">
                 <div class="col-md-2 p-2" id="dep-label">
                     <label class="control-label col-sm-12 end_padding text-white"><strong>Department</strong></label>
                     <h5 class="text-white"> {{ $ticket->department_name != null ? $ticket->department_name : '-' }} </h5>
@@ -250,6 +382,7 @@ br + br { display: none; }
                         </select>
                     </div>
                 </div>
+                
                 <div class="col-md-2 p-2" id="priority_html" style="background-color:{{($current_priority == null) ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ')}}">
                     <label class="control-label col-sm-12 end_padding text-white"><strong> Priority</strong></label>
                     <div id="priority_field">
@@ -263,19 +396,31 @@ br + br { display: none; }
             </div>
 
         </div>
-    </div>
+    </div> --}}
 
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <h3>Ticket Replies  </h3>
-                <div>
-                    <button class="btn btn-success update_tkt_tbn" id="update_btn" onclick="ticketDetail.updateTkt(this)" style="display:none"> 
+                <div class="d-flex">
+                    <button class="btn btn-success update_tkt_tbn mx-1" id="update_btn" onclick="ticketDetail.updateTkt(this)" style="display:none"> 
                         <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
                             <span class="sr-only">Loading...</span>
                         </div>
                                 Update </button>
-                    <button class="btn btn-primary" onclick="ticketDetail.showReplyDiv()"> <i data-feather='plus'></i> Add Reply</button>
+                                
+                                    <button id="rply" type="button" class="btn waves-effect waves-light btn-danger float-right cancel-btn" style="display:none" onclick="ticketDetail.cancelReply(this)">
+                                        Cancel
+                                    </button>
+                                    <button id="rply" type="button" class="btn waves-effect waves-light btn-success float-right reply-btn mx-1" style="display:none" onclick="ticketDetail.publishReply(this)">
+                                        <div class="spinner-border text-light" role="status" style="height: 20px; width:20px; margin-right: 8px; display: none;">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        Reply
+                                    </button>
+                                
+                       
+                    <button class="btn btn-primary" id="reply-btn" onclick="ticketDetail.showReplyDiv()"> <i data-feather='plus'></i> Add Reply</button>
                 </div>
             </div>
 
