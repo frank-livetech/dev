@@ -231,6 +231,18 @@
             url: "{{asset('/get_ticket_log')}}",
             success: function(data) {
                 if (data.success) {
+
+                    $.ajax({
+                        url: "{{route('make.online.user')}}",
+                        dataType: "json",
+                        type: "Post",
+                        async: true,
+                        data: { _token: "{{csrf_token()}}",online:true},
+                        success: function (data) {
+                            console.log(data)
+                        },
+                    });
+
                     console.log(data);
                     tickets_logs_list.clear().draw();
 

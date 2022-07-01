@@ -5,16 +5,7 @@
     // var presenceChannel = pusher.subscribe('presenceChannelName');
     console.log(channel);
     // if(is_online_notif == 0){
-        $.ajax({
-            url: "{{route('make.online.user')}}",
-            dataType: "json",
-            type: "Post",
-            async: true,
-            data: { _token: "{{csrf_token()}}",online:true},
-            success: function (data) {
-                console.log(data)
-            },
-        });
+        
     // }else if(is_online_notif == ''){
     //     $.ajax({
     //         url: "{{route('make.online.user')}}",
