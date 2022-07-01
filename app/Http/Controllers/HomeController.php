@@ -138,6 +138,7 @@ class HomeController extends Controller {
         $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',0)->get()->toArray();
     
         $notify = new NotifyController();
+
         foreach ($admin_users as $key => $value) {
 
             $sender_id = \Auth::user()->id;

@@ -47,7 +47,7 @@ Route::get('/all-users', 'HomeController@showAllUser')->name('show.all.user');
 Route::get('/login', 'AuthController@index')->name('login');
 Route::post('/login', 'AuthController@postLogin');
 
-Route::post('/logout', 'AuthController@logout')->name('logout');
+Route::get('/logout', 'AuthController@logout')->name('logout');
 
 Route::get('/forgetPassword', 'AuthController@forgetPassword')->name('forgetpassword');
 Route::post('/forgetpassword', 'AuthController@submitForgetPasswordForm')->name('resetpassword');

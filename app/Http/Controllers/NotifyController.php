@@ -25,10 +25,9 @@ class NotifyController extends Controller
                 "btn_class" => $class ,
                 "noti_desc" => $desc ,
             );
-    
+
             $notify = Notification::create($data);
             $sender = User::where('id' , $sender_id)->first();
-    
             if($notify) {
                 $notificationJob = (new NotificationJob($receiver_id, $sender_id, $data));
                 dispatch($notificationJob);
