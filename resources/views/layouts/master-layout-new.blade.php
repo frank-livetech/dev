@@ -343,14 +343,14 @@
 
     {{-- <script src="{{asset($file_path . 'app-assets/js/scripts/imagePreview.js')}}"></script> --}}
 
-    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-messaging.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script> -->
 
     <!-- END: Page Vendor JS-->
 
