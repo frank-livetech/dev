@@ -740,7 +740,7 @@ class AuthController extends Controller
                 $data = '';
                 $slug = 'dashboard';
                 $type = 'online_user';
-                $title = 'LoggedInUser';
+                $title = 'LoggedOutUser';
                 $icon = 'ti-calendar';
                 $class = 'btn-success';
                 $desc = 'Login In by '.$name;

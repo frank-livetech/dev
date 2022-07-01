@@ -55,6 +55,19 @@
 
                     });
                     
+                }else if(notify.noti_title == 'LoggedOutUser'){
+                    $.ajax({
+                        url: "{{route('show.all.user')}}",
+                        dataType: "json",
+                        type: "get",
+                        async: true,
+                        success: function (users) {
+                            for (const user of users) {
+                                $('#user-status-'+user.id).html('<span class="avatar-status-offline"></span>');
+                            }
+                        },
+
+                    });
                 }else{
                     appendNotification(notify.noti_icon , notify.noti_title , notify.noti_desc)
 
