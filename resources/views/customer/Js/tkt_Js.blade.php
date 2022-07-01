@@ -342,7 +342,11 @@
         },
 
         showReplyDiv : () => {
+            $('.cancel-btn').attr('style', 'display: block !important');
+            $('.reply-btn').attr('style', 'display: block !important');
             $('.replydiv').toggle();
+            $('#update_btn').attr('style', 'display: none !important');
+            $("#reply-btn").hide();
             $(".all_attachs").remove();
             tinymce.activeEditor.setContent('<p></p>');
         },
@@ -388,6 +392,9 @@
 
         cancelReply : () => {
             $('.replydiv').hide();
+            $('.cancel-btn').attr('style', 'display: none !important');
+            $('.reply-btn').attr('style', 'display: none !important');
+            $("#reply-btn").show();
             edit_reply_mode = false;
             tinymce.activeEditor.setContent('<p></p>');
         },

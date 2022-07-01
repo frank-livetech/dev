@@ -336,7 +336,7 @@ a {
                                         <div class="form-group">
                                             <figure style="text-align: center;">
                                                 <label for="profile_pic">
-                                                    <img class="profile_pic_img" src="{{URL::asset('files/user_photos/user-photo.jpg')}}" height="100" width="100" style="border-radius:50%">
+                                                    <img class="profile_pic_img" src="{{asset($path . 'default_imgs/customer.png')}}" height="100" width="100" style="border-radius:50%;cursor: pointer;">
                                                 </label>
                                             </figure>
                                             <input accept="image/*" onchange="UserImgValidation()" name="user_photo" type="file" style="display: none;" id="profile_pic" />
