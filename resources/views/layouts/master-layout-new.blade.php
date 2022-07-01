@@ -888,8 +888,21 @@
     @include('js_files.pusher_notification.user_status')
     @yield('scripts')
     <script>
+        getAllActiveUsers();
+        function getAllActiveUsers(){
+            $.ajax({
+                url: "{{route('show.all.user')}}",
+                dataType: "json",
+                type: "get",
+                async: true,
+                success: function (users) {
+                    for (const user of users) {
+                        $('#user-status-'+notify.sender_id).html('<span class="avatar-status-online"></span>');
+                    }
+                },
 
-
+            });
+        }
 
     </script>
 </body>
