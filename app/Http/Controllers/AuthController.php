@@ -475,7 +475,7 @@ class AuthController extends Controller
 
                     $depts = $this->listPermissions(\Auth::user()->id);
                     Session::put('depts', $depts);
-
+                    Session::put('is_online',Auth::user() ?? null);
                     Session::put('menus', $role_features->sortBy('sequence'));
 
                     $currentDate = Carbon::now();
