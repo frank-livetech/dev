@@ -898,9 +898,7 @@
         });
 
         channel.bind("online-user-event", (data) => {
-            console.log(pusher.connection.socket_id)
             if(data.status == true){
-
                 $.ajax({
                     url: "{{route('show.all.user')}}",
                     dataType: "json",
