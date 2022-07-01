@@ -133,7 +133,7 @@ $("#addNewUser").on('hidden.bs.modal', function() {
     $('#tags').trigger('change');
     $("#save_user").trigger("reset");
     $('#save_user').find('#staff_id').val('');
-    $('#save_user').find('.profile_pic_img').attr('src', user_photo_url + "/user-photo.jpg");
+    // $('#save_user').find('.profile_pic_img').attr('src', user_photo_url + "/user-photo.jpg");
     $('#save_user').find('.user-password-div').parent().show();
     // $('#save_user').find('.user-confirm-password-div').parent().show();
 });

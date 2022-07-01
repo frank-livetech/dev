@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/vendors.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/charts/apexcharts.css')}}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/charts/apexcharts.css')}}"> --}}
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/extensions/toastr.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css')}}">
@@ -57,7 +57,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
 
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/charts/chart-apex.css')}}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/charts/chart-apex.css')}}"> --}}
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/extensions/ext-component-toastr.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-invoice-list.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
@@ -200,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="content-body">
+    <div class="content-body">
     <!-- BEGIN: Content-->
       
            @yield('body')
@@ -234,7 +234,7 @@
     <!-- BEGIN: Page Vendor JS-->
     <!-- <script src="../../../app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js"></script> -->
 
-    <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script>
+    {{-- <script src="{{asset($file_path . 'app-assets/vendors/js/charts/apexcharts.min.js')}}"></script> --}}
     <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/extensions/moment.min.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js')}}"></script>
@@ -264,7 +264,6 @@
     <!-- BEGIN: Page JS-->
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/dashboard-analytics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-invoice-list.js')}}"></script>
-    <script src="{{asset($file_path . 'app-assets/js/scripts/cards/card-statistics.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/tables/table-datatables-advanced.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar-events.js')}}"></script>
     <script src="{{asset($file_path . 'app-assets/js/scripts/ui/ui-feather.js')}}"></script>

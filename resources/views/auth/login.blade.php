@@ -78,7 +78,7 @@
                             @endif
                             <div id="loginform" class="pt-1">
 
-                                <h4 class="card-title mb-1">Welcome to Live-Tech System</h4>
+                                <h4 class="card-title mb-1">Welcome to {{ $settings->site_title != null ? $settings->site_title : 'System' }}</h4>
                                 <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
 
                                 <form class="auth-login-form mt-2" action="{{url('login')}}" method="POST">
