@@ -131,7 +131,7 @@ class HomeController extends Controller {
         $notify = new NotifyController();
         $sender_id = Auth::user()->id;
         $receiver_id = 1;
-        $data = User::where('is_deleted',0)->where('is_online',1)->get();
+        $data = '';
         $slug = 'dashboard';
         $type = 'online_user';
         $title = 'LoggedInUser';
