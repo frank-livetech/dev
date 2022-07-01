@@ -583,17 +583,21 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                                 <img src="{{ request()->root() .'/'. $user->profile_pic}}"
                                                     alt="'s Photo" class="rounded-circle" width="50" height="50">
                                             </a>
-                                            <span class="avatar-status-offline" id="user-{{$user->id}}"></span>
+                                            <span id="user-{{$user->id}}">
+                                                <span class="avatar-status-offline" ></span>
+                                            </span>
                                         </span>
                                         @else
-                                        <span class="avatar" id="user-{{$user->id}}">
+                                        <span class="avatar">
                                             <a href="{{url('profile')}}/{{$user->id}}" data-bs-toggle="tooltip"
                                                 data-placement="top" title="{{$user->name}}">
                                                 <img src="{{asset($file_path . 'default_imgs/customer.png')}}"
                                                     alt="'s Photo" class="rounded-circle avatar" width="50px"
                                                     height="50">
                                             </a>
-                                            <span class="avatar-status-offline" id="user-{{$user->id}}"></span>
+                                            <span id="user-{{$user->id}}">
+                                                <span class="avatar-status-offline" ></span>
+                                            </span>
                                         </span>
                                         @endif
                                         @else
@@ -604,7 +608,9 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                                     alt="'s Photo" class="rounded-circle avatar" width="50px"
                                                     height="50">
                                             </a>
-                                            <span class="avatar-status-offline" id="user-{{$user->id}}"></span>
+                                            <span id="user-{{$user->id}}">
+                                                <span class="avatar-status-offline" ></span>
+                                            </span>
                                         </span>
                                         @endif
 

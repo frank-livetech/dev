@@ -41,6 +41,7 @@ Route::get('/user-reset-password/{mail}/{token}', 'AuthController@showCustomerRe
 Route::post('/user-reset-password', 'AuthController@submitCustomerResetPasswordForm')->name('user.reset.password.post');
 
 Route::post('/online-user', 'HomeController@onlineUser')->name('make.online.user');
+Route::post('/all-users', 'HomeController@showAllUser')->name('show.all.user');
 
 //Auth::routes();
 Route::get('/login', 'AuthController@index')->name('login');

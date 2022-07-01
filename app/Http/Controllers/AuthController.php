@@ -476,6 +476,10 @@ class AuthController extends Controller
                     $depts = $this->listPermissions(\Auth::user()->id);
                     Session::put('depts', $depts);
 
+                    User::find(Auth::id())->update([
+                        'is_online' => 1
+                    ]);
+
                     Session::put('menus', $role_features->sortBy('sequence'));
 
                     $currentDate = Carbon::now();
@@ -785,7 +789,7 @@ class AuthController extends Controller
 
         return view('auth.userforgetpassword' , get_defined_vars());
     }
-    
+
     public function submitCustomerForgetPasswordForm(Request $request){
         $request->validate([
             'email' => 'required|email|exists:users',
@@ -866,7 +870,7 @@ class AuthController extends Controller
         return redirect()->to('user-login');
 
     }
-    
+
     public function submitCustomerResetPasswordForm(Request $request) {
 
         $request->validate([

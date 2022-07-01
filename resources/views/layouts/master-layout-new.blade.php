@@ -898,13 +898,25 @@
         });
 
         channel.bind("online-user-event", (data) => {
-            var user = data.user;
+            console.log(pusher.connection.socket_id)
             if(data.status == true){
-                $("#user-"+user.id).removeClass('avatar-status-offline');
-                $("#user-"+user.id).addClass('avatar-status-online');
-            }else if(data.status == false){
-                $("#user-"+user.id).removeClass('avatar-status-online');
-                $("#user-"+user.id).addClass('avatar-status-offline');
+
+                $.ajax({
+                    url: "{{route('show.all.user')}}",
+                    dataType: "json",
+                    type: "Post",
+                    async: true,
+                    data: { _token: "{{csrf_token()}}",status:1},
+                    success: function (users) {
+                        for (const user of users) {
+                            $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
+                        }
+
+                    },
+
+                });
+
+
             }
 
         });
