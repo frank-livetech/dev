@@ -263,7 +263,7 @@
                         @endif
                         <a class="dropdown-item" onclick="run_parser()"><i class="me-50" data-feather="refresh-ccw"></i> Run Parser</a>
 
-                        <a class="dropdown-item" type="button" href="{{ route('logout') }}">
+                        <a class="dropdown-item" type="button" id="logout" type="button" href="javascript:void(0)">
                             <i class="me-50" data-feather="power"></i>  Logout
                         </a>
 
@@ -873,54 +873,61 @@
             });
         }
     </script>
-    @include('js_files.chat.pusher')
-    @include('js_files.pusher_notification.notification')
-    @include('js_files.pusher_notification.user_status')
-    @yield('scripts')
+    <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
     <script type="text/javascript">
         var pusher = new Pusher("{{ pusherCredentials('key') }}", {
             cluster: "{{ pusherCredentials('cluster') }}",
         });
         // Enter a unique channel you wish your users to be subscribed in.
-        var channel = pusher.subscribe('online-user');
-        // bind the server event to get the response data and append it to the message div
-
-        $.ajax({
-            url: "{{route('make.online.user')}}",
-            dataType: "json",
-            type: "Post",
-            async: true,
-            data: { _token: "{{csrf_token()}}",online:true},
-            success: function (data) {
-
-            },
-
-        });
-
-        channel.bind("online-user-event", (data) => {
-            if(data.status == true){
-                $.ajax({
-                    url: "{{route('show.all.user')}}",
-                    dataType: "json",
-                    type: "Post",
-                    async: true,
-                    data: { _token: "{{csrf_token()}}",status:1},
-                    success: function (users) {
-                        for (const user of users) {
-                            $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
-                        }
-
-                    },
-
-                });
-
-
-            }
-
-        });
+        var channel = pusher.subscribe('default.'+`{{Auth::id()}}`);
 
 
     </script>
+    @include('js_files.chat.pusher')
+    @include('js_files.pusher_notification.notification')
+    @include('js_files.pusher_notification.user_status')
+    @yield('scripts')
+    <script>
+        $("#logout").click(function(){
 
+            $.ajax({
+                url: "{{ route('logout') }}",
+                dataType: "json",
+                type: "Post",
+                async: true,
+                data: { _token: "{{csrf_token()}}",status:1},
+                success: function (data) {
+                        $.ajax({
+                            url: "{{route('make.online.user')}}",
+                            dataType: "json",
+                            type: "Post",
+                            async: true,
+                            data: { _token: "{{csrf_token()}}"},
+                        });
+
+                        channelUser.bind("online-user-event", (data) => {
+                            if(data.status == true){
+                                $.ajax({
+                                    url: "{{route('show.all.user')}}",
+                                    dataType: "json",
+                                    type: "get",
+                                    async: true,
+                                    success: function (users) {
+                                        for (const user of users) {
+                                            $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
+                                        }
+                                    },
+
+                                });
+                            }
+
+                        });
+
+                    // window.location = data
+                },
+
+            });
+        });
+    </script>
 </body>
 </html>

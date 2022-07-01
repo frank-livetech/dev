@@ -1,3 +1,4 @@
+
 <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
 <script type="text/javascript">    
     // var pusher = new Pusher("{{ pusherCredentials('key') }}", {
@@ -10,4 +11,6 @@
     // channel.bind("user-status-event", (data) => {
     //     console.log(data , "user status");
     // });
+
 </script>
+

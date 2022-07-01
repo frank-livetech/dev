@@ -716,10 +716,8 @@ class AuthController extends Controller
 
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
         \Session::forget('user_session');
+        User::find(Auth::id())->update(['is_online' => 1]);
         if( Auth::check()){
-            User::find(Auth::id())->update([
-                'is_online' => 1
-            ]);
             Auth::logout();
         }
 

@@ -1,18 +1,11 @@
-<script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
-<script type="text/javascript">    
-    var pusher = new Pusher("{{ pusherCredentials('key') }}", {
-        cluster: "{{ pusherCredentials('cluster') }}",
-    });
-    // Enter a unique channel you wish your users to be subscribed in.
-    var channel = pusher.subscribe('support-chat.'+`{{Auth::id()}}`);
+<script type="text/javascript">
     // bind the server event to get the response data and append it to the message div
-
     var title = $("title").text();
 
-    channel.bind("support-chat-event", (data) => {
+    channel.bind("default-event", (data) => {
         console.log(data , "data");
         let url = window.location.href;
-        
+
         if(url.includes('chat')) {
 
             getAllMessages();
@@ -29,10 +22,10 @@
                 hideMethod: 'slideUp',
                 timeOut: 3000,
             });
-            
+
             jQuery("#msg_my_audio")[0].play();
         }
-        
+
     });
 
 </script>

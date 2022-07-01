@@ -50,7 +50,7 @@ class SuportChat implements ShouldQueue
             "sender" => $this->sender,
         ];
 
-        $pusher->trigger('support-chat.'.(int) $this->reciever, 'support-chat-event', $data);
+        $pusher->trigger('default.'.(int) $this->reciever, 'default-event', $data);
 
     }
 }
