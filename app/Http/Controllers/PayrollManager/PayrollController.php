@@ -355,12 +355,14 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{My-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
                 
                 $todayTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
                     ['is_overdue', 0] ,
-                    ['trashed', 0] 
+                    ['trashed', 0] ,
+                    ['status','!=', $closeStatus->id], 
                 ])->get();
 
                 $newTicket ='<strong> My Tickets </strong>';
