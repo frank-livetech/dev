@@ -1815,8 +1815,8 @@
             }
 
             let tkt_subject = '';
-            let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
-            if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
+            // let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
+            tkt_subject = '<a href="{{asset("/ticket-details")}}/' + notes[i].tkt_cust_id + '">'+notes[i].tkt_cust_id+'</a>';
            
             let n_type = '<i class="fas fa-clipboard-list"></i>';
             if(notes[i].type == 'Ticket') {
