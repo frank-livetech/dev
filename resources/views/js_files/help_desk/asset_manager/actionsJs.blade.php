@@ -967,62 +967,103 @@ function getAssetDetails(id=1) {
 
 
 
-$("#asset_customer").change(function(){
+// $("#asset_customer").change(function(){
 
-    if($('#asset_customer :selected').text() == 'All'){
-        let option_company = [];
-        for (const data of companies) {
-            option_company += `<option value="${data.id}"> ${data.name} </option>`;
-        }
-        $('#asset_customer').empty();
-        $("#asset_company").html(option_company);
-        $('#asset_company').trigger('change');
+//     if($('#asset_customer :selected').text() == 'All'){
+//         console.log("chose customer")
+//         // let option_customer = [];
+//         // for (const data of customers) {
+//         //     option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+//         // }
+//         // $('#asset_customer').empty();
+//         // $("#asset_customer").html(option_customer);
+//         // $('#asset_customer').trigger('change');
 
-    }
-});
+//         let option_company = [];
+//         for (const data of companies) {
+//             option_company += `<option value="${data.id}"> ${data.name} </option>`;
+//         }
 
-$("#asset_company").change(function(){
+//         console.log(option_company)
+//         // $('#asset_company').empty();
+//         $("#asset_company").html(option_company);
+//         $('#asset_company').trigger('change');
 
-    if($('#asset_company :selected').text() == 'All'){
-        let option_company = [];
-        for (const data of companies) {
-            option_company += `<option value="${data.id}"> ${data.name} </option>`;
-        }
-        $('#asset_company').empty();
-        $("#asset_customer").html(option_company);
-        $('#asset_customer').trigger('change');
+//     }
+// });
 
-    }
-});
+// $("#asset_company").change(function(){
+
+//     if($('#asset_company :selected').text() == 'All'){
+//         let option_customer = [];
+//         for (const data of customers) {
+//             option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+//         }
+//         $('#asset_customer').empty();
+//         $("#asset_customer").html(option_customer);
+//         $('#asset_customer').trigger('change');
+
+//         let option_company = [];
+//         for (const data of companies) {
+//             option_company += `<option value="${data.id}"> ${data.name} </option>`;
+//         }
+//         $('#asset_company').empty();
+//         $("#asset_company").html(option_company);
+//         $('#asset_company').trigger('change');
+
+//     }
+// });
 
 
 function selectCustomer(value , customerId , companyId) {
 
         let root = `<option value="all">All</option>`;
         if (value != '') {
-            $("#"+companyId).empty();
-            let item = customers.find(item => item.id == value);
-            if(item != null) {
-                if(item.company_id != null) {
-                    if(assetFlag) {
-                        $("#"+companyId).empty();
-                        let option = `<option value="${item.company_id}"> ${item.company_name} </option>`;
-                        $("#"+companyId).html(option);
+
+            if($('#asset_customer :selected').text() == 'All'){
+
+                let option_company = [];
+                for (const data of companies) {
+                    option_company += `<option value="${data.id}"> ${data.name} </option>`;
+                }
+
+                $('#asset_company').empty();
+                $('#asset_company').html(option_company);
+                $('#asset_company').trigger('change');
 
 
+                let option_customer = [];
+                for (const data of customers) {
+                    option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+                }
+                $('#asset_customer').empty();
+                $("#asset_customer").html(option_customer);
 
-                    }else{
-                        let option = `<option value="${item.company_id}"> ${item.company_name} </option>`;
-                        $("#"+companyId).html(root+option);
+
+            }else{
+                $("#"+companyId).empty();
+                let item = customers.find(item => item.id == value);
+                if(item != null) {
+                    if(item.company_id != null) {
+                        if(assetFlag) {
+                            $("#"+companyId).empty();
+                            let option = `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
+                            $("#"+companyId).html(root+option);
+                        }else{
+                            let option = `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
+                            $("#"+companyId).html(root+option);
+                        }
                     }
                 }
             }
+
+
         } else {
             assetFlag = false;
             $('#'+customerId).empty();
             let option = ``;
-            for (let data of customers) {
-                option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
+            for (let [i, data] of customers.entries()) {
+                option += `<option value="${data.id}" ${i == 0 ? 'selected' : ''}> ${data.first_name} ${data.last_name} </option>`;
             }
             $("#"+customerId).html(option);
         }
@@ -1034,17 +1075,36 @@ function selectCustomer(value , customerId , companyId) {
 
         if(value != '') {
             assetFlag = true;
+
+            if($('#asset_company :selected').text() == 'All'){
+                let option_company = [];
+                for (const data of companies) {
+                    option_company += `<option value="${data.id}"> ${data.name} </option>`;
+                }
+
+                $('#asset_company').empty();
+                $('#asset_company').html(option_company);
+                $('#asset_company').trigger('change');
+
+
+                let option_customer = [];
+                for (const data of customers) {
+                    option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+                }
+                $('#asset_customer').empty();
+                $("#asset_customer").html(option_customer);
+            }
             let custs = customers.filter(item => item.company_id == value);
             if(custs.length > 0) {
                 let option = ``;
-                for (let data of custs) {
-                    option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
+                for (let [i, data] of custs.entries()) {
+                    option += `<option value="${data.id}" ${i == 0 ? 'selected' : ''}> ${data.first_name} ${data.last_name} </option>`;
                 }
 
                 if($('#'+customerId+' :selected').text() == 'All'){
                     let option_company = '';
-                    for (const data of companies) {
-                            option_company += `<option value="${data.company_id}"> ${data.company_name} </option>`;
+                    for (const [i, data] of companies.entries()) {
+                            option_company += `<option value="${data.company_id}" ${i == 0 ? 'selected' : ''}> ${data.company_name} </option>`;
                     }
 
                     $("#"+companyId).html(option_company);
