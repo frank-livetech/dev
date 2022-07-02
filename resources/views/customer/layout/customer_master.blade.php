@@ -163,7 +163,7 @@
                             <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="40" height="40"
                                 id="profile-user-img" />
                             @endif
-                            <span class="avatar-status-online"></span></span>
+                            {{-- <span class="avatar-status-online"></span></span> --}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         <a class="dropdown-item" href="{{route('customer.myProfile')}}"><i class="me-50" data-feather="user"></i> Profile</a>

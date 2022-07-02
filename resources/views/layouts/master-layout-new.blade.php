@@ -253,7 +253,7 @@
                             @else
                                 <img src="{{asset( $file_path . 'default_imgs/customer.png')}}" id="login_usr_logo" alt="'s Photo" height="50px"  width="50px" class="rounded-circle">
                             @endif
-                            <span class="avatar-status-online"></span></span>
+                            {{-- <span class="avatar-status-online"></span> --}}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         <a class="dropdown-item" href="{{url('my-profile')}}"><i class="me-50" data-feather="user"></i> Profile</a>
