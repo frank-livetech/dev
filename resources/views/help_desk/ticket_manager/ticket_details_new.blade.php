@@ -338,8 +338,10 @@
     
     }
     @media (max-width: 650px){
+        
     #sub-tkt{
-        margin-top: 6px !important
+        margin-top: 6px !important;
+        width: 298px !important;
     }
     .bor-top img{
         max-width: 160px !important
@@ -610,7 +612,7 @@
                                                                 <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                                                             </div>
-                                                            <div class="first" id="sub-tkt">
+                                                            <div class="first frt-width" id="sub-tkt" style="width: 514px;">
                                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                                                
                                                                 <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$details->subject}} </span> 
@@ -2133,7 +2135,7 @@
                                 <h6 class="mb-0"> {{$details->creator_name != null ? $details->creator_name : $details->customer_name}} <span class="badge badge-secondary">{{$user_type}}</span>  </h6>
                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                             </div>
-                            <div class="first" id="sub-tkt">
+                            <div class="first" id="sub-tkt" style="width: 514px">
                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
                                 
                                 <span  style="font-size:20px"> {{$details->subject}} </span> 
