@@ -54,7 +54,7 @@ use App\Http\Controllers\ActivitylogController;
 use App\Http\Controllers\GeneralController;
 use App\Models\Activitylog;
 use App\Models\Assets;
-
+use App\Models\Mail;
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
@@ -226,12 +226,21 @@ class HomeController
     function saveTicket(Request $request) {
         $customer = Customer::where('email' , auth()->user()->email)->first();
 
+        $creator_idd = User::where('email', auth()->user()->email)->first();
+        $created_by = empty($creator_idd) ? $customer->id : $creator_idd->id;
+
+        $sendingMailServer = Mail::where('mail_dept_id', $request->dept_id)->where('is_deleted', 0)->where('is_default', 'yes')->first();
+
         $data = array(
             "subject" => $request->subject ,
             "priority" => $request->priority ,
             "dept_id" => $request->dept_id,
+            'status' => $sendingMailServer->mail_status_id,
+            'type' => $sendingMailServer->mail_type_id,
+            'queue_id' => $sendingMailServer->id,
             "ticket_detail" => $request->ticket_detail,
             "customer_id" => $customer->id,
+            "created_by" => $created_by,
         );
 
         $type = TicketType::where('name' ,'Issue')->first();
