@@ -10,6 +10,19 @@
         </ol>
     </div>
 @endsection
+<style>
+    .carousel-control-prev, .carousel-control-next{
+        bottom: 26px !important;
+    }
+     @media (max-width: 548px) {
+        #carouselExampleDark{
+            display: block !important
+        }
+        #full-view{
+            display: none !important
+        }
+     }
+</style>
 @section('body')
 
 <div class="container-fluid">
@@ -53,7 +66,49 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row mt-3">
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" style="display:none">
+                        {{-- <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div> --}}
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="10000">
+                                <div class="card card-hover border-bottom border-success">
+                                    <div class="box p-2 rounded success text-center">
+                                        <h1 id="my_tickets_count">0</h1>
+                                        <h6 class="text-success">All Tickets</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <div class="card card-hover border-bottom border-warning">
+                                    <div class="box p-2 rounded warning text-center">
+                                        <h1 id="open_tickets_count">0</h1>
+                                        <h6 class="text-warning">Open</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="card card-hover border-bottom border-danger">
+                                    <div class="box p-2 rounded danger text-center">
+                                        <h1 id="closed_tickets_count">0</h1>
+                                        <h6 class="text-danger">Overdue</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                   
+                    <div class="row mt-3" id="full-view">
                         <div class="col-6 col-md-4">
                             <div class="card card-hover border-bottom border-success">
                                 <div class="box p-2 rounded success text-center">
@@ -81,19 +136,17 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="customer_tickets_table" class="table table-striped table-bordered display w-100">
+                        <table id="customer_tickets_table" class="table">
                             <thead>
                                 <tr>
                                     <th>Ticket ID</th>
-                                    <th>Subject</th>
-                                    <th> Status </th>
-                                    <th> Priority </th>
-                                    <th> Type </th>
-                                    <th> Last Activity </th>
-                                    <th> Last Replier </th>
+                                    <th width='350'>Subject</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Type</th>
+                                    <th>Last Activity</th>
+                                    <th>Last Replier</th>
                                     <th>Department </th>
-                                    
-                                   
                                 </tr>
                             </thead>
                             <tbody>
