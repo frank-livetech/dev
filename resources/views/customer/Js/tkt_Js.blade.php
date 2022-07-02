@@ -44,6 +44,8 @@
                         var user_img = ``;
                         var attachments_name = ``;
                         var type = ``;
+                        $('.show_replies').html("");
+
                         if (obj.length != 0) {
 
                             tkt_replies_arr = obj;
