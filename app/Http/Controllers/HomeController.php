@@ -128,18 +128,29 @@ class HomeController extends Controller {
     public function onlineUser(Request $request)
     {
 
+        $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',0)->get()->toArray();
+    
         $notify = new NotifyController();
-        $sender_id = Auth::user()->id;
-        $receiver_id = 1;
-        $data = '';
-        $slug = 'dashboard';
-        $type = 'online_user';
-        $title = 'LoggedInUser';
-        $icon = 'ti-calendar';
-        $class = 'btn-success';
-        $desc = 'Clock In by '.Auth::user()->name;
-        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
 
+        foreach ($admin_users as $key => $value) {
+
+            $sender_id = \Auth::user()->id;
+            $receiver_id = $value['id'];
+            $data = '';
+            $slug = 'dashboard';
+            $type = 'online_user';
+            $title = 'LoggedInUser';
+            $icon = 'ti-calendar';
+            $class = 'btn-success';
+            $desc = 'Login In by '.Auth::user()->name;
+            
+            $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+        }
+
+        $response['message'] = 'Status changed!';
+        $response['status_code'] = 200;
+        $response['success'] = true;
+        return response()->json($response);
 
     }
 
