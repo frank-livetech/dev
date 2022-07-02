@@ -2402,7 +2402,7 @@ class MailController extends Controller
                     $template = str_replace('{URL}', $url , $template);
                 }
                 if(str_contains($template, '{Customer-Ticket-URL}')) {
-                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/tickets/customer-ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{Customer-Ticket-URL}', $url , $template);
                 }
                 
@@ -2418,7 +2418,7 @@ class MailController extends Controller
 
                 // customer ticket url
                 if(str_contains($template, '{Customer-URL}')) {
-                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-ticket-details' . '/' . $data['values']['coustom_id'];
+                    $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/tickets/customer-ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{Customer-URL}', $url , $template);
                 }
 
