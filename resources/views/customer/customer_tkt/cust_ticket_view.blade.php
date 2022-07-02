@@ -136,11 +136,11 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="customer_tickets_table" class="table">
+                        <table id="customer_tickets_table" class="table display compact">
                             <thead>
                                 <tr>
                                     <th>Ticket ID</th>
-                                    <th width='350'>Subject</th>
+                                    <th >Subject</th>
                                     <th>Status</th>
                                     <th>Priority</th>
                                     <th>Type</th>
