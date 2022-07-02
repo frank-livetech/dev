@@ -514,6 +514,8 @@ class PayrollController extends Controller {
                 
                 $template = str_replace('{ActivityLogs}', count($logs) > 0 ? $logList : '' , $template);
             }
+            $template = str_replace('{My-Tickets}', '' , $template);
+
         }
 
         return html_entity_decode($template);
