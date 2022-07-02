@@ -74,7 +74,7 @@
                             "pageLength": 10,
                             "bInfo": false,
                             "paging": true,
-                            "autoWidth": true
+                            "autoWidth": true,
                             columns: [
                             {
                                 "render": function (data, type, full, meta) {
