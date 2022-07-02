@@ -190,33 +190,6 @@ br + br { display: none; }
 
     <h4>Ticket Details : <a class="text-body" href="javascript:window.location.reload()">{{$ticket->coustom_id}}</a></h4>
     
-    {{-- <div class="row">
-        <div class="col-md-8">
-            <div class="card mt-2">
-                <div class="card-body">
-                    <div class="text-muted">Subject</div>
-                    <h3>{{$ticket->subject}} </h3>
-
-                    Created : <span id="tkt_created_at"> </span>
-                    Updated : <span id="tkt_updated_at"> </span>
-
-                    <hr>
-
-                    <div class="text-muted" >Description</div>
-                    <p>{!! $ticket->ticket_detail !!}</p>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mt-2">
-                <div class="card-body">
-                    <div class="text-muted">Attachments</div>
-                    <div class="row show_attachments"></div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <div class="col-md-12">
         <div class="card" id="style-5">
         <!-- <div class="card" id="style-5" style="height:270px; overflow-y:auto; overflow-x:hidden"> -->
