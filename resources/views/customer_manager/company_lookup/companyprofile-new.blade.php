@@ -250,13 +250,13 @@
                         <a class="nav-link" id="pills-tickets-tab" data-bs-toggle="tab" href="#tickets" role="tab"
                             aria-controls="pills-tickets" aria-selected="false">Tickets</a>
                     </li>
-                   
+
                     <li class="nav-item">
                         <a class="nav-link" id="pills-staff-tab" data-bs-toggle="tab" href="#staff" role="tab"
                             aria-controls="pills-staff" aria-selected="false">Staff</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link loadNotes" id="notes-profile-tab" data-bs-toggle="tab" href="#ticket_notes"
+                        <a class="nav-link loadNotes" id="notes-profile-tab"  onclick="get_ticket_notes()" data-bs-toggle="tab" href="#ticket_notes"
                             role="tab" aria-controls="pills-profile" aria-selected="false">Notes
                             @if($notesCount != 0)
                             <span id="notes_count" class="badge bg-dark text-white mx-1"> {{$notesCount}}
@@ -390,11 +390,11 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-body">
-    
+
                                                 <div class="table-responsive">
                                                     <div id="zero_config_wrapper"
                                                         class="dataTables_wrapper container-fluid dt-bootstrap4">
-    
+
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <table id="customer_subscription"
@@ -427,14 +427,14 @@
                                                                                 colspan="1"
                                                                                 aria-label="Start date: activate to sort column ascending"
                                                                                 style="width: 0px;">Total</th>
-    
+
                                                                     </thead>
                                                                     <tbody>
-    
+
                                                                     </tbody>
-    
+
                                                                 </table>
-    
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -452,16 +452,16 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-    
+
                                         <button type="button" class="btn btn-info mr-auto" data-toggle="modal"
                                             data-target="#Add-new-card" style="float:right;"><i
                                                 class="mdi mdi-plus-circle"></i>&nbsp;Add New Card</button>
                                     </div>
                                 </div>
-    
+
                                 <div class="row mt-3">
                                     <div class="col-md-6">
-    
+
                                         <div class="card" style="border:1px solid black">
                                             <div class="card-body">
                                                 <div class="row">
@@ -474,16 +474,16 @@
                                                                 title="Rate"
                                                                 style="float:right;padding-right: 5px;position: relative;bottom: 4px;">
                                                             <input name="score" type="hidden">
-    
+
                                                         </div>
-    
+
                                                     </div>
                                                 </div>
                                                 <h1 class="mt-0"><i class="fab fa-cc-visa text-info"></i></h1>
                                                 <h3>**** **** **** 2150</h3>
                                                 <span class="pull-right">Exp date: 10/16</span>
                                                 <span class="font-500">Johnathan Doe</span>
-    
+
                                             </div>
                                         </div>
                                     </div>
@@ -752,7 +752,7 @@
                                                                 <!-- <div id="default-star-rating" style="cursor: pointer;">
                                                                         <img alt="1" src="assets/images/rating/star-off.png" title="Rate" style="float:right;padding-right: 5px;position: relative;bottom: 4px;">
                                                                         <input name="score" type="hidden">
-    
+
                                                                     </div>-->
 
                                                             </div>
@@ -837,7 +837,7 @@
                             <hr>
                             <div class="card-body">
                                 <div class="row">
-    
+
                                 </div>
                             </div>
                         </div> -->
@@ -875,7 +875,7 @@
 
                                 <div class="col-sm-12">
                                     <div class="accordion accordion-margin" id="accordionMargin">
-                                        
+
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingMargintwo">
                                                 <button class="accordion-button collapsed" type="button"
@@ -996,7 +996,7 @@
                     <div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="pills-tickets-tab">
                         <hr>
                         {{-- <div class="card-body">
-                                
+
                                 <table id="ticket_table" style="table-layout: fixed"
                                     class="table table-striped table-bordered display no-wrap">
                                     <thead>
@@ -1081,7 +1081,7 @@
                                     <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                                     {{-- <input type="text" id="phone" name="phone" value="{{$company->phone}}"
                                         class="form-control">
-                                    {{-- <span class="text-danger small" id="err4"></span> --}} 
+                                    {{-- <span class="text-danger small" id="err4"></span> --}}
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="domain">Domain</label>
@@ -1308,7 +1308,12 @@
 
                 <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
                     <hr>
-                    <div class="card-body">
+                    <div class="d-flex justify-content-end ">
+                        <button class="rounded btn btn-outline-success waves-effect fa fa-plus" style="margin-right: 20px"
+                             data-bs-toggle="tooltip" data-bs-placement="top" title=""
+                             onclick="openNotesModal()" data-bs-original-title="Add Notes"> Add Note</button>
+                    </div>
+                    <div class="card-body" id="show_ticket_notes">
                         No Data Found.
                     </div>
                 </div>
@@ -1719,7 +1724,7 @@
                         <input class="form-control" type="text" id="up_asset_title" required> -->
                         <input class="form-control" type="hidden" id="asset_title_id" required>
                     </div>
-                    
+
                     <div class="input_fields"></div>
                     <div class="address_fields"></div>
                     <div class="form-group text-end mt-3">
@@ -1745,8 +1750,9 @@
                 <button type="button" class="btn-close text-danger" onclick="notesModalClose()"></button>
             </div>
             <div class="modal-body">
-                <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post">
-                    <input type="text" id="note-id" style="display: none;">
+                <form id="save_ticket_note" action="{{ asset('save-ticket-note') }}" method="post"
+                    enctype="multipart/form-data">
+                    <input type="hidden" id="note-id" name="id">
                     <div class="row">
                         <div class="col-12 d-flex py-2">
                             <label for="">
@@ -1754,47 +1760,53 @@
                             </label>
                             <div class="" style="margin-left:6px ">
                                 <span class="fas fa-square mr-2"
-                                    style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;"
-                                    onclick="selectColor('rgb(255, 230, 177)')"></span>
+                                    style="font-size: 26px; color: #FFEFBB; cursor: pointer;"
+                                    onclick="selectColor('#FFEFBB')"></span>
                                 <span class="fas fa-square mr-2"
-                                    style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;"
-                                    onclick="selectColor('rgb(218, 125, 179)')"></span>
+                                    style="font-size: 26px; color: #e5c7ec; cursor: pointer;"
+                                    onclick="selectColor('#e5c7ec')"></span>
                                 <span class="fas fa-square mr-2"
-                                    style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;"
-                                    onclick="selectColor('rgb(195, 148, 255)')"></span>
+                                    style="font-size: 26px; color: #C7D6EC; cursor: pointer;"
+                                    onclick="selectColor('#C7D6EC')"></span>
                                 <span class="fas fa-square mr-2"
-                                    style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;"
-                                    onclick="selectColor('rgb(151, 235, 172)')"></span>
+                                    style="font-size: 26px; color: #E5ECC7; cursor: pointer;"
+                                    onclick="selectColor('#E5ECC7')"></span>
                                 <span class="fas fa-square mr-2"
-                                    style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;"
-                                    onclick="selectColor('rgb(229, 143, 149)')"></span>
+                                    style="font-size: 26px; color: #ECC9C9; cursor: pointer;"
+                                    onclick="selectColor('#ECC9C9')"></span>
                             </div>
                         </div>
 
                         <div class="col-12 py-2">
                             <div class="form-group">
-                                <textarea name="note" id="note" class="form-control" rows="10" required
-                                    style="background-color: rgb(255, 230, 177)"></textarea>
+                                <textarea name="note" id="note" class="form-control" style="background-color: #FFEFBB; color: black;"></textarea>
+                                <div id="menu" class="menu" role="listbox"></div>
                             </div>
                         </div>
 
-                        <div class="col-12 text-right pt-3">
-                            <button type="submit" class="btn btn-primary mr-2">Save</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="col-5"></div>
+
+                        <div class="col-12 pt-3">
+                            <button type="button" class="btn btn-success float-right ms-1" disabled
+                                id="note_processing" style="display:none"> Processing ... </button>
+                            <button type="submit" class="btn btn-success ms-1" id="note_save_btn"
+                                style="float: right;margin-right: 3px"> Save </button>
+                            <button type="button" class="btn btn-secondary ms-1" data-bs-dismiss="modal"
+                                style="float: right">Close</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div>
-<!-- /.modal Notes Modal -->
+</div><!-- /.modal Notes Modal -->
 
 @endsection
 
 @section('scripts')
 <!-- jQuery ui files-->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 <script src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
@@ -1808,9 +1820,9 @@ let companies = @json($all_companies);
         getFormsTemplates();
         get_asset_table_list();
     });
-    $('.loadNotes').click(function() {
-        get_ticket_notes();
-    });
+    // $('.loadNotes').click(function() {
+    //     get_ticket_notes();
+    // });
     jQuery(function($){
         var input = $('[type=tel]')
         input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});
@@ -1836,7 +1848,4 @@ function loadFile(event) {
 
 @include('js_files.company_lookup.companyprofileJs')
 
-<script>
-    
-  </script>
 @endsection

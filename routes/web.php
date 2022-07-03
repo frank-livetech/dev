@@ -542,8 +542,10 @@ Route::post('/ticket_refresh','HelpdeskController@ticketRefreshTime')->name('tic
 Route::Post('/fetch-followups','HelpdeskController@fetch_followups');
 Route::Post('/search-ticket','HelpdeskController@search_ticket');
 Route::Post('/save-ticket-note','HelpdeskController@save_ticket_note');
+Route::Post('/save-ticket-note_cc','HelpdeskController@UserORGNote');
 Route::Post('/update-ticket-customer','HelpdeskController@update_ticket_customer');
 Route::Post('/del-ticket-note','HelpdeskController@del_ticket_note');
+Route::Post('/del-UserORGNote','HelpdeskController@del_UserORGNote');
 Route::get('/system-info','AboutController@System_info')->name('system_info.index');
 Route::get('/feature-suggestions','AboutController@feature_suggestions')->name('feature_suggestions.index');
 Route::get('/ticket-manager/{type?}','HelpdeskController@ticket_management')->name('ticket_management.index');
@@ -581,6 +583,7 @@ Route::get('/get_ticket_log/{id?}','HelpdeskController@get_ticket_log');
 Route::get('/get-ticket-follow-up/{tkt_id}','HelpdeskController@get_ticket_follow_up');
 Route::post('/del-ticket-follow-up/{tkt_id}','HelpdeskController@del_ticket_follow_up');
 Route::get('/get-ticket-notes','HelpdeskController@getTicketNotes');
+Route::get('/getUserORGNote','HelpdeskController@getUserORGNote');
 Route::get('/task-scripts','TaskScriptsController@task_scripts')->name('task_scripts.index');
 Route::post('/save-task-scripts','TaskScriptsController@_save');
 Route::post('/del-task-scripts','TaskScriptsController@_delete');

@@ -23,8 +23,8 @@ class CompanyController extends Controller
     {
         $this->middleware('auth');
         $this->woocommerce = new Client(
-            'https://ltdevdemo.tempurl.host', 
-            'ck_0a047661cab377740f44c61240667dfed7af21b3', 
+            'https://ltdevdemo.tempurl.host',
+            'ck_0a047661cab377740f44c61240667dfed7af21b3',
             'cs_c822dc7a24b1cfb790d1dd4ed66fd4ec8a143ce6',
             [
                 'version' => 'wc/v3',
@@ -46,7 +46,7 @@ class CompanyController extends Controller
         $is_default = 0;
 
         $check_company = Company::where("is_default", 1)->first();
-        
+
         $is_default = empty($check_company) ? 0 : 1;
 
         $google_key = 0;
@@ -56,7 +56,7 @@ class CompanyController extends Controller
                 $detail_values = explode(",", $google->details);
                 $api = substr($detail_values[1], 1, -1);
                 $explode_key = explode(":", $api);
-                $key = substr($explode_key[1], 1, -1);   
+                $key = substr($explode_key[1], 1, -1);
 
                 if(!empty($key)) $google_key = 1;
 
@@ -66,7 +66,7 @@ class CompanyController extends Controller
 
         $countries = [];
         if($google_key === 0) $countries = DB::Table('countries')->get();
-        
+
         return view('customer_manager.company_lookup.index-new',compact('google','companies','countries','is_default','google_key'));
     }
 
@@ -94,8 +94,8 @@ class CompanyController extends Controller
         $response['success'] = true;
         $response['customer'] = $data;
         return response()->json($response);
-        
-          
+
+
     }
 
     public function save_company(Request $request){
@@ -109,9 +109,9 @@ class CompanyController extends Controller
                 if($request->is_default == 1) {
 
                     $check_company = Company::where("is_default","=",1)->first();
-        
+
                     if(empty($check_company)) {
-                        
+
                         $company = new Company();
                         $company->poc_first_name = $request->poc_first_name;
                         $company->poc_last_name = $request->poc_last_name;
@@ -129,14 +129,14 @@ class CompanyController extends Controller
                         $company->cmp_ship_add = $request->cmp_ship_add;
                         $company->created_by = $request->user_id;
                         $company->is_default = $request->is_default;
-            
+
                         if($company->save()){
                             $cmp_act_log = new CompanyActivityLog();
                             $cmp_act_log->action_perform = auth()->user()->name.' Created '.$company->name;
                             $cmp_act_log->company_id = $company->id;
                             $cmp_act_log->created_by = \auth()->user()->id;
                             $cmp_act_log->save();
-            
+
                             $response['message'] = 'Company Added Successfully!';
                             $response['status_code'] = 200;
                             $response['success'] = true;
@@ -154,9 +154,9 @@ class CompanyController extends Controller
                         $response['success'] = false;
                         return response()->json($response);
                     }
-                    
+
                 }else{
-                    
+
                     $company = new Company();
                     $company->poc_first_name = $request->poc_first_name;
                     $company->poc_last_name = $request->poc_last_name;
@@ -174,14 +174,14 @@ class CompanyController extends Controller
                     $company->cmp_ship_add = $request->cmp_ship_add;
                     $company->created_by = $request->user_id;
                     $company->is_default = 0;
-        
+
                     if($company->save()){
                         $cmp_act_log = new CompanyActivityLog();
                         $cmp_act_log->action_perform = auth()->user()->name.' Created '.$company->name;
                         $cmp_act_log->company_id = $company->id;
                         $cmp_act_log->created_by = \auth()->user()->id;
                         $cmp_act_log->save();
-        
+
                         $response['message'] = 'Company Added Successfully!';
                         $response['status_code'] = 200;
                         $response['success'] = true;
@@ -194,13 +194,13 @@ class CompanyController extends Controller
                         return response()->json($response);
                     }
                 }
-            
-            
+
+
         }else{
             if($request->is_default == 1) {
 
                 $check_company = Company::where("is_default","=",1)->first();
-    
+
                 if(empty($check_company)) {
                     // $request->validate([
                     //     "email" => "required|email|unique:companies",
@@ -222,14 +222,14 @@ class CompanyController extends Controller
                     $company->cmp_ship_add = $request->cmp_ship_add;
                     $company->created_by = $request->user_id;
                     $company->is_default = $request->is_default;
-        
+
                     if($company->save()){
                         $cmp_act_log = new CompanyActivityLog();
                         $cmp_act_log->action_perform = auth()->user()->name.' Created '.$company->name;
                         $cmp_act_log->company_id = $company->id;
                         $cmp_act_log->created_by = \auth()->user()->id;
                         $cmp_act_log->save();
-        
+
                         $response['message'] = 'Company Added Successfully!';
                         $response['status_code'] = 200;
                         $response['success'] = true;
@@ -247,7 +247,7 @@ class CompanyController extends Controller
                     $response['success'] = false;
                     return response()->json($response);
                 }
-                
+
             }else{
                 // $request->validate([
                 //     "email" => "required|email|unique:companies",
@@ -269,14 +269,14 @@ class CompanyController extends Controller
                 $company->cmp_ship_add = $request->cmp_ship_add;
                 $company->created_by = $request->user_id;
                 $company->is_default = $request->is_default;
-    
+
                 if($company->save()){
                     $cmp_act_log = new CompanyActivityLog();
                     $cmp_act_log->action_perform = auth()->user()->name.' Created '.$company->name;
                     $cmp_act_log->company_id = $company->id;
                     $cmp_act_log->created_by = \auth()->user()->id;
                     $cmp_act_log->save();
-    
+
                     $response['message'] = 'Company Added Successfully!';
                     $response['status_code'] = 200;
                     $response['success'] = true;
@@ -290,7 +290,7 @@ class CompanyController extends Controller
                 }
             }
         }
-        
+
     }
 
     public function deleteCompany(Request $request) {
@@ -363,10 +363,10 @@ class CompanyController extends Controller
                         return response()->json($response);
                     }
                 }
-                
-               
+
+
             }
-            
+
         }catch(Throwable $err){
             $response['message'] = 'Something Went wrong!';
             $response['status_code'] = 500;
@@ -376,11 +376,11 @@ class CompanyController extends Controller
     }
 
     public function company_profile($id){
-        
+
         $company = Company::with('staff_members')->with('staffs')->findOrFail($id);
         $customer = Customer::where('company_id', $id)->first();
 
-        $company_staff = Customer::where('company_id', $id)->get();    
+        $company_staff = Customer::where('company_id', $id)->get();
         $tags = Tags::all();
         $tickets = DB::Table('tickets')
         ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
@@ -399,7 +399,7 @@ class CompanyController extends Controller
 
         $check_company = Company::where("is_default", 1)->first();
         empty($check_company) ? $is_default = 0 : $is_default = 1;
-        
+
         $google_key = 0;
         $google = DB::Table("integrations")->where("slug","=","google-api")->where('status', 1)->first();
         if(!empty($google)) {
@@ -408,17 +408,17 @@ class CompanyController extends Controller
                 $api = substr($detail_values[1], 1, -1);
                 $explode_key = explode(":", $api);
                 $key = substr($explode_key[1], 1, -1);
-    
+
                 if(!empty($key)) $google_key = 1;
 
-                $google = json_decode($google->details, true); 
+                $google = json_decode($google->details, true);
             }
         }
 
         $countries = [];
         if($google_key === 0) $countries = DB::Table('countries')->get();
 
-        $sla_plans = SlaPlan::where('sla_status',1)->where('is_deleted',0)->get(); 
+        $sla_plans = SlaPlan::where('sla_status',1)->where('is_deleted',0)->get();
         $date_format = Session('system_date');
 
 
@@ -436,6 +436,8 @@ class CompanyController extends Controller
         $all_customers = Customer::all();
         $all_companies = Company::all();
 
+        $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff', 0)->get();
+
         return view('customer_manager.company_lookup.companyprofile-new', get_defined_vars());
     }
 
@@ -443,7 +445,7 @@ class CompanyController extends Controller
 
         $image = $request->file('profile_img');
         $imageName = $_FILES['profile_img']['name'];
-       
+
         $imageName = strtolower($imageName);
         $imageName = str_replace(" ","_",$imageName);
 
@@ -552,35 +554,35 @@ class CompanyController extends Controller
             "cmp_bill_add" => $request->bill_st_add,
         );
 
-        if($request->is_default == 1) { 
+        if($request->is_default == 1) {
             $check_company = Company::where("is_default","=",1)->first();
 
             if(empty($check_company)) {
 
                 $company = Company::find($request->cmp_id);
-            
+
                 // if($company->email == $request->email) {
 
                     Company::where('id',$request->cmp_id)->update($data);
-        
+
                     $response['message'] = 'Company Profile Updated Successfully';
                     $response['status_code'] = 200;
                     $response['success'] = true;
                     return response()->json($response);
-    
+
                 // }else{
-    
+
                     // $request->validate([
                     //     "email" => "required|email|unique:companies",
                     // ]);
-                    
+
                     // Company::where('id',$request->cmp_id)->update($data);
-        
+
                     // $response['message'] = 'Company Profile Updated Successfully';
                     // $response['status_code'] = 200;
                     // $response['success'] = true;
                     // return response()->json($response);
-    
+
                 // }
             }else{
                 $response['message'] = 'Default Company Already Set!';
@@ -591,11 +593,11 @@ class CompanyController extends Controller
 
         }else{
             $company = Company::find($request->cmp_id);
-            
+
             // if($company->email == $request->email) {
 
                 // Company::where('id',$request->cmp_id)->update($data);
-    
+
                 // $response['message'] = 'Company Profile Updated Successfully';
                 // $response['status_code'] = 200;
                 // $response['success'] = true;
@@ -608,7 +610,7 @@ class CompanyController extends Controller
                 // ]);
 
                 Company::where('id',$request->cmp_id)->update($data);
-    
+
                 $response['message'] = 'Company Profile Updated Successfully';
                 $response['status_code'] = 200;
                 $response['success'] = true;
@@ -616,7 +618,7 @@ class CompanyController extends Controller
 
             // }
         }
-      
+
     }
 
     public function get_staffs($id){
@@ -678,14 +680,14 @@ class CompanyController extends Controller
         \Log::info(json_encode( $payload));
         // return response()->json([ 'data' => $payload, 'status' => \Symfony\Component\HttpFoundation\Response::HTTP_OK]);
 
-             
+
         // $data = [
         //     'name' => 'Product created',
         //     'topic' => 'product.created',
         //     'delivery_url' => 'https://webhook.site/9db4191d-d0d0-4a10-9659-c86b2d55232d'
         // ];
         // $results = $this->woocommerce->get('webhooks' , $data);
-        // return $results;    
+        // return $results;
     }
 
     public function saveCompanySLA(Request $request) {
@@ -718,16 +720,16 @@ class CompanyController extends Controller
                     "username" => $request->staff_email,
                     "company_id" => $request->company_id,
                 ]);
-                
+
                 $title = 'Customer Created Successfully';
                 $status = 200;
-            }    
+            }
         }else{
 
             $user = User::where('email',$request->staff_email)->first();
 
             if($user) {
-                
+
                 $title = 'Email Already Registered... Try Another one!';
                 $status = 500;
 
@@ -759,7 +761,7 @@ class CompanyController extends Controller
         return response()->json($response);
 
     }
-    
+
 
     public function showCompanyStaff(Request $request) {
         $id = $request->company_id;
@@ -768,6 +770,6 @@ class CompanyController extends Controller
         $users = $customers->merge(User::where('company_id',$id)->select('name','email','phone_number')->get()->toArray());
 
         return $users->all();
-        
+
     }
 }

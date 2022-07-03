@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-require 'vendor/autoload.php';
-//require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -83,7 +83,7 @@ class HelpdeskController extends Controller
         //         $followUpsNew[] = $value;
         //     }
         // }
-        
+
         // $tickets_followups = $followUpsNew;
 
         $url_type = '';
@@ -107,7 +107,7 @@ class HelpdeskController extends Controller
     }
 
     public function ticket_management(Request $request ,$type = ''){
-        
+
         $departments = Departments::all();
         $statuses = TicketStatus::orderBy('seq_no')->get();
         $priorities = TicketPriority::all();
@@ -120,7 +120,7 @@ class HelpdeskController extends Controller
 
         $dept_name = '';
         $status_name = $type;
-        
+
         $url_type = '';
         if(isset($request->type)) {
             $url_type = $request->type;
@@ -174,7 +174,7 @@ class HelpdeskController extends Controller
     }
 
     public function update_ticket(Request $request) {
-        
+
         $data = $request->all();
 
         $response = array();
@@ -196,14 +196,14 @@ class HelpdeskController extends Controller
 
                     // set files
                     foreach ($data['attachments'] as $key => $value) {
-                        if (filter_var($value[1], FILTER_VALIDATE_URL)) { 
+                        if (filter_var($value[1], FILTER_VALIDATE_URL)) {
                             $file = file_get_contents($value[1]);
                         }else{
                             $file = base64_decode($value[1]);
                         }
-                        
+
                         $target_src = $target_dir.'/'.$value[0];
-                            
+
                         file_put_contents($target_src, $file);
                     }
                 }
@@ -219,19 +219,19 @@ class HelpdeskController extends Controller
                         if($dd_values[$dd]['id'] == 1){
                             $data['dept_id'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) department changed from: '.$ticket->department_name.' to: '.$dd_values[$dd]['new_text'];
-                            $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';  
+                            $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';
                         }elseif($dd_values[$dd]['id'] == 2){
                             $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
-                            $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->assignee_name .')';  
+                            $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->assignee_name .')';
                         }elseif($dd_values[$dd]['id'] == 3){
                             $data['type'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
-                            $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
+                            $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';
                         }elseif($dd_values[$dd]['id'] == 4){
                             $data['status'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) status changed from: '. $ticket->status_name .' to: '. $dd_values[$dd]['new_text'];
-                            $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';  
+                            $message .= '<strong> Status :</strong> '. $dd_values[$dd]['new_text'].' (was : '. $ticket->status_name .')';
                             $os = TicketStatus::where('id',$dd_values[$dd]['new_data'])->first();
                             if($os && $os->name == 'Closed'){
                                 $data['reply_deadline'] = 'cleared';
@@ -241,7 +241,7 @@ class HelpdeskController extends Controller
                         }elseif($dd_values[$dd]['id'] == 5){
                             $data['priority'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) priority changed from: '. $ticket->priority_name .' to: '.  $dd_values[$dd]['new_text'];
-                            $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
+                            $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';
                         }
 
                         // save activity logs
@@ -270,7 +270,7 @@ class HelpdeskController extends Controller
 
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
-                
+
                 $ticket->update($data);
 
                 // if($request->has('dd_Arr')){
@@ -320,8 +320,8 @@ class HelpdeskController extends Controller
                 $dept_assignments = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
                 $allusers = User::whereIn('id',$dept_assignments)->where('user_type','!=',4)->where('user_type','!=',5)->where('status',1)->where('is_deleted',0)->get();
 
-                
-                
+
+
 
                 $response['message'] = 'Ticket Updated Successfully!';
                 $response['status_code'] = 200;
@@ -370,31 +370,31 @@ class HelpdeskController extends Controller
 
             if( isset($request->status) ) {
                 $status =  TicketStatus::where('id',$request->status )->first();
-                $message = '<strong> Status </strong> '. $status->name .' (was : '. $tk->status_name .')';  
+                $message = '<strong> Status </strong> '. $status->name .' (was : '. $tk->status_name .')';
             }
 
             if( isset($request->type) ) {
                 $type =  TicketType::where('id',$request->type )->first();
-                $message = '<strong> Type </strong> '. $type->name .' (was : '. $tk->type_name .')';  
+                $message = '<strong> Type </strong> '. $type->name .' (was : '. $tk->type_name .')';
             }
 
             if( isset($request->priority) ) {
                 $priority =  TicketPriority::where('id',$request->priority )->first();
-                $message = '<strong> Priority </strong> '. $priority->name .' (was : '. $tk->priority_name .')';  
+                $message = '<strong> Priority </strong> '. $priority->name .' (was : '. $tk->priority_name .')';
             }
 
             if( isset($request->dept_id) ) {
                 $dep =  Departments::where('id',$request->dept_id )->first();
-                $message = '<strong> Department </strong> '. $dep->name .' (was : '. $tk->department_name .')';  
+                $message = '<strong> Department </strong> '. $dep->name .' (was : '. $tk->department_name .')';
             }
 
             if( isset($request->assigned_to) ) {
                 $user =  User::where('id',$request->assigned_to )->first();
-                $message = '<strong> Techh </strong> '. $user->name .' (was : '. $tk->creator_name .')';  
+                $message = '<strong> Techh </strong> '. $user->name .' (was : '. $tk->creator_name .')';
             }
-            
+
             $tk->updated_at = Carbon::now();
-            
+
             // save activity logs
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
             $action_perform = 'Ticket (<a href="'.url('ticket-details').'/' .$tk->coustom_id.'">'.$tk->coustom_id.'</a>) Updated By '. $name_link;
@@ -424,7 +424,7 @@ class HelpdeskController extends Controller
         ]);
     }
 
-    public function save_tickets(Request $request){ 
+    public function save_tickets(Request $request){
         $current_date = Carbon::now();
 
         $data = $request->all();
@@ -451,10 +451,10 @@ class HelpdeskController extends Controller
             }
 
             $tickets_count = Tickets::all()->count();
-            
+
             $data['created_by'] = \Auth::user()->id;
-            
-            
+
+
             if(!isset($data['status'])) {
                 // set default open status
                 $os = TicketStatus::where('name','Open')->first();
@@ -466,7 +466,7 @@ class HelpdeskController extends Controller
                 $data['type'] = $tt->id;
             }
             $ticket = Tickets::create($data);
-                                  
+
             // ticket assoc with sla plan
             $settings = $this->getTicketSettings(['default_reply_and_resolution_deadline']);
             if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -485,8 +485,8 @@ class HelpdeskController extends Controller
                 }
             }
 
-            
-            
+
+
             $newG = new GeneralController();
             $ticket->coustom_id = $newG->randomStringFormat(self::CUSTOMID_FORMAT);
             $lt = Tickets::orderBy('created_at', 'desc')->first();
@@ -501,15 +501,15 @@ class HelpdeskController extends Controller
             $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
             $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Created By '. $name_link;
             $log = new ActivitylogController();
-            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);    
-            
-            
+            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
+
+
             // saving response template
             if($request->res == 1) {
                 $resTemp = new SettingsController();
                 $resTemp->addResponseTemplate($request);
-            }  
-            
+            }
+
             // send notification
             // $slug = url('ticket-details') .'/'.$ticket->coustom_id;
             // $type = 'ticket_created';
@@ -541,7 +541,7 @@ class HelpdeskController extends Controller
                 "due_deadline" => "",
                 "bg_color" => "#fff"
             );
-    
+
             $settings = $this->getTicketSettings(['default_reply_time_deadline', 'default_resolution_deadline', 'overdue_ticket_background_color']);
 
             $sla_plan['bg_color'] = $settings['overdue_ticket_background_color'];
@@ -557,11 +557,11 @@ class HelpdeskController extends Controller
 
                     // use default set deadlines in case of empty
                     if(empty($sla_plan['reply_deadline'])) $sla_plan['reply_deadline'] = $settings['default_reply_time_deadline'];
-                    
+
                     if(empty($sla_plan['due_deadline'])) $sla_plan['due_deadline'] = $settings['default_resolution_deadline'];
                 }
             }
-    
+
             return $sla_plan;
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
@@ -598,20 +598,20 @@ class HelpdeskController extends Controller
             }else{
                  $deadlines[0] = $ticket->created_at;
             }
-            
+
             $res_logs = Activitylog::where('ref_id', $ticketID)->where([ ['module', 'Tickets'], ['table_ref', 'sla_res_deadline_from'] ])->orderByDesc('id')->first();
             if(!empty($res_logs)) {
                 $deadlines[1] =  strtotime($res_logs->created_at) < strtotime($ticket->created_at) ? $ticket->created_at : $res_logs->created_at;
             }else{
                 $deadlines[1] = $ticket->created_at;
             }
-            
+
             return $deadlines;
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
-    
+
     public function getFilteredTickets($dept = '' , $sts = ''){
 
 
@@ -639,7 +639,7 @@ class HelpdeskController extends Controller
                 })
                 ->where([['tickets.is_deleted', 0], ['tickets.trashed', 0], ['tickets.is_pending',0] ])->orderBy('tickets.updated_at', 'desc')->with('ticket_created_by')->get();
                 // ->where('tickets.is_deleted', 0)->orderBy('tickets.updated_at', 'desc')->where('tickets.trashed', 0)->get();
-            }        
+            }
         } else {
             $aid = \Auth::user()->id;
             $assigned_depts = DepartmentAssignments::where('user_id', $aid)->get()->pluck('dept_id')->toArray();
@@ -653,7 +653,7 @@ class HelpdeskController extends Controller
                     return $q->where('tickets.dept_id', $dept);
                 })
                 ->where([['tickets.is_deleted', 0],['is_enabled', 'yes'],['tickets.trashed', 0], ['tickets.is_pending',0], ['tickets.status','!=', $closed_status_id] ])->orderBy('tickets.updated_at', 'desc')->get();
-                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();                
+                // ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->where('tickets.trashed', 0)->orderBy('tickets.updated_at', 'desc')->get();
             }else{
 
                 $tickets = Tickets::select("*")
@@ -680,13 +680,13 @@ class HelpdeskController extends Controller
         $closed_tickets_count = Tickets::where('status', $closed_status->id)->where('is_deleted', 0)->count();
         $trashed_tickets_count = Tickets::where('trashed', 1)->where('is_deleted', 0)->where('tickets.status', '!=', $closed_status_id)->count();
         $flagged_tickets_count = Tickets::where('is_flagged', 1)->where('is_deleted', 0)->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->count();
-        
+
         foreach($tickets as $value) {
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
-            
+
             // if($value->is_overdue == 0){
-            
+
                 $dd = $this->getSlaDeadlineFrom($value->id);
                 $value->sla_rep_deadline_from = $dd[0];
                 $value->sla_res_deadline_from = $dd[1];
@@ -722,9 +722,9 @@ class HelpdeskController extends Controller
                                 if($timediff < 0) $lcnt = true;
                             }
                         }
-                    }   
+                    }
                 }
-                
+
                 $value->is_overdue = 0;
                 if($lcnt) {
                     // $late_tickets_count++;
@@ -735,7 +735,7 @@ class HelpdeskController extends Controller
                 }
             // }
         }
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
@@ -749,7 +749,7 @@ class HelpdeskController extends Controller
         $response['trashed_tickets_count']= $trashed_tickets_count;
         $response['date_format'] = Session('system_date');
         $response['ticket_view'] = TicketView::where('user_id' , auth()->id() )->first();
-        
+
         return response()->json($response);
 
     }
@@ -761,7 +761,7 @@ class HelpdeskController extends Controller
             if($statusOrUser == 'customer') $cid = $id;
             else if($statusOrUser == 'staff') $sid = $id;
         }
-        
+
         $open_status = TicketStatus::where('name','Open')->first();
         $closed_status = TicketStatus::where('name','Closed')->first();
         $closed_status_id = $closed_status->id;
@@ -772,7 +772,7 @@ class HelpdeskController extends Controller
         if($statusOrUser == 'closed') $cnd = '=';
         if($statusOrUser == 'trash') $is_del = 1;
         $dept_assignments = DepartmentAssignments::where('user_id', \Auth::user()->id)->get()->pluck('dept_id')->toArray();
-        
+
         if(\Auth::user()->user_type == 1) {
 
             $tickets = Tickets::select("*")->whereIn('dept_id',$dept_assignments)
@@ -811,7 +811,7 @@ class HelpdeskController extends Controller
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id);
             })
             ->when($statusOrUser == 'total', function($q) use($closed_status_id) {
-                
+
                 return $q->where('tickets.trashed', 0)->where('tickets.status', '!=', $closed_status_id)->where('tickets.trashed', 0);
             })
             ->where([['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')->with('ticket_created_by')
@@ -846,7 +846,7 @@ class HelpdeskController extends Controller
                 return $q->where('tickets.customer_id', $cid);
             })
             ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
-            
+
         }else{
             $total_tickets_count = Tickets::
             when($statusOrUser == 'staff', function($q) use ($sid) {
@@ -858,13 +858,13 @@ class HelpdeskController extends Controller
 
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)
         ->where( [ ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ] )->count();
-        
+
         $unassigned_tickets_count = Tickets::whereNull('assigned_to')
         ->where([ ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
-        
-        
+
+
         $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
-        
+
         $closed_tickets_count = Tickets::
         when($statusOrUser == 'customer', function($q) use ($cid) {
             return $q->where('tickets.customer_id', $cid);
@@ -873,9 +873,9 @@ class HelpdeskController extends Controller
             return $q->where('tickets.assigned_to', $sid);
         })
         ->where([ ['status', $closed_status->id] , ['is_pending' ,0] , ['is_deleted' , 0]])->count();
-        
+
         $trashed_tickets_count = Tickets::where([ ['trashed', 1] , ['is_deleted', 0] , ['is_pending' ,0] ])->count();
-        
+
         $flagged_tickets_count = Tickets::where([ ['is_flagged', 1] , ['is_deleted', 0] ,['tickets.trashed', 0] , ['is_pending' ,0] ,['tickets.status', '!=', $closed_status_id] ])->count();
 
         $open_ticket_count = Tickets::
@@ -905,7 +905,7 @@ class HelpdeskController extends Controller
 
             if($value->sla_plan['title'] != self::NOSLAPLAN) {
                 if($value->reply_deadline != 'cleared') {
-                    
+
                     $date = new Carbon( Carbon::now() , $tm_name);
                     $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
 
@@ -922,10 +922,10 @@ class HelpdeskController extends Controller
                             $lcnt = true;
                         }
 
-                        
+
                     }
                 }
-    
+
                 if(!$lcnt) {
                     if($value->resolution_deadline != 'cleared') {
                         $date = new Carbon( Carbon::now() , $tm_name);
@@ -943,11 +943,11 @@ class HelpdeskController extends Controller
                             }
                         }
                     }else{
-                        
+
                     }
                 }
-            
-                
+
+
                 if($lcnt) {
                     $value->is_overdue = 1;
                     $tkt = Tickets::where('id',$value->id)->first();
@@ -957,7 +957,7 @@ class HelpdeskController extends Controller
                 $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
             }
         }
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
@@ -972,7 +972,7 @@ class HelpdeskController extends Controller
         $response['trashed_tickets_count']= $trashed_tickets_count;
         $response['date_format'] = Session('system_date');
         $response['ticket_view'] = TicketView::where('user_id' , auth()->id() )->first();
-        
+
         return response()->json($response);
     }
 
@@ -1015,7 +1015,7 @@ class HelpdeskController extends Controller
                     throw new Exception('Do not have department permission to reply.');
                 }
             }
-            
+
             if($ticket->trashed === 1) {
                 if(\Auth::user()->user_type == $customer_role_id) {
                     $ticket->trashed = 0;
@@ -1030,16 +1030,16 @@ class HelpdeskController extends Controller
                     $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
 
                 } else {
-                    
+
                     $response['message'] = 'Please restore this ticket first!';
                     $response['status_code'] = 500;
                     $response['success'] = false;
                     return response()->json($response);
                 }
             }
-            
+
             $data['user_id'] = \Auth::user()->id;
-            
+
             if(array_key_exists('inner_attachments', $data)) {
                 // target dir for ticket files against ticket id
                 // $target_dir = public_path().'/files/replies/'.$data['ticket_id'];
@@ -1048,21 +1048,21 @@ class HelpdeskController extends Controller
                 // }
 
                 $target_dir = 'storage/tickets-replies/'.$data['ticket_id'];
-                    
+
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
 
                 // set files
                 foreach ($data['inner_attachments'] as $key => $value) {
-                    if (filter_var($value[1], FILTER_VALIDATE_URL)) { 
+                    if (filter_var($value[1], FILTER_VALIDATE_URL)) {
                         $file = file_get_contents($value[1]);
                     }else{
                         $file = base64_decode($value[1]);
                     }
-                    
+
                     $target_src = $target_dir.'/'.$value[0];
-                        
+
                     file_put_contents($target_src, $file);
                 }
             }
@@ -1075,7 +1075,7 @@ class HelpdeskController extends Controller
             if($type == 'publish'){
                 $data['is_published'] = 1;
             }
-            
+
             unset($data['type']);
 
             //converting html to secure bbcode
@@ -1091,7 +1091,7 @@ class HelpdeskController extends Controller
                 $save_reply['cc'] = $data['cc'];
                 $save_reply['is_published'] = $data['is_published'];
                 $save_reply['attachments'] = $data['attachments'];
-                
+
                 $save_reply['updated_at'] = Carbon::now();
                 $save_reply['updated_by'] = \Auth::user()->id;
 
@@ -1118,17 +1118,17 @@ class HelpdeskController extends Controller
                     if($dd_values[$dd]['id'] == 1){
                         $data['dept_id'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) department changed from: '.$ticket->department_name.' to: '.$dd_values[$dd]['new_text'];
-                        $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';  
+                        $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';
                         $ticket->dept_id = $dd_values[$dd]['new_data'];
                     }elseif($dd_values[$dd]['id'] == 2){
                         $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
-                        $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';  
+                        $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';
                         $ticket->assigned_to = $dd_values[$dd]['new_data'];
                     }elseif($dd_values[$dd]['id'] == 3){
                         $data['type'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
-                        $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';  
+                        $message .= '<strong> Type :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->type_name .')';
                         $ticket->type = $dd_values[$dd]['new_data'];
 
                     }elseif($dd_values[$dd]['id'] == 4){
@@ -1146,7 +1146,7 @@ class HelpdeskController extends Controller
                     }elseif($dd_values[$dd]['id'] == 5){
                         $data['priority'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) priority changed from: '. $ticket->priority_name .' to: '.  $dd_values[$dd]['new_text'];
-                        $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';  
+                        $message .= '<strong> Priority :</strong> '.  $dd_values[$dd]['new_text'] .' (was : '. $ticket->priority_name .')';
                         $ticket->priority = $dd_values[$dd]['new_data'];
 
                     }
@@ -1170,7 +1170,7 @@ class HelpdeskController extends Controller
                     '. $message .' <br>
                     Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Reply added & Updated by ' . auth()->user()->name .'
                 </div>';
-                
+
 
             }
 
@@ -1199,7 +1199,7 @@ class HelpdeskController extends Controller
                         $ticket->save();
 
                         $sla_updated = $ticket->reply_deadline;
-                        
+
                         $log = new ActivitylogController();
                         $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $ticket->id , auth()->id() , $action_perf);
                     }
@@ -1209,7 +1209,7 @@ class HelpdeskController extends Controller
             // Set cc and bcc mails if any
 
             $tkt_share = array();
-    
+
             // if($data['cc'] != null && $data['cc'] != "") {
                 $tkt_share['email'] = $data['cc'];
                 $tkt_share['mail_type'] = 1;
@@ -1244,8 +1244,8 @@ class HelpdeskController extends Controller
 
 
             if($type == 'publish') {
-            
-                
+
+
                 $ticket = Tickets::where('id', $data['ticket_id'])->where('trashed', 0)->where('is_deleted', 0)->first();
 
                 $action = 'ticket_reply';
@@ -1265,7 +1265,7 @@ class HelpdeskController extends Controller
             if($request->res == 1) {
                 $resTemp = new SettingsController();
                 $resTemp->addResponseTemplate($request);
-            }   
+            }
 
             $up_tkt = Tickets::where('id' , $request->ticket_id)->first();
             $save_reply->name = \Auth::user()->name;
@@ -1287,7 +1287,7 @@ class HelpdeskController extends Controller
 
 
             return response()->json($response);
-    
+
         // }catch(Exception $e) {
         //     $response['message'] = $e->getMessage();
         //     $response['status_code'] = 500;
@@ -1297,8 +1297,8 @@ class HelpdeskController extends Controller
     }
 
     public function replaceBodyShortCodes($data , $ticket){
-        
-        if(str_contains($data, '{Customer-Name}')) {  
+
+        if(str_contains($data, '{Customer-Name}')) {
 
             if(!empty($ticket)){
                 $customer = '';
@@ -1313,13 +1313,13 @@ class HelpdeskController extends Controller
                     // dd($customer);
                     $data = str_replace('{Customer-Name}', $name , $data);
                 }else{
-                   $data = str_replace('Customer Name:', '' , $data); 
-                   $data = str_replace('{Customer-Name}', '' , $data); 
+                   $data = str_replace('Customer Name:', '' , $data);
+                   $data = str_replace('{Customer-Name}', '' , $data);
                 }
                 // dd($data);
             }else{
                 $data = str_replace('Customer Name:', '' , $data);
-                $data = str_replace('{Customer-Name}', '' , $data); 
+                $data = str_replace('{Customer-Name}', '' , $data);
             }
         }
 
@@ -1336,7 +1336,7 @@ class HelpdeskController extends Controller
         if(empty($ticket)) {
             return view('help_desk.ticket_manager.ticket_404');
         }
-  
+
         // dd($ticket->dept_id);
         $dept_assignments = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
         $allusers = User::whereIn('id',$dept_assignments)->where('user_type','!=',4)->where('user_type','!=',5)->where('status',1)->where('is_deleted',0)->get();
@@ -1345,7 +1345,7 @@ class HelpdeskController extends Controller
         $id = $ticket->id;
         // $details = Tickets::with('ticketReplies')->where('id', $id)->first();
         $details = Tickets::where('id', $id)->with('ticket_created_by')->first();
-        
+
         $shared_emails = TicketSharedEmails::where('ticket_id',$details->id)->get()->toArray();
         $shared_bcc_emails = TicketSharedEmails::where('mail_type',2)->where('ticket_id',$details->id)->first();
         $shared_cc_emails = TicketSharedEmails::where('mail_type',1)->where('ticket_id',$details->id)->first();
@@ -1359,7 +1359,7 @@ class HelpdeskController extends Controller
         // $ticket = Tickets::all();
         if($details->is_staff_tkt == 1){
             $ticket_customer = User::firstWhere('id',$details->customer_id);
-            
+
         }else{
             $ticket_customer = Customer::firstWhere('id',$details->customer_id);
         }
@@ -1392,12 +1392,12 @@ class HelpdeskController extends Controller
             $open_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],['status','!=',$closed_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
             $closed_tickets_count = Tickets::where([ ['customer_id',$ticket->customer_id],  ['status',$closed_status->id], ['trashed',0], ['is_deleted',0] , ['is_pending',0] ])->count();
         }
-        
+
         $bbcode = new BBCode();
 
         if(!empty($details->ticket_detail))
             $details->ticket_detail = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($details->ticket_detail));
-        
+
         foreach ($details->ticketReplies as $key => $rep) {
             if($rep !=null){
 
@@ -1418,9 +1418,9 @@ class HelpdeskController extends Controller
         $sla_plans = SlaPlan::where('sla_status', 1)->where('is_deleted',0)->get();
 
         $ticket_slaPlan = (Object) $this->getTicketSlaPlan($id);
-        
+
         $dd = $this->getSlaDeadlineFrom($id);
-        
+
         $details->sla_rep_deadline_from = $dd[0];
         $details->sla_res_deadline_from = $dd[1];
         // dd($details->toArray());
@@ -1460,7 +1460,7 @@ class HelpdeskController extends Controller
 
         return response()->json([
             "message" => "Ticket Reply Deleted Successfully!",
-            "status_code" => 200 , 
+            "status_code" => 200 ,
             "success" => true,
         ]);
     }
@@ -1470,7 +1470,7 @@ class HelpdeskController extends Controller
 
         try{
             for($i=0; $i< sizeof($data);$i++){
-                
+
                 $del_tkt = Tickets::where('id',$data[$i])->first();
 
                 $del_tkt->is_deleted = 1;
@@ -1479,11 +1479,11 @@ class HelpdeskController extends Controller
 
                 $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
                 $replies = TicketReply::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
-                
+
                 // Add Delete log
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
                 $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Deleted By '. $name_link;
-                
+
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $del_tkt->id , auth()->id() , $action_perform);
             }
@@ -1504,7 +1504,7 @@ class HelpdeskController extends Controller
         $data  = $request->tickets;
         try{
             for($i=0; $i< sizeof($data);$i++) {
-                
+
                 $del_tkt = Tickets::where('id',$data[$i])->first();
                 $current_date = Carbon::now();
 
@@ -1551,12 +1551,12 @@ class HelpdeskController extends Controller
         try {
             for($i=0; $i< sizeof($data);$i++){
                 $del_tkt = Tickets::where('id',$data[$i])->first();
-                
+
                 $del_tkt->trashed = 0;
                 $del_tkt->updated_at = Carbon::now();
                 $del_tkt->updated_by = \Auth::user()->id;
                 $del_tkt->save();
-                
+
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
                 $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$del_tkt->coustom_id.'">'.$del_tkt->coustom_id.'</a>) Restored By '. $name_link;
 
@@ -1604,7 +1604,7 @@ class HelpdeskController extends Controller
             $flag_tkt->updated_at = Carbon::now();
             $flag_tkt->updated_by = \Auth::user()->id;
             $flag_tkt->save();
-            
+
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
             $action_perform = 'Ticket ( <a href="'.url('ticket-details').'/'.$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> '.$msg.' '. $name_link;
@@ -1619,7 +1619,7 @@ class HelpdeskController extends Controller
             $desc = 'Ticket <a href="'.url('ticket-details').'/' .$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> ' . $msg . ' ' .auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
-            
+
             $template = DB::table("templates")->where('code','ticket_common_notification')->first();
             if(!empty($template)) {
 
@@ -1630,7 +1630,7 @@ class HelpdeskController extends Controller
                     $mail->sendMail( $emailSubject , $temp , 'system_flagged@mylive-tech.com', $user->email , $user->name);
                 }
             }
-    
+
 
             $response['message'] = 'Ticket Flagged Successfully!';
             $response['status_code'] = 200;
@@ -1645,22 +1645,22 @@ class HelpdeskController extends Controller
     }
 
     public function ticketCommonNotificationShortCodes($templateHtml , $ticket , $flag , $tempType, $notes = '') {
-        
+
         $template = htmlentities($templateHtml);
- 
+
         if(str_contains($template, '{Subject}')) {
             $subject = auth()->user()->name . ' ' . ($tempType =='ticket_flag' ? $flag : ' mentioned you in ') . ' Ticket ' .  $ticket->coustom_id;
             $template = str_replace('{Subject}', $subject , $template);
         }
 
         if(str_contains($template, '{Flag-Image}')) {
-            
+
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/');
             $flaggedImage = '<img src="'.$url.'/public/default_imgs/flagged.png" width="20" style="width:20px !important; height:20px !important" />';
             $unflaggedImage = '<img src="'.$url.'/public/default_imgs/unflagged.png" width="20" style="width:20px !important; height:20px !important" />';
 
             $template = str_replace('{Flag-Image}', ($tempType != 'ticket_flag' ? '' : ( $flag =='Flagged' ? $flaggedImage : $unflaggedImage ) ) , $template);
-        }        
+        }
 
         if(str_contains($template, '{Ticket-Subject}')) {
             $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
@@ -1705,26 +1705,26 @@ class HelpdeskController extends Controller
 
         if($sla !== HelpdeskController::NOSLAPLAN) {
             $sla_from = $this->getSlaDeadlineFrom($ticket['id']);
-            
+
             if(!empty( $ticket_reply_deadline ) && !empty( $ticket_resolution_deadline ) ) {
                 if( $ticket_resolution_deadline != 'cleared'){
                     $res = Carbon::parse( $ticket_resolution_deadline );
                 }
-                
+
                 $rep = Carbon::parse($sla_from[1]);
             } else {
-                
+
                 if($ticket_resolution_deadline != 'cleared'){
 
                     $date = new \DateTime($ticket['created_at']);
-                    $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+                    $date->setTimezone(new \DateTimeZone( timeZone() ));
                     $res = Carbon::parse( $date->format('Y-m-d H:i:s') );
 
                     $dt = explode('.', $slaPlan['due_deadline']);
                     $res->addHours($dt[0]);
                     if(array_key_exists(1, $dt)) $res->addMinutes($dt[1]);
                 }
-                
+
                 $date = new \DateTime($sla_from[0] . '+00');
                 $date->setTimezone(new \DateTimeZone( timeZone() ));
                 $rep = Carbon::parse( $date->format('Y-m-d H:i:s') );
@@ -1735,16 +1735,16 @@ class HelpdeskController extends Controller
         }
 
         // reply due
-        
+
         if($ticket_reply_deadline == null) {
-                
+
             $dd = new Carbon( now(), timeZone() );
-            
+
             $currentDate =strtotime( $dd );
             $futureDate =strtotime( $rep );
 
             $diff = $mail->getDiff($futureDate , $currentDate);
-            
+
             if( str_contains($diff[0] , '-') ) {
                 $rep = '<span style="color: red  !important">' . $rep->format( $dateTimeFormat ) . ' (Overdue)' . '</span>';
                 $data[0] = $rep;
@@ -1755,23 +1755,23 @@ class HelpdeskController extends Controller
         }else{
 
             if($ticket_reply_deadline != 'cleared') {
-                
+
                 $rep_date = Carbon::parse($ticket_reply_deadline);
 
                 $a = strtotime( new Carbon( now(), timeZone() ) );
                 $b = strtotime($rep_date);
                 $remain = $b - $a;
-                
+
                 $diff = $mail->getDiff($b , $a);
 
                 if(str_contains($diff[0], '-')) {
-                    
+
                     $rpd = Carbon::parse($ticket_reply_deadline);
                     $rep = '<span style="color:red !important">'. $rpd->format( $dateTimeFormat ) .' (Overdue) </span>';
                     $data[0] = '<span style="color: red !important"> Reply due: </span>' . $rep;
-                    
+
                 }else{
-                    
+
                     $dd = new Carbon( now() , timeZone() );
                     $ab =  $dd->format( $dateTimeFormat );
                     $rep = $rep_date->format( $dateTimeFormat ) . ' ('.$diff[0].')' ;
@@ -1781,18 +1781,18 @@ class HelpdeskController extends Controller
             }else{
                 $rep = '';
                 $data[0] = $rep;
-            } 
+            }
         }
 
         // resolution deadline
         if($ticket_resolution_deadline == null) {
             $dd = new Carbon( now(), timeZone() );
-            
+
             $currentDate = strtotime( $dd );
             $futureDate = strtotime( $res );
-            
+
             $diff = $mail->getDiff($futureDate , $currentDate);
-            
+
             if( str_contains($diff[0] , '-') ) {
                 $res = '<span style="color: red  !important">' . $res->format( $dateTimeFormat ) . ' (Overdue)' . '</span>';
                 $data[1] = $res;
@@ -1803,18 +1803,18 @@ class HelpdeskController extends Controller
         }else{
 
             if( $ticket_resolution_deadline != 'cleared') {
-                
+
                 $res_date = Carbon::parse( $ticket_resolution_deadline );
-                
-                
+
+
                 $a = strtotime( new Carbon( now(), timeZone() ) );
                 $b = strtotime($res_date);
                 $remain = $b - $a;
-                
+
                 $diff = $mail->getDiff($b , $a);
-                                
+
                 if(str_contains($diff[0], '-')) {
-                    
+
                     $rd = Carbon::parse( $ticket_resolution_deadline );
                     $res = '<span style="color:red !important">'. $rd->format( $dateTimeFormat ) .' (Overdue) </span>';
                     $data[1] = '<span style="color:red !important"> Resolution due: </span>' . $res;
@@ -1825,7 +1825,7 @@ class HelpdeskController extends Controller
                     $res = $res_date->format( $dateTimeFormat ) . ' ('.$diff[0].')';
                     $data[1] = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>' . $res;
                 }
-                
+
             }else{
                 $res = '';
                 $data[1] = $res;
@@ -1838,7 +1838,7 @@ class HelpdeskController extends Controller
 
 
 
-  
+
     public function save_ticket_follow_up(Request $request) {
         $data = $request->all();
         $response = array();
@@ -1861,7 +1861,7 @@ class HelpdeskController extends Controller
             $data['created_by'] = \Auth::user()->id;
             $ticket_followUp = TicketFollowUp::create($data);
 
-            if( isset($request->close_ticket)){ 
+            if( isset($request->close_ticket)){
                 $status = TicketStatus::firstWhere('slug','closed');
                 $ticket->status = $status->id;
                 $response['ticket_close'] = $status->id;
@@ -1893,7 +1893,7 @@ class HelpdeskController extends Controller
     public function getTicketReplies($id) {
         $response = array();
         try {
-            
+
             $replies = TicketReply::where('ticket_id', $id)->with(['replyUser','customerReplies'])->orderBy('created_at', 'DESC')->get();
             $bbcode = new BBCode();
 
@@ -1965,16 +1965,16 @@ class HelpdeskController extends Controller
                 }else{
                     $tm_name = 'America/New_York';
                 }
-                
+
                 $add_value = 0;
                 $add_type = '';
 
                 foreach($flwups as $flwup) {
-                    
+
                     $ticket = Tickets::findOrFail($flwup->ticket_id);
 
                     if( $flwup->is_recurring == 1 ) {
-                        
+
                         $checkFollowUpLogs = TicketFollowupLogs::where('follow_up_id' , $flwup->id)->orderByDesc('id')->first();
                         if($checkFollowUpLogs) {
 
@@ -1986,23 +1986,23 @@ class HelpdeskController extends Controller
                                 if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
 
                                     $startDate = new Carbon( $flwup->recurrence_start , $tm_name);
-                            
+
                                     if($flwup->recurrence_pattern && $flwup->recurrence_time) {
-        
+
                                         if($flwup->date) $followUpDate = new Carbon($flwup->date, $tm_name);
                                         else $followUpDate = $startDate;
-        
+
                                         $rec_time = explode(':', $flwup->recurrence_time);
-        
+
                                         // set some timezone for proper hour and mins setting
                                         $followUpDate->timezone(Session::get('timezone'));
-                        
+
                                         $followUpDate->hour = $rec_time[0];
                                         $followUpDate->minute = $rec_time[1];
-                                        
+
                                         // convert back to utc for further calculations
                                         $followUpDate->utcOffset(0);
-                                        
+
                                         $pattern = explode('|', $flwup->recurrence_pattern);
                                         $pattern_type = $pattern[0];
                                         // daily|2
@@ -2015,13 +2015,13 @@ class HelpdeskController extends Controller
                                             case 'weekly':
                                                 $w_val = $pattern[1]; // weeks to occur after
                                                 $w_days = explode(',', $pattern[2]); // weekly days
-                        
+
                                                 $today = (String) $followUpDate->day;
-        
+
                                                 if(array_search($today, $w_days) == -1) $w_days[] = $today;
-                        
+
                                                 sort($w_days);
-                        
+
                                                 if(sizeof($w_days) == 1) {
                                                     // set follow up on current day or next week
                                                     $add_value = $w_val*7;
@@ -2035,7 +2035,7 @@ class HelpdeskController extends Controller
                                                     } else {
                                                         // set follow up on next index
                                                         $daytoadd = $w_val*((int) $w_days[$t_ind+1] - (int) $today);
-        
+
                                                     }
                                                     $add_value = $daytoadd;
                                                     $add_type = 'days';
@@ -2044,54 +2044,54 @@ class HelpdeskController extends Controller
                                             case 'monthly':
                                                 $m_val = $pattern[1]; // month
                                                 $md_val = $pattern[2]; // month day
-                        
+
                                                 $add_value = $m_val;
                                                 $add_type = 'months';
-                        
+
                                                 $followUpDate->set('day', $md_val);
                                                 break;
                                             case 'yearly':
                                                 $y_val = $pattern[1];
                                                 $y_month = $pattern[2];
                                                 $y_m_day = $pattern[3];
-                        
+
                                                 $add_value = $y_val;
                                                 $add_type = 'years';
-                        
+
                                                 $followUpDate->month = $y_month;
                                                 $followUpDate->day = $y_m_day;
                                                 break;
                                             default:
                                                 break;
                                         }
-                                    
-        
+
+
                                         // $currentDateTime = new \DateTime();
                                         // $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
                                         // $nowDate = Carbon::parse( $currentDateTime->format('Y-m-d') );
                                         $nowDate = new Carbon( Carbon::now() , $tm_name);
-                                        
+
                                         // $newfollowUpDate = new \DateTime($followUpDate);
                                         // $newfollowUpDate->setTimezone(new \DateTimeZone($tm_name));
                                         // $followUpDate = Carbon::parse( $newfollowUpDate->format('Y-m-d') );
                                         $followUpDate = new Carbon( $followUpDate , $tm_name);
-                                        
-                                        
+
+
                                         $timediff = $nowDate->diffInSeconds($followUpDate, false);
                                         if($timediff < 0) {
-                                    
+
                                             $idata = array();
                                             // follow up time to update ticket
                                             $idata['ticket_update'] = true;
-                                
+
                                             // update the recurrence time for next all ocurrences
                                             if($flwup->recurrence_time2) $idata['recurrence_time'] = $flwup->recurrence_time2;
-                                            
+
                                             if($flwup->recurrence_end_type == 'count') {
                                                 if((int) $flwup->recurrence_end_val > 0) $idata['recurrence_end_val'] = (int) $flwup->recurrence_end_val-1;
                                                 else $idata['passed'] = 1;
                                             }
-                                        
+
                                             // if(!array_key_exists('passed', $idata)) {
                                                 if($add_type == 'minutes') $followUpDate->addMinutes($add_value);
                                                 else if($add_type == 'hours') $followUpDate->addHours($add_value);
@@ -2099,9 +2099,9 @@ class HelpdeskController extends Controller
                                                 else if($add_type == 'weeks') $followUpDate->addWeeks($add_value);
                                                 else if($add_type == 'months') $followUpDate->addMonths($add_value);
                                                 else if($add_type == 'years') $followUpDate->addYears($add_value);
-                                
-                                
-                                
+
+
+
                                                 if($flwup->recurrence_end_type == 'date') {
                                                     // $endDate = new Carbon($flwup->recurrence_end_val);
                                                     $endDate = new \DateTime($flwup->recurrence_end_val);
@@ -2110,28 +2110,28 @@ class HelpdeskController extends Controller
                                                     if( strtotime($followUpDate) >=  strtotime($endDate) ) {
                                                         $idata['passed'] = 1;
                                                     }
-                                                    
+
                                                     // if($followUpDate->isAfter($endDate)) $idata['passed'] = 1;
                                                 }
-                                                // if(!array_key_exists('passed', $idata)) 
+                                                // if(!array_key_exists('passed', $idata))
                                                 $idata['date'] = new Carbon($followUpDate);
                                             // }
-        
-                                
+
+
                                             if(array_key_exists('passed', $idata)) $flwup->passed = $idata['passed'];
                                             if(array_key_exists('date', $idata)) $flwup->date = $idata['date'];
                                             if(array_key_exists('recurrence_time', $idata)) $flwup->recurrence_time = $idata['recurrence_time'];
                                             if(array_key_exists('recurrence_end_val', $idata)) $flwup->recurrence_end_val = $idata['recurrence_end_val'];
-                                
+
                                             $flwup->save();
-                                
+
                                             // if(!array_key_exists('passed', $idata)) $this->follow_up_calculation($followUp);
                                             if($idata['passed'] == 1){
                                                 $this->createFollowUpLogs($ticket , $flwup , $value = null,$idata['passed']);
                                             }else{
                                                 $this->createFollowUpLogs($ticket , $flwup , $value = null);
                                             }
-                                            
+
                                         }
                                     }
 
@@ -2141,7 +2141,7 @@ class HelpdeskController extends Controller
                                     return response()->json($response);
                                 }
                             }
-                            
+
                         }else{
                             $this->createFollowUpLogs($ticket , $flwup , $value = null);
                         }
@@ -2162,29 +2162,29 @@ class HelpdeskController extends Controller
 
                                         // convert utc time into user timezone
                                         $date = new \DateTime($flwup->created_at);
-                                        $date->setTimezone(new \DateTimeZone($tm_name));                            
+                                        $date->setTimezone(new \DateTimeZone($tm_name));
                                         $convertedDate = Carbon::parse( $date->format('Y-m-d H:i:s') );
-        
+
                                         $schedule_type = $flwup->schedule_type;
                                         $schedule_time = $flwup->schedule_time;
-        
-                                        // pass converted_date , 
+
+                                        // pass converted_date ,
                                         $futureDate = $this->calculateFutureDate($convertedDate , $schedule_time , $schedule_type);
-        
+
                                         // getting region current date and time
                                         $currentDateTime = new \DateTime();
-                                        $currentDateTime->setTimezone(new \DateTimeZone($tm_name));                            
+                                        $currentDateTime->setTimezone(new \DateTimeZone($tm_name));
                                         $currentDate = Carbon::parse( $currentDateTime->format('Y-m-d H:i:s') );
-        
+
                                         if( strtotime($currentDate) >=  strtotime($futureDate) ) {
-        
+
                                             // $this->triggerFollowUp($ticket , $flwup);
                                             $this->createFollowUpLogs($ticket , $flwup , $value = null );
 
                                             $flwup->passed = 1;
                                             $flwup->save();
                                         }
-        
+
                                     }
 
                                     $this->createFollowUpLogs($ticket , $flwup , $value = null);
@@ -2196,14 +2196,14 @@ class HelpdeskController extends Controller
                                 }
                             }
 
-                            
+
                         } else{
                             $this->createFollowUpLogs($ticket , $flwup , $value = null);
-                        }  
+                        }
                     }
                 }
             }
-            
+
             // $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
             // $action_perform = 'Ticket (ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Follow-up "'.$logData.'" by ' . $name_link;
 
@@ -2230,21 +2230,21 @@ class HelpdeskController extends Controller
                 $ticket = Tickets::findOrFail($request->ticket_id);
                 $data = json_decode($request->data, true);
                 $logData = '';
-                
+
                 if(is_array($data)) {
                     foreach ($data as $value) {
                         $flwup = TicketFollowUp::findOrFail($value['id']);
 
                         $checkFollowUpLogs = TicketFollowupLogs::where('follow_up_id' , $flwup->id)->orderByDesc('id')->first();
                         if($checkFollowUpLogs) {
-                          
+
                             if($checkFollowUpLogs->is_recurring == 1){
-    
+
                                 $currentDate = date('Y-m-d H:i:s');
                                 $fLogs_created_at = $checkFollowUpLogs->created_at;
 
                                 if($checkFollowUpLogs->is_cron == 1 || $checkFollowUpLogs->is_front_end == 1) {
-    
+
                                     if(strtotime($currentDate) > strtotime($fLogs_created_at) ) {
 
                                         $this->createFollowUpLogs($ticket , $flwup , $value );
@@ -2258,7 +2258,7 @@ class HelpdeskController extends Controller
 
                                     }
                                 }
-    
+
                             }else{
 
                                 if($checkFollowUpLogs->is_cron == 1 ||  $checkFollowUpLogs->is_front_end == 1) {
@@ -2286,11 +2286,11 @@ class HelpdeskController extends Controller
             $response['status_code'] = 500;
             $response['success'] = false;
             return response()->json($response);
-        }  
+        }
     }
 
     public function createFollowUpLogs($ticket , $flwup , $value , $passed = '') {
-        
+
         $fLogsData = array(
             'ticket_id' => $ticket->id,
             'follow_up_id' => $flwup->id,
@@ -2305,7 +2305,7 @@ class HelpdeskController extends Controller
             'old_status' => $ticket->status,
             'old_type' => $ticket->type,
             'new_dept_id' => $flwup->follow_up_dept_id,
-            'new_priority' => $flwup->follow_up_priority, 
+            'new_priority' => $flwup->follow_up_priority,
             'new_assigned_to' => $flwup->follow_up_assigned_to,
             'new_status'=> $flwup->follow_up_status,
             'new_type' => $flwup->follow_up_type,
@@ -2322,7 +2322,7 @@ class HelpdeskController extends Controller
             'recurrence_end_type' => $flwup->recurrence_end_type,
             'recurrence_end_val' => $flwup->recurrence_end_val,
             'date' => $flwup->date,
-            'created_by' => $flwup->created_by, 
+            'created_by' => $flwup->created_by,
         );
 
         if(array_key_exists('is_recurring' , $value)) {
@@ -2332,7 +2332,7 @@ class HelpdeskController extends Controller
         }
 
         TicketFollowupLogs::create($fLogsData);
-        
+
         if($value != null) {
 
             if(array_key_exists('date', $value)) {
@@ -2348,7 +2348,7 @@ class HelpdeskController extends Controller
                 $flwup->recurrence_time = $value['recurrence_time'];
                 $flwup->recurrence_time2 = NULL;
             }
-            
+
             $this->triggerFollowUp($ticket , $flwup , $passed);
 
         }else{
@@ -2377,7 +2377,7 @@ class HelpdeskController extends Controller
                     "id" => 1 ,
                     "data" => $ticket->department_name ,
                     "new_data" => $flwup->follow_up_dept_id ,
-                    "new_text" => $dept_name->name , 
+                    "new_text" => $dept_name->name ,
                 );
 
                 array_push($updates_Arr, $obj);
@@ -2392,7 +2392,7 @@ class HelpdeskController extends Controller
                     "id" => 2 ,
                     "data" => $ticket->assignee_name ,
                     "new_data" => $flwup->follow_up_assigned_to ,
-                    "new_text" => $user->name , 
+                    "new_text" => $user->name ,
                 );
 
                 array_push($updates_Arr, $obj);
@@ -2407,9 +2407,9 @@ class HelpdeskController extends Controller
                     "id" => 3 ,
                     "data" => $ticket->type_name ,
                     "new_data" => $flwup->follow_up_type ,
-                    "new_text" =>$tkt_type->name, 
+                    "new_text" =>$tkt_type->name,
                 );
-                
+
                 array_push($updates_Arr, $obj);
             }
         }
@@ -2422,9 +2422,9 @@ class HelpdeskController extends Controller
                     "id" => 4 ,
                     "data" => $ticket->status_name ,
                     "new_data" => $flwup->follow_up_status ,
-                    "new_text" => $tkt_status->name, 
+                    "new_text" => $tkt_status->name,
                 );
-                
+
                 array_push($updates_Arr, $obj);
             }
         }
@@ -2437,36 +2437,36 @@ class HelpdeskController extends Controller
                     "id" => 5 ,
                     "data" => $ticket->priority_name ,
                     "new_data" => $flwup->follow_up_priority ,
-                    "new_text" => $tkt_priority->name, 
+                    "new_text" => $tkt_priority->name,
                 );
-                
+
                 array_push($updates_Arr, $obj);
             }
         }
 
         $logData = '';
-        
+
         $ticket->dept_id = $flwup->follow_up_dept_id;
         $ticket->priority = $flwup->follow_up_priority;
         $ticket->assigned_to = $flwup->follow_up_assigned_to;
         $ticket->status = $flwup->follow_up_status;
         $ticket->type = $flwup->follow_up_type;
         $ticket->updated_at = Carbon::now();
-        
+
         $logData = 'ticket updated';
 
         if(!empty($flwup['follow_up_reply'])) {
-            
+
             $bbcode = new BBCode();
 
             TicketReply::create([
                 "ticket_id" => $flwup->ticket_id,
-                "user_id" => $flwup->created_by, 
-                "msgno" => null , 
-                "reply" => $flwup->follow_up_reply , 
-                // "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) , 
-                "cc" => null , 
-                "date" => date('Y-m-d H:i:s'), 
+                "user_id" => $flwup->created_by,
+                "msgno" => null ,
+                "reply" => $flwup->follow_up_reply ,
+                // "reply" => $bbcode->convertFromHtml( $flwup->follow_up_reply ) ,
+                "cc" => null ,
+                "date" => date('Y-m-d H:i:s'),
                 "is_published" => 1 ,
                 "attachments" => null ,
             ]);
@@ -2475,7 +2475,7 @@ class HelpdeskController extends Controller
             }
 
             $ticket->reply_deadline = 'cleared';
-        
+
         }
         $ticket->save();
 
@@ -2493,7 +2493,7 @@ class HelpdeskController extends Controller
             $logData .= (empty($logData)) ? 'added a note' : ', added a note';
         }
         $flwup->updated_at = Carbon::now();
-    
+
         $created_by = User::where('id',$flwup->created_by)->first();
         $flwup_updated = $created_by->name;
         if($passed == 1){
@@ -2504,7 +2504,7 @@ class HelpdeskController extends Controller
         $ticket = Tickets::findOrFail($flwup->ticket_id);
         $this->sendNotificationMail($ticket->toArray(), 'ticket_note_create', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
         $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $flwup_reply, '', 'Ticket Followup', '' , '' , $updates_Arr,'','',$flwup_note,$flwup_updated);
-        return; 
+        return;
     }
 
     public function update_ticket_follow_up(Request $request) {
@@ -2517,11 +2517,11 @@ class HelpdeskController extends Controller
                 $data = json_decode($request->data, true);
 
                 $logData = '';
-                
+
                 if(is_array($data)) {
                     foreach ($data as $value) {
                         $flwup = TicketFollowUp::findOrFail($value['id']);
-                        
+
                         if(array_key_exists('date', $value)) {
                             $flwup->date = $value['date'];
                         }
@@ -2535,7 +2535,7 @@ class HelpdeskController extends Controller
                             $flwup->recurrence_time = $value['recurrence_time'];
                             $flwup->recurrence_time2 = NULL;
                         }
-                        
+
                         if(array_key_exists('ticket_update', $value) || array_key_exists('passed', $value)) {
                             try {
                                 $ticket->dept_id = $flwup->follow_up_dept_id;
@@ -2545,13 +2545,13 @@ class HelpdeskController extends Controller
                                 $ticket->type = $flwup->follow_up_type;
                                 $ticket->updated_at = Carbon::now();
                                 $ticket->save();
-                                
+
                                 $logData = 'ticket updated';
                             } catch (Exception $e) {
                                 //
                             }
                         }
-                        
+
                         if(!empty($flwup['follow_up_notes'])) {
                             TicketNote::create([
                                 'ticket_id' => $flwup->ticket_id,
@@ -2566,7 +2566,7 @@ class HelpdeskController extends Controller
                             $logData .= (empty($logData)) ? 'added a note' : ', added a note';
                         }
                         $flwup->updated_at = Carbon::now();
-            
+
                         // $ticket = Tickets::findOrFail($flwup->ticket_id);
                     }
                 }
@@ -2648,7 +2648,7 @@ class HelpdeskController extends Controller
 
                 if($followUp->date) $followUpDate = new Carbon($followUp->date);
                 else $followUpDate = $startDate;
-                
+
                 $rec_time = explode(':', $followUp->recurrence_time);
 
                 // set some timezone for proper hour and mins setting
@@ -2659,7 +2659,7 @@ class HelpdeskController extends Controller
 
                 // convert back to utc for further calculations
                 $followUpDate->utcOffset(0);
-                
+
                 $pattern = explode('|', $followUp->recurrence_pattern);
                 $pattern_type = $pattern[0];
                 // daily|2
@@ -2674,7 +2674,7 @@ class HelpdeskController extends Controller
                         $w_days = explode(',', $pattern[2]); // weekly days
 
                         $today = (String) $followUpDate->day;
-                        
+
                         if(array_search($today, $w_days) == -1) $w_days[] = $today;
 
                         sort($w_days);
@@ -2740,12 +2740,12 @@ class HelpdeskController extends Controller
 
             // update the recurrence time for next all ocurrences
             if($followUp->recurrence_time2) $idata['recurrence_time'] = $followUp->recurrence_time2;
-            
+
             if($followUp->recurrence_end_type == 'count') {
                 if((int) $followUp->recurrence_end_val > 0) $idata['recurrence_end_val'] = (int) $followUp->recurrence_end_val-1;
                 else $idata['passed'] = 1;
             }
-            
+
             if(!array_key_exists('passed', $idata)) {
                 if($add_type == 'minutes') $followUpDate->addMinutes($add_value);
                 else if($add_type == 'hours') $followUpDate->addHours($add_value);
@@ -2774,7 +2774,7 @@ class HelpdeskController extends Controller
 
         return $followUpDate;
     }
-    
+
     public function del_ticket_follow_up($flwup_id){
         $followUp = TicketFollowUp::findOrFail($flwup_id);
 
@@ -2805,16 +2805,17 @@ class HelpdeskController extends Controller
             return response()->json($response);
         }
     }
-    
-    public function save_ticket_note(Request $request) {       
+
+    public function save_ticket_note(Request $request) {
         $data = $request->all();
+
         $response = array();
         try{
             $action_performed = '';
             $ticket = Tickets::findOrFail($data['ticket_id']);
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
-            
+
             if( $request->id != null ){
 
                 $note = TicketNote::findOrFail($data['id']);
@@ -2824,7 +2825,7 @@ class HelpdeskController extends Controller
                 $note->note = $data['note'];
                 $note->visibility = (array_key_exists('visibility', $data)) ? $data['visibility'] : '';
                 $note->updated_by = \Auth::user()->id;
-                
+
                 $note->updated_at = Carbon::now();
                 $note->save();
 
@@ -2840,7 +2841,7 @@ class HelpdeskController extends Controller
             $ticket->updated_at = Carbon::now();
             $ticket->updated_by = \Auth::user()->id;
             $ticket->save();
-            
+
             $sla_updated = false;
             $settings = $this->getTicketSettings(['reply_due_deadline_when_adding_ticket_note']);
             if(isset($settings['reply_due_deadline_when_adding_ticket_note'])) {
@@ -2864,13 +2865,13 @@ class HelpdeskController extends Controller
             if($request->tag_emails != null && $request->tag_emails != '') {
 
                 $emails = explode(',',$request->tag_emails);
-        
+
                 for( $i = 0; $i < sizeof($emails); $i++ ) {
-                    
+
                     $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
                     if($user) {
                         $ticket = Tickets::where('is_deleted', 0)->where('id',$request->ticket_id)->first();
-        
+
                         $notify = new NotifyController();
                         $sender_id = \Auth::user()->id;
                         $receiver_id = $user->id;
@@ -2881,7 +2882,7 @@ class HelpdeskController extends Controller
                         $icon = 'at-sign';
                         $class = 'btn-success';
                         $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
-                        
+
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
 
                         // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
@@ -2893,7 +2894,7 @@ class HelpdeskController extends Controller
                 }
             }
             $check =  Tickets::where('id' , $request->ticket_id)->first();
-            
+
 
             // send notification
             $slug = url('ticket-details') .'/'.$ticket->coustom_id;
@@ -2915,7 +2916,117 @@ class HelpdeskController extends Controller
             $response['status_code'] = 500;
             $response['success'] = false;
             return response()->json($response);
-        }    
+        }
+    }
+
+    public function UserORGNote(Request $request) {
+        $data = $request->all();
+
+        $response = array();
+        try{
+            $action_performed = '';
+
+            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+
+            if( $request->id != null ){
+
+                $note = TicketNote::findOrFail($data['id']);
+
+                $note->color = $data['color'];
+                $note->type = $data['type'];
+                $note->note = $data['note'];
+                $note->visibility = (array_key_exists('visibility', $data)) ? $data['visibility'] : '';
+                $note->updated_by = \Auth::user()->id;
+
+                $note->updated_at = Carbon::now();
+                $note->save();
+
+
+                $data = $note;
+                $action_performed = 'User (<a href="'.url('customer-profile').'/'.$note->coustom_id.'">'.$note->coustom_id.'</a>) Note updated by '. $name_link;
+            }else{
+                $data['created_by'] = \Auth::user()->id;
+                $note = TicketNote::create($data);
+
+                $action_performed = 'User (<a href="'.url('customer-profile').'/'.$note->coustom_id.'">'.$note->coustom_id.'</a>) Note added by '. $name_link;
+            }
+
+
+            $sla_updated = false;
+            // $settings = $this->getTicketSettings(['reply_due_deadline_when_adding_ticket_note']);
+            // if(isset($settings['reply_due_deadline_when_adding_ticket_note'])) {
+            //     if($settings['reply_due_deadline_when_adding_ticket_note'] == 1) {
+            //         $note->reply_deadline = 'cleared';
+            //         $note->updated_at = Carbon::now();
+            //         $note->save();
+
+            //         $sla_updated = 'cleared';
+
+            //         $log = new ActivitylogController();
+            //         $log->saveActivityLogs('Tickets' , 'sla_rep_deadline_from' , $note->id , auth()->id() , $action_performed);
+            //     }
+            // }
+
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'ticket_notes' , $note->id , auth()->id() , $action_performed);
+
+            $template = DB::table("templates")->where('code','ticket_common_notification')->first();
+
+            if($request->tag_emails != null && $request->tag_emails != '') {
+
+                $emails = explode(',',$request->tag_emails);
+
+                for( $i = 0; $i < sizeof($emails); $i++ ) {
+
+                    $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
+                    if($user) {
+                        $ticket = Tickets::where('is_deleted', 0)->where('id',$note->id)->first();
+
+                        $notify = new NotifyController();
+                        $sender_id = \Auth::user()->id;
+                        $receiver_id = $user->id;
+                        $slug = url('customer-profile') .'/'.$note->coustom_id;
+                        $type = 'ticket_notes';
+                        $data = 'data';
+                        $title = \Auth::user()->name.' mentioned You ';
+                        $icon = 'at-sign';
+                        $class = 'btn-success';
+                        $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $note->coustom_id;
+
+                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+
+                        // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
+
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $request->note);
+                        $mail = new MailController();
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $note->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+                    }
+                }
+            }
+
+
+
+            // send notification
+            $slug = url('customer-profile') .'/'.$note->coustom_id;
+            $type = 'ticket_updated';
+            $title = ($request->id != null ? 'User Note Updated' : 'User Note Created');
+            $desc = 'User (<a href="'.url('/customer-profile').'/' .$note->coustom_id.'">'.$note->coustom_id.'</a>)' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
+            sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
+            $response['message'] = 'User Note Saved Successfully!';
+            $response['sla_updated'] = $sla_updated;
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['tkt_update_at'] = $note->updated_at;
+            $response['data'] = $note;
+            return response()->json($response);
+
+        } catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
     }
 
     public function addTicketCustomer(Request $request) {
@@ -2962,7 +3073,7 @@ class HelpdeskController extends Controller
                 $user->status = 1;
                 $user->user_type = 5;
                 $user->save();
-                
+
                 try {
                     $mailer = new MailController();
                     $mailer->UserRegisteration($data['email']);
@@ -3007,28 +3118,28 @@ class HelpdeskController extends Controller
                 if(isset($data['new_customer'])) {
                     $data['customer_id'] = $this->addTicketCustomer($request);
                     $customer = Customer::find($data["customer_id"]);
-    
+
                     if($data['new_company'] != 0) {
-                        Company::create([ 
+                        Company::create([
                             "name" => $data['company_name'] != null ? $data['company_name']  : '',
                             "poc_first_name" => $data['cmp_first_name'] != null ? $data['cmp_first_name']  : '',
                             "poc_last_name" => $data['cmp_last_name'] != null ? $data['cmp_last_name']  : '',
                             "phone" => $data['cmp_phone'] != null ? $data['cmp_phone']  : '',
                         ]);
                     }
-    
+
                 } else {
                     $customer = Customer::find($data["customer_id"]);
-    
+
                     $tkt_share = array();
-    
+
                     // if($data['tkt_cc'] != null && $data['tkt_cc'] != "") {
                         $tkt_share['email'] = $data['tkt_cc'];
                         $tkt_share['mail_type'] = 1;
                         $tkt_share['ticket_id'] = $data['ticket_id'];
-    
+
                         $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 1)->first();
-    
+
                         if($shared_emails) {
                             $shared_emails->email = $data['tkt_cc'];
                             $shared_emails->save();
@@ -3036,12 +3147,12 @@ class HelpdeskController extends Controller
                             TicketSharedEmails::create($tkt_share);
                         }
                     // }
-    
+
                     // if($data['tkt_bcc'] != null && $data['tkt_bcc'] != "") {
                         $tkt_share['email'] = $data['tkt_bcc'];
                         $tkt_share['mail_type'] = 2;
                         $tkt_share['ticket_id'] = $data['ticket_id'];
-    
+
                         $shared_emails = TicketSharedEmails::where('ticket_id',$data['ticket_id'])->where('mail_type' , 2)->first();
                         if($shared_emails) {
                             $shared_emails->email = $data['tkt_bcc'];
@@ -3049,15 +3160,15 @@ class HelpdeskController extends Controller
                         }else{
                             TicketSharedEmails::create($tkt_share);
                         }
-    
+
                     // }
                 }
-    
+
                 $ticket = Tickets::find($data["ticket_id"]);
-                
+
                 $ticket->customer_id = $customer->id;
                 $ticket->is_staff_tkt = 0;
-    
+
                 $ticket->save();
             }else{
 
@@ -3150,23 +3261,21 @@ class HelpdeskController extends Controller
                     $customer = Customer::where('id', $request->customer)->first();
                     $company_id = $customer->company_id;
 
-                    
                    $notes = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$request->customer)->orwhere('company_id',$company_id)->get();
 
-                    
                 }else if($request->type == 'User Organization'){
-                    
+
                      $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$request->company_id)->get();
                 }
             }else{
                 if(!$request->has('id')) throw new Exception('Ticket id missing');
-            
+
                 $id = $request->id;
                 $company_id = '';
-                
+
                 $type = $request->type;
                 if(!is_array($id)) $id = [$id];
-    
+
                 $ticket = Tickets::where('id', $id)->first();
                 if($ticket->is_staff_tkt == 1){
                     $customer = User::where('id' , $ticket->customer_id)->first();
@@ -3179,11 +3288,11 @@ class HelpdeskController extends Controller
                     }
                 }
                 $customer_id = $customer->id;
-                
+
                 if(!is_array($customer)) $customer_id = [$customer_id];
                 if(!is_array($customer)) $company_id = [$company_id];
-    
-    
+
+
                 $notes_arr = DB::table('users')
                 ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
                 ->select('ticket_notes.*', 'users.name', 'users.profile_pic')->whereIn('ticket_notes.ticket_id', $id)
@@ -3197,27 +3306,27 @@ class HelpdeskController extends Controller
                 })
                 ->orderBy('created_at', 'desc')
                 ->get()->toArray();
-                
+
                 $notes = array_filter($notes_arr, function ($notes_arr) {
                     if( $notes_arr->is_deleted == 0 ) {
-                        return $notes_arr;    
+                        return $notes_arr;
                     }
-                }); 
+                });
             }
-            
-                 
+
+
             $response['message'] = 'Success';
             $response['status_code'] = 200;
             $response['success'] = true;
             $response['notes']= json_decode( json_encode($notes) , true);
             $response['notes_count']= count($notes);
-            
+
             return response()->json($response);
         } catch(Exception $e) {
             $response['message'] = $e->getMessage();
             $response['status_code'] = 500;
             $response['success'] = false;
-            
+
             return response()->json($response);
         }
     }
@@ -3231,7 +3340,7 @@ class HelpdeskController extends Controller
                 $note->deleted_by = \Auth::user()->id;
                 $note->deleted_at =  Carbon::now();
                 $note->save();
-                
+
                 $ticket = Tickets::where('id' , $note->ticket_id)->first();
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
@@ -3243,7 +3352,7 @@ class HelpdeskController extends Controller
                     $ticket->save();
 
                     $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) Note deleted by '. $name_link;
-        
+
                 }else{
                     $ticket = Tickets::where("coustom_id" , $request->ticket_id)->first();
                     $ticket->updated_at =  Carbon::now();
@@ -3270,13 +3379,45 @@ class HelpdeskController extends Controller
         }
     }
 
+    public function del_UserORGNote(Request $request){
+        try{
+            if(!empty($request->id)){
+                $note = TicketNote::findOrFail($request->id);
+
+                $note->is_deleted = 1;
+                $note->deleted_by = \Auth::user()->id;
+                $note->deleted_at =  Carbon::now();
+                $note->save();
+
+
+                $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+
+                $action_perform = 'User '.$note->id.' Note deleted by '. $name_link;
+
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Note' , 'user_notes' , $note->id, auth()->id() , $action_perform);
+            }
+
+            $response['message'] = 'User Note Deleted Successfully!';
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            return response()->json($response);
+
+        }catch(Exception $e){
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
     public function spamTickets(Request $request){
 
         $data  = $request->tickets;
         $cust_arr = array();
         try{
             for($i=0; $i< sizeof($data);$i++) {
-                
+
                 $del_tkt = Tickets::where('id',$data[$i])->first();
                 $del_tkt->is_deleted = 1;
                 $del_tkt->save();
@@ -3291,7 +3432,7 @@ class HelpdeskController extends Controller
                 if(!in_array($customer->id, $cust_arr)){
                     array_push($cust_arr,$customer->id);
                 }
-                
+
             }
 
             for($j=0; $j< sizeof($cust_arr);$j++){
@@ -3300,10 +3441,10 @@ class HelpdeskController extends Controller
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
                 $action_perform = 'Customer ('.$customer->email.') deleted By '. $name_link;
-                
+
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Customer' , 'customers' , $customer->id , auth()->id() , $action_perform);
-                
+
                 // send notification
                 $slug = '';
                 $type = 'Customer Deleted';
@@ -3328,7 +3469,7 @@ class HelpdeskController extends Controller
     }
 
     public function spamUser(Request $request){
-        
+
         try {
             if($request->has('ticket_id')) {
                 $id = $request->ticket_id;
@@ -3342,19 +3483,19 @@ class HelpdeskController extends Controller
                 $customer_id = $ticket->customer_id;
                 $customer = Customer::where('id',$customer_id)->first();
                 if($customer){
-                    
+
                     $user = SpamUser::where('email',$customer->email)->first();
                     if(!$user){
                         SpamUser::create([
                             "email" => $customer->email ,
                             "banned_by" => \Auth::user()->id,
                         ]);
-                    } 
+                    }
                     $customer->is_deleted = 1;
                     $customer->save();
                     $data = array(
-                        "is_deleted" => 1, 
-                       
+                        "is_deleted" => 1,
+
                     );
                     $tickets = Tickets::where('customer_id', $customer->id)->update($data);
                 }else{
@@ -3363,12 +3504,12 @@ class HelpdeskController extends Controller
                     $response['success'] = false;
                     return response()->json($response);
                 }
-                
+
                 // $ticket->trashed = 1;
                 // $ticket->updated_at = Carbon::now();
                 // $ticket->updated_by = \Auth::user()->id;
                 // $ticket->save();
-                
+
                 $response['message'] = 'User spammed and tickets Deleted.';
                 $response['success'] = true;
             } else {
@@ -3384,7 +3525,7 @@ class HelpdeskController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }
-        
+
     }
 
     public function mergeTickets(Request $request) {
@@ -3404,7 +3545,7 @@ class HelpdeskController extends Controller
                 array_splice($ids, array_search($ticket->id, $ids), 1);
 
                 $tickets = Tickets::whereIn('id', $ids)->where('is_deleted', 0)->get();
-                
+
                 foreach ($tickets as $i => $value) {
                     if($value->trashed == 1) {
                         $response['message'] = 'Please restore tickets to merge';
@@ -3452,27 +3593,27 @@ class HelpdeskController extends Controller
                     // if($ticket->customer_id != $ticket_into_merge->customer_id){
 
                     //     $customer = Customer::where('id',$ticket->customer_id)->first();
-    
+
                     //     $tkt_share['email'] = $customer->email;
                     //     $tkt_share['mail_type'] = 1;
                     //     $tkt_share['ticket_id'] = $ticket_into_merge->id;
-    
+
                     //     $shared_emails = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 1)->first();
-    
+
                     //     if($shared_emails) {
                     //         $shared_emails->email = $data['tkt_cc'];
                     //         $shared_emails->save();
                     //     }else{
                     //         TicketSharedEmails::create($tkt_share);
                     //     }
-    
+
                     //     $ticket->is_deleted = 1;
                     //     $ticket->save();
                     // }
 
                     $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
                     $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$value->coustom_id.'">'.$value->coustom_id.'</a>) merged into ID <a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> By '. $name_link;
-        
+
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id, auth()->id() , $action_perform);
 
@@ -3482,7 +3623,7 @@ class HelpdeskController extends Controller
                 $ticket->updated_at = Carbon::now();
                 $ticket->updated_by = \Auth::user()->id;
                 $ticket->save();
-                
+
                 $response['message'] = 'Ticket(s) Merged Successfully!';
                 $response['success'] = true;
             } else {
@@ -3511,7 +3652,7 @@ class HelpdeskController extends Controller
                 $response['success'] = false;
                 return response()->json($response);
             }
-            
+
             $assoc_plan = SlaPlanAssoc::where('ticket_id', $ticket->id)->first();
             if(empty($assoc_plan)) {
                 SlaPlanAssoc::create([
@@ -3609,28 +3750,28 @@ class HelpdeskController extends Controller
             // }
             if($request->module == 'tickets'){
                 $target_dir = 'storage/tickets/'.$request->ticket_id;
-                    
+
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
             }else if($request->module == 'replies'){
                 $target_dir = 'storage/tickets-replies/'.$request->ticket_id;
-                    
+
                 if (!File::isDirectory($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
             }
-            
+
 
             $file = $request->file('attachment');
 
             //Move Uploaded File
             if($file->move($target_dir, $request->fileName.'.'.$file->getClientOriginalExtension())) {
-                
+
                 if($request->module == 'tickets') {
                     if(!empty($ticket->attachments)) $ticket->attachments .= ','.$request->fileName.'.'.$file->getClientOriginalExtension();
                     else $ticket->attachments = $request->fileName.'.'.$file->getClientOriginalExtension();
-    
+
                     $response['tkt_updated_at'] = $ticket->attachments;
                     $response['attachments'] = $ticket->attachments;
 
@@ -3664,7 +3805,7 @@ class HelpdeskController extends Controller
             // target dir for ticket files against ticket id
             $target_dir = public_path().'/files'.'/'.$request->module.'/'.$request->id.'/'.$request->fileName;
 
-            if(!is_readable($target_dir)) { 
+            if(!is_readable($target_dir)) {
                 $response['message'] = 'File is not readable!';
                 $response['status_code'] = 500;
                 $response['success'] = false;
@@ -3763,7 +3904,7 @@ class HelpdeskController extends Controller
 
 
             $response = (is_numeric($id)) ? DB::select("SELECT * FROM tickets WHERE id=$id OR seq_custom_id=$id;") : DB::select("SELECT * FROM `tickets` WHERE `coustom_id` LIKE '%$id%' OR `subject` LIKE '%$id%';");
-             
+
             return response()->json($response);
         }catch(Exception $e){
             return response()->json($e->getMessage());
@@ -3787,7 +3928,7 @@ class HelpdeskController extends Controller
                         $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval);
                     }
 
-                    
+
                 } else {
                     $response['message'] = 'Ticket is either deleted or not exists!';
                 }
@@ -3812,8 +3953,8 @@ class HelpdeskController extends Controller
                 "email" => $mail ,
                 "banned_by" => \Auth::user()->id,
             ]);
-        }   
-        return redirect()->route('ticket_management.index'); 
+        }
+        return redirect()->route('ticket_management.index');
     }
 
     // create ticket for customer not registered
@@ -3828,23 +3969,23 @@ class HelpdeskController extends Controller
                 $customer = Customer::where('email', $ticket->cust_email)->where('is_deleted',0)->first();
 
                 if(!empty($customer)) {
-                    
+
                     $ticket->customer_id = $customer->id;
                     $ticket->is_pending = 0;
                     $ticket->created_at = Carbon::now();
                     $ticket->save();
-                    
+
                     $ticket = Tickets::where('coustom_id' , $id)->where('is_pending',0)->first();
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
-                    
+
                 }else{
-                    
+
                     $f_name = $ticket->cust_name;
-                    
+
                     $data = [
-                        "username" => $ticket->cust_email , 
+                        "username" => $ticket->cust_email ,
                         "first_name" => $f_name ,
-                        "email" => $ticket->cust_email , 
+                        "email" => $ticket->cust_email ,
                     ];
 
                     $customer = Customer::create($data);
@@ -3866,7 +4007,7 @@ class HelpdeskController extends Controller
                     $ticket->customer_id = $customer->id;
                     $ticket->is_pending = 0;
                     $ticket->save();
-                    
+
                     $ticket = Tickets::where('coustom_id' , $id)->where('is_pending',0)->first();
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'Ticket Create' , '', $ticket->cust_email , '' , 1 , 0);
                 }
@@ -3896,13 +4037,13 @@ class HelpdeskController extends Controller
             }
             if(empty($sendingMailServer)) {
                 $sendingMailServer = Mail::where('mail_dept_id', $ticket['dept_id'])->where('is_deleted', 0)->first();
-                
+
                 if(empty($sendingMailServer)) {
                     // dept email queue not found
                     throw new Exception('Ticket department email not found!');
                 }
             }
-            
+
             $mail_from = $sendingMailServer->mailserver_username;
 
             $notification_message = '';
@@ -3914,9 +4055,9 @@ class HelpdeskController extends Controller
             $cust_template_code = '';
             $is_cron = false;
             if($action_name != 'cron' && $action_name != 'cust_cron' && $action_name != 'Ticket Followup'){
-                $user = DB::table('users')->where('id', \Auth::user()->id)->first(); 
+                $user = DB::table('users')->where('id', \Auth::user()->id)->first();
             }
-            
+
 
             if($action_name == 'cron') {
                 $is_cron = true;
@@ -3931,21 +4072,21 @@ class HelpdeskController extends Controller
             }elseif($action_name == 'cust_cron'){
                 $is_cron = true;
                 $action_name = 'ticket_cus_reply';
-                
+
             }elseif($action_name == 'Customer Ticket Create'){
-                
+
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
                 $notification_message = 'New Ticket (<a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a>) Created By '.  $user->name;
 
                 $notification_title = 'New Ticket Created';
-                
+
 
             } else if($action_name == 'Ticket Create') {
                 $user = DB::table('users')->where('id', \Auth::user()->id)->first();
                 $notification_message = 'New Ticket (<a href="'.url('ticket-details').'/'. $ticket['coustom_id'] .'">'. $ticket['coustom_id'] .'</a>) Created By '.  $user->name;
                 $notification_title = 'New Ticket Created';
             }
-            
+
             // dd($template_code);exit;
 
             if($template_code == 'ticket_create') {
@@ -3960,7 +4101,7 @@ class HelpdeskController extends Controller
                 $attachs = $ticket['attachments'];
                 $pathTo = 'storage/tickets/'.$ticket['id'];
             } else if($action_name == "ticket_reply" || $action_name == 'ticket_cus_reply') {
-                
+
                 $customer_send = true;
                 $cust_template_code = 'auto_res_ticket_reply';
 
@@ -3974,18 +4115,18 @@ class HelpdeskController extends Controller
                     $notification_message = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket['coustom_id'].'">'.$ticket['coustom_id'].'</a>)  Reply Added by '. $user->name;
                     $notification_title = 'Reply Added';
                 }
-                
+
             }else if($action_name == "Ticket Followup"){
-                
+
                 if(!empty($reply_content)){
                     $customer_send = true;
                     $cust_template_code = 'auto_res_ticket_reply';
-    
+
                     // if(!empty($user)) $mail_from = $user->email;
                     $attachs = $data_id;
                     $pathTo = 'storage/tickets-replies/'.$ticket['id'];
                 }
-                
+
             }else if($action_name == 'ticket_reply_update'){
 
                 $customer_send = true;
@@ -4035,7 +4176,7 @@ class HelpdeskController extends Controller
             if(!empty($ticket['assigned_to'])) {
                 $tech = User::where('id', $ticket['assigned_to'])->first();
             }
-            
+
             $customer = null;
             if(!empty($ticket['customer_id'])) {
                 $customer = Customer::where('id', $ticket['customer_id'])->first();
@@ -4063,29 +4204,29 @@ class HelpdeskController extends Controller
             if($action_name == 'Ticket Updated'){
                 $customer_send = false;
             }
-            
-            // if customer if null or empty then find user 
+
+            // if customer if null or empty then find user
             // if(empty($customer)) {
             //     $customer = User::where('id' , $ticket['customer_id'])->first();
             //     $user_type = 'staff';
             // }
-            
-            
 
-            
+
+
+
             $mail_template = DB::table('templates')->where('code', $template_code)->first();
             $cust_template = DB::table('templates')->where('code', $cust_template_code)->first();
             // dd($cust_template_code);
             if(empty($mail_template)) throw new Exception('"'.$template_code.'" Template not found');
-           
+
             if($customer_send && empty($cust_template_code)) throw new Exception('"'.$cust_template_code.'" Template not found');
-           
+
             $template_input = array(
                 array('module' => 'Tech', 'values' => (!empty($tech)) ? $tech->attributesToArray() : []),
                 array('module' => 'Customer', 'values' => (!empty($customer)) ? $customer->attributesToArray() : []),
                 array('module' => 'Ticket', 'values' => (!empty($ticket)) ? $ticket : []),
             );
-            
+
             if(!empty($user)) {
                 // $template_input[] = array('module' => 'User', 'values' => $user);
                 $template_input[] = array('module' => 'Creator', 'values' => $user);
@@ -4102,21 +4243,21 @@ class HelpdeskController extends Controller
             $message = $mail_template->template_html;
             $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
 
-            
+
             // return dd($is_closed);
             if($template_code == 'ticket_create' && ($auto_res == 0 || $auto_res == '')) {
 
-                
+
                 $cust_message = '';
 
             }else{
-                
+
                 $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$cust_template_code,$ticket,$old_params, '','', $is_closed , $reset_tkt , $ticket['is_staff_tkt'],$embed_imges);
-                
+
             }
 
             $message = $mailer->template_parser($template_input, $message, $reply_content, $action_name,$template_code,$ticket,$old_params,$flwup_note,$flwup_updated , $is_closed , $reset_tkt , $ticket['is_staff_tkt'],$embed_imges);
-            
+
             // if(empty($mail_from)) $mail_from = $mail_frm_param;
 
             if(!empty($cust_message)) {
@@ -4127,17 +4268,17 @@ class HelpdeskController extends Controller
                         }else{
                             if($action_name != 'ticket_cus_reply'){
                                 $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
-    
+
                                 if(!empty($reply_content)) {
                                     // this is a reply
                                     // $subject = 'Re: '.$subject;
                                 }
-                                
+
                                 if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
                                     if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param ,'', $sendingMailServer->from_name );
                                 }
                             }
-                            
+
                         }
                     }else{
                         if($action_name != 'ticket_cus_reply'){
@@ -4147,13 +4288,13 @@ class HelpdeskController extends Controller
                                 // this is a reply
                                 // $subject = 'Re: '.$subject;
                             }
-                            
+
                             if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
                                 if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param ,'', $sendingMailServer->from_name );
                             }
                         }
                     }
-                    
+
                 }
             }
             if($send_detail == 1){
@@ -4162,16 +4303,16 @@ class HelpdeskController extends Controller
                     $reply_content= $ticket['ticket_detail'];
                     $cust_message = empty($cust_template) ? '' : $cust_template->template_html;
                     $cust_message = $mailer->template_parser($template_input, $cust_message, $reply_content, $action_name,$template_code,$ticket,$old_params , '','', '','' , $ticket['is_staff_tkt']);
-    
+
                     if(!empty($cust_message)) {
-                    
+
                         $subject = $mailer->parseSubject($ticket['coustom_id'].' '.$ticket['subject'], $ticket, $cust_template, $sendingMailServer->mail_queue_address);
-        
+
                         if(!empty($reply_content)) {
                             // this is a reply
                             // $subject = 'Re: '.$subject;
                         }
-        
+
                         if($sendingMailServer->outbound == 'yes' && trim($sendingMailServer->autosend) == 'yes') {
                             if(!empty($customer)) $mailer->sendMail($subject, $cust_message, $mail_from, $customer->email, $customer->first_name.' '.$customer->last_name, $action_name, $attachs, $pathTo , $mail_frm_param ,'', $sendingMailServer->from_name );
                         }
@@ -4213,12 +4354,12 @@ class HelpdeskController extends Controller
                 // dd($mail_frm_param);exit;
                     $users_list = User::whereIn('id', $assigned_users)->get()->toArray();
                 }
-                
-                
+
+
                 if($sendingMailServer->outbound == 'yes' || $action_name == "ticket_reply") {
                     // if(!empty($tech)) $users_list[] = $tech->attributesToArray();
                     // echyo "dfs";
-                     
+
                     if(sizeof($users_list) > 0) $mailer->sendMail($subject, $message, $mail_from, $users_list, '', '', $attachs, $pathTo , $mail_frm_param,$template_code);
                 }
                 $allwd_users = [];
@@ -4237,16 +4378,16 @@ class HelpdeskController extends Controller
                             $icon = 'calendar';
                             $class = 'btn-success';
                             $desc = $notification_message;
-                            
+
                             $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                         }
                     } catch(Exception $e) {
                         // ignore for now
-                    } 
+                    }
 
                 }
 
-                
+
             }
         } catch(Exception $e) {
             throw new Exception($e->getMessage());
@@ -4294,7 +4435,7 @@ class HelpdeskController extends Controller
         $response['states'] = $states;
         return response()->json($response);
     }
-    
+
     public function listStates(Request $request) {
         try {
             $states = [];
@@ -4382,7 +4523,7 @@ class HelpdeskController extends Controller
             $icon = 'ti-calendar';
             $class = 'btn-success';
             $desc = 'Task created by '.\Auth::user()->name;
-            
+
             $nn->notify($sender_id,0,$slug,$type,$data,$title,$icon,$class,$desc, $pm_id,$desc);
         }
     }
@@ -4390,7 +4531,7 @@ class HelpdeskController extends Controller
     public function send_notification(Request $request) {
         try {
             $admin_users = User::where('user_type', 1)->get()->toArray();
-    
+
             $notify = new NotifyController();
             foreach ($admin_users as $key => $value) {
                 $sender_id = \Auth::user()->id;
@@ -4402,7 +4543,7 @@ class HelpdeskController extends Controller
                 $icon = $request->icon;
                 $class = 'btn-success';
                 $desc = $request->description;
-                
+
                 $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
             }
 
@@ -4422,8 +4563,8 @@ class HelpdeskController extends Controller
     public function saveTicketGeneralInfo(Request $request) {
 
         $data = array(
-            "per_page" => $request->per_page , 
-            "user_id" => $request->user_id , 
+            "per_page" => $request->per_page ,
+            "user_id" => $request->user_id ,
             "created_by" => auth()->id(),
         );
 
@@ -4443,7 +4584,7 @@ class HelpdeskController extends Controller
         ]);
     }
 
-    // ticket refresh time 
+    // ticket refresh time
     public function ticketRefreshTime() {
 
         try {
@@ -4464,21 +4605,21 @@ class HelpdeskController extends Controller
             }
 
             return response()->json([
-                "message" => 'Setting '. $message .' Successfully', 
+                "message" => 'Setting '. $message .' Successfully',
                 "status_code" => 200 ,
                 "success" => true ,
             ]);
-            
+
         } catch(Exception $e) {
             return response()->json([
-                "message" => $e->getMessage() , 
+                "message" => $e->getMessage() ,
                 "status_code" => 500 ,
                 "success" => false ,
             ]);
         }
 
-        
-        
+
+
     }
 
 }

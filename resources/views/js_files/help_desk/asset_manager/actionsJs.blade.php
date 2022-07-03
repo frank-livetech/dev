@@ -1095,6 +1095,7 @@ function selectCustomer(value , customerId , companyId) {
                 $("#asset_customer").html(option_customer);
             }
             let custs = customers.filter(item => item.company_id == value);
+                console.log(custs)
             if(custs.length > 0) {
                 let option = ``;
                 for (let [i, data] of custs.entries()) {
@@ -1113,6 +1114,8 @@ function selectCustomer(value , customerId , companyId) {
 
                 $('#'+customerId).empty();
                 $("#"+customerId).html(root + option);
+            }else{
+                $('#'+customerId).empty();
             }
 
         }else{
