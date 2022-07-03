@@ -15,12 +15,15 @@ class NotifyController extends Controller
     public function sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc) {
 
         $user_pic = '';
+        $user_type = '';
         $sender = User::where('id' , $sender_id)->first();
         if(!$sender){
             $sender = Customer::where('id' , $sender_id)->first();
             $user_pic = $sender->avatar_url;
+            $user_type = 5;
         }else{
             $user_pic = $sender->profile_pic;
+            $user_type = 1;
         }
         
         if($title != '' && $title !=null){
@@ -35,6 +38,7 @@ class NotifyController extends Controller
                 "btn_class" => $class ,
                 "noti_desc" => $desc ,
                 "user_pic" => $user_pic ,
+                "user_type" => $user_type ,
 
             );
 

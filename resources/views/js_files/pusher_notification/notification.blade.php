@@ -69,7 +69,7 @@
 
                     });
                 }else{
-                    appendNotification(notify.user_pic , notify.noti_title , notify.noti_desc)
+                    appendNotification(notify.user_pic , notify.noti_title , notify.noti_desc , notify.user_type)
 
                 // if(notify.noti_desc != null && notify.noti_title != null) {
                     toastr['info']( notify.noti_desc , notify.noti_title, {
@@ -89,7 +89,7 @@
     });
 
 
-    function appendNotification(profile_pic , title , desc) {
+    function appendNotification(profile_pic , title , desc , user_type) {
 
         let time = moment( new Date().toLocaleString('en-US', { timeZone: "{{Session::get('timezone')}}" })).format('hh:mm A');
         var user_image = ``;
@@ -100,6 +100,12 @@
             user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
         }
 
+        var badge = '';
+        if(user_type == 5){
+            badge = '<span class="badge badge-secondary">User</span>';
+        }else{
+            badge = '<span class="badge badge-secondary">Staff</span>';
+        }
         let html = `
         <div class="list-item d-flex align-items-start" style="cursor:pointer">
             <div class="me-1">
@@ -109,7 +115,7 @@
             </div>
             <div class="list-item-body flex-grow-1">
                 <p class="media-heading">
-                <span class="fw-bolder"> ${title} </span>
+                <span class="fw-bolder"> ${title} </span> &nbsp;${badge}
                 <span class="float-end"> ${time} </span> </p>
                 <small class="notification-text"> ${desc} </small>
             </div>
