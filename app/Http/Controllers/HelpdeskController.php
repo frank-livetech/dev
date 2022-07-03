@@ -1477,7 +1477,7 @@ class HelpdeskController extends Controller
                 $del_tkt->deleted_at = Carbon::now();
                 $del_tkt->save();
 
-                $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
+                // $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
                 $replies = TicketReply::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
 
                 // Add Delete log
@@ -1513,8 +1513,8 @@ class HelpdeskController extends Controller
 
                 if($request->tkt_del) {
                     $del_tkt->is_deleted = 1;
-                    $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
-                    $replies = TicketReply::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
+                    // $notes = TicketNote::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
+                    // $replies = TicketReply::where('ticket_id', $data[$i])->update(['is_deleted' => 1]);
                 }
 
 

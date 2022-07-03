@@ -773,16 +773,14 @@
                                                                 <span class="ticket-timestamp3 text-muted small"
                                                                     style="margin-left: 9px;"></span>
                                                             </div>
-                                                            <div class="first" id="sub-tkt">
-                                                                <!-- <img src="{{ asset($file_path . 'default_imgs/int_req.jpeg') }}" width="30" height="30" alt="">  -->
 
-                                                                <span id="tkt-subject" class="tkt-subject"
-                                                                    style="font-size:20px"> {{ $details->subject }}
-                                                                </span>
-                                                                @if ($details->attachments != null)
-                                                                    <i class="fa fa-paperclip" aria-hidden="true"
-                                                                        style="margin-top:2px; color:#5f6c73;"
-                                                                        title="Has Attachments"></i> &nbsp;&nbsp;
+                                                            <div class="first frt-width" id="sub-tkt" style="width: 514px;">
+                                                                <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
+                                                               
+                                                                <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$details->subject}} </span> 
+                                                                @if($details->attachments != null)
+                                                                <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
+
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -2667,14 +2665,14 @@
                                     <span class="badge badge-secondary">{{ $user_type }}</span> </h6>
                                 <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;"></span>
                             </div>
-                            <div class="first" id="sub-tkt">
-                                <!-- <img src="{{ asset($file_path . 'default_imgs/int_req.jpeg') }}" width="30" height="30" alt="">  -->
 
-                                <span style="font-size:20px"> {{ $details->subject }} </span>
-                                @if ($details->attachments != null)
-                                    <i class="fa fa-paperclip" aria-hidden="true"
-                                        style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i>
-                                    &nbsp;&nbsp;
+                            <div class="first" id="sub-tkt" style="width: 514px">
+                                <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
+                                
+                                <span  style="font-size:20px"> {{$details->subject}} </span> 
+                                @if($details->attachments != null)
+                                <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
+
                                 @endif
                             </div>
                         </div>

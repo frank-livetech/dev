@@ -477,11 +477,11 @@ class AuthController extends Controller
                     Session::put('depts', $depts);
 
 
-                    User::find(Auth::id())->update([
+                    User::find(\Auth::user()->id)->update([
                         'is_online' => 1
                     ]);
 
-
+                    Session::put('is_online_notif', 0);
                     Session::put('menus', $role_features->sortBy('sequence'));
 
                     $currentDate = Carbon::now();
@@ -715,12 +715,40 @@ class AuthController extends Controller
     public function logout(Request $request) {
 
         $route = auth()->user()->user_type == 5 ? 'user-login' : 'login';
+        $user_type = auth()->user()->user_type;
+        $id = auth()->user()->id;
+        $name = auth()->user()->name;
+
         \Session::forget('user_session');
         User::find(Auth::id())->update(['is_online' => 1]);
         if( Auth::check()){
             Auth::logout();
         }
+        if($user_type != 5 && $user_type != 4 ){
+            User::find($id)->update([
+                'is_online' => 0
+            ]);
 
+            $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',1)->get()->toArray();
+    
+            $notify = new NotifyController();
+    
+            foreach ($admin_users as $key => $value) {
+    
+                $sender_id = $id;
+                $receiver_id = $value['id'];
+                $data = '';
+                $slug = 'dashboard';
+                $type = 'online_user';
+                $title = 'LoggedOutUser';
+                $icon = 'ti-calendar';
+                $class = 'btn-success';
+                $desc = 'Login In by '.$name;
+                
+                $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+            }
+
+        }
         return redirect()->to($route);
     }
 

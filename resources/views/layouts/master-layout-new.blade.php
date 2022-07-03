@@ -317,8 +317,9 @@
                                 <img src="{{ asset($file_path . 'default_imgs/customer.png') }}" id="login_usr_logo"
                                     alt="'s Photo" height="50px" width="50px" class="rounded-circle">
                             @endif
-                            <span class="avatar-status-online"></span>
-                        </span>
+
+                            {{-- <span class="avatar-status-online"></span> --}}</span>
+
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         <a class="dropdown-item" href="{{ url('my-profile') }}"><i class="me-50"
@@ -363,8 +364,9 @@
     <footer class="footer footer-static footer-light">
         {{ Session::get('site_footer') }}
     </footer>
-    <button class="btn btn-primary btn-icon scroll-top" type="button"
-        style="background-color: #0075be !important"><i data-feather="arrow-up"></i></button>
+
+    <button class="btn btn-primary btn-icon scroll-top" type="button" style="background-color: #0075be !important"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></button>
+
     <!-- END: Footer-->
 
     <!-- BEGIN: Vendor JS-->
@@ -455,10 +457,13 @@
     <script type="text/javascript" src="{{ asset($file_path . 'assets/extra-libs/countdown/countdown.js') }}"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
-        const org_path = "{{ Session::get('is_live') }}";
-        const root = "{{ request()->root() }}";
-        const js_origin = root + (org_path == 1 ? '/public/' : '/');
-        const change_theme_url = "{{ asset('change_theme_mode') }}";
+
+        const org_path = "{{Session::get('is_live')}}";
+        let is_online_notif = "{{Session::get('is_online_notif')}}";
+        const root = "{{request()->root()}}";
+        const js_origin  = root + (org_path == 1 ? '/public/' : '/');
+        const change_theme_url = "{{asset('change_theme_mode')}}";
+
 
         $(document).ready(function() {
             $(document).on('select2:open', () => {
@@ -969,54 +974,31 @@
             cluster: "{{ pusherCredentials('cluster') }}",
         });
         // Enter a unique channel you wish your users to be subscribed in.
-        var channel = pusher.subscribe('default.' + `{{ Auth::id() }}`);
+
+        var channel = pusher.subscribe('default.'+`{{Auth::id()}}`);
+
     </script>
     @include('js_files.chat.pusher')
     @include('js_files.pusher_notification.notification')
     @include('js_files.pusher_notification.user_status')
     @yield('scripts')
     <script>
-        // $("#logout").click(function(){
+        getAllActiveUsers();
+        function getAllActiveUsers(){
+            $.ajax({
+                url: "{{route('show.all.user')}}",
+                dataType: "json",
+                type: "get",
+                async: true,
+                success: function (users) {
+                    for (const user of users) {
+                        $('#user-status-'+user.id).html('<span class="avatar-status-online"></span>');
+                    }
+                },
 
-        //     $.ajax({
-        //         url: "{{ route('logout') }}",
-        //         dataType: "json",
-        //         type: "Post",
-        //         async: true,
-        //         data: { _token: "{{ csrf_token() }}",status:1},
-        //         success: function (data) {
-        //                 $.ajax({
-        //                     url: "{{ route('make.online.user') }}",
-        //                     dataType: "json",
-        //                     type: "Post",
-        //                     async: true,
-        //                     data: { _token: "{{ csrf_token() }}"},
-        //                 });
+            });
+        }
 
-
-        //                 // channelUser.bind("online-user-event", (data) => {
-        //                 //     if(data.status == true){
-        //                 //         $.ajax({
-        //                 //             url: "{{ route('show.all.user') }}",
-        //                 //             dataType: "json",
-        //                 //             type: "get",
-        //                 //             async: true,
-        //                 //             success: function (users) {
-        //                 //                 for (const user of users) {
-        //                 //                     $("#user-"+user.id).html('<span class="avatar-status-online"></span>');
-        //                 //                 }
-        //                 //             },
-
-        //                 //         });
-        //                 //     }
-
-        //                 // });
-
-        //             // window.location = data
-        //         },
-
-        //     });
-        // });
     </script>
 </body>
 

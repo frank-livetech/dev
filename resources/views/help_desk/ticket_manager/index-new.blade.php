@@ -154,7 +154,20 @@ span.select2-container.select2-container--default.select2-container--open {
     font-weight: bolder;
 }
 .cursor { cursor: pointer !important }
+
+    .carousel-control-prev, .carousel-control-next{
+        bottom: 26px !important;
+    }
+     @media (max-width: 630px) {
+        #carouselExampleDark{
+            display: block !important
+        }
+        #full-view{
+            display: none !important
+        }
+     }
 </style>
+
 @php
 $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 @endphp
@@ -203,8 +216,114 @@ $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 
         <div class="content-body">
             <section id="statistics-card">
-                <div class="row">
-                    <!-- <div class="col-md-1 col-sm-1"></div> -->
+                <div class="col-md-12">
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" style="display:none">
+                        {{-- <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        </div> --}}
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="10000">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <input hidden id="dept" value="{{$dept}}">
+                                        <input hidden id="sts" value="{{$sts}}">
+                                        <div class="flex-row">
+                                            <div class="my-auto" style="text-align: center">
+                                                <a href="javascript:getCounterTickets('total')">
+                                                    <h2 class="fw-bolder mb-0" id="total_tickets_count_col"></h2>
+                                                    <h5 class="card-text font-small-10 mb-0 mt-1 text-info">All Tickets</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <div class="card border-success">
+                                    <div class="card-body">
+                                        <div class="flex-row">
+                                            <div class="my-auto" style="text-align: center">
+                                                <a href="javascript:getCounterTickets('self')">
+                                                    <h2 class="fw-bolder mb-0" id="my_tickets_count_col"></h2>
+                                                    <h5 class="card-text font-small-10 mb-0 mt-1 text-success">My Tickets</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="card border-primary">
+                                    <div class="card-body">
+                                        <div class="flex-row">
+                                            <div class="my-auto" style="text-align: center">
+                                                <a href="javascript:getCounterTickets('unassigned')">
+                                                    <h2 class="fw-bolder mb-0" id="unassigned_tickets_count_col"></h2>
+                                                    <h5 class="card-text font-small-10 mb-0 mt-1 text-primary">Unassigned</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="card border-danger">
+                                    <div class="card-body">
+                                        <div class="flex-row">
+                                            <div class="my-auto" style="text-align: center">
+                                                <a href="javascript:getCounterTickets('overdue')">
+                                                    <h2 class="fw-bolder mb-0" id="late_tickets_count_col"></h2>
+                                                    <h5 class="card-text font-small-10 mb-0 mt-1 text-danger">Overdue</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="card border-danger">
+                                    <div class="card-body">
+                                        <div class="flex-row">
+                                            <div class="my-auto" style="text-align: center">
+                                                <a href="javascript:getCounterTickets('flagged')">
+                                                    <h2 class="fw-bolder mb-0" id="flagged_tickets_count_col"></h2>
+                                                    <h5 class="card-text font-small-10 mb-0 mt-1 text-danger">Flagged</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="card border-success" onclick="listTickets('trash')">
+                                    <div class="card-body">
+                                        <div class="flex-row">
+                                            <div class="my-auto" style="text-align: center">
+                                                <a href="javascript:void(0)">
+                                                    <h2 class="fw-bolder mb-0" id="trashed_tickets_count_col"></h2>
+                                                    <h5 class="card-text font-small-10 mb-0 mt-1 text-success">Trash</h5>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+               
+                <div class="row" id="full-view">
+                    <!-- <div class="col-md-12 col-sm-12"></div> -->
                     <div class="col-md-2 col-sm-2">
                         <div class="card border-info">
                             <div class="card-body">

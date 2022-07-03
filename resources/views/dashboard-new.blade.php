@@ -583,7 +583,7 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                                 <img src="{{ request()->root() .'/'. $user->profile_pic}}"
                                                     alt="'s Photo" class="rounded-circle" width="50" height="50">
                                             </a>
-                                            <span id="user-{{$user->id}}">
+                                            <span id="user-status-{{$user->id}}">
                                                 <span class="avatar-status-offline" ></span>
                                             </span>
                                         </span>

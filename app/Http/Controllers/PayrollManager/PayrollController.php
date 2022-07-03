@@ -245,18 +245,22 @@ class PayrollController extends Controller {
                 $template = str_replace('Worked hours:','', $template);
             }
 
-            if(str_contains($template, '{New-Tickets}')) {
-                
-                $todayTickets = Tickets::where([ 
+            
+            if(str_contains($template, '{Flagged-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
+            
+                $flaggedTickets = Tickets::where([ 
                     ['assigned_to', auth()->id()], 
                     ['is_deleted', 0] ,
-                    ['is_overdue', 0] ,
-                    ['trashed', 0] 
-                ])->whereDate('created_at', Carbon::today())->get();
+                    ['trashed', 0] ,
+                    ['is_flagged', 1] ,
+                    ['status','!=', $closeStatus->id], 
 
-                $newTicket ='<strong> New Tickets </strong>';
+                ])->get();
 
-                foreach($todayTickets as $tk) {
+                $newTicket ='<strong> Flagged Tickets </strong>';
+
+                foreach($flaggedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
                     $newTicket .= '
                         <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
@@ -265,8 +269,9 @@ class PayrollController extends Controller {
                         </p>';
                 }
 
-                $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
-                $template = str_replace('{New-Tickets}', count($todayTickets) > 0 ? $newTicket : '' , $template);
+                $newTicket .='<p>Total Count '. count($flaggedTickets).'</p>';
+                $template = str_replace('{Flagged-Tickets}', count($flaggedTickets) > 0 ? $newTicket : '' , $template);
+
             }
 
             if(str_contains($template, '{Overdue-Tickets}')) {
@@ -298,34 +303,6 @@ class PayrollController extends Controller {
                 $template = str_replace('{Overdue-Tickets}', count($overdueTickets) > 0 ? $newTicket : '' , $template);
             }
 
-            if(str_contains($template, '{Flagged-Tickets}')) {
-                $closeStatus = TicketStatus::where('slug','closed')->first();
-            
-                $flaggedTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
-                    ['is_deleted', 0] ,
-                    ['trashed', 0] ,
-                    ['is_flagged', 1] ,
-                    ['status','!=', $closeStatus->id], 
-
-                ])->get();
-
-                $newTicket ='<strong> Flagged Tickets </strong>';
-
-                foreach($flaggedTickets as $tk) {
-                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
-                    $newTicket .= '
-                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
-                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
-                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
-                        </p>';
-                }
-
-                $newTicket .='<p>Total Count '. count($flaggedTickets).'</p>';
-                $template = str_replace('{Flagged-Tickets}', count($flaggedTickets) > 0 ? $newTicket : '' , $template);
-
-            }
-
             if(str_contains($template, '{UnAssigned-Tickets}')) {
                 $closeStatus = TicketStatus::where('slug','closed')->first();
             
@@ -353,17 +330,6 @@ class PayrollController extends Controller {
 
             }
 
-            $template = str_replace('{Update-Tickets}', '' , $template);
-            $template = str_replace('{Closed-Tickets}', '' , $template);
-            $template = str_replace('{ActivityLogs}', '' , $template);
-
-        }else{
-            if(str_contains($template, '{Worked_hours}')) {
-                $template = str_replace('{Worked_hours}', $totalWorkingHour , $template);
-            } 
-            $template = str_replace('{Overdue-Tickets}', '' , $template);
-            $template = str_replace('{UnAssigned-Tickets}', '' , $template);
-
             if(str_contains($template, '{New-Tickets}')) {
                 
                 $todayTickets = Tickets::where([ 
@@ -387,6 +353,43 @@ class PayrollController extends Controller {
                 $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
                 $template = str_replace('{New-Tickets}', count($todayTickets) > 0 ? $newTicket : '' , $template);
             }
+
+            if(str_contains($template, '{My-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
+                
+                $todayTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['is_overdue', 0] ,
+                    ['trashed', 0] ,
+                    ['status','!=', $closeStatus->id], 
+                ])->get();
+
+                $newTicket ='<strong> My Tickets </strong>';
+
+                foreach($todayTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
+                }
+
+                $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
+                $template = str_replace('{My-Tickets}', count($todayTickets) > 0 ? $newTicket : '' , $template);
+            }
+
+            $template = str_replace('{Update-Tickets}', '' , $template);
+            $template = str_replace('{Closed-Tickets}', '' , $template);
+            $template = str_replace('{ActivityLogs}', '' , $template);
+
+        }else{
+            if(str_contains($template, '{Worked_hours}')) {
+                $template = str_replace('{Worked_hours}', $totalWorkingHour , $template);
+            } 
+            $template = str_replace('{Overdue-Tickets}', '' , $template);
+            $template = str_replace('{UnAssigned-Tickets}', '' , $template);
 
             if(str_contains($template, '{Flagged-Tickets}')) {
                 $closeStatus = TicketStatus::where('slug','closed')->first();
@@ -468,6 +471,30 @@ class PayrollController extends Controller {
                 $template = str_replace('{Closed-Tickets}', count($todayClosedTickets) > 0 ? $newTicket : '' , $template);
             }
 
+            if(str_contains($template, '{New-Tickets}')) {
+                
+                $todayTickets = Tickets::where([ 
+                    ['assigned_to', auth()->id()], 
+                    ['is_deleted', 0] ,
+                    ['is_overdue', 0] ,
+                    ['trashed', 0] 
+                ])->whereDate('created_at', Carbon::today())->get();
+
+                $newTicket ='<strong> New Tickets </strong>';
+
+                foreach($todayTickets as $tk) {
+                    $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
+                    $newTicket .= '
+                        <p class="tkt_details" style="line-height: 18px !important;margin-bottom: 0 !important;">
+                            <a href="'.$tkUrl.'">'.$tk->coustom_id.'</a> - <span style="color:'.$tk->status_color.'">'.$tk->status_name.'</span> - <span style="color:'.$tk->priority_color.'">'.$tk->priority_name .'</span> - <span>'.$this->converDateTime($tk->created_at) .'</span>
+                            <p style="line-height: 18px !important;margin-bottom: 0.3rem !important;">'.$tk->subject.'</p>
+                        </p>';
+                }
+
+                $newTicket .='<p>Total Count '. count($todayTickets).'</p>';
+                $template = str_replace('{New-Tickets}', count($todayTickets) > 0 ? $newTicket : '' , $template);
+            }
+
             if(str_contains($template, '{ActivityLogs}')) {
 
                 $logs = Activitylog::where('created_by', auth()->id() )->whereDate('created_at', Carbon::today())->get();
@@ -489,6 +516,8 @@ class PayrollController extends Controller {
                 
                 $template = str_replace('{ActivityLogs}', count($logs) > 0 ? $logList : '' , $template);
             }
+            $template = str_replace('{My-Tickets}', '' , $template);
+
         }
 
         return html_entity_decode($template);

@@ -163,7 +163,7 @@
                             <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="40" height="40"
                                 id="profile-user-img" />
                             @endif
-                            <span class="avatar-status-online"></span></span>
+                            {{-- <span class="avatar-status-online"></span></span> --}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         <a class="dropdown-item" href="{{route('customer.myProfile')}}"><i class="me-50" data-feather="user"></i> Profile</a>
@@ -195,7 +195,27 @@
                     <div class="content-header-left col-md-12 col-12 mb-2">
                         <div class="row breadcrumbs-top">
                             <div class="col-12">
-                                @yield('breadcrumb')
+                                <h2 class="content-header-title float-start mb-0">Dashboard</h2>
+                                <div class="breadcrumb-wrapper">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item active"><a href="">
+                                            
+                                            @if(request()->is('myprofile'))
+                                                Profile
+                                            
+                                            @elseif(request()->is('submitTicket'))
+                                                Submit Ticket
+                                           
+                                            @elseif(request()->is('view-tkt'))
+                                                My Ticket
+                                            @else
+                                                Ticket Details
+                                           
+                                            @endif
+                                        </a>
+                                        </li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>

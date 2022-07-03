@@ -42,7 +42,7 @@ Route::post('/user-reset-password', 'AuthController@submitCustomerResetPasswordF
 
 Route::post('/online-user', 'HomeController@onlineUser')->name('make.online.user');
 Route::get('/all-users', 'HomeController@showAllUser')->name('show.all.user');
-
+Route::get('/all-offline-users', 'HomeController@showAllOfflineUser')->name('show.all.offline.user');
 //Auth::routes();
 Route::get('/login', 'AuthController@index')->name('login');
 Route::post('/login', 'AuthController@postLogin');
@@ -428,8 +428,8 @@ Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth','customer
     Route::get('/user/assets','HomeController@asset')->name('customer.myasset');
     Route::post('/save_profile_img','HomeController@saveProfileImage')->name('customer.saveProfileImage');
     Route::get('/submitTicket','HomeController@addTicketPage')->name('customer.addTicket');
-    Route::get('/viewTicketList','HomeController@viewTicketPage')->name('customer.tickets');
-    Route::get('/customer-ticket-details/{id}','HomeController@get_tkt_details')->name('customer.tkt_dtl');
+    Route::get('tickets/list','HomeController@viewTicketPage')->name('customer.tickets');
+    Route::get('tickets/customer-ticket-details/{id}','HomeController@get_tkt_details')->name('customer.tkt_dtl');
     Route::post('change_theme_mode','HomeController@change_theme_mode');
     Route::post('save_company','HomeController@saveCompany')->name('customer.saveCompany');
     Route::post('update_customer','HomeController@update_customer_profile')->name('customer.updateCustomer');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\Customer;
 use App\Jobs\NotificationJob;
 use App\User;
 
@@ -13,6 +14,15 @@ class NotifyController extends Controller
 
     public function sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc) {
 
+        $user_pic = '';
+        $sender = User::where('id' , $sender_id)->first();
+        if(!$sender){
+            $sender = Customer::where('id' , $sender_id)->first();
+            $user_pic = $sender->avatar_url;
+        }else{
+            $user_pic = $sender->profile_pic;
+        }
+        
         if($title != '' && $title !=null){
             $data = array(
                 "sender_id" => $sender_id ,
@@ -24,10 +34,11 @@ class NotifyController extends Controller
                 "noti_icon" => $icon ,
                 "btn_class" => $class ,
                 "noti_desc" => $desc ,
+                "user_pic" => $user_pic ,
+
             );
 
             $notify = Notification::create($data);
-            $sender = User::where('id' , $sender_id)->first();
             if($notify) {
                 $notificationJob = (new NotificationJob($receiver_id, $sender_id, $data));
                 dispatch($notificationJob);

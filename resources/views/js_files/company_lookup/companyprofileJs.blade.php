@@ -238,7 +238,6 @@
 
     }
 
-
     tinymce.init({
         selector: '#note',
         plugins: ["advlist autolink lists link image charmap print preview anchor",
@@ -252,6 +251,7 @@
         remove_script_host : 0,
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     });
+
 
 
     function openNotesModal() {
