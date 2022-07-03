@@ -69,7 +69,7 @@
 
                     });
                 }else{
-                    appendNotification(notify.noti_icon , notify.noti_title , notify.noti_desc)
+                    appendNotification(notify.user_pic , notify.noti_title , notify.noti_desc)
 
                 // if(notify.noti_desc != null && notify.noti_title != null) {
                     toastr['info']( notify.noti_desc , notify.noti_title, {
@@ -89,17 +89,22 @@
     });
 
 
-    function appendNotification(icon , title , desc) {
+    function appendNotification(profile_pic , title , desc) {
 
         let time = moment( new Date().toLocaleString('en-US', { timeZone: "{{Session::get('timezone')}}" })).format('hh:mm A');
+        var user_image = ``;
+
+        if(profile_pic != null) {
+            user_image = `<img src="${root}/${profile_pic}" alt="avatar" width="32" height="32">`;
+        }else{
+            user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
+        }
 
         let html = `
         <div class="list-item d-flex align-items-start" style="cursor:pointer">
             <div class="me-1">
                 <div class="avatar">
-                    <span class="btn-success rounded-circle btn-circle" "="" style="padding:8px 12px">
-                        <i data-feather="${icon}"></i>
-                    </span>
+                    ${user_image}
                 </div>
             </div>
             <div class="list-item-body flex-grow-1">
