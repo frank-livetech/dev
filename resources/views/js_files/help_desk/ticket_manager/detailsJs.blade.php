@@ -18,7 +18,6 @@ let shared_bcc_emails = {!! json_encode($shared_bcc_emails) !!};
 
 let update_flag = 0;
 let updates_Arr = [];
-console.log(shared_cc_emails)
 // var ticket_attach_path = `{{asset('public/files')}}`;
 // var ticket_attach_path_search = 'public/files';
 
@@ -37,6 +36,7 @@ $.ajaxSetup({
     }
 });
 
+
 $(document).ready(function() {
 
     if(shared_cc_emails != '' && shared_cc_emails != null){
@@ -54,7 +54,7 @@ $(document).ready(function() {
 
         // console.log(regiondate , "regiondate");
     }
-    
+
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
@@ -66,10 +66,10 @@ $(document).ready(function() {
             "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
             "save table contextmenu directionality emoticons template paste textcolor ","tb_variables"
         ],
-        
+
         contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
         toolbar: "tb_variables | insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
-        
+
         spellchecker_callback: function (method, text, success, failure) {
             var words = text.match(this.getWordCharPattern());
             if (method === "spellcheck") {
@@ -93,7 +93,7 @@ $(document).ready(function() {
             // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
 
             input.onchange = function() {
-                
+
                 var file = this.files[0];
 
                 var reader = new FileReader();
@@ -119,8 +119,23 @@ $(document).ready(function() {
     }).catch(function(error) {
         listReplies();
     });
-    
+
     getAllCodes();
+
+
+    tinymce.init({
+        selector: '#note',
+        plugins: ["advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+        ],
+        toolbar: 'bold italic underline alignleft link',
+        menubar: false,
+        statusbar: false,
+        relative_urls : 0,
+        remove_script_host : 0,
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+    });
 
 
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
@@ -135,9 +150,9 @@ $(document).ready(function() {
     // let res = moment(ticket.sla_res_deadline_from).valueOf();
     // let rep = moment(ticket.sla_rep_deadline_from).valueOf();
     // let updt_dt = rep > res ? ticket.sla_rep_deadline_from : ticket.sla_res_deadline_from;
-    
+
     $('#updation-date').html( convertDate(ticket.updated_at) );
-    
+
     // settle company name and phone values
     setCustomerCompany();
     getLatestLogs();
@@ -145,7 +160,7 @@ $(document).ready(function() {
     // $('#ticket-timestamp2').text( convertDate(ticket.created_at) );
     $('.ticket-timestamp3').text('Posted on ' + convertDate( ticket.created_at) );
 
-    
+
     if ($("#ticket_details_edit").length > 0) {
         tinymce.init({
             selector: "textarea#ticket_details_edit",
@@ -219,7 +234,7 @@ $(document).ready(function() {
     //     minimumResultsForSearch: 10
     // });
 
-    
+
     setSlaPlanDeadlines();
 
     $('.note-type-ticket').on('change', function() {
@@ -242,10 +257,10 @@ setInterval(() => {
     }else{
         ticketDetailTheme.light();
     }
-    
+
 }, 2000);
 
-// show hide cc & bcc email 
+// show hide cc & bcc email
 $("#show_cc_email").click(function() {
     if( $(this).is(":checked") ) {
         $('.cc_email_field').show();
@@ -386,7 +401,7 @@ function ticket_attachemnt_view() {
             file_row +=`
                 <div class="col-md-12 mt-1">
                     ${extension_img}
-                    <a href="${root}/storage/tickets/${ticket_details.id}/${files[i]}" target="_blank">${files[i]}</a> 
+                    <a href="${root}/storage/tickets/${ticket_details.id}/${files[i]}" target="_blank">${files[i]}</a>
                 </div> `
         }
         return file_row;
@@ -454,7 +469,7 @@ function setSlaPlanDeadlines(ret = false) {
                 res_due = moment(moment(ticket.resolution_deadline).toDate()).local();
                 $('#ticket-res-due').val(ticket.resolution_deadline);
             }
-            
+
         } else if (ticket_slaPlan.due_deadline) {
             // use sla deadlines
             let hm = ticket_slaPlan.due_deadline.split('.');
@@ -478,7 +493,7 @@ function setSlaPlanDeadlines(ret = false) {
         $('#sla-rep_due').parent().removeClass('d-none');
         $('#sla-res_due').parent().removeClass('d-none');
         if (ticket.hasOwnProperty('reply_deadline') && ticket.reply_deadline) {
-            
+
             if(ticket.reply_deadline == 'cleared') {
                 $('#sla-rep_due').parent().addClass('d-none');
             } else {
@@ -491,7 +506,7 @@ function setSlaPlanDeadlines(ret = false) {
             if (hm.length > 1) rep_due.add(hm[1], 'minutes');
         }
 
-        
+
 
         if (rep_due) {
             // overdue or change format of the date
@@ -517,13 +532,13 @@ function setSlaPlanDeadlines(ret = false) {
         if(ticket.reply_deadline == null) {
             if (rep_due) $('#sla-rep_due').html(rep_due.replace("60m", "59m"));
         }
-        
+
         if(ticket.resolution_deadline == null) {
             if (res_due) $('#sla-res_due').html(res_due.replace("60m", "59m"));
         }
 
         if(ticket.reply_deadline != null){
-            
+
             let rep_diff = ``;
             if(ticket.reply_deadline != "cleared") {
                 let tkt_rep_due = moment(ticket.reply_deadline , "YYYY-MM-DD hh:mm A").format('YYYY-MM-DD hh:mm A');
@@ -543,7 +558,7 @@ function setSlaPlanDeadlines(ret = false) {
         }
 
         if(ticket.resolution_deadline != null){
-            
+
             let res_diff = ``;
 
             if(ticket.resolution_deadline != "cleared") {
@@ -561,7 +576,7 @@ function setSlaPlanDeadlines(ret = false) {
             }else{
                 $('#sla-res_due').parent().addClass('d-none');
             }
-            
+
         }
     }
 
@@ -613,7 +628,7 @@ function getDatesSeconds(greater_date , smaller_date) {
 }
 
 function momentDiff(end ,  start) {
-    
+
     let diff = moment.preciseDiff(end , start);
     diff = diff.replace(" days", "d");
     diff = diff.replace(" day", "d");
@@ -624,7 +639,7 @@ function momentDiff(end ,  start) {
     diff = diff.replace(" seconds", "s");
     diff = diff.replace(" second", "s");
 
-    
+
     let color = ``;
     if(diff.includes('d')) {
         color = `#8BB467`;
@@ -638,7 +653,7 @@ function momentDiff(end ,  start) {
     let time = `(<span style="color: ${color}">${diff}</span>)`;
     return time;
 }
- 
+
 function resetSlaPlan() {
     // console.log(ticket , "ticket");
     if(ticket != null) {
@@ -649,9 +664,9 @@ function resetSlaPlan() {
                 if(ticket.reply_deadline != "cleared") {
                     var reply_deadline =  moment().utc(today).add(ticket_slaPlan.reply_deadline , 'h').format('YYYY-MM-DDThh:mm');
                     $("#ticket-rep-due").val(reply_deadline);
-                }                
+                }
 
-                var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm') 
+                var deadline_time =   moment().utc(today).add(ticket_slaPlan.due_deadline , 'h').format('YYYY-MM-DDThh:mm')
                 $("#ticket-res-due").val(deadline_time);
             }
         }else{
@@ -662,7 +677,7 @@ function resetSlaPlan() {
     $("#reset_sla_plan_modal").modal("show");
 }
 
-// new function 
+// new function
 function SlaPlanReset() {
     console.log(ticket , "ticket");
     if(ticket != null) {
@@ -691,7 +706,7 @@ function SlaPlanReset() {
         }
 
         if(ticket.reply_deadline != null || ticket.resolution_deadline != null ) {
-            
+
             if(ticket.reply_deadline != "cleared") {
                 let rep_deadline = moment(ticket.reply_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
                 let time  = rep_deadline.split(' ');
@@ -731,7 +746,7 @@ function SlaPlanReset() {
 
     $("#reset_sla_plan_modal").modal("show");
 }
-// new function 
+// new function
 function slaPlanDeadlines(ret = false) {
     let res_due = '';
     let rep_due = '';
@@ -753,7 +768,7 @@ function slaPlanDeadlines(ret = false) {
                 $("#res_minute").val(  newDat.format('mm') );
                 $("#res_type").val(  newDat.format('A') );
             }
-            
+
         } else if (ticket_slaPlan.due_deadline) {
             let hm = ticket_slaPlan.due_deadline.split('.');
             res_due = moment(moment(ticket.sla_res_deadline_from).toDate()).local().add(hm[0], 'hours');
@@ -829,7 +844,7 @@ function slaPlanDeadlines(ret = false) {
 }
 
 $("#ticket-rep-due").on('change' , function() {
-    
+
 });
 
 $("#response_template").click(function() {
@@ -844,7 +859,7 @@ function updateDeadlines() {
 
     let currdate = new Date().toLocaleString('en-US', { timeZone: time_zone });
     currdate = moment(currdate).format("YYYY-MM-DD h:mm A");
-    
+
     let rp_date = $("#reply_date").val();
     let rp_hour = $("#reply_hour").val();
     let rp_min = $("#reply_minute").val();
@@ -858,7 +873,7 @@ function updateDeadlines() {
     let res_type = $("#res_type").val();
 
     let res_deadline = res_date + ' ' +res_hour + ':' + res_min + ' ' + res_type;
-    
+
     let overdue = '';
 
     let timediff_rep = getDatesSeconds( rep_deadline  , currdate  );
@@ -896,7 +911,7 @@ function updateDeadlines() {
     };
 
     console.log(formData , "formdata");
-    
+
     $.ajax({
         type: "post",
         url: $('#sla_plan_reset_form').attr("action"),
@@ -1019,7 +1034,7 @@ function editRequest() {
         tinyMCE.editors.ticket_details_edit.setContent(ticket.ticket_detail);
     }
 
-    
+
 }
 
 function cancelEditRequest() {
@@ -1136,7 +1151,7 @@ async function tinyContentEditor(content, action) {
 }
 
 function saveRequest() {
-    
+
     subject_div = $('#ticket_subject_edit').val();
     // ticket_details = $('#ticket_details_edit').val();
 
@@ -1198,7 +1213,7 @@ function saveRequest() {
                             fileData.append('fileName', 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index);
                             fileData.append('attachment', this.files[0]);
                             fileData.append('module', 'tickets');
-    
+
                             $.ajax({
                                 type: "post",
                                 url: "{{asset('upload_attachments')}}",
@@ -1225,7 +1240,7 @@ function saveRequest() {
 
                     // refresh logs
                     getLatestLogs();
-                    
+
                     alertNotification('success', 'Success' , 'Initial Request Updated Successfully');
 
                     $('#ticket_subject_heading').css('display', 'block');
@@ -1255,12 +1270,12 @@ function getTicketDetailsContent() {
         // }else{
             content = content;
         // }
-      
+
         tdet = ``;
-        
+
     }
 
-    
+
 
     tdet += `<div class="col-12" id="editor_div">${content}</div>`;
 
@@ -1271,7 +1286,7 @@ function parseAttachments(){
     let tdet = '';
     if(ticket_details.attachments) {
         let attchs = ticket_details.attachments.split(',');
-        
+
         tdet +=`<div class="row">
                     <h6 style="font-size:.8rem !important"><strong>Attachments</strong></h6>
                 </div>`
@@ -1287,18 +1302,18 @@ function parseAttachments(){
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">    
+                                                            <div class="">
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </div>
                                             </div>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </div>` 
+                    </div>`
             }
             else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                 tdet+= `
@@ -1309,18 +1324,18 @@ function parseAttachments(){
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">    
+                                                            <div class="">
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                             </div>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </div>` 
+                    </div>`
             }
             else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
                 tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1330,18 +1345,18 @@ function parseAttachments(){
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">    
+                                                            <div class="">
+                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${item}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </div>
                                             </div>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </div>` 
+                    </div>`
             }
             else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
                 tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1351,18 +1366,18 @@ function parseAttachments(){
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">    
+                                                            <div class="">
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </div>
                                             </div>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </div>` 
+                    </div>`
             }
             else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
                 tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1372,18 +1387,18 @@ function parseAttachments(){
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">    
+                                                            <div class="">
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">
                                                             </div>
                                                         </div>
-                                                       
+
                                                     </div>
                                             </div>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </div>` 
+                    </div>`
             }
             else if(ter == "zip"){
                 tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1393,18 +1408,18 @@ function parseAttachments(){
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">    
+                                                            <div class="">
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                             </div>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </div>` 
+                    </div>`
             }
             else{
                 tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1414,65 +1429,65 @@ function parseAttachments(){
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">    
+                                                            <div class="">
+                                                                <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                             </div>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </div>` 
+                    </div>`
             }
         });
     }
-    
+
     $('#ticket_details_p_attachments').html(tdet);
     $('#ticket_details_p3_attachments').html(tdet);
 }
 
 function parserEmbeddedImages(){
-    
+
     var index = 0;
     $('#ticket_details_p img').each(function () {
         let attchs = '';
         if(ticket_details.embed_attachments != null){
 
             attchs = ticket_details.embed_attachments.split(',');
-            
+
         }
         console.log(attchs[index])
         if(attchs[index] == undefined){
-            
+
         }else{
             $(this).attr('src', "{{asset('storage/tickets')}}/"+ticket_details.id+'/'+attchs[index]);
             $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
             index++;
         }
-        
-        
+
+
     });
     var index1 = 0;
     $('#ticket_details_p3 img').each(function () {
-        
+
         let attchs = '';
         if(ticket_details.embed_attachments != null){
 
             attchs = ticket_details.embed_attachments.split(',');
-            
+
         }
         if(attchs[index1] != undefined){
             $(this).attr('src', "{{asset('storage/tickets')}}/"+ticket_details.id+'/'+attchs[index1]);
             $(this).attr("onClick","showAttachedImage("+ticket_details.id+"," + attchs[index1]  + ")");
             index1++;
         }
-        
-        
+
+
     });
-    
+
 }
 
 function showAttachedImage(id, item , type = '') {
@@ -1484,19 +1499,19 @@ function showAttachedImage(id, item , type = '') {
         img = `<img src="{{asset('storage/tickets/${id}/${item}')}}" class="w-100 h-100">`;
     }
     let csv = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png"> `;
-    let pdf = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png">`; 
+    let pdf = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png">`;
     let doc = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png">` ;
     let pptx = `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png"> `;
-    let zip =   `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png">` 
+    let zip =   `<img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png">`
     let downloadimg = '';
     if(type == 'reply'){
         downloadimg = `<a class="btn btn-primary waves-effect waves-float waves-light" href="{{asset('storage/tickets-replies/${id}/${item}')}}" download><svg style="color: #fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span style="color: #fff"> Download</span></a>`;
     }else{
         downloadimg = `<a class="btn btn-primary waves-effect waves-float waves-light" href="{{asset('storage/tickets/${id}/${item}')}}" download><svg style="color: #fff" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span style="color: #fff"> Download</span></a>`;
-    } 
-    
+    }
+
     var file_type = img.substr(img.lastIndexOf('.')).toLowerCase();
-    
+
     if (file_type.includes('csv') || file_type.includes('xls') || file_type.includes('xlsx') || file_type.includes('sql')) {
         $('.showDefaultPreview').html(csv);
 
@@ -1529,16 +1544,16 @@ function showAttachmentPreview(id , item) {
 }
 
 function parserReplyEmbeddedImages(reply_id , images , type){
-    
+
     var index = 0;
     $('#'+reply_id+' img').each(function () {
         let attchs = '';
 
-        
+
         if(images != null && images != 'null'){
 
             attchs = images.split(',');
-            
+
         }
         var classList = $(this).attr("class");
         // console.log(attchs[index])
@@ -1547,18 +1562,18 @@ function parserReplyEmbeddedImages(reply_id , images , type){
                 $(this).remove();
             }
         }else{
-            
+
             if(classList != 'rounded-circle' && classList != 'attImg'){
                 $(this).attr('src', "{{asset('storage/tickets-replies')}}/"+ticket_details.id+'/'+attchs[index]);
                 // $(this).attr("onClick","showAttachedImage("+ticket_details.id+",`" +attchs[index] +"`)");
                 index++;
             }
-            
+
         }
-        
-        
+
+
     });
-    
+
 }
 
 function listReplies() {
@@ -1591,7 +1606,7 @@ function listReplies() {
                         var tech =  `{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}`;
                         var ter = getExt(tech);
 
-                        
+
                         // return ter;
                     if(ter == "pdf" ){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1601,17 +1616,17 @@ function listReplies() {
                                                         <div class="modal-first w-100">
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
-                                                                    <div class="">                                                               
-                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">    
+                                                                    <div class="">
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pdf.png" width="25px">
                                                                     </div>
                                                                 </div>
-                                                               
+
                                                             </div>
                                                     </div>
                                                 </div>
                                         </div>
                                     </div>
-                                </div>` 
+                                </div>`
                     }
                     else if(ter == "csv" || ter == "xls" || ter == "xlsx" || ter == "sql"){
                         tdet+= `
@@ -1622,17 +1637,17 @@ function listReplies() {
                                                         <div class="modal-first w-100">
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
-                                                                    <div class="">                                                               
-                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">    
+                                                                    <div class="">
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}xlx.png" width="25px">
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                             </div>
                                                     </div>
                                                 </div>
                                         </div>
                                     </div>
-                            </div>` 
+                            </div>`
                     }
                     else if(ter == "png" || ter == "jpg" || ter == "webp" || ter == "jpeg" || ter == "webp" || ter == "svg" || ter == "psd"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1642,17 +1657,17 @@ function listReplies() {
                                                         <div class="modal-first w-100">
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
-                                                                    <div class="">                                                               
-                                                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">    
+                                                                    <div class="">
+                                                                        <img src="{{asset('storage/tickets-replies/${ticket_details.id}/${item}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">
                                                                     </div>
                                                                 </div>
-                                                               
+
                                                             </div>
                                                     </div>
                                                 </div>
                                         </div>
                                     </div>
-                            </div>` 
+                            </div>`
                     }
                     else if(ter == "docs" || ter == "doc" || ter == "txt" || ter == "dotx" || ter == "docx"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1662,17 +1677,17 @@ function listReplies() {
                                                         <div class="modal-first w-100">
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
-                                                                    <div class="">                                                               
-                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">    
+                                                                    <div class="">
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}word.png" width="25px">
                                                                     </div>
                                                                 </div>
-                                                               
+
                                                             </div>
                                                     </div>
                                                 </div>
                                         </div>
                                     </div>
-                            </div>` 
+                            </div>`
                     }
                     else if(ter == "ppt" || ter == "pptx" || ter == "pot" || ter == "pptm"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1682,17 +1697,17 @@ function listReplies() {
                                                         <div class="modal-first w-100">
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
-                                                                    <div class="">                                                               
-                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">    
+                                                                    <div class="">
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}pptx.png" width="25px">
                                                                     </div>
                                                                 </div>
-                                                               
+
                                                             </div>
                                                     </div>
                                                 </div>
                                         </div>
                                     </div>
-                            </div>` 
+                            </div>`
                     }
                     else if(ter == "zip"){
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1702,17 +1717,17 @@ function listReplies() {
                                                         <div class="modal-first w-100">
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
-                                                                    <div class="">                                                               
-                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">    
+                                                                    <div class="">
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}zip.png" width="25px">
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                             </div>
                                                     </div>
                                                 </div>
                                         </div>
                                     </div>
-                            </div>` 
+                            </div>`
                     }
                     else{
                         tdet+= `<div class="col-md-2" style='position:relative;cursor:pointer;width: 74px;' >
@@ -1722,17 +1737,17 @@ function listReplies() {
                                                         <div class="modal-first w-100">
                                                             <div class="mt-0 rounded" >
                                                                 <div class="float-start rounded me-1 bg-none" style="">
-                                                                    <div class="">                                                               
-                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">    
+                                                                    <div class="">
+                                                                        <img src="{{request()->root() . '/' . (Session::get('is_live') == 1 ? 'public/default_imgs/' : 'default_imgs/')}}txt.png" width="25px">
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                             </div>
                                                     </div>
                                                 </div>
                                         </div>
                                     </div>
-                            </div>` 
+                            </div>`
                     }
                         // tdet += `<p><a href="{{asset('public/files/replies/${ticket_details.id}/${item}')}}" target="_blank">${item}</a></p>`;
                     });
@@ -1741,7 +1756,7 @@ function listReplies() {
                 }
 
                 let user_type = 'Staff';
-                
+
                 if(reply.user_type == 5){
                     user_type = 'User'
                 }
@@ -1750,15 +1765,15 @@ function listReplies() {
                 var now = moment( new Date().toLocaleString('en-US', { timeZone: time_zone }));
                 // console.log(now)
                 var d = new Date(reply.created_at);
-                
+
                 var min = d.getMinutes();
                 var dt = d.getDate();
                 var d_utc = d.getUTCHours();
-                
+
                 d.setMinutes(min);
                 d.setDate(dt);
                 d.setUTCHours(d_utc);
-                
+
                 let a = d.toLocaleString("en-US" , {timeZone: time_zone});
 
                 var end = moment(a); // another date
@@ -1766,7 +1781,7 @@ function listReplies() {
                 var days = duration.asHours();
 
                 // console.log(days + ' sadasdasd' + a)
-                
+
                 if(days <= 1){
                     new_tag = `<span class="badge badge-primary" style="background-color:#4eafcb">New</span>`;
                 }
@@ -1783,8 +1798,8 @@ function listReplies() {
                         customer_img += `<img src="${path}" width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
                     }else{
                         customer_img += `<img src="{{asset('${js_path}default_imgs/customer.png')}}" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
-                    } 
-                    
+                    }
+
                     // link = `<a href="{{url('customer-profile')}}/${reply.customer_replies.customer_id}"> ${reply.customer_replies.name} </a>`;
 
                 }else{
@@ -1798,7 +1813,7 @@ function listReplies() {
                     }else{
                         user_img += `<img src="${js_path}default_imgs/customer.png" class="rounded-circle" width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
-                    
+
                     // link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
 
                 }else{
@@ -1821,19 +1836,19 @@ function listReplies() {
                         if(reply.reply_user != null) {
                             link = `<a href="{{url('profile')}}/${reply.reply_user.id}" class="text-body"> ${reply.reply_user.name} </a>`;
                         }
-                        
+
                     }
                 }else{
 
                     if(reply.customer_replies != null) {
                         link = `<a href="{{url('customer-profile')}}/${reply.customer_id}"> ${reply.customer_replies.first_name != null ? reply.customer_replies.first_name : ''} ${reply.customer_replies.last_name !=null ? reply.customer_replies.last_name :  ''} </a>`;
                     }
-                        
+
                     if(reply.reply_user != null) {
                         link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
                     }
                 }
-                                
+
                 replies_html =`
                     <li class="media" id="reply__${index}">
                         <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
@@ -1849,21 +1864,21 @@ function listReplies() {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3 me-1"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                                         <span class="align-middle" >Edit</span>
                                     </a>
-                                    
+
                                     <a class="dropdown-item" onclick="deleteReply(${reply.id},${index})" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                         <span class="align-middle" >Delete</span>
-                                    </a>   
-                                   
-                                </h5> 
+                                    </a>
+
+                                </h5>
                             </div>
-                            
-                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span> 
+
+                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span>
                             <div class="my-1 bor-top reply-htm" id="reply-html-` + reply.id + `"> ${content} </div>
                             </div>
-                            
+
                         </div>
-                        
+
                     </li>
                     <div class="row mt-1" style="word-break: break-all;">
                             ${tdet}
@@ -1881,7 +1896,7 @@ function listReplies() {
         });
 
         $('.bor-top').find(' p img').css('width','200px !important');
- 
+
     }else{
         $("#ticket-replies").html("");
     }
@@ -1930,7 +1945,7 @@ function deleteReply(id , index) {
 }
 
 function publishReply(ele, reply_btn_id , type = 'publish') {
-    
+
     console.log(reply_btn_id , "reply_btn_id");
     $("."+reply_btn_id).attr('style','display:none !important');
 
@@ -1998,7 +2013,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                             if(!res.success) {
                                 // show error
                             } else {
-                                
+
                                 if(!rep_attaches) rep_attaches = res.attachments;
                                 else rep_attaches += ','+res.attachments;
                             }
@@ -2019,7 +2034,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                 inner_attachments: attachments_src,
                 queue_id:queue_id
             };
-            
+
             if (edit_reply_mode !== false) {
                 params.id = ticketReplies[edit_reply_mode].id;
             }
@@ -2091,7 +2106,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
 
                                 if(ticket != null) {
                                     ticket.reply_deadline = 'cleared';
-                                    ticket.resolution_deadline = 'cleared';  
+                                    ticket.resolution_deadline = 'cleared';
                                 }
                             }
                         }
@@ -2124,7 +2139,7 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
                                         ticket.reply_deadline = 'cleared';
                                         ticket.resolution_deadline = 'cleared';
                                     }
-                                
+
                                 }
 
                                 ticket.status = updates_Arr[i]['new_data'];
@@ -2228,7 +2243,7 @@ function editReply(rindex) {
 
     // if(ticketReplies[rindex].attachments) {
     //     let attchs = ticketReplies[rindex].attachments.split(',');
-        
+
     //     $('#replies_attachments').html('');
     //     ticket_attachments_count = 0;
 
@@ -2271,7 +2286,7 @@ function cancelReply() {
     }
 
     edit_reply_mode = false;
-    
+
     document.getElementById('compose-reply').classList.add('d-none');
 
     tinyMCE.editors.mymce.setContent('');
@@ -2279,7 +2294,7 @@ function cancelReply() {
     // $('#cancel-rply').hide();
     // $('#draft-rply').show();
 
-    
+
     $('.reply_btns').attr('style', 'display: none !important');
     $("#compose_btn").show();
 
@@ -2293,13 +2308,13 @@ function getDeptStatuses(value) {
 
 $('#dept_id').on('select2:selecting', function(e) {
     console.log('Selecting: ' , e.params.args.data);
-    
+
     var dept_id = e.params.args.data.id;
 
     // no dept change to do update
     if (dept_id == ticket.dept_id){
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 1; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 1;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2309,7 +2324,7 @@ $('#dept_id').on('select2:selecting', function(e) {
         }
         showDepartStatus(dept_id , 'nochange');
         $('#dept_id').val(dept_id).trigger("change");
-        
+
         return false;
     }
     console.log(update_flag , "update_flag");
@@ -2321,12 +2336,12 @@ $('#dept_id').on('select2:selecting', function(e) {
         new_data:dept_id,
         new_text:e.params.args.data.text
     }
-      
+
     let item = updates_Arr.filter(item => item.id === 1);
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(1);
     if(item.length > 0) {
         updates_Arr[index].id = 1;
-        updates_Arr[index].data = ticket.department_name ; 
+        updates_Arr[index].data = ticket.department_name ;
         updates_Arr[index].new_data = dept_id ;
         updates_Arr[index].new_text = e.params.args.data.text;
     }else{
@@ -2338,17 +2353,17 @@ $('#dept_id').on('select2:selecting', function(e) {
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
     }
-  
+
     showDepartStatus(dept_id , 'nochange');
-    
+
 });
 // $('#dept_id').change(function() {
 //     var dept_id = $(this).val();
 
 //     // no dept change to do update
 //     if (dept_id == ticket.dept_id){
-//         updates_Arr = $.grep(updates_Arr, function(e){ 
-//             return e.id != 1; 
+//         updates_Arr = $.grep(updates_Arr, function(e){
+//             return e.id != 1;
 //         });
 //         if(update_flag > 0){
 //             update_flag--;
@@ -2367,12 +2382,12 @@ $('#dept_id').on('select2:selecting', function(e) {
 //         new_data:dept_id,
 //         new_text:$("#dept_id option:selected").text()
 //     }
-      
+
 //     let item = updates_Arr.filter(item => item.id === 1);
 //     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(1);
 //     if(item.length > 0) {
 //         updates_Arr[index].id = 1;
-//         updates_Arr[index].data = ticket.department_name ; 
+//         updates_Arr[index].data = ticket.department_name ;
 //         updates_Arr[index].new_data = dept_id ;
 //         updates_Arr[index].new_text = $("#dept_id option:selected").text();
 //     }else{
@@ -2384,19 +2399,19 @@ $('#dept_id').on('select2:selecting', function(e) {
 //     if(reply_flag == 0) {
 //         $("#update_ticket").css("display", "block");
 //     }
-  
+
 //     showDepartStatus(dept_id , 'nochange');
 // });
 $('#assigned_to').on('select2:selecting', function(e) {
 
     // var assigned_to = $(this).val() ? $(this).val() : null;
     console.log('Selecting owner: ' , e.params.args.data);
-    
+
     var assigned_to = e.params.args.data.id;
     // no change to do update
     if (assigned_to == ticket.assigned_to){
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 2; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 2;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2423,7 +2438,7 @@ $('#assigned_to').on('select2:selecting', function(e) {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
     if(item.length > 0) {
         updates_Arr[index].id = 2;
-        updates_Arr[index].data = ticket.assignee_name ; 
+        updates_Arr[index].data = ticket.assignee_name ;
         updates_Arr[index].new_data = assigned_to ;
         updates_Arr[index].new_text = e.params.args.data.text;
     }else{
@@ -2442,8 +2457,8 @@ $('#assigned_to').change(function() {
 
     // no change to do update
     if (assigned_to == ticket.assigned_to){
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 2; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 2;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2468,7 +2483,7 @@ $('#assigned_to').change(function() {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
     if(item.length > 0) {
         updates_Arr[index].id = 2;
-        updates_Arr[index].data = ticket.assignee_name ; 
+        updates_Arr[index].data = ticket.assignee_name ;
         updates_Arr[index].new_data = assigned_to ;
         updates_Arr[index].new_text = $("#assigned_to option:selected").text();
     }else{
@@ -2479,18 +2494,18 @@ $('#assigned_to').change(function() {
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
     }
-   
+
 });
 $('#type').on('select2:selecting', function(e) {
 
     // var type = $(this).val();
     console.log('Selecting type: ' , e.params.args.data);
-    
+
     var type = e.params.args.data.id;
     // no change to do update
     if (type == ticket.type){
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 3; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 3;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2517,7 +2532,7 @@ $('#type').on('select2:selecting', function(e) {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(3);
     if(item.length > 0) {
         updates_Arr[index].id = 3;
-        updates_Arr[index].data = ticket.type_name ; 
+        updates_Arr[index].data = ticket.type_name ;
         updates_Arr[index].new_data = type ;
         updates_Arr[index].new_text = e.params.args.data.text;
     }else{
@@ -2534,8 +2549,8 @@ $('#type').change(function() {
     var type = $(this).val();
     // no change to do update
     if (type == ticket.type){
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 3; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 3;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2560,7 +2575,7 @@ $('#type').change(function() {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(3);
     if(item.length > 0) {
         updates_Arr[index].id = 3;
-        updates_Arr[index].data = ticket.type_name ; 
+        updates_Arr[index].data = ticket.type_name ;
         updates_Arr[index].new_data = type ;
         updates_Arr[index].new_text = $("#type option:selected").text();
     }else{
@@ -2571,8 +2586,8 @@ $('#type').change(function() {
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
     }
-    
-    
+
+
 });
 $('#status').on('select2:selecting', function(e) {
 
@@ -2585,8 +2600,8 @@ $('#status').on('select2:selecting', function(e) {
 
     // no change to do update
     if (status == ticket.status) {
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 4; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 4;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2613,7 +2628,7 @@ $('#status').on('select2:selecting', function(e) {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(4);
     if(item.length > 0) {
         updates_Arr[index].id = 4;
-        updates_Arr[index].data = ticket.status_name ; 
+        updates_Arr[index].data = ticket.status_name ;
         updates_Arr[index].new_data = status ;
         updates_Arr[index].new_text = e.params.args.data.text;
     }else{
@@ -2632,8 +2647,8 @@ $('#status').change(function() {
 
     // no change to do update
     if (status == ticket.status) {
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 4; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 4;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2658,7 +2673,7 @@ $('#status').change(function() {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(4);
     if(item.length > 0) {
         updates_Arr[index].id = 4;
-        updates_Arr[index].data = ticket.status_name ; 
+        updates_Arr[index].data = ticket.status_name ;
         updates_Arr[index].new_data = status ;
         updates_Arr[index].new_text = $("#status option:selected").text();
     }else{
@@ -2680,8 +2695,8 @@ $('#priority').on('select2:selecting', function(e) {
     $('#prio-label').css('background-color',color);
     // no change to do update
     if (priority == ticket.priority){
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 5; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 5;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2691,7 +2706,7 @@ $('#priority').on('select2:selecting', function(e) {
         }
         return false;
     }
-    
+
     console.log(update_flag , "update_flag");
 
     update_flag++;
@@ -2708,7 +2723,7 @@ $('#priority').on('select2:selecting', function(e) {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(5);
     if(item.length > 0) {
         updates_Arr[index].id = 5;
-        updates_Arr[index].data = ticket.priority_name ; 
+        updates_Arr[index].data = ticket.priority_name ;
         updates_Arr[index].new_data = priority ;
         updates_Arr[index].new_text = e.params.args.data.text;
     }else{
@@ -2717,7 +2732,7 @@ $('#priority').on('select2:selecting', function(e) {
     console.log(updates_Arr , "updates_Arr priority");
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
-    }   
+    }
 
 });
 
@@ -2727,8 +2742,8 @@ $('#priority').change(function() {
     $('#prio-label').css('background-color',color);
     // no change to do update
     if (priority == ticket.priority){
-        updates_Arr = $.grep(updates_Arr, function(e){ 
-            return e.id != 5; 
+        updates_Arr = $.grep(updates_Arr, function(e){
+            return e.id != 5;
         });
         if(update_flag > 0){
             update_flag--;
@@ -2738,7 +2753,7 @@ $('#priority').change(function() {
         }
         return false;
     }
-    
+
     console.log(update_flag , "update_flag");
 
     update_flag++;
@@ -2755,7 +2770,7 @@ $('#priority').change(function() {
     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(5);
     if(item.length > 0) {
         updates_Arr[index].id = 5;
-        updates_Arr[index].data = ticket.priority_name ; 
+        updates_Arr[index].data = ticket.priority_name ;
         updates_Arr[index].new_data = priority ;
         updates_Arr[index].new_text = $("#priority option:selected").text();
     }else{
@@ -2764,7 +2779,7 @@ $('#priority').change(function() {
     console.log(updates_Arr , "updates_Arr priority");
     if(reply_flag == 0) {
         $("#update_ticket").css("display", "block");
-    }    
+    }
 });
 
 function updateTicket(){
@@ -2794,7 +2809,7 @@ function updateTicket(){
                 all_users.forEach(element => {
                     userlist.push(element.name + ' (' + element.email + ')');
                 });
-                
+
                 let closeStatus = updates_Arr.find(item => item.new_text == 'Closed');
                 if(closeStatus != null) {
                     let closetkt = $('.closeCounter').text();
@@ -2833,9 +2848,9 @@ function updateTicket(){
                                 ticket.reply_deadline = 'cleared';
                                 ticket.resolution_deadline = 'cleared';
                             }
-                           
+
                         }
- 
+
                         ticket.status = updates_Arr[i]['new_data'];
                         ticket.status_name = updates_Arr[i]['new_text'];
                         // $("#dropD").css('background-color' ,color + ' !important');
@@ -2854,7 +2869,7 @@ function updateTicket(){
 
                 }
                 updateTicketDate();
-                
+
 
                 $('#note').atwho({
                     at: "@",
@@ -2910,7 +2925,7 @@ function getTicketFollowUp() {
                     $('.followup_count').text('');
                     $('.followup_count').removeClass('badge badge-light-danger rounded-pill mx-1');
                 }
-                
+
 
                 g_followUps = obj;
 
@@ -2990,18 +3005,18 @@ function listFollowups() {
             // console.log(g_followUps[i].date , "g_followUps[i].date");
             // followUpDate = moment(moment.utc(g_followUps[i].date).toDate()).local();
             followUpDate = moment(new Date(g_followUps[i].date).toLocaleString('en-US', { timeZone: time_zone }));
-            
+
 
             if (g_followUps[i].schedule_type == 'time' && g_followUps[i].recurrence_time) {
                 let rec_time = g_followUps[i].recurrence_time.split(':');
                 followUpDate.set('hour', rec_time[0]);
                 followUpDate.set('minute', rec_time[1]);
             }
-            
+
             timediff = followUpDate.diff( moment(currTime) , 'seconds');
             console.log(timediff , "timediff");
             let remainTime = momentDiff(followUpDate ,  moment(currTime));
-            
+
             if (timediff < 0) idata.ticket_update = true;
             // else remTime = getClockTime(followUpDate, timediff);
             else remTime = remainTime;
@@ -3041,7 +3056,7 @@ function listFollowups() {
                         ${countFlups+1}. Will run a follow-up at ${moment(followUpDate).format(date_format)} created by ${g_followUps[i].creator_name} ${remTime}</strong>&nbsp;
                         ` + autho + `
                             <span class="ml-auto"><i class="fas fa-chevron-down accordion-arrow"></i></span>
-                        
+
                     </a>
                     <button onclick="deleteFollowup(${g_followUps[i].id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
                     <i class="fa fa-trash"></i></button>
@@ -3118,13 +3133,13 @@ function executeFollowUps(check_followup) {
             let notes_html = ``;
             let n_type = '';
             let user_img = ``;
-            
+
 
             if( "{{auth()->user()->profile_pic}}" != null) {
                 user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
                 width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
             }else{
-                user_img += `<img src="${path}default_imgs/customer.png" 
+                user_img += `<img src="${path}default_imgs/customer.png"
                         width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
             }
 
@@ -3164,7 +3179,7 @@ function executeFollowUps(check_followup) {
                 user_img += `<img src="{{ asset( request()->root() .'/'. auth()->user()->profile_pic)}}"
                 width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
             }else{
-                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
                         width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
             }
 
@@ -3179,7 +3194,7 @@ function executeFollowUps(check_followup) {
                     <a href="{{url('profile')}}/{{auth()->user()->id}}"> {{auth()->user()->name}} </a>
                         </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp; <br>
 
-                    <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span> 
+                    <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(item.created_at) + `</span>
                     <div class="my-1 bor-top reply-htm" id="reply-html-` + item.id + `"> ${item.follow_up_reply} </div>
                 </div>
             </li>
@@ -3192,9 +3207,8 @@ function executeFollowUps(check_followup) {
     }
 
     setTimeout(() => {
-        console.log("chal gya");
         get_ticket_notes();
-        getTicketReplies(ticket.id);    
+        getTicketReplies(ticket.id);
     }, 40000);
 }
 
@@ -3358,9 +3372,9 @@ $('#fu_post_reply').change(function() {
 });
 
 $('#is_recurring').click(function() {
-    
+
     if ($(this).is(":checked")) {
-        
+
         $('#recurrence-range').show();
         $('#followup-recurrence').show();
 
@@ -3767,7 +3781,7 @@ function createFollowUp(event) {
 
 function selectColor(color) {
     gl_color_notes = color;
-    $('#note').css('background-color', color);
+    tinymce.get(1).getBody().style.backgroundColor = color;
 }
 
 function followUpNoteColor(color) {
@@ -3791,7 +3805,7 @@ function updateTicketDate(){
 $("#save_ticket_note").submit(function(event) {
     event.preventDefault();
 
-    var note = $("#note").val();
+    var note = $("textarea[name=note]").html();
     let extract_notes_email = note.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
 
     let vis = [];
@@ -3807,7 +3821,7 @@ $("#save_ticket_note").submit(function(event) {
     formData.append('ticket_id', ticket.id);
     formData.append('color', gl_color_notes);
     formData.append('visibility', vis.toString());
-    
+
 
     if(document.getElementById('note-type-user').checked) {
         formData.append('customer_id', temp_sel_customer);
@@ -3828,7 +3842,6 @@ $("#save_ticket_note").submit(function(event) {
         type: "POST",
         url: "{{asset('save-ticket-note')}}" ,
         data: formData,
-        // async: false,
         cache: false,
         contentType: false,
         processData: false,
@@ -3859,7 +3872,7 @@ $("#save_ticket_note").submit(function(event) {
                 getLatestLogs();
 
                 $(this).trigger('reset');
-  
+
                 get_ticket_notes();
 
                 if(data.hasOwnProperty('sla_updated') && data.sla_updated !== false) {
@@ -3887,7 +3900,7 @@ $("#save_ticket_note").submit(function(event) {
     });
 });
 
-function get_ticket_notes() {   
+function get_ticket_notes() {
     $('#v-pills-notes-list').html('');
     $.ajax({
         type: 'GET',
@@ -3899,7 +3912,7 @@ function get_ticket_notes() {
                     $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
                     $('.notes_count').text(data.notes_count);
                 }
-                
+
                 notes = data.notes;
                 var type = '';
 
@@ -3924,19 +3937,19 @@ function get_ticket_notes() {
                             <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
                                 style= "float:right;cursor:pointer;position:relative;bottom:25px"
                                 onclick="deleteTicketNote(this, '` + notes[i].id + `')" ></span>
-                        
-                            <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+
+                            <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
                                 style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
                                 onclick="editNote(${notes[i].id})"></span>
 
-                        
+
                         </div>`;
                     }
 
                     if(notes[i].type == 'Ticket') {
-                    
+
                         type = '<i class="fas fa-clipboard-list"></i>';
-                    
+
                     }else if(notes[i].type == 'User') {
 
                         type = '<i class="fas fa-user"></i>';
@@ -3951,16 +3964,16 @@ function get_ticket_notes() {
 
                     if(notes[i].profile_pic != null) {
 
-                        user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
+                        user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
                         width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
 
                     }else{
 
-                        user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                        user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
                                 width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
                     }
-                    
+
                     let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
                         <div style="margin-right: 10px; margin-left: -8px;">
                             ${user_img}
@@ -3978,13 +3991,13 @@ function get_ticket_notes() {
                         </div>
                     </div>`;
 
-                    
+
                     $('#v-pills-notes-list').append(flup);
                 }
             }
         },
         failure: function(errMsg) {
-            
+
         }
     });
 }
@@ -3992,14 +4005,14 @@ function get_ticket_notes() {
 
 function jsTimeZone(date) {
     let d = new Date(date);
-    
+
     var year =  d.getFullYear();
     var month = d.getMonth();
     var date = d.getDate();
     var hour = d.getHours();
     var min = d.getMinutes();
     var mili = d.getMilliseconds();
-            
+
     // year , month , day , hour , minutes , seconds , miliseconds;
     let new_date = new Date(Date.UTC(year, (month), date, hour, min, mili));
     let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
@@ -4008,17 +4021,18 @@ function jsTimeZone(date) {
 
 function editNote(id) {
     let item = notes.find(item => item.id === id);
-    console.log(item ,"item");
+
     if(item != null || item != undefined || item != "") {
 
         $("#note_title").text("Edit Notes");
         $('#notes_manager_modal').modal('show');
-        
+
         $('#note-id').val(id);
 
         $("#note-visibilty").val("Everyone").trigger('change');
-        $('#save_ticket_note').find('#note').val(item.note != null ? item.note : '');
-        $('#save_ticket_note').find('#note').css('background-color', item.color != null ? item.color : '');
+        tinymce.activeEditor.setContent(item.note != null ? item.note : '')
+        tinyMCE.get(1).getBody().style.backgroundColor = item.color != null ? item.color : '';
+        gl_color_notes = item.color != null ? item.color : '';
         if(item.type == 'Ticket') {
             $("#note-type-ticket").prop('checked',true);
             $('.note-visibilty').prop('disabled',false);
@@ -4054,7 +4068,7 @@ function deleteTicketNote(ele, id) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.value) {
-            
+
             $.ajax({
                 type: 'post',
                 url: del_ticket_route,
@@ -4118,7 +4132,7 @@ function setCustomerCompany() {
 
         // $('#adjustCard1Height').attr('style', 'height: 300px !important');
         $('#adjustCard2Height').attr('style', 'height: 160px !important; overflow-y:scroll');
-        
+
     } else {
         $('#cst-company').html('');
         $('#cst-company-name').html('');
@@ -4180,7 +4194,7 @@ function getLatestLogs() {
         data: { id: asset_ticket_id },
         success: function(data) {
             if (data.success) {
-                
+
                 var obj = data.logs;
 
                 let id = "{{$details->coustom_id}}";
@@ -4217,11 +4231,11 @@ function getLatestLogs() {
                     ],
                 });
             } else {
-                
+
             }
         },
         failure: function(errMsg) {
-            
+
         }
     });
 }
@@ -4244,10 +4258,10 @@ function showDepartStatus(value , type) {
             let open_sts = '';
             let obj_queue = data.queue;
             let default_queue = data.default_queue;
-            
+
             if(default_queue == null){
                 default_queue = obj_queue['0'];
-            }       
+            }
             for(var i =0; i < obj.length; i++) {
                 if(obj[i].name == 'Open'){
                     open_sts = obj[i].id;
@@ -4262,16 +4276,16 @@ function showDepartStatus(value , type) {
             if(type == 'followup') {
 
                 $("#follow_up_status").html(option);
-                
+
             }else{
-                
+
                 $("#status").html(select + option);
 
                 console.log(value +'========'+ticket.dept_id)
                 if (value == ticket.dept_id){
                     // alert('asd');
-                    updates_Arr = $.grep(updates_Arr, function(e){ 
-                        return e.id != 1; 
+                    updates_Arr = $.grep(updates_Arr, function(e){
+                        return e.id != 1;
                     });
                     if(update_flag > 0){
                         update_flag--;
@@ -4288,14 +4302,14 @@ function showDepartStatus(value , type) {
                 //     $('#status').trigger('change');
                 // }
                 $('#status').trigger('change');
-                
+
                 if(reply_flag == 0) {
                     $("#update_ticket").css("display", "block");
                 }
-                
+
                 let email_option = ``;
                 for( let item of obj_queue) {
-                    
+
                     if(item.is_default == 'yes'){
                         email_option += `<option value="${item.id}" selected> ${item.mailserver_username} (${item.from_name}) </option>`;
                     }else{
@@ -4309,13 +4323,13 @@ function showDepartStatus(value , type) {
                 $('#type').val(default_queue.mail_type_id);
                 $("#type").trigger('change');
 
-                
+
 
                 let assigned_to = $('#assigned_to').val();
                 let ass_obj = {};
                 let flg = false;
 
-               
+
                 select = `<option value="">Unassigned</option>`;
 
                 for(var i =0; i < obj_user.length; i++) {
@@ -4341,7 +4355,7 @@ function showDepartStatus(value , type) {
                     let index = updates_Arr.map(function (item) { return item.id; }).indexOf(2);
                     if(item.length > 0) {
                         updates_Arr[index].id = 2;
-                        updates_Arr[index].data = ticket.assignee_name ; 
+                        updates_Arr[index].data = ticket.assignee_name ;
                         updates_Arr[index].new_data = null ;
                         updates_Arr[index].new_text = "Unassigned";
                     }else{
@@ -4388,7 +4402,7 @@ function ticket_notify(template, action_name, data_id = '',oldval) {
                 }
             },
             failure: function(errMsg) {
-                
+
             }
         });
     }
@@ -4423,8 +4437,8 @@ function addAttachment(type, olderAttach='') {
                                                 <div class="modal-first w-100">
                                                     <div class="mt-0 rounded" >
                                                         <div class="float-start rounded me-1 bg-none" style="">
-                                                            <div class="">                                                               
-                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${olderAttach}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">    
+                                                            <div class="">
+                                                                <img src="{{asset('storage/tickets/${ticket_details.id}/${olderAttach}')}}" class="attImg"  alt="" style="width:40px;height:30px !important">
                                                             </div>
                                                         </div>
                                                         <div class="more-info">
@@ -4434,7 +4448,7 @@ function addAttachment(type, olderAttach='') {
                                                                 </h6>
                                                             </a>
                                                         </div>
-                                                        
+
                                                     </div>
                                             </div>
                                         </div>
@@ -4525,6 +4539,8 @@ function openNotesModal() {
     $('#note-visibilty').prop('disabled', false);
     $("#note-visibilty").val("Everyone").trigger('change');
     $("#note-id").val("");
+    tinymce.get(1).getBody().style.backgroundColor = '#FFEFBB';
+    gl_color_notes = '#FFEFBB';
 }
 
 function showFollowUpModal() {
@@ -4554,7 +4570,7 @@ function showFollowUpModal() {
 
     // checking darkmood
     if ($(".loaded ").hasClass('dark-layout')) {
-        
+
         $('.followup_accordin').removeClass('bg-light');
 
         $('.general_checkbox').attr('style','border:1px solid white !important');
@@ -4582,7 +4598,7 @@ const ticketDetailTheme = {
         $("#response_template_fields").addClass('bg-light');
         $("#response_template_fields").removeClass('bg-dark');
     },
-    dark : () => { 
+    dark : () => {
 
         $('.bootstrap-tagsinput').attr('style','background: #424242; border: 1px solid #424242 !important;');
         $("#response_template_fields").removeClass('bg-light');
@@ -4675,7 +4691,7 @@ function resetTktSLA(value) {
     }
 }
 
-function toggleReq(){    
+function toggleReq(){
     $(".frst").toggleClass("d-none");
     $(".sec").toggleClass("d-none");
     let ter = $('#ticket_details_p').html();
@@ -4686,7 +4702,7 @@ function toggleReq(){
 
 
 
-// trash ticket 
+// trash ticket
 function trashTicket(id) {
 
     $.ajax({
@@ -4717,7 +4733,7 @@ function publishTicketReply(reply) {
         ticket_id: ticket.id,
         reply: reply,
     };
-    
+
     $.ajax({
         type: "post",
         url: publish_reply_route,
@@ -4735,7 +4751,7 @@ function getTicketReplies(id) {
     $.ajax({
         type: 'GET',
         url: "{{url('ticket-replies')}}/"+id,
-        success: function(data) {            
+        success: function(data) {
             ticketReplies = data.replies;
             listReplies();
             console.log(data , "getTicketReplies");
@@ -4780,7 +4796,7 @@ function checkRecurrence(type) {
         $(".weekly_check_div").hide();
         $(".monthly_check_div").hide();
     }
-    
+
 }
 
 

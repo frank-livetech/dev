@@ -58,10 +58,9 @@
     var general_info_route = "{{asset('/general-info')}}";
     var set_sla_plan_route = "{{asset('/set-sla-plan')}}";
 
-    console.log(ticket , "ticket");
 
     $( document ).ready(function() {
-       
+
         $("#dropD ").find(".select2").hide();
         $("#dropD ").find("h5").show();
         selectD();
@@ -88,7 +87,7 @@
                 }
             }
         }
-    }); 
+    });
 
     $("#tkt_customer_id").on("change" , function() {
         $("#tkt_company_id").empty();
@@ -128,20 +127,20 @@
         selectD();
     })
 
-    function selectD(){ 
+    function selectD(){
         var Priority =  $("#prio-label").find(".select2 option:selected").text();
-        $("#prio-h5").text(Priority);    
+        $("#prio-h5").text(Priority);
         var Dep =  $("#dep-label").find(".select2 option:selected").text();
-        $("#dep-h5").text(Dep);    
+        $("#dep-h5").text(Dep);
         var Tech =  $("#tech-label").find(".select2 option:selected").text();
-        $("#tech-h5").text(Tech);    
+        $("#tech-h5").text(Tech);
         var Status =  $("#status-label").find(".select2 option:selected").text();
-        $("#status-h5").text(Status);    
+        $("#status-h5").text(Status);
         var Type =  $("#type-label").find(".select2 option:selected").text();
-        $("#type-h5").text(Type);    
+        $("#type-h5").text(Type);
 
     }
-  
+
 
     $("#csearch").keyup(function(e) {
         let value = $(this).val();
@@ -237,7 +236,7 @@
                     },
                     type: "POST",
                     url: "{{url('update-ticket-customer')}}",
-                    data: { 
+                    data: {
                         ticket_id: asset_ticket_id,
                         customer_id : cid,
                         email: $('#username-fill').val(),
@@ -286,7 +285,7 @@
         $('#search_customer_result .bg-success').removeClass('bg-success');
         $('#cts-'+id).removeClass('bg-light');
         $('#cts-'+id).addClass('bg-success');
-        
+
         $('#username-fill').val(email);
         $('#phone-fill').val(phn);
     }
@@ -309,7 +308,7 @@
     }
 
     function openProModal() {
-        
+
         $("#up_tkt_cust_title").text("Update Ticket Properties");
         $('#csearch').val('');
         $('#ct-search').val('');
@@ -417,7 +416,7 @@
                     var result = ``;
 
                     if (data.length > 0) {
-                        
+
                         data.forEach(element => {
                             var phone = element.phone ? element.phone : 'Phone not added';
                             var company = element.name ? element.name : 'Company not provided';
@@ -447,7 +446,7 @@
             });
         }
     }
-    
+
     const ticketCustomer = {
 
         select_customer : (value) => {
@@ -480,7 +479,7 @@
                         },
                         type: "POST",
                         url: "{{url('update-ticket-customer')}}",
-                        data: { 
+                        data: {
                             ticket_id: asset_ticket_id,
                             customer_id : cust_id,
                             tkt_cc: tkt_cc,
@@ -513,26 +512,26 @@
                                     $('#cst-direct-line').text(ticket_customer.phone);
                                     var cc_vals = $("#tkt_cc").val();
                                     var bcc_vals = $("#tkt_bcc").val();
-                                    
+
                                     if(cc_vals != '' || cc_vals != null || cc_vals != undefined){
                                         $('#to_mails').tagsinput()[0].removeAll();
                                         cc_vals = cc_vals.split(",");
                                         var tagInputEle = $('#to_mails');
                                         tagInputEle.tagsinput();
-                                        
+
                                         for(var i = 0; i<cc_vals.length;i++){
                                             tagInputEle.tagsinput('add', cc_vals[i]);
                                         }
                                             $('.cc_email_field').show();
                                             $('#show_cc_email').prop('checked', true);
-                                            
+
                                     }
                                     if(bcc_vals != '' || bcc_vals != null || bcc_vals != undefined){
                                         $('#bcc_emails').tagsinput()[0].removeAll();
                                         bcc_vals = bcc_vals.split(",");
                                         var tagInputEle = $('#bcc_emails');
                                         tagInputEle.tagsinput();
-                                        
+
                                         for(var i = 0; i<bcc_vals.length;i++){
                                             tagInputEle.tagsinput('add', bcc_vals[i]);
                                         }
@@ -547,14 +546,14 @@
                                         $('.bcc_email_field').hide();
                                         $('#show_bcc_emails').prop('checked', false);
                                     }
-                                    
+
                                     $('#to_mails').val($("#tkt_cc").val());
                                     $('#bcc_emails').val($("#tkt_bcc").val());
                                     // ticket_customer.company_id = comp;
                                     setCustomerCompany();
 
                                 }
-                                
+
                             } else {
                                 alertNotification('error', 'Error' , data.message );
                             }
@@ -633,9 +632,9 @@
         });
     }
 
-    
+
     function spamUser(id){
-        
+
         Swal.fire({
             title: 'Are you sure you want to spam this user? All data will be removed!',
             icon: 'warning',
@@ -659,7 +658,7 @@
                             console.log(data);
 
                         } else {
-                            
+
                         }
                     },
                     failure: function(errMsg) {
@@ -669,7 +668,7 @@
                 })
             }
         });
-        
+
     }
-    
+
 </script>

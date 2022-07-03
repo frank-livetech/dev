@@ -1113,6 +1113,8 @@ function selectCustomer(value , customerId , companyId) {
 
                 $('#'+customerId).empty();
                 $("#"+customerId).html(root + option);
+            }else{
+                $('#'+customerId).empty();
             }
 
         }else{

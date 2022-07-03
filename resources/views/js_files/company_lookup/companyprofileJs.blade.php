@@ -19,7 +19,9 @@
     var update_asset = "{{asset('/update-assets')}}";
     let time_zone = "{{Session::get('timezone')}}";
     let date_format =  "{{Session::get('system_date')}}";
-
+    var ticket_notes_route = "{{asset('/get-ticket-notes')}}";
+    let gl_color_notes = '';
+    let gl_sel_note_index = null;
     let autocomplete;
     let autocomplete1;
     let address1Field;
@@ -30,42 +32,43 @@
     let timeouts_list = [];
     let loggedInUser_id = {!! json_encode(\Auth::user()->id) !!};
     let loggedInUser_role = {!! json_encode(\Auth::user()->user_type) !!};
+    var staff_list =  {!! json_encode($users) !!};
+    let all_staff_ids = staff_list.map(a => a.id);
 
     function initMap(){
-    address1Field = document.querySelector("#address");
-    address2Field = document.querySelector("#apt_address");
-    postalField = document.querySelector("#cmp_zip");
-    payment_billing_address = document.querySelector('#payment_billing_address');
+        address1Field = document.querySelector("#address");
+        address2Field = document.querySelector("#apt_address");
+        postalField = document.querySelector("#cmp_zip");
+        payment_billing_address = document.querySelector('#payment_billing_address');
 
-    // Create the autocomplete object, restricting the search predictions to
-    // addresses in the US and Canada.
-    console.log(address1Field);
+        // Create the autocomplete object, restricting the search predictions to
+        // addresses in the US and Canada.
 
-    if(payment_billing_address.value) {
-        autocomplete1 = new google.maps.places.Autocomplete(payment_billing_address, {
-            componentRestrictions: { country: ["us", "ca"] },
-            fields: ["address_components", "geometry"],
-            types: ["address"],
-        });
-        payment_billing_address.focus();
+        if(payment_billing_address.value) {
+            autocomplete1 = new google.maps.places.Autocomplete(payment_billing_address, {
+                componentRestrictions: { country: ["us", "ca"] },
+                fields: ["address_components", "geometry"],
+                types: ["address"],
+            });
+            payment_billing_address.focus();
+        }
+
+        if(address1Field.value) {
+            autocomplete = new google.maps.places.Autocomplete(address1Field, {
+                componentRestrictions: { country: ["us", "ca"] },
+                fields: ["address_components", "geometry"],
+                types: ["address"],
+            });
+            address1Field.focus();
+            $("#map_2").html('<iframe width="100%" frameborder="0" style="    height: -webkit-fill-available;" src="https://www.google.com/maps/embed/v1/place?key='+  $("#google_api_key").val()+'&q=' + address1Field.value + '&language=en"></iframe>');
+        }
+
+        // When the user selects an address from the drop-down, populate the
+        // address fields in the form.
+        // autocomplete.addListener("place_changed", fillInAddress);
+        // autocomplete1.addListener("place_changed", fillPaymentBillingFIelds);
     }
 
-    if(address1Field.value) {
-        autocomplete = new google.maps.places.Autocomplete(address1Field, {
-            componentRestrictions: { country: ["us", "ca"] },
-            fields: ["address_components", "geometry"],
-            types: ["address"],
-        });
-        address1Field.focus();
-        $("#map_2").html('<iframe width="100%" frameborder="0" style="    height: -webkit-fill-available;" src="https://www.google.com/maps/embed/v1/place?key='+  $("#google_api_key").val()+'&q=' + address1Field.value + '&language=en"></iframe>');
-    }
-
-    // When the user selects an address from the drop-down, populate the
-    // address fields in the form.
-    // autocomplete.addListener("place_changed", fillInAddress);
-    // autocomplete1.addListener("place_changed", fillPaymentBillingFIelds);
-    }
- 
     function fillInAddress() {
         // Get the place details from the autocomplete object.
 
@@ -123,7 +126,7 @@
         // prediction, set cursor focus on the second address line to encourage
         // entry of subpremise information such as apartment, unit, or floor number.
         address2Field.focus();
-        
+
     }
 
     function fillPaymentBillingFIelds() {
@@ -174,12 +177,7 @@
         // prediction, set cursor focus on the second address line to encourage
         // entry of subpremise information such as apartment, unit, or floor number.
         address2Field.focus();
-        
-    }
 
-    function selectColor(color) {
-        gl_color_notes = color;
-        $('#note').css('background-color', color);
     }
 
     function ticket_notify(tick_id, template, action_name) {
@@ -228,7 +226,7 @@
                     }else{
                         alertNotification('error', 'Error' , data.message);
                     }
-                
+
                 },
                 error: function(e) {
                     console.log(e);
@@ -237,246 +235,230 @@
         }else{
             alertNotification('error', 'Error' , "Select SLA First");
         }
-        
-    }
-    
 
-    function editNote(ele, index) {
-        gl_sel_note_index = index;
-        gl_color_notes = notes[index].color;
-        $('#save_ticket_note').find('#note').val(notes[index].note);
-        $('#save_ticket_note').find('#note').css('background-color', gl_color_notes);
-
-        $('#notes_manager_modal').modal('show');
     }
 
-    function deleteTicketNote(ele, id, tick_id) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "All data related to this note will be removed!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({
-                    type: 'post',
-                    url: "{{asset('/del-ticket-note')}}",
-                    data: { id: id },
-                    success: function(data) {
+    tinymce.init({
+        selector: '#note',
+        plugins: ["advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+        ],
+        toolbar: 'bold italic underline alignleft link',
+        menubar: false,
+        statusbar: false,
+        relative_urls : 0,
+        remove_script_host : 0,
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+    });
 
-                        if (data.success) {
-                            // send mail notification regarding ticket action
-                            // ticket_notify(tick_id, 'ticket_update');
 
-                            $(ele).closest('#note-div-' + id).remove();
-                        } else {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'error',
-                                title: data.message,
-                                showConfirmButton: false,
-                                timer: swal_message_time
-                            });
-                        }
-                    },
-                    failure: function(errMsg) {
-                        // console.log(errMsg);
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: errMsg,
-                            showConfirmButton: false,
-                            timer: swal_message_time
-                        });
-                    }
-                });
-            }
-        });
+
+    function openNotesModal() {
+        $("#note_title").text("Add Notes");
+        $("#notes_manager_modal").modal('show');
+        $("#note").val(" ");
+        $("#note-type-ticket").prop('checked',true);
+        $('#note-visibilty').prop('disabled', false);
+        $("#note-visibilty").val("Everyone").trigger('change');
+        $("#note-id").val("");
+        tinyMCE.get(0).getBody().style.backgroundColor = '#FFEFBB';
+        gl_color_notes = '#FFEFBB';
     }
 
-    function get_ticket_notes() {
-        let company_id = $("#company_id").val();
-        $.ajax({
-            type: 'GET',
-            url: "{{asset('/get-ticket-notes')}}",
-            data: {
-                id: tkts_ids,
-                type: 'User Organization',
-                page :'companyprofile',
-                company_id : company_id,
-            },
-            success: function(data) {
-                if (data.success) {
+    function notesModalClose() {
+        $("#notes_manager_modal").modal('hide');
+    }
 
-                    $('#ticket_notes .card-body').html('');
-
-                    notes = data.notes;
-
-                    if (timeouts_list.length) {
-                        for (let i in timeouts_list) {
-                            clearTimeout(timeouts_list[i]);
-                        }
-                    }
-
-                    timeouts_list = [];
-
-                    for (let i in notes) {
-                        let timeOut = '';
-                        let autho = '';
-                        if (loggedInUser_role == 1) {
-                            autho = `<div class="ml-auto mt-2">
-
-                                <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
-                                    style= "float:right;cursor:pointer;position:relative;bottom:25px"
-                                    onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')" ></span>
-                            
-                                <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
-                                    style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
-                                    onclick="editNote(this, ` + (i) + `)"></span>
-
-                            </div>`;
-                        }
-
-                        if (notes[i].followup_id && notes[i].followUp_date) {
-                            let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
-
-                            // set timeout for only 1 day's followups
-                            if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
-
-                            if (timeOut2 > 0) {
-                                timeOut = timeOut2 * 1000;
-                            }
-                        }
-
-                        let tkt_subject = '';
-                        // let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
-                        tkt_subject = '<a href="{{asset("/ticket-details")}}/' + notes[i].tkt_cust_id + '">'+notes[i].tkt_cust_id+'</a>';
-
-                        var user_img = ``;
-                        let is_live = "{{Session::get('is_live')}}";
-                        let path = is_live == 0 ? '' : 'public/';
-
-                        if(notes[i].profile_pic != null) {
-
-                            user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
-                            width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
-
-                        }else{
-
-                            user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
-                                    width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
-
-                        }
-                        let n_type = '<i class="fas fa-clipboard-list"></i>';
-                        if(notes[i].type == 'Ticket') {
-                            n_type = '<i class="fas fa-clipboard-list"></i>';
-                        }else if(notes[i].type == 'User') {
-                            n_type = '<i class="fas fa-user"></i>';
-                        }else{
-                            n_type = '<i class="far fa-building"></i>';
-                        }
-                        let flup = `
-                        <div class="col-12 rounded p-2 my-1 d-flex" id="note-div-${notes[i].id}" style="background-color:${notes[i].color != null ? notes[i].color : 'rgb(255, 230, 177)'}">
-                            <div style="margin-right: 10px; margin-left: -8px;">
-                                ${user_img}
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="note-head">Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span>  ${n_type}</h5>
-                                    ${autho}
-                                </div>
-                                <p class="col" style="word-break:break-all">
-                                    ${notes[i].note != null ? notes[i].note : ''}
-                                </p>
-                            </div>
-                        </div>`;
-
-                        if (timeOut) {
-                            timeouts_list.push(setTimeout(function() {
-                                $('#ticket_notes .card-body').append(flup);
-                            }, timeOut));
-                        } else {
-                            $('#ticket_notes .card-body').append(flup);
-                        }
-                    }
-                }
-            },
-            failure: function(errMsg) {
-                console.log(errMsg);
-            }
-        });
+    function selectColor(color) {
+        gl_color_notes = color
+        tinyMCE.get(0).getBody().style.backgroundColor = color;
     }
 
     $("#save_ticket_note").submit(function(event) {
         event.preventDefault();
 
+        $("#note").val(tinymce.activeEditor.getContent())
         var formData = new FormData($(this)[0]);
-        formData.append('ticket_id', notes[gl_sel_note_index].ticket_id);
+        formData.append('ticket_id', '');
         formData.append('color', gl_color_notes);
-        formData.append('type', notes[gl_sel_note_index].type);
+        formData.append('type', 'User Organization');
+        formData.append('visibility', all_staff_ids.toString());
+        formData.append('company_id', asset_company_id);
         if (gl_sel_note_index !== null) {
             formData.append('id', notes[gl_sel_note_index].id);
         }
-        var action = $(this).attr('action');
-        var method = $(this).attr('method');
 
         $.ajax({
-            type: method,
-            url: action,
+            type: "POST",
+            url: "{{asset('save-ticket-note_cc')}}" ,
             data: formData,
-            async: false,
             cache: false,
             contentType: false,
-            enctype: 'multipart/form-data',
             processData: false,
+            beforeSend:function(data) {
+                $("#note_save_btn").hide();
+                $('#note_processing').attr('style', 'display: block !important');
+            },
             success: function(data) {
                 // console.log(data);
-
                 if (data.success) {
+
+                    alertNotification('success', 'Success' , data.message);
+
+                    let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
+                    let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm A');
                     // send mail notification regarding ticket action
-                    ticket_notify(notes[gl_sel_note_index].ticket_id, 'ticket_update');
-                    gl_sel_note_index = null;
+                    $("#updation-date").html(tkt_updted_date);
+
+                    let note_status = 'added';
+                    let note_temp = 'ticket_note_create';
+                    if ($('#note-id').val()) {
+                        note_status = 'updated';
+                        note_temp = 'ticket_note_update';
+                    }
+                    ticket_notify(note_temp, 'Note ' + note_status, data.data.id);
+
 
                     $(this).trigger('reset');
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: data.message,
-                        showConfirmButton: false,
-                        timer: swal_message_time
-                    });
-                    get_ticket_notes();
+
+                    // get_ticket_notes();
 
                     $('#notes_manager_modal').modal('hide');
+
                 } else {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: data.message,
-                        showConfirmButton: false,
-                        timer: swal_message_time
-                    });
+                    alertNotification('error', 'Error' , data.message );
                 }
             },
+            complete:function(data) {
+                $("#note_save_btn").show();
+                $('#note_processing').attr('style', 'display: none !important');
+            },
             failure: function(errMsg) {
-                console.log(errMsg);
+                $("#note_save_btn").show();
+                $('#note_processing').attr('style', 'display: none !important');
             }
         });
     });
 
+    // function editNote(id) {
+    //     let item = notes.find(item => item.id === id);
+
+    //     if(item != null || item != undefined || item != "") {
+
+    //         $("#note_title").text("Edit Notes");
+    //         $('#notes_manager_modal').modal('show');
+
+    //         $('#note-id').val(id);
+    //         tinymce.activeEditor.setContent(item.note != null ? item.note : '')
+    //         tinyMCE.get(0).getBody().style.backgroundColor = item.color != null ? item.color : '';
+    //         gl_color_notes = item.color != null ? item.color : '';
+
+    //     }
+    // }
+
+    // function get_ticket_notes() {
+    //     $('#show_ticket_notes').html('');
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: ticket_notes_route,
+    //         data: { company_id: asset_company_id, type:"User Organization" },
+    //         success: function(data) {
+    //             if (data.success) {
+    //                 if(data.notes_count  != 0) {
+    //                     $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
+    //                     $('#notes_count').text(data.notes_count);
+    //                 }
+
+    //                 notes = data.notes;
+    //                 var type = '';
+
+    //                 if (timeouts_list.length) {
+    //                     for (let i in timeouts_list) {
+    //                         clearTimeout(timeouts_list[i]);
+    //                     }
+    //                 }
+
+    //                 timeouts_list = [];
+
+    //                 let notes_html = ``;
+
+    //                 for (let i in notes) {
+
+    //                     let timeOut = '';
+    //                     let autho = '';
+    //                     if (loggedInUser_role == 1) {
+
+    //                         autho = `<div class="mt-2">
+    //                                     <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+    //                                         style= "float:right;cursor:pointer;position:relative;bottom:25px"
+    //                                         onclick="deleteTicketNote(this, '` + notes[i].id + `')" ></span>
+
+    //                                     <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
+    //                                         style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+    //                                         onclick="editNote(`+ notes[i].id +`)"></span>
+    //                                 </div>`;
+    //                     }
+
+
+
+
+
+    //                     type = '<i class="far fa-building"></i>';
+
+    //                     var user_img = ``;
+    //                     let is_live = "{{Session::get('is_live')}}";
+    //                     let path = is_live == 0 ? '' : 'public/';
+
+    //                     if(notes[i].profile_pic != null) {
+
+    //                         user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
+    //                         width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+
+    //                     }else{
+
+    //                         user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
+    //                                 width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+
+    //                     }
+
+    //                     let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+    //                         <div style="margin-right: 10px; margin-left: -8px;">
+    //                             ${user_img}
+    //                         </div>
+    //                         <div class="w-100">
+    //                             <div class="d-flex justify-content-between">
+    //                                 <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
+    //                                 ` + autho + `
+    //                             </div>
+    //                             <blockquote>
+    //                             <p class="col text-dark" style="margin-top:-20px; word-break:break-all; color:black !important">
+    //                                 ${notes[i].note.replace(/\r\n|\n|\r/g, '<br />')}
+    //                             </p>
+    //                             </blockquote>
+    //                         </div>
+    //                     </div>`;
+
+    //                     $('#show_ticket_notes').append(flup);
+    //                 }
+    //             }
+    //         },
+    //         failure: function(errMsg) {
+
+    //         }
+    //     });
+    // }
+
     function jsTimeZone(date) {
         let d = new Date(date);
-        
+
         var year = d.getFullYear();
         var month = d.getMonth();
         var date = d.getDate();
         var hour = d.getHours();
         var min = d.getMinutes();
         var mili = d.getMilliseconds();
-                
+
         // year , month , day , hour , minutes , seconds , miliseconds;
         let new_date = new Date(Date.UTC(year, month, date, hour, min, mili));
         let converted_date = new_date.toLocaleString("en-US", {timeZone: time_zone});
@@ -528,7 +510,7 @@
             }
                    const allScripts = document.getElementsByTagName( 'script' );
                     [].filter.call(
-                    allScripts, 
+                    allScripts,
                     ( scpt ) => scpt.src.indexOf( 'key='+api_key ) >0
                     )[ 0 ].remove();
 
@@ -540,9 +522,9 @@
         e.preventDefault();
         var value = $(this).attr('href');
         if(value == '') {
-            $("#social-error").html("Twitter Link is Missing");                
+            $("#social-error").html("Twitter Link is Missing");
             setTimeout(() => {
-                $("#social-error").html("");                
+                $("#social-error").html("");
             },5000);
         }else{
             window.open(value, '_blank');
@@ -555,7 +537,7 @@
         if(value == '') {
             $("#social-error").html("Facebook Link is Missing");
             setTimeout(() => {
-                $("#social-error").html("");                
+                $("#social-error").html("");
             },5000);
         }else{
             window.open(value, '_blank');
@@ -568,7 +550,7 @@
         if(value == '') {
             $("#social-error").html("Pinterest Link is Missing");
             setTimeout(() => {
-                $("#social-error").html("");                
+                $("#social-error").html("");
             },5000);
         }else{
             window.open(value, '_blank');
@@ -581,7 +563,7 @@
         if(value == '') {
             $("#social-error").html("Instagram Link is Missing");
             setTimeout(() => {
-                $("#social-error").html("");                
+                $("#social-error").html("");
             },5000);
         }else{
             window.open(value, '_blank');
@@ -594,7 +576,7 @@
         if(value == '') {
             $("#social-error").html("Website Link is Missing");
             setTimeout(() => {
-                $("#social-error").html("");                
+                $("#social-error").html("");
             },5000);
         }else{
             window.open(value, '_blank');
@@ -698,7 +680,7 @@
         var phone = $("#phone").val();
         var is_default = 0;
 
-        
+
         var a = checkEmptyFields(poc_first_name , $("#err"));
         var b = checkEmptyFields(poc_last_name , $("#err1"));
         var c = checkEmptyFields(name , $("#err2"));
@@ -729,7 +711,7 @@
         //     return false;
         // }
 
-        
+
 
         if(a && b && c && e == true) {
 
@@ -812,7 +794,7 @@
                     // }
 
                     var country = $("#cmp_country").val();
-                    
+
                     // if(country == "Select Country"){
                     //     $("#comp_country").text('');
                     // }else{
@@ -831,7 +813,7 @@
                 complete:function() {
                     $("#comp_pro_btn").hide();
                     $("#comp_update_Btn").show();
-                },  
+                },
                 error: function (e) {
                     console.log(e);
                     $("#comp_pro_btn").hide();
@@ -893,14 +875,14 @@
         if($('#is_bill_add').prop("checked")) {
             $('#is_bill_add').trigger('change');
         }
-    
+
         orders_table_list = $('#customer_order_table').DataTable();
         $('#customer_subscription').DataTable();
         users_table_list = $('#user-table-list').DataTable();
         // get_users_table_list();
         assets_table_list = $('#assets_table_list').DataTable();
         //get_assets_table_list();
-            
+
         var password = $(".user-password-div input[name='password']").val();
         var confirm_password = $(".user-confirm-password-div input[name='confirm_password']").val();
         var password = $(this).val();
@@ -914,7 +896,7 @@
             score = (password.length > 10) ? score+2 : score;
             $(".user-password-div .progress .progress-bar").css("width", (score*10)+"%");
         });
-        
+
         $(".user-confirm-password-div").on('keyup', "input[name='confirm_password']", function() {
             password = $(".user-password-div input[name='password']").val();
             confirm_password = $(".user-confirm-password-div input[name='confirm_password']").val();
@@ -925,7 +907,7 @@
             $(".user-confirm-password-div .check-match").addClass("fa-times red");
             }
         });
-        
+
         $(".user-password-div").on('click', '.show-password-btn', function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
             var input = $(".user-password-div input[name='password']");
@@ -935,7 +917,7 @@
                 input.attr("type", "password");
             }
         });
-        
+
         $(".user-confirm-password-div").on('click','.show-confirm-password-btn',function(){
             $(this).toggleClass("fa-eye fa-eye-slash");
             var input = $(".user-confirm-password-div input[name='confirm_password']");
@@ -994,7 +976,7 @@
             });
 
         });
-        
+
         function values(){
             var state;
             var country;
@@ -1004,15 +986,15 @@
             var apartment = $("#apt_address").val();
             var city = $("#cmp_city").val();
             // if($("#cmp_state option:selected" ).val() == ""){
-                state = "";    
+                state = "";
             // }
             // else{
             //     state = $("#cmp_state option:selected" ).text();
             // }
-            
+
             var zip = $("#cmp_zip").val();
             // if($("#cmp_country option:selected" ).val() == ""){
-                country = "";    
+                country = "";
             // }
             // else{
             //     country = $("#cmp_country option:selected" ).text();
@@ -1028,7 +1010,7 @@
             //             '<h6>'+apartment+'</h6>'+
             //             '<h6>'+city+', ' +state+', '+zip+'</h6>'+
             //             '<h6>'+country+'</h6>'+
-            //             '<hr>');       
+            //             '<hr>');
         }
     });
 
@@ -1038,7 +1020,7 @@
             var formData = new FormData($(this)[0]);
             var action = $(this).attr('action');
             var method = $(this).attr('method');
-            
+
             $.ajax({
                 type: method,
                 url: action,
@@ -1051,8 +1033,8 @@
                 success: function (data) {
                     if (data['success'] == true) {
                         $("#add_staff_form").trigger("reset");
-                        $('#add_staff_model').modal('hide');    
-                        get_users_table_list()                
+                        $('#add_staff_model').modal('hide');
+                        get_users_table_list()
                     }
                         Swal.fire({
                             position: 'top-end',
@@ -1086,7 +1068,7 @@
                     var tagsArr = '';
                     // console.log(item);
                         if(val['staff_profile']['tags'] == null){
-                        
+
                         }else{
                             tagsArr = val['staff_profile']['tags'].split(",");
                         }
@@ -1154,7 +1136,7 @@
     }
 
 
-    var cmp_com_sla  = $("#cmp_com_sla").val(); 
+    var cmp_com_sla  = $("#cmp_com_sla").val();
     var arraySla = cmp_com_sla.split(',');
     $('#com_sla').val(arraySla).trigger('change');
 

@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    @if($date_format) 
+    @if($date_format)
         <input type="hidden" id="system_date_format" value="{{$date_format}}">
     @else
         <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
@@ -94,7 +94,7 @@
             <!-- Column -->
             <div class="col-md-12">
             @if($errors->any())
-            
+
             <div class="alert alert-dismissable alert-danger">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -105,42 +105,42 @@
                     <li>{{ $error }}</li>
                 @endforeach
                 </ul>
-            
+
             </div>
-            
+
             @endif
-    
+
             @if(session('success'))
                 <div class="alert alert-success">{{session('success')}}</div>
             @endif
-    
+
             </div>
-    
+
             <div class="col-lg-3 col-xlg-3 col-md-5">
                 <div class="card">
                     <div class="card-body">
                         <center class="mt-4">
                             @php
                                 $path = Session::get('is_live') == 1 ? 'public/' : '/';
-                                
+
                             @endphp
                             <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
 
                             @if($customer->avatar_url != null)
 
-                            
+
                                 @if(is_file( getcwd() .'/'. $customer->avatar_url))
                                     <img src="{{ request()->root() .'/'. $customer->avatar_url }}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @else
                                     <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                                 @endif
                             @else
-                            
+
                                 <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
                             </a>
                             <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left: 51px;bottom: 97px;"><i class="fa fa-pencil-alt picEdit"></i></a> -->
-    
+
                             <h4 class="card-title mt-2" id="cust_name">{{$customer->first_name}} {{$customer->last_name}}
                             </h4>
                             <span>#{{substr(str_repeat(0, 4).$customer->id, - 4)}}</span>
@@ -148,7 +148,7 @@
                                 <div class="customer_from mt-2">
                                     @php
                                         $date = new \DateTime($customer->created_at);
-                                        $date->setTimezone(new \DateTimeZone( timeZone() ));                            
+                                        $date->setTimezone(new \DateTimeZone( timeZone() ));
                                         $created_at =  $date->format(system_date_format() .' h:i a');
                                     @endphp
                                     <p class="small"> Client Since: {{$created_at}} </p>
@@ -160,43 +160,43 @@
                         <hr>
                     </div>
                     <div class="card-body">
-    
+
                         @if($customer->company != null)
                         <small class="text-muted">Company Name </small>
                         <h6 id="company-name"><a target="_blank"
                                 href="{{url('company-profile')}}/{{$customer->company_id}}"> {{$customer->company->name}}
                             </a> </h6>
                         @endif
-    
+
                         <small class="text-muted db">Phone</small>
-                        <h6> <a href="tel:{{$customer->phone}}" id="cust_phone">{{$customer->phone}}</a> </h6>                    
-    
+                        <h6> <a href="tel:{{$customer->phone}}" id="cust_phone">{{$customer->phone}}</a> </h6>
+
                         <div id="adrs">
                             <small class="text-muted db">Email Address</small>
                             <input type="hidden" id="cust_email1" value="{{$customer->email}}">
                             <h6> <a href="mailto:{{$customer->email}}" id="cust_email"> {{$customer->email}}</a></h6>
-                        </div>                   
-    
-    
+                        </div>
+
+
                         <div>
                             <small class="text-muted  db">Address</small><br>
                             <span id="cust_add" class="text-dark">{{$customer->address}}</span>
                             <span id="cust_apprt"
                                 class="text-dark">{{$customer->apt_address != null ? ', '.$customer->apt_address : '' }}</span>
                         </div>
-    
+
                         <div>
                             <span id="cust_city">{{$customer->cust_city}}</span>
-    
+
                             @if($customer->cust_state != null && $customer->cust_state != '')
                                 <span id="cust_state">{{ ', '.$customer->cust_state }}</span>
                             @else
                                 <span id="cust_state"></span>
                             @endif
-                            
+
                             <span id="cust_zip">{{$customer->cust_zip != null ? ', '.$customer->cust_zip : '' }}</span>
                             <br>
-    
+
                             @if($customer->country != null && $customer->country != '')
                             <span id="cust_country">{{$customer->country}}</span>
                             @else
@@ -205,36 +205,36 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="card">
                     <div class="card-body">
                         <div id="map_2" class="gmaps">
-                       
+
                         </div>
                        <input type="hidden" id="google_api_key">
                        <h2 class="mt-4 font-weight-bold text-dark">Social Links</h2>
                         <div class="d-flex justify-content-center">
-                        
+
                             <a href="{{$customer->twitter}}" id="twt" title="Twitter" class="btn" target="_blank"
                                 style="color: #009efb; font-size:24px">
                                 <i class="fab fa-twitter"></i>
                             </a>
-    
+
                             <a href="{{$customer->fb}}" id="fb_icon" title="Facebook" class="btn" target="_blank"
                                 style="color:#0570E6; font-size:24px">
                                 <i class="fab fa-facebook"></i>
                             </a>
-    
+
                             <a href="{{$customer->pinterest}}" id="pintrst" title="Pinterest" class="btn" target="_blank"
                                 style="color:#DF1A26; font-size:24px">
                                 <i class="fab fa-pinterest"></i>
                             </a>
-    
+
                             <a href="{{$customer->insta}}" id="inst" title="Instagram" class="btn" target="_blank"
                                 style="color:#e1306c; font-size:24px">
                                 <i class="fab fa-instagram"></i>
                             </a>
-    
+
                             <a href="{{$customer->linkedin}}" id="lkdn" title="Linkedin" class="btn" target="_blank"
                                 style="color:#0e76a8; font-size:24px">
                                 <i class="fab fa-linkedin"></i>
@@ -243,10 +243,10 @@
                         <div class="row">
                             <span class="text-danger text-center small" style="width:100%" id="social-error"></span>
                         </div>
-    
+
                     </div>
                 </div>
-    
+
             </div>
             <!-- Column -->
             <!-- Column -->
@@ -258,7 +258,7 @@
                                 <h4 class="mb-0 text-info ">Domain Manager</h4>
                             </div>
                         </a>
-                    </div>    
+                    </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <a href="#" class="card  border-primary card-hover">
                             <div class="box p-2 rounded text-center">
@@ -288,7 +288,7 @@
                         </a>
                     </div>
                 </div> --}}
-                
+
                 <div class="card">
                     <!-- Tabs -->
                     <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
@@ -298,41 +298,41 @@
                             <!-- <a class="nav-link active" id="pills-user-detail" data-bs-toggle="pill" href="#user-detail"
                                 role="tab" aria-controls="pills-user-detail" aria-selected="true"></a> -->
                         </li>
-    
+
                         <li class="nav-item">
                             <a class="nav-link loadTickets" id="pills-tickets-tab" data-bs-toggle="pill" href="#tickets" role="tab"
                                 aria-controls="pills-tickets" aria-selected="false">Tickets
                                 @if($ticketsCount != 0)
-                            <span id="tickets_count" class="badge bg-dark text-white mx-1"> {{$ticketsCount}} </span> 
+                            <span id="tickets_count" class="badge bg-dark text-white mx-1"> {{$ticketsCount}} </span>
                             @endif
                                 </a>
                         </li>
-    
+
                         <li class="nav-item">
                             <a class="nav-link" id="orders-profile-tab" data-bs-toggle="pill" href="#orders" role="tab"
                                 aria-controls="pills-profile" aria-selected="false">Billing</a>
                         </li>
-    
+
                         <!-- <li class="nav-item">
                             <a class="nav-link" id="subscription-profile-tab" data-bs-toggle="pill" href="#subscription"
                                 role="tab" aria-controls="pills-profile" aria-selected="false">Subscriptions</a>
                         </li> -->
-    
+
                         <li class="nav-item">
                             <a class="nav-link loadAssets" id="pills-assets-tab" data-bs-toggle="pill" href="#assets" role="tab"
                                 aria-controls="pills-assets" aria-selected="false">Assets</a>
                         </li>
-    
+
                         <!--<li class="nav-item">
                             <a class="nav-link" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab"
                                 aria-controls="pills-setting" aria-selected="false">Setting</a>
                         </li>-->
-    
+
                         <!-- <li class="nav-item">
                             <a class="nav-link" id="pills-timeline-tab" data-bs-toggle="pill" href="#current-month" role="tab"
                                 aria-controls="pills-timeline" aria-selected="true">History</a>
                         </li> -->
-    
+
                         <li class="nav-item">
                             <a class="nav-link" id="payment-profile-tab" data-bs-toggle="pill" href="#payment" role="tab"
                                 aria-controls="pills-profile" aria-selected="false">Payments</a>
@@ -342,20 +342,20 @@
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" onclick="getNotes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes 
+                            <a class="nav-link" onclick="getNotes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes
                             @if($notesCount != 0)
-                            <span id="notes_count" class="badge bg-dark text-light mx-1"> {{$notesCount}} </span> 
+                            <span id="notes_count" class="badge bg-dark text-light mx-1"> {{$notesCount}} </span>
                             @endif
                         </a>
                         </li>
-    
+
                         <li class="nav-item">
                             <a class="nav-link" id="domain-profile-tab" data-bs-toggle="pill" href="#ticket_domain" role="tab" aria-controls="pills-profile" aria-selected="false">Domain</a>
                         </li>
                     </ul>
                     <!-- Tabs -->
                     <div class="tab-content" id="pills-tabContent">
-    
+
                         <div class="tab-pane fade" id="user-detail" role="tabpanel"
                             aria-labelledby="pills-user-detail">
                             <hr>
@@ -363,7 +363,7 @@
                                 No Data Found.
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade show" id="current-month" role="tabpanel"
                             aria-labelledby="pills-timeline-tab">
                             <hr>
@@ -371,13 +371,13 @@
                                 No Data Found.
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-profile-tab">
                             <div class="row p-2">
                                 <div class="col-md-12">
                             <div class="d-flex justify-content-between pl-3 pr-3 mt-1">
                                 <h2 class="lead font-weight-bold">01. Orders</h2>
-    
+
                                 @if($wp_value == 1)
                                     <button class="float-right btn-sm rounded btn btn-info mr-3"><i class="fas fa-sync"></i> Sync WP Orders  </button>
                                 @endif
@@ -386,7 +386,7 @@
                             </div>
                             <div class="table-responsive mt-1">
                                 <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-    
+
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <table id="customer_order_table"
@@ -411,17 +411,17 @@
                                     </div>
                                 </div>
                             </div>
-    
+
                             <hr>
-    
+
                             <div class="d-flex justify-content-between p-3 ">
                                 <h2 class="lead font-weight-bold">02. Subscriptions</h2>
                             </div>
-    
+
                             <div class="table-responsive">
                                 <div id="zero_config_wrapper"
                                     class="dataTables_wrapper container-fluid dt-bootstrap4">
-    
+
                                     <div class="row ">
                                         <div class="col-sm-12">
                                             <table id="customer_subscription" class="table table-striped table-bordered w-100">
@@ -468,17 +468,17 @@
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
-    
+
                                             </table>
-    
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        
-                    
+
+
                         </div>
-    
+
                         <!-- <div class="tab-pane fade" id="subscription" role="tabpanel"
                             aria-labelledby="subscription-profile-tab">
                             <hr>
@@ -487,11 +487,11 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-body">
-    
+
                                                 <div class="table-responsive">
                                                     <div id="zero_config_wrapper"
                                                         class="dataTables_wrapper container-fluid dt-bootstrap4">
-    
+
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <table id="customer_subscription"
@@ -540,9 +540,9 @@
                                                                         </tr>
                                                                         @endforeach
                                                                     </tbody>
-    
+
                                                                 </table>
-    
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -553,23 +553,23 @@
                                 </div>
                             </div>
                         </div> -->
-    
+
                         <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-profile-tab">
-    
+
                             <!-- <hr>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-    
+
                                         <button type="button" class="btn btn-info mr-auto" data-bs-toggle="modal"
                                             data-target="#Add-new-card" style="float:right;"><i
                                                 class="mdi mdi-plus-circle"></i>&nbsp;Add New Card</button>
                                     </div>
                                 </div>
-    
+
                                 <div class="row mt-3">
                                     <div class="col-md-6">
-    
+
                                         <div class="card" style="border:1px solid black">
                                             <div class="card-body">
                                                 <div class="row">
@@ -582,25 +582,25 @@
                                                                 title="Rate"
                                                                 style="float:right;padding-right: 5px;position: relative;bottom: 4px;">
                                                             <input name="score" type="hidden">
-    
+
                                                         </div>
-    
+
                                                     </div>
                                                 </div>
                                                 <h1 class="mt-0"><i class="fab fa-cc-visa text-info"></i></h1>
                                                 <h3>**** **** **** 2150</h3>
                                                 <span class="pull-right">Exp date: 10/16</span>
                                                 <span class="font-500">Johnathan Doe</span>
-    
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div> -->
                             <hr>
-                            
+
                             <div class="row col-md-12">
-                                
+
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header" style="background-color: #f7f7f7;margin-left: 12px">
@@ -650,10 +650,10 @@
                                                             @else
                                                                 <select class="form-control" name="country" id="country" onchange="listStates(this.value, 'state', 'cmp_state')">
                                                                     <option value="">Select Country</option>
-                                                                   
+
                                                                     @foreach ($countries as $item)
                                                                         @if (!empty($customer->country))
-                                                                            <option value="{{$item->name}}" {{$customer->country == $item->name ? "selected" : ''}}>{{$item->name}}</option>    
+                                                                            <option value="{{$item->name}}" {{$customer->country == $item->name ? "selected" : ''}}>{{$item->name}}</option>
                                                                         @else
                                                                             <option value="{{$item->name}}" {{'US' == $item->short_name ? "selected" : ''}}>{{$item->name}}</option>
                                                                         @endif
@@ -662,17 +662,17 @@
                                                             @endif
                                                         </div>
                                                     </div>
-    
+
                                                     <input type="hidden" name="payment_token" id="payment_token" value="0">
                                                     <input type="hidden" name="card_type" id="card_type">
                                                     <input type="hidden" name="exp" id="exp">
                                                     <input type="hidden" name="cardlastDigits" id="cardlastDigits">
-    
-                                            
+
+
                                                     <div class="col-md-12 mt-1">
                                                         <input type="submit" id="payButton" value="Add Card" class="btn btn-success float-btn">
                                                     </div>
-                                                </div>    
+                                                </div>
                                             </form>
                                         </div>
                                         <div id="paymentTokenInfo"></div>
@@ -720,7 +720,7 @@
                                                             {{-- <label for="">State</label> --}}
                                                             @if($google_key == 1)
                                                                 <input type="text" class=" form-control" placeholder="State" id="payment_billing_state" name="payment_billing_state" style="width: 100%; height:36px;">
-                                                            @else    
+                                                            @else
                                                                 <select class="select2 form-control" id="payment_billing_state" name="payment_billing_state" style="width: 100%; height:36px;"></select>
                                                             @endif
                                                         </div>
@@ -748,9 +748,9 @@
                                                     </div>
                                                     <div class="col-md-12 text-right mt-1">
                                                     <button class="btn btn-success float-btn">Save Address</button>
-    
+
                                                     </div>
-                                                </div>    
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -815,23 +815,23 @@
                                                                     <!-- <div id="default-star-rating" style="cursor: pointer;">
                                                                         <img alt="1" src="assets/images/rating/star-off.png" title="Rate" style="float:right;padding-right: 5px;position: relative;bottom: 4px;">
                                                                         <input name="score" type="hidden">
-    
+
                                                                     </div>-->
-    
+
                                                                 </div>
                                                             </div>
                                                             <!--<h1 class="mt-0">
                                                             <i class="fab fa-cc-visa text-info" aria-hidden="true"></i></h1>-->
-                                                            
-                                                            
-                                                            
-                                                            
-                                                            
+
+
+
+
+
                                                             <!--<h3>hipercard Ended With 2222</h3>
                                                             <span class="pull-right">Exp date: 1245</span>-->
-                                                            
+
                                                             <h3 class="payCard-number">**** **** ****  2222</h3>
-                                                            <p><span class="payCard-text">Muhammad Kashif</span> 
+                                                            <p><span class="payCard-text">Muhammad Kashif</span>
                                                             <span class="payCard-text" style="float:right;"> Exp : 1245</span>
                                                             </p>
                                                             <!--<h4>hipercard ending in 2222<span class="pull-right"> (expires 1245)</span></h4>-->
@@ -885,20 +885,20 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade " id="notification" role="tabpanel"
                             aria-labelledby="notifications-profile-tab">
                             <hr>
                             <div class="card-body">
                                 <div class="row">
-    
+
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="assets" role="tabpanel" aria-labelledby="pills-assets-tab">
                             <hr>
                             <div class="card-body">
@@ -929,12 +929,12 @@
                                     </div>
                                 </div> --}}
                                 <div class="row">
-                                
+
                                     <div class="col-sm-12">
                                         <div class="accordion accordion-margin" id="accordionMargin">
-                                            
 
-                                        
+
+
 
 
                                             <div class="accordion-item">
@@ -984,19 +984,19 @@
                                                             </div>
                                                         </div>
                                                         <div class="row" id="form-fields"></div>
-                                        
+
                                                         <button type="submit" class="btn btn-success mt-1" style="float:right;">Save</button>
                                                     </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                        
-                                        
+
+
                                         </div>
-                                        
+
 
                                     </div>
-                                    
+
                                     <div class="col-lg-12 col-md-12">
                                         <div class="card">
                                             <div class="card-body">
@@ -1016,11 +1016,11 @@
                                                             Asset Template
                                                         </button>
                                                     </div> -->
-                                                    
+
                                                 </div>
                                                 <br>
-                            
-                            
+
+
                                                 <!-- <div class="row">
                                                     <div class="col-md-12" style="text-align:right;">
                                                         <select class="multiple-select mt-2 mb-2" name="as_select" id="as_select" placeholder="Show/Hide" multiple="multiple" selected="selected">
@@ -1034,7 +1034,7 @@
                                                         </select>
                                                     </div>
                                                 </div> -->
-                                                
+
                                                 <div class="table-responsive">
                                                     <table id="asset-table-list"
                                                         class="table table-bordered w-100 no-wrap asset-table-list">
@@ -1049,9 +1049,9 @@
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
-                            
+
                                                     </table>
-                            
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1059,7 +1059,7 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="pills-tickets-tab">
                             <div class="card-body">
                                 <div class="text-right mb-3">
@@ -1096,9 +1096,9 @@
                                         </a>
                                     </div>
                                 </div>
-        
+
                                 <div class="table-responsive position-relative">
-                                       
+
                                     <table id="ticket-table-list" class="table table-striped table-bordered table-hover display ticket-table-list">
                                         <thead>
                                             <tr>
@@ -1136,12 +1136,12 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade active show" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
                             <div class="card-body">
                                 <form id="update_customer" action="{{url('update_customer_profile')}}" method="POST">
                                     <h2 class="mt-4 font-weight-bold text-dark">Personal Info</h2>
-    
+
                                     <div class="row">
                                         <div class="col-md-4 form-group">
                                             <label for="first_name">First Name</label>
@@ -1159,7 +1159,7 @@
                                                 value="{{$customer->email}}" required>
                                         </div>
                                     </div>
-    
+
                                     @if($customer->has_account != 0)
                                         <div class="row mt-1 mb-2">
                                             <div class="col-md-12">
@@ -1195,7 +1195,7 @@
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label>Phone No</label>
@@ -1218,12 +1218,12 @@
                                             </select>
                                         </div>
                                     </div>
-    
-    
+
+
                                     <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label>Customer Type</label>
-                                            
+
                                                 <select id="cust_type" name="cust_type"
                                                     class="form-select form-control-line">
                                                     <option value="">Customer Type</option>
@@ -1231,7 +1231,7 @@
                                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                                     @endforeach
                                                 </select>
-                                            
+
                                         </div>
                                         <div class="col-md-5 form-group">
                                             <label>Company</label>
@@ -1248,7 +1248,7 @@
                                             id="new-company" class="btn btn-info" style="margin-top: 20px;position: relative;right:30px">New</button>
                                         </div>
                                     </div>
-    
+
                                     @if($customer->has_account == 0)
                                     <div class="row mb-2 mt-2">
                                         <div class="custom-control custom-checkbox mr-sm-2">
@@ -1258,9 +1258,9 @@
                                         </div>
                                     </div>
                                     @endif
-    
+
                                     <input type="hidden" name="customer_id" value="{{$customer->id}}">
-    
+
                                     <div class="row mt-1">
                                         <div class="col-12 form-group">
                                             <label>Street Address</label>
@@ -1280,7 +1280,7 @@
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     <div class="row mt-1">
                                         <div class="col-md-3 form-group">
                                             <label>City</label>
@@ -1289,7 +1289,7 @@
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>State</label>
-    
+
                                             @if($google_key == 1)
                                                 <input type="text" class=" form-control " value="{{$customer->cust_state}}" id="prof_state" name="prof_state"
                                                     style="width: 100%; height:36px;">
@@ -1301,7 +1301,7 @@
                                             <label>Zip Code</label>
                                             <input type="number" maxlength="5" class="form-control" value="{{$customer->cust_zip}}" id="prof_zip">
                                         </div>
-    
+
                                         <div class="col-md-3 form-group">
                                             <label>Country</label>
                                             @if($google_key == 1)
@@ -1320,9 +1320,9 @@
                                             @endif
                                         </div>
                                     </div>
-    
+
                                     <h2 class="mt-4 font-weight-bold text-dark">Social</h2>
-    
+
                                     <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label>Twitter</label>
@@ -1335,7 +1335,7 @@
                                                 placeholder="https://facebook.com/yourprofile">
                                         </div>
                                     </div>
-    
+
                                     <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label>Instagram</label>
@@ -1349,7 +1349,7 @@
                                                 placeholder="https://pinterest.com/@Username">
                                         </div>
                                     </div>
-    
+
                                     <div class="row mt-1" >
                                         <div class="col-md-6 form-group">
                                             <label>Linkedin</label>
@@ -1358,39 +1358,45 @@
                                                 placeholder="https://linkedin.com/@Username">
                                         </div>
                                     </div>
-    
-    
+
+
                                     <input type="hidden" name="customer-id" id="customer-id" value="{{$customer->id}}">
                                     <div class="row mt-1 mb-2 float-right">
                                         <div class="col-md-12 form-group">
                                             <button type="submit" id="saveBtn" class="btn btn-success">Update Profile</button>
-                                            
+
                                             <button id="processing" style="display:none" class="btn btn-success"
                                                     type="button" disabled>
                                                     <i class="fas fa-circle-notch fa-spin"></i>
                                                     Processing</button>
                                         </div>
-    
+
                                     </div>
-                                    
+
                                 </form>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
                             <hr>
+                            <div class="d-flex justify-content-end ">
+                                <button class="rounded btn btn-outline-success waves-effect fa fa-plus" style="margin-right: 20px"
+                                     data-bs-toggle="tooltip" data-bs-placement="top" title=""
+                                     onclick="openNotesModal()" data-bs-original-title="Add Notes"> Add Note</button>
+                            </div>
+
                             <div class="card-body" id="show_ticket_notes">
                                 No Data Found.
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="ticket_domain" role="tabpanel" aria-labelledby="domain-profile-tab">
                             <hr>
                             <div class="card-body">
                                 <div class="table-responsive mt-3">
                                     <div id="zero_config_wrapper"
                                         class="dataTables_wrapper container-fluid dt-bootstrap4">
-    
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="row">
@@ -1401,7 +1407,7 @@
                                                         <button class="btn btn-success" onclick="searchDomain()"> Search </button>
                                                     </div>
                                                 </div>
-                                               
+
                                                 <hr>
                                             </div>
                                             <div class="col-sm-12">
@@ -1416,7 +1422,7 @@
                                                             <th>Register</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>  
+                                                    <tbody>
                                                     </tbody>
                                                 </table>
                                                 <div class="loader_container" id="domain_loader">
@@ -1427,7 +1433,7 @@
                                                 <a type="button" class="btn btn-success text-white"> Purchase </a>
                                                 <a type="button" class="btn btn-primary text-white" > Show Only </a>
                                             </div>
-    
+
                                             <div class="col-sm-12 mt-3">
                                                 <hr>
                                                 <h4>My Domains</h4>
@@ -1461,16 +1467,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>       
+                                </div>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
             </div>
             <!-- Column -->
         </div>
-    
+
         {{-- Details --}}
         <div class="row" style="display: none;">
             <div class="col-12">
@@ -1479,12 +1485,12 @@
             </div>
         </div>
         {{-- Details End --}}
-    
+
         <input type="hidden" id="customer_id" value="{{$customer->id}}">
-    
+
         <!--Add card model-->
-    
-    
+
+
         <!--Address Book model-->
         <div class="modal fade" id="Address-Book" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel"
             aria-hidden="true">
@@ -1525,7 +1531,7 @@
                                     <label>Zip Code</label>
                                     <input type="text" class="form-control">
                                 </div>
-    
+
                                 <div class="col-md-3">
                                     <label>State</label>
                                     <input type="text" class="form-control">
@@ -1658,14 +1664,14 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal end -->
-    
+
         <!--order number model-->
         <div class="modal fade" id="show-order" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header d-flex align-items-center">
-    
+
                         <h4 class="modal-title" id="myLargeModalLabel">Order 1234</h4>
                         <div class="alert alert-success" role="alert" style="position:relative;left:477px;margin:unset;">
                             <i class="dripicons-checkmark "></i><strong>Processing</strong>
@@ -1679,7 +1685,7 @@
                                 <p>Eugenia karahalias 743 sandra ave west islip, NY 11795</p>
                             </div>
                             <div class="col-md-6">
-    
+
                             </div>
                             <div class="col-md-3">
                                 <p>Subscription ####</p>
@@ -1706,43 +1712,43 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h3>Product</h3>
-    
+
                             </div>
                             <div class="col-md-2">
                                 <h3>Quality</h3>
-    
+
                             </div>
                             <div class="col-md-2">
                                 <h3>Tax</h3>
-    
+
                             </div>
                             <div class="col-md-2">
                                 <h3>Total</h3>
-    
+
                             </div>
-    
+
                         </div>
                         <hr>
-    
+
                         <div class="row">
                             <div class="col-md-6">
                                 <p>Huntress Cyber security -workstation
                                     its huntress wo</p>
-    
+
                             </div>
                             <div class="col-md-2">
                                 <h3>2</h3>
-    
+
                             </div>
                             <div class="col-md-2">
                                 <h3>$0.00</h3>
-    
+
                             </div>
                             <div class="col-md-2">
                                 <h3>$6.98</h3>
-    
+
                             </div>
-    
+
                         </div>
                         <hr>
                         <button class="btn btn-success" style="float:right">Edit</button>
@@ -1752,7 +1758,7 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal end -->
-    
+
         <!-- add new company -->
         <div class="modal fade" id="addCompanyModal" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -1763,7 +1769,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="companyForm">
-    
+
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="poc_first_name" class="small">Owner First Name</label>
@@ -1781,7 +1787,7 @@
                                     <span class="text-danger small" id="err2"></span>
                                 </div>
                             </div>
-    
+
                             <div class="row mt-1">
                                 <div class="col-md-6">
                                     <label for="email" class="small">Company Email</label>
@@ -1799,16 +1805,16 @@
                                     <span class="text-danger small" id="err4"></span>
                                 </div>
                             </div>
-    
+
                             <!-- <div class="row mt-3">
-                            
+
                             <div class="col-md-6">
                                 <label for="country" class="small">Country</label>
                                 <input type="text" id="country" class="form-control">
                                 <span class="text-danger small" id="err5"></span>
-                            </div> 
+                            </div>
                         </div> -->
-    
+
                             <!-- <div class="row mt-3">
                             <div class="col-md-4">
                                 <label for="state" class="small">State</label>
@@ -1826,7 +1832,7 @@
                                 <span class="text-danger small" id="err8"></span>
                             </div>
                         </div>
-    
+
                         <div class="row mt-3">
                            <div class="col-md-12">
                                 <label for="address" class="small">Addres</label>
@@ -1834,16 +1840,16 @@
                                 <span class="text-danger small" id="err9"></span>
                            </div>
                         </div> -->
-    
+
                             <!-- <button type="button" style="float:right;" class="btn btn-danger mt-2" data-dismiss="modal">Close</button> -->
                             <button type="submit" style="float:right;" class="btn btn-success mt-2 mr-2">Save</button>
-    
+
                         </form>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-    
+
         <!--  Modal content ticket start -->
         <div class="modal fade" id="ticketModal" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -1881,7 +1887,7 @@
                                                         @foreach($departments as $department)
                                                         <option value="{{$department->id}}">{{$department->name}}</option>
                                                         @endforeach
-    
+
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-4">
@@ -1913,7 +1919,7 @@
                                                 </div>
                                             </div>
                                         </div>
-    
+
                                         <div class="form-group">
                                             <div class="row mb-3">
                                                 <div class="col-sm-12">
@@ -1944,7 +1950,7 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal content ticket end -->
     </div>
-    
+
     <!-- Create Template Title modal content -->
     <div id="fields-modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
@@ -1980,12 +1986,12 @@
                             <button class="btn btn-rounded btn-secondary" type="button" data-dismiss="modal">Close</button>
                         </div>
                     </form>
-    
+
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    
+
     <!-- Modal -->
     <div class="modal fade" id="editPicModal" tabindex="-1" aria-labelledby="editPicModalLabel" data-backdrop="static" aria-hidden="true" >
         <div class="modal-dialog">
@@ -1999,7 +2005,7 @@
                 <div class="modal-body">
                     <div class="text-center" id="prof-img ">
                             @php
-                                
+
                                 $path = Session::get('is_live') == 1 ? '/' : '/';
                             @endphp
                             @if($customer->avatar_url != null)
@@ -2024,14 +2030,14 @@
                         <div class="text-right mt-3">
                             <button type="submit" class="btn btn-success float-right">Save changes</button>
                         </div>
-    
+
                     </form>
                 </div>
-    
+
             </div>
         </div>
     </div>
-    
+
     <!--Domain Modal -->
     <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -2065,8 +2071,8 @@
                 <div class="col-md-3">
                     <button class="btn btn-success"> Add New Time </button>
                 </div>
-    
-                
+
+
                 <div class="col-md-12">
                     <hr>
                     <button type="button" class="btn btn-warning" >Update Name Servers</button>
@@ -2102,8 +2108,8 @@
         </div>
       </div>
     </div>
-    
-    
+
+
     <!-- Payment Modal -->
     <div class="modal fade" id="payNow" tabindex="-1" aria-labelledby="payNowLabel" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
@@ -2117,18 +2123,18 @@
                 <div class="modal-body text-center" style="padding:60px;">
                     <h2>What Payment Method you want to use?</h2>
                     <div class="payBtns ">
-    
+
                         <button class="btn btn-success"><i class="fab fa-cc-visa"></i> Credit Card</button>
                         <a class="btn bg-pPal btn-info" href="{{url('paypal/ec-checkout')}}" id="paypalHref"> <i
                                 class="fab fa-paypal"></i> PayPal</a>
                     </div>
                 </div>
-    
+
             </div>
         </div>
     </div>
-    
-    
+
+
     <!-- update asset modal -->
     <div id="update_asset_modal" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -2164,7 +2170,7 @@
                             <input class="form-control" type="text" id="up_asset_title" required> -->
                             <input class="form-control" type="hidden" id="asset_title_id" required>
                         </div>
-                        
+
                         <div class="input_fields"></div>
                         <div class="address_fields"></div>
                         <div class="form-group text-end mt-3">
@@ -2172,7 +2178,7 @@
                             <button class="btn btn-rounded btn-danger" type="button" data-dismiss="modal">Close</button>
                         </div>
                     </form>
-    
+
                     <div class="loader_container">
                         <div class="loader"></div>
                     </div>
@@ -2180,9 +2186,9 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Notes Modal -->
-    <div class="modal fade text-start" id="notes_manager_modal"  tabindex="-1" aria-hidden="true">
+    <div class="modal fade text-start" id="notes_manager_modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -2190,38 +2196,59 @@
                     <button type="button" class="btn-close text-danger" onclick="notesModalClose()"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="save_ticket_note" action="{{asset('save-ticket-note')}}" method="post">
-                        <input type="text" id="note-id" style="display: none;">
+                    <form id="save_ticket_note" action="{{ asset('save-ticket-note') }}" method="post"
+                        enctype="multipart/form-data">
+                        <input type="hidden" id="note-id" name="id">
                         <div class="row">
                             <div class="col-12 d-flex py-2">
-                                <label for=""><h4>Notes:</h4></label>
+                                <label for="">
+                                    <h4>Notes:</h4>
+                                </label>
                                 <div class="" style="margin-left:6px ">
-                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(255, 230, 177); cursor: pointer;" onclick="selectColor('rgb(255, 230, 177)')"></span>
-                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(218, 125, 179); cursor: pointer;" onclick="selectColor('rgb(218, 125, 179)')"></span>
-                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(195, 148, 255); cursor: pointer;" onclick="selectColor('rgb(195, 148, 255)')"></span>
-                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(151, 235, 172); cursor: pointer;" onclick="selectColor('rgb(151, 235, 172)')"></span>
-                                    <span class="fas fa-square mr-2" style="font-size: 26px; color: rgb(229, 143, 143); cursor: pointer;" onclick="selectColor('rgb(229, 143, 149)')"></span>
+                                    <span class="fas fa-square mr-2"
+                                        style="font-size: 26px; color: #FFEFBB; cursor: pointer;"
+                                        onclick="selectColor('#FFEFBB')"></span>
+                                    <span class="fas fa-square mr-2"
+                                        style="font-size: 26px; color: #e5c7ec; cursor: pointer;"
+                                        onclick="selectColor('#e5c7ec')"></span>
+                                    <span class="fas fa-square mr-2"
+                                        style="font-size: 26px; color: #C7D6EC; cursor: pointer;"
+                                        onclick="selectColor('#C7D6EC')"></span>
+                                    <span class="fas fa-square mr-2"
+                                        style="font-size: 26px; color: #E5ECC7; cursor: pointer;"
+                                        onclick="selectColor('#E5ECC7')"></span>
+                                    <span class="fas fa-square mr-2"
+                                        style="font-size: 26px; color: #ECC9C9; cursor: pointer;"
+                                        onclick="selectColor('#ECC9C9')"></span>
                                 </div>
                             </div>
 
                             <div class="col-12 py-2">
                                 <div class="form-group">
-                                    <textarea name="note" id="note" class="form-control" rows="10" required style="background-color: rgb(255, 230, 177)"></textarea>
+                                    <textarea name="note" id="note" class="form-control" style="background-color: #FFEFBB; color: black;"></textarea>
+                                    <div id="menu" class="menu" role="listbox"></div>
                                 </div>
                             </div>
 
-                            <div class="col-12 text-right pt-3">
-                                <button type="submit" class="btn btn-primary mr-2">Save</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <div class="col-5"></div>
+
+                            <div class="col-12 pt-3">
+                                <button type="button" class="btn btn-success float-right ms-1" disabled
+                                    id="note_processing" style="display:none"> Processing ... </button>
+                                <button type="submit" class="btn btn-success ms-1" id="note_save_btn"
+                                    style="float: right;margin-right: 3px"> Save </button>
+                                <button type="button" class="btn btn-secondary ms-1" data-bs-dismiss="modal"
+                                    style="float: right">Close</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal Notes Modal -->
+    </div><!-- /.modal Notes Modal -->
 
+    <input type="hidden" id="loggedInUser_id" value="{{ \Auth::user()->id }}">
+    <input type="hidden" id="loggedInUser_t" value="{{ \Auth::user()->user_type }}">
     </div>
 </div>
 @endsection
@@ -2258,6 +2285,7 @@
 <!-- <link rel="stylesheet" type="text/css" href="{{asset('assets/extra-libs/countdown/countdown.css')}}" />
 <script type="text/javascript" src="{{asset('assets/extra-libs/countdown/countdown.js')}}"></script> -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 @include('js_files.customer_lookup.customerprofileJs')
 
 <script>
@@ -2287,10 +2315,10 @@
             if(item.last_reply != null) {
 
                 let time =convertDate(item.created_at);
-                
+
                 var user_img = ``;
-                
-                if(item.last_reply != null){ 
+
+                if(item.last_reply != null){
 
                     type = 'Staff';
                     if(item.last_reply.reply_user != null) {
@@ -2301,7 +2329,7 @@
                         let path = root + '/' + item.last_reply.reply_user.profile_pic;
                         user_img += `<img src="${path}" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                     }else{
-                        user_img += `<img src="{{asset('${root}/default_imgs/customer.png')}}" class="rounded-circle" 
+                        user_img += `<img src="{{asset('${root}/default_imgs/customer.png')}}" class="rounded-circle"
                                 width="40px" height="40px" style="border-radius: 50%;" class="img-fluid" />`;
                     }
                 }
@@ -2316,12 +2344,12 @@
                             <h5 class="mt-0"><span class="text-primary">
                                 <a href="http://127.0.0.1:8000/profile/209"> ${item.lastReplier} </a>
                                 </span>&nbsp;<span class="badge badge-secondary">${type}</span>&nbsp;
-                            &nbsp;                            
+                            &nbsp;
                             <br>
-                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ${ time } </span> 
+                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ${ time } </span>
                             <div class="my-1 bor-top" id="reply-html-4"> ${item.last_reply.reply} </div>
                         </div>
-                        
+
                     </li>
                     <div class="row mt-1" style="word-break: break-all;"></div>
                 </ul>
@@ -2345,8 +2373,8 @@
                                         <h6 class="mb-0"> ${item.creator_name != null ? item.creator_name : item.customer_name} <span class="badge badge-secondary"> ${user_type}</span>  </h6>
                                         <span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Posted on ${convertDate(item.created_at)}</span>
                                     </div>
-                                    <div class="first">                                        
-                                        <span style="word-break: break-all;font-size:20px"> ${item.subject} </span> 
+                                    <div class="first">
+                                        <span style="word-break: break-all;font-size:20px"> ${item.subject} </span>
                                     </div>
                                 </div>
 
@@ -2392,8 +2420,222 @@
             $("#tkt_company_id").append(root + option).trigger('change');
         }
     });
-</script>
-<script>
+
+
+    tinymce.init({
+        selector: '#note',
+        plugins: ["advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+        ],
+        toolbar: 'bold italic underline alignleft link',
+        menubar: false,
+        statusbar: false,
+        relative_urls : 0,
+        remove_script_host : 0,
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+    });
+
+
+    function openNotesModal() {
+        $("#note_title").text("Add Notes");
+        $("#notes_manager_modal").modal('show');
+        $("#note").val(" ");
+        $("#note-type-ticket").prop('checked',true);
+        $('#note-visibilty').prop('disabled', false);
+        $("#note-visibilty").val("Everyone").trigger('change');
+        $("#note-id").val("");
+        tinyMCE.get(0).getBody().style.backgroundColor = '#FFEFBB';
+        gl_color_notes = '#FFEFBB';
+    }
+
+    function notesModalClose() {
+        $("#notes_manager_modal").modal('hide');
+    }
+
+    function selectColor(color) {
+        gl_color_notes = color
+        tinyMCE.get(0).getBody().style.backgroundColor = color;
+    }
+
+    $("#save_ticket_note").submit(function(event) {
+        event.preventDefault();
+
+        $("#note").val(tinymce.activeEditor.getContent())
+        var formData = new FormData($(this)[0]);
+        formData.append('ticket_id', '');
+        formData.append('color', gl_color_notes);
+        formData.append('type', 'user');
+        formData.append('visibility', all_staff_ids.toString());
+        formData.append('customer_id', cust_id);
+        if (gl_sel_note_index !== null) {
+            formData.append('id', notes[gl_sel_note_index].id);
+        }
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "{{asset('save-ticket-note_cc')}}" ,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend:function(data) {
+                $("#note_save_btn").hide();
+                $('#note_processing').attr('style', 'display: block !important');
+            },
+            success: function(data) {
+                // console.log(data);
+                if (data.success) {
+
+                    alertNotification('success', 'Success' , data.message);
+
+                    let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
+                    let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm A');
+                    // send mail notification regarding ticket action
+                    $("#updation-date").html(tkt_updted_date);
+
+                    let note_status = 'added';
+                    let note_temp = 'ticket_note_create';
+                    if ($('#note-id').val()) {
+                        note_status = 'updated';
+                        note_temp = 'ticket_note_update';
+                    }
+                    ticket_notify(note_temp, 'Note ' + note_status, data.data.id);
+
+
+                    $(this).trigger('reset');
+
+                    getNotes();
+
+                    $('#notes_manager_modal').modal('hide');
+
+                } else {
+                    alertNotification('error', 'Error' , data.message );
+                }
+            },
+            complete:function(data) {
+                $("#note_save_btn").show();
+                $('#note_processing').attr('style', 'display: none !important');
+            },
+            failure: function(errMsg) {
+                $("#note_save_btn").show();
+                $('#note_processing').attr('style', 'display: none !important');
+            }
+        });
+    });
+
+    // function editNote(id) {
+    //     let item = notes.find(item => item.id === id);
+
+    //     if(item != null || item != undefined || item != "") {
+
+    //         $("#note_title").text("Edit Notes");
+    //         $('#notes_manager_modal').modal('show');
+
+    //         $('#note-id').val(id);
+    //         tinymce.activeEditor.setContent(item.note != null ? item.note : '')
+    //         tinyMCE.get(0).getBody().style.backgroundColor = item.color != null ? item.color : '';
+    //         gl_color_notes = item.color != null ? item.color : '';
+
+    //     }
+    // }
+
+    // function get_ticket_notes() {
+    //     $('#show_ticket_notes').html('');
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: ticket_notes_route,
+    //         data: { customer: cust_id, type:"User" },
+    //         success: function(data) {
+    //             if (data.success) {
+    //                 if(data.notes_count  != 0) {
+    //                     $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
+    //                     $('#notes_count').text(data.notes_count);
+    //                 }
+
+    //                 notes = data.notes;
+    //                 var type = '';
+
+    //                 if (timeouts_list.length) {
+    //                     for (let i in timeouts_list) {
+    //                         clearTimeout(timeouts_list[i]);
+    //                     }
+    //                 }
+
+    //                 timeouts_list = [];
+
+    //                 let notes_html = ``;
+
+    //                 for (let i in notes) {
+
+    //                     let timeOut = '';
+    //                     let autho = '';
+    //                     if (loggedInUser_t == 1) {
+
+    //                         autho = `<div class="mt-2">
+    //                                     <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+    //                                         style= "float:right;cursor:pointer;position:relative;bottom:25px"
+    //                                         onclick="deleteTicketNote(this, '` + notes[i].id + `')" ></span>
+
+    //                                     <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
+    //                                         style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+    //                                         onclick="editNote(`+ notes[i].id +`)"></span>
+    //                                 </div>`;
+    //                     }
+
+
+    //                     type = '<i class="fas fa-user"></i>';
+
+
+    //                     // else{
+    //                     //     type = '<i class="far fa-building"></i>';
+    //                     // }
+
+    //                     var user_img = ``;
+    //                     let is_live = "{{Session::get('is_live')}}";
+    //                     let path = is_live == 0 ? '' : 'public/';
+
+    //                     if(notes[i].profile_pic != null) {
+
+    //                         user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
+    //                         width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+
+    //                     }else{
+
+    //                         user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
+    //                                 width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+
+    //                     }
+
+    //                     let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+    //                         <div style="margin-right: 10px; margin-left: -8px;">
+    //                             ${user_img}
+    //                         </div>
+    //                         <div class="w-100">
+    //                             <div class="d-flex justify-content-between">
+    //                                 <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
+    //                                 ` + autho + `
+    //                             </div>
+    //                             <blockquote>
+    //                             <p class="col text-dark" style="margin-top:-20px; word-break:break-all; color:black !important">
+    //                                 ${notes[i].note.replace(/\r\n|\n|\r/g, '<br />')}
+    //                             </p>
+    //                             </blockquote>
+    //                         </div>
+    //                     </div>`;
+
+    //                     $('#show_ticket_notes').append(flup);
+    //                 }
+    //             }
+    //         },
+    //         failure: function(errMsg) {
+
+    //         }
+    //     });
+    // }
+
     jQuery(function($){
       var input = $('[type=tel]')
       input.mobilePhoneNumber({allowPhoneWithoutPrefix: '+1'});

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Crypt,DB, Hash, Auth,URL};
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Models\{Departments, TicketPriority,TicketType,CustomerType,TicketStatus,TicketSettings,TicketNote,TicketView,Customer,Company,CustomerCC,Tickets,
-    Subscriptions,BrandSettings,LineItem,Tax,Billing,Shipping,Orders,Integrations,CompanyActivityLog,TicketReply};
+    Subscriptions,BrandSettings,LineItem,Tax,Billing,Shipping,Orders,Integrations,CompanyActivityLog, DepartmentAssignments, TicketReply};
 use Illuminate\Support\Facades\File;
 use App\User;
 use App\Http\Controllers\SystemManager\MailController;
@@ -26,7 +26,7 @@ use PayPal;
 class CustomerlookupController extends Controller
 {
     protected $woocommerce;
-    
+
     protected $provider;
 
     // const ACCOUNTID_FORMAT = 'XXX-999-9999';
@@ -41,14 +41,14 @@ class CustomerlookupController extends Controller
 
         $this->woocommerce = new Client(
             GeneralController::PROJECT_DOMAIN_NAME,
-            'ck_dd8561dd74e2d4aa3cb367810ec981c6b639100d', 
+            'ck_dd8561dd74e2d4aa3cb367810ec981c6b639100d',
             'cs_1f080df2e83691ae7ab586ea86433c00f7f86975',
             [
                 'version' => 'wc/v3',
                 'verify_ssl' => false
             ]
         );
-        
+
         $paypal= DB::Table("integrations")->where("name", "PayPal")->first();
         if(!empty($paypal)) {
             if(!empty($paypal->details)) {
@@ -56,7 +56,7 @@ class CustomerlookupController extends Controller
 
                 if(!empty($details['client_id'])) {
                     if(!isset($details['enviornment'])) $details['enviornment'] = 'sandbox';
-                    
+
                     $config = [
                         'mode' => env('PAYPAL_MODE', $details['enviornment']), // Can only be 'sandbox' Or 'live'. If empty or invalid, 'live' will be used.
                         'sandbox' => [
@@ -72,7 +72,7 @@ class CustomerlookupController extends Controller
                         'notify_url'     => env('PAYPAL_NOTIFY_URL', ''),
                         'validate_ssl'   => env('PAYPAL_VALIDATE_SSL', false)
                     ];
-                   
+
                     // PayPal::setProvider();
                     // $this->provider = PayPal::getProvider();
                     // $this->provider->setApiCredentials($config);
@@ -95,7 +95,7 @@ class CustomerlookupController extends Controller
         Session::put('order_id',$id);
 
           $cart = $this->getCheckoutData($id);
-       
+
         try {
             // $response = $this->provider->setExpressCheckout($cart, $recurring);
          $response=   $this->provider->createOrder([
@@ -120,7 +120,7 @@ class CustomerlookupController extends Controller
                                                 [
                                                     'currency_code' => 'USD',
                                                     'value' =>$cart['total'],
-                                                ],], 
+                                                ],],
                         ],
                         "items"=>$cart['items'],
                     ]
@@ -135,12 +135,12 @@ class CustomerlookupController extends Controller
                     return redirect($link['href']);
                     exit;
                   }
-               
-               
-                
+
+
+
               }
-           
-          
+
+
         } catch (\Exception $e) {
 
             session()->put(['code' => 'danger', 'message' => "Error processing PayPal payment for Order $id!"]);
@@ -157,7 +157,7 @@ class CustomerlookupController extends Controller
 
         try{
             // Verify Express Checkout Token
-            $response = $this->provider->capturePaymentOrder($paypal_order); 
+            $response = $this->provider->capturePaymentOrder($paypal_order);
             Session::forget('order_id');
             Session::forget('paypal_order');
             Session::forget('customer_id');
@@ -175,7 +175,7 @@ class CustomerlookupController extends Controller
         }
 
             return redirect('customer-profile/'. $customer_id.'#Success');
-        
+
     }
 
     protected function getCheckoutData($id) {
@@ -185,10 +185,10 @@ class CustomerlookupController extends Controller
         $customer_id=$order->customer_id;
         Session::put('customer_id',$customer_id);
         $order_items = DB::Table("line_items")->where("order_id","=",$id)->get();
-       
+
         $total = 0;
         foreach($order_items as $key =>$value){
-            
+
             $data['items'][]=[
                 'name'=>$value->name,
                  'unit_amount' =>
@@ -200,16 +200,16 @@ class CustomerlookupController extends Controller
             ];
             $total += $value->price * $value->quantity;
         }
-        
+
 
         $data['return_url'] = url('/paypal/ec-checkout-success');
-        
+
 
         $data['invoice_id'] = Session::get('site_title').'_'.$id;
         $data['invoice_description'] = "Order #$id Invoice";
         $data['cancel_url'] =  url('customer-profile/'. $customer_id.'#Error');
 
-       
+
 
         $data['total'] = $total;
 
@@ -225,9 +225,9 @@ class CustomerlookupController extends Controller
         $customer_id=$order->customer_id;
         // Session::put('customer_id',$customer_id);
         $customer = Customer::where('id',$customer_id)->first();
-        
+
         $order_items = DB::Table("line_items")->where("order_id","=",$orderId)->get();
-       
+
         $total = $order->grand_total;
         // foreach($order_items as $key =>$value){
         //     $total += $value->price * $value->quantity;
@@ -246,9 +246,9 @@ class CustomerlookupController extends Controller
         $query .= "orderid=" . urlencode($orderId) . "&";
         // Billing Information
         $query .= "customer_vault_id=" . urlencode($account->customer_vault_id) . "&";
-       
+
         // Shipping Information
-       
+
         $query .= "type=sale";
         // return $query;
         $ch = curl_init();
@@ -258,10 +258,10 @@ class CustomerlookupController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
         curl_setopt($ch, CURLOPT_POST, 1);
-    
+
         if (!($data = curl_exec($ch))) {
             return ERROR;
         }
@@ -274,8 +274,8 @@ class CustomerlookupController extends Controller
             $rdata = explode("=",$data[$i]);
             $responses[$rdata[0]] = $rdata[1];
         }
-     
-         
+
+
         if($responses['response']=='1'){
             DB::Table("orders")->where("id","=",$orderId)->update(["payment_method"=>"PayPal","date_completed"=>Carbon::now(),"date_completed"=>Carbon::now(),"transaction_id"=>$responses['transactionid'],"status"=>4,"status_text"=>'Completed']);
             $response['success'] = true;
@@ -286,7 +286,7 @@ class CustomerlookupController extends Controller
         }
 
         return   $response;
-        
+
     }
 
     public function customer_lookup(){
@@ -295,7 +295,7 @@ class CustomerlookupController extends Controller
         $google_key = 0;
         $brand = BrandSettings::first();
         $google = DB::Table("integrations")->where("slug", "google-api")->where('status', 1)->first();
-        
+
         if(!empty($google)) {
             if(!empty($google->details)) {
                 $detail_values = explode(",", $google->details);
@@ -347,7 +347,7 @@ class CustomerlookupController extends Controller
             $wordpress = DB::Table("integrations")->where("slug", "wordpress")->where('status', 1)->first();
             if(!empty($wordpress)) {
                 if($wordpress->is_verified == 1) {
-                    
+
                     if($wordpress->details != null & $wordpress->details != '') {
 
                         $detail_values = explode(",",$wordpress->details);
@@ -359,15 +359,15 @@ class CustomerlookupController extends Controller
                         $ck_key = substr($detail_values[2], 1, -1);
                         $explode_key = explode(":",$ck_key);
                         $secret_key = trim($explode_key[1], '"');
-                        
+
                         $con_key = substr($detail_values[3], 1, -1);
                         $explode_key = explode(":",$con_key);
                         $consumer_key = trim($explode_key[1],'"');
-                        
+
 
                         if($api_url != null && $api_url != " " && $secret_key != null && $secret_key != " " && $consumer_key != null && $consumer_key != " ") {
                             $woocommerce = new Client(
-                                $api_url, 
+                                $api_url,
                                 $secret_key,
                                 $consumer_key,
                                 [
@@ -383,7 +383,7 @@ class CustomerlookupController extends Controller
                 }
             }
         }
-           
+
 
         $response['message'] = 'Customer Deleted Successfully';
         $response['status_code'] = 200;
@@ -399,23 +399,23 @@ class CustomerlookupController extends Controller
     public function customer_profile($customer_id, $type = null) {
         $customer = Customer::with('company')->where('id', $customer_id)->first();
         $company_id = $customer->company_id;
-        
+
         if(!empty($customer)) {
             $credential = User::where('email', $customer->email)->first();
-                        
+
             if($credential) {
                 if($credential->alt_pwd) {
                     $customer->password = Crypt::decryptString($credential->alt_pwd);
                 }
             }
         }
-        
+
         $company = Company::get(['id','name']);
         if($type == 'json'){
             return response()->json(['customer' => $customer, 'company' => $company]);
         }
- 
-        
+
+
         $subscriptions = Subscriptions::where('customer_id', $customer->id)->get();
 
         foreach($subscriptions as $key=>$value){
@@ -436,7 +436,7 @@ class CustomerlookupController extends Controller
         $customer_types = CustomerType::all();
         $statuses = TicketStatus::all();
         $ticket_format = TicketSettings::where('tkt_key', 'ticket_format')->first();
-        
+
         $nmi_integration = DB::Table("integrations")->where("name", "NMI Payment Gateway")->first();
         if(!empty($nmi_integration)) {
             $nmi_integration = !empty($nmi_integration->details) ? json_decode($nmi_integration->details, true) : '';
@@ -477,7 +477,7 @@ class CustomerlookupController extends Controller
         $closed_status = TicketStatus::where('name','Closed')->first();
         $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0] ])->get();
         // $company_id
-        
+
         $notesCount = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$customer_id)->orwhere('company_id',$company_id)->count();
         // return $notesCount;
         // foreach($tickets as $ticket) {
@@ -490,6 +490,9 @@ class CustomerlookupController extends Controller
         $all_customers = Customer::with('company')->get();
         $all_companies = Company::all();
 
+        $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff', 0)->get();
+
+
         return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
     }
 
@@ -498,7 +501,7 @@ class CustomerlookupController extends Controller
         $user = User::where('id', \Auth::user()->id)->first();
         $customer_id = Customer::where('email', $user->email)->first();
         // return $customer_id->id;
-        
+
         $customer = Customer::with('company')->where('id', $customer_id->id)->first();
         if(!empty($customer)) {
             $credential = User::where('email', $customer->email)->first();
@@ -506,12 +509,12 @@ class CustomerlookupController extends Controller
                 $customer->password = Crypt::decryptString($credential->alt_pwd);
             }
         }
-        
+
         $company = Company::get(['id', 'name']);
         if($type == 'json'){
             return response()->json(['customer' => $customer, 'company' => $company]);
         }
-        
+
         $subscriptions = Subscriptions::where('customer_id', $customer_id->id)->get();
 
         foreach($subscriptions as $key=>$value){
@@ -548,7 +551,7 @@ class CustomerlookupController extends Controller
                 $detail_values = explode(",", $google->details);
                 $api = substr($detail_values[1], 1, -1);
                 $explode_key = explode(":", $api);
-                $key = substr($explode_key[1], 1, -1);   
+                $key = substr($explode_key[1], 1, -1);
 
                 if(!empty($key)) $google_key = 1;
 
@@ -558,7 +561,7 @@ class CustomerlookupController extends Controller
 
         $countries = [];
         if($google_key === 0) $countries = DB::Table('countries')->get();
-        
+
         // return view('customer_manager.customer_lookup.customerprofile',compact('prof_state','customer','company', 'countries' , 'states' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format'));
         // return view('customer_manager.customer_lookup.custProfile',compact('prof_state','customer','company', 'countries' , 'states' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format'));
         return view('customer_manager.customer_lookup.custProfile',compact('google','nmi_integration','customer','company', 'countries' ,'subscriptions', 'orders', 'departments', 'priorities', 'types','customer_types', 'statuses', 'ticket_format','wp_value','google_key'));
@@ -567,7 +570,7 @@ class CustomerlookupController extends Controller
     public function checkout($customerId,$orderId) {
         $paypal = DB::Table("integrations")->where("name", "PayPal")->first();
         $nmi_integration = DB::Table("integrations")->where("name", "NMI Payment Gateway")->first();
-        
+
         if(empty($PayPaldetails) && empty($nmi_integration)) {
             return back()->withErrors(['error', 'No payment method Is enabled or provided']);
         }
@@ -591,7 +594,7 @@ class CustomerlookupController extends Controller
         $customer = Customer::with('company')->where('id',$customerId)->first();
         // Session::put('customer_id',$customerId);
         $order_items = DB::Table("line_items")->where("order_id","=",$orderId)->get();
-        
+
         $countries = DB::Table('countries')->get();
 
         $nmi_integration = DB::Table("integrations")->where("name", "NMI Payment Gateway")->first();
@@ -610,7 +613,7 @@ class CustomerlookupController extends Controller
             }elseif($request->input('action') == 'delete'){
                 return $this->delete_customer($request);
             }
-            
+
         }catch(\Exception $err){
             $response['message'] = 'Something went wrong! 1';
             $response['status_code'] = 500;
@@ -623,7 +626,7 @@ class CustomerlookupController extends Controller
         $response = array();
         try{
             $customer = Customer::find($request->input('id'));
-            
+
             // $customer->address = $request->input('address');
             // // $customer->company_id = $request->input('0');
             // $customer->email = $request->input('email');
@@ -634,7 +637,7 @@ class CustomerlookupController extends Controller
             $customer->$col_name = $request->value;
             // $customer->business_residential = $request->input('business_residential');
             $customer->updated_at = Carbon::now();
-            
+
             $data = [
                 'email' => $customer->email,
                 'first_name' => $customer->first_name,
@@ -678,7 +681,7 @@ class CustomerlookupController extends Controller
             $user->address = $request->address;
             $user->phone_number = $request->phone_number;
             $user->country = $request->country;
-            
+
             $user->state = $request->state;
             $user->city = $request->city;
             $user->twitter = $request->twitter;
@@ -729,7 +732,7 @@ class CustomerlookupController extends Controller
 
     public function newCustomerReplaceShortCodes($customer, $templateHtml) {
         $template = htmlentities($templateHtml);
- 
+
         if(str_contains($template, '{Staff-Name}')) {
             $template = str_replace('{Staff-Name}', auth()->user()->name , $template);
         }
@@ -765,7 +768,7 @@ class CustomerlookupController extends Controller
         return html_entity_decode($template);
     }
 
-    //save customer 
+    //save customer
     public function save_customer(Request $request){
         try {
             $request->validate([
@@ -824,7 +827,7 @@ class CustomerlookupController extends Controller
             );
 
             $wordpress = DB::Table("integrations")->where("slug","wordpress")->where('status', 1)->first();
-            
+
             $check_customer = DB::table("customers")->where('email', $request->email)->where('is_deleted', 0)->first();
 
             $check_user = '';
@@ -863,14 +866,14 @@ class CustomerlookupController extends Controller
                         $ck_key = substr($detail_values[2], 1, -1);
                         $explode_key = explode(":",$ck_key);
                         $secret_key = trim($explode_key[1], '"');
-                        
+
                         $con_key = substr($detail_values[3], 1, -1);
                         $explode_key = explode(":",$con_key);
                         $consumer_key = trim($explode_key[1],'"');
 
                         if(!empty($api_url) && !empty($secret_key) && !empty($consumer_key)) {
                             $woocommerce = new Client(
-                                $api_url, 
+                                $api_url,
                                 $secret_key,
                                 $consumer_key,
                                 [
@@ -904,7 +907,7 @@ class CustomerlookupController extends Controller
             }
 
             $newCustomer = Customer::create($customer_data);
-            
+
             if($request->customer_login == 1) {
                 DB::table("users")->insert([
                     "name" => $request->first_name . " " . $request->last_name,
@@ -914,7 +917,7 @@ class CustomerlookupController extends Controller
                     "user_type" => 5,
                     "status" => 1
                 ]);
-                
+
                 $mailer = new MailController();
                 $mailer->UserRegisteration($request->email,true,'customer');
             }
@@ -931,7 +934,7 @@ class CustomerlookupController extends Controller
 
                 // $mail->sendMail( $title , $temp , 'system_notification@mylive-tech.com', $user->email , $user->name);
             }
-            
+
 
 
             return response()->json($response);
@@ -952,24 +955,24 @@ class CustomerlookupController extends Controller
 
         //         if($wordpress->is_verified == 1) {
         //             if($wordpress->details != NULL & $wordpress->details != '') {
-        
+
         //                 $detail_values = explode(",",$wordpress->details);
         //                 $api = substr($detail_values[1], 1, -1);
         //                 $explode_key = explode(":",$api);
         //                 $url = $explode_key[1] .':'. $explode_key[2];
         //                 $api_url = trim(str_replace( '\/', '/', $url ), '"');
-        
+
         //                 $ck_key = substr($detail_values[2], 1, -1);
         //                 $explode_key = explode(":",$ck_key);
         //                 $secret_key = trim($explode_key[1], '"');
-                        
+
         //                 $con_key = substr($detail_values[3], 1, -1);
         //                 $explode_key = explode(":",$con_key);
         //                 $consumer_key = trim($explode_key[1],'"');
-        
+
         //                 if($api_url != null && $api_url != " " && $secret_key != null && $secret_key != " " && $consumer_key != null && $consumer_key != " ") {
         //                     $woocommerce = new Client(
-        //                         $api_url, 
+        //                         $api_url,
         //                         $secret_key,
         //                         $consumer_key,
         //                         [
@@ -977,16 +980,16 @@ class CustomerlookupController extends Controller
         //                             'verify_ssl' => false
         //                         ]
         //                     );
-        
+
         //                     $woocommerce_data = $woocommerce->post('customers', $woo_data);
         //                     $customer_data['woo_id'] = $woocommerce_data->id;
         //                     // Customer::create($customer_data);
         //                 }
-                        
+
         //             } else {
         //                 // Customer::create($customer_data);
         //                 // if($request->customer_login == 1) {
-                            
+
         //                 //     DB::table("users")->insert([
         //                 //         "name" => $request->first_name . " " . $request->last_name,
         //                 //         "email" => $request->email,
@@ -1007,10 +1010,10 @@ class CustomerlookupController extends Controller
         //                 //     "message" => 'Wordpress plugin not verified so we are saving record in our system only',
         //                 //     "status" => 201,
         //                 //     "success" => true,
-        //                 // ]); 
+        //                 // ]);
         //             }
         //         }
-                
+
         //         Customer::create($customer_data);
 
         //         if($request->customer_login == 1) {
@@ -1022,7 +1025,7 @@ class CustomerlookupController extends Controller
         //                 "user_type" => 5,
         //                 "status" => 1
         //             ]);
-                    
+
         //             $mailer->UserRegisteration($request->email);
         //         }
 
@@ -1044,24 +1047,24 @@ class CustomerlookupController extends Controller
 
         //         if($wordpress->is_verified == 1) {
         //             if($wordpress->details != NULL & $wordpress->details != '') {
-        
+
         //                 $detail_values = explode(",",$wordpress->details);
         //                 $api = substr($detail_values[1], 1, -1);
         //                 $explode_key = explode(":",$api);
         //                 $url = $explode_key[1] .':'. $explode_key[2];
         //                 $api_url = trim(str_replace( '\/', '/', $url ), '"');
-        
+
         //                 $ck_key = substr($detail_values[2], 1, -1);
         //                 $explode_key = explode(":",$ck_key);
         //                 $secret_key = trim($explode_key[1], '"');
-                        
+
         //                 $con_key = substr($detail_values[3], 1, -1);
         //                 $explode_key = explode(":",$con_key);
         //                 $consumer_key = trim($explode_key[1],'"');
-        
+
         //                 if($api_url != null && $api_url != " " && $secret_key != null && $secret_key != " " && $consumer_key != null && $consumer_key != " ") {
         //                     $woocommerce = new Client(
-        //                         $api_url, 
+        //                         $api_url,
         //                         $secret_key,
         //                         $consumer_key,
         //                         [
@@ -1069,12 +1072,12 @@ class CustomerlookupController extends Controller
         //                             'verify_ssl' => false
         //                         ]
         //                     );
-        
+
         //                     $woocommerce_data = $woocommerce->post('customers', $woo_data);
         //                     $customer_data['woo_id'] = $woocommerce_data->id;
         //                     Customer::create($customer_data);
         //                 }
-                        
+
         //             }else{
         //                 Customer::create($customer_data);
         //                 if($request->customer_login == 1) {
@@ -1088,14 +1091,14 @@ class CustomerlookupController extends Controller
         //                         "user_type" => 5,
         //                         "status" => 1
         //                     ]);
-                            
+
         //                     $mailer->UserRegisteration($request->email);
         //                 }
         //                 return response()->json([
         //                     "message" => 'Wordpress plugin not verified so we are saving record in our system only',
         //                     "status" => 201,
         //                     "success" => true,
-        //                 ]); 
+        //                 ]);
         //             }
         //         }else{
         //             Customer::create($customer_data);
@@ -1121,7 +1124,7 @@ class CustomerlookupController extends Controller
         //             "status" => 200,
         //             "success" => true
         //         ]);
-                
+
         //     }
         // }else{
             // if($request->cmp_name && $request->cmp_email) {
@@ -1134,24 +1137,24 @@ class CustomerlookupController extends Controller
 
             //     if($wordpress->is_verified == 1) {
             //         if($wordpress->details != NULL & $wordpress->details != '') {
-        
+
             //             $detail_values = explode(",",$wordpress->details);
             //             $api = substr($detail_values[1], 1, -1);
             //             $explode_key = explode(":",$api);
             //             $url = $explode_key[1] .':'. $explode_key[2];
             //             $api_url = trim(str_replace( '\/', '/', $url ), '"');
-        
+
             //             $ck_key = substr($detail_values[2], 1, -1);
             //             $explode_key = explode(":",$ck_key);
             //             $secret_key = trim($explode_key[1], '"');
-                        
+
             //             $con_key = substr($detail_values[3], 1, -1);
             //             $explode_key = explode(":",$con_key);
             //             $consumer_key = trim($explode_key[1],'"');
-        
+
             //             if($api_url != null && $api_url != " " && $secret_key != null && $secret_key != " " && $consumer_key != null && $consumer_key != " ") {
             //                 $woocommerce = new Client(
-            //                     $api_url, 
+            //                     $api_url,
             //                     $secret_key,
             //                     $consumer_key,
             //                     [
@@ -1159,12 +1162,12 @@ class CustomerlookupController extends Controller
             //                         'verify_ssl' => false
             //                     ]
             //                 );
-        
+
             //                 $woocommerce_data = $woocommerce->post('customers', $woo_data);
             //                 $customer_data['woo_id'] = $woocommerce_data->id;
             //                 Customer::create($customer_data);
             //             }
-                        
+
             //         }else{
             //             Customer::create($customer_data);
             //             if($request->customer_login == 1) {
@@ -1178,14 +1181,14 @@ class CustomerlookupController extends Controller
             //                     "user_type" => 5,
             //                     "status" => 1
             //                 ]);
-                            
+
             //                 $mailer->UserRegisteration($request->email);
             //             }
             //             return response()->json([
             //                 "message" => 'Wordpress plugin not verified so we are saving record in our system only',
             //                 "status" => 201,
             //                 "success" => true,
-            //             ]); 
+            //             ]);
             //         }
             //     }else{
             //         Customer::create($customer_data);
@@ -1200,7 +1203,7 @@ class CustomerlookupController extends Controller
             //             "user_type" => 5,
             //             "status" => 1
             //         ]);
-                    
+
             //         $mailer->UserRegisteration($request->email);
             //     }
 
@@ -1220,24 +1223,24 @@ class CustomerlookupController extends Controller
 
                 // if($wordpress->is_verified == 1) {
                 //     if($wordpress->details != NULL & $wordpress->details != '') {
-        
+
                 //         $detail_values = explode(",",$wordpress->details);
                 //         $api = substr($detail_values[1], 1, -1);
                 //         $explode_key = explode(":",$api);
                 //         $url = $explode_key[1] .':'. $explode_key[2];
                 //         $api_url = trim(str_replace( '\/', '/', $url ), '"');
-        
+
                 //         $ck_key = substr($detail_values[2], 1, -1);
                 //         $explode_key = explode(":",$ck_key);
                 //         $secret_key = trim($explode_key[1], '"');
-                        
+
                 //         $con_key = substr($detail_values[3], 1, -1);
                 //         $explode_key = explode(":",$con_key);
                 //         $consumer_key = trim($explode_key[1],'"');
-        
+
                 //         if($api_url != null && $api_url != " " && $secret_key != null && $secret_key != " " && $consumer_key != null && $consumer_key != " ") {
                 //             $woocommerce = new Client(
-                //                 $api_url, 
+                //                 $api_url,
                 //                 $secret_key,
                 //                 $consumer_key,
                 //                 [
@@ -1245,15 +1248,15 @@ class CustomerlookupController extends Controller
                 //                     'verify_ssl' => false
                 //                 ]
                 //             );
-        
+
                 //             $woocommerce_data = $woocommerce->post('customers', $woo_data);
                 //             $customer_data['woo_id'] = $woocommerce_data->id;
                 //             Customer::create($customer_data);
                 //         }
-                        
+
                 //     }else{
                 //         Customer::create($customer_data);
-                        
+
                 //         if($request->customer_login == 1) {
 
                 //             $random_no = Str::random(15);
@@ -1265,7 +1268,7 @@ class CustomerlookupController extends Controller
                 //                 "user_type" => 5,
                 //                 "status" => 1
                 //             ]);
-                            
+
                 //             $mailer->UserRegisteration($request->email);
                 //         }
 
@@ -1273,7 +1276,7 @@ class CustomerlookupController extends Controller
                 //             "message" => 'Wordpress plugin not verified so we are saving record in our system only',
                 //             "status" => 201,
                 //             "success" => true,
-                //         ]); 
+                //         ]);
                 //     }
                 // }else{
                 //     Customer::create($customer_data);
@@ -1288,7 +1291,7 @@ class CustomerlookupController extends Controller
                 //         "user_type" => 5,
                 //         "status" => 1
                 //     ]);
-                    
+
                 //     $mailer->UserRegisteration($request->email);
                 // }
 
@@ -1333,7 +1336,7 @@ class CustomerlookupController extends Controller
 
     //     if(str_contains($template, '{User-Name}')) {
     //         $content = DB::table('templates')->where('code', 'new_user_signup')->first();
-            
+
     //         if(!empty($content)) {
     //             $content = $content->template_html;
     //             $this->replaceShortCodes($data_list, $content,$password,$new);
@@ -1348,8 +1351,8 @@ class CustomerlookupController extends Controller
     //         if(str_contains($template, $value->code)) {
     //             $template = str_replace($value->code," ", $template);
     //         }
-    //     }    
-    //     return html_entity_decode($template);          
+    //     }
+    //     return html_entity_decode($template);
     // }
 
     // public function replaceShortCodes($data_list, &$template,$password,$new) {
@@ -1360,8 +1363,8 @@ class CustomerlookupController extends Controller
     //         // $img = '<img src="'.$current_url.'" width="150" height="150"/>';
     //         $img = '<img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/brand_files/'.$brand_setting->site_logo .'" width="150" height="150"/>';
     //     }else{
-    //         $img = '<img src="{{ asset("files/user_photos/logo.gif")}}" width="150" height="150"/>';  
-    //     }  
+    //         $img = '<img src="{{ asset("files/user_photos/logo.gif")}}" width="150" height="150"/>';
+    //     }
 
     //     foreach ($data_list as $key => $data) {
 
@@ -1415,7 +1418,7 @@ class CustomerlookupController extends Controller
     //             $k = str_replace('_', ' ', $key);
     //             $k = ucwords($k);
     //             $k = str_replace(' ', '-', $k);
-    
+
     //             if(!is_array($value) && !is_object($value)) {
     //                 $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
     //             }
@@ -1451,15 +1454,15 @@ class CustomerlookupController extends Controller
         $query  = "";
         $check ='new';
         $valt= CustomerCC::where("customer_id","=",$request->customer_id)->first();
-       
-       
+
+
         $query .= "customer_vault=add_customer&";
 
-        
+
         // Login Information
         $query .= "security_key=" . urlencode('gVH4w9X6GS53MPThD753PNDme3rt4JGf') . "&";
-    
-        
+
+
         // $query .= "customer_vault_id=" . urlencode('vaultId-'.$request->customer_id) . "&";
         $query .= "billing_id=" . urlencode('billId'.$request->customer_id) . "&";
         $query .= "payment_token=" . urlencode($request->payment_token) . "&";
@@ -1479,10 +1482,10 @@ class CustomerlookupController extends Controller
         // $query .= "fax=" . urlencode($this->billing['fax']) . "&";
         // $query .= "email=" . urlencode($this->billing['email']) . "&";
         // $query .= "website=" . urlencode($this->billing['website']) . "&";
-  
-       
+
+
         //return $query;
-       
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://secure.merchantonegateway.com/api/transact.php");
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
@@ -1490,10 +1493,10 @@ class CustomerlookupController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    
+
         curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
         curl_setopt($ch, CURLOPT_POST, 1);
-    
+
         if (!($data = curl_exec($ch))) {
             return ERROR;
         }
@@ -1507,9 +1510,9 @@ class CustomerlookupController extends Controller
             $responses[$rdata[0]] = $rdata[1];
         }
          $responses;
-         
+
         if($responses['response']=='1'){
-     
+
             $valt = new CustomerCC();
             $valt->customer_id = $request->customer_id;
             $valt->payment_token = $request->payment_token;
@@ -1525,7 +1528,7 @@ class CustomerlookupController extends Controller
             $valt->cardlastDigits =substr ($request->cardlastDigits, -4) ;
             $valt->created_at = Carbon::now();
             $valt->created_by = \auth()->user()->id;
-         
+
             if($valt->save()){
                 $cmp_act_log = new CompanyActivityLog();
                 $cmp_act_log->action_perform = auth()->user()->name.' Created '.$valt->fname.$valt->lname .' valt account';
@@ -1543,28 +1546,28 @@ class CustomerlookupController extends Controller
                 $response['success'] = false;
                 return response()->json($response);
             }
-       
-        
-        
+
+
+
         }else{
-            
+
                 $responses['message'] = 'Something Went wrong!';
                 $responses['status_code'] = 500;
                 $responses['success'] = False;
                 return response()->json($responses);
-            
-        }       
+
+        }
     }
 
     public function get_customer_card(Request $request){
         // $types = TicketType::get();
         $types = DB::table('cust_cc')->where('customer_id',$request->customer_id)->get();
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['types']= $types;
-        
+
         return response()->json($response);
     }
 
@@ -1584,7 +1587,7 @@ class CustomerlookupController extends Controller
         }
 
         $image->move($target_dir, $imageName);
-       
+
         $customer = Customer::where('id' , $request->customer_id)->first();
         $customer->avatar_url = 'storage/customers/'. $imageName;
         $customer->save();
@@ -1594,7 +1597,7 @@ class CustomerlookupController extends Controller
             $user->profile_pic = 'storage/customers/'. $imageName;
             $user->save();
         }
-        
+
         $response['message'] = 'Customer Profile Uploaded Successfully';
         $response['status'] = 200;
         $response['success'] = true;
@@ -1622,14 +1625,14 @@ class CustomerlookupController extends Controller
                 echo "<br><br><h3>Page : ".$count."</h3><br><br>";
                 $result = json_decode(json_encode($this->woocommerce->get('customers?per_page='.$perpage.'&page='.$count)), true);
                 $count++;
-                
+
                 foreach ($result as $key => $value) {
-                    
+
                     if( empty($value['first_name']) || empty($value['email']) ) {
                         continue;
                     }
                     echo $total. " ) ";
-    
+
                     $company = null;
                     if(!empty($value['billing']['company']) && isset($value['billing']['company'])){
                         $company = Company::where('name', $value['billing']['company'])->first();
@@ -1668,7 +1671,7 @@ class CustomerlookupController extends Controller
                         }
                         $company = $company->id;
                     }
-                    
+
                     $customer = Customer::where('woo_id', $value['id'])->first();
                     $cust_password = '';
                     if(!empty($company)) {
@@ -1704,11 +1707,11 @@ class CustomerlookupController extends Controller
                         ]);
                         echo "<br><br>Customer ".$value['username']." Updated.<br><br>";
                     }
-                    
+
                     // if(!empty($value['billing']['city']) && isset($value['billing']['city'])){
                     //     $customerBilling = Billing::where('customer_id', $customer->id)->where('type', 'billing')->first();
                     //     if(!$customerBilling && !empty($value['billing']['city'])){
-    
+
                     //         $customerBilling = Billing::create([
                     //             "customer_id" => $customer->id,
                     //             "type" => 'billing',
@@ -1737,7 +1740,7 @@ class CustomerlookupController extends Controller
                     //         echo "<br><br>Customer ".$value['username']." Billing Updated.<br><br>";
                     //     }
                     // }
-    
+
                     // if(!empty($value['shipping']['city']) && isset($value['shipping']['city'])) {
                     //     $customerShipping = Shipping::where('customer_id', $customer->id)->where('type', 'shipping')->first();
                     //     if(!$customerShipping){
@@ -1767,8 +1770,8 @@ class CustomerlookupController extends Controller
                     // }
                     $total++;
                 }
-                
-                
+
+
                 if(count($result) < $perpage){
                     $sync = false;
                     break;
@@ -1788,7 +1791,7 @@ class CustomerlookupController extends Controller
             $id = $data['id'];
 
             $response = DB::select("SELECT cust.id,cust.username,cust.first_name,cust.last_name,cust.email,cust.phone, comp.name, comp.id as company_id FROM customers cust Left JOIN companies comp ON cust.company_id = comp.id WHERE cust.username LIKE '%$id%' OR CONCAT(cust.first_name, ' ', cust.last_name) LIKE '%$id%' OR cust.email LIKE '%$id%' OR cust.phone LIKE '%$id%' OR comp.name LIKE '%$id%' ");
-            
+
             return response()->json($response);
         }catch(Exception $e){
             return response()->json($response);
@@ -1814,7 +1817,7 @@ class CustomerlookupController extends Controller
         );
 
         $wordpress = DB::Table("integrations")->where("slug","wordpress")->where('status', 1)->first();
-        
+
         $customer = Customer::find($request->customer_id);
 
         $old_email = $customer->email;
@@ -1912,7 +1915,7 @@ class CustomerlookupController extends Controller
                     $ck_key = substr($detail_values[2], 1, -1);
                     $explode_key = explode(":",$ck_key);
                     $secret_key = trim($explode_key[1], '"');
-                    
+
                     $con_key = substr($detail_values[3], 1, -1);
                     $explode_key = explode(":",$con_key);
                     $consumer_key = trim($explode_key[1],'"');
@@ -1958,7 +1961,7 @@ class CustomerlookupController extends Controller
                         $data['password'] = Hash::make( $request->password  );
                     }
                 }
-                
+
                 DB::table("users")->where("email", $old_email)->update($data);
 
                 // $mailer->UserRegisteration($request->email, false);
@@ -1973,13 +1976,13 @@ class CustomerlookupController extends Controller
                             "user_type" => 5,
                             "status" => 1
                         ]);
-                        
+
                         // $mailer->UserRegisteration($request->email);
                     }
                 }
             }
         }
-            
+
         return response()->json($response);
     }
 
@@ -2002,13 +2005,13 @@ class CustomerlookupController extends Controller
                 if(!empty($result)) {
                     $count++;
                 }
-                
+
                 foreach ($result as $key => $value) {
-                    
+
                     if( empty($value['first_name']) || empty($value['email']) ) {
                         continue;
                     }
-    
+
                     $company = null;
                     if(!empty($value['billing']['company']) && isset($value['billing']['company'])){
                         $company = Company::where('name', $value['billing']['company'])->first();
@@ -2045,7 +2048,7 @@ class CustomerlookupController extends Controller
                         }
                         $company = $company->id;
                     }
-                    
+
                     $customer = Customer::where('woo_id', $value['id'])->first();
                     $cust_password = '';
                     if(!empty($company)) {
@@ -2081,7 +2084,7 @@ class CustomerlookupController extends Controller
                     }
                     $total++;
                 }
-                
+
                 $integrations['page_count'] = $count;
                 $integrations->save();
                 if(count($result) < $perpage){
@@ -2131,9 +2134,9 @@ class CustomerlookupController extends Controller
         $namecheap = DB::Table("integrations")->where("slug","namecheap")->first();
         if($namecheap->is_verified == 1) {
 
-            
+
             $detail_values = explode(",",$namecheap->details);
-            
+
             $explode_key = explode(":",$detail_values[1]);
             $api_key = trim(str_replace( '\/', '/', $explode_key[1] ), '"');
 
@@ -2143,7 +2146,7 @@ class CustomerlookupController extends Controller
             $explode_key = explode(":",$detail_values[3]);
             $ip_add = trim(str_replace( '\/', '/', $explode_key[1] ), '"');
 
-            if( $api_key != null && $api_key != "" 
+            if( $api_key != null && $api_key != ""
                 && $username != null && $username != ""
                 && $ip_add !=null && $ip_add != "" ) {
 
@@ -2154,30 +2157,30 @@ class CustomerlookupController extends Controller
                 $resp = $client->request('GET', $url, ['verify' => false]);
                 $xml = simplexml_load_string($resp->getBody(),'SimpleXMLElement',LIBXML_NOCDATA);
                 $json = json_encode($xml);
-    
+
                 $array = json_decode($json, true);
 
-                $domain_check = array();                
+                $domain_check = array();
                 $collection = collect($array);
 
                 array_push($domain_check , $collection['CommandResponse']['DomainCheckResult']['@attributes']['Domain'],$collection['CommandResponse']['DomainCheckResult']['@attributes']['Available']);
 
                 return $domain_check;
-                
+
             }else{
                 return response()->json([
                     "message" =>  'Namecheap plugin is not verified',
                     "status" => 500,
                     "success" => false,
-                ]); 
+                ]);
             }
-            
+
         }else{
             return response()->json([
                 "message" =>  'Namecheap plugin is not verified',
                 "status" => 500,
                 "success" => false,
-            ]); 
+            ]);
         }
     }
 }

@@ -53,7 +53,7 @@
     let notes = [];
     let tkts_ids = [];
     let cust_tkt_ids = [];
-
+    var ticket_notes_route = "{{asset('/get-ticket-notes')}}";
     let get_tickets_route = "{{asset('/get-tickets')}}/customer/"+customer.id;
     let ticket_details_route = "{{asset('/ticket-details')}}";
     let ticket_notify_route = "{{asset('/ticket_notification')}}";
@@ -64,6 +64,9 @@
     let date_format = "{{Session::get('system_date')}}";
     let time_zone = "{{Session::get('timezone')}}";
     let url_type = '';
+    var loggedInUser_t = $("#loggedInUser_t").val();
+    var staff_list =  {!! json_encode($users) !!};
+    let all_staff_ids = staff_list.map(a => a.id);
 
     let autocomplete;
     let autocomplete1;
@@ -117,9 +120,9 @@
                     "title": "CVV Code",
                     "placeholder": "***"
                 },
-                
-                
-                
+
+
+
             },
             'validationCallback' : function(field, status, message) {
                 if (status) {
@@ -143,13 +146,13 @@
                 $('#cardlastDigits').val(response.card.number)
                 $('#exp').val(response.card.exp)
                 $('#payment_token').val(response.token).trigger('change')
-                
+
                 // CardSubmit();
-                
+
             }
         });
     });
-    
+
     document.addEventListener('DOMContentLoaded', function () {
         CollectJS.configure({
             "paymentSelector" : "#payButton",
@@ -192,7 +195,7 @@
                     "selector": "#cvv",
                     "title": "CVV Code",
                     "placeholder": "***"
-                }, 
+                },
             },
             'validationCallback' : function(field, status, message) {
                 if (status) {
@@ -221,25 +224,25 @@
     });
 
     function initMapReplace(){
-    
+
         address1Field = document.querySelector("#prof_address");
         address2Field = document.querySelector("#apt_address");
         address11Field = document.querySelector("#bill_st_add");
         address21Field = document.querySelector("#bill_apt_add");
         postalField = document.querySelector("#prof_zip");
         postal1Field = document.querySelector("#bill_add_zip");
-        
+
         // Create the autocomplete object, restricting the search predictions to
         // addresses in the US and Canada.
         // console.log(address1Field);google.maps.places.SearchBox
         autocomplete = new google.maps.places.Autocomplete(address1Field, {
             componentRestrictions: { country: ["us", "ca"] },
             fields: ["address_components", "geometry","name"],
-           
+
             types: ["address"],
         });
         address1Field.focus();
-        
+
          autocomplete.addListener("place_changed", fillInAddress);
         // console.log(address1Field);
         autocomplete1 = new google.maps.places.Autocomplete(address11Field, {
@@ -249,7 +252,7 @@
         });
         if(address11Field != null) {
             address11Field.focus();
-        }        
+        }
         // When the user selects an address from the drop-down, populate the
         // address fields in the form.
         // $("#map_2").html('');
@@ -262,12 +265,12 @@
 
     function fillInAddress() {
         // Get the place details from the autocomplete object.
-        
+
 
         const place = autocomplete.getPlace();
         let address1 = "";
         let postcode = "";
-        
+
         // Get each component of the address from the place details,
         // and then fill-in the corresponding field on the form.
         // place.address_components are google.maps.GeocoderAddressComponent objects
@@ -318,7 +321,7 @@
         // prediction, set cursor focus on the second address line to encourage
         // entry of subpremise information such as apartment, unit, or floor number.
         address2Field.focus();
-        
+
     }
     function fillInAddress1() {
         // Get the place details from the autocomplete object.
@@ -372,9 +375,9 @@
         // prediction, set cursor focus on the second address line to encourage
         // entry of subpremise information such as apartment, unit, or floor number.
         address21Field.focus();
-        
+
     }
-    
+
     $(document).ready(function() {
 
         // tickets
@@ -391,7 +394,7 @@
             get_tickets_route = get_tickets_route+'#active';
         }
         if(url.includes('#open')) {
-            
+
             $("#pills-tickets-tab").click();
             $("#pills-setting-tab").removeClass("active")
             $("#previous-month").removeClass("show active");
@@ -402,15 +405,15 @@
         }
         if(url.includes('#closed')) {
 
-            
+
             $("#pills-tickets-tab").click();
             $("#pills-setting-tab").removeClass("active")
             $("#previous-month").removeClass("show active");
             $("#pills-tickets-tab").addClass('active');
             $("#tickets").addClass("show active");
-            
+
             get_tickets_route = get_tickets_route+'#closed';
-            listTickets('closed');            
+            listTickets('closed');
         }
 
         try {
@@ -428,7 +431,7 @@
         domain_table_list = $('#domain_order_table').DataTable();
 
         customer_subscription_table = $('#customer_subscription').DataTable();
-    
+
         initializeTicketTable();
 
         getCustomerOrders();
@@ -516,7 +519,7 @@
                 var api_key = googleObject.api_key;
                 $("#google_api_key").val(api_key);
                 // console.log(api_key);
-                
+
                 if(api_key!=''){
 
                     var script ="https://maps.googleapis.com/maps/api/js?key="+api_key+"&libraries=places&sensor=false&callback=initMapReplace";
@@ -528,13 +531,13 @@
                 }
                 const allScripts = document.getElementsByTagName( 'script' );
                 [].filter.call(
-                allScripts, 
+                allScripts,
                 ( scpt ) => scpt.src.indexOf( 'key='+api_key ) >0
                 )[ 0 ].remove();
                         // window.google = {};
             }
         }
-        
+
         get_cust_card();
         var url = window.location.href;
         if (window.location.href.indexOf("#Success") > -1) {
@@ -570,10 +573,10 @@
             }
 
         }
-        
+
 
     });
-  
+
     // here
     $("#twt").click(function(e) {
         e.preventDefault();
@@ -641,10 +644,10 @@
     });
 
     $("#change_password_checkbox").click(function() {
-        $(this).is(":checked") ? 
-        $('.change_password_row').show() : 
+        $(this).is(":checked") ?
+        $('.change_password_row').show() :
         $('.change_password_row').hide();
-    }); 
+    });
 
     $('#update_customer').submit(function(event) {
         event.preventDefault();
@@ -730,8 +733,8 @@
             }
         }
 
-        
-        
+
+
         let pass_checkbox =  $("#change_password_checkbox").is(":checked") ? 1 : 0;
 
         var phone_type = $("#phone_type").val();
@@ -801,7 +804,7 @@
                     var state = $("#prof_state").val();
 
                     $("#cust_state").text(state);
-                    
+
                     var country = $("#prof_country").val();
 
                     $("#cust_country").text(country);
@@ -858,7 +861,7 @@
         var poc_first_name = $('#poc_first_name').val();
         var poc_last_name = $('#poc_last_name').val();
         var name = $('#name').val();
-        
+
         var phone = $('#phone').val();
         var country = $("#country").val();
         var state = $("#state").val();
@@ -875,7 +878,7 @@
        // var d = checkValidEmail(email, $("#err3"));
         var e = checkEmptyFields(phone, $("#err4"));
 
-        
+
         if (a && b && c  == true) {
 
             var formData = {
@@ -905,7 +908,7 @@
                     $('.loader_container').show();
                 },
                 success: function(data) {
-                    
+
                     alertNotification('success', 'Success' , data.message );
 
                     $('#company_id').append('<option value="' + data.result +'" selected>' + $('#companyForm #name').val() + '</option>');
@@ -933,7 +936,7 @@
             // Check/uncheck checkboxes for all rows in the table
             $('input[type="checkbox"]', rows).prop('checked', this.checked);
         });
-            
+
     });
 
     $("#payment_token").change(function(event) {
@@ -981,7 +984,7 @@
                 });
                 get_cust_card()
                 // console.log(data)
-        
+
             },
             complete: function(data) {
                 $('.loader_container').hide();
@@ -1084,7 +1087,7 @@
             input.attr("type", "password");
         }
     });
-    
+
 
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -1225,9 +1228,9 @@
                                     `+(data[i].card_type == 'maestro' ? maestroImg : ' ')+`
                                     <!--<h3>`+data[i].card_type+` Ended With `+data[i].cardlastDigits+`</h3>
                                     <span class="pull-right">Exp date: `+data[i].exp+ `</span>-->
-                                    
+
                                     <h3 class="payCard-number">**** **** ****  `+data[i].cardlastDigits+`</h3>
-                                    <p><span class="payCard-text">`+data[i].fname+` `+data[i].lname+ `</span> 
+                                    <p><span class="payCard-text">`+data[i].fname+` `+data[i].lname+ `</span>
                                     <span class="payCard-text" style="float:right;"> Exp : `+data[i].exp+ `</span>
                                     </p>
                                     <!--<h4>`+data[i].card_type+` ending in `+data[i].cardlastDigits+`<span class="pull-right"> (expires `+data[i].exp+ `)</span></h4>-->
@@ -1235,7 +1238,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                 `);
                     // $('#pay-card').append(cardSet);
                 }
@@ -1275,7 +1278,7 @@
         //             '<h6>'+apartment+'</h6>'+
         //             '<h6>'+city+', ' +state+', '+zip+'</h6>'+
         //             '<h6>'+country+'</h6>'+
-        //             '<hr>');       
+        //             '<hr>');
     }
 
     function listTickets() {
@@ -1338,81 +1341,6 @@
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////// Ticket notes methods 
-    ////////////////////////////////////////////////////////////////////////
-
-    function selectColor(color) {
-        gl_color_notes = color;
-        $('#note').css('background-color', color);
-        }
-
-        $("#save_ticket_note").submit(function(event) {
-        event.preventDefault();
-
-        var formData = new FormData($(this)[0]);
-        formData.append('ticket_id', notes[gl_sel_note_index].ticket_id);
-        formData.append('color', gl_color_notes);
-        formData.append('type', notes[gl_sel_note_index].type);
-        if (gl_sel_note_index !== null) {
-            formData.append('id', notes[gl_sel_note_index].id);
-        }
-        var action = $(this).attr('action');
-        var method = $(this).attr('method');
-
-        $.ajax({
-            type: method,
-            url: action,
-            data: formData,
-            async: false,
-            cache: false,
-            contentType: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: function(data) {
-                // console.log(data);
-
-                if (data.success) {
-                    // send mail notification regarding ticket action
-                    ticket_notify(notes[gl_sel_note_index].ticket_id, 'ticket_update');
-                    gl_sel_note_index = null;
-
-                    $(this).trigger('reset');
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: data.message,
-                        showConfirmButton: false,
-                        timer: swal_message_time
-                    });
-                    get_ticket_notes();
-
-                    $('#notes_manager_modal').modal('hide');
-                } else {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: data.message,
-                        showConfirmButton: false,
-                        timer: swal_message_time
-                    });
-                }
-            },
-            failure: function(errMsg) {
-                console.log(errMsg);
-            }
-        });
-    });
-
-    function editNote(ele, index) {
-        gl_sel_note_index = index;
-        gl_color_notes = notes[index].color;
-        $('#save_ticket_note').find('#note').val(notes[index].note);
-        $('#save_ticket_note').find('#note').css('background-color', gl_color_notes);
-
-        $('#notes_manager_modal').modal('show');
-    }
-
     function deleteTicketNote(ele, id, tick_id) {
         Swal.fire({
             title: 'Are you sure?',
@@ -1426,7 +1354,7 @@
             if (result.value) {
                 $.ajax({
                     type: 'post',
-                    url: "{{asset('/del-ticket-note')}}",
+                    url: "{{asset('/del-UserORGNote')}}",
                     data: { id: id },
                     success: function(data) {
 
@@ -1500,7 +1428,7 @@
                 $.fn.dataTable.ext.errMode = 'none';
                 var tbl = $('#customer_order_table').DataTable({
                     data: obj,
-                
+
                     "pageLength": 50,
                     processing: true,
                     language: {
@@ -1631,7 +1559,7 @@
                             <td>` + obj[i].quantity + `</td>
                             <td>` + obj[i].price + `</td>
                             <td>` + obj[i].quantity * obj[i].price + `</td>
-                            
+
                         </tr>
                     `;
 
@@ -1692,7 +1620,7 @@
                                     <label class="custom-control-label" for="customCheck1"></label>
                                 </div>
                             </td>
-                            <td>  
+                            <td>
                                 <a type="button" data-toggle="modal" data-target="#domainModal">
                                     <i class="fas fa-angle-right"></i> <span style="font-size:20px;"> `+data[0]+`</span></a></td>
                             <td>-</td>
@@ -1720,7 +1648,7 @@
         if(notes.length != 0) {
             $("#notes_count").addClass("badge bg-light-warning mx-1");
             $("#notes_count").text(notes.length)
-        }        
+        }
     }
 
     function get_ticket_notes(tkts_ids) {
@@ -1749,7 +1677,7 @@
                     if(data.notes.length != 0) {
                         $("#notes_count").addClass("badge bg-light-warning mx-1");
                         $("#notes_count").text(notes.length)
-                    }  
+                    }
 
                 }
             },
@@ -1771,7 +1699,7 @@
         let timeOut = '';
         let flup = ``;
         for (let i in notes) {
-            
+
             let autho = '';
             if (loggedInUser_role == 1) {
                 autho = `<div class="ml-auto mt-2">
@@ -1779,8 +1707,8 @@
                         <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
                             style= "float:right;cursor:pointer;position:relative;bottom:25px"
                             onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')"></span>
-                    
-                        <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+
+                        <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
                             style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
                             onclick="editNote(this, ` + (i) + `)"></span>
 
@@ -1804,17 +1732,18 @@
 
             if(notes[i].profile_pic != null) {
 
-                user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
+                user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
                 width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
 
             }else{
 
-                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
                         width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
             }
 
             let tkt_subject = '';
+
             // let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
             tkt_subject = '<a href="{{asset("/ticket-details")}}/' + notes[i].tkt_cust_id + '">'+notes[i].tkt_cust_id+'</a>';
            
