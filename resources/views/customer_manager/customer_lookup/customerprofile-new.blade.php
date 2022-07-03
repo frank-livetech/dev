@@ -342,7 +342,7 @@
                                 role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" onclick="get_ticket_notes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes
+                            <a class="nav-link" onclick="getNotes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">Notes
                             @if($notesCount != 0)
                             <span id="notes_count" class="badge bg-dark text-light mx-1"> {{$notesCount}} </span>
                             @endif
@@ -2507,7 +2507,7 @@
 
                     $(this).trigger('reset');
 
-                    get_ticket_notes();
+                    getNotes();
 
                     $('#notes_manager_modal').modal('hide');
 
@@ -2526,115 +2526,115 @@
         });
     });
 
-    function editNote(id) {
-        let item = notes.find(item => item.id === id);
+    // function editNote(id) {
+    //     let item = notes.find(item => item.id === id);
 
-        if(item != null || item != undefined || item != "") {
+    //     if(item != null || item != undefined || item != "") {
 
-            $("#note_title").text("Edit Notes");
-            $('#notes_manager_modal').modal('show');
+    //         $("#note_title").text("Edit Notes");
+    //         $('#notes_manager_modal').modal('show');
 
-            $('#note-id').val(id);
-            tinymce.activeEditor.setContent(item.note != null ? item.note : '')
-            tinyMCE.get(0).getBody().style.backgroundColor = item.color != null ? item.color : '';
-            gl_color_notes = item.color != null ? item.color : '';
+    //         $('#note-id').val(id);
+    //         tinymce.activeEditor.setContent(item.note != null ? item.note : '')
+    //         tinyMCE.get(0).getBody().style.backgroundColor = item.color != null ? item.color : '';
+    //         gl_color_notes = item.color != null ? item.color : '';
 
-        }
-    }
+    //     }
+    // }
 
-    function get_ticket_notes() {
-        $('#show_ticket_notes').html('');
-        $.ajax({
-            type: 'GET',
-            url: ticket_notes_route,
-            data: { customer: cust_id, type:"User" },
-            success: function(data) {
-                if (data.success) {
-                    if(data.notes_count  != 0) {
-                        $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
-                        $('#notes_count').text(data.notes_count);
-                    }
+    // function get_ticket_notes() {
+    //     $('#show_ticket_notes').html('');
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: ticket_notes_route,
+    //         data: { customer: cust_id, type:"User" },
+    //         success: function(data) {
+    //             if (data.success) {
+    //                 if(data.notes_count  != 0) {
+    //                     $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
+    //                     $('#notes_count').text(data.notes_count);
+    //                 }
 
-                    notes = data.notes;
-                    var type = '';
+    //                 notes = data.notes;
+    //                 var type = '';
 
-                    if (timeouts_list.length) {
-                        for (let i in timeouts_list) {
-                            clearTimeout(timeouts_list[i]);
-                        }
-                    }
+    //                 if (timeouts_list.length) {
+    //                     for (let i in timeouts_list) {
+    //                         clearTimeout(timeouts_list[i]);
+    //                     }
+    //                 }
 
-                    timeouts_list = [];
+    //                 timeouts_list = [];
 
-                    let notes_html = ``;
+    //                 let notes_html = ``;
 
-                    for (let i in notes) {
+    //                 for (let i in notes) {
 
-                        let timeOut = '';
-                        let autho = '';
-                        if (loggedInUser_t == 1) {
+    //                     let timeOut = '';
+    //                     let autho = '';
+    //                     if (loggedInUser_t == 1) {
 
-                            autho = `<div class="mt-2">
-                                        <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
-                                            style= "float:right;cursor:pointer;position:relative;bottom:25px"
-                                            onclick="deleteTicketNote(this, '` + notes[i].id + `')" ></span>
+    //                         autho = `<div class="mt-2">
+    //                                     <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+    //                                         style= "float:right;cursor:pointer;position:relative;bottom:25px"
+    //                                         onclick="deleteTicketNote(this, '` + notes[i].id + `')" ></span>
 
-                                        <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
-                                            style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
-                                            onclick="editNote(`+ notes[i].id +`)"></span>
-                                    </div>`;
-                        }
-
-
-                        type = '<i class="fas fa-user"></i>';
+    //                                     <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
+    //                                         style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+    //                                         onclick="editNote(`+ notes[i].id +`)"></span>
+    //                                 </div>`;
+    //                     }
 
 
-                        // else{
-                        //     type = '<i class="far fa-building"></i>';
-                        // }
+    //                     type = '<i class="fas fa-user"></i>';
 
-                        var user_img = ``;
-                        let is_live = "{{Session::get('is_live')}}";
-                        let path = is_live == 0 ? '' : 'public/';
 
-                        if(notes[i].profile_pic != null) {
+    //                     // else{
+    //                     //     type = '<i class="far fa-building"></i>';
+    //                     // }
 
-                            user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
-                            width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+    //                     var user_img = ``;
+    //                     let is_live = "{{Session::get('is_live')}}";
+    //                     let path = is_live == 0 ? '' : 'public/';
 
-                        }else{
+    //                     if(notes[i].profile_pic != null) {
 
-                            user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
-                                    width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+    //                         user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
+    //                         width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
 
-                        }
+    //                     }else{
 
-                        let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
-                            <div style="margin-right: 10px; margin-left: -8px;">
-                                ${user_img}
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
-                                    ` + autho + `
-                                </div>
-                                <blockquote>
-                                <p class="col text-dark" style="margin-top:-20px; word-break:break-all; color:black !important">
-                                    ${notes[i].note.replace(/\r\n|\n|\r/g, '<br />')}
-                                </p>
-                                </blockquote>
-                            </div>
-                        </div>`;
+    //                         user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
+    //                                 width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
-                        $('#show_ticket_notes').append(flup);
-                    }
-                }
-            },
-            failure: function(errMsg) {
+    //                     }
 
-            }
-        });
-    }
+    //                     let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+    //                         <div style="margin-right: 10px; margin-left: -8px;">
+    //                             ${user_img}
+    //                         </div>
+    //                         <div class="w-100">
+    //                             <div class="d-flex justify-content-between">
+    //                                 <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
+    //                                 ` + autho + `
+    //                             </div>
+    //                             <blockquote>
+    //                             <p class="col text-dark" style="margin-top:-20px; word-break:break-all; color:black !important">
+    //                                 ${notes[i].note.replace(/\r\n|\n|\r/g, '<br />')}
+    //                             </p>
+    //                             </blockquote>
+    //                         </div>
+    //                     </div>`;
+
+    //                     $('#show_ticket_notes').append(flup);
+    //                 }
+    //             }
+    //         },
+    //         failure: function(errMsg) {
+
+    //         }
+    //     });
+    // }
 
     jQuery(function($){
       var input = $('[type=tel]')

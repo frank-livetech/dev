@@ -1641,144 +1641,144 @@
         });
     }
 
-    // function getNotes() {
-    //     tkts_ids = ticketsList.map(a => a.id);
-    //     cust_tkt_ids = tkts_ids;
-    //     notes.length == 0 ? get_ticket_notes(tkts_ids) : render_notes(notes);
-    //     if(notes.length != 0) {
-    //         $("#notes_count").addClass("badge bg-light-warning mx-1");
-    //         $("#notes_count").text(notes.length)
-    //     }
-    // }
+    function getNotes() {
+        tkts_ids = ticketsList.map(a => a.id);
+        cust_tkt_ids = tkts_ids;
+        notes.length == 0 ? get_ticket_notes(tkts_ids) : render_notes(notes);
+        if(notes.length != 0) {
+            $("#notes_count").addClass("badge bg-light-warning mx-1");
+            $("#notes_count").text(notes.length)
+        }
+    }
 
-    // function get_ticket_notes(tkts_ids) {
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: "{{asset('/get-ticket-notes')}}",
-    //         data: {
-    //             // id: tkts_ids,
-    //             type: 'User',
-    //             customer: $("#customer_id").val()
-    //         },
-    //         // contentType: 'json',
-    //         // enctype: 'multipart/form-data',
-    //         // processData: false,
-    //         success: function(data) {
-    //             if (data.success) {
-    //                 // $('#ticket_notes .card-body').html(`<div class="col-12 px-0 text-right">
-    //                 //     <button class="btn btn-success" data-target="#notes_manager_modal" data-toggle="modal"><i class="mdi mdi-plus-circle"></i> Add Note</button>
-    //                 // </div>`);
-    //                 $('#ticket_notes .card-body').html('');
+    function get_ticket_notes(tkts_ids) {
+        $.ajax({
+            type: 'GET',
+            url: "{{asset('/get-ticket-notes')}}",
+            data: {
+                // id: tkts_ids,
+                type: 'User',
+                customer: $("#customer_id").val()
+            },
+            // contentType: 'json',
+            // enctype: 'multipart/form-data',
+            // processData: false,
+            success: function(data) {
+                if (data.success) {
+                    // $('#ticket_notes .card-body').html(`<div class="col-12 px-0 text-right">
+                    //     <button class="btn btn-success" data-target="#notes_manager_modal" data-toggle="modal"><i class="mdi mdi-plus-circle"></i> Add Note</button>
+                    // </div>`);
+                    $('#ticket_notes .card-body').html('');
 
-    //                 notes = data.notes;
+                    notes = data.notes;
 
-    //                 render_notes(notes);
+                    render_notes(notes);
 
-    //                 if(data.notes.length != 0) {
-    //                     $("#notes_count").addClass("badge bg-light-warning mx-1");
-    //                     $("#notes_count").text(notes.length)
-    //                 }
+                    if(data.notes.length != 0) {
+                        $("#notes_count").addClass("badge bg-light-warning mx-1");
+                        $("#notes_count").text(notes.length)
+                    }
 
-    //             }
-    //         },
-    //         failure: function(errMsg) {
-    //             console.log(errMsg);
-    //         }
-    //     });
-    // }
+                }
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
+        });
+    }
 
-    // function render_notes(notes) {
+    function render_notes(notes) {
 
-    //     if (timeouts_list.length) {
-    //         for (let i in timeouts_list) {
-    //             clearTimeout(timeouts_list[i]);
-    //         }
-    //     }
+        if (timeouts_list.length) {
+            for (let i in timeouts_list) {
+                clearTimeout(timeouts_list[i]);
+            }
+        }
 
-    //     timeouts_list = [];
-    //     let timeOut = '';
-    //     let flup = ``;
-    //     for (let i in notes) {
+        timeouts_list = [];
+        let timeOut = '';
+        let flup = ``;
+        for (let i in notes) {
 
-    //         let autho = '';
-    //         if (loggedInUser_role == 1) {
-    //             autho = `<div class="ml-auto mt-2">
+            let autho = '';
+            if (loggedInUser_role == 1) {
+                autho = `<div class="ml-auto mt-2">
 
-    //                     <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
-    //                         style= "float:right;cursor:pointer;position:relative;bottom:25px"
-    //                         onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')"></span>
+                        <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+                            style= "float:right;cursor:pointer;position:relative;bottom:25px"
+                            onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')"></span>
 
-    //                     <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
-    //                         style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
-    //                         onclick="editNote(this, ` + (i) + `)"></span>
+                        <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
+                            style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+                            onclick="editNote(this, ` + (i) + `)"></span>
 
-    //             </div>`;
-    //         }
+                </div>`;
+            }
 
-    //         if (notes[i].followup_id && notes[i].followUp_date) {
-    //             let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
+            if (notes[i].followup_id && notes[i].followUp_date) {
+                let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
 
-    //             // set timeout for only 1 day's followups
-    //             if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
+                // set timeout for only 1 day's followups
+                if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
 
-    //             if (timeOut2 > 0) {
-    //                 timeOut = timeOut2 * 1000;
-    //             }
-    //         }
+                if (timeOut2 > 0) {
+                    timeOut = timeOut2 * 1000;
+                }
+            }
 
-    //         var user_img = ``;
-    //         let is_live = "{{Session::get('is_live')}}";
-    //         let path = is_live == 0 ? '' : 'public/';
+            var user_img = ``;
+            let is_live = "{{Session::get('is_live')}}";
+            let path = is_live == 0 ? '' : 'public/';
 
-    //         if(notes[i].profile_pic != null) {
+            if(notes[i].profile_pic != null) {
 
-    //             user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
-    //             width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+                user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
+                width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
 
-    //         }else{
+            }else{
 
-    //             user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
-    //                     width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+                user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
+                        width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
-    //         }
+            }
 
-    //         let tkt_subject = '';
-    //         let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
-    //         if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
+            let tkt_subject = '';
+            let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
+            if(tkt.length) tkt_subject = '<a href="{{asset("/ticket-details")}}/' + tkt[0].coustom_id + '">'+tkt[0].coustom_id+'</a>';
 
-    //         let n_type = '<i class="fas fa-clipboard-list"></i>';
-    //         if(notes[i].type == 'Ticket') {
-    //             n_type = '<i class="fas fa-clipboard-list"></i>';
-    //         }else if(notes[i].type == 'User') {
-    //             n_type = '<i class="fas fa-user"></i>';
-    //         }else{
-    //             n_type = '<i class="far fa-building"></i>';
-    //         }
+            let n_type = '<i class="fas fa-clipboard-list"></i>';
+            if(notes[i].type == 'Ticket') {
+                n_type = '<i class="fas fa-clipboard-list"></i>';
+            }else if(notes[i].type == 'User') {
+                n_type = '<i class="fas fa-user"></i>';
+            }else{
+                n_type = '<i class="far fa-building"></i>';
+            }
 
-    //         flup += `
-    //         <div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
-    //             <div style="margin-right: 10px; margin-left: -8px;">
-    //                 ${user_img}
-    //             </div>
-    //             <div class="w-100">
-    //                 <div class="col-12 p-0">
-    //                 <h5 class="note-head">Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span>  ${n_type}</h5>
-    //                     ${autho}
-    //                 </div>
-    //                 <p class="note-details">${notes[i].note} </p>
-    //             </div>
-    //         </div>`;
-    //     }
+            flup += `
+            <div class="col-12 p-2 my-2 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
+                <div style="margin-right: 10px; margin-left: -8px;">
+                    ${user_img}
+                </div>
+                <div class="w-100">
+                    <div class="col-12 p-0">
+                    <h5 class="note-head">Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span>  ${n_type}</h5>
+                        ${autho}
+                    </div>
+                    <p class="note-details">${notes[i].note} </p>
+                </div>
+            </div>`;
+        }
 
-    //     if (timeOut) {
-    //         timeouts_list.push(setTimeout(function() {
-    //             $('#ticket_notes .card-body').html(flup);
-    //         }, timeOut));
-    //     } else {
-    //         $('#ticket_notes .card-body').html(flup);
-    //     }
+        if (timeOut) {
+            timeouts_list.push(setTimeout(function() {
+                $('#ticket_notes .card-body').html(flup);
+            }, timeOut));
+        } else {
+            $('#ticket_notes .card-body').html(flup);
+        }
 
-    // }
+    }
 
 </script>
 

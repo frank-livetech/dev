@@ -256,7 +256,7 @@
                             aria-controls="pills-staff" aria-selected="false">Staff</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link loadNotes" id="notes-profile-tab"  onclick="get_ticket_notes()" data-bs-toggle="tab" href="#ticket_notes"
+                        <a class="nav-link loadNotes" id="notes-profile-tab"  data-bs-toggle="tab" href="#ticket_notes"
                             role="tab" aria-controls="pills-profile" aria-selected="false">Notes
                             @if($notesCount != 0)
                             <span id="notes_count" class="badge bg-dark text-white mx-1"> {{$notesCount}}
