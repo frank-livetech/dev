@@ -341,113 +341,176 @@
         });
     });
 
-    // function editNote(id) {
-    //     let item = notes.find(item => item.id === id);
 
-    //     if(item != null || item != undefined || item != "") {
+    function editNote(ele, index) {
+        gl_sel_note_index = index;
+        gl_color_notes = notes[index].color;
+        $('#save_ticket_note').find('#note').val(notes[index].note);
+        $('#save_ticket_note').find('#note').css('background-color', gl_color_notes);
 
-    //         $("#note_title").text("Edit Notes");
-    //         $('#notes_manager_modal').modal('show');
+        $('#notes_manager_modal').modal('show');
+    }
 
-    //         $('#note-id').val(id);
-    //         tinymce.activeEditor.setContent(item.note != null ? item.note : '')
-    //         tinyMCE.get(0).getBody().style.backgroundColor = item.color != null ? item.color : '';
-    //         gl_color_notes = item.color != null ? item.color : '';
+    function deleteTicketNote(ele, id, tick_id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "All data related to this note will be removed!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: 'post',
+                    url: "{{asset('/del-ticket-note')}}",
+                    data: { id: id },
+                    success: function(data) {
 
-    //     }
-    // }
+                        if (data.success) {
+                            // send mail notification regarding ticket action
+                            // ticket_notify(tick_id, 'ticket_update');
 
-    // function get_ticket_notes() {
-    //     $('#show_ticket_notes').html('');
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: ticket_notes_route,
-    //         data: { company_id: asset_company_id, type:"User Organization" },
-    //         success: function(data) {
-    //             if (data.success) {
-    //                 if(data.notes_count  != 0) {
-    //                     $('.notes_count').addClass('badge badge-light-danger rounded-pill mx-1');
-    //                     $('#notes_count').text(data.notes_count);
-    //                 }
+                            $(ele).closest('#note-div-' + id).remove();
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: swal_message_time
+                            });
+                        }
+                    },
+                    failure: function(errMsg) {
+                        // console.log(errMsg);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: errMsg,
+                            showConfirmButton: false,
+                            timer: swal_message_time
+                        });
+                    }
+                });
+            }
+        });
+    }
 
-    //                 notes = data.notes;
-    //                 var type = '';
+    function get_ticket_notes() {
+        let company_id = $("#company_id").val();
+        $.ajax({
+            type: 'GET',
+            url: "{{asset('/get-ticket-notes')}}",
+            data: {
+                id: tkts_ids,
+                type: 'User Organization',
+                page :'companyprofile',
+                company_id : company_id,
+            },
+            success: function(data) {
+                if (data.success) {
 
-    //                 if (timeouts_list.length) {
-    //                     for (let i in timeouts_list) {
-    //                         clearTimeout(timeouts_list[i]);
-    //                     }
-    //                 }
+                    $('#ticket_notes .card-body').html('');
 
-    //                 timeouts_list = [];
+                    notes = data.notes;
 
-    //                 let notes_html = ``;
+                    if (timeouts_list.length) {
+                        for (let i in timeouts_list) {
+                            clearTimeout(timeouts_list[i]);
+                        }
+                    }
 
-    //                 for (let i in notes) {
+                    timeouts_list = [];
 
-    //                     let timeOut = '';
-    //                     let autho = '';
-    //                     if (loggedInUser_role == 1) {
+                    for (let i in notes) {
+                        let timeOut = '';
+                        let autho = '';
+                        if (loggedInUser_role == 1) {
+                            autho = `<div class="ml-auto mt-2">
 
-    //                         autho = `<div class="mt-2">
-    //                                     <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
-    //                                         style= "float:right;cursor:pointer;position:relative;bottom:25px"
-    //                                         onclick="deleteTicketNote(this, '` + notes[i].id + `')" ></span>
+                                <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
+                                    style= "float:right;cursor:pointer;position:relative;bottom:25px"
+                                    onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')" ></span>
+                            
+                                <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+                                    style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
+                                    onclick="editNote(this, ` + (i) + `)"></span>
 
-    //                                     <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
-    //                                         style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
-    //                                         onclick="editNote(`+ notes[i].id +`)"></span>
-    //                                 </div>`;
-    //                     }
+                            </div>`;
+                        }
 
+                        if (notes[i].followup_id && notes[i].followUp_date) {
+                            let timeOut2 = moment(notes[i].followUp_date).diff(moment(), 'seconds');
 
+                            // set timeout for only 1 day's followups
+                            if (moment(notes[i].followUp_date).diff(moment(), 'hours') > 23) continue;
 
+                            if (timeOut2 > 0) {
+                                timeOut = timeOut2 * 1000;
+                            }
+                        }
 
+                        let tkt_subject = '';
+                        // let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
+                        tkt_subject = '<a href="{{asset("/ticket-details")}}/' + notes[i].tkt_cust_id + '">'+notes[i].tkt_cust_id+'</a>';
 
-    //                     type = '<i class="far fa-building"></i>';
+                        var user_img = ``;
+                        let is_live = "{{Session::get('is_live')}}";
+                        let path = is_live == 0 ? '' : 'public/';
 
-    //                     var user_img = ``;
-    //                     let is_live = "{{Session::get('is_live')}}";
-    //                     let path = is_live == 0 ? '' : 'public/';
+                        if(notes[i].profile_pic != null) {
 
-    //                     if(notes[i].profile_pic != null) {
+                            user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
+                            width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
 
-    //                         user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
-    //                         width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
+                        }else{
 
-    //                     }else{
+                            user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                                    width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
-    //                         user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
-    //                                 width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
+                        }
+                        let n_type = '<i class="fas fa-clipboard-list"></i>';
+                        if(notes[i].type == 'Ticket') {
+                            n_type = '<i class="fas fa-clipboard-list"></i>';
+                        }else if(notes[i].type == 'User') {
+                            n_type = '<i class="fas fa-user"></i>';
+                        }else{
+                            n_type = '<i class="far fa-building"></i>';
+                        }
+                        let flup = `
+                        <div class="col-12 rounded p-2 my-1 d-flex" id="note-div-${notes[i].id}" style="background-color:${notes[i].color != null ? notes[i].color : 'rgb(255, 230, 177)'}">
+                            <div style="margin-right: 10px; margin-left: -8px;">
+                                ${user_img}
+                            </div>
+                            <div class="w-100">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="note-head">Posted to ${tkt_subject} by <strong>${notes[i].name}</strong>  <span class="small">${jsTimeZone(notes[i].created_at)}</span>  ${n_type}</h5>
+                                    ${autho}
+                                </div>
+                                <p class="col" style="word-break:break-all">
+                                    ${notes[i].note != null ? notes[i].note : ''}
+                                </p>
+                            </div>
+                        </div>`;
 
-    //                     }
+                        if (timeOut) {
+                            timeouts_list.push(setTimeout(function() {
+                                $('#ticket_notes .card-body').append(flup);
+                            }, timeOut));
+                        } else {
+                            $('#ticket_notes .card-body').append(flup);
+                        }
+                    }
+                }
+            },
+            failure: function(errMsg) {
+                console.log(errMsg);
+            }
+        });
+    }
 
-    //                     let flup = `<div class="col-12 rounded p-2 my-1 d-flex" id="note-div-` + notes[i].id + `" style="background-color: ` + notes[i].color + `">
-    //                         <div style="margin-right: 10px; margin-left: -8px;">
-    //                             ${user_img}
-    //                         </div>
-    //                         <div class="w-100">
-    //                             <div class="d-flex justify-content-between">
-    //                                 <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
-    //                                 ` + autho + `
-    //                             </div>
-    //                             <blockquote>
-    //                             <p class="col text-dark" style="margin-top:-20px; word-break:break-all; color:black !important">
-    //                                 ${notes[i].note.replace(/\r\n|\n|\r/g, '<br />')}
-    //                             </p>
-    //                             </blockquote>
-    //                         </div>
-    //                     </div>`;
-
-    //                     $('#show_ticket_notes').append(flup);
-    //                 }
-    //             }
-    //         },
-    //         failure: function(errMsg) {
-
-    //         }
-    //     });
-    // }
 
     function jsTimeZone(date) {
         let d = new Date(date);
