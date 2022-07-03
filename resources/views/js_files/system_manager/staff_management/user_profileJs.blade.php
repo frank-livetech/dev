@@ -56,6 +56,9 @@
         selector: "textarea#signature",
         // theme: "modern",
         height: 300,
+        mobile: {
+            theme: 'silver'
+          },
         file_picker_types: 'image',
         paste_data_images: true,
         plugins: [

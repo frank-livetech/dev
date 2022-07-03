@@ -79,7 +79,10 @@
     $(document).ready(function() {
 
         tinymce.init({
-            selector: '#mymce'
+            selector: '#mymce',
+            mobile: {
+            theme: 'silver'
+          },
         });
 
         var company = $("#comp_id option:selected").text();

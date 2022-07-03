@@ -122,6 +122,9 @@
         tinymce.init({
             selector: "#tinymceEditor",
             plugins: "code",
+            mobile: {
+            theme: 'silver'
+          },
             toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link code image_upload",
             menubar:false,
             statusbar: false,

@@ -45,6 +45,9 @@ $(function() {
         tinymce.init({
             selector: "textarea#mymce",
             theme: "modern",
+            mobile: {
+            theme: 'silver'
+          },
             height: 100,
             plugins: [
                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
@@ -58,6 +61,9 @@ $(function() {
         tinymce.init({
             selector: "textarea#mymce2",
             theme: "modern",
+            mobile: {
+            theme: 'silver'
+          },
             height: 100,
             plugins: [
                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
