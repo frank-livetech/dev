@@ -32,6 +32,8 @@
     let timeouts_list = [];
     let loggedInUser_id = {!! json_encode(\Auth::user()->id) !!};
     let loggedInUser_role = {!! json_encode(\Auth::user()->user_type) !!};
+    var staff_list =  {!! json_encode($users) !!};
+    let all_staff_ids = staff_list.map(a => a.id);
 
     function initMap(){
         address1Field = document.querySelector("#address");
@@ -281,7 +283,7 @@
         formData.append('ticket_id', '');
         formData.append('color', gl_color_notes);
         formData.append('type', 'User Organization');
-        // formData.append('visibility', all_staff_ids.toString());
+        formData.append('visibility', all_staff_ids.toString());
         formData.append('company_id', asset_company_id);
         if (gl_sel_note_index !== null) {
             formData.append('id', notes[gl_sel_note_index].id);
