@@ -13,6 +13,14 @@
 @section('body')
 
 <style>
+    .select2-container--default .select2-selection--single{
+        min-height: 1.714rem !important;
+        padding: 0px !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        top: unset !important;
+        bottom: 6px;
+    }
     .tag {
     width: fit-content !important;
     padding: 0.25rem;
