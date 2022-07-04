@@ -39,6 +39,7 @@ $.ajaxSetup({
 
 $(document).ready(function() {
 
+
     if(shared_cc_emails != '' && shared_cc_emails != null){
         $('.cc_email_field').show();
         $('#show_cc_email').prop('checked', true);
@@ -58,7 +59,9 @@ $(document).ready(function() {
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
+
         auto_focus : "mymce",
+
         height: 300,
         file_picker_types: 'image',
         plugins: [
@@ -124,10 +127,10 @@ $(document).ready(function() {
 
 
     tinymce.init({
-        selector: '#note',
-        plugins: ["advlist autolink lists link image charmap print preview anchor",
+        selector: 'textarea#note',
+        plugins: ["advlist autolink lists charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste"
+                "insertdatetime table contextmenu paste"
         ],
         toolbar: 'bold italic underline alignleft link',
         menubar: false,
@@ -3781,7 +3784,9 @@ function createFollowUp(event) {
 
 function selectColor(color) {
     gl_color_notes = color;
-    tinymce.get(1).getBody().style.backgroundColor = color;
+    console.log(color);
+    tinymce.editors.note.contentDocument.body.style.backgroundColor= color;
+    
 }
 
 function followUpNoteColor(color) {
@@ -3804,8 +3809,8 @@ function updateTicketDate(){
 
 $("#save_ticket_note").submit(function(event) {
     event.preventDefault();
-
-    var note = $("textarea[name=note]").html();
+    var note = tinymce.editors.note.getContent();
+    // var note = $("textarea[name=note]").html();
     let extract_notes_email = note.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
 
     let vis = [];
@@ -3821,7 +3826,7 @@ $("#save_ticket_note").submit(function(event) {
     formData.append('ticket_id', ticket.id);
     formData.append('color', gl_color_notes);
     formData.append('visibility', vis.toString());
-
+    formData.append('note', note);
 
     if(document.getElementById('note-type-user').checked) {
         formData.append('customer_id', temp_sel_customer);
