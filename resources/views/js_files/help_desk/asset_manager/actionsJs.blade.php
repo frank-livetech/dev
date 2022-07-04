@@ -136,7 +136,6 @@ function get_asset_table_list() {
 function showAssetDetails(id) {
 
     let item = asset_arr.find(item => item.id == id);
-    console.log(item , "item");
     let template_html  = ``;
     let customer_html = ``;
     let company_html = ``;
@@ -209,19 +208,17 @@ function showAssetDetails(id) {
         // }
 
         if(item.asset_fields != null) {
-
             for( let data of item.asset_fields) {
 
                 if(item.asset_record) {
                     let custom_key = 'fl_' + data.id;
                     let key = item.asset_record[custom_key];
 
-
                     asset_field_tr += `
                         <tr>
                             <td class="fw-bolder" width="170"> ${data.label} </td>
                             <td width="300px">${key != null ? key : '-'}</td>
-                            <td>${key != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+key+'`)" style="float:left"></i>': ''}</td>
+                            <td>${key != null ? (data.copy_icon == 1 ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+key+'`)" style="float:left"></i>' : ''): ''}</td>
                         </tr>`;
 
                 }
@@ -789,7 +786,6 @@ $("#save_asset_form").submit(function (event) {
     formData.append('ticket_id', asset_ticket_id);
 
     let url = window.location.href;
-
     if(url.includes('asset-manager')) {
 
 
@@ -798,8 +794,8 @@ $("#save_asset_form").submit(function (event) {
             return false;
         }
 
-        formData.append('customer_id', $("#customer_id").val() );
-        formData.append('company_id',  $("#company_id").val() );
+        // formData.append('customer_id', $("#customer_id").val() );
+        // formData.append('company_id',  $("#company_id").val() );
 
     }else{
 
@@ -1017,7 +1013,7 @@ function getAssetDetails(id=1) {
 
 function selectCustomer(value , customerId , companyId) {
 
-        let root = `<option>All</option><option>N/A</option>`;
+        let root = `<option>All</option><option value="0">N/A</option>`;
         if (value != '') {
 
             if($('#asset_customer :selected').text() == 'All'){
@@ -1072,7 +1068,7 @@ function selectCustomer(value , customerId , companyId) {
 
 
     function selectCompany(value , customerId , companyId) {
-        let root = `<option selected>N/A</option>`;
+        let root = `<option selected value="0">N/A</option>`;
 
         if(value != '') {
             assetFlag = true;
