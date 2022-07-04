@@ -35,7 +35,7 @@ class MailController extends Controller
 
     // ***************   METHODS   *****************
 
-    
+
     public function __construct() {
         $this->middleware('auth');
     }
@@ -50,7 +50,7 @@ class MailController extends Controller
 
         return response()->json([
             "status_code" => 200 ,
-            "success" => true, 
+            "success" => true,
             "mails" => $mails,
         ]);
     }
@@ -64,14 +64,14 @@ class MailController extends Controller
 
             return response()->json([
                 "status_code" => 200 ,
-                "success" => true, 
+                "success" => true,
                 "message" => 'Email Queue' .(request()->status == 'yes' ? ' Enabled ' : ' Disabled ') . ' Successfully',
             ]);
 
         }else{
             return response()->json([
                 "status_code" => 500 ,
-                "success" => false, 
+                "success" => false,
                 "message" => 'Something went wrong',
             ]);
         }
@@ -87,7 +87,7 @@ class MailController extends Controller
         $data = $request->all();
         // return $data['from_email'];
         $response = array();
-    
+
         try{
             if( array_key_exists('verify', $data) ) {
                 $ver = $this->verify_connection($request);
@@ -150,7 +150,7 @@ class MailController extends Controller
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);
-    
+
         }catch(Exception $e){
             $response['message'] = $e->getMessage();
             $response['status_code'] = 500;
@@ -175,7 +175,7 @@ class MailController extends Controller
             $mail->save();
         }else{
             $mail = Mail::find($request->id);
-            
+
             if($data['is_default'] == 'yes') {
                 $mails = Mail::where('mail_dept_id', $data['mail_dept_id'])->where('id','!=',$request->id)->where('is_default', 'yes')->get();
                 foreach ($mails as $key => $value) {
@@ -207,7 +207,7 @@ class MailController extends Controller
             $mail->updated_by = \Auth::user()->id;
             $mail->save();
 
-            
+
         }
 
         $response['message'] = 'Mail Updated Successfully!';
@@ -218,9 +218,9 @@ class MailController extends Controller
 
     public function delete_mail(Request $request){
         $data = $request->all();
-            
+
         $response = array();
-    
+
         try{
             $mail = Mail::findOrFail($data['id']);
 
@@ -231,19 +231,19 @@ class MailController extends Controller
                 }
                 $mail->is_default = 'no';
             }
-           
+
             $mail->deleted_at = Carbon::now();
             $mail->updated_by = \Auth::user()->id;
             $mail->deleted_by = \Auth::user()->id;
             $mail->is_deleted = 1;
 
             $mail->save();
-            
+
             $response['message'] = 'Mail Deleted Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);
-    
+
         }catch(Exception $e){
             $response['message'] = $e->getMessage();
             $response['status_code'] = 500;
@@ -259,7 +259,7 @@ class MailController extends Controller
 
         try {
             $imap = imap_open($connection, $data['mailserver_username'], $data['mailserver_password']);
-            
+
             if(!empty($imap)) {
                 imap_close($imap);
                 $response['success'] = true;
@@ -271,7 +271,7 @@ class MailController extends Controller
             }
             $response['success'] = true;
             return $response;
-            
+
         }catch(Throwable $e) {
             $response['error'] = imap_errors();
             $response['alerts'] = imap_alerts();
@@ -294,24 +294,24 @@ class MailController extends Controller
                 $content =  explode('<div id="appendonsend"></div>',$html_reply);
                 $html_reply = $content[0].'</div></body></html>';
                 // dd($html_reply);exit;
-                
+
             }else if(str_contains($html_reply, '<div id="divRplyFwdMsg"></div>')){
                 echo "yes";
                 $content =  explode('<div class="divRplyFwdMsg">',$html_reply);
                 $html_reply = $content[0].'</div></body></html>';
-                
+
             }else if(str_contains($html_reply, '<div class="gmail_quote">')){
-                
+
                 // echo "yes";exit;
                 $content =  explode('<div class="gmail_quote">',$html_reply);
                 $html_reply = $content[0];
                 // dd($html_reply);exit;
-                
+
             }else if(str_contains($html_reply,$tkt_str)){
-                
+
                 if(str_contains($html_reply,'From:')){
                     if(str_contains($html_reply,'<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">')){
-                        
+
                         $content =  explode('<div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">',$html_reply);
                         $html_reply = $content[0].'</div></body></html>';
                     }else{
@@ -322,15 +322,15 @@ class MailController extends Controller
                             $content =  explode('From:',$html_reply);
                             $html_reply = $content[0].'</b></p></div></body></html>';
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
             }else if(str_contains($html_reply,'On') && str_contains($html_reply,'wrote') && str_contains($html_reply,$eq_value->mailserver_username) && str_contains($html_reply,'<blockquote type="cite">On')){
                 $content =  explode('<blockquote type="cite">On',$html_reply);
                 $html_reply = $content[0];
-            }  
+            }
         }
 
         $html_reply = str_replace("[img]","<img ",$html_reply);
@@ -342,14 +342,14 @@ class MailController extends Controller
     }
 
     public function verifyCustomer($emailFrom , $queue, $name){
-        
+
         $customer = '';
         if($queue == 'yes') {
             // email is from our customer
             $customer = Customer::where('email', trim($emailFrom))->first();
         } else {
             $customer = Customer::where('email', trim($emailFrom))->first();
-            
+
             if(empty($customer)) {
                 // $name = $strFromName;
                 $customer = Customer::create([
@@ -359,10 +359,10 @@ class MailController extends Controller
                     'email' => trim($emailFrom)
                 ]);
             }
-        }  
+        }
 
         return $customer;
-        
+
     }
 
     public function save_inbox_replies() {
@@ -370,7 +370,7 @@ class MailController extends Controller
             $repliesSaved = false;
 
             $emailQueue = DB::table('email_queues')->where([ ['is_deleted', 0], ['is_enabled','yes'] ])->get()->toArray();
-            
+
             foreach ($emailQueue as $eq_value) {
                 if($eq_value->is_enabled == 'no') continue;
 
@@ -385,15 +385,15 @@ class MailController extends Controller
                     imap_alerts();
                     continue;
                 }
-                
+
                 $helpDesk = new HelpdeskController();
-                    
+
                 foreach ($mails as $key => $message) {
-                    
+
                     $mail = imap_fetchstructure($imap, $message);
                     $type = $mail->subtype;
                     // dd($mail->subtype);exit;
-                    
+
                     // For getting basic info , subject , mail from , mail to etc.
                     $header=imap_fetch_overview($imap, $message);
                     $strAddress_Sender=$header[0]->from;
@@ -402,50 +402,50 @@ class MailController extends Controller
                     $strAddress_Sender = explode('<',$strAddress_Sender);
                     $strAddress_Sender = trim($strAddress_Sender[1],'>');
                     $email_subject =$header[0]->subject;
-                    
+
                     $name = explode(" ",$header[0]->from);
                     $name = (array_key_exists(0, $name) ? $name[0] : '') .' '. (array_key_exists(1, $name) ? $name[1] : '');
-                    
+
                     /////////////////////////////////////////////////////////////
-                    
+
                     $mail = $this->mail_get_parts($imap, $message, $mail, 0);
                     $mail[0]["parsed"] = $this->mail_parse_headers($mail[0]["data"]);
                     $emailFrom =  $strAddress_Sender;
-                   
+
                     $spam_user = SpamUser::where('email',$emailFrom)->first();
                     if(!$spam_user){
                         if(!empty($email_subject)) {
-                   
+
                             if(!empty($emailFrom)) {
-                                
+
                                 $customer = $this->verifyCustomer($emailFrom , $eq_value->registration_required , $name);
-                                
+
                                 // if(empty($customer)){
-    
+
                                 //     $this->handleUnregisteredCustomers($emailFrom);
-    
+
                                 // }else{
-     
+
                                 if(strpos($email_subject, '[') !== false && strpos($email_subject, ']:') !== false && strpos($email_subject, '!') !== false){
                                     $id = '';
                                     if(strpos($email_subject, $eq_value->mail_queue_address) !== false){
-                                        
+
                                         $pos = strpos($email_subject, '!');
                                         $sub = substr($email_subject,$pos+1);
                                         $pos1 = strpos($sub,']:');
                                         $id = substr($sub,0,$pos1);
-                                        
+
                                         $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
                                         if(preg_match($pattern, $id, $array)) {
                                             $id = $array[0];
                                         }
-                                        
+
                                     }else{
                                         $pos = strpos($email_subject, '!');
                                         $sub = substr($email_subject,$pos+1);
                                         $pos1 = strpos($sub,']:');
                                         $id = substr($sub,0,$pos1);
-                                        
+
                                         $pattern = '/[A-Z]{3}-[0-9]{3}-[0-9]{4}/';
                                         if(preg_match($pattern, $id, $array)) {
                                             $id = $array[0];
@@ -475,12 +475,12 @@ class MailController extends Controller
                                             }
                                             $sid = $staff->id;
                                         }
-                                        
-                                        
-                                        
+
+
+
                                         // $ticket = Tickets::where(DB::raw('concat(coustom_id, " ", subject)'), trim($sbj))->first();
                                         $ticket = Tickets::where('coustom_id', $ticketID)->first();
-    
+
                                         $bbcode = new BBCode();
                                         if(!empty($ticket)) {
                                             // $all_parsed = $this->mail_parse_attachments($mail, $ticket->id);
@@ -492,31 +492,31 @@ class MailController extends Controller
                                             $html_reply = $bbcode->convertFromHtml($reply);
                                             // Remove extra threads
                                             $html_reply = $this->removeExtraThreads($html_reply,$eq_value,$ticket,$type);
-                                            
-                                            //  $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply); 
-                                            //  $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply); 
+
+                                            //  $email_reply = preg_replace("/<img[^>]+\>/i", "", $html_reply);
+                                            //  $email_reply = preg_replace("/<img[^>]+>/i", "", $html_reply);
                                             $email_reply = str_replace('\r\n', "", $html_reply);
                                         //   dd($email_reply);
                                             $email_reply = str_replace('//', "<br>", $email_reply);
                                             $email_reply = str_replace('[url=', "<a href=", $html_reply);
                                             $email_reply = str_replace('[\url]', "</a>", $html_reply);
-                                            $email_reply =  $bbcode->convertToHtml($email_reply);   
+                                            $email_reply =  $bbcode->convertToHtml($email_reply);
                                             $email_reply = nl2br($email_reply);
-                                          
+
                                             $this->createParserNewReply($ticket , $html_reply , $email_reply , $date , $attachments,$embed_imges , $message , $sid , $staff , $cid , $customer);
-      
+
                                         }else{
-    
-                                            $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
+
+                                            $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );
                                         }
                                     }else{
-                                        $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );  
+                                        $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );
                                     }
                                 }else{
                                     $this->createParserNewTicket($emailFrom , $strFromName , $customer , $email_subject , $eq_value , $mail , $message , $imap , $eq_value->from_mail );
-    
+
                                 }
-    
+
                             }
                         }
                     }
@@ -528,7 +528,7 @@ class MailController extends Controller
                 imap_close($imap, CL_EXPUNGE);
                 // imap_close($imap);
             }
-            
+
             if(empty($repliesSaved)) {
                 // echo "\nNo new mails found.";
 
@@ -595,20 +595,20 @@ class MailController extends Controller
             $close_status = TicketStatus::where('name','Closed')->first();
             $reset_tkt =  $this->getTicketResetFlag($ticket , $close_status);
         }
-        
+
         if(!empty($cid)) {
             $data["customer_id"] = $cid;
-            
+
             $close_status = TicketStatus::where('name','Closed')->first();
             if($ticket->status == $close_status->id) {
-                $is_closed = 1 ;    
+                $is_closed = 1 ;
             }
             $reset_tkt =  $this->getTicketResetFlag($ticket , $close_status);
             $open_status = TicketStatus::where('name','Open')->first();
             $ticket->status = $open_status->id;
 
         }
-      
+
         $rep = TicketReply::create($data);
         // dd($email_reply);
         $sett = TicketSettings::where('tkt_key', 'reply_due_deadline')->first();
@@ -631,7 +631,7 @@ class MailController extends Controller
         $body = str_replace('//', "", $body);
         $helpDesk = new HelpdeskController();
         if(!empty($sid)) {
-          
+
             $fullname = $staff->name;
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/profile'.'/' . $staff->id;
             $name_link = '<a href="'. $url .'">'. $fullname .'</a>';
@@ -640,8 +640,8 @@ class MailController extends Controller
             // $ticket->assigned_to = $sid;
             // $ticket->save();
             try {
-                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
-                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply);
+                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply);
                 // $email_reply = str_replace('/\r\n/', "", $email_reply);
                 // $email_reply = str_replace('//', "<br>", $email_reply);
                 $email_reply = $rep->reply;
@@ -653,15 +653,15 @@ class MailController extends Controller
                 echo 'Reply Notification! '. $e->getMessage();
             }
         }
-        
+
         if(!empty($cid)) {
-            
+
             $fullname = $customer->first_name.' '.$customer->last_name;
             $name_link = '<a href="'.url('customer-profile').'/' . $customer->id .'">'. $fullname .'</a>';
             $user = $customer;
             try {
-                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply); 
-                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply); 
+                // $email_reply = preg_replace("/<img[^>]+\>/i", "", $email_reply);
+                // $email_reply = preg_replace("/<img[^>]+>/i", "", $email_reply);
                $email_reply = $rep->reply;
                 $email_reply = str_replace('/\r\n/', "<br>", $email_reply);
                 // dd($email_reply);
@@ -676,7 +676,7 @@ class MailController extends Controller
         echo 'Saved reply FROM "'.$fullname.' ('.$user->email.')" with SUBJECT " '.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
 
         $tkt_url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/'.$ticket->coustom_id;
-        
+
         $action_perform = 'Ticket (<a href="'. $tkt_url.'">'.$ticket->coustom_id.'</a>) Reply added by '. $name_link;
 
         // $action_perform = "Saved reply FROM '.$fullname.' with SUBJECT '.$ticket->subject.'";
@@ -697,7 +697,7 @@ class MailController extends Controller
         $email = '';
         $created_by = '';
         if(empty($customer)) {
-            
+
             $staff = User::where('email', trim($emailFrom))->first();
             if(empty($staff)) {
                 // reply is not from our system user
@@ -712,19 +712,19 @@ class MailController extends Controller
             $email = $staff->email;
             $is_staff_tkt = 1;
         }else{
-            
+
             $name = $customer->first_name.' '.$customer->last_name;
             $email = $customer->email;
             $customer_id = $customer->id;
             $creator_idd = User::where('email', trim($emailFrom))->first();
             $created_by = empty($creator_idd) ? $customer->id : $creator_idd->id;
         }
-  
+
         $ticket = Tickets::where('customer_id', $customer_id)->where('coustom_id', $email_subject)->first();
-      
+
         if(empty($ticket)) {
             $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
-            
+
             // create new ticket
             $ticket = Tickets::create([
                 'dept_id' => $eq_value->mail_dept_id,
@@ -741,7 +741,7 @@ class MailController extends Controller
             $newG = new GeneralController();
             $helpDesk = new HelpdeskController();
             $cust_id = $newG->randomStringFormat($helpDesk::CUSTOMID_FORMAT);
-            
+
             $all_parsed = $mail;
 
             $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id , $cust_id);
@@ -749,13 +749,13 @@ class MailController extends Controller
             // dd($body);
             // dd($all_parsed);
             $tickets_count = Tickets::all()->count();
-            
+
             $lt = Tickets::orderBy('created_at', 'desc')->first();
 
             $ticket->ticket_detail = $body;
             $ticket->attachments = $attaches[1];
             $ticket->embed_attachments = $attaches[0];
-        
+
             $ticket->coustom_id = $cust_id;
             if(!empty($lt)) {
                 $ticket->seq_custom_id = 'T-'.strval($lt->id + 1);
@@ -763,7 +763,7 @@ class MailController extends Controller
                 $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
             }
             $ticket->save();
-            
+
             // ticket assoc with sla plan
             $settings = $helpDesk->getTicketSettings(['default_reply_and_resolution_deadline']);
             if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -781,9 +781,9 @@ class MailController extends Controller
                     ]);
                 }
             }
-            
+
             $repliesSaved = true;
-            
+
             echo 'Created Ticket By "'.$name.' ('.$email.')" with SUBJECT "'.$ticket->subject.'" MESSAGE NO# '.$message.'<br>';
 
             self::$mailserver_hostname = $eq_value->mailserver_hostname;
@@ -795,7 +795,7 @@ class MailController extends Controller
             $action_perform = 'Ticket (<a href="'. $url .'">'.$ticket->coustom_id.'</a>) Created By CRON';
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
-            
+
             try {
                 $ticket = Tickets::where('id',$ticket->id)->first();
                 $helpDesk->sendNotificationMail($ticket->toArray(), 'ticket_create', '', '', 'cron','',$email,'',1,'','','','','');
@@ -806,13 +806,13 @@ class MailController extends Controller
         }
         return ;
     }
-    
+
     public function createUnregisteredTicket($emailFrom , $strFromName ,  $email_subject , $eq_value , $mail , $message , $imap , $strAddress_Sender ){
-        
+
         $ticket_settings = TicketSettings::where('tkt_key','ticket_format')->first();
         $is_staff_tkt = 0;
         $name = (array_key_exists(0, $strFromName) ? $strFromName[0] : '') .' '. (array_key_exists(1, $strFromName) ? $strFromName[1] : '');
-            
+
         // create new ticket
         $ticket = Tickets::create([
             'dept_id' => $eq_value->mail_dept_id,
@@ -827,13 +827,13 @@ class MailController extends Controller
             'cust_name' => $name,
             'is_pending' => 1
         ]);
-        
+
         $all_parsed = $mail;
         $attaches = $this->mail_parse_ticket_attachments($mail, $ticket->id);
         $body = $this->email_body_parser($all_parsed, 'ticket');
-        
+
         $tickets_count = Tickets::all()->count();
-        
+
         $lt = Tickets::orderBy('created_at', 'desc')->first();
 
         $ticket->ticket_detail = $body;
@@ -848,7 +848,7 @@ class MailController extends Controller
             $ticket->seq_custom_id = 'T-'.strval($tickets_count+1);
         }
         $ticket->save();
-        
+
         // ticket assoc with sla plan
         $settings = $helpDesk->getTicketSettings(['default_reply_and_resolution_deadline']);
         if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -866,7 +866,7 @@ class MailController extends Controller
                 ]);
             }
         }
-    
+
         return $ticket->coustom_id;
     }
 
@@ -876,12 +876,12 @@ class MailController extends Controller
         $admin_template = DB::table("templates")->where('code','auto_res_admin_cust_not_reg')->first();
 
         if(!empty($cust_template)) {
-            
+
             $subject = 'Unable to process your email (registration required)';
             $this->sendMail($subject, $cust_template->template_html , $strAddress_Sender, $emailFrom, '');
 
         }
-       
+
         if(!empty($admin_template)) {
 
             $template = htmlentities($admin_template->template_html);
@@ -895,7 +895,7 @@ class MailController extends Controller
             if(str_contains($template, '{Subject}')) {
                 $template = str_replace('{Subject}', $emailSubject , $template);
             }
-    
+
             if(str_contains($template, '{Customer-Email-Not-Registered}')) {
                 $template = str_replace('{Customer-Email-Not-Registered}', $emailFrom , $template);
             }
@@ -985,7 +985,7 @@ class MailController extends Controller
                 foreach ($value as $val) {
                     if(strpos($val, "=")  !== false) {
                         $s = explode('=', $val);
-        
+
                         if($s[0] == 'smtp.mailfrom') {
                             return $s[1];
                         }
@@ -994,7 +994,7 @@ class MailController extends Controller
             } else {
                 if(strpos($value, "=")  !== false) {
                     $s = explode('=', $value);
-    
+
                     if($s[0] == 'smtp.mailfrom') {
                         return $s[1];
                     }
@@ -1014,8 +1014,8 @@ class MailController extends Controller
                 if(!array_key_exists('is_attachment', $value)){
                     $data = $value;
                 }
-                
-                
+
+
             }
             // if(array_key_exists('is_attachment', $value)) {
             //     $attachments .= $value['data'];
@@ -1027,9 +1027,9 @@ class MailController extends Controller
             if(!array_key_exists('is_attachment', $value)){
                 $data = $all_parsed[2];
             }
-            
+
         } else if(array_key_exists('1.2', $all_parsed) && array_key_exists('charset', $all_parsed['1.2'])) {
-           
+
             if(!array_key_exists('is_attachment', $value)){
                 $data = $all_parsed[1.2];
             }
@@ -1049,8 +1049,8 @@ class MailController extends Controller
             $data = $data['data'];
             $data = utf8_encode($data['data']);
         }
-        
-       
+
+
         // if($type == 'reply'){
         //     $str = 'From: '.$from.' <'.$from.'>';
         //     $gmail_str = $from.' wrote:';
@@ -1090,14 +1090,14 @@ class MailController extends Controller
     }
 
     public function mail_parse_attachments($data, $tid , $custom_id) {
-       
+
         $embed_names = '';
         $attach_names = '';
         $files = array();
         $emded_count = 1;
         $attach_count = 1;
         $count = 0;
-        $count1 = 0; 
+        $count1 = 0;
         // dd($data);
         foreach ($data as $key =>$value) {
             $current_timestamp = Carbon::now()->timestamp;
@@ -1107,70 +1107,70 @@ class MailController extends Controller
             if($count1 <= 0){
                 $count1 = substr_count($value['data'],"Content-Disposition: attachment;");
             }
-            
+
             if(array_key_exists('is_attachment', $value) && $value['is_attachment'] == '1'){
-                
+
                 if($emded_count <= $count){
-                    
+
                     $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
-                    
+
                     if(empty($ext)) $ext = 'svg';
-                    
+
                     $filename = $custom_id.'_R_'.$emded_count.'_'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
-                        
+
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
-    
+
                     file_put_contents($target_src, $value['data']);
-    
+
                     if(!empty($embed_names)) $embed_names .= ','.$filename;
                     else $embed_names = $filename;
                     $emded_count++;
-                    
+
                 }else{
                     $ext = pathinfo($value['filename'], PATHINFO_EXTENSION);
 
                     if(empty($ext)) $ext = 'svg';
-    
+
                     $filename = $custom_id.'_R_'.$attach_count.'_'.$current_timestamp.'.'.$ext;
                     $target_dir = 'storage/tickets-replies/'.$tid;
                     $target_src = $target_dir.'/'.$filename;
-                        
+
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
-    
+
                     file_put_contents($target_src, $value['data']);
-    
+
                     if(!empty($attach_names)) $attach_names .= ','.$filename;
                     else $attach_names = $filename;
                     $attach_count++;
                 }
-              
+
             }
         }
-        
+
         array_push($files,$embed_names);
         array_push($files,$attach_names);
-        
+
         return $files;
     }
 
     public function mail_parse_ticket_attachments($data, $tid , $custom_id = '') {
-        
+
         $embed_names = '';
         $attach_names = '';
         $files = array();
         $emded_count = 1;
         $attach_count = 1;
         $count = 0;
-        $count1 = 0; 
-        
+        $count1 = 0;
+
         foreach ($data as $key =>$value) {
-            
+
             if($count <= 0){
                 $count = substr_count($value['data'],"Content-Disposition: inline;");
             }
@@ -1179,54 +1179,54 @@ class MailController extends Controller
             }
             if(array_key_exists('is_attachment', $value) && $value['is_attachment'] == '1') {
 
-                    
+
                 if($emded_count <= $count){
                     $filename = preg_replace('/[^a-zA-Z0-9_.]/', '_', $value['filename']);
                     $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    
+
                     if(empty($ext)) $ext = 'svg';
                     $filename = $custom_id.'_'.$key.'.'.$ext;
- 
+
                     $target_dir = 'storage/tickets/'.$tid.'/';
                     $target_src = $target_dir.$filename;
-                        
+
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
-    
+
                     file_put_contents($target_src, $value['data']);
-    
+
                     if(!empty($embed_names)) $embed_names .= ','.$filename;
                     else $embed_names = $filename;
                     $emded_count++;
-                    
+
                 }else{
-                    
+
                     $filename = preg_replace('/[^a-zA-Z0-9_.]/', '_', $value['filename']);
                     $ext = pathinfo($filename, PATHINFO_EXTENSION);
-    
+
                     if(empty($ext)) $ext = 'svg';
                     $filename = $custom_id.'_'.$key.'.'.$ext;
-    
+
                     $target_dir = 'storage/tickets/'.$tid.'/';
                     $target_src = $target_dir.$filename;
-                        
+
                     if (!File::isDirectory($target_dir)) {
                         mkdir($target_dir, 0777, true);
                     }
-    
+
                     file_put_contents($target_src, $value['data']);
-    
+
                     if(!empty($attach_names)) $attach_names .= ','.$filename;
                     else $attach_names = $filename;
                     $attach_count++;
-                    
+
                 }
             }
         }
         array_push($files,$embed_names);
         array_push($files,$attach_names);
-        
+
         return $files;
     }
 
@@ -1238,7 +1238,7 @@ class MailController extends Controller
         return($result);
     }
 
-    public function mail_get_parts($imap,$mid,$part,$prefix){   
+    public function mail_get_parts($imap,$mid,$part,$prefix){
         $attachments=array();
         $attachments[$prefix] = $this->mail_decode_part($imap,$mid,$part,$prefix);
         if (isset($part->parts)) // multipart
@@ -1261,7 +1261,7 @@ class MailController extends Controller
                 }
             }
         }
-    
+
         if($part->ifparameters) {
             foreach($part->parameters as $object) {
                 $attachment[strtolower($object->attribute)]=$object->value;
@@ -1271,7 +1271,7 @@ class MailController extends Controller
                 }
             }
         }
-    
+
         // $attachment['data'] = imap_fetchbody($connection, $message_number, $prefix);
         // dd($attachment['data']);exit;
         $attachment['data'] = ($prefix)?
@@ -1285,7 +1285,7 @@ class MailController extends Controller
             // echo $attachment['data'];
             // dd($attachment['data']);exit;
         }
-            
+
         //     if ($part->type==0 && $attachment['data']) {
         //     // Messages may be split in different parts because of inline attachments,
         //     // so append parts together with blank row.
@@ -1298,13 +1298,13 @@ class MailController extends Controller
         //     $charset = $params['charset'];  // assume all parts are same charset
         //     }
         // }
-        
+
         return($attachment);
     }
 
     public function sendMail($subject, $body, $from, $recipient, $recipient_name, $reply='', $attachments='', $path='' , $from_email = '',$template_code = '' , $from_name = '') {
         try {
-            
+
             // $mail = new PHPMailer(true);
             $mail = new PHPMailer();
             $mail->CharSet = "UTF-8";
@@ -1334,13 +1334,13 @@ class MailController extends Controller
                         $user = User::where('email', $from_email)->first();
                         $from_name = $user->name;
                     }
-                    
+
                 }
             }
-            
+
 
             $mail->setFrom($from , $from_name);
-            
+
             //Recipients
             if(!empty($this->cc_string)) {
                 $ccs = explode(',', $this->cc_string);
@@ -1353,7 +1353,7 @@ class MailController extends Controller
                     $attachments = explode(',', $attachments);
                     foreach ($attachments as $key => $value) {
                         $path_tmp =  __DIR__."/../../../../$path/$value";
-                        
+
                         if(is_readable($path_tmp)) {
                             // echo $path_tmp;
                             if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
@@ -1367,7 +1367,7 @@ class MailController extends Controller
                     $attachments = explode(',', $attachments);
                     foreach ($attachments as $key => $value) {
                         $path_tmp =  __DIR__."/../../../../$path/$value";
-                        
+
                         if(is_readable($path_tmp)) {
                             // echo $path_tmp;
                             if(!$mail->AddAttachment($path_tmp)) throw new Exception('Add attachment failed '.$mail->ErrorInfo);
@@ -1375,7 +1375,7 @@ class MailController extends Controller
                     }
                 }
             }
-            
+
             // dd($mail);
             // exit;
             //Content
@@ -1383,7 +1383,7 @@ class MailController extends Controller
             $mail->Subject = $subject;
             $mail->Body    = $body;
             $mail->AltBody = '';
-       
+
             if(is_array($recipient)) {
                 foreach ($recipient as $key => $value) {
                     $mail->clearAllRecipients();
@@ -1392,9 +1392,9 @@ class MailController extends Controller
                 }
             } else {
                 $mail->addAddress($recipient, $recipient_name);
-                
+
                 if(!$mail->send()) throw new Exception('Failed to send mail');
-               
+
             }
 
         } catch(Exception $e) {
@@ -1459,7 +1459,7 @@ class MailController extends Controller
         return $subject;
     }
 
-    
+
     public function template_parser($data_list, $template, $reply_content='', $action_name='',$template_code = '',$ticket = '',$old_params = '',$flwup_note = '',$flwup_updated = '', $is_closed='' , $reset_tkt = '' , $user_type = '',$embed_imges = '') {
         if(empty($template)) {
             return '';
@@ -1467,15 +1467,15 @@ class MailController extends Controller
 
         if(empty($data_list)) {
             throw new Exception('Provided data list is empty!');
-        }   
-                
+        }
+
         $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
         $tp_date_format = empty($system_format) ? 'DD-MM-YYYY' : $system_format->sys_value;
 
         $template = htmlentities($template);
         if(!empty($reply_content)) {
             if(str_contains($template, '{Ticket-Reply}')) {
-              
+
                 $doc = new \DOMDocument();
                 // dd($content);
                 libxml_use_internal_errors(true);
@@ -1498,7 +1498,7 @@ class MailController extends Controller
                         $reply_content = $doc->saveHTML();
                     }
                 }
-                
+
                 $reply_content =  $bbcode->convertToHtml($reply_content);
                 // dd($reply_content);
                 if($template_code == 'auto_res_ticket_reply'){
@@ -1568,12 +1568,12 @@ class MailController extends Controller
                         }elseif($old_params[$dd]['id'] == '4'){
                             $actions .= '<p><strong>Status: </strong>'.$ticket['status_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span></p>';
 
-                            
+
                         }elseif($old_params[$dd]['id'] == '5'){
                             $actions .= '<p><strong>Priority: </strong>'.$ticket['priority_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
-                          
+
                         }
-                    }                    
+                    }
                     if(!empty($reply_content)){
                         if($template_code == 'auto_res_ticket_reply'){
                             // $reply_content = $reply_content;
@@ -1581,12 +1581,12 @@ class MailController extends Controller
                         }else{
                             $reply_content = '<p> '. $reply_content . ' </p>';
                         }
-                        
+
                     }
                     if(!empty($flwup_note)){
                         $flwup_note = '<p>'. $flwup_note .'</p>';
                     }
-                    
+
                     $template = str_replace('{Ticket-Note}', $flwup_note, $template);
                     $template = str_replace('{Ticket-Reply}', $reply_content, $template);
                 }else if($action_name == 'ticket_reply_update'){
@@ -1609,14 +1609,14 @@ class MailController extends Controller
                         }elseif($old_params[$dd]['id'] == '4'){
                             $actions .= '<p><strong>Status:</strong> '.$ticket['status_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
 
-                            
+
                         }elseif($old_params[$dd]['id'] == '5'){
                             $actions .= '<p><strong>Priority:</strong> '.$ticket['priority_name'].' <span style="color:#A5A5A5"> (was: '.$old_params[$dd]["data"].') </span> </p>';
-                          
+
                         }
 
                     }
-                    
+
                 }
                 if(!empty($actions)){
                     $actions = $actions;
@@ -1635,27 +1635,27 @@ class MailController extends Controller
                     }else if(!empty($flwup_updated)){
                         $action_by = $flwup_updated;
                     }
-                    
+
                     $t_id = $ticket['coustom_id'];
                     $template = str_replace('{Ticket-Updated-By}', $action_by .' Updated #'. $t_id, $template);
                 }
             }
-            
+
         }
-        
+
         if(str_contains($template, '{Ticket-Content}')) {
             $content = DB::table('templates')->where('code', 'ticket_content')->first();
 
             if(!empty($content)) {
                 $content = $content->template_html;
-                
+
                 $this->replaceShortCodes($data_list, $content);
-    
+
                 $template = str_replace('{Ticket-Content}', $content, $template);
             }
         }
-        
-        
+
+
         if($action_name == 'Flagged' || $action_name == 'Flag removed')  {
 
             if(!empty($ticket)) {
@@ -1680,21 +1680,21 @@ class MailController extends Controller
                     if(auth()->user()->signature != null) {
 
                         $signture = preg_replace("/\r\n|\r|\n/", '<br/>', auth()->user()->signature  );
-                        $template = str_replace('{Staff-Signature}', $signture, $template);    
+                        $template = str_replace('{Staff-Signature}', $signture, $template);
                     }else{
                         $template = str_replace('{Staff-Signature}', '' , $template);
                     }
                 }
-                
+
                 // $staff_data = array_values(array_filter($data_list, function ($var) {
                 //     return ($var['module'] == 'Tech');
                 // }));
-    
+
                 // if( !empty($staff_data[0]['values']) ) {
                 //     $signature = $staff_data[0]['values']['signature'];
                 //     if($signature != null) {
                 //         $signture = preg_replace("/\r\n|\r|\n/", '<br/>', $signature);
-                //         $template = str_replace('{Staff-Signature}', $signture, $template);    
+                //         $template = str_replace('{Staff-Signature}', $signture, $template);
                 //     }else{
                 //         $template = str_replace('{Staff-Signature}', '' , $template);
                 //     }
@@ -1709,9 +1709,9 @@ class MailController extends Controller
 
             if(!empty($content)) {
                 $content = $content->template_html;
-                
+
                 $this->replaceShortCodes($data_list, $content);
-    
+
                 $template = str_replace('{Our-Company-Details}', $content, $template);
             }
         }
@@ -1722,49 +1722,49 @@ class MailController extends Controller
                 $layout = "";
                 $flexlayout = "";
                 if($ticket != null) {
-    
+
                     if($ticket['attachments'] != null) {
-    
+
                         $attachments = explode(',', $ticket['attachments']);
-                        
+
                         for($i =0; $i <count($attachments); $i++) {
-    
+
                             $imgeUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/') . '/public/default_imgs/';
                             $attchUrl = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'];
-    
+
                             if ( str_contains($attachments[$i], 'csv') || str_contains($attachments[$i], 'xls') || str_contains($attachments[$i], 'xlsx') || str_contains($attachments[$i], 'sql')) {
                                 $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/xlx.png" style="width:70px !important"> </a> </div>';
-                        
+
                             }else if( str_contains($attachments[$i], 'pdf') ){
                                 $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/pdf.png" style="width:70px !important"> </a> </div>';
-                        
+
                             }else if( str_contains($attachments[$i], 'docs') || str_contains($attachments[$i], 'doc') || str_contains($attachments[$i], 'txt') || str_contains($attachments[$i], 'dotx') ||  str_contains($attachments[$i], 'docx') ){
                                 $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/word.png" style="width:70px !important"> </a> </div>';
-                        
+
                             }else if( str_contains($attachments[$i], 'ppt') || str_contains($attachments[$i], 'pptx') || str_contains($attachments[$i], 'pot') || str_contains($attachments[$i], 'pptm') ){
                                 $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/pptx.png" style="width:70px !important">  </a></div>';
-                        
+
                             } else if( str_contains($attachments[$i], 'zip') ){
                                 $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.$imgeUrl.'/zip.png" style="width:70px !important">  </a></div>';
-                        
+
                             }else{
                                 $layout .= ' <div class=""><a href="'.$attchUrl.'/'.$attachments[$i].'"><img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/storage/tickets/'.$ticket['id'].'/'.$attachments[$i].'" style="width:70px !important" />  </a></div>';
                             }
-    
+
                         }
                         $flexlayout = '<div class=""><label><strong>Attachments</strong></label></div><div class="row" style="display:flex">'.$layout.'</div>';
                         $template = str_replace('{Initial-Request-Attachments}', $flexlayout, $template);
-                        
+
                     }else{
                         $template = str_replace('{Initial-Request-Attachments}', '', $template);
                     }
-    
+
                 }
             }
         }else{
             $template = str_replace('{Initial-Request-Attachments}', '', $template);
         }
-        
+
         if(str_contains($template, '{Asset-ID-####}')) {
             $asset = array_values(array_filter($data_list, function($value) {
                 return ($value['module'] == 'Asset');
@@ -1772,7 +1772,7 @@ class MailController extends Controller
 
             if(!empty($asset)) {
                 $content = $this->getAssetDetails_SC($asset[0]['values']);
-    
+
                 if(!empty($content)) {
                     $template = str_replace('{Asset-ID-####}', $content, $template);
                 }
@@ -1798,13 +1798,13 @@ class MailController extends Controller
             //     $template = str_replace('{Computer-Specs}', $cm[0], $template);
             // }
         }
-        
+
         if(str_contains($template, '{Show-System-Errors}')) {
             // if(!empty($cm)) {
             //     $template = str_replace('{Show-System-Errors}', $cm[0], $template);
             // }
         }
-        
+
         // replace the generic array modules data
         $this->replaceShortCodes($data_list, $template , $user_type);
         // dd('template_parser');
@@ -1825,7 +1825,7 @@ class MailController extends Controller
                     $name = $customer->first_name .' '. $customer->last_name;
                     $template = str_replace('{Creator-Name}', $name, $template);
                 }else{
-                    
+
                     $template = str_replace('{Creator-Name}', '', $template);
                     $template = str_replace('Creator:', '', $template);
                 }
@@ -1851,7 +1851,7 @@ class MailController extends Controller
                         $template = str_replace('{User-Name}', 'Unassigned', $template);
                     }
                     // $template = str_replace('{User-Name}', $user->name, $template);
-                }   
+                }
             }
         }
 
@@ -1872,20 +1872,20 @@ class MailController extends Controller
             if(sizeof($tckt) > 0) {
                 $helpd = new HelpdeskController();
                 $slaPlan = $helpd->getTicketSlaPlan($tckt[0]['values']['id']);
-                
+
                 $currentDate_res = new Carbon( now() , $tm_name);
-                
+
                 $dt = explode('.', $slaPlan['due_deadline']);
                 $currentDate_res->addHours($dt[0]);
                 $currentDate_res->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_res->addMinutes($dt[1]);
-                
+
                 $currentDate_rep = new Carbon( now() , $tm_name);
                 $dt = explode('.', $slaPlan['reply_deadline']);
                 $currentDate_rep->addHours($dt[0]);
                 $currentDate_rep->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
-                
+
                 $update_arr = array();
 
                 if($reset_tkt == 1) {
@@ -1900,14 +1900,14 @@ class MailController extends Controller
                     $update_arr['resolution_deadline'] = $currentDate_res->format('Y-m-d g:i A');
                 }
 
-                
+
                 Tickets::where('id' , $tckt[0]['values']['id'])->update($update_arr);
             }
         }
 
 
         if($action_name == 'ticket_cus_reply' || $action_name == 'cust_cron') {
-            
+
             $tckt = array_values(array_filter($data_list, function ($var) {
                 return ($var['module'] == 'Ticket');
             }));
@@ -1915,21 +1915,21 @@ class MailController extends Controller
             if(sizeof($tckt) > 0) {
                 $helpd = new HelpdeskController();
                 $slaPlan = $helpd->getTicketSlaPlan($tckt[0]['values']['id']);
-                
+
                 $currentDate_res = new Carbon( now() , $tm_name);
-                
+
                 $dt = explode('.', $slaPlan['due_deadline']);
                 $currentDate_res->addHours($dt[0]);
                 $currentDate_res->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_res->addMinutes($dt[1]);
-                
+
                 $currentDate_rep = new Carbon( now() , $tm_name);
                 $dt = explode('.', $slaPlan['reply_deadline']);
                 $currentDate_rep->addHours($dt[0]);
                 $currentDate_rep->addMinutes(-1);
                 if(array_key_exists(1, $dt)) $currentDate_rep->addMinutes($dt[1]);
-                
-                $update_arr = array();                
+
+                $update_arr = array();
                 $update_arr['reply_deadline'] = $currentDate_rep->format('Y-m-d g:i A');
 
                 if($is_closed == 1) {
@@ -1938,8 +1938,8 @@ class MailController extends Controller
                 Tickets::where('id' , $tckt[0]['values']['id'])->update($update_arr);
             }
         }
-    
-    
+
+
         if(str_contains($template, '{Ticket-SLA}') || str_contains($template, '{Ticket-Resolution-Due}') || str_contains($template, '{Ticket-Reply-Due}')) {
             $sla=''; $res=''; $rep = '';
             $tckt = array_values(array_filter($data_list, function ($var) {
@@ -1947,7 +1947,7 @@ class MailController extends Controller
             }));
 
             $ticket = Tickets::where('id' , $tckt[0]['values']['id'])->first()->toArray();
-                        
+
             $ticket_reply_deadline = empty($ticket['reply_deadline']) ? null : $ticket['reply_deadline'];
             $ticket_resolution_deadline = empty($ticket['resolution_deadline']) ? null : $ticket['resolution_deadline'];
 
@@ -1955,29 +1955,29 @@ class MailController extends Controller
                 $helpd = new HelpdeskController();
                 $slaPlan = $helpd->getTicketSlaPlan($tckt[0]['values']['id']);
                 $sla = $slaPlan['title'];
-                
+
                 if($sla !== HelpdeskController::NOSLAPLAN) {
                     $sla_from = $helpd->getSlaDeadlineFrom($tckt[0]['values']['id']);
-                    
+
                     if(!empty( $ticket_reply_deadline ) && !empty( $ticket_resolution_deadline ) ) {
                         if( $ticket_resolution_deadline != 'cleared'){
                             $res = Carbon::parse( $ticket_resolution_deadline );
                         }
-                        
+
                         $rep = Carbon::parse($sla_from[1]);
                     } else {
-                        
+
                         if($ticket_resolution_deadline != 'cleared'){
 
                             $date = new \DateTime($tckt[0]['values']['created_at']);
-                            $date->setTimezone(new \DateTimeZone($tm_name));                            
+                            $date->setTimezone(new \DateTimeZone($tm_name));
                             $res = Carbon::parse( $date->format('Y-m-d H:i:s') );
 
                             $dt = explode('.', $slaPlan['due_deadline']);
                             $res->addHours($dt[0]);
                             if(array_key_exists(1, $dt)) $res->addMinutes($dt[1]);
                         }
-                        
+
                         $date = new \DateTime($sla_from[0] . '+00');
                         $date->setTimezone(new \DateTimeZone($tm_name));
                         $rep = Carbon::parse( $date->format('Y-m-d H:i:s') );
@@ -1987,23 +1987,23 @@ class MailController extends Controller
                     }
                 }
             }
-            
-            
+
+
 
             if($ticket_reply_deadline == null) {
-                
+
                 $dd = new Carbon( now(), $tm_name);
-                
+
                 $currentDate =strtotime( $dd );
                 $futureDate =strtotime( $rep );
 
                 $diff = $this->getDiff($futureDate , $currentDate);
-                
+
                 if( str_contains($diff[0] , '-') ) {
                     $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                     $rep = '<span style="color: red  !important">' . $rep->format( $fr ) . ' (Overdue)' . '</span>';
                 }else{
-                          
+
                     $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                     $rep = $rep->format( $fr ) . ' ('.$diff[0].')';
 
@@ -2016,41 +2016,41 @@ class MailController extends Controller
             }else{
 
                 if($ticket_reply_deadline != 'cleared') {
-                    
+
                     $rep_date = Carbon::parse($ticket_reply_deadline);
 
 
                     $a = strtotime( new Carbon( now(), $tm_name) );
                     $b = strtotime($rep_date);
                     $remain = $b - $a;
-                    
+
                     $diff = $this->getDiff($b , $a);
 
                     if(str_contains($diff[0], '-')) {
-                        
+
                         $rpd = Carbon::parse($ticket_reply_deadline);
 
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                         $rep = '<span style="color:red !important">'. $rpd->format( $fr ) .' (Overdue) </span>';
-                        
+
                         if(str_contains($template, 'Reply due:')) {
-    
+
                             $title = '<span style="color: red !important"> Reply due: </span>';
                             $template = str_replace('Reply due:', $title , $template);
                         }
-                        
-                        
+
+
                     }else{
-                        
-                        
+
+
                         $dd = new Carbon( now() , $tm_name);
                         $ab =  $dd->format($this->convertFormat($tp_date_format) . ' h:i a');
 
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                         $rep = $rep_date->format( $fr ) . ' ('.$diff[0].')' ;
-                        
+
                         if(str_contains($template, 'Reply due:')) {
-    
+
                             $title = '<span style="color:'.$diff[1].' !important"> Reply due: </span>';
                             $template = str_replace('Reply due:', $title , $template);
                         }
@@ -2059,18 +2059,18 @@ class MailController extends Controller
                 }else{
                     $rep = '';
                     $template = str_replace('Reply due:', $rep, $template);
-                } 
+                }
             }
 
 
             if($ticket_resolution_deadline == null) {
                 $dd = new Carbon( now(), $tm_name);
-                
+
                 $currentDate = strtotime( $dd );
                 $futureDate = strtotime( $res );
-                
+
                 $diff = $this->getDiff($futureDate , $currentDate);
-                
+
                 if( str_contains($diff[0] , '-') ) {
                     $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                     $res = '<span style="color: red  !important">' . $res->format( $fr ) . ' (Overdue)' . '</span>';
@@ -2086,29 +2086,29 @@ class MailController extends Controller
             }else{
 
                 if( $ticket_resolution_deadline != 'cleared') {
-                    
+
                     $res_date = Carbon::parse( $ticket_resolution_deadline );
-                    
-                    
+
+
                     $a = strtotime( new Carbon( now(), $tm_name) );
                     $b = strtotime($res_date);
                     $remain = $b - $a;
-                    
+
                     $diff = $this->getDiff($b , $a);
-                    
-                    
+
+
                     if(str_contains($diff[0], '-')) {
-                        
+
 
                         $rd = Carbon::parse( $ticket_resolution_deadline );
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
                         $res = '<span style="color:red !important">'. $rd->format( $fr ) .' (Overdue) </span>';
-                        
+
                         if(str_contains($template, 'Resolution due:')) {
                             $title = '<span style="color:red !important"> Resolution due: </span>';
                             $template = str_replace('Resolution due:', $title , $template);
-                        } 
-                        
+                        }
+
                     }else{
 
                         $dd = new Carbon( now() , $tm_name);
@@ -2116,21 +2116,21 @@ class MailController extends Controller
 
                         // $diff = $this->formatDateTime( $ab  , $ticket_resolution_deadline );
                         $fr = $this->convertFormat($tp_date_format) . ' h:i a';
-            
+
                         $res = $res_date->format( $fr ) . ' ('.$diff[0].')';
-                        
+
                         if(str_contains($template, 'Resolution due:')) {
                             $title = '<span style="color:'.$diff[1].' !important"> Resolution due: </span>';
                             $template = str_replace('Resolution due:', $title , $template);
-                        }    
+                        }
                     }
-                    
+
                 }else{
                     $res = '';
-                    $template = str_replace('Resolution due:', $res, $template); 
+                    $template = str_replace('Resolution due:', $res, $template);
                 }
             }
-            
+
 
 
             $template = str_replace('{Ticket-SLA}', $sla, $template);
@@ -2142,7 +2142,7 @@ class MailController extends Controller
 
         if($action_name == 'Subject updated') {
             if( str_contains($template, '{Initial-Request-Updated}') ) {
-                $template = str_replace('{Initial-Request-Updated}', '<hr>' . '<p>Ticket Subject Updated</p>' , $template);    
+                $template = str_replace('{Initial-Request-Updated}', '<hr>' . '<p>Ticket Subject Updated</p>' , $template);
             }
         }else{
             $template = str_replace('{Initial-Request-Updated}', '' , $template);
@@ -2156,7 +2156,7 @@ class MailController extends Controller
 
         return html_entity_decode($template);
 
-        
+
     }
 
 
@@ -2165,7 +2165,7 @@ class MailController extends Controller
         $end    = new Carbon($date2);
 
         $days = (int) $start->diff($end)->format('%D');
-        
+
         if($days == 0  || $days < 0) {
             $days = '';
         }else{
@@ -2181,7 +2181,7 @@ class MailController extends Controller
 
 
         $color = '';
-        if ( str_contains( $remainTime , 'd') ) { 
+        if ( str_contains( $remainTime , 'd') ) {
             $color = '#8BB467';
         }else if( str_contains( $remainTime , 'h') ) {
             $color = '#5c83b4';
@@ -2203,7 +2203,7 @@ class MailController extends Controller
         // $seconds=($difference % 60);
         // $days=($hours/24);
         // $hours=($hours % 24);
-        // $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd '; 
+        // $days = $days < 0 ? ceil($days) . 'd ' : floor($days) > 'd ';
         // $remainTime = $days . $hours . 'h ' . $minutes . 'm ' . $seconds . 's';
         $diff = ($futureDate- $currentDate)  - 1;
         // return dd($diff);
@@ -2233,20 +2233,20 @@ class MailController extends Controller
         }
 
         $remainTime = $days . $hours . $minutes . $seconds . 's';
-        
+
         if($futureDate < $currentDate) {
             $remainTime = '-';
         }
-        
+
         $color = '';
-        if ( str_contains( $remainTime , 'd') ) { 
+        if ( str_contains( $remainTime , 'd') ) {
             $color = '#8BB467';
         }else if( str_contains( $remainTime , 'h') ) {
             $color = '#5c83b4';
         }else if( str_contains( $remainTime , 'm') ) {
             $color = '#ff8c5a';
         }
-        
+
         $time[0] = '<span style="color:'. $color .'">' . $remainTime .  '</span>';
         $time[1] = $color;
         return $time;
@@ -2266,56 +2266,56 @@ class MailController extends Controller
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-manager';
             $link = '<a href="'.$url.'"> '. $url .'  </a>';
             $template = str_replace('{Ticket-Manager}', $link , $template);
-        }            
-                  
+        }
+
         foreach ($data_list as $key => $data) {
 
             if($data['module'] == 'Customer') {
-                
+
                 if(str_contains($template, '{Customer-ID}')) {
                     $template = str_replace('{Customer-ID}', $data['values']['id'], $template);
                 }
-                
+
                 if(str_contains($template, '{Customer-Email}')) {
                     $template = str_replace('{Customer-Email}', $data['values']['email'] , $template);
                 }
-                
+
                 if(str_contains($template, '{Site-Link}')) {
                     $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/dev';
                     $template = str_replace('{Site-Link}', $url , $template);
                 }
-                
+
                 if(array_key_exists("company_id" ,  $data['values'])) {
 
                     if(str_contains($template, '{Company-Name}')) {
-                            
+
                         if(!empty($data['values']['company_id'])){
-                            
+
                             $company = DB::table("companies")->where('id' , $data['values']['company_id'])->first();
-                            
+
                             if($company) {
                                 $template = str_replace('{Company-Name}', $company->name , $template);
                             }else{
-                               $template = str_replace('Company Name:', '' , $template); 
-                               $template = str_replace('{Company-Name}', '' , $template); 
+                               $template = str_replace('Company Name:', '' , $template);
+                               $template = str_replace('{Company-Name}', '' , $template);
                             }
-                            
+
                         }else{
                             $template = str_replace('Company Name:', '' , $template);
-                            $template = str_replace('{Company-Name}', '' , $template); 
+                            $template = str_replace('{Company-Name}', '' , $template);
                         }
                     }
                 }else{
                     $template = str_replace('Company Name:', '' , $template);
-                    $template = str_replace('{Company-Name}', '' , $template); 
+                    $template = str_replace('{Company-Name}', '' , $template);
                 }
-                    
+
                 if($user_type == 0) {
-                    
+
                     if(str_contains($template, '{Customer-Name}')) {
                         $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
                     }
-                    
+
                     if(str_contains($template, '{Customer-Phone}')) {
 
                         if(!empty($data['values']['phone'])) {
@@ -2324,9 +2324,9 @@ class MailController extends Controller
                             $template = str_replace('Phone Number:', '' , $template);
                         }
 
-                        
+
                     }
-    
+
                 }else{
                     if(str_contains($template, '{Customer-Name}')) {
                         $template = str_replace('{Customer-Name}', $data['values']['name'], $template);
@@ -2337,7 +2337,7 @@ class MailController extends Controller
                         }else{
                             $template = str_replace('Phone Number:', '' , $template);
                         }
-                    }                    
+                    }
                 }
 
             } else if($data['module'] == 'Ticket') {
@@ -2348,16 +2348,16 @@ class MailController extends Controller
                 if(str_contains($template, '{Initial-Request}')) {
                     if(array_key_exists('ticket_detail', $data['values'])) {
                         $bbcode = new BBCode();
-                        
-                        $content = $data['values']['ticket_detail']; 
+
+                        $content = $data['values']['ticket_detail'];
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*){2,}}i", "<br /><br />", $content);
                         $content=preg_replace("{(<br[\\s]*(>|\/>)\s*)}i", "<br />", $content);
                         if($data['values']['tkt_crt_type'] == 'cron'){
 
-                            // $content = preg_replace("/<img[^>]+\>/i", " ", $content); 
+                            // $content = preg_replace("/<img[^>]+\>/i", " ", $content);
                             $content = str_replace("<o:p>","",$content);
                             $content = str_replace("</o:p>","",$content);
-                            
+
                             $doc = new \DOMDocument();
                             // dd($content);
                             libxml_use_internal_errors(true);
@@ -2366,7 +2366,7 @@ class MailController extends Controller
                             $tags = $doc->getElementsByTagName('img');
                             $attaches = explode(",",$data['values']['embed_attachments']);
                             $atch_count = 0;
-                           
+
                             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets/'.$data['values']['id'].'/';
                             if($data['values']['embed_attachments'] != NULL){
                                 if($tags){
@@ -2378,13 +2378,13 @@ class MailController extends Controller
                                             $tag->setAttribute('style', 'width:100%;');
                                             $atch_count++;
                                         }
-                                        
+
                                     }
                                     $content = $doc->saveHTML();
                                 }
                             }
-                            
-                            
+
+
                         }
                         $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
@@ -2405,16 +2405,16 @@ class MailController extends Controller
                     $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/tickets/customer-ticket-details' . '/' . $data['values']['coustom_id'];
                     $template = str_replace('{Customer-Ticket-URL}', $url , $template);
                 }
-                
+
                 // ends here
 
-                
+
                 if(str_contains($template, '{Create-Ticket-Button}')) {
                     $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/create-ticket' .'/' . $data['values']['coustom_id'];
                     $link = '<a href="'.$url.'"> Create Ticket </a>';
                     $template = str_replace('{Create-Ticket-Button}', $link, $template);
                 }
-        
+
 
                 // customer ticket url
                 if(str_contains($template, '{Customer-URL}')) {
@@ -2424,7 +2424,7 @@ class MailController extends Controller
 
 
                 if(str_contains($template, '{Ticket-Status-Name}')) {
-                    $status = TicketStatus::where('id' , $data['values']['status'])->first();    
+                    $status = TicketStatus::where('id' , $data['values']['status'])->first();
                     $status_badge = '<span class="badge" style="background:'.$status['color'].'; padding: 2px 12px; border-radius: 20px; color: white; font-size: 12px;"> '. $status['name'] .'</span>';
 
                     $template = str_replace('{Ticket-Status-Name}', $status_badge, $template);
@@ -2436,7 +2436,7 @@ class MailController extends Controller
 
                     $template = str_replace('{Ticket-Priority-Name}', $priority_badge, $template);
                 }
-                
+
 
                 if(str_contains($template, '{Ticket-Attachments}') && !empty($data['values']['attachments'])) {
                     $content = '';
@@ -2465,13 +2465,13 @@ class MailController extends Controller
                             </div>';
                         }
                     }
-        
+
                     if(!empty($content)) {
                         $template = str_replace('{Ticket-Attachments}', $content, $template);
                     }
                 }
             } else if($data['module'] == 'User') {
-                
+
                 if(str_contains($template, '{User-Name}')) {
                     $template = str_replace('{User-Name}', $data['values']['name'], $template);
                 }
@@ -2502,7 +2502,7 @@ class MailController extends Controller
             if(!is_array($data['values'])) $data['values'] = (array) $data['values'];
 
 
-            // timezone 
+            // timezone
             $timezone = DB::table("sys_settings")->where('sys_key','sys_timezone')->first();
             $tm_name = '';
             if($timezone) {
@@ -2513,16 +2513,16 @@ class MailController extends Controller
 
             $system_format = DB::table("sys_settings")->where('sys_key','sys_dt_frmt')->first();
             $date_format = empty($system_format) ? 'DD-MM-YYYY' :  $system_format->sys_value;
-            
-            
-                
+
+
+
             foreach ($data['values'] as $key => $value) {
                 // echo "<pre>$data['module'] : "; print_r($value); echo "<br><br>";
                 $k = str_replace('_', ' ', $key);
                 $k = ucwords($k);
                 $k = str_replace(' ', '-', $k);
-    
-         
+
+
                 if(!is_array($value) && !is_object($value) && !empty($value)) {
 
 
@@ -2530,62 +2530,62 @@ class MailController extends Controller
                         $tkt =Tickets::where('id' , $data['values']['id'] )->first();
                     //  dd('masachusa');
                         // date_default_timezone_set($tm_name);
-                        
-                        $fr = $this->convertFormat($date_format) . ' g:i a';
-                        
-                        $tkt_created_at = new \DateTime( $data['values']['created_at'] );
-                        $tkt_created_at->setTimezone(new \DateTimeZone($tm_name));                            
-                        $create_date = Carbon::parse( $tkt_created_at->format( $fr ) );
-                        
 
-                        
+                        $fr = $this->convertFormat($date_format) . ' g:i a';
+
+                        $tkt_created_at = new \DateTime( $data['values']['created_at'] );
+                        $tkt_created_at->setTimezone(new \DateTimeZone($tm_name));
+                        $create_date = Carbon::parse( $tkt_created_at->format( $fr ) );
+
+
+
                         $tkt_updated_at = new \DateTime( $data['values']['updated_at'] );
-                        $tkt_updated_at->setTimezone(new \DateTimeZone($tm_name));                            
+                        $tkt_updated_at->setTimezone(new \DateTimeZone($tm_name));
                         $update_date = Carbon::parse( $tkt_updated_at->format( $fr ) );
-                        
-                        
+
+
                         if($k == 'Created-At') {
                             $value = $create_date->format( $fr );
                         }
                         if($k == 'Updated-At') {
                             $value = $update_date->format( $fr );
                         }
-                        
+
                         $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
                     }
 
                 }
             }
-        
+
         }
     }
 
     function convertFormat($format) {
 
         $replacements = [
-            'DD'   => 'd', 
-            'ddd'  => 'D', 
-            'D'    => 'j', 
-            'dddd' => 'l', 
-            'E'    => 'N', 
+            'DD'   => 'd',
+            'ddd'  => 'D',
+            'D'    => 'j',
+            'dddd' => 'l',
+            'E'    => 'N',
             'o'    => 'S',
-            'e'    => 'w', 
-            'DDD'  => 'z', 
-            'W'    => 'W', 
-            'MMMM' => 'F', 
-            'MM'   => 'm', 
+            'e'    => 'w',
+            'DDD'  => 'z',
+            'W'    => 'W',
+            'MMMM' => 'F',
+            'MM'   => 'm',
             'MMM'  => 'M',
-            'M'    => 'n', 
-            'YYYY' => 'Y', 
-            'YY'   => 'y', 
-            'a'    => 'a', 
-            'A'    => 'A', 
+            'M'    => 'n',
+            'YYYY' => 'Y',
+            'YY'   => 'y',
+            'a'    => 'a',
+            'A'    => 'A',
             'h'    => 'g',
-            'H'    => 'G', 
-            'hh'   => 'h', 
-            'HH'   => 'H', 
-            'mm'   => 'i', 
-            'ss'   => 's', 
+            'H'    => 'G',
+            'hh'   => 'h',
+            'HH'   => 'H',
+            'mm'   => 'i',
+            'ss'   => 's',
             'SSS'  => 'u',
             'zz'   => 'e', 'X'    => 'U',
         ];
@@ -2596,7 +2596,7 @@ class MailController extends Controller
 
     public function getAssetDetails_SC($asset) {
         $form = AssetForms::with('fields')->findOrFail($asset['asset_forms_id'])->toArray();
-        
+
         $records = DB::table('asset_records_'.$form['id'])->where('asset_id', $asset['id'])->get()->toArray();
 
         $recs = '';
@@ -2614,7 +2614,7 @@ class MailController extends Controller
                 <tbody>
                     <tr>
                         <td>
-                        Asset ID :&nbsp;'.$asset['id'].' 
+                        Asset ID :&nbsp;'.$asset['id'].'
                         </td>
                     </tr>
                     <tr>

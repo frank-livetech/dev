@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\PayrollManager;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use App\User;
 use App\Models\{StaffAttendance,Tasks,SystemSetting,Notification,Activitylog, Tickets, TicketStatus};
@@ -12,6 +11,7 @@ use Carbon\Carbon;
 use DB;
 use Session;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use SystemSettings;
 use Illuminate\Support\Str;
 
@@ -23,11 +23,11 @@ class PayrollController extends Controller {
 
     public function clockin() {
 
-        // return Tickets::where([ 
-        //     ['assigned_to', auth()->id()], 
+        // return Tickets::where([
+        //     ['assigned_to', auth()->id()],
         //     ['is_deleted', 0] ,
         //     ['is_overdue', 0] ,
-        //     ['trashed', 0] 
+        //     ['trashed', 0]
         // ])->whereDate('created_at', Carbon::today())->get();
 
         $currentDate = Carbon::now();
@@ -51,7 +51,7 @@ class PayrollController extends Controller {
             $staffData->clocked_out_by = 'user';
             $staffData->save();
 
-            // after clockout again clock in 
+            // after clockout again clock in
             StaffAttendance::create($clock_in_arr);
 
         }else{
@@ -81,10 +81,10 @@ class PayrollController extends Controller {
 
             if(!empty($template)) {
 
-                $detail = $value['email'] != auth()->user()->email ? 
-                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked in' : 
+                $detail = $value['email'] != auth()->user()->email ?
+                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked in' :
                     'Hey, you just clocked in into LT-CMS, here are the details';
-                
+
                 $temp = $this->templateReplaceShortCodes($template->template_html ,$detail, 'clockin' , 0);
                 $mail = new MailController();
                 $mail->sendMail( auth()->user()->name . ' Clock in' , $temp , 'system_notification@mylive-tech.com', $value['email'] , $value['name']);
@@ -109,37 +109,37 @@ class PayrollController extends Controller {
                 $clock_in->clock_out = Carbon::now();
                 $startTime = Carbon::parse($clock_in->clock_in);
                 $totalDuration = (array) $clock_in->clock_out->diff($startTime);
-        
+
                 $clock_in->hours_worked = sprintf("%02s:%02s:%02s", ($totalDuration['d']*24)+$totalDuration['h'], $totalDuration['i'], $totalDuration['s']);
                 $clock_in->clocked_out_by = 'user';
-        
+
                 $clock_in->save();
-    
+
                 Session::put('clockin',0);
                 Session::put('clockin_time', null );
                 Session::put('staff_data', null );
-                
+
                 // $get_tsk_lst = Tasks::where('task_status','default')->where('assign_to', \Auth::user()->id)->get();
-    
+
                 $template = DB::table("templates")->where('code','staff_clockin')->first();
-    
+
                 // foreach($get_tsk_lst as $task){
-        
-                //     $strt_time =  $task->started_at; 
+
+                //     $strt_time =  $task->started_at;
                 //     $wrk_time = $task->worked_time;
-              
+
                 //     $end    = Carbon::now();
                 //     $startTime = Carbon::parse($strt_time);
                 //     $endTime = Carbon::parse($end);
-              
+
                 //     $total_sec = $startTime->diffInSeconds($endTime)  + $wrk_time;
-        
+
                 //     $task->task_status = 'danger';
                 //     $task->worked_time = $total_sec;
                 //     $task->save();
-                    
+
                 // }
-        
+
                 $notify = new NotifyController();
                 $users_list = User::where('user_type','=',1)->where('is_deleted',0)->get();
                 foreach ($users_list as $key => $value) {
@@ -152,22 +152,22 @@ class PayrollController extends Controller {
                     $icon = 'ti-calendar';
                     $class = 'btn-success';
                     $desc = 'Clock Out by '.\Auth::user()->name;
-                    
+
                     $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                     if(!empty($template)) {
-    
-                        $detail = $value['email'] != auth()->user()->email ? 
-                        'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked out' : 
+
+                        $detail = $value['email'] != auth()->user()->email ?
+                        'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just clocked out' :
                         'Hey, you just clocked out from LT-CMS, here are the details';
-                        
+
                         $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
                         $mail = new MailController();
                         $mail->sendMail( auth()->user()->name .' Clock out' , $temp , 'system_notification@mylive-tech.com', $value['email'], $value['name']);
                     }
                 }
-        
+
                 $staff_att_data = $this->getAllStaffData();
-    
+
                 $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked;
                 $response['status_code'] = 200;
                 $response['success'] = true;
@@ -175,7 +175,7 @@ class PayrollController extends Controller {
                 $response['clock_out_time'] = Carbon::now();
                 $response['worked_time'] = $clock_in->hours_worked;
                 $response['staff_att_data'] = $staff_att_data;
-        
+
                 return response()->json($response);
 
             }else{
@@ -208,7 +208,7 @@ class PayrollController extends Controller {
                 $staffData->name = $user->name;
                 array_push($staff_att_data,$staffData);
             }
-            
+
         }
 
         return $staff_att_data;
@@ -238,6 +238,7 @@ class PayrollController extends Controller {
             $template = str_replace('{current_time}', $time . $todayDateTime->format('h:i A') , $template);
         }
 
+
         if($type == 'clockin') {
 
             if(str_contains($template, '{Worked_hours}')) {
@@ -245,16 +246,16 @@ class PayrollController extends Controller {
                 $template = str_replace('Worked hours:','', $template);
             }
 
-            
+
             if(str_contains($template, '{Flagged-Tickets}')) {
                 $closeStatus = TicketStatus::where('slug','closed')->first();
-            
-                $flaggedTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $flaggedTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
                     ['is_flagged', 1] ,
-                    ['status','!=', $closeStatus->id], 
+                    ['status','!=', $closeStatus->id],
 
                 ])->get();
 
@@ -276,13 +277,13 @@ class PayrollController extends Controller {
 
             if(str_contains($template, '{Overdue-Tickets}')) {
                 $closeStatus = TicketStatus::where('slug','closed')->first();
-                
-                $overdueTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $overdueTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['is_overdue', 1] ,
                     ['trashed', 0] ,
-                    ['status','!=', $closeStatus->id], 
+                    ['status','!=', $closeStatus->id],
 
                 ])->get();
 
@@ -299,18 +300,18 @@ class PayrollController extends Controller {
                 }
 
                 $newTicket .='<p>Total Count '. count($overdueTickets).'</p>';
-                
+
                 $template = str_replace('{Overdue-Tickets}', count($overdueTickets) > 0 ? $newTicket : '' , $template);
             }
 
             if(str_contains($template, '{UnAssigned-Tickets}')) {
                 $closeStatus = TicketStatus::where('slug','closed')->first();
-            
-                $UnassginedTickets = Tickets::where([ 
-                    ['assigned_to', null], 
+
+                $UnassginedTickets = Tickets::where([
+                    ['assigned_to', null],
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['status','!=', $closeStatus->id], 
+                    ['status','!=', $closeStatus->id],
 
                 ])->get();
 
@@ -331,12 +332,12 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{New-Tickets}')) {
-                
-                $todayTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $todayTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['is_overdue', 0] ,
-                    ['trashed', 0] 
+                    ['trashed', 0]
                 ])->whereDate('created_at', Carbon::today())->get();
 
                 $newTicket ='<strong> New Tickets </strong>';
@@ -356,13 +357,13 @@ class PayrollController extends Controller {
 
             if(str_contains($template, '{My-Tickets}')) {
                 $closeStatus = TicketStatus::where('slug','closed')->first();
-                
-                $todayTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $todayTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['is_overdue', 0] ,
                     ['trashed', 0] ,
-                    ['status','!=', $closeStatus->id], 
+                    ['status','!=', $closeStatus->id],
                 ])->get();
 
                 $newTicket ='<strong> My Tickets </strong>';
@@ -387,19 +388,19 @@ class PayrollController extends Controller {
         }else{
             if(str_contains($template, '{Worked_hours}')) {
                 $template = str_replace('{Worked_hours}', $totalWorkingHour , $template);
-            } 
+            }
             $template = str_replace('{Overdue-Tickets}', '' , $template);
             $template = str_replace('{UnAssigned-Tickets}', '' , $template);
 
             if(str_contains($template, '{Flagged-Tickets}')) {
                 $closeStatus = TicketStatus::where('slug','closed')->first();
-                
-                $todayFlaggedTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $todayFlaggedTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
                     ['is_flagged', 1] ,
-                    ['status','!=', $closeStatus->id], 
+                    ['status','!=', $closeStatus->id],
 
                 ])->get();
 
@@ -419,18 +420,18 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{Update-Tickets}')) {
-            
+
                 $closeStatus = TicketStatus::where('slug','closed')->first();
-                
-                $todayUpdatedTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $todayUpdatedTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['status','!=', $closeStatus->id], 
+                    ['status','!=', $closeStatus->id],
                 ])->where('updated_by',auth()->id())->whereDate('updated_at', Carbon::today())->get();
-                
+
                 $newTicket ='<strong> Updated Tickets </strong>';
-                
+
                 foreach($todayUpdatedTickets as $tk) {
                     $tkUrl = request()->root() . '/ticket-details' .'/'.$tk->coustom_id;
                     $newTicket .= '
@@ -444,16 +445,16 @@ class PayrollController extends Controller {
                 $template = str_replace('{Update-Tickets}', count($todayUpdatedTickets) > 0 ? $newTicket : '' , $template);
 
             }
-            
+
             if(str_contains($template, '{Closed-Tickets}')) {
 
                 $closeStatus = TicketStatus::where('slug','closed')->first();
-                
-                $todayClosedTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $todayClosedTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['trashed', 0] ,
-                    ['status', $closeStatus->id], 
+                    ['status', $closeStatus->id],
                 ])->whereDate('updated_at', Carbon::today())->get();
 
                 $newTicket ='<strong> Closed Tickets </strong>';
@@ -472,12 +473,12 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{New-Tickets}')) {
-                
-                $todayTickets = Tickets::where([ 
-                    ['assigned_to', auth()->id()], 
+
+                $todayTickets = Tickets::where([
+                    ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['is_overdue', 0] ,
-                    ['trashed', 0] 
+                    ['trashed', 0]
                 ])->whereDate('created_at', Carbon::today())->get();
 
                 $newTicket ='<strong> New Tickets </strong>';
@@ -497,23 +498,27 @@ class PayrollController extends Controller {
 
             if(str_contains($template, '{ActivityLogs}')) {
 
-                $logs = Activitylog::where('created_by', auth()->id() )->whereDate('created_at', Carbon::today())->get();
+                $clock = StaffAttendance::where('user_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();
+                $logs = Activitylog::where('created_by', auth()->id())
+                                    ->whereBetween('created_at',[$clock->clock_in,$clock->clock_out])
+                                    ->get();
+
 
                 $logList ='<strong> Activity Logs </strong>';
 
                 foreach($logs as $log) {
                     $vl = $log->action_perform;
-                    $dd = new Carbon( $log['created_at'] , timeZone() ); 
+                    $dd = new Carbon( $log['created_at'] , timeZone() );
                     if(str_contains($vl, 'by')) {
                         $logList .= '<p> '. Str::before($vl ,'by') .' - '. Carbon::parse( $dd->format('g:i') )->format('g:i A') .' </p>';
                     }else if(str_contains($vl, 'By')) {
                         $logList .= '<p> '. Str::before($vl ,'By') .' - '. Carbon::parse( $dd->format('g:i') )->format('g:i A') .' </p>';
                     }
-                    
-                } 
+
+                }
 
                 $logList .='<p>Total Count '. count($logs).'</p>';
-                
+
                 $template = str_replace('{ActivityLogs}', count($logs) > 0 ? $logList : '' , $template);
             }
             $template = str_replace('{My-Tickets}', '' , $template);
@@ -524,36 +529,36 @@ class PayrollController extends Controller {
     }
 
     function converDateTime($date) {
-        $dd = new Carbon( $date , timeZone() ); 
+        $dd = new Carbon( $date , timeZone() );
         return $dd->format( system_date_format() . ' g:i A' );
     }
 
     function convertFormat($format) {
 
         $replacements = [
-            'DD'   => 'd', 
-            'ddd'  => 'D', 
-            'D'    => 'j', 
-            'dddd' => 'l', 
-            'E'    => 'N', 
+            'DD'   => 'd',
+            'ddd'  => 'D',
+            'D'    => 'j',
+            'dddd' => 'l',
+            'E'    => 'N',
             'o'    => 'S',
-            'e'    => 'w', 
-            'DDD'  => 'z', 
-            'W'    => 'W', 
-            'MMMM' => 'F', 
-            'MM'   => 'm', 
+            'e'    => 'w',
+            'DDD'  => 'z',
+            'W'    => 'W',
+            'MMMM' => 'F',
+            'MM'   => 'm',
             'MMM'  => 'M',
-            'M'    => 'n', 
-            'YYYY' => 'Y', 
-            'YY'   => 'y', 
-            'a'    => 'a', 
-            'A'    => 'A', 
+            'M'    => 'n',
+            'YYYY' => 'Y',
+            'YY'   => 'y',
+            'a'    => 'a',
+            'A'    => 'A',
             'h'    => 'g',
-            'H'    => 'G', 
-            'hh'   => 'h', 
-            'HH'   => 'H', 
-            'mm'   => 'i', 
-            'ss'   => 's', 
+            'H'    => 'G',
+            'hh'   => 'h',
+            'HH'   => 'H',
+            'mm'   => 'i',
+            'ss'   => 's',
             'SSS'  => 'u',
             'zz'   => 'e', 'X'    => 'U',
         ];
@@ -573,7 +578,7 @@ class PayrollController extends Controller {
             if($request->type == 'yes') {
                 $this->clockin();
             }
-    
+
             session()->put('clockin', $request->type);
             session()->put('clockin_time', now() );
 
@@ -581,8 +586,8 @@ class PayrollController extends Controller {
         }
 
         return response()->json([
-            "status" => 200 , 
-            "success" => true , 
+            "status" => 200 ,
+            "success" => true ,
             "message" => $message,
         ]);
     }
@@ -598,7 +603,7 @@ class PayrollController extends Controller {
                 $totalDuration = (array) $clockout_time->diff($startTime);
 
                 if($totalDuration['h'] > 8 || $totalDuration['d'] > 0 || $totalDuration['m'] > 0 || $totalDuration['y'] > 0) {
-                    
+
                     $value->clock_out = $clockout_time;
                     $value->hours_worked = sprintf("%02s:%02s:%02s", ($totalDuration['d']*24)+$totalDuration['h'], $totalDuration['i'], $totalDuration['s']);
                     $value->clocked_out_by = 'cron';
@@ -607,26 +612,26 @@ class PayrollController extends Controller {
                     $user = User::where('id', $value->user_id)->first();
 
                     echo 'Clocked out "'.$user->name.'" after '.$value->hours_worked;
-                    
+
                     $get_tsk_lst = Tasks::where('task_status','default')->where('assign_to', $value->user_id)->get();
-                    
+
                     foreach($get_tsk_lst as $task){
-            
-                        $strt_time =  $task->started_at; 
+
+                        $strt_time =  $task->started_at;
                         $wrk_time = $task->worked_time;
-                  
+
                         $end    = Carbon::now();
                         $startTime = Carbon::parse($strt_time);
                         $endTime = Carbon::parse($end);
-                  
+
                         $total_sec = $startTime->diffInSeconds($endTime)  + $wrk_time;
-            
+
                         $task->task_status = 'danger';
                         $task->worked_time = $total_sec;
                         $task->save();
-                        
+
                     }
-                
+
                 }
             }
         } catch(Exception $e) {
@@ -644,7 +649,7 @@ class PayrollController extends Controller {
                 $startTime = Carbon::parse($value->clock_in);
                 $totalDuration = (array) $clockout_time->diff($startTime);
                 $workingTaskCount = Tasks::where('is_deleted',0)->where('assign_to', $value->user_id)->where('task_status', 'default')->get()->count();
-  
+
                 if($workingTaskCount  < 1) {
                     $value->clock_out = $clockout_time;
                     $value->hours_worked = sprintf("%02s:%02s:%02s", ($totalDuration['d']*24)+$totalDuration['h'], $totalDuration['i'], $totalDuration['s']);
@@ -688,7 +693,7 @@ class PayrollController extends Controller {
             return response()->json($response);
         }
     }
-    
+
     public function update_work_hours(Request $request) {
         try {
             $data = StaffAttendance::findOrFail($request->id);
