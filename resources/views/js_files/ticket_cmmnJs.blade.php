@@ -6,6 +6,7 @@
     var usrtimeZone = $("#usrtimeZone").val();
     let ticketDataTableLength = 10;
     let ticket_id_arr = [];
+    var check_ticket = {};
 
     function initializeTicketTable(p_name = '') {
         page_name = p_name;
@@ -137,12 +138,23 @@
         });
     }
 
+
     function selectSingle(id) {
+
         let find = ticket_id_arr.find(item => item.id == id);
         let findIndex = ticket_id_arr.findIndex(item => item.id == id);
 
         let chck = $("#select_single_" + id).prop('checked');
+
         $("#select_single_" + id).toggleClass('chkd');
+
+        if(chck){
+            check_ticket[id] = id
+        }else if(!chck){
+            delete check_ticket[id]
+        }
+        console.log(check_ticket)
+
 
         let selectedCount = $('.total_tickets').text();
 
