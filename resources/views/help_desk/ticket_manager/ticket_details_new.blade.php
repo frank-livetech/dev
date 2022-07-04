@@ -437,6 +437,9 @@
                 position: relative;
                 right: 53px;
             }
+            .frt-width{
+                width: unset !important;
+            }
 
 
         }
