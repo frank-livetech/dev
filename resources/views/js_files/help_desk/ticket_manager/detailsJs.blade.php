@@ -3147,11 +3147,11 @@ function executeFollowUps(check_followup) {
             }
 
             if(item.follow_up_notes_type == 'Ticket') {
-                n_type = '<i class="fas fa-clipboard-list"></i>';
+                n_type = '<i class="fas fa-clipboard-list" data-bs-toggle="tooltip" data-placement="top" title="Ticket"></i>';
             }else if(item.follow_up_notes_type == 'User') {
-                n_type = '<i class="fas fa-user"></i>';
+                n_type = '<i class="fas fa-user" data-bs-toggle="tooltip" data-placement="top" title="User"></i>';
             }else{
-                n_type = '<i class="far fa-building"></i>';
+                n_type = '<i class="far fa-building" data-bs-toggle="tooltip" data-placement="top" title="Organization"></i>';
             }
 
 
@@ -3953,14 +3953,14 @@ function get_ticket_notes() {
 
                     if(notes[i].type == 'Ticket') {
 
-                        type = '<i class="fas fa-clipboard-list"></i>';
+                        type = '<i class="fas fa-clipboard-list" data-bs-toggle="tooltip" data-placement="top" title="Ticket"></i>';
 
                     }else if(notes[i].type == 'User') {
 
-                        type = '<i class="fas fa-user"></i>';
+                        type = '<i class="fas fa-user" data-bs-toggle="tooltip" data-placement="top" title="User"></i>';
 
                     }else{
-                        type = '<i class="far fa-building"></i>';
+                        type = '<i class="far fa-building" data-bs-toggle="tooltip" data-placement="top" title="Organization"></i>';
                     }
 
                     var user_img = ``;
