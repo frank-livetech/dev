@@ -10,7 +10,7 @@
     let customersArr = '';
 
     $(document).ready(function() {
-        
+
         let url = window.location.href;
 
         if (url.includes('asset-manager')) {
@@ -20,11 +20,11 @@
 
         assets_table_list = $('#asset-table-list').DataTable();
 
-        $("#checkAll").click(function() {
+        $("#asset-table-list").click(function() {
             $('input:checkbox.assets').not(this).prop('checked', this.checked);
         });
 
-        
+
 
         $(document).on('click', '.show-password-btn', function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
