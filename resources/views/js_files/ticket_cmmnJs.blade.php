@@ -1,5 +1,5 @@
 <script>
-    // Ticket CMMN Script Blade 
+    // Ticket CMMN Script Blade
     let tickets_table_list = '';
     let page_name = '';
     var system_date_format = $("#system_date_format").val();
@@ -83,13 +83,13 @@
 
             // show hide tkt buttons
             (chck == true ? $('.show_tkt_btns').show() : $('.show_tkt_btns').hide());
-            // 
+            //
             let totalSelectedTickets = $('#ticket-table-list tbody input[type="checkbox"]').length;
 
             let check = false;
-                  
+
             $('#ticket-table-list tbody input[type="checkbox"]').each(function() {
-                
+
                 if (chck == true) {
                     check = true;
                     $(this).prop('checked', true);
@@ -100,7 +100,7 @@
                         $('.btnDelete').removeClass('d-none');
                         $('#btnSpam').hide();
                         $('#btnMerge').hide();
-                    }else { 
+                    }else {
                         $('#btnSpam').show();
                         $('#btnMerge').show();
                         $('.btnDelete').addClass('d-none')
@@ -116,24 +116,24 @@
                         $('.btnDelete').removeClass('d-none');
                         $('#btnSpam').hide();
                         $('#btnMerge').hide();
-                    }else { 
+                    }else {
                         $('#btnSpam').show();
                         $('#btnMerge').show();
                         $('.btnDelete').addClass('d-none')
                     };
                     $('.btnDelete').addClass('d-none')
 
-                } 
+                }
             });
 
             if(check) {
                 $("input:checkbox[name=select_all]:checked").each(function() {
                     ticket_id_arr.push({'id' : $(this).val()});
-                });    
+                });
             }else{
                 ticket_id_arr = [];
             }
-            
+
         });
     }
 
@@ -150,7 +150,7 @@
             $('.btnDelete').removeClass('d-none');
             $('#btnSpam').hide();
             $('#btnMerge').hide();
-        }else { 
+        }else {
             $('#btnSpam').show();
             $('#btnMerge').show();
             $('.btnDelete').addClass('d-none')
@@ -159,9 +159,9 @@
         $('.total_selected_tkts').removeClass('d-none');
 
         if (chck == true) {
-            
+
             if(find == null) {
-                ticket_id_arr.push({'id' : id}); 
+                ticket_id_arr.push({'id' : id});
             }
 
             $('.show_tkt_btns').show()
@@ -196,9 +196,9 @@
 
         $('.drop-dpt').attr('style', 'background-color:#b0bec5;border-radius:9px;');
 
-        
+
         // if( parseInt(selectedCount) != 0) {
-            
+
         // }
     }
 
@@ -324,7 +324,7 @@
         } else {
             url = get_filteredtkt_route + '/' + dept + '/' + sts;
         }
-        
+
         $.ajax({
             type: "get",
             url: url,
@@ -336,7 +336,7 @@
                 date_formate = data.date_format;
                 // console.log(data.tickets);
                 ticketsList = data.tickets;
-                
+
                 if(get_tickets_route.includes('customer')){
                     var myArray = get_tickets_route.split("#");
                     if(myArray.length > 1){
@@ -353,8 +353,8 @@
                 }else{
                     listTickets(url_type);
                 }
-                
-                
+
+
                 if (page_name == 'tickets') ShowCalendarModel();
                 if (data.hasOwnProperty('open_ticket_count')) $('#open_ticket_count').html(data.open_ticket_count);
                 if (data.hasOwnProperty('total_tickets_count')) $('#total_tickets_count').html(data.total_tickets_count);
@@ -362,7 +362,7 @@
                 if (data.hasOwnProperty('flagged_tickets_count')) $('#flagged_tickets_count').html(data.flagged_tickets_count);
                 if (data.hasOwnProperty('unassigned_tickets_count')) $('#unassigned_tickets_count').html(data.unassigned_tickets_count);
                 if (data.hasOwnProperty('late_tickets_count')) $('#late_tickets_count').html(data.late_tickets_count);
-               
+
                 if (data.hasOwnProperty('total_tickets_count')) $('#total_tickets_count_col').html(data.total_tickets_count);
                 if (data.hasOwnProperty('my_tickets_count')) $('#my_tickets_count_col').html(data.my_tickets_count);
                 if (data.hasOwnProperty('flagged_tickets_count')) $('#flagged_tickets_count_col').html(data.flagged_tickets_count);
@@ -474,7 +474,7 @@
     }
 
     function convertDate(date) {
-        
+
         var d = new Date(date);
 
         var min = d.getMinutes();
@@ -486,7 +486,7 @@
         d.setUTCHours(d_utc);
 
         let a = d.toLocaleString("en-US" , {timeZone: "{{Session::get('timezone')}}"} );
-        
+
         // return a;
         var converted_date = moment(a).format("{{Session::get('system_date')}}" + ' ' +'hh:mm A');
         return converted_date;
@@ -495,13 +495,13 @@
     function redrawTicketsTable(ticket_arr) {
         tkt_arr = ticket_arr;
         var la_color = ``;
-        
+
         if ( $.fn.dataTable.isDataTable( '#ticket-table-list' ) ) {
             tickets_table_list.clear().draw();
         }
 
         $.each(ticket_arr, function(key, val) {
-            
+
             let prior = '<div class="text-center">' + val['priority_name'] + '</div>';
             if (val['priority_color']) {
                 prior = '<div class="text-center text-white badge" style="background-color: ' + val['priority_color'] + ';">' + val['priority_name'] + '</div>';
@@ -669,7 +669,7 @@
                             </div>`;
                     } else {
                         new_res_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})">${getHoursMinutesAndSeconds(val['resolution_deadline'], con_currTime)}</span>`
-                        // let cal_res_due = momentDiff(tkt_res_due , con_currTime);   
+                        // let cal_res_due = momentDiff(tkt_res_due , con_currTime);
                         // new_res_due = cal_res_due.replace("60m", "59m");
                     }
                 } else {
@@ -720,7 +720,7 @@
             let row = `<tr class="${val['is_flagged'] == 1 ? 'flagged-tr' : ''}">
             <td>
                 <div class="text-center">
-                    <input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})" 
+                    <input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})"
                         class="tkt_chk" name="select_all" value="${val['id']}">
                         </div>
             </td>
@@ -733,7 +733,7 @@
             <td class="ticketName" id="${val['id']}">
                 <div class="d-flex justify-content-between">
 
-                    <a href="${ticket_details_route}/${val['coustom_id']}" id="ticket_name_${val['id']}" class="ticket_name fw-bolder text-body" data-id="${val['id']}">   
+                    <a href="${ticket_details_route}/${val['coustom_id']}" id="ticket_name_${val['id']}" class="ticket_name fw-bolder text-body" data-id="${val['id']}">
                         ${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}
                     </a>
 
@@ -742,12 +742,12 @@
                         ${val['tkt_follow_up'] > 0 ? follow_up_icon : ''}
                     </span>
 
-                    <div class="hover_content_${val['id']} bg-white border rounded p-1" 
+                    <div class="hover_content_${val['id']} bg-white border rounded p-1"
                         style="position:absolute;width:clamp(auto, 80%, auto);height:auto; overflow:hidden; white-space: initial; display:none;
                             z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:22px;">
                     </div>
                 </div>
-                
+
             </td>
             <td>
                 <span class="text-dark"><a href="${ticket_details_route}/${val['coustom_id']}" class="text-body">${custom_id}</a></span>
@@ -761,7 +761,7 @@
             <td class='text-center'>${new_res_due}</td>
             <td>${assignee}</td>
             <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
-            
+
         </tr>`;
 
             tickets_table_list.row.add($(row)).draw();
@@ -1057,7 +1057,7 @@
         };
     }
 
-    // refresh ticket page 
+    // refresh ticket page
     function refreshTickets() {
         get_ticket_table_list();
     }
@@ -1092,7 +1092,7 @@
             }
 
             if(ticket.reply_deadline != null || ticket.resolution_deadline != null ) {
-            
+
                 if(ticket.reply_deadline != "cleared") {
                     let rep_deadline = moment(ticket.reply_deadline , "YYYY-MM-DD h:mm A").format("YYYY-MM-DD h:mm A");
                     let time  = rep_deadline.split(' ');
@@ -1216,7 +1216,7 @@
                 if (data.success) {
                     toastr.success( data.message , { timeOut: 5000 });
                     $("#reset_sla_plan_modal").modal("hide");
-                    
+
                     get_ticket_table_list();
                 }
             }
