@@ -3211,27 +3211,30 @@ class HelpdeskController extends Controller
                     $item->ticket_id = $ticket_into_merge->id;
                     $item->save();
                 }
+                
+                
 
+                $cc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->first();
+                $bcc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->first();
+
+                $cc_new = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 1)->first();
+                $bcc_new = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 2)->first();
+
+                $cc_new->email = $cc_new->email.','.$cc_old->email;
                 if($ticket->customer_id != $ticket_into_merge->customer_id){
-
                     $customer = Customer::where('id',$ticket->customer_id)->first();
-
-                    $tkt_share['email'] = $customer->email;
-                    $tkt_share['mail_type'] = 1;
-                    $tkt_share['ticket_id'] = $ticket_into_merge->id;
-
-                    $shared_emails = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 1)->first();
-
-                    if($shared_emails) {
-                        $shared_emails->email = $data['tkt_cc'];
-                        $shared_emails->save();
-                    }else{
-                        TicketSharedEmails::create($tkt_share);
-                    }
-
-                    $ticket->is_deleted = 1;
-                    $ticket->save();
+                    $cc_new->email  = $cc_new->email.','.$customer->email;
                 }
+                $cc_new->save();
+
+                $bcc_new->email = $bcc_new->email.','.$bcc_old->email;
+                $bcc_new->save();
+
+                $ticket->is_deleted = 1;
+                $ticket->save();
+
+                $cc_old->delete();
+                $bcc_old->delete();
 
                 $response['message'] = 'Ticket merged successfully';
                 $response['status_code'] = 200;
