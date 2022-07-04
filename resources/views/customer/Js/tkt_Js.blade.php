@@ -204,7 +204,7 @@
                                                 <div class="col-md-6">
                                                     <h5 class="mt-0 mb-0">
                                                         <span class="text-primary"> ${item.customer_id == null ? name : customer_name} 
-                                                        <span class="badge bg-info"> ${item.customer_id == null ? type : 'user'} </span> </span>
+                                                        <span class="badge bg-secondary"> ${item.customer_id == null ? type : 'user'} </span> </span>
                                                     </h5> 
                                                     <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;"> posted on created at ${ ticketDetail.date_conversion(item.created_at)} </span> 
 
