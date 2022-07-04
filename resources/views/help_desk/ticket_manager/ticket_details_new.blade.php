@@ -382,6 +382,9 @@
         table.dataTable th {
             padding: 0.72rem 0.5rem !important;
         }
+        #dropdowm_mbl{
+                display: none !important
+            }
 
         @media (max-width: 897.98px) {
             .webkit-box1 {
@@ -399,6 +402,7 @@
             .bor-top img {
                 max-width: 160px !important
             }
+            
 
         }
 
@@ -440,7 +444,26 @@
             .frt-width{
                 width: unset !important;
             }
-
+            #cust_detail_card{
+                display: none !important
+            }
+            #accordionExample{
+                display:block !important;
+                margin-bottom: 2rem !important;
+            }
+            #dropdowm_mbl{
+                position: relative !important;
+                bottom: 18px !important;
+                right: 10px !important;
+                float:right !important;
+                display: block !important
+            }
+            .accordion-button{
+                padding-top:0px
+            }
+            .dropdown-toggle:empty::after{
+                display: none
+            }
 
         }
     </style>
@@ -482,7 +505,267 @@
         <div class="content-body">
             <div class="row">
                 <div class="col-md-5">
-                    <div class="card">
+                    <div id="dropdowm_mbl">
+                        <i class="fal fa-ellipsis-v dropdown-toggle" id="dropdowm_mbl" data-bs-toggle="dropdown" type="button"
+                        style="float:right"></i>
+                  
+                    <div class="dropdown-menu dropdown-menu-end" style="">
+                        <a class="dropdown-item" onclick="openProModal();">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="feather feather-edit-3 me-1">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                            </svg>
+                            <span class="align-middle">Edit Ticket Properties</span>
+                        </a>
+                        @if ($details->trashed == 0)
+                            <a class="dropdown-item" onclick="trashTicket({{ $details->id }})">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-trash-2 me-1">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                    </path>
+                                    <line x1="10" y1="11" x2="10" y2="17">
+                                    </line>
+                                    <line x1="14" y1="11" x2="14" y2="17">
+                                    </line>
+                                </svg>
+                                <span class="align-middle">Trash</span>
+                            </a>
+                        @else
+                            <a class="dropdown-item" onclick="restoreTicket({{ $details->id }})">
+                                <i class="fas fa-trash-restore me-1"></i>
+                                <span class="align-middle">Restore</span>
+                            </a>
+                        @endif
+                        @if ($details->is_staff_tkt == 0)
+                            <a class="dropdown-item" onclick="spamUser({{ $details->id }})"
+                                id="spam_ticket_user">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-alert-triangle me-1">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                    </path>
+                                    <line x1="12" y1="9" x2="12" y2="13">
+                                    </line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17">
+                                    </line>
+                                </svg>
+                                <span class="align-middle">Spam</span>
+                            </a>
+                        @endif
+                    </div>
+                    </div>
+                    <div class="accordion" id="accordionExample" style="display: none">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
+                                    <h5 class="card-title mb-0">Ticket ID:
+                                        <a class="text-body"
+                                            href="{{ asset('/ticket-details') }}/{{ $details->coustom_id }}">{{ $details->coustom_id }}</a>
+                                        <a href="javascript:void(0)" onclick="ticketUrlCopy()">
+                                            <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url"
+                                            style="display:none">Url Copied</span>
+                                        {{-- <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle waves-effect waves-float waves-light" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button> --}}
+                                      
+                                        {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
+                                        {{-- <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i> --}}
+                                        {{-- @if ($details->trashed == 0)
+                                        <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="trashTicket({{$details->id}})"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Trash</button>
+                                        @else
+                                        <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="restoreTicket({{$details->id}})"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg> Restore</button>
+                                        @endif --}}
+                                        {{-- <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:145px;position: absolute" onclick=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Spam</button> --}}
+        
+                                    </h5>
+                                </button>
+                            </h2>
+                            <div id="accordionOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="profile-pic mt-2">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 text-center align-self-center">
+                                                @php
+                                                    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+                                                @endphp
+                                                @if ($details->is_staff_tkt == 0)
+                                                    @if ($ticket_customer != null)
+                                                        @if ($ticket_customer->avatar_url != null)
+                                                            @if (file_exists(getcwd() . '/' . $ticket_customer->avatar_url))
+                                                                <img src=" {{ asset(request()->root() . '/' . $ticket_customer->avatar_url) }}"
+                                                                    class="rounded-circle" width="70" height="70"
+                                                                    id="profile-user-img" />
+                                                            @else
+                                                                <img id="login_logo_preview" name="login_logo_preview"
+                                                                    class="rounded-circle" width="70" height="70"
+                                                                    id="profile-user-img"
+                                                                    src="{{ asset($file_path . 'default_imgs/customer.png') }}" />
+                                                            @endif
+                                                        @else
+                                                            <img id="login_logo_preview" name="login_logo_preview"
+                                                                class="rounded-circle" width="70" height="70"
+                                                                id="profile-user-img"
+                                                                src="{{ asset($file_path . 'default_imgs/customer.png') }}" />
+                                                        @endif
+                                                    @else
+                                                        <img id="login_logo_preview" name="login_logo_preview"
+                                                            class="rounded-circle" width="70" height="70"
+                                                            id="profile-user-img"
+                                                            src="{{ asset($file_path . 'default_imgs/customer.png') }}" />
+                                                    @endif
+                                                    <!-- <span class="badge badge-secondary type_bdge">User</span> -->
+                                                @else
+                                                    @if ($ticket_customer->profile_pic != null)
+                                                        @if (file_exists(getcwd() . '/' . $ticket_customer->profile_pic))
+                                                            <img src="{{ asset(request()->root() . '/' . $ticket_customer->profile_pic) }}"
+                                                                class="rounded-circle" width="100" height="100"
+                                                                id="profile-user-img" />
+                                                        @else
+                                                            <img id="login_logo_preview" name="login_logo_preview"
+                                                                class="rounded-circle" width="100" height="100"
+                                                                id="profile-user-img"
+                                                                src="{{ asset($file_path . 'default_imgs/customer.png') }}" />
+                                                        @endif
+                                                    @else($ticket_customer->profile_pic == NULL)
+                                                        <img id="login_logo_preview" name="login_logo_preview"
+                                                            class="rounded-circle" width="80" height="80"
+                                                            id="profile-user-img"
+                                                            src="{{ asset($file_path . 'default_imgs/customer.png') }}" />
+                                                    @endif
+                                                    <!-- <span class="badge badge-secondary type_bdge">Staff</span> -->
+        
+                                                @endif
+                                                <br><br>
+        
+                                            </div>
+                                            @php
+        
+                                                $name = '';
+                                                $phone = '';
+                                                $email = '';
+        
+                                                if ($details->is_staff_tkt == 0) {
+                                                    $name = $ticket_customer->first_name . ' ' . $ticket_customer->last_name;
+                                                    $phone = $ticket_customer->phone;
+                                                    $email = $ticket_customer->email;
+                                                } else {
+                                                    $name = $ticket_customer->name;
+                                                    $phone = $ticket_customer->phone_number;
+                                                    $email = $ticket_customer->email;
+                                                }
+        
+                                            @endphp
+                                            <div class="col-lg-9 col-md-8" id="style-5">
+        
+                                                <p style="margin-bottom: 0.2rem !important; font-size:13px; ">Name :
+                                                    @if ($details->is_staff_tkt == 0)
+                                                        <a class="text-body"
+                                                            href="{{ asset('customer-profile') }}/{{ $ticket_customer->id }}"
+                                                            id="cst-name"> {{ $name }}
+                                                        @else
+                                                            <a class="text-body"
+                                                                href="{{ url('profile') }}/{{ $ticket_customer->id }}"
+                                                                id="cst-name"> {{ $name }}
+                                                    @endif
+                                                    <span class="badge badge-secondary type_bdge">
+                                                        {{ $details->is_staff_tkt == 0 ? 'User' : 'Staff' }} </span> </a>
+                                                </p>
+        
+                                                <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company">
+                                                </p>
+                                                <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a
+                                                        href="tel:{{ $phone }}" id="cst-direct-line"
+                                                        class="text-body">{{ $phone }}</a> </p>
+                                                <p style="margin-bottom: 0.2rem !important; font-size:13px;"
+                                                    id="cst-company-name"></p>
+                                                <p style="margin-bottom: 0.2rem !important; font-size:13px;">Email : <a
+                                                        href="mailto:{{ $email }}" id="cst-email"
+                                                        class="text-body">{{ $email }}</a> </p>
+                                                <p style="margin-bottom: 0.2rem !important; font-size:13px;">Client Since :
+                                                    <span id="cust-creation-date"></span></p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-evenly ">
+                                            <div class="col4">
+                                                <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
+                                                    @if ($details->is_staff_tkt == 0)
+                                                        <a href="{{ asset('customer-profile') }}/{{ $ticket_customer->id }}#tickets"
+                                                            class="text-primary">{{ $total_tickets_count }}</a>
+                                                    @else
+                                                        <a href="{{ url('profile') }}/{{ $ticket_customer->id }}#tickets"
+                                                            class="text-primary">{{ $total_tickets_count }}</a>
+                                                    @endif
+                                                </h3>
+                                                <h6 class="mb-0" style="font-size:14px">
+                                                    @if ($details->is_staff_tkt == 0)
+                                                        <a href="{{ asset('customer-profile') }}/{{ $ticket_customer->id }}#tickets"
+                                                            class="text-primary">Total</a>
+                                                    @else
+                                                        <a href="{{ url('profile') }}/{{ $ticket_customer->id }}#tickets"
+                                                            class="text-primary">Total</a>
+                                                    @endif
+                                                </h6>
+                                            </div>
+        
+                                            <div class="col4"
+                                                style="    border-left: 1px solid #ebe9f1; padding-left: 80px; padding-right: 80px; border-right: 1px solid #ebe9f1;">
+                                                <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
+                                                    @if ($details->is_staff_tkt == 0)
+                                                        <a href="{{ asset('customer-profile') }}/{{ $ticket_customer->id }}#open"
+                                                            class="text-primary openCounter">{{ $open_tickets_count }}</a>
+                                                    @else
+                                                        <a href="{{ url('profile') }}/{{ $ticket_customer->id }}#open"
+                                                            class="text-primary openCounter">{{ $open_tickets_count }}</a>
+                                                    @endif
+                                                </h3>
+                                                <h6 class="mb-0" style="font-size:14px">
+                                                    @if ($details->is_staff_tkt == 0)
+                                                        <a href="{{ asset('customer-profile') }}/{{ $ticket_customer->id }}#open"
+                                                            class="text-primary">Open</a>
+                                                    @else
+                                                        <a href="{{ url('profile') }}/{{ $ticket_customer->id }}#open"
+                                                            class="text-primary">Open</a>
+                                                    @endif
+                                                </h6>
+                                            </div>
+        
+                                            <div class="col4">
+                                                <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
+                                                    @if ($details->is_staff_tkt == 0)
+                                                        <a href="{{ asset('customer-profile') }}/{{ $ticket_customer->id }}#closed"
+                                                            class="text-primary closeCounter">{{ $closed_tickets_count }}</a>
+                                                    @else
+                                                        <a href="{{ url('profile') }}/{{ $ticket_customer->id }}#closed"
+                                                            class="text-primary closeCounter">{{ $closed_tickets_count }}</a>
+                                                    @endif
+                                                </h3>
+                                                <h6 class="mb-0" style="font-size:14px">
+                                                    @if ($details->is_staff_tkt == 0)
+                                                        <a href="{{ asset('customer-profile') }}/{{ $ticket_customer->id }}#closed"
+                                                            class="text-primary">Closed</a>
+                                                    @else
+                                                        <a href="{{ url('profile') }}/{{ $ticket_customer->id }}#closed"
+                                                            class="text-primary">Closed</a>
+                                                    @endif
+                                                </h6>
+                                            </div>
+                                        </div>
+        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="card" id="cust_detail_card">
                         <div class="card-body" id="adjustCard1Height" style="overflow: hidden;">
                             <h5 class="card-title mb-0">Ticket ID:
                                 <a class="text-body"
@@ -2812,5 +3095,9 @@
             $('.country').text(country || '')
         })
     });
+
+  
 </script>
+
+
 @endsection
