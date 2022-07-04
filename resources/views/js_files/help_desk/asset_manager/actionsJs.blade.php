@@ -1017,7 +1017,7 @@ function getAssetDetails(id=1) {
 
 function selectCustomer(value , customerId , companyId) {
 
-        let root = `<option>All</option>`;
+        let root = `<option>All</option><option>N/A</option>`;
         if (value != '') {
 
             if($('#asset_customer :selected').text() == 'All'){
@@ -1117,13 +1117,15 @@ function selectCustomer(value , customerId , companyId) {
 
                 $('#'+customerId).empty();
                 $("#"+customerId).html(root + option);
-            }else{
-                if($('#'+customerId+' :selected').text() != 'Choose'){
-                    $('#'+customerId).empty();
+            }else {
+                if($('#'+customerId+' :selected').text() != 'Choose' ){
+                    if( $('#asset_company :selected').text() !== "N/A"){
+                        $('#'+customerId).empty();
+                    }
                 }
             }
 
-        }else{
+        }else {
             assetFlag = false;
             $('#'+companyId).empty();
             let option = ``;
