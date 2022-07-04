@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -3112,7 +3112,7 @@ class HelpdeskController extends Controller
     }
 
     public function update_ticket_customer(Request $request) {
-        try {
+        // try {
             $data = $request->all();
             if($data['tkt_merge_id'] == null || empty($data['tkt_merge_id'])){
                 if(isset($data['new_customer'])) {
@@ -3214,27 +3214,65 @@ class HelpdeskController extends Controller
                 
                 
 
-                $cc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->first();
-                $bcc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->first();
-
+                $cc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 1)->first();
+                $bcc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 2)->first();
+                
                 $cc_new = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 1)->first();
                 $bcc_new = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 2)->first();
-
-                $cc_new->email = $cc_new->email.','.$cc_old->email;
-                if($ticket->customer_id != $ticket_into_merge->customer_id){
-                    $customer = Customer::where('id',$ticket->customer_id)->first();
-                    $cc_new->email  = $cc_new->email.','.$customer->email;
+                
+                if($cc_new){
+                    if($cc_old){
+                        $cc_new->email = $cc_new->email.','.$cc_old->email;
+                    }
+                    
+                    if($ticket->customer_id != $ticket_into_merge->customer_id){
+                       
+                        $customer = Customer::where('id',$ticket->customer_id)->first();
+                        $cc_new->email  = $cc_new->email.','.$customer->email;
+                    }
+                    $cc_new->save();
+                    $cc_old->delete();
+                }else{
+                    
+                    $cc_data = array();
+                    if($cc_old){
+                        $cc_data['email'] = $cc_old->email;
+                    }
+                    
+                    if($ticket->customer_id != $ticket_into_merge->customer_id){
+                       
+                        $customer = Customer::where('id',$ticket->customer_id)->first();
+                        $cc_data['email'] = $cc_data['email'].','.$customer->email;
+                    }
+                    
+                    $cc_data['mail_type'] = 1;
+                    $cc_data['ticket_id'] = $ticket_into_merge->id;
+                    TicketSharedEmails::create($cc_data);
+                    $cc_old->delete();
                 }
-                $cc_new->save();
-
-                $bcc_new->email = $bcc_new->email.','.$bcc_old->email;
-                $bcc_new->save();
+                
+                if($bcc_new){
+                    if($bcc_old){
+                        $bcc_new->email = $bcc_new->email.','.$bcc_old->email;
+                    }
+                    
+                    $bcc_new->save();
+                    $bcc_old->delete();
+                }else{
+                    
+                    $bcc_data = array();
+                    if($bcc_old){
+                        $bcc_data['email'] = $bcc_old->email;
+                    }
+                    
+                    $bcc_data['mail_type'] = 2;
+                    $bcc_data['ticket_id'] = $ticket_into_merge->id;
+                    TicketSharedEmails::create($bcc_data);
+                    $bcc_old->delete();
+                }
 
                 $ticket->is_deleted = 1;
                 $ticket->save();
-
-                $cc_old->delete();
-                $bcc_old->delete();
 
                 $response['message'] = 'Ticket merged successfully';
                 $response['status_code'] = 200;
@@ -3249,12 +3287,12 @@ class HelpdeskController extends Controller
             $response['success'] = true;
             return response()->json($response);
 
-        } catch(Exception $e) {
-            $response['message'] = $e->getMessage();
-            $response['status_code'] = 500;
-            $response['success'] = false;
-            return response()->json($response);
-        }
+        // } catch(Exception $e) {
+        //     $response['message'] = $e->getMessage();
+        //     $response['status_code'] = 500;
+        //     $response['success'] = false;
+        //     return response()->json($response);
+        // }
     }
 
     public function getTicketNotes(Request $request) {
