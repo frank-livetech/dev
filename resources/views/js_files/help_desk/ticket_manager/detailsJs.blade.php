@@ -59,7 +59,9 @@ $(document).ready(function() {
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
-
+        mobile: {
+            theme: 'silver'
+          },
         auto_focus : "mymce",
 
         height: 300,
@@ -134,6 +136,9 @@ $(document).ready(function() {
         ],
         toolbar: 'bold italic underline alignleft link',
         menubar: false,
+        mobile: {
+            theme: 'silver'
+          },
         statusbar: false,
         relative_urls : 0,
         remove_script_host : 0,
@@ -169,6 +174,9 @@ $(document).ready(function() {
             selector: "textarea#ticket_details_edit",
             // theme: "modern",
             height: 300,
+            mobile: {
+            theme: 'silver'
+          },
             file_picker_types: 'image',
             plugins: [
                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",

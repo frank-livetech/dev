@@ -18,6 +18,9 @@
             tinymce.init({
                 selector: "textarea#ticket_detail",
                 // theme: "modern",
+                mobile: {
+            theme: 'silver'
+          },
                 height: 300,
                 file_picker_types: 'image',
                 paste_data_images: true,

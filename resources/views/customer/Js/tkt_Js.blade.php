@@ -278,6 +278,9 @@
             tinymce.init({
                 selector: "textarea#desc",
                 // theme: "modern",
+                mobile: {
+            theme: 'silver'
+          },
                 height: 300,
                 file_picker_types: 'image',
                 plugins: [

@@ -31,6 +31,9 @@ $(function() {
             selector: "textarea#mymce",
             // theme: "modern",
             height: 300,
+            mobile: {
+                theme: 'silver'
+              },
             plugins: [
                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
@@ -80,6 +83,9 @@ $(function() {
         tinymce.init({
             selector: "textarea#ticket_details_edit",
             // theme: "modern",
+            mobile: {
+                theme: 'silver'
+              },
             height: 300,
             plugins: [
                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",

@@ -530,6 +530,9 @@
         let datetime = {!! json_encode($datetime) !!};
         tinymce.init({
             selector: "textarea#mymce",
+            mobile: {
+            theme: 'silver'
+          },
             // theme: "modern",
             height: 300,
             file_picker_types: 'image',
