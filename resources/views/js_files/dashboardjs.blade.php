@@ -236,7 +236,7 @@
                     for (let i = 0; i < data.logs.length; i++) {
                         const element = data.logs[i];
                         tickets_logs_list.row.add([
-                            element.action_perform.split('by')[0],
+                            element.action_perform.split('by')[0] + element.action_perform.split('By')[0],
                             // element.ticket != null ? `Ticket (<a href="/ticket-details/${element.ticket.coustom_id}">`+element.ticket.coustom_id+"</a>)" : '',
                                         convertDate(element.created_at),
                                         `<a href="/profile/${element.created_by != null ? element.created_by.id : 0}">`+element.created_by != null ? element.created_by.name : ''+`</a>`
