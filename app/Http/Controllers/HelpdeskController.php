@@ -267,7 +267,9 @@ class HelpdeskController extends Controller
                     sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
                 }
-                $data['ticket_detail'] = $this->replaceBodyShortCodes($data['ticket_detail'] , $ticket);
+                if(isset($data['ticket_detail'])){
+                    $data['ticket_detail'] = $this->replaceBodyShortCodes($data['ticket_detail'] , $ticket);
+                }
                 
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
