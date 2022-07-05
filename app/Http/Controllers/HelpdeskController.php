@@ -982,7 +982,7 @@ class HelpdeskController extends Controller
             if($request->has('id')) {
                 $logs =  Activitylog::where('ref_id', $request->id)->orderByDesc('id')->get();
             } else {
-                $logs =  Activitylog::with('createdBy')->where('module', 'Tickets')->orderByDesc('id')->limit(150)->get();
+                $logs =  Activitylog::with(['ticket','createdBy','updatedBy'])->where('module', 'Tickets')->orderByDesc('id')->limit(150)->get();
             }
 
             $response['status_code'] = 200;
