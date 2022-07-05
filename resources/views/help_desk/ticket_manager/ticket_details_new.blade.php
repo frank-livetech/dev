@@ -1062,8 +1062,8 @@
 
                                                             <div class="first frt-width" id="sub-tkt" style="width: 514px;">
                                                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
-                                                               
-                                                                <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$details->subject}} </span> 
+
+                                                                <span id="tkt-subject" class="tkt-subject" style="font-size:20px"> {{$details->subject}} </span>
                                                                 @if($details->attachments != null)
                                                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
 
@@ -2954,8 +2954,8 @@
 
                             <div class="first" id="sub-tkt" style="width: 514px">
                                 <!-- <img src="{{asset($file_path . 'default_imgs/int_req.jpeg')}}" width="30" height="30" alt="">  -->
-                                
-                                <span  style="font-size:20px"> {{$details->subject}} </span> 
+
+                                <span  style="font-size:20px"> {{$details->subject}} </span>
                                 @if($details->attachments != null)
                                 <i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; color:#5f6c73;" title="Has Attachments"></i> &nbsp;&nbsp;
 
@@ -3008,7 +3008,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <textarea id="mymce" class="mymce mt-2" name="reply"></textarea>
+                <textarea id="mymce_edit" class="mymce mt-2" name="reply"></textarea>
                 <div class="d-flex mt-3">
                     <div class="form-check form-check-primary">
                         <input type="checkbox" value="1" class="form-check-input" id="send_email"
@@ -3024,7 +3024,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Edit</button>
+                <button type="button" class="btn btn-success" onclick="update_edit_reply()" >Edit</button>
             </div>
         </div>
     </div>

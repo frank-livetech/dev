@@ -154,7 +154,6 @@
             }
 
             // key is either alphabet or number or dot or @ or backspace or space is pressed
-            console.log('KEYCODE ', e.keyCode);
             if ((e.keyCode >= 64 && e.keyCode <= 90) || (e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 64 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 32) {
                 if ($(this).val().length > 1) {
                     $.ajax({

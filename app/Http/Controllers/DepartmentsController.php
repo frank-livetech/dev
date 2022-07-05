@@ -10,14 +10,15 @@ use App\Models\DepartmentAssignments;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
-require 'vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class DepartmentsController extends Controller
 {
     private $permissions_list = [
-        'd_t_canreply'=>'Reply to tickets', 
-        'd_t_canforward'=>'Forward tickets', 
-        'd_t_canfollowup'=>'Schedule ticket follow-ups', 
+        'd_t_canreply'=>'Reply to tickets',
+        'd_t_canforward'=>'Forward tickets',
+        'd_t_canfollowup'=>'Schedule ticket follow-ups',
         'd_t_canbilling'=>'Time tracking and billing notes',
         'd_t_canassignment'=>'Ticket Assignment Email Alert',
         'd_t_cannotealerts'=>'Note Alerts',
@@ -33,7 +34,7 @@ class DepartmentsController extends Controller
         $dept_assignments = DepartmentAssignments::where('dept_id', $id)->get()->pluck('user_id')->toArray();
 
         $dept_permissions = DepartmentPermissions::where('dept_id', $id)->whereIn('user_id', $dept_assignments)->get()->toArray();
-        
+
         $webmaster_new_per = ["d_t_notifications" => ["Project manager progress report notifications"]];
 
         $research = true;
@@ -50,14 +51,14 @@ class DepartmentsController extends Controller
             $permissions[$key] = [$value, 0];
         }
 
-        
-        
+
+
         foreach ($users_with_permissions as $key => $value) {
-            
+
             $users_with_permissions[$key]['permissions'] = $permissions;
 
             if($department->name == "Webmaster") {
-                
+
                 $combine = array_merge($permissions ,$webmaster_new_per);
 
                 if(in_array($value['id'], $dept_assignments) ) {
@@ -67,7 +68,7 @@ class DepartmentsController extends Controller
                 }
 
                 $users_with_permissions[$key]['permissions'] = $combine;
-            }   
+            }
 
             if(in_array($value['id'], $dept_assignments)) {
                 $users_with_permissions[$key]['assignment'] = 1;
@@ -136,7 +137,7 @@ class DepartmentsController extends Controller
             );
 
             $dep_arr = array(
-                "user_id" => $request->user_id , 
+                "user_id" => $request->user_id ,
                 "dept_id" => $request->dept_id ,
             );
 
@@ -148,17 +149,17 @@ class DepartmentsController extends Controller
 
                     $dep_arr['updated_by'] = auth()->id();
                     DepartmentAssignments::where([ ['user_id', $request->user_id], ['dept_id', $request->dept_id] ])->update($dep_arr);
-        
+
                     if(count($permission) > 0) {
                         DepartmentPermissions::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->delete();
                     }
-    
+
                     foreach($permission_arr as $key => $value) {
                         DB::table("department_permissions")->insert([
                             $key => $value,
                         ]);
                     }
-                    
+
                 } else {
                     DepartmentAssignments::where([ ['user_id', $request->user_id], ['dept_id', $request->dept_id] ])->delete();
                     if(count($permission) > 0) {
@@ -171,17 +172,17 @@ class DepartmentsController extends Controller
                 if($request->assignment == 'set') {
 
                     DepartmentAssignments::create($dep_arr);
-        
+
                     if(count($permission) > 0) {
                         DepartmentPermissions::where([['user_id', $request->user_id], ['dept_id', $request->dept_id]])->delete();
                     }
-    
+
                     foreach($permission_arr as $key => $value) {
                         DB::table("department_permissions")->insert([
                             $key => $value,
                         ]);
                     }
-                    
+
                 } else {
                     DepartmentAssignments::where([ ['user_id', $request->user_id], ['dept_id', $request->dept_id] ])->delete();
                     if(count($permission) > 0) {
@@ -202,5 +203,5 @@ class DepartmentsController extends Controller
             return response()->json($response);
         }
     }
-    
+
 }
