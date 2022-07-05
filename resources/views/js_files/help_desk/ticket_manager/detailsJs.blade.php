@@ -1854,7 +1854,11 @@ function listReplies() {
                         link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
                     }
                 }
-                var updated_msg = 'Last edited by:'+ reply.updated_by.name + ' On '+convertDate(reply.updated_by.updated_at)
+
+                var updated_msg = ''
+                if(reply.updated_by != null){
+                    updated_msg = 'Last edited by:'+ reply.updated_by.name + ' On '+convertDate(reply.updated_by.updated_at)
+                }
                 replies_html =`
                     <li class="media" id="reply__${index}">
                         <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
