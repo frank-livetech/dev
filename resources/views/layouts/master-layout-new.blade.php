@@ -672,7 +672,6 @@
 
                     if (data.status_code == 200 && data.success == true) {
 
-                        console.log(data.staff_clock_in, "abcqweoqwiueyr");
                         renderClockIn(data.staff_clock_in);
 
                         notifications = data.data;
@@ -683,22 +682,15 @@
 
                         if (notifications.length > 0) {
                             for (var i = 0; i < notifications.length; i++) {
-
-
                                 if (notifications[i].noti_desc != "") {
-
                                     if (notifications[i].sender != null) {
-
                                         if (notifications[i].sender.profile_pic != null) {
-                                            user_image =
-                                                `<img src="${root}/${notifications[i].sender.profile_pic}" alt="avatar" width="32" height="32">`;
+                                            user_image =`<img src="${root}/${notifications[i].sender.profile_pic}" alt="avatar" width="32" height="32">`;
                                         } else {
-                                            user_image =
-                                                `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
+                                            user_image =`<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
                                         }
                                     } else {
-                                        user_image =
-                                            `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
+                                            user_image = `<img src="${root}/default_imgs/customer.png" alt="avatar" width="32" height="32">`;
                                     }
 
                                     var date = new Date(notifications[i].created_at);
@@ -713,7 +705,7 @@
                                         notifications[i].id + `)" style ="cursor:pointer">
                                                 <div class="me-1">
                                                     <div class="avatar">
-                                                        ${notifications[i].noti_type == "attendance" ? user_image : default_icon}
+                                                        ${notifications[i].noti_type == "attendance" ? default_icon : user_image}
                                                     </div>
                                                 </div>
                                                 <div class="list-item-body flex-grow-1">

@@ -2285,7 +2285,6 @@ function update_edit_reply()
         id:edit_reply_id
     };
 
-    console.log(params)
 
     $.ajax({
         type: "post",

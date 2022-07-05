@@ -59,10 +59,15 @@
                             data.forEach(element => {
                                 result += `
                                 <a href="{{asset('ticket-details/` + element.coustom_id + `')}}">
-                                    <div class="bg-light text-left text-dark mt-2 p-2 border shadow-sm rounded">
-
-                                        <p class="m-0">`+element.coustom_id +` | `+element.subject+` | `+element.created_at+`</p>
-
+                                    <div class="bg-white text-left text-dark mt-0 px-1 py-1 border search_result rounded">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <p class="m-0">`+element.coustom_id +` | `+element.subject+` | `+element.created_at+`</p>
+                                            </div>
+                                            <div class="col-md-2 text-right">
+                                                <!-- <img class="rounded-circle w-50" src="https://picsum.photos/id/3/80/80" data-holder-rendered="true"> -->
+                                            </div>
+                                        </div>
                                     </div>
                                 </a>
                                 `;
@@ -670,4 +675,11 @@
         }
         caleandar(element, events, settings);
     }
+
+    // $( ".search_result" ).hover(
+    // function() {
+    //     $(this).addClass('shadow-lg').css('cursor', 'pointer');
+    // }, function() {
+    //     $(this).removeClass('shadow-lg');
+    // })
 </script>
