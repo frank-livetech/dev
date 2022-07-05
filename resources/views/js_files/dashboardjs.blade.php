@@ -238,7 +238,7 @@
                         tickets_logs_list.row.add([
                             element.ticket != null ? `Ticket (<a href="/ticket-details/${element.ticket.coustom_id}">`+element.ticket.coustom_id+"</a>)" : '',
                                         convertDate(element.created_at),
-                                        `<a href="/profile/${element.created_by.id}">`+element.created_by != null ? element.created_by.name : ''+`</a>`
+                                        `<a href="/profile/${element.created_by != null ? element.created_by.id : 0}">`+element.created_by != null ? element.created_by.name : ''+`</a>`
                                 ]).draw(false).node();
                     }
                 } else {
