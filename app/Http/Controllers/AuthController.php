@@ -623,7 +623,6 @@ class AuthController extends Controller
          else{
             setcookie('livetech_ml',base64_encode($request->email),time()+60*60*24*100);
             setcookie('livetech_ps',base64_encode($request->password),time()+60*60*24*100);
-
          }
 
         // $remember = ($request->remember == 'on') ? true : false;
@@ -730,11 +729,11 @@ class AuthController extends Controller
             ]);
 
             $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',1)->get()->toArray();
-    
+
             $notify = new NotifyController();
-    
+
             foreach ($admin_users as $key => $value) {
-    
+
                 $sender_id = $id;
                 $receiver_id = $value['id'];
                 $data = '';
@@ -744,7 +743,7 @@ class AuthController extends Controller
                 $icon = 'ti-calendar';
                 $class = 'btn-success';
                 $desc = 'Login In by '.$name;
-                
+
                 $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
             }
 
