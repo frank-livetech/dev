@@ -126,9 +126,13 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function activityLog()
+    public function activityLogCreated()
     {
         return $this->belongsTo(Activitylog::class,'created_by','id');
+    }
+    public function activityLogUpdated()
+    {
+        return $this->belongsTo(Activitylog::class,'updated_by','id');
     }
 }
 

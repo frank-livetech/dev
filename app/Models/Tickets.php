@@ -25,13 +25,18 @@ class Tickets extends Model
     public function ticket_created_by() {
         return $this->hasOne(User::class,'id','created_by');
     }
-    
+
     public function ticketReplies() {
         return $this->hasMany(TicketReply::class,'ticket_id','id')->with('replyUser');
     }
 
     public function ticket_customer() {
         return $this->hasOne(Customer::class,'id','customer_id');
+    }
+
+    public function activityLog()
+    {
+        return $this->hasMany(Activitylog::class,'ref_id','id');
     }
 
     public function getRepliesAttribute() {
@@ -44,12 +49,12 @@ class Tickets extends Model
     public function getLastReplyAttribute() {
         $id = $this->id;
         $last_reply = TicketReply::where('ticket_id', $id)->with('replyUser')->orderByDesc('id')->first();
-        
+
         if($last_reply){
             $bbcode = new BBCode();
             $last_reply->reply = str_replace('/\r\n/','<br>', $bbcode->convertToHtml($last_reply->reply));
         }
-        
+
         return $last_reply;
     }
 
@@ -84,7 +89,7 @@ class Tickets extends Model
 
         $id = $this->id;
         $rep = TicketReply::where('ticket_id', $id)->orderBy('created_at', 'desc')->first();
-      
+
         if(!empty($rep)) {
             if($rep['user_id']) {
                 $user = User::where('id', $rep['user_id'])->first();
@@ -93,7 +98,7 @@ class Tickets extends Model
                 $user = Customer::where('id', $rep['customer_id'])->first();
                 if(!empty($user)) return  $user->first_name.' '.$user->last_name;
             }
-            
+
         }
     }
     public function getPriorityColorAttribute() {
@@ -129,7 +134,7 @@ class Tickets extends Model
                 $data = DB::table('users')->where('id', $id)->first();
                 if(!empty($data)) return $data->name;
             }
-            
+
         }
         return null;
     }
@@ -155,7 +160,7 @@ class Tickets extends Model
         }else{
             $customer = DB::table('customers')->where('id', $this->created_by)->first();
             if(!empty($customer)) {
-                
+
                 if($customer->avatar_url!= null) {
                     if(is_file( getcwd() . $path . $customer->avatar_url)) {
                         $image = $customer->avatar_url;
@@ -212,7 +217,7 @@ class Tickets extends Model
         }
         return null;
     }
-    
+
     public function getCreatorNameAttribute() {
         $id = $this->created_by;
         if(!empty($id)) {
