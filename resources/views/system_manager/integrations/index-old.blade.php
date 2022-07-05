@@ -1,39 +1,31 @@
-@extends('layouts.master-layout-new')
-@section('title', 'Integrations')
-@section('System Manager','open')
-@section('Integrations','active')
-@section('body')
+@extends('layouts.staff-master-layout')
+@section('body-content')
 <style>
     .btn-list>a:hover {
         color: #009efb;
     }
 </style>
-<div class="app-content content">
-    <div class="content-overlay"></div>
-    <div class="header-navbar-shadow"></div>
-    <div class="content-wrapper container-fluid p-0">
-        <div class="content-header row">
-            <div class="content-header-left col-12 mb-2">
-                <div class="row breadcrumbs-top">
-                    <div class="col-md-112">
-                        <h2 class="content-header-title float-start mb-0">Integrations</h2>
-                        <div class="breadcrumb-wrapper">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a>
-                                </li>
-                                <li class="breadcrumb-item">System Manager
-                                </li>
-                                <li class="breadcrumb-item active">Integrations
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-md-5 align-self-center">
+            <!--<h3 class="page-title">Dashboard</h3>-->
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                        <li class="breadcrumb-item" aria-current="page">System Manager</li>
+                        <li class="breadcrumb-item active" aria-current="page">Integrations</li>
+                    </ol>
+                </nav>
             </div>
         </div>
+
     </div>
-    <div class="content-body">
-         <!-- ============================================================== -->
+</div>
+
+<div class="container-fluid">
+    <!-- ============================================================== -->
     <!-- Left Part -->
     <!-- ============================================================== -->
     <div class="row">
@@ -41,18 +33,11 @@
             <div class="card">
                 <div class="card-body">
 
-                    <div class="p-1" card-title="">
+                    <div class="p-3 " card-title="">
                         <input type="text" class="form-control" id="search" name="search" placeholder="Search ...">
                     </div>
-                    <div id="nestable-menu">
-                        <ul class="list-group cursor-pointer">
-                            @foreach ($categories as $item)
-                            <li class="list-group-item list-group-item-action integrations-menu {{ $loop->index == 0 ? 'bg-dark text-white': ''}}" data-id="integration-{{$item->id}}">{{$item->title}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    
-                    {{-- <div class="dd myadmin-dd" id="nestable-menu">
+
+                    <div class="dd myadmin-dd" id="nestable-menu">
                         <ol class="dd-list">
 
                             @foreach ($categories as $item)
@@ -61,12 +46,12 @@
                             </li>
                             @endforeach
                         </ol>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- <div class="col-md-9">
+        <div class="col-md-9">
             @foreach ($categories as $item)
             <div class="row integrations-content {{ $loop->index > 0 ? 'd-none' : ''}}" id="integration-{{$item->id}}">
                 @foreach($item->integrations as $integration)
@@ -78,7 +63,7 @@
                                 <input type="checkbox" data-id="{{ $integration->id }}" {{ ($integration->status=='0') ? '' : 'checked' }} name="status" class="js-switch" onchange="integrationStatus(this)">
                             </div>
                             <h2 class="mt-0">
-                               
+                                <!-- i just change icon right 10 or top 10  -->
                                 <img src="assets/images/{{$integration->image}}" style="width: 45px;height: 45px;">
 
                             </h2>
@@ -88,71 +73,17 @@
                 </div>
                 @endforeach
             </div>
-            @endforeach--}}
-        
-        <div class="col-lg-9 col-md-9 col-12">
-            @foreach ($categories as $item)
-            <div class="row integrations-content {{ $loop->index > 0 ? 'd-none' : ''}}" id="integration-{{$item->id}}">
-                
-                @foreach($item->integrations as $integration)
-                <div class="col-lg-4 col-md-4">
-                <div class="card shadow-none border cursor-pointer" >
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <img src="assets/images/{{$integration->image}}" alt="{{$integration->name}}" height="38" />
-                        <div class="form-check form-switch">
-                            <input type="checkbox" class="form-check-input" id="customSwitch1" data-id="{{ $integration->id }}" {{ ($integration->status=='0') ? '' : 'checked' }} name="status" onchange="integrationStatus(this)" style="position: relative;left: 48px;bottom: 3px;">
-                        </div>
-                        <div class="dropdown-items-wrapper">
-                            <i class="fas fa-ellipsis-v" id="dropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                            {{-- <i data-feather="more-vertical" id="dropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i> --}}
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink1">
-                                <a class="dropdown-item" href="#">
-                                    <i data-feather="refresh-cw" class="me-25"></i>
-                                    <span class="align-middle">Refresh</span>
-                                </a>
-                                <a class="dropdown-item" href="#" onclick="showFolderModel({{ json_encode($integration) }})">
-                                    <i data-feather="settings" class="me-25" ></i>
-                                    <span class="align-middle">Manage</span>
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i data-feather="trash" class="me-25"></i>
-                                    <span class="align-middle">Delete</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="my-1">
-                        <h5>{{$integration->name}}</h5>
-                    </div>
-                    {{-- <div class="d-flex justify-content-between mb-50">
-                        <span class="text-truncate">35GB Used</span>
-                        <small class="text-muted">50GB</small>
-                    </div>
-                    <div class="progress progress-bar-warning progress-md mb-0" style="height: 10px">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="70" aria-valuemax="100" style="width: 70%"></div>
-                    </div> --}}
-                   
-                </div>
-            </div>
-        </div>
-                @endforeach
-            
-        </div>
             @endforeach
         </div>
-        <!-- Modal -->
 
+        <!-- Modal -->
+    </div>
 
     <div id="add-integration" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel1">Add API Settings</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                {{-- <div class="text-left bg-info p-3">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                <div class="text-left bg-info p-3">
+                    <button type="button" class="close ml-auto" data-dismiss="modal" style="color:#fff;" aria-hidden="true">×</button>
                     <a class="text-success">
 
                         <span class="d-flex align-items-center"><img class="mr-2 mb-2 integration-logo" src="https://mylive-tech.com/framework/files/brand_files/logo.png" alt="" height="50">
@@ -161,7 +92,7 @@
 
 
                     </a>
-                </div> --}}
+                </div>
                 <div class="modal-body">
                     <form id="save-details" class="widget-box widget-color-dark user-form" method="POST" action="{{asset('integrations')}}">
                         @csrf
@@ -189,21 +120,20 @@
             </div>
         </div>
     </div>
+
+
+
+
     <!-- wordpress -->
     <div class="modal fade" id="wordPress" data-backdrop="static" tabindex="-1" aria-labelledby="wordPressLabel" aria-hidden="true">
         <div class="modal-dialog ">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="wordPressLabel">WordPress</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                {{-- <div class="modal-header">
                     <h5 class="modal-title" id="wordPressLabel"> WordPress </h5>
-
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                </div> --}}
+                </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
@@ -297,11 +227,9 @@
             </div>
         </div>
     </div>
-    </div>
 </div>
-    </div>
 @endsection
-
 @section('scripts')
 @include('js_files.system_manager.integrations.indexJs')
+
 @endsection

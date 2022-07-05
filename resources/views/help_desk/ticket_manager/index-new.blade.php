@@ -175,6 +175,12 @@
             #full-view {
                 display: none !important
             }
+            .btn_view_mbl{
+                display:block !important
+            }
+            .btn_view_dkt{
+                display: none
+        }
         }
     </style>
 
@@ -540,7 +546,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-10" id="action_btns">
+                            <div class="col-md-10 btn_view_dkt" id="action_btns" >
                                 <span style="float: right">
 
                                     <button type="button" class="btn btn-primary" style="display: none;"
@@ -590,6 +596,59 @@
                                     <a href="{{ url('add-ticket') }}" type="button"
                                         class="btn btn-success waves-effect waves-float waves-light">
                                         <i class="fa fa-plus"></i>&nbsp; Create ticket
+                                    </a>
+
+                                </span>
+                            </div>
+                            <div class="col-md-10 btn_view_mbl" id="action_btns" style="display:none ">
+                                <span style="float: right">
+
+                                    <button type="button" class="btn btn-primary" style="display: none;"
+                                        id="btnBack" onclick="get_ticket_table_list();"><i
+                                            class="fas fa-chevron-left"></i>&nbsp;Back</button>
+
+                                    <span class="show_tkt_btns" style="display:none">
+                                        <button type="button"
+                                            class="btn btn-danger waves-effect waves-float waves-light"
+                                            id="btnMovetotrash" onclick="moveToTrash()"><i class="fas fa-trash-alt"
+                                                aria-hidden="true"></i></button>
+
+                                        <button type="button"
+                                            class="btn btn-warning waves-effect waves-float waves-light"
+                                            id="btnSpam" onclick="spamTickets()"><i class="far fa-question-circle"
+                                                aria-hidden="true"></i></button>
+
+                                        <button type="button"
+                                            class="btn btn-info waves-effect waves-float waves-light" id="btnMerge"
+                                            onclick="merge_tickets()"><i class="fas fa-random"
+                                                aria-hidden="true"></i></button>
+                                    </span>
+
+                                    <button type="button" class="btn btn-danger btnDelete d-none" id="btnDelete"
+                                        style="display: none;">
+                                        <i class="fas fa-trash-alt"></i></button>
+
+                                    <button type="button" id="refreshTicket" onclick="refreshTickets()"
+                                        class="btn btn-secondary waves-effect waves-float waves-light">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-refresh-ccw">
+                                            <polyline points="1 4 1 10 7 10"></polyline>
+                                            <polyline points="23 20 23 14 17 14"></polyline>
+                                            <path
+                                                d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15">
+                                            </path>
+                                        </svg>
+                                    </button>
+
+                                    <button type="button"
+                                        class="btn btn-primary waves-effect waves-float waves-light"
+                                        id="show-clndr"><i class="fas fa-calendar" aria-hidden="true"></i></button>
+
+                                    <a href="{{ url('add-ticket') }}" type="button"
+                                        class="btn btn-success waves-effect waves-float waves-light">
+                                        <i class="fa fa-plus"></i>
                                     </a>
 
                                 </span>
