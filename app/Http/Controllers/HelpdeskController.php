@@ -3218,8 +3218,6 @@ class HelpdeskController extends Controller
                     $item->save();
                 }
 
-
-
                 $cc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 1)->first();
                 $bcc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 2)->first();
 
@@ -3277,8 +3275,8 @@ class HelpdeskController extends Controller
                     $bcc_old->delete();
                 }
 
-                $ticket->is_deleted = 1;
-                $ticket->save();
+                // $ticket->is_deleted = 1;
+                // $ticket->save();
 
                 $response['message'] = 'Ticket merged successfully';
                 $response['status_code'] = 200;
