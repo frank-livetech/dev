@@ -982,7 +982,7 @@ class HelpdeskController extends Controller
             if($request->has('id')) {
                 $logs =  Activitylog::where('ref_id', $request->id)->orderByDesc('id')->get();
             } else {
-                $logs =  Activitylog::where('module', 'Tickets')->orderByDesc('id')->limit(150)->get();
+                $logs =  Activitylog::with('createdBy')->where('module', 'Tickets')->orderByDesc('id')->limit(150)->get();
             }
 
             $response['status_code'] = 200;
@@ -1038,7 +1038,7 @@ class HelpdeskController extends Controller
                 }
             }
 
-            $data['user_id'] = \Auth::user()->id;
+            $data['user_id'] = Auth::user()->id;
 
             if(array_key_exists('inner_attachments', $data)) {
                 // target dir for ticket files against ticket id
@@ -1086,14 +1086,14 @@ class HelpdeskController extends Controller
 
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
 
+
             if($request->has('id')) {
                 $save_reply['reply'] = $data['reply'];
                 $save_reply['cc'] = $data['cc'];
                 $save_reply['is_published'] = $data['is_published'];
-                $save_reply['attachments'] = $data['attachments'];
-
+                $save_reply['attachments'] = $data['attachments'] ?? '';
                 $save_reply['updated_at'] = Carbon::now();
-                $save_reply['updated_by'] = \Auth::user()->id;
+                $save_reply['updated_by'] = Auth::user()->id;
 
                 $save_reply->save();
 
@@ -1208,7 +1208,7 @@ class HelpdeskController extends Controller
 
             // Set cc and bcc mails if any
 
-            $tkt_share = array();
+                $tkt_share = array();
 
             // if($data['cc'] != null && $data['cc'] != "") {
                 $tkt_share['email'] = $data['cc'];
@@ -1256,7 +1256,7 @@ class HelpdeskController extends Controller
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                 }else{
                     $content = $mail_reply;
-                    $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments']);
+                    $this->sendNotificationMail($ticket->toArray(), 'ticket_reply', $content, $data['cc'], $action, $data['attachments'] ?? '');
                 }
             }
 
@@ -1268,9 +1268,10 @@ class HelpdeskController extends Controller
             }
 
             $up_tkt = Tickets::where('id' , $request->ticket_id)->first();
-            $save_reply->name = \Auth::user()->name;
+            $save_reply->name = Auth::user()->name;
             $save_reply['reply_user'] = User::where('id' , auth()->id())->first();
-            $response['message'] = ($request->has('id')) ? 'Reply Added Successfully! '.$data['attachments'] : 'Reply Updated Successfully! '.$data['attachments'];
+            // $response['message'] = ($request->has('id')) ? 'Reply Added Successfully! '.$data['attachments'] ?? '' : 'Reply Updated Successfully! '.$data['attachments'] ?? '';
+            $response['message'] = ($request->has('id')) ? 'Reply Added Successfully!' : 'Reply Updated Successfully!';
             $response['sla_updated'] = $sla_updated;
             $response['status_code'] = 200;
             $response['success'] = true;
@@ -1894,7 +1895,7 @@ class HelpdeskController extends Controller
         $response = array();
         try {
 
-            $replies = TicketReply::where('ticket_id', $id)->with(['replyUser','customerReplies'])->orderBy('created_at', 'DESC')->get();
+            $replies = TicketReply::with('updatedBy')->where('ticket_id', $id)->with(['replyUser','customerReplies'])->orderBy('created_at', 'DESC')->get();
             $bbcode = new BBCode();
 
             foreach ($replies as $key => $rep) {

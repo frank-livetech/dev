@@ -476,6 +476,8 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                                                 <tr>
                                                     <!-- <th width="20">ID</th> -->
                                                     <th>Activity</th>
+                                                    <th></th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>

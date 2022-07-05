@@ -59,7 +59,7 @@
                             if(reader.result.includes('/svg') || reader.result.includes('/SVG')) {
                                 base64 = await downloadPNGFromAnyImageSrc(reader.result);
                             }
-                            
+
                             var blobInfo = blobCache.create(id, file, base64);
                             blobCache.add(blobInfo);
                             cb(blobInfo.blobUri(), { title: file.name });
@@ -196,12 +196,12 @@
                     var email = $('#tkt_email').val();
 
                     newcustomer = 'newcustomer';
- 
+
                     form_Data["first_name"] = first_name;
-                    form_Data["last_name"] = last_name; 
-                    form_Data["phone"] = phone; 
-                    form_Data["email"] = email; 
-                    form_Data["newcustomer"] = newcustomer; 
+                    form_Data["last_name"] = last_name;
+                    form_Data["phone"] = phone;
+                    form_Data["email"] = email;
+                    form_Data["newcustomer"] = newcustomer;
 
                     if( first_name == '' || first_name == null) {
                         $("#first_name_error").html('This field is required');
@@ -216,7 +216,7 @@
                     }else{
                         $("#last_name_error").html(' ');
                     }
-                    
+
                     if( email == '' || email == null) {
                         $("#email_error").html('This field is required');
                         return false;
@@ -253,9 +253,9 @@
                 }
 
                 if($('#create_customer_login').prop('checked')) {
-                    form_Data["customer_login"] = 1; 
+                    form_Data["customer_login"] = 1;
                 }else{
-                    // form_Data["customer_login"] = 0; 
+                    // form_Data["customer_login"] = 0;
                 }
 
                 var for_customer_profile_id = $("#for_customer_profile_id").val();
@@ -301,7 +301,7 @@
                                     fileData.append('fileName', 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index);
                                     fileData.append('attachment', this.files[0]);
                                     fileData.append('module', 'tickets');
-    
+
                                     $.ajax({
                                         type: "post",
                                         url: "{{asset('upload_attachments')}}",
@@ -428,7 +428,6 @@
                         $("#dropdown_loader").show();
                     },
                     success: function(data) {
-                        console.log(data , "assignee");
                         let obj = data.status;
                         let obj_user = data.users;
                         let obj_queue = data.queue;
@@ -443,7 +442,7 @@
                         }else{
                             let email_option = ``;
                             for( let item of obj_queue) {
-                                
+
                                 if(item.is_default == 'yes'){
                                     email_option += `<option value="${item.id}" selected> ${item.mailserver_username} (${item.from_name}) </option>`;
                                 }else{
@@ -455,7 +454,7 @@
                             if(default_queue == null){
                                 default_queue = obj_queue['0'];
                             }
-                            
+
 
                             $("#status").html('');
                             select = `<option value="">Select Status</option>`;
@@ -467,7 +466,7 @@
                                 }
                             }
                             $("#status").html(select + option);
-                            
+
                             $('#priority').val(default_queue.mail_priority_id);
                             $("#priority").trigger('change');
 
@@ -475,15 +474,23 @@
                             $("#type").trigger('change');
 
                             select = `<option value="">Unassigned</option>`;
-                            $("#assigned_to").html('');
-                            for(var i =0; i < obj_user.length; i++) {
-                                select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
+                            if($("#assigned_to :selected").val()){
+                                var available_user = obj_user.find(item => item.id == $("#assigned_to :selected").val());
+                                $("#assigned_to").html('');
+                                for(var i =0; i < obj_user.length; i++) {
+                                    select +=`<option value="`+obj_user[i].id+`" ${obj_user[i].id == (available_user ? available_user.id : 0 ) ? 'selected' : ''}>`+obj_user[i].name+`</option>`;
+                                }
+                            }else{
+                                $("#assigned_to").html('');
+                                for(var i =0; i < obj_user.length; i++) {
+                                    select +=`<option value="`+obj_user[i].id+`">`+obj_user[i].name+`</option>`;
+                                }
                             }
                             $("#assigned_to").html(select);
 
-                            
+
                         }
-                        
+
                     },
                     complete: function(data) {
                         $("#dropdown_loader").hide();
@@ -498,7 +505,7 @@
                 $("#assigned_to").html('');
 
             }
-            
+
         }
 
         function ticket_notify(id, template) {
@@ -531,12 +538,12 @@
                         reject(new Error('Cannot retrieve blob'))
                     }
                 })
-        
+
                 xhr.open('GET', bUrl, true)
                 xhr.send()
             })
         }
-        
+
         function fromBlobToBase64 (blob) {
             return new Promise((resolve, reject) => {
                 let reader = new FileReader()
@@ -612,7 +619,7 @@
                     var canvas = document.createElement("canvas");
                     canvas.width = img.width; canvas.height = img.height;
                     canvas.getContext("2d").drawImage(img, 0, 0);
-                    
+
                     //get image/png from convas
                     console.log("Image Loaded");
                     resolve(canvas.toDataURL("image/png"));
@@ -626,7 +633,7 @@
             $('#ticket_attachments').append(`<div class="input-group mt-3">
                 <div class="custom-file text-left">
                     <input type="file" class="form-control ticket_attaches" id="ticket_attachment_${ticket_attachments_count}">
-                    
+
                 </div>
                 <div class="input-group-append">
                     <button class="btn btn-dark" type="button" title="Remove" onclick="console.log(this.parentElement.parentElement.remove())"><span class="fa fa-times"></span></button>
@@ -651,7 +658,7 @@
 
 
         function newCompany() {
-            
+
             $(".newCompany").toggle();
             $("#new_company").val("new_company");
             $("#company_id").val("").trigger("change");
@@ -662,6 +669,6 @@
             }else{
                 $("#new_company").val("old");
             }
-            
+
         }
     </script>

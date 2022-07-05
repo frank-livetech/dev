@@ -5,7 +5,7 @@
     let date_format = $("#system_date_format").val();
     let time_zone = "{{Session::get('timezone')}}";
     let atte_data = {!! json_encode($staff_att_data) !!};
-    
+
 
     var settings = {
         Color: '',
@@ -24,10 +24,10 @@
     $(document).ready(function() {
         $("#flagged").DataTable();
         tickets_logs_list = $('#ticket-logs-list').DataTable({
-            ordering: false
+            ordering: false,
         });
 
-        ticketLogs(); 
+        ticketLogs();
 
         $("#tsearch").keyup(function(e) {
 
@@ -61,7 +61,7 @@
                                 <a href="{{asset('ticket-details/` + element.coustom_id + `')}}">
                                     <div class="bg-light text-left text-dark mt-2 p-2 border shadow-sm rounded">
 
-                                        <p class="m-0">`+element.coustom_id +` | `+element.subject+` | `+element.created_at+`</p> 
+                                        <p class="m-0">`+element.coustom_id +` | `+element.subject+` | `+element.created_at+`</p>
 
                                     </div>
                                 </a>
@@ -191,7 +191,7 @@
                     render: function (data, type, full, meta) {
                         return moment(full.date).format($("#system_date_format").val());
                     }
-                }, 
+                },
                 {
                     render: function(data, type, full, meta) {
                         // alert({{Session::get("timezone")}});
@@ -231,16 +231,16 @@
             url: "{{asset('/get_ticket_log')}}",
             success: function(data) {
                 if (data.success) {
-                    console.log(data);
                     tickets_logs_list.clear().draw();
 
                     for (let i = 0; i < data.logs.length; i++) {
                         const element = data.logs[i];
 
                         tickets_logs_list.row.add([
-                            // element.id,
-                            element.action_perform+' at '+convertDate(element.created_at),
-                        ]).draw(false).node();
+                                        element.action_perform.split('Created By')[0],
+                                        convertDate(element.created_at),
+                                        `<a href="/profile/${element.created_by.id}">`+element.created_by.name+`</a>`
+                                ]).draw(false).node();
                     }
                 } else {
                     console.log(data.message);
@@ -284,7 +284,7 @@
 
                         clockintime = moment(data.clock_in_time , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
                     }else{
-                        btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
+                        btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;
 
                         $('.clockin_timer').hide();
                         $('.clock_in_section').removeAttr('style');
@@ -299,7 +299,7 @@
 
                         $('.showClockInSection').html(clockSection);
                     }
-                    
+
                     $('.clock_btn_div').append(btn);
 
                     var curr_user_name = $("#curr_user_name").val();
@@ -309,7 +309,7 @@
                     let date = moment(today).format(system_date_format);
 
                     let clock_out_time = ``;
-                    
+
                     if( data.hasOwnProperty('clock_out_time') ) {
                         clock_out_time =convertDate( data.clock_out_time );
                     }else{
@@ -356,7 +356,7 @@
                             <td>${clock_out_time}</td>
                             <td>${working_hour}</td>
                         </tr>`);
-                        
+
                     $('#staff_table').DataTable().draw();
 
 
@@ -368,7 +368,7 @@
                 } else {
                     $('.clock_btn').remove();
 
-                    btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;   
+                    btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;
 
                         $('.clockin_timer').hide();
                         $('.clock_in_section').removeAttr('style');

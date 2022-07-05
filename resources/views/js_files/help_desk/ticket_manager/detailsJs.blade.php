@@ -10,6 +10,7 @@ var loggedInUser_id = $("#loggedInUser_id").val();
 var loggedInUser_t = $("#loggedInUser_t").val();
 
 let edit_reply_mode = false;
+let edit_reply_id = 0;
 let attachments_src = [];
 let ticket_attachments_count = 1;
 let date_format = {!! json_encode($date_format) !!};
@@ -22,7 +23,6 @@ let updates_Arr = [];
 // var ticket_attach_path_search = 'public/files';
 
 let reply_flag = 0;
-
 var ticket_attach_path = `{{asset('storage')}}`;
 var ticket_attach_path_search = 'storage';
 let check_followup = [];
@@ -55,7 +55,7 @@ $(document).ready(function() {
 
         // console.log(regiondate , "regiondate");
     }
-
+    //composer TinyMce
     tinymce.init({
         selector: "textarea.mymce",
         // theme: "modern",
@@ -122,6 +122,9 @@ $(document).ready(function() {
     }).catch(function(error) {
         listReplies();
     });
+
+
+
 
     getAllCodes();
 
@@ -1596,7 +1599,7 @@ function listReplies() {
         ticketReplies.forEach(function(reply, index) {
             replies_html = ``;
             if (reply.is_published === 0) {
-                editReply(index);
+                editReply(null,index);
                 $('#draft-rply').show();
             } else {
                 let tdet = '';
@@ -1851,7 +1854,7 @@ function listReplies() {
                         link = `<a href="{{url('profile')}}/${reply.reply_user.id}"> ${reply.reply_user.name} </a>`;
                     }
                 }
-
+                var updated_msg = 'Last edited by:'+ reply.updated_by.name + ' On '+convertDate(reply.updated_by.updated_at)
                 replies_html =`
                     <li class="media" id="reply__${index}">
                         <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
@@ -1863,7 +1866,7 @@ function listReplies() {
                                 </span>&nbsp;<span class="badge badge-secondary">`+user_type+`</span>&nbsp;
                             &nbsp; <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2 dropdown-toggle" data-bs-toggle="dropdown" type="button" style="position: absolute;right: 21px;"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                             <div class="dropdown-menu dropdown-menu-end" style="">
-                                    <a class="dropdown-item" onclick="editReply('${index}')" >
+                                    <a class="dropdown-item" onclick="editReply(${reply.id},'${index}')" >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3 me-1"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                                         <span class="align-middle" >Edit</span>
                                     </a>
@@ -1876,7 +1879,9 @@ function listReplies() {
                                 </h5>
                             </div>
 
-                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">Posted on ` + convertDate(reply.created_at) + `</span>
+                            <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">
+                                `+ reply.updated_by != null ? updated_msg : 'Posted on' + convertDate(reply.created_at) +`
+                            </span>
                             <div class="my-1 bor-top reply-htm" id="reply-html-` + reply.id + `"> ${content} </div>
                             </div>
 
@@ -1947,9 +1952,8 @@ function deleteReply(id , index) {
     });
 }
 
-function publishReply(ele, reply_btn_id , type = 'publish') {
+function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
 
-    console.log(reply_btn_id , "reply_btn_id");
     $("."+reply_btn_id).attr('style','display:none !important');
 
     var content = tinyMCE.editors.mymce.getContent();
@@ -2159,8 +2163,6 @@ function publishReply(ele, reply_btn_id , type = 'publish') {
 
                             }
 
-                            console.log(updates_Arr , "updates_Arr");
-
                         }
 
                         getTicketReplies(ticket.id);
@@ -2233,17 +2235,17 @@ function composeReply() {
 
     for (let i in ticketReplies) {
         if (ticketReplies[i].is_published === 0) {
-            editReply(i);
+            editReply(null,i);
             $('#draft-rply').show();
         }
     }
 }
 
-function editReply(rindex) {
+function editReply(id,rindex) {
     // publishReply(this)
     $('#editreply').modal('show');
-     tinyMCE.editors.mymce.setContent(ticketReplies[rindex].reply);
-
+     tinyMCE.editors.mymce_edit.setContent(ticketReplies[rindex].reply);
+     edit_reply_id = id
     // if(ticketReplies[rindex].attachments) {
     //     let attchs = ticketReplies[rindex].attachments.split(',');
 
@@ -2254,13 +2256,109 @@ function editReply(rindex) {
     //         addAttachment('replies', item);
     //     });
     // }
-
+        // console.log(ticket.queue_id)
     // $('#draft-rply').hide();
     // if(ticketReplies[rindex].is_published == 1) $('#cancel-rply').show();
 
     // document.getElementById('compose-reply').classList.remove('d-none');
 
-    edit_reply_mode = rindex;
+    // edit_reply_mode = rindex;
+}
+
+function update_edit_reply()
+{
+    var content = tinyMCE.editors.mymce_edit.getContent();
+
+    let params = {
+        cc: $('#to_mails').val(),
+        bcc: $('#bcc_emails').val(),
+        ticket_id: ticket.id,
+        type: 'publish',
+        reply: content,
+        queue_id:ticket.queue_id,
+        id:edit_reply_id
+    };
+
+    console.log(params)
+
+    $.ajax({
+        type: "post",
+        url: publish_reply_route,
+        data: params,
+        dataType: 'json',
+        enctype: 'multipart/form-data',
+        cache: false,
+        success: function(data) {
+            if (data.success == true) {
+
+                $('#editreply').modal('hide');
+                $('#mymce_edit').html('');
+
+                // for(var i = 0 ; i < updates_Arr.length ; i++){
+
+                //     if(updates_Arr[i]['id'] == 1){
+                //         ticket.dept_id = updates_Arr[i]['new_data'];
+                //         ticket.department_name  = updates_Arr[i]['new_text'];
+                //         $('#follow_up_dept_id').val(ticket.dept_id).trigger("change");
+                //     }else if(updates_Arr[i]['id'] == 2){
+                //         ticket.assigned_to = updates_Arr[i]['new_data'];
+                //         ticket.assignee_name = updates_Arr[i]['new_text'];
+                //         $('#follow_up_assigned_to').val(ticket.assigned_to).trigger("change");
+                //     }else if(updates_Arr[i]['id'] == 3){
+
+                //         ticket.type = updates_Arr[i]['new_data'];
+                //         ticket.type_name = updates_Arr[i]['new_text'];
+                //         $('#follow_up_type').val(ticket.type).trigger("change");
+
+                //     }else if(updates_Arr[i]['id'] == 4){
+
+                //         if(updates_Arr[i]['new_text'] == 'Closed') {
+                //             $("#sla_reply_due").hide();
+                //             $("#sla_res_due").hide();
+
+                //             if(ticket != null) {
+                //                 ticket.reply_deadline = 'cleared';
+                //                 ticket.resolution_deadline = 'cleared';
+                //             }
+
+                //         }
+
+                //         ticket.status = updates_Arr[i]['new_data'];
+                //         ticket.status_name = updates_Arr[i]['new_text'];
+                //         // $("#dropD").css('background-color' ,color + ' !important');
+                //         $('#follow_up_status').val(ticket.status).trigger("change");
+
+                //     }else if(updates_Arr[i]['id'] == 5){
+
+                //         ticket.priority = updates_Arr[i]['new_data'];
+                //         ticket.priority_name = updates_Arr[i]['new_text'];
+                //         // $("#prio-label").css('background-color' ,color + ' !important');
+                //         $('#follow_up_priority').val(ticket.priority).trigger("change");
+
+                //     }
+
+                // }
+
+                getTicketReplies(ticket.id);
+                tinyMCE.editors.mymce_edit.setContent('');
+                alertNotification('success', 'Success' , data.message);
+            } else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: swal_message_time
+                });
+            }
+        },
+        complete:function (data) {
+
+        },
+        error:function(e) {
+
+        }
+    });
 }
 
 function cancelReply() {
@@ -3104,10 +3202,8 @@ function listFollowups() {
 }
 
 function executeFollowUps(check_followup) {
-    console.log(check_followup , "adasd");
     // if(data.length > 0) {
     let item = g_followUps.find( item => item.id === check_followup[0].id );
-    console.log(item , "item");
     if(item != null) {
 
         let depid = item.follow_up_dept_id;
@@ -3786,7 +3882,7 @@ function selectColor(color) {
     gl_color_notes = color;
     console.log(color);
     tinymce.editors.note.contentDocument.body.style.backgroundColor= color;
-    
+
 }
 
 function followUpNoteColor(color) {
@@ -4665,9 +4761,6 @@ function matchStart(params, data) {
     return null;
 }
 
-
-
-
 // reset fields
 function resetSLA(value) {
     // if(value == 'reply_due') {
@@ -4757,9 +4850,9 @@ function getTicketReplies(id) {
         type: 'GET',
         url: "{{url('ticket-replies')}}/"+id,
         success: function(data) {
+            console.log(data)
             ticketReplies = data.replies;
             listReplies();
-            console.log(data , "getTicketReplies");
             $("#ticket-replies1").remove();
         },
         failure: function(errMsg) {
