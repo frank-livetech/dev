@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -3212,60 +3212,60 @@ class HelpdeskController extends Controller
                     $item->ticket_id = $ticket_into_merge->id;
                     $item->save();
                 }
-                
-                
+
+
 
                 $cc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 1)->first();
                 $bcc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 2)->first();
-                
+
                 $cc_new = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 1)->first();
                 $bcc_new = TicketSharedEmails::where('ticket_id',$ticket_into_merge->id)->where('mail_type' , 2)->first();
-                
+
                 if($cc_new){
                     if($cc_old){
                         $cc_new->email = $cc_new->email.','.$cc_old->email;
                     }
-                    
+
                     if($ticket->customer_id != $ticket_into_merge->customer_id){
-                       
+
                         $customer = Customer::where('id',$ticket->customer_id)->first();
                         $cc_new->email  = $cc_new->email.','.$customer->email;
                     }
                     $cc_new->save();
                     $cc_old->delete();
                 }else{
-                    
+
                     $cc_data = array();
                     if($cc_old){
                         $cc_data['email'] = $cc_old->email;
                     }
-                    
+
                     if($ticket->customer_id != $ticket_into_merge->customer_id){
-                       
+
                         $customer = Customer::where('id',$ticket->customer_id)->first();
                         $cc_data['email'] = $cc_data['email'].','.$customer->email;
                     }
-                    
+
                     $cc_data['mail_type'] = 1;
                     $cc_data['ticket_id'] = $ticket_into_merge->id;
                     TicketSharedEmails::create($cc_data);
                     $cc_old->delete();
                 }
-                
+
                 if($bcc_new){
                     if($bcc_old){
                         $bcc_new->email = $bcc_new->email.','.$bcc_old->email;
                     }
-                    
+
                     $bcc_new->save();
                     $bcc_old->delete();
                 }else{
-                    
+
                     $bcc_data = array();
                     if($bcc_old){
                         $bcc_data['email'] = $bcc_old->email;
                     }
-                    
+
                     $bcc_data['mail_type'] = 2;
                     $bcc_data['ticket_id'] = $ticket_into_merge->id;
                     TicketSharedEmails::create($bcc_data);
