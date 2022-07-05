@@ -28,7 +28,7 @@ class TicketReply extends Model
         return $this->hasOne(Customer::class,'id','customer_id');
     }
 
-    public function updatedBy(){
+    public function updatedByUser(){
         return $this->belongsto(User::class,'updated_by','id');
     }
 
