@@ -2391,6 +2391,36 @@ class MailController extends Controller
                     }
                 }
 
+                if($user_type == 0) {
+
+                    if(str_contains($template, '{Customer-Name}')) {
+                        $template = str_replace('{Customer-Name}', $data['values']['first_name']. ' ' .$data['values']['last_name'], $template);
+                    }
+
+                    if(str_contains($template, '{Customer-Phone}')) {
+
+                        if(!empty($data['values']['phone'])) {
+                            $template = str_replace('{Customer-Phone}', $data['values']['phone'] , $template);
+                        }else{
+                            $template = str_replace('Phone Number:', '' , $template);
+                        }
+
+
+                    }
+
+                }else{
+                    if(str_contains($template, '{Customer-Name}')) {
+                        $template = str_replace('{Customer-Name}', $data['values']['name'], $template);
+                    }
+                    if(str_contains($template, '{Customer-Phone}')) {
+                        if(!empty($data['values']['phone_number'] )) {
+                            $template = str_replace('{Customer-Phone}', $data['values']['phone_number'] , $template);
+                        }else{
+                            $template = str_replace('Phone Number:', '' , $template);
+                        }
+                    }
+                }
+
                 if(str_contains($template, '{Site-Link}')) {
                     $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/dev';
                     $template = str_replace('{Site-Link}', $url , $template);
