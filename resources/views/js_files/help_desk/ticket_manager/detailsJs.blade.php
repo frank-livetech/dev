@@ -1856,8 +1856,9 @@ function listReplies() {
                 }
 
                 var updated_msg = ''
-                if(reply.updated_by != null){
-                    updated_msg = 'Last edited by:'+ reply.updated_by.name + ' On '+convertDate(reply.updated_by.updated_at)
+                console.log(reply)
+                if(reply.updated_by_user != null){
+                    updated_msg = 'Last edited by:'+ reply.updated_by_user.name + ' On '+convertDate(reply.updated_at)
                 }
                 replies_html =`
                     <li class="media" id="reply__${index}">
@@ -4855,7 +4856,6 @@ function getTicketReplies(id) {
         type: 'GET',
         url: "{{url('ticket-replies')}}/"+id,
         success: function(data) {
-            console.log(data)
             ticketReplies = data.replies;
             listReplies();
             $("#ticket-replies1").remove();
