@@ -1855,10 +1855,10 @@ function listReplies() {
                     }
                 }
 
-                var updated_msg = ''
-                if(reply.updated_by != null){
-                    updated_msg = 'Last edited by:'+ reply.updated_by.name + ' On '+convertDate(reply.updated_by.updated_at)
-                }
+                // var updated_msg = ''
+                // if(reply.updated_by != null){
+                //     updated_msg = 'Last edited by:'+ reply.updated_by.name + ' On '+convertDate(reply.updated_by.updated_at)
+                // }
                 replies_html =`
                     <li class="media" id="reply__${index}">
                         <span class="mr-3">${reply.customer_replies == null ? user_img : customer_img }</span>
@@ -1884,7 +1884,7 @@ function listReplies() {
                             </div>
 
                             <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">
-                                `+ reply.updated_by != null ? updated_msg : 'Posted on' + convertDate(reply.created_at) +`
+                                `+'Posted on' + convertDate(reply.created_at) +`
                             </span>
                             <div class="my-1 bor-top reply-htm" id="reply-html-` + reply.id + `"> ${content} </div>
                             </div>
