@@ -3950,7 +3950,7 @@ class HelpdeskController extends Controller
 
 
 
-            $response = (is_numeric($id)) ? DB::select("SELECT * FROM tickets WHERE id=$id OR seq_custom_id=$id;") : DB::select("SELECT * FROM `tickets` WHERE `coustom_id` LIKE '%$id%' OR `subject` LIKE '%$id%';");
+            $response = (is_numeric($id)) ? DB::select("SELECT * FROM tickets WHERE id=$id OR seq_custom_id=$id AND is_trashed = 0 And is_deleted  = 0;") : DB::select("SELECT * FROM `tickets` WHERE `coustom_id` LIKE '%$id%' OR `subject` LIKE '%$id%' AND is_trashed = 0 And is_deleted  = 0;");
 
             return response()->json($response);
         }catch(Exception $e){
