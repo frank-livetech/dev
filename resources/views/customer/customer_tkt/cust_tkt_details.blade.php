@@ -13,6 +13,17 @@
 @section('body')
 
 <style>
+    .text-white {
+            color: white;
+        }
+    .select2-container--default .select2-selection--single{
+        min-height: 1.714rem !important;
+        padding: 0px !important;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow{
+        top: unset !important;
+        bottom: 6px;
+    }
     .tag {
     width: fit-content !important;
     padding: 0.25rem;
@@ -153,7 +164,7 @@ br + br { display: none; }
     @media (max-width: 548px) {
     .more-info {
         display: block;
-        width: 32rem !important; } 
+        width: 22rem !important; } 
     .webkit-box-sub{
         display:inline-table !important;
     }
@@ -272,11 +283,11 @@ br + br { display: none; }
         </div>  
     </div>
     <div class="card" >
-        <div class="card-body drop-dpt" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color . ' !important' : ' ')}}; border-radius: 8px;">
+        <div class="card-body drop-dpt" style="background-color:{{($current_status == null) ? '' : ($current_status->color != null ? $current_status->color . ' !important' : ' ')}};">
             <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
                 <div class="col-md-2 br-white" id="dep-label" style="border-right: 1px solid white;padding: 12px;">
                     <label class="control-label col-sm-12 end_padding text-white" ><strong>Department</strong></label>
-                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important"  id="dep-h5">{{ $ticket->department_name != null ? $ticket->department_name : '-' }}</h5>
+                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem !important;"  id="dep-h5">{{ $ticket->department_name != null ? $ticket->department_name : '-' }}</h5>
                     {{-- <select class="select2 form-select form-control form-control-line" id="dept_id" name="dept_id" style="width: 100%; height:36px;">
                         
                         @foreach($departments as $department)
@@ -286,7 +297,7 @@ br + br { display: none; }
                 </div>
                 <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
                     <label class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
-                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5">{{$ticket->assignee_name != null ? $ticket->assignee_name : '---'}}</h5>
+                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem !important" id="tech-h5">{{$ticket->assignee_name != null ? $ticket->assignee_name : '---'}}</h5>
                     {{-- <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
                         <option value="">Unassigned</option>
                         @foreach($users as $user)
@@ -296,7 +307,7 @@ br + br { display: none; }
                 </div>
                 <div class="col-md-2 br-white" id="type-label" style="border-right: 1px solid white;padding: 12px;">
                     <label class="control-label col-sm-12 end_padding text-white "><strong>Type</strong></label>
-                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="type-h5">{{ $ticket->type_name != null ? $ticket->type_name : '-' }}</h5>
+                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem !important" id="type-h5">{{ $ticket->type_name != null ? $ticket->type_name : '-' }}</h5>
                     {{-- <select class="select2 form-control " id="type" name="type" style="width: 100%; height:36px;">
                         @foreach($types as $type)
                             <option value="{{$type->id}}" {{ $type->id == $details->type ? 'selected' : '' }}>{{$type->name}}</option>
@@ -311,7 +322,7 @@ br + br { display: none; }
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white;;padding: 12px;background-color:{{($current_priority == null) ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ')}}">
+                <div class="col-md-2 br-white" id="prio-label" style="border-right: 1px solid white;padding: 12px;background-color:{{($current_priority == null) ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ')}}">
                     <label class="control-label col-sm-12 end_padding text-white " ><strong>Priority</strong></label>
                     <div id="priority_field">
                         <select class="select2 form-control "  onchange="ticketDetail.updateTktType('priority', this.value)" id="priority" name="priority" style="display:none">

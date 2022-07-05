@@ -6,6 +6,9 @@
               tinymce.init({
                   selector: "textarea#mymce",
                   theme: "modern",
+                  mobile: {
+            theme: 'silver'
+          },
                   height: 300,
                   plugins: [
                       "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
