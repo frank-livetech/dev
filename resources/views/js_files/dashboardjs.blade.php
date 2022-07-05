@@ -242,11 +242,12 @@
                         }else{
                             ticket_acti_col += element.action_perform.split('By')[0]
                         }
+                        var user_id = element.created_by != null ? element.created_by.id : 0;
+                        var staff = element.created_by != null ? element.created_by.name : "";
                         tickets_logs_list.row.add([
-                            ticket_acti_col,
-                            // element.ticket != null ? `Ticket (<a href="/ticket-details/${element.ticket.coustom_id}">`+element.ticket.coustom_id+"</a>)" : '',
+                                        ticket_acti_col,
                                         convertDate(element.created_at),
-                                        `<a href="/profile/${element.created_by != null ? element.created_by.id : 0}">`+element.created_by != null ? element.created_by.name : ''+`</a>`
+                                        `<a href="/profile/`+user_id+`">${staff}</a>`
                                 ]).draw(false).node();
                     }
                 } else {
