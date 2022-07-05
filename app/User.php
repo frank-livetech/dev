@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Activitylog;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -9,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Models\Role;
 use App\Models\Tags;
+use App\Models\TicketReply;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -100,6 +102,9 @@ class User extends Authenticatable implements JWTSubject
     public function tickets(){
         return $this->hasMany(Models\Tickets::class,'assigned_to','id');
     }
+    public function ticketReply(){
+        return $this->hasMany(TicketReply::class,'updated_by','id');
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -120,4 +125,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function activityLog()
+    {
+        return $this->belongsTo(Activitylog::class,'created_by','id');
+    }
 }
+
