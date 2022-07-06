@@ -3304,7 +3304,7 @@ class HelpdeskController extends Controller
                 $action_perform = 'Ticket ('.$ticket->coustom_id.') merged into Ticket ('.$data['tkt_merge_id'].') By '. $name_link;
                 
                 $log = new ActivitylogController();
-                $log->saveActivityLogs('Ticket' , 'tickets' , $ticket_into_merge->id , auth()->id() , $action_perform);
+                $log->saveActivityLogs('Tickets' , 'tickets' , $ticket_into_merge->id , auth()->id() , $action_perform);
 
                 // send notification
                 $slug = '';
