@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -267,7 +267,10 @@ class HelpdeskController extends Controller
                     sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
                 }
-
+                if(isset($data['ticket_detail'])){
+                    $data['ticket_detail'] = $this->replaceBodyShortCodes($data['ticket_detail'] , $ticket);
+                }
+                
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
 
@@ -3215,8 +3218,6 @@ class HelpdeskController extends Controller
                     $item->save();
                 }
 
-
-
                 $cc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 1)->first();
                 $bcc_old = TicketSharedEmails::where('ticket_id',$ticket->id)->where('mail_type' , 2)->first();
 
@@ -3225,7 +3226,14 @@ class HelpdeskController extends Controller
 
                 if($cc_new){
                     if($cc_old){
-                        $cc_new->email = $cc_new->email.','.$cc_old->email;
+                        $cc_old_arr = explode(',',$cc_old);
+                        for($c = 0; $c<sizeof($cc_old_arr);$c++){
+                            if(str_contains($cc_new, $cc_old_arr[$c])){
+                                
+                            }else{
+                                $cc_new->email = $cc_new->email.','.$cc_old_arr[$c];
+                            }
+                        }
                     }
 
                     if($ticket->customer_id != $ticket_into_merge->customer_id){
@@ -3234,7 +3242,9 @@ class HelpdeskController extends Controller
                         $cc_new->email  = $cc_new->email.','.$customer->email;
                     }
                     $cc_new->save();
-                    $cc_old->delete();
+                    if($cc_old){
+                        $cc_old->delete();
+                    }
                 }else{
 
                     $cc_data = array();
@@ -3251,7 +3261,9 @@ class HelpdeskController extends Controller
                     $cc_data['mail_type'] = 1;
                     $cc_data['ticket_id'] = $ticket_into_merge->id;
                     TicketSharedEmails::create($cc_data);
-                    $cc_old->delete();
+                    if($cc_old){
+                        $cc_old->delete();
+                    }
                 }
 
                 if($bcc_new){
@@ -3260,7 +3272,9 @@ class HelpdeskController extends Controller
                     }
 
                     $bcc_new->save();
-                    $bcc_old->delete();
+                    if($bcc_old){
+                        $bcc_old->delete();
+                    }
                 }else{
 
                     $bcc_data = array();
@@ -3271,8 +3285,12 @@ class HelpdeskController extends Controller
                     $bcc_data['mail_type'] = 2;
                     $bcc_data['ticket_id'] = $ticket_into_merge->id;
                     TicketSharedEmails::create($bcc_data);
-                    $bcc_old->delete();
+                    if($bcc_old){
+                        $bcc_old->delete();
+                    }
+                    
                 }
+
 
                 $ticket->is_deleted = 1;
                 $ticket->save();
@@ -3947,7 +3965,7 @@ class HelpdeskController extends Controller
 
 
 
-            $response = (is_numeric($id)) ? DB::select("SELECT * FROM tickets WHERE id=$id OR seq_custom_id=$id;") : DB::select("SELECT * FROM `tickets` WHERE `coustom_id` LIKE '%$id%' OR `subject` LIKE '%$id%';");
+            $response = (is_numeric($id)) ? DB::select("SELECT * FROM tickets WHERE is_deleted  = 0 AND (id=$id OR seq_custom_id=$id) ;") : DB::select("SELECT * FROM `tickets` WHERE is_deleted  = 0 AND ( `coustom_id` LIKE '%$id%' OR `subject` LIKE '%$id%')  ;");
 
             return response()->json($response);
         }catch(Exception $e){

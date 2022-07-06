@@ -3,7 +3,15 @@
         $menus = Session('menus');
         $departments = Session('depts');
         ?>
+<style>
 
+.navigation li a{
+    overflow: visible !important;
+}
+li.sidebar-item.thirdlvl{
+    font-size:13px !important;
+}
+</style>
     <!-- BEGIN: Main Menu-->
     @if(\Auth::user()->theme == "dark")
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
