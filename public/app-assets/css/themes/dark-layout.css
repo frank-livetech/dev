@@ -50,7 +50,13 @@ body.dark-layout {
 
 .dark-layout a:hover {
   color: #7367f0; }
-
+.dark-layout span.fc-icon.fc-icon-chevron-left,.dark-layout span.fc-icon.fc-icon-chevron-right,.dark-layout .fc .fc-daygrid-day-number{
+  color: #fff !important
+}
+.dark-layout .fc .fc-day-today{
+  background-color: midnightblue !important; 
+  background: midnightblue !important;
+}
 .dark-layout label {
   color: #d0d2d6; }
 
