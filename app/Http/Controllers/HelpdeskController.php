@@ -3120,7 +3120,7 @@ class HelpdeskController extends Controller
     public function update_ticket_customer(Request $request) {
         // try {
             $data = $request->all();
-            if($data['tkt_merge_id'] == null || empty($data['tkt_merge_id'])){
+            // if($data['tkt_merge_id'] == null || empty($data['tkt_merge_id'])){
                 if(isset($data['new_customer'])) {
                     $data['customer_id'] = $this->addTicketCustomer($request);
                     $customer = Customer::find($data["customer_id"]);
@@ -3176,8 +3176,9 @@ class HelpdeskController extends Controller
                 $ticket->is_staff_tkt = 0;
 
                 $ticket->save();
-            }else{
+            // }
 
+            if(isset($data['tkt_merge_id'])){
 
                 $ticket_into_merge = Tickets::where('coustom_id', $data['tkt_merge_id'])->where('is_deleted', 0)->first();
                 $ticket = Tickets::where('id', $data['ticket_id'])->where('is_deleted', 0)->first();
@@ -3268,7 +3269,14 @@ class HelpdeskController extends Controller
 
                 if($bcc_new){
                     if($bcc_old){
-                        $bcc_new->email = $bcc_new->email.','.$bcc_old->email;
+                        $bcc_old_arr = explode(',',$cc_old);
+                        for($bcc = 0; $c<sizeof($bcc_old_arr);$bcc++){
+                            if(str_contains($bcc_new, $bcc_old_arr[$bcc])){
+                                
+                            }else{
+                                $bcc_new->email = $bcc_new->email.','.$bcc_old_arr[$bcc];
+                            }
+                        }
                     }
 
                     $bcc_new->save();
@@ -3276,7 +3284,6 @@ class HelpdeskController extends Controller
                         $bcc_old->delete();
                     }
                 }else{
-
                     $bcc_data = array();
                     if($bcc_old){
                         $bcc_data['email'] = $bcc_old->email;
@@ -3288,12 +3295,23 @@ class HelpdeskController extends Controller
                     if($bcc_old){
                         $bcc_old->delete();
                     }
-                    
                 }
-
 
                 $ticket->is_deleted = 1;
                 $ticket->save();
+
+                $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+                $action_perform = 'Ticket ('.$ticket->coustom_id.') merged into Ticket ('.$data['tkt_merge_id'].') By '. $name_link;
+                
+                $log = new ActivitylogController();
+                $log->saveActivityLogs('Ticket' , 'tickets' , $ticket_into_merge->id , auth()->id() , $action_perform);
+
+                // send notification
+                $slug = '';
+                $type = 'Ticket Merged';
+                $title = 'Ticket Merged';
+                $desc = 'Ticket ('.$ticket->coustom_id.') merged into Ticket ('.$data['tkt_merge_id'].') By ' .auth()->user()->name;
+                sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
                 $response['message'] = 'Ticket merged successfully';
                 $response['status_code'] = 200;
@@ -3302,7 +3320,21 @@ class HelpdeskController extends Controller
 
             }
 
-            $response['message'] = 'Ticket Customer Changed Successfully';
+            $cus_name = $customer->first_name .' '. $customer->last_name;
+            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+            $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) properties updated by '. $name_link;
+            
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Ticket' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
+            
+            // send notification
+            $slug = '';
+            $type = 'Ticket Properties';
+            $title = 'Ticket Properties Updated';
+            $desc = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) properties updated By ' .auth()->user()->name;
+            sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
+            $response['message'] = 'Ticket Properties Updated Successfully';
             $response['status_code'] = 200;
             $response['data'] = $customer;
             $response['success'] = true;
