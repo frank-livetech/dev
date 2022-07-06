@@ -3227,7 +3227,7 @@ class HelpdeskController extends Controller
 
                 if($cc_new){
                     if($cc_old){
-                        $cc_old_arr = explode(',',$cc_old);
+                        $cc_old_arr = explode(',',$cc_old->email);
                         for($c = 0; $c<sizeof($cc_old_arr);$c++){
                             if(str_contains($cc_new, $cc_old_arr[$c])){
                                 
@@ -3269,7 +3269,7 @@ class HelpdeskController extends Controller
 
                 if($bcc_new){
                     if($bcc_old){
-                        $bcc_old_arr = explode(',',$cc_old);
+                        $bcc_old_arr = explode(',',$cc_old->email);
                         for($bcc = 0; $c<sizeof($bcc_old_arr);$bcc++){
                             if(str_contains($bcc_new, $bcc_old_arr[$bcc])){
                                 
