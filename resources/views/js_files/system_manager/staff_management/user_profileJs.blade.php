@@ -99,7 +99,7 @@
                     if(reader.result.includes('/svg') || reader.result.includes('/SVG')) {
                         base64 = await downloadPNGFromAnyImageSrc(reader.result);
                     }
-                    
+
                     var blobInfo = blobCache.create(id, file, base64);
                     blobCache.add(blobInfo);
                     cb(blobInfo.blobUri(), { title: file.name });
@@ -188,7 +188,7 @@
         // prediction, set cursor focus on the second address line to encourage
         // entry of subpremise information such as apartment, unit, or floor number.
         address2Field.focus();
-        
+
     }
 
     $(document).ready(function() {
@@ -217,7 +217,7 @@
                 }
                     const allScripts = document.getElementsByTagName( 'script' );
                         [].filter.call(
-                        allScripts, 
+                        allScripts,
                         ( scpt ) => scpt.src.indexOf( 'key='+api_key ) >0
                         )[ 0 ].remove();
 
@@ -328,11 +328,11 @@
                     if(data.status_code == 200 && data.success == true) {
                         get_all_leaves();
                         alertNotification('success', 'Success' , data.message);
-                        
+
                         $("#leaveModal").modal('hide');
-                    
+
                         let event = {
-                            title : form.reason , 
+                            title : form.reason ,
                             start : form.start_date ,
                             end : form.end_date ,
                         }
@@ -460,7 +460,7 @@
                     if (data.status == 200 && data.success == true) {
                         alertNotification('success', 'Success' , data.message);
                         $("#editPicModal").modal('hide');
-                        
+
                         let path = root + '/' + data.img;
                         let id = "{{auth()->user()->id}}";
 
@@ -471,7 +471,7 @@
                         }else{
                             $('#profile-user-img').attr('src', path);
                             $('#modal_profile_user_img').attr('src', path);
-                        }                
+                        }
                     } else {
                         alertNotification('error', 'Error' , data.message);
                     }
@@ -482,7 +482,7 @@
 
             });
         });
-        
+
         // save work hours
         $("#workHoursForm").submit(function(event) {
             event.preventDefault();
@@ -634,9 +634,9 @@
                         },
                         {
                             "render": function(data, type, full, meta) {
-                                return `<button  onclick="editWorkHours(${full.id}, '${full.hours_worked}')" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
+                                return `<button  onclick="editWorkHours(${full.id}, '${full.hours_worked}','${moment(full.clock_in).format('YYYY-MM-DD HH:MM:DD')}','${full.clock_out}')" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
                                     <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>`
-                                
+
                             }
                         },
 
@@ -653,9 +653,12 @@
         });
     }
 
-    function editWorkHours(id, hours) {
+    function editWorkHours(id, hours, clock_in, clock_out) {
         $('#workHoursForm #attendance_id').val(id);
         $('#workHoursForm #worked_hours_value').val(hours);
+        $('#workHoursForm #clock_in').val(clock_in);
+        $('#workHoursForm #clock_out').val(clock_out);
+
         $('#workHoursModal').modal('show');
     }
 
@@ -668,7 +671,7 @@
         formData.append('dept_id', dept_id);
         formData.append('assignment', 'set');
         $('.yes_sub_check_'+dept_id).prop('checked' , true);
-        
+
         updateAssignment(formData);
 
         // $('.yes_sub_check_'+dept_id).each(function () {
@@ -733,7 +736,7 @@
                 var no = '';
 
                 for(var i = 0; i < obj.length; i++) {
-                    
+
                     $("#collapseOne_"+obj[i].id).addClass('show');
                     $("#customRadio1_"+obj[i].id).prop('checked',true);
 
@@ -749,10 +752,10 @@
                         }else{
                             $(no).prop('checked',true);
                         }
-                        
+
                     }
                 }
-                
+
             },
             complete: function(data) {
                 $(".loader_container").hide();
@@ -799,7 +802,7 @@
                 $("#per_sve_btn").hide();
                 $("#per_process").show();
                 $("#permission_loader").show();
-            },  
+            },
             success: function(data) {
                 // console.log(data);
                 alertNotification('success', 'Success' , data.message);
@@ -808,7 +811,7 @@
                 $("#per_sve_btn").show();
                 $("#per_process").hide();
                 $("#permission_loader").hide();
-            },  
+            },
             error: function(e) {
                 console.log(e);
                 $("#per_sve_btn").show();
@@ -940,12 +943,12 @@
     $("#my-schedule-tab").click(function() {
         get_all_leaves();
         var defaultEvents = [];
-            
+
         // get_all_schedules(defaultEvents);
     });
 
     $("#payroll-tab").click(function() {
-        
+
         let date = new Date();
         let start = moment(date).startOf('month').format('YYYY-MM-DD');
         let end = moment(date).endOf('month').format('YYYY-MM-DD');

@@ -1092,7 +1092,7 @@
                             </div>
 
                             @if($is_default != 1)
-                            <div class="row mt-1">
+                            {{-- <div class="row mt-1">
                                 <div class="col-md-6">
                                     <div class="custom-control custom-checkbox mr-sm-2">
                                         <input type="checkbox" class="custom-control-input" name="set_default"
@@ -1100,7 +1100,7 @@
                                         <label class="custom-control-label" for="set_default">Set as Default</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             @endif
 
                             <div class="row mt-1">

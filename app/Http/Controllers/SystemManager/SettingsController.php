@@ -33,7 +33,7 @@ class SettingsController extends Controller
 
         $brand_settings = BrandSettings::first();
         $departments = Departments::all();
-        $ticket_settings = TicketSettings::first(); 
+        $ticket_settings = TicketSettings::first();
 
         if($brand_settings) {
             Session::put('site_title', $brand_settings->site_title);
@@ -48,7 +48,7 @@ class SettingsController extends Controller
         $featureListsSub = Feature::where('parent_id', '!=',0)->get();
         $sys_setting = SystemSetting::whereIn('sys_key',['emails','email_recap_notifications','check_off_emails'])->get()->toArray();
 
-        $keys = array(  
+        $keys = array(
             "reply_due_deadline" ,
             "reply_due_deadline_when_adding_ticket_note",
             "default_reply_and_resolution_deadline" ,
@@ -65,7 +65,7 @@ class SettingsController extends Controller
         if(sizeOf($ticket_sla) > 0) {
             foreach($ticket_sla as $sla) {
                 $sla_setting[$sla->tkt_key] = $sla->tkt_value;
-            }   
+            }
         }
 
         $staff_list = User::where('user_type', '!=', 5)->get();
@@ -88,13 +88,13 @@ class SettingsController extends Controller
 
         $dateformat = SystemSetting::where('sys_key','sys_dt_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
         $timeformat = SystemSetting::where('sys_key','sys_tm_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
-        
+
         $datetime = [
             "date" =>  ($dateformat != null ? $dateformat->sys_value : 'MM/DD/YYYY'),
             "time" =>  ($timeformat != null ? $timeformat->sys_value : 'hh:mm:ss'),
         ];
         // return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
-       
+
         // get ticket refresh time
         $tkt_refresh_time = SystemSetting::where('sys_key', 'ticket_refresh_time')->where('created_by', auth()->id())->first();
         $ticket_time = ($tkt_refresh_time == null ? 0 : $tkt_refresh_time->sys_value);
@@ -111,7 +111,7 @@ class SettingsController extends Controller
 
         $brand_settings = BrandSettings::first();
         $departments = Departments::all();
-        $ticket_settings = TicketSettings::first(); 
+        $ticket_settings = TicketSettings::first();
 
         if($brand_settings) {
             Session::put('site_title', $brand_settings->site_title);
@@ -126,7 +126,7 @@ class SettingsController extends Controller
         $featureListsSub = Feature::where('parent_id', '!=',0)->get();
         $sys_setting = SystemSetting::whereIn('sys_key',['emails','email_recap_notifications','check_off_emails'])->get()->toArray();
 
-        $keys = array(  
+        $keys = array(
             "reply_due_deadline" ,
             "reply_due_deadline_when_adding_ticket_note",
             "default_reply_and_resolution_deadline" ,
@@ -143,7 +143,7 @@ class SettingsController extends Controller
         if(sizeOf($ticket_sla) > 0) {
             foreach($ticket_sla as $sla) {
                 $sla_setting[$sla->tkt_key] = $sla->tkt_value;
-            }   
+            }
         }
 
         $staff_list = User::where('user_type', '!=', 5)->get();
@@ -166,7 +166,7 @@ class SettingsController extends Controller
 
         $dateformat = SystemSetting::where('sys_key','sys_dt_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
         $timeformat = SystemSetting::where('sys_key','sys_tm_frmt')->where('created_by', auth()->id())->select('sys_value')->first();
-        
+
         $datetime = [
             "date" =>  ($dateformat != null ? $dateformat->sys_value : 'MM/DD/YYYY'),
             "time" =>  ($timeformat != null ? $timeformat->sys_value : 'hh:mm:ss'),
@@ -174,7 +174,7 @@ class SettingsController extends Controller
         // return view('system_manager.settings.index',compact('brand_settings','roles','departments','ticket_settings','featureLists','featureListsSub','sys_setting','sla_setting', 'staff_list', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
         return view('system_manager.settings.index-new', get_defined_vars());
     }
-    
+
     public function staff_manager(){
         return view('system_manager.staff_manager.index');
     }
@@ -182,11 +182,11 @@ class SettingsController extends Controller
     public function saveBrandSettings(Request $request){
 
         $data = array(
-            "site_title" => $request->site_title, 
-            "site_logo_title" => $request->site_logo_title, 
-            "site_version" => $request->site_version, 
-            "site_domain" => $request->site_domain, 
-            "site_footer" => $request->site_footer, 
+            "site_title" => $request->site_title,
+            "site_logo_title" => $request->site_logo_title,
+            "site_version" => $request->site_version,
+            "site_domain" => $request->site_domain,
+            "site_footer" => $request->site_footer,
         );
 
         $brand_settings = BrandSettings::first();
@@ -197,7 +197,7 @@ class SettingsController extends Controller
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $filePath = public_path('storage/branding/');
             $image->move($filePath, $filename);
-            
+
             $data['site_logo'] = 'storage/branding/'. $filename;
         }
 
@@ -207,7 +207,7 @@ class SettingsController extends Controller
             $filename = (time() + 2) . '.' . $image->getClientOriginalExtension();
             $filePath = public_path('storage/branding/');
             $image->move($filePath, $filename);
-            
+
             $data['site_favicon'] = 'storage/branding/'. $filename;
         }
 
@@ -217,7 +217,7 @@ class SettingsController extends Controller
             $filename = (time() + 4) . '.' . $image->getClientOriginalExtension();
             $filePath = public_path('storage/branding/');
             $image->move($filePath, $filename);
-            
+
             $data['login_logo'] = 'storage/branding/'. $filename;
         }
 
@@ -227,7 +227,7 @@ class SettingsController extends Controller
             $filename = (time() + 5) . '.' . $image->getClientOriginalExtension();
             $filePath = public_path('storage/branding/');
             $image->move($filePath, $filename);
-            
+
             $data['customer_logo'] = 'storage/branding/'. $filename;
         }
 
@@ -237,7 +237,7 @@ class SettingsController extends Controller
             $filename = (time() + 7) . '.' . $image->getClientOriginalExtension();
             $filePath = public_path('storage/branding/');
             $image->move($filePath, $filename);
-            
+
             $data['company_logo'] = 'storage/branding/'. $filename;
         }
 
@@ -246,7 +246,7 @@ class SettingsController extends Controller
             $filename = (time() + 8) . '.' . $image->getClientOriginalExtension();
             $filePath = public_path('storage/branding/');
             $image->move($filePath, $filename);
-            
+
             $data['user_logo'] = 'storage/branding/'. $filename;
         }
 
@@ -257,7 +257,7 @@ class SettingsController extends Controller
             $data['created_by'] = auth()->id();
             BrandSettings::create($data);
         }
-    
+
 
         $response['message'] = 'Brand Settings Saved Successfully!';
         $response['status_code'] = 200;
@@ -266,7 +266,7 @@ class SettingsController extends Controller
     }
 
     public function save_department(Request $request ){
-        
+
         $data = $request->all();
 
         if(empty(trim($request->name, " "))) {
@@ -275,7 +275,7 @@ class SettingsController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }
-        
+
         $response = array();
         $dept_created_by=\Auth::user()->id;
         try{
@@ -290,7 +290,7 @@ class SettingsController extends Controller
                 $departments_id->dept_counter = $dept_counter;
 
                 $departments_id->updated_by = \Auth::user()->id;
-            
+
             if($departments_id){
 
                 $departments_id->update();
@@ -311,11 +311,11 @@ class SettingsController extends Controller
                 $response['message'] = 'department Saved Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
-                return response()->json($response); 
+                return response()->json($response);
 
                  }
-            
-           
+
+
         }catch(Exception $e){
             $response['message'] = 'Something Went wrong!';
             $response['status_code'] = 500;
@@ -325,17 +325,17 @@ class SettingsController extends Controller
     }
 
     public function get_departments(){
-        
+
         // $departments = Departments::get();
         $departments = DB::table('departments')->get();
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['departments']= $departments;
-        
+
         return response()->json($response);
-        
+
     }
 
     public function showDepartmentPermission(Request $request) {
@@ -356,14 +356,14 @@ class SettingsController extends Controller
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['permissions']= $departments;
-        
+
         return response()->json($response);
     }
-    
+
     public function save_priorities(Request $request){
 
         $data = $request->all();
-        
+
         $response = array();
         $priority_created_by= \Auth::user()->id;;
         try{
@@ -375,20 +375,20 @@ class SettingsController extends Controller
             }
 
             if(!empty($request->priority_id)){
-                
+
                     $priorities_id = TicketPriority::where('id',$request->priority_id)->first();
                     $priorities_id->name = $data['name'];
                     $priorities_id->priority_color = $data['priority_color'];
                     $priorities_id->updated_by = \Auth::user()->id;
-                
+
                 if($priorities_id){
-    
+
                     $priorities_id->update();
                     $response['message'] = 'Priority Update Successfully!';
                     $response['status_code'] = 200;
                     $response['success'] = true;
                     return response()->json($response);
-    
+
                 }
              }else{
                 $data['created_by']= $priority_created_by;
@@ -404,19 +404,19 @@ class SettingsController extends Controller
             $response['status_code'] = 500;
             $response['success'] = false;
             return response()->json($response);
-    
+
         }
     }
 
     public function get_priorities(){
         // $priorities = TicketPriority::get();
         $priorities = DB::table('ticket_priorities')->get();
-            
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['priorities']= $priorities;
-        
+
         return response()->json($response);
     }
 
@@ -478,22 +478,22 @@ class SettingsController extends Controller
     public function get_statuses(){
         // $statuses = TicketStatus::get();
         $statuses = DB::table('ticket_statuses')->get();
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['statuses']= $statuses;
-        
+
         return response()->json($response);
     }
 
     public function save_type(Request $request){
 
         $data = $request->all();
-        
+
         $response = array();
         $createdby= \Auth::user()->id;
-        
+
         try{
             if(empty(trim($data['name'], " "))) {
                 $response['message'] = 'Name is empty!';
@@ -503,11 +503,11 @@ class SettingsController extends Controller
             }
 
             if(!empty($request->type_id)){
-                
+
                 $types_id = TicketType::where('id',$request->type_id)->first();
                 $types_id->name = $data['name'];
                 $types_id->updated_by = \Auth::user()->id;
-            
+
             if($types_id){
 
                 $types_id->update();
@@ -536,10 +536,10 @@ class SettingsController extends Controller
     public function save_customer_type(Request $request){
 
         $data = $request->all();
-        
+
         $response = array();
         $createdby= \Auth::user()->id;
-        
+
         try{
             if(empty(trim($data['name'], " "))) {
                 $response['message'] = 'Type name is empty!';
@@ -549,11 +549,11 @@ class SettingsController extends Controller
             }
 
             if(!empty($request->customer_type_id)){
-                
+
                 $types_id = CustomerType::where('id',$request->customer_type_id)->first();
                 $types_id->name = $data['name'];
                 $types_id->updated_by = \Auth::user()->id;
-            
+
             if($types_id){
 
                 $types_id->update();
@@ -582,10 +582,10 @@ class SettingsController extends Controller
     public function save_dispatch_status(Request $request){
 
         $data = $request->all();
-        
+
         $response = array();
         $createdby= \Auth::user()->id;
-        
+
         try{
             if(empty(trim($data['name'], " "))) {
                 $response['message'] = 'Status name is empty!';
@@ -595,11 +595,11 @@ class SettingsController extends Controller
             }
 
             if(!empty($request->dispatch_status_id)){
-                
+
                 $types_id = DispatchStatus::where('id',$request->dispatch_status_id)->first();
                 $types_id->name = $data['name'];
                 $types_id->updated_by = \Auth::user()->id;
-            
+
             if($types_id){
 
                 $types_id->update();
@@ -629,10 +629,10 @@ class SettingsController extends Controller
     public function save_project_type(Request $request){
 
         $data = $request->all();
-        
+
         $response = array();
         $createdby= \Auth::user()->id;
-        
+
         try{
             if(empty(trim($data['name'], " "))) {
                 $response['message'] = 'Project type name is empty!';
@@ -642,11 +642,11 @@ class SettingsController extends Controller
             }
 
             if(!empty($request->project_type_id)){
-                
+
                 $types_id = ProjectType::where('id',$request->project_type_id)->first();
                 $types_id->name = $data['name'];
                 $types_id->updated_by = \Auth::user()->id;
-            
+
             if($types_id){
 
                 $types_id->update();
@@ -675,162 +675,162 @@ class SettingsController extends Controller
     public function get_types(){
         // $types = TicketType::get();
         $types = DB::table('ticket_types')->get();
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['types']= $types;
-        
+
         return response()->json($response);
     }
 
     public function get_customer_types(){
         // $types = TicketType::get();
         $types = DB::table('customer_types')->get();
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['types']= $types;
-        
+
         return response()->json($response);
     }
 
     public function get_dispatch_status(){
         // $types = TicketType::get();
         $types = DB::table('dispatch_status')->get();
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['types']= $types;
-        
+
         return response()->json($response);
     }
 
     public function get_project_type(){
         // $types = TicketType::get();
         $types = DB::table('project_type')->get();
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['types']= $types;
-        
+
         return response()->json($response);
     }
 
     public function delete_department(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-    
+
         $del_department = Departments::destroy($data);
         $response['message'] = 'Department Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-    
-        
+
+
     }
 
     public function delete_priority(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-    
+
         $del__priority = TicketPriority::destroy($data);
         $response['message'] = 'Priority Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-    
-        
+
+
     }
 
     public function delete_status(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-    
+
         $del_status = TicketStatus::destroy($data);
         $response['message'] = 'Status Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-    
-        
+
+
     }
 
     public function delete_type(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-    
+
         $del_type = TicketType::destroy($data);
         $response['message'] = 'Type Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-    
-        
+
+
     }
 
     public function delete_customer_type(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-    
+
         $del_type = CustomerType::destroy($data);
         $response['message'] = 'Type Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-    
-        
+
+
     }
-    
+
     public function delete_dispatch_status(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-    
+
         $del_type = DispatchStatus::destroy($data);
         $response['message'] = 'Status Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-    
-        
+
+
     }
 
     public function delete_project_type(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-    
+
         $del_type = ProjectType::destroy($data);
         $response['message'] = 'Project Type Delete Successfully!';
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
-    
-        
+
+
     }
 
     public function ticket_format(Request $request){
-            
+
             $data = $request->all();
             $response = array();
-            
-            
-            
+
+
+
             try{
 
                 $ticketSettings = TicketSettings::where('tkt_key','ticket_format')->first();
 
                 if($ticketSettings){
-                                        
+
                     TicketSettings::where('tkt_key','ticket_format')->update([
                         "tkt_key" => 'ticket_format',
                         "tkt_value" => $request->ticket_format,
@@ -856,7 +856,7 @@ class SettingsController extends Controller
                     $response['status_code'] = 200;
                     $response['success'] = true;
                     return response()->json($response);
-                     
+
                 }
             }catch(Exception $e){
                 $response['message'] = 'Something Went wrong!';
@@ -864,16 +864,16 @@ class SettingsController extends Controller
                 $response['success'] = false;
                 return response()->json($response);
             }
-    } 
+    }
 
     public function saveColorSettings(Request $request){
-        
+
         try{
             $action = $request->input('action');
             $color = $request->input('color');
             $response = [];
             $brand_settings = BrandSettings::first();
-            
+
             if($brand_settings){
                 if($action == 'textDark'){
                     $brand_settings->text_dark = $color;
@@ -907,13 +907,13 @@ class SettingsController extends Controller
 
     public function saveSystemDateAndTime(Request $request) {
         $response = array();
-        
+
         $date = $request->sys_dt_frmt;
         $time = $request->sys_tm_frmt;
         $timezone = $request->timezone;
 
         $datetime = array("sys_dt_frmt" => $date ,"sys_tm_frmt" =>$time , "sys_timezone" => $timezone);
-        
+
         $setting = SystemSetting::where("sys_key","=","sys_dt_frmt")->first();
 
         if(!$setting ) {
@@ -929,8 +929,8 @@ class SettingsController extends Controller
             $response['message'] = 'System Setting Saved Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
-            return response()->json($response); 
-            
+            return response()->json($response);
+
         }else{
 
             foreach($datetime as $key=>$value) {
@@ -947,14 +947,14 @@ class SettingsController extends Controller
             $response['message'] = 'System Setting Updated Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
-            return response()->json($response); 
-        }       
+            return response()->json($response);
+        }
 
     }
     //Response Template
 
     public function addResponseTemplate(Request $request) {
-        
+
         $data = array(
             "title" => $request->title,
             "cat_id" => $request->cat_id,
@@ -978,7 +978,7 @@ class SettingsController extends Controller
         return response()->json($response);
     }
 
-    public function showResponseTemplate(Request $request) {  
+    public function showResponseTemplate(Request $request) {
         $data = ResponseTemplate::all();
 
         $response['message'] = 'Category Saved Successfully';
@@ -989,7 +989,7 @@ class SettingsController extends Controller
     }
 
     public function updateResponseTemplate(Request $request) {
-    
+
         $sla = ResponseTemplate::where("id",$request->id)->first();
         $sla->title = $request->title;
         $sla->cat_id = $request->cat_id;
@@ -1080,7 +1080,7 @@ class SettingsController extends Controller
         $sla = RestemplateCat::where("id",$request->id)->first();
         $sla->is_deleted = 1;
         $sla->save();
-        
+
         $response['message'] = 'Record Deleted Successfully';
         $response['status_code'] = 200;
         $response['success'] = true;
@@ -1126,13 +1126,13 @@ class SettingsController extends Controller
             $sla->sla_status = $request->sla_status;
             // $sla->is_default = $request->is_default;
             $sla->save();
-    
+
             $response['message'] = 'SLA Saved Successfully';
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);
         // }
-     
+
 
     }
 
@@ -1174,7 +1174,7 @@ class SettingsController extends Controller
         //     $sla2->sla_status = $request->sla_status;
         //     $sla2->is_default = $request->is_default;
         //     $sla2->save();
-    
+
         //     $response['message'] = 'SLA Updated Successfully';
         //     $response['status_code'] = 200;
         //     $response['success'] = true;
@@ -1195,22 +1195,22 @@ class SettingsController extends Controller
             $sla->sla_status = $request->sla_status;
             // $sla->is_default = $request->is_default;
             $sla->save();
-    
+
             $response['message'] = 'SLA Updated Successfully';
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);
         // }
-     
-      
+
+
 
     }
 
     public function SLASetting(Request $request) {
 
         $current_date = Carbon::now();
-        
-        $data = array(  
+
+        $data = array(
             "reply_due_deadline" => $request->reply_due_deadline,
             "reply_due_deadline_when_adding_ticket_note" => $request->reply_due_deadline_when_adding_ticket_note,
             "default_reply_and_resolution_deadline" =>$request->default_reply_and_resolution_deadline,
@@ -1220,7 +1220,7 @@ class SettingsController extends Controller
             "overdue_ticket_text_color" =>$request->overdue_ticket_text_color,
         );
 
-        $keys = array(  
+        $keys = array(
             "reply_due_deadline" ,
             "reply_due_deadline_when_adding_ticket_note",
             "default_reply_and_resolution_deadline" ,
@@ -1229,7 +1229,7 @@ class SettingsController extends Controller
             "overdue_ticket_background_color",
             "overdue_ticket_text_color",
         );
-        
+
         $setting = TicketSettings::whereIn('tkt_key',$keys)->get();
 
         if($setting) {
@@ -1253,7 +1253,7 @@ class SettingsController extends Controller
             return response()->json($response);
 
         }else{
-            
+
             foreach($data as $key=>$value) {
                 $sys_setting = new TicketSettings();
                 $sys_setting->tkt_key = $key;
@@ -1274,7 +1274,7 @@ class SettingsController extends Controller
 
     public function customerSetting(Request $request) {
 
-        $data = array(  
+        $data = array(
             "customer_delete" => $request->customer_delete,
             "customer_disable" => $request->customer_disable,
             "customer_create" => $request->customer_create,
@@ -1341,7 +1341,7 @@ class SettingsController extends Controller
             $response['message'] = 'System Setting Updated Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
-            return response()->json($response); 
+            return response()->json($response);
 
         }else{
 
@@ -1356,7 +1356,7 @@ class SettingsController extends Controller
             $response['message'] = 'System Setting Saved Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
-            return response()->json($response); 
+            return response()->json($response);
 
         }
     }
@@ -1377,7 +1377,7 @@ class SettingsController extends Controller
         // }
 
         Notification::where('receiver_id', auth()->id() )->update(['read_at' => Carbon::now()]);
-        
+
         return view('notification.notification-new',compact('notifications'));
     }
 
@@ -1401,7 +1401,7 @@ class SettingsController extends Controller
         );
 
         if($request->edituser != null && $request->edituser != " ") {
-            
+
             SpamUser::where('id',$request->edituser)->update($data);
             $title = 'Updated';
         }else{
@@ -1414,16 +1414,16 @@ class SettingsController extends Controller
         $response['success'] = true;
         return response()->json($response);
     }
-    
+
     public function get_banned_users(){
-        
+
         $banned_users = SpamUser::orderBy('id', 'DESC')->with('banned_by_user')->get();
 
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['banned_users']= $banned_users;
-        
+
         return response()->json($response);
     }
 
@@ -1434,14 +1434,14 @@ class SettingsController extends Controller
         if( count($users) > 0) {
             SpamUser::whereIn('id',$request->id)->delete();
             return response()->json([
-                "status" => 200 , 
+                "status" => 200 ,
                 "success" => true ,
                 "message" => "Banned User deleted Successfully",
             ]);
         }else{
 
             return response()->json([
-                "status" => 500 , 
+                "status" => 500 ,
                 "success" => false ,
                 "message" => "Something Went Wrong",
             ]);

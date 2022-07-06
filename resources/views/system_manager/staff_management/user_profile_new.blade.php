@@ -14,7 +14,7 @@
         .mti-2 { margin-top: 1.9rem !important; }
         .demo-inline-spacing { display: flex; flex-wrap: wrap; justify-content: space-between !important; align-items: center; background-color: rgb(243, 239, 239); padding: 14px; border-radius: 5px}
         .demo-inline-spacing1 { display: flex; flex-wrap: wrap; justify-content: space-between !important; align-items: center; padding: 7px; border-radius: 5px }
-        .demo-inline-spacing > * { margin-right: unset; margin-top: unset; }   
+        .demo-inline-spacing > * { margin-right: unset; margin-top: unset; }
         .soc-card { justify-content: space-between; display: flex; }
         .soc-ico { font-size: 24px; }
         .picEdit{ cursor:pointer; position: absolute; top: 72px; left: 139px; border: 1px solid #fff; padding: 4px; border-radius: 100%; background: #fbfbfb; }
@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/pages/app-calendar.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/css/plugins/forms/form-validation.css')}}">
-    
+
 @endsection
 
 @section('body')
@@ -63,7 +63,7 @@
     </div>
 
     <div class="content-body">
-        @if($date_format) 
+        @if($date_format)
         <input type="hidden" id="system_date_format" value="{{$date_format}}">
         @else
             <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
@@ -101,33 +101,33 @@
                     </div>
                     <div class="card-body">
                         <input type="hidden" id="user_id" value="{{$profile->id}}">
-    
-                        <small class="text-muted">Email address <a href="#" class="text-muted" onclick="openSettingTab()"><i class="fas 
+
+                        <small class="text-muted">Email address <a href="#" class="text-muted" onclick="openSettingTab()"><i class="fas
                         fa-pencil-alt float-right" aria-hidden="true"></i></a></small>
-                        
-                        <h6> 
+
+                        <h6>
                             <a href="mailto:{{$profile->email}}" title="{{$profile->email}}">
                                 {{ $profile->email != null ? $profile->email : '-'}}
-                            </a> 
+                            </a>
                         </h6>
 
                         <small class="text-muted pt-4 db">Phone</small>
                         <h6><a href="tel:{{$profile->phone_number}}" id="staff_phone">{{$profile->phone_number}}</a></h6>
                         <small class="text-muted pt-4 db">Address</small> <br>
-    
-                        <span id="staff_address">{{$profile != null ? $profile->address : ' '}}</span> 
+
+                        <span id="staff_address">{{$profile != null ? $profile->address : ' '}}</span>
                         <span id="staff_apt_address">{{$profile->apt_address != null ? ','.$profile->apt_address : ''}}</span>
-    
+
                         <span id="staff_city">{{$profile != null ? $profile->city : ' '}}</span>
-    
+
                         @if($profile->state != null && $profile->state != '')
                             <span id="staff_state">{{ ', '. $profile->state }}</span>
                         @else
                             <span id="staff_state"></span>
                         @endif
-    
+
                         <span id="staff_zip">{{$profile->zip != null ? ','. $profile->zip : ' '}}</span>
-    
+
                         @if($profile->country != null && $profile->country != '')
                             <span id="staff_coun">{{ ', ' . $profile->country}}</span>
                         @else
@@ -147,21 +147,21 @@
                     <h2 class="mt-4 font-weight-bold text-dark">Social Links</h2>
                         <div class=" soc-card mt-3">
                             <a href="{{$profile->twitter}}" id="twt_link" target="_blank" style="color: #009efb;font-size:24px"><i class="soc-ico  fab fa-twitter"></i></a>
-    
+
                             <a href="{{$profile->fb}}" id="fb_link" target="_blank" style="color:#0570E6;font-size:24px"><i class="soc-ico fab fa-facebook"></i></a>
-    
+
                             <a href="{{$profile->pinterest}}" id="pint_link" target="_blank" style="color:#DF1A26;font-size:24px"><i class="soc-ico  fab fa-pinterest-square"></i></a>
-    
+
                             <a href="{{$profile->insta}}" id="insta_link" target="_blank" style="color:#e1306c;font-size:24px"><i class="soc-ico  fab fa-instagram"></i></a>
-    
+
                             <a href="{{$profile->linkedin}}" id="linkedin_link" target="_blank" style="color:#0e76a8; font-size:24px"><i class="fab fa-linkedin"></i></a>
-    
+
                             <a href="{{$profile->website}}" id="website_link" target="_blank" style="font-size:24px"><i class="fas fa-globe"></i></a>
-    
+
                         </div>
-                        
+
                         <div class="loader_container" id="usr_lnk_loader" style="display:none">
-                            <div class="loader"></div>  
+                            <div class="loader"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -169,7 +169,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="col-lg-9 col-xlg-9 col-md-7 ">
                 <div class="card">
                     <!-- Tabs -->
@@ -213,7 +213,7 @@
                                     <h2 class="mt-4 font-weight-bold text-dark">Personal Info</h2>
                                     <div class="row">
                                         <input type="hidden" value="{{$profile->id}}" id="profile_id">
-    
+
                                         <div class="col-md-6 form-group">
                                             <label>Name</label> <span class="text-danger">*</span>
                                             <input type="text" name="full_name" id="full_name" placeholder="Name" value="{{$profile->name}}" class="form-control" required>
@@ -223,12 +223,12 @@
                                             <input type="text" name="job_title" id="job_title" placeholder="Job Title" value="{{$profile->job_title}}" class="form-control">
                                         </div>
                                     </div>
-    
+
                                     <div class="row mt-1">
                                         <div class="col-md-5 form-group">
                                             <label for="example-email">Email</label><span class="text-danger">*</span>
                                             <input type="email" value="{{$profile->email}}" placeholder="Email" class="form-control " name="email" id="email" disabled required>
-    
+
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <label>Phone No </label>
@@ -238,19 +238,19 @@
                                             </div>
                                             <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                                             {{-- <input type="number" name="phone" id="phone" value="{{$profile->phone_number}}" placeholder="Phone" class="form-control"> --}}
-                                            
+
                                         </div>
-                                        
+
                                         <div class="col-md-3">
                                             <label>Phone Type</label>
                                             <select class="select2 form-select" id="select2-disabled-result" name="phone_type" id="phone_type">
                                                     <option value="">Select</option>
-                                                    
+
                                                     <option value="cellphone" {{$profile->phone_type == "cellphone" ? "selected" : ''}}>Cell Phone</option>
                                                     <option value="landline" {{$profile->phone_type == "landline" ? "selected" : ''}}>Landline</option>
                                                     <option value="office" {{$profile->phone_type == "office" ? "selected" : ''}}>Office</option>
                                                     <option value="other" {{$profile->phone_type == "other" ? "selected" : ''}}>Other</option>
-                                                    
+
                                             </select>
                                         </div>
                                     </div>
@@ -263,7 +263,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="row mt-1 change_password_row" style="display:none">
                                         {{-- <div class="col-md-4 form-group">
                                             <label>Old Password</label>
@@ -293,8 +293,8 @@
                                             </div>
                                         </div>
                                     </div>
-    
-    
+
+
                                     <div class="row mt-1">
                                         <div class="col-12">
                                             <label>Street Address</label>
@@ -308,36 +308,36 @@
                                             </div>
                                         </div>
                                     </div>
-    
-    
+
+
                                     <div class="row mt-1">
                                         <div class="col-md-3 form-group">
                                             <label>City</label>
-    
+
                                             <input type="text" name="city" class="form-control" value="{{$profile->city}}" id="update_city">
-    
+
                                             <span class="text-danger" id="err2"></span>
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>State</label>
-                                            @if(isset($google_api) && $google_api == 1) 
+                                            @if(isset($google_api) && $google_api == 1)
                                                 <input type="text" name="state" class="form-control" value="{{$profile->state}}" id="state">
                                             @else
                                                 <select class="select2 form-control" id="state" name="state" style="width: 100%; height:36px;"></select>
                                             @endif
-                                            
+
                                             <span class="text-danger" id="err1"></span>
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>Zip Code</label>
-    
+
                                             <input type="text" name="zip" class="form-control" value="{{$profile->zip}}" id="update_zip">
-    
+
                                             <span class="text-danger" id="err3"></span>
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>Country</label>
-                                            @if(isset($google_api) && $google_api == 1) 
+                                            @if(isset($google_api) && $google_api == 1)
                                                 <input type="text" name="country" class="form-control" value="{{$profile->country}}" id="country">
                                             @else
                                                 <select class="select2 form-control" name="country" id="country" style="width: 100%; height:36px;" onchange="listStates(this.value, 'state', 'state')">
@@ -354,8 +354,8 @@
                                             <span class="text-danger" id="err"></span>
                                         </div>
                                     </div>
-    
-    
+
+
                                     <h2 class="mt-4 font-weight-bold text-dark">Social</h2>
                                     <div class="row mt-1">
                                         <div class="col-md-6 form-group">
@@ -382,22 +382,22 @@
                                             <label class="small">LinkedIn</label>
                                             <input type="url" name="linkedin" class="form-control" value="{{$profile->linkedin}}" placeholder="https://linkedin.com/username" value="{{$profile->linkedin}}" id="update_linkedin">
                                         </div>
-                                    
-                                    
+
+
                                         <div class="col-md-6 form-group">
                                             <label class="small">Website</label>
                                             <input type="text" id="website" name="website" class="form-control" value="{{$profile->website}}" placeholder="https://www.yoursite.com" id="update_website">
                                             <span class="text-danger small" id="website_error"></span>
                                         </div>
                                     </div>
-    
-    
+
+
                                     <div class="row mt-1">
                                         <div class="col-md-12 form-group">
                                             <label>About</label>
-    
+
                                             <textarea class="form-control" name="notes" id="notes" cols="30" rows="5">{{$profile->notes}}</textarea>
-    
+
                                         </div>
                                     </div>
 
@@ -405,17 +405,17 @@
                                         <div class="col-md-12 form-group">
                                             <label>Signature</label> <br>
                                             <small>Your Signature will be attached to all outgoing correspondence (ticket replies and email)</small>
-    
+
                                             <textarea class="form-control" name="signature" id="signature" cols="5" rows="5"> {{$profile->signature}} </textarea>
                                         </div>
                                     </div>
-    
+
                                     <div class="row mt-2">
                                         <div class="col-sm-12 text-right">
                                             <button class="btn btn-success rounded float-right" id="usr_btn" type="submit"><i class="fas fa-check-circle"></i> Save</button>
-                                            <button type="button" style="display:none" disabled id="usr_process" 
-                                                class="btn  rounded btn-success float-right"> 
-                                                <i class="fas fa-circle-notch fa-spin"> </i> Processing 
+                                            <button type="button" style="display:none" disabled id="usr_process"
+                                                class="btn  rounded btn-success float-right">
+                                                <i class="fas fa-circle-notch fa-spin"> </i> Processing
                                             </button>
                                         </div>
                                     </div>
@@ -425,19 +425,19 @@
                                 </div>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="current-month" role="tabpanel" aria-labelledby="my-history-tab">
                             <hr>
                             <div class="card-body">
                                 No Data Found
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="staff-schedule" role="tabpanel" aria-labelledby="my-schedule-tab">
                             <hr>
                             <div class="card-body">
                                 <div class="row">
-                                    
+
                                     <div class="card">
                                         <div class="d-flex justify-content-between p-2">
                                             <h3 class="lead">View Your Schedule here Below</h3>
@@ -451,13 +451,13 @@
 
                             </div>
                             <hr>
-    
+
                             <div class="card p-2">
                                 <div class="d-flex justify-content-between p-2">
                                     <h3>Leaves Section</h3>
                                     <button onclick="requestLeaveModal()" class="btn btn-success rounded"> <i class="fas fa-plus-circle"></i> Request Leave</button>
                                 </div>
-    
+
                                 <table class="table table-hover table-bordered w-100 text-center" id="leaves-table">
                                     <thead>
                                         <tr>
@@ -469,21 +469,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-    
+
                                     </tbody>
                                 </table>
                             </div>
-    
+
                         </div>
-    
+
                         <div class="tab-pane fade" id="last-month" role="tabpanel" aria-labelledby="my-subscriptions-tab">
                             <div class="card-body">
                                 <p>No Subscriptions</p>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="last-orders" role="tabpanel" aria-labelledby="payroll-tab">
-    
+
                             <div class="card-body" style="overflow: overlay;">
                                     <div class="form-check form-check-inline">
                                         <!-- <label for="customRadio">From</label> -->
@@ -511,7 +511,7 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div class="row pt-2">
                                     <div class="col-md-3">
                                         <div class="card border-bottom border-primary">
@@ -545,8 +545,8 @@
                                             </div>
                                         </div>
                                     </div>
-    
-    
+
+
                                 </div>
                                 <table id="payroll_table" class="table table-striped table-hover text-center table-bordered no-wrap w-100" role="grid" aria-describedby="zero_config_info">
                                     <thead>
@@ -561,20 +561,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-    
+
                                         <div class="loader_container" style="display:none">
                                             <div class="loader"></div>
                                         </div>
                                 </table>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="last-certifications" role="tabpanel" aria-labelledby="my-certifications-tab">
-    
+
                             <div class="card-body">
                                 <button type="submit" style="float:right" class="btn btn-success" onclick="ShowCertificateModel()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add
                                     Certificate </button>
-    
+
                                 <!--  -->
                                 <div class="mt-5">
                                     <div class="table-responsive pt-3">
@@ -589,15 +589,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody></tbody>
-    
+
                                         </table>
                                     </div>
                                 </div>
-    
+
                                 <!--  -->
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="pills-tickets-tab">
                             <div class="card-body">
                                 <div class="row mt-3">
@@ -627,7 +627,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right mb-3">
-                                    
+
                                     <button type="button" class="btn btn-info ml-auto mb-auto f-btn" onclick="ShowTicketModel()">
                                         <i class="fas fa-plus"></i>&nbsp;Add ticket
                                     </button>
@@ -656,7 +656,7 @@
                                             </select>
                                         </div>
                                     </div> -->
-    
+
                                     <table id="ticket-table-list" class="table w-100 table-striped table-bordered table-hover display ticket-table-list">
                                         <thead>
                                             <tr>
@@ -694,7 +694,7 @@
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <h5>Tickets to display per page</h5>
-                                                    <small>Specify the number of tickets to display before breaking the view into multiple pages. Note: 
+                                                    <small>Specify the number of tickets to display before breaking the view into multiple pages. Note:
                                                         This value cannot exceed the default maximum your administrator has set for staff views.
                                                         Automatically refresh the ticket listing</small>
                                                 </div>
@@ -705,7 +705,7 @@
                                                 <hr>
                                                 <div class="col-md-8">
                                                     <h5>Automatically refresh the ticket listing</h5>
-                                                    <small>When this view is loaded, the ticket listing can be automatically refreshed. Useful for 
+                                                    <small>When this view is loaded, the ticket listing can be automatically refreshed. Useful for
                                                         wallboard type uses.</small>
                                                 </div>
                                                 <div class="col-md-4">
@@ -719,7 +719,7 @@
                                                 <hr>
                                                 <div class="col-md-8">
                                                     <h5>Automatically set ticket owner to active staff user</h5>
-                                                    <small>When replying or forwarding a ticket, the ticket owner will be automatically 
+                                                    <small>When replying or forwarding a ticket, the ticket owner will be automatically
                                                         set to the active staff user if this view is in use.</small>
                                                     </div>
                                                     <div class="col-md-3">
@@ -737,7 +737,7 @@
                                                     <hr>
                                                     <div class="col-md-8">
                                                         <h5>Default ticket status when replying to a ticket</h5>
-                                                    <small>Specify which status a ticket will be automatically set to when a staff user 
+                                                    <small>Specify which status a ticket will be automatically set to when a staff user
                                                         who is using this view replies to or forwards a ticket.</small>
                                                     </div>
                                                     <div class="col-md-4">
@@ -761,10 +761,10 @@
                                     </div>
                                 </div>
                             </div>
-                                
+
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="user_docs_tab" role="tabpanel" aria-labelledby="pills-documents-tab">
                             <div class="card-body">
                                 <div class="row">
@@ -792,7 +792,7 @@
                             </div>
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade" id="user_bucket_tab" role="tabpanel" aria-labelledby="pills-bucket-tab">
                             <div class="card-body">
                                 <form action="">
@@ -845,7 +845,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php //dd($tasks) 
+                                                <?php //dd($tasks)
                                                 ?>
                                                 @foreach($tasks as $task)
                                                 <tr>
@@ -853,11 +853,11 @@
                                                     <td><a href="{{asset('task_details')}}/{{$task->id}}">{{$task->id}}</a></td>
                                                     <td>
                                                         <a href="{{asset('task_details')}}/{{$task->id}}">{{$task->title}}</a> <br>
-                                                        <?php 
+                                                        <?php
                                                             if($task->task_status != "success"){
                                                                 $today_date = date("Y-m-d");
                                                                 $overdue = '<span class="badge bg-danger text-white">overdue</span>';
-    
+
                                                                 if($task->due_date < $today_date) {
                                                                     echo $overdue;
                                                                 }else{
@@ -866,23 +866,23 @@
                                                             }
                                                         ?>
                                                     </td>
-    
+
                                                     @if($task->taskProject == null)
                                                     <td>---</td>
                                                     @else
                                                     <td>{{$task->taskProject['name']}}</td>
                                                     @endif
-    
+
                                                     <td>{{$task->version}}</td>
                                                     <td>{{$task->estimated_time}}</td>
                                                     <td>{{$task->created_at}}</td>
-    
+
                                                     @if($task->taskCreator == null)
                                                     <td>---</td>
                                                     @else
                                                     <td>{{$task->taskCreator['name']}}</td>
                                                     @endif
-    
+
                                                     <td><?php echo gmdate('H:i:s', $task->worked_time); ?></td>
                                                     <td> <span class="badge text-white {{$task->task_status == 'danger' ? 'bg-danger' : 'bg-warning'}} ">{{$task->task_status == "danger" ? "Pending" : "Work In Progress"}}</span> </td>
                                                 </tr>
@@ -894,10 +894,10 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                             </div>
                         </div>
-    
+
                         <div class="tab-pane fade show" id="user_notifi_permission" role="tabpanel" aria-labelledby="my-history-tab">
                             <hr>
                             <div class="card-body">
@@ -914,7 +914,7 @@
                                                         </a>
                                                     </h5>
                                                     <div class="">
-                                                        
+
                                                             <div class="form-check form-check-success form-check-inline">
                                                                 <input type="radio" onclick="openThisAccordin({{$obj['id']}})" id="customRadio1_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="form-check-input" {{($obj['assignment'] == 1) ? 'checked' : ''}}>
                                                                 <label class="form-check-label" for="customRadio1_{{$obj['id']}}">Yes</label>
@@ -923,7 +923,7 @@
                                                                 <input type="radio" onclick="closeThisAccordin({{$obj['id']}})" id="customRadio2_{{$obj['id']}}" name="customRadio_{{$obj['id']}}" class="form-check-input">
                                                                 <label class="form-check-label" for="customRadio2_{{$obj['id']}}">No</label>
                                                             </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -952,22 +952,22 @@
                                     </div>
                                     @endforeach
                                 </div>
-    
+
                                 {{-- <button id="per_sve_btn" class="btn mb-3 btn-sm btn-success float-right rounded ml-2" onclick="savePermission()"><i class="fas fa-check-circle"></i> Save</button>
                                 <button  id="per_process" style="display:none" class="btn mb-3 btn-sm btn-success rounded float-right ml-2" type="button" disabled><i class="fas fa-circle-notch fa-spin"></i> Processing</button>
-    
+
                                 <div class="loader_container" id="permission_loader" style="display:none">
                                     <div class="loader"></div>
                                 </div> --}}
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
             </div>
             <!-- Column -->
         </div>
-    
+
         <!-- add new certificate model -->
         <div id="add-new-certificate" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static">
             <div class="modal-dialog modal-lg" style="width:50%;">
@@ -985,11 +985,11 @@
                                             <div class="widget-box widget-color-dark">
                                                 <div class="widget-body">
                                                     <div class="widget-main padding-8">
-    
+
                                                         <form class="row road-map-form" id="save-certification" enctype="multipart/form-data" action="{{asset('add-new-certification')}}" method="post">
-    
+
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    
+
                                                                 <input name="id" style="display: none;" class="form-control" type="text" value="" readonly="readonly">
                                                                 <input type="hidden" name="user_id" id="user_id" value="{{$profile->id}}">
                                                                 <div class="form-horizontal">
@@ -998,10 +998,10 @@
                                                                             :</label>
                                                                         <div class="col-sm-12">
                                                                             <input name="name" class="form-control" type="text" value="" placeholder="" />
-    
+
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-6">Category Name
                                                                             :</label>
@@ -1009,7 +1009,7 @@
                                                                             <input name="category_name" class="form-control" type="text" value="" placeholder="" />
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Details
                                                                             :</label>
@@ -1017,13 +1017,13 @@
                                                                             <textarea style="height: 100px;" name="details" class="form-control" placeholder=""></textarea>
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Attachment
                                                                             :</label>
                                                                         <div class="col-sm-12">
                                                                             <div class="input-group mb-3 mt-1" style="border:1px solid #848484 !important; border-radius:4px;">
-    
+
                                                                                 <div class="custom-file">
                                                                                     <input class="custom-file-input form-control" name="image" id="cer_image" accept="image/*" type="file">
                                                                                 </div>
@@ -1031,25 +1031,25 @@
                                                                             <!-- <input type="file" name="image" id="image" accept="image/*" class="custom-file-input form-control"> -->
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group">
                                                                         <div class="col-sm-offset-4 col-sm-12">
                                                                             <button type="submit" class="btn btn-success pull-right" style="float: right;">Add</button>
                                                                         </div>
                                                                     </div>
-    
-    
-    
+
+
+
                                                                 </div>
-    
+
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                         </div>
-    
+
                                     </div>
                                 </div>
                             </div>
@@ -1058,7 +1058,7 @@
                 </div>
             </div>
         </div>
-    
+
         <!--  Modal content ticket start -->
         <div class="modal fade" id="ticket" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -1071,7 +1071,7 @@
                         <form class="form-horizontal mt-1" id="save_tickets" action="{{asset('save-tickets')}}" method="post">
                             <div class="row">
                                 <div class="col-sm-12 col-xs-12">
-    
+
                                     <fieldset>
                                         <div class="form-group">
                                             <div class="row">
@@ -1086,14 +1086,14 @@
                                                         @foreach($departments as $department)
                                                         <option value="{{$department['id']}}">{{$department['name']}}</option>
                                                         @endforeach
-    
+
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="row mt-1">
-    
+
                                                 <div class="col-sm-4">
                                                     <label class="control-label col-sm-12">Select Status<span style="color:red !important;">*</span></label><span id="select-status" style="display:none; color:red !important;">Please Select Status</span>
                                                     <select class="select2 form-control " id="status" name="status" style="width: 100%; height:36px;">
@@ -1103,8 +1103,8 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-    
-    
+
+
                                                 <div class="col-sm-4">
                                                     <label class="control-label col-sm-12">Select Priority<span style="color:red !important;">*</span></label><span id="select-priority" style="display :none; color:red !important;">Please Select Priority</span>
                                                     <select class="select2 form-control " id="priority" name="priority" style="width: 100%; height:36px;">
@@ -1114,7 +1114,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-    
+
                                                 <div class="col-sm-4">
                                                     <label class="control-label col-sm-12">Assign Tech<span style="color:red !important;">*</span></label><span id="select-assign" style="display :none; color:red !important;">Please Select Tech</span>
                                                     <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
@@ -1122,16 +1122,16 @@
                                                         @foreach($users as $user)
                                                         <option value="{{$user->id}}">{{$user->name}}</option>
                                                         @endforeach
-    
-    
+
+
                                                     </select>
                                                 </div>
-    
+
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="row mt-1">
-    
+
                                                 <div class="col-sm-4">
                                                     <label class="control-label col-sm-12">Select Type
                                                         <span style="color:red !important;">*</span></label><span id="select-type" style="display :none; color:red !important;">Please Select Type</span>
@@ -1145,26 +1145,26 @@
                                                 <div class="col-sm-4">
                                                     <label class="control-label col-sm-12">Customer Select<span style="color:red !important;">*</span></label><span id="select-customer" style="display :none; color:red !important;">Please Select Customer</span>
                                                     <select class="select2 form-control custom-select" id="customer_id" name="customer_id" style="width: 100%; height:36px;">
-    
+
                                                         <option value="">Select</option>
                                                         @foreach($customers as $customer)
                                                         <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</option>
                                                         @endforeach
-    
-    
+
+
                                                     </select>
                                                 </div>
-    
+
                                                 <div class="col-sm-4 checkbox checkbox-info mti-2">
                                                     <input id="new-form" value="1" type="checkbox" name="newcustomer">
                                                     <label class="mb-0" for="checkbox4">New Customer</label>
                                                 </div>
                                             </div>
                                         </div>
-    
+
                                         <div class="form-group">
                                             <div class="row ">
-    
+
                                                 <div class="col-sm-12" id="new-customer" style="display:none;">
                                                     <div class="row">
                                                         <label for="example-search-input" class="col-sm-3 col-form-label">First
@@ -1175,7 +1175,7 @@
                                                             <input class="form-control" type="text" id="ticket_id" name="ticket_id" hidden>
                                                         </div>
                                                     </div>
-    
+
                                                     <div class="row mt-1">
                                                         <label for="example-search-input" class="col-sm-3 col-form-label">Last
                                                             Name :<span style="color:red !important;">*</span></label><span id="save-lastname" style="display :none; color:red !important;position: relative;top: 10px;">Last
@@ -1184,7 +1184,7 @@
                                                             <input class="form-control" type="text" id="last_name" name="last_name">
                                                         </div>
                                                     </div>
-    
+
                                                     <div class="row mt-1">
                                                         <label for="example-search-input" class="col-sm-3 col-form-label">Phone
                                                             Number :<span style="color:red !important;">*</span></label><span id="save-number" style="display :none; color:red !important;position: relative;top: 10px;">Phone
@@ -1193,7 +1193,7 @@
                                                             <input class="form-control" type="text" name="phone">
                                                         </div>
                                                     </div>
-    
+
                                                     <div class="row mt-1">
                                                         <label for="example-search-input" class="col-sm-3 col-form-label">E-mail1
                                                             :<span style="color:red !important;">*</span></label><span id="save-email" style="display :none; color:red !important; position: relative;top: 10px;">Email
@@ -1205,13 +1205,13 @@
                                                 </div>
                                             </div>
                                         </div>
-    
+
                                         <div class="form-group">
                                             <div class="row mt-1">
                                                 <!--<div class="col-sm-4">-->
                                                 <!--    <input type="file" class="file-upload form-control-file" id="exampleInputFile">-->
                                                 <!--                        </div>-->
-    
+
                                                 <div class="col-sm-12">
                                                     <label class="control-label col-sm-12">Problem Details<span style="color:red !important;">*</span></label><span id="pro-details" style="display :none; color:red !important;">Please provide details</span>
                                                     <textarea class="form-control" rows="3" id="ticket_detail" name="ticket_detail"></textarea>
@@ -1222,8 +1222,8 @@
                                     <div class="text-right mt-1">
                                         <button type="submit" class="btn waves-effect waves-light btn-success float-right">Save</button>
                                     </div>
-    
-    
+
+
                                 </div>
                             </div>
                         </form>
@@ -1231,8 +1231,8 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal content ticket end -->
-    
-    
+
+
         <!-- add user document modal -->
         <div id="add-new-document" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static">
             <div class="modal-dialog modal-lg" style="width:50%;">
@@ -1250,26 +1250,26 @@
                                             <div class="widget-box widget-color-dark">
                                                 <div class="widget-body">
                                                     <div class="widget-main padding-8">
-    
+
                                                         <form class="row road-map-form" id="save-documents" enctype="multipart/form-data" action="{{asset('add-new-documents')}}" method="post">
                                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    
+
                                                                 <input name="id" style="display: none;" class="form-control" type="text" value="" readonly="readonly">
-    
+
                                                                 <input type="hidden" name="user_id" value="{{$profile->id}}">
-    
+
                                                                 <div class="form-horizontal">
-    
-    
+
+
                                                                     <div class="form-group">
                                                                         <label class="control-label col-sm-4">Name
                                                                             :</label>
                                                                         <div class="col-sm-12">
                                                                             <input name="name" class="form-control" type="text" value="" placeholder="" />
-    
+
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-6">Category Name
                                                                             :</label>
@@ -1277,7 +1277,7 @@
                                                                             <input name="category_name" class="form-control" type="text" value="" placeholder="" />
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Details
                                                                             :</label>
@@ -1285,7 +1285,7 @@
                                                                             <textarea style="height: 100px;" name="details" class="form-control" placeholder=""></textarea>
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group mt-1">
                                                                         <label class="control-label col-sm-12">Attachment
                                                                             :</label>
@@ -1293,22 +1293,22 @@
                                                                             <input type="file" name="image" id="image" accept="image/*" class="form-control">
                                                                         </div>
                                                                     </div>
-    
+
                                                                     <div class="form-group mt-2">
                                                                         <div class="col-sm-offset-4 col-sm-12">
                                                                             <button type="submit" class="btn btn-success pull-right" style="float: right;">Add</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-    
+
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                         </div>
-    
+
                                     </div>
                                 </div>
                             </div>
@@ -1317,9 +1317,9 @@
                 </div>
             </div>
         </div>
-    
+
     </div>
-    
+
     <!-- Modal -->
     <div class="modal fade" id="editPicModal" tabindex="-1" aria-labelledby="editPicModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -1327,7 +1327,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="editPicModalLabel">Profile Picture</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        
+
                     </button>
                 </div>
                 <div class="modal-body">
@@ -1354,19 +1354,19 @@
                             <div class="custom-file w-100">
                                 <input type="hidden" name="staff_id" id="staff_id" value="{{$profile->id}}">
                                 <input type="file" name="profile_img" class="form-control" onchange="loadFile(event)" id="customFilePP">
-                                
+
                             </div>
                         </div>
                         <div class="text-right mt-3">
                             <button type="submit" class="btn btn-success rounded float-right"> <i class="fas fa-check-circle"></i> Save changes</button>
                         </div>
-    
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- leave Modal -->
     <div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="editPicModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -1403,7 +1403,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- schdule Modal -->
     <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="editPicModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -1462,7 +1462,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- schdule Modal -->
     <div class="modal fade" id="workHoursModal" tabindex="-1" aria-labelledby="workHoursModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -1476,6 +1476,15 @@
                     <form id="workHoursForm" method="POST" action="{{url('update-work-hours')}}">
                         <input type="hidden" id="attendance_id" name="id">
                         <div class="row">
+
+                            <div class="col-md-6 mt-1">
+                                <label for="worked_hours_value">Clock In</label>
+                                <input type="datetime-local" class="form-control" id="clock_in" name="clock_in" required>
+                            </div>
+                            <div class="col-md-6 mt-1">
+                                <label for="worked_hours_value">Clock Out</label>
+                                <input type="datetime-local" class="form-control" id="clock_out" name="clock_out" required>
+                            </div>
                             <div class="col-md-12">
                                 <label for="worked_hours_value">Worked Hours</label>
                                 <input type="text" class="form-control" id="worked_hours_value" name="worked_hours_value" required>
@@ -1492,7 +1501,7 @@
 </div>
 @endsection
 @section('scripts')
-    
+
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 
@@ -1506,7 +1515,7 @@
     var calender;
     var events = @json($leaves);
     console.log(events , "events");
-    
+
     let ticketLengthCount = {!! json_encode($ticketView) !!};
         var url  = window.location.href;
         if(url.includes('#staff-schedule')) {

@@ -8,6 +8,8 @@ use App\Models\{StaffAttendance,Tasks,SystemSetting,Notification,Activitylog, Ti
 use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\SystemManager\MailController;
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 use DB;
 use Session;
 use Exception;
@@ -696,8 +698,17 @@ class PayrollController extends Controller {
 
     public function update_work_hours(Request $request) {
         try {
+
+            $clock_in = new DateTime($request->clock_in);
+            $clock_in->setTimezone(new DateTimeZone('UTC'));
+
+            $clock_out = new DateTime($request->clock_out);
+            $clock_out->setTimezone(new DateTimeZone('UTC'));
+
             $data = StaffAttendance::findOrFail($request->id);
             $data->hours_worked = $request->worked_hours_value;
+            $data->clock_in = $clock_in->format('Y-m-d H:i:s');
+            $data->clock_out = $clock_out;
             $data->updated_at = Carbon::now();
             $data->save();
 

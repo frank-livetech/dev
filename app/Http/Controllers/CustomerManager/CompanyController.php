@@ -621,6 +621,67 @@ class CompanyController extends Controller
 
     }
 
+    public function default_company_profile(Request $request)
+    {
+        try{
+            $data = array(
+                "poc_first_name" => $request->poc_first_name,
+                "poc_last_name" => $request->poc_last_name,
+                "name" => $request->name,
+                "domain" => $request->domain,
+                "phone" => $request->phone,
+                "is_default" => 1,
+            );
+
+
+            $company = Company::where('name',$request->name)->where('is_default',1)->first();
+
+            if($company){
+                $company->update($data);
+                $response['message'] = 'Company Updated Successfully!';
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                return response()->json($response);
+            }else{
+
+                $c_created = Company::create($data);
+                // if($c_created){
+                //     User::find(Auth::id())->update([
+                //         'company_id' => $c_created->id
+                //     ]);
+                // }
+
+                $response['message'] = 'Company Created Successfully!';
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                return response()->json($response);
+            }
+        }catch(Exception $err){
+            $response['message'] = 'Something Went wrong!';
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+
+
+    }
+
+    public function default_company(){
+        try{
+            $company = Company::where('is_default',1)->first();
+            $response['status_code'] = 200;
+            $response['data'] = $company ;
+            $response['success'] = true;
+            return response()->json($response);
+
+        }catch(Exception $err){
+            $response['status_code'] = 500;
+            $response['data'] = [];
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
     public function get_staffs($id){
         $staffs = Company::with(['staffs.tickets','staffs.staffProfile'])->orderBy('created_at','desc')->find($id);
         // $staffs->load('staffProfile');
