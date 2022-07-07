@@ -1,7 +1,11 @@
 @extends('layouts.master-layout-new')
-@section('Customer Manager','open')
-@section('title', 'Company Lookup')
-@section('Company Lookup','active')
+@section('Billing','open')
+@section('title', 'Reports')
+@section('Reports','active')
+@php
+    $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
+    $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
+@endphp
 @section('body')
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -50,7 +54,7 @@
                                     <div class="col-12 d-md-block d-grid ps-md-0 ps-auto">
                                         <button class="btn btn-primary mb-1 btn-sm-block" type="submit">Notify</button>
                                     </div>
-                                </form><img class="img-fluid" src="../../../app-assets/images/pages/coming-soon.svg" alt="Coming soon page" />
+                                </form><img class="img-fluid" src="{{ asset($file_path . 'app-assets/images/pages/coming-soon.svg') }}" alt="Coming soon page" />
                             </div>
                         </div>
                     </div>

@@ -463,15 +463,15 @@
 
             if(!cust_id && temp_sel_customer) cust_id = temp_sel_customer;
 
-            Swal.fire({
-                title: 'Do you want to update ticket customer?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-            }).then((result) => {
-                if (result.value) {
+            // Swal.fire({
+            //     title: 'Do you want to update ticket customer?',
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Yes'
+            // }).then((result) => {
+            //     if (result.value) {
                     $.ajax({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -565,8 +565,8 @@
                             console.log(e)
                         }
                     });
-                }
-            });
+            //     }
+            // });
         },
 
         openCompany : () => {

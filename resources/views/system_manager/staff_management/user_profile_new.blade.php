@@ -485,17 +485,46 @@
                         <div class="tab-pane fade" id="last-orders" role="tabpanel" aria-labelledby="payroll-tab">
 
                             <div class="card-body" style="overflow: overlay;">
-                                    <div class="form-check form-check-inline">
-                                        <!-- <label for="customRadio">From</label> -->
-                                        <input type="radio" id="today" onclick="filterData('today')" name="customRadio" class="form-check-input" checked>
-                                        <label class="form-check-label" for="today">Today</label>
+                                <div class="row">
+                                    <div class="col-md-4 mt-2">
+                                        <div class="form-check form-check-inline">
+                                            <!-- <label for="customRadio">From</label> -->
+                                            <input type="radio" id="today" onclick="filterData('today')" name="customRadio" class="form-check-input" checked>
+                                            <label class="form-check-label" for="today">Today</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <!-- <label for="customRadio">To</label> -->
+                                            <input type="radio" id="date_range" onclick="filterData('date_range')" name="customRadio" class="form-check-input">
+                                            <label class="form-check-label" for="date_range">Date Range</label>
+                                        </div>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <!-- <label for="customRadio">To</label> -->
-                                        <input type="radio" id="date_range" onclick="filterData('date_range')" name="customRadio" class="form-check-input">
-                                        <label class="form-check-label" for="date_range">Date Range</label>
+                                    <div class="col-md-3 mt-2">
+                                        <div class="form-check-inline" style="">
+                                            <!-- <label for="customRadio">To</label> -->
+                                            <input type="number" id="basic-icon-default-uname" class="form-control dt-uname" placeholder="" aria-label="jdoe1" aria-describedby="basic-icon-default-uname2" name="user-name" />
+                                            
+                                        </div>
+                                        
                                     </div>
+                                    <div class="col-md-5">
+                                        
+                                            <label class="form-label" for="">Term</label>
+                                            <select class="select2 form-select" onchange="yesnoCheck(this);">
+                                                <option value="hourly">Hourly</option>
+                                                <option value="daily">Daily</option>
+                                                <option value="weekly">Weekly</option>
+                                                <option value="monthly">Monthly</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                            <div class="mt-1" id="ifYes" style="display: none;">
+                                                <input type="text" id="basic-icon-default-uname" class="form-control dt-uname" placeholder="" aria-label="jdoe1" aria-describedby="basic-icon-default-uname2" name="user-name" />
 
+                                            </div>
+                                       
+                                    </div>
+                                </div>
+                                   
+                                    
                                 <div id="daterangediv" style="display:none">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -530,10 +559,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <div class="card border-bottom border-info">
+                                        <div class="card border-bottom border-info" style="height: 108px;">
                                             <div class="box p-2 rounded text-center">
                                                 <h5 class="" id="total_hours">00</h5>
                                                 <h6 class="text-info">Total Hours</h6>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -1587,6 +1617,13 @@
         $('.country').text(country || '')
       })
     });
+    function yesnoCheck(that) {
+    if (that.value == "other") {
+        document.getElementById("ifYes").style.display = "block";
+    } else {
+        document.getElementById("ifYes").style.display = "none";
+    }
+}
   </script>
     @include('js_files.ticket_cmmnJs')
     @include('js_files.system_manager.staff_management.user_profileJs')

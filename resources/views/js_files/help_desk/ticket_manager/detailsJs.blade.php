@@ -44,9 +44,14 @@ $(document).ready(function() {
         $('.cc_email_field').show();
         $('#show_cc_email').prop('checked', true);
     }
+    
     if(shared_bcc_emails != '' && shared_bcc_emails != null){
-        $('.bcc_email_field').show();
-        $('#show_bcc_emails').prop('checked', true);
+        console.log(shared_bcc_emails);
+        if(shared_bcc_emails.email != null){
+            $('.bcc_email_field').show();
+            $('#show_bcc_emails').prop('checked', true);
+        }
+        
     }
 
     if(currentTime.length == 0) {
@@ -60,6 +65,9 @@ $(document).ready(function() {
         selector: "textarea.mymce",
         // theme: "modern",
 
+        mobile: {
+            theme: 'silver'
+          },
         auto_focus : "mymce",
 
         height: 300,
@@ -1877,9 +1885,11 @@ function listReplies() {
                 }
 
                 var updated_msg = ''
+
                 console.log(reply)
                 if(reply.updated_by_user != null){
                     updated_msg = 'Last edited by:'+ reply.updated_by_user.name + ' On '+convertDate(reply.updated_at)
+
                 }
                 replies_html =`
                     <li class="media" id="reply__${index}">
