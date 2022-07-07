@@ -458,6 +458,7 @@ Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin'
     Route::post('/save-cust-card','CustomerlookupController@save_cust_card');
     Route::get('/get-customer-card','CustomerlookupController@get_customer_card');
     Route::get('/customer-profile/{id}/{type?}','CustomerlookupController@customer_profile');
+    Route::get('/logged_in_as_customer/{id}','CustomerlookupController@loggedInAsCustomer');
 
     // Route::get('/myprofile/{slug}/{type?}','CustomerlookupController@test');
 

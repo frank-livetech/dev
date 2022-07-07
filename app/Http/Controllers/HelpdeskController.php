@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -270,7 +270,7 @@ class HelpdeskController extends Controller
                 if(isset($data['ticket_detail'])){
                     $data['ticket_detail'] = $this->replaceBodyShortCodes($data['ticket_detail'] , $ticket);
                 }
-                
+
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
 
@@ -3229,7 +3229,7 @@ class HelpdeskController extends Controller
                         $cc_old_arr = explode(',',$cc_old);
                         for($c = 0; $c<sizeof($cc_old_arr);$c++){
                             if(str_contains($cc_new, $cc_old_arr[$c])){
-                                
+
                             }else{
                                 $cc_new->email = $cc_new->email.','.$cc_old_arr[$c];
                             }
@@ -3288,7 +3288,7 @@ class HelpdeskController extends Controller
                     if($bcc_old){
                         $bcc_old->delete();
                     }
-                    
+
                 }
 
 
