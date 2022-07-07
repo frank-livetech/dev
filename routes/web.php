@@ -490,6 +490,8 @@ Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin'
     Route::get('/get-company-log','CompanyController@getLog');
     Route::post('/update-company','CompanyController@update_company');
     Route::post('/update_company_profile','CompanyController@update_company_profile');
+    Route::post('/default_company_profile','CompanyController@default_company_profile');
+    Route::get('/default_company','CompanyController@default_company');
     Route::get('/company-get-staffs/{id}','CompanyController@get_staffs');
     Route::post('/company-add-staff/{id}','CompanyController@add_staff');
     Route::get('/company-remove-staff/{company}/{id}','CompanyController@remove_staff');

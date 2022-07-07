@@ -143,6 +143,17 @@ $(document).ready(function() {
                 "searchreplace visualblocks code fullscreen",
                 "insertdatetime table contextmenu paste"
         ],
+        // init_instance_callback: function(editor,userlist) {
+        //     $(editor.contentDocument.activeElement).atwho({
+        //                 at: "@",
+        //                 data:userlist});
+        // },
+        // setup: function(editor) {
+        // editor.on('keydown', function(e) {
+        //   if(e.keyCode == 13 && $(editor.contentDocument.activeElement).atwho('isSelecting'))
+        //     return false
+        // })
+        // },
         toolbar: 'bold italic underline alignleft link',
         menubar: false,
         statusbar: false,
@@ -151,6 +162,16 @@ $(document).ready(function() {
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     });
 
+
+    // tinymce.onAddEditor.add(function(mgr, ed) {
+    //     var editor = $('#' + ed.editor + '.atjs');
+    //     var names = ["Jacob","Isabella","Ethan","Emma","Michael","Olivia","Alexander","Sophia","William","Ava","Joshua","Emily","Daniel","Madison","Jayden","Abigail","Noah","Chloe","你好","你你你", "jeremy"];
+    //     if (editor.length == 1) {
+    //       ed.onInit.add(function(ed, l) {
+    //         $(ed.contentDocument.activeElement).atwho({at: "@",data: "names"});
+    //       });
+    //     }
+    //   });
 
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );

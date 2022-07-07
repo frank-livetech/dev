@@ -63,10 +63,10 @@
                     <div class="row">
                         <div class="col-md-12">
 
-                        
+
                     <div class="card">
                         <div class="card-body p-1">
-                        
+
                             <div class="dd myadmin-dd" id="nestable-menu">
                                 <ol class="dd-list nav nav-pills flex-column ">
                                     <li class="dd-item nav-item" data-id="1">
@@ -117,6 +117,8 @@
                 <div class="col-md-10 gears" id="settings_stats">
                     <div class="card">
                         <div class="card-body">
+                            @include('system_manager.settings.tabs.company')
+
                         </div>
                     </div>
                 </div>
@@ -128,57 +130,57 @@
                 <div class="col-md-10 gears" id="billing_settings" style="display:none">
                     @include('system_manager.settings.tabs.billing')
                 </div>
-            
+
                 <div class="col-md-10 gears" id="customer_settings" style="display:none">
                     @include('system_manager.settings.tabs.customer')
                 </div>
 
                 <div class="col-md-10 gears" id="marketing_settings" style="display:none">
                     @include('system_manager.settings.tabs.marketing')
-                    
+
                 </div>
 
                 <div class="col-md-10 gears" id="security_settings" style="display:none">
                     @include('system_manager.settings.tabs.security')
-                    
+
                 </div>
 
                 <div class="col-md-10 gears" id="system_settings" style="display:none">
                     @include('system_manager.settings.tabs.system')
-                   
+
                 </div>
 
                 <div class="col-md-10 gears" id="branding_settings" style="display:none">
                      @include('system_manager.settings.tabs.branding')
-                    
+
                 </div>
 
                 <div class="col-md-10 gears" id="menu_settings" style="display:none">
                     @include('system_manager.settings.tabs.menu_management')
-                    
+
                 </div>
 
                 <div class="col-md-10 gears" id="dispatch_settings" style="display:none">
                     @include('system_manager.settings.tabs.dispatch')
-                    
-                </div> 
+
+                </div>
 
                 <div class="col-md-10 gears" id="project_settings" style="display:none">
                     @include('system_manager.settings.tabs.prjct_mgt')
-                   
+
                 </div>
 
                 <div class="col-md-10 gears" id="payroll_settings" style="display:none">
                     @include('system_manager.settings.tabs.payroll')
-                    
+
                 </div>
             </div>
         </div>
     </div>
-   
+
 <!--Common Modals-->
 
-  
+
     <!-- Ticket POP3 Mail Modal -->
     <div id="save-mail" class="modal fade" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -337,7 +339,7 @@
     <div id="edit_email_modal" class="modal fade" role="dialog" data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">                    
+                <div class="modal-header">
                     <h5 class="modal-title" id="modalheader">Edit Mail</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -516,8 +518,8 @@
     @include('js_files.system_manager.settings.indexJs')
     @include('js_files.system_manager.settings.settingNewJs')
     @include('js_files.system_manager.feature_list.feature_listJs')
-  
-    
+
+
         <!-- This Page JS -->
     <!-- <script src="{{asset('assets/libs/jquery-asColor/dist/jquery-asColor.min.js')}}"></script> -->
     <!-- <script src="{{asset('assets/libs/jquery-asGradient/dist/jquery-asGradient.js')}}"></script> -->
@@ -560,7 +562,7 @@
                         if(reader.result.includes('/svg') || reader.result.includes('/SVG')) {
                             base64 = await downloadPNGFromAnyImageSrc(reader.result);
                         }
-                        
+
                         var blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
                         cb(blobInfo.blobUri(), { title: file.name });
@@ -570,6 +572,45 @@
                 input.click();
             },
         });
-        
+
+        get_default_company();
+
+        $("#update_company").submit(function(e) {
+            e.preventDefault(); // prevent actual form submit
+            var form = $(this);
+            var url = form.attr('action'); //get submit url [replace url here if desired]
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(), // serializes form input
+                success: function(data){
+                    if(data.success == true){
+                        alertNotification('success', 'Success' , data.message);
+                    }else{
+                        alertNotification('Error', 'Error' , data.message);
+                    }
+                }
+            });
+        });
+
+
+        function get_default_company(){
+            $.ajax({
+                type: "GET",
+                url: "{{url('/default_company')}}",
+                success: function(response){
+                    var data = response.data;
+                    if(response.success == true){
+                        $("#name").val(data.name);
+                        $("#poc_first_name").val(data.poc_first_name);
+                        $("#poc_last_name").val(data.poc_last_name);
+                        $("#phone").val(data.phone);
+                        $("#domain").val(data.domain);
+                    }else{
+                        alertNotification('Error', 'Error' , data.message);
+                    }
+                }
+            });
+        }
     </script>
 @endsection

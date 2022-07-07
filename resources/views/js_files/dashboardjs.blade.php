@@ -51,7 +51,6 @@
                         $("#tkt_loader").show();
                     },
                     success: function(data) {
-                        console.log(data, "search result");
                         $('#show_ticket_results').show();
                         var result = ``;
 
