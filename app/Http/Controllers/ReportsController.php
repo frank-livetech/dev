@@ -75,7 +75,7 @@ class ReportsController extends Controller
             
             $date2 = new \DateTime($att->clock_out);
             $date2->setTimezone(new \DateTimeZone( timeZone() ));                            
-            $att->clock_in = $date2->format(system_date_format() .' h:i a');
+            $att->clock_out = $date2->format(system_date_format() .' h:i a');
 
 
             $date3 = new \DateTime($att->clock_out);
