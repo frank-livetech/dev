@@ -52,15 +52,15 @@ class AssetManagerController extends Controller
 
     public function assetExport(Request $request)
     {
-        $asset = AssetFields::where('asset_forms_id',$request->asset_type)->where('is_deleted',0)->get();
+        $asset = DB::table('asset_records_'.$request->asset_type)
+                    ->where('is_deleted',0)->get();
         $assetForm = AssetForms::find($request->asset_type);
         $ext = ($assetForm->title ?? 'untitled').'-'. $assetForm->id .'.csv';
 
-
         if($request->type == 'sample'){
-            return Excel::download(new AssetFieldsExport([]),'sample.csv');
+            return Excel::download(new AssetFieldsExport($request->asset_type,[]),'sample.csv');
         }else{
-            return Excel::download(new AssetFieldsExport($asset), $ext);
+            return Excel::download(new AssetFieldsExport($request->asset_type,$asset), $ext);
         }
     }
 

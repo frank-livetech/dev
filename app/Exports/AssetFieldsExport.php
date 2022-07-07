@@ -11,11 +11,12 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class AssetFieldsExport implements FromCollection, WithHeadings
 {
-    protected $data,$type;
+    protected $data,$table_id;
 
-    public function __construct($data)
+    public function __construct($table_id,$data)
     {
         $this->data = $data;
+        $this->table_id = $table_id;
     }
      /**
     * @return array []
@@ -23,7 +24,7 @@ class AssetFieldsExport implements FromCollection, WithHeadings
     */
     public function headings(): array
     {
-        return Schema::getColumnListing('asset_templates_fields');
+        return Schema::getColumnListing('asset_records_'.$this->table_id);
     }
 
     /**
@@ -31,8 +32,6 @@ class AssetFieldsExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-
         return collect($this->data);
-
     }
 }
