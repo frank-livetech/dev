@@ -561,26 +561,31 @@
                 <h4 class="modal-title" id="myModalLabel18">Import Modal</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="col-md-12 form-group">
-                    <div class="form-group">
-                        <label for="">Asset Type</label>
-                        <select class="select2 form-select form-control" onchange="getFields(this.value)" id="form_id" name="form_id" required></select>
+
+            <form action="{{route('asset.import')}}" id="import_asset_form" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="col-md-12 form-group">
+                        <div class="form-group">
+                            <label for="">Asset Type</label>
+                            <select class="select2 form-select form-control" onchange="getFields(this.value)" id="excel_import_id" name="asset_type" required></select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group mt-1">
+                        <div class="form-group">
+                            <input type="file" name="file" class="form-control asset_import" id="asset_import">
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12 form-group mt-1">
-                    <div class="form-group">
-                        <input type="file" class="form-control asset_import" id="asset_import">
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Import</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success">Import</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
+
 <div class="modal fade text-start" id="export_asset" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -588,26 +593,59 @@
                 <h4 class="modal-title" id="myModalLabel18">Export Modal</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <label>Asset Type</label>
-                <select class="select2 form-select form-control" onchange="getFields(this.value)" id="form_id" name="form_id" required></select>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-secondary">Sample</button>
-                <button type="button" class="btn btn-success">Export</button>
-            </div>
+            <form action="{{url('asset-export')}}" method="POST" target="__blank" id="export_asset">
+                @csrf
+                <input type="hidden" name="type" id="exp_type" value="">
+                <div class="modal-body">
+                    <label>Asset Type</label>
+                    <select class="select2 form-select form-control" onchange="getFields(this.value)" id="excel_esport_id" name="asset_type" required></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-secondary" onclick="exportAsset('sample')">Sample</button>
+                    <button type="submit" class="btn btn-success" onclick="exportAsset()">Export</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 @endsection
 @section('scripts')
 <script>
     let companies = @json($companies);
     let customers = @json($customers);
     let asset_type_arr = [];
-    // console.log(companies , "com");
-    // console.log(customers , "customers");
+
+    function exportAsset(type=null){
+        if(type != null){
+            $("#exp_type").val(type)
+        }else{
+            $("#exp_type").val('')
+        }
+    }
+
+    // $("#import_asset_form").submit(function(e) {
+    //         e.preventDefault();
+    //         var form = new FormData(this);
+    //         var url = $(this).attr('action');
+
+    //         $.ajax({
+    //             type: "POST",
+    //             url: url,
+    //             data: form.serialize(),
+    //             cache:false,
+    //             contentType: false,
+    //             processData: false,
+    //             success: function(response){
+
+    //                 if(response.success == true){
+    //                     $('#import_asset').modal('hide')
+    //                     alertNotification('success', 'Success', response.message);
+    //                 }
+    //             }
+    //         });
+    //     });
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
