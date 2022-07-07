@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\HelpDesk;
+
+use App\Exports\AssetFieldsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ActivitylogController;
 use Illuminate\Http\Request;
@@ -26,7 +28,9 @@ use Carbon\Carbon;
 
 use App\Models\Mail;
 use App\Http\Controllers\SystemManager\MailController;
+use App\Imports\AssetFieldsImport;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AssetManagerController extends Controller
 {
@@ -44,6 +48,42 @@ class AssetManagerController extends Controller
         $companies = Company::with('staff_members')->get();
 
         return view('help_desk.asset_manager.index-new',compact('customers','companies'));
+    }
+
+    public function assetExport(Request $request)
+    {
+        $asset = AssetFields::where('asset_forms_id',$request->asset_type)->where('is_deleted',0)->get();
+        $assetForm = AssetForms::find($request->asset_type);
+        $ext = ($assetForm->title ?? 'untitled').'-'. $assetForm->id .'.csv';
+
+
+        if($request->type == 'sample'){
+            return Excel::download(new AssetFieldsExport([]),'sample.csv');
+        }else{
+            return Excel::download(new AssetFieldsExport($asset), $ext);
+        }
+    }
+
+    public function assetImport(Request $request)
+    {
+
+        Excel::import(new AssetFieldsImport($request->asset_type), $request->file('file'));
+        return redirect()->back();
+
+        // try{
+        //     Excel::import(new AssetFieldsImport($request->asset_type), $request->file('file'));
+        //     $response['success'] = true;
+        //     $response['messages'] = "Asset Imported Successfully";
+        //     $response['status'] = 200;
+
+        // }catch(Exception $e){
+        //     $response['success'] = false;
+        //     $response['messages'] = $e->getMessage();
+        //     $response['status'] = 500;
+        // }
+
+        // return response($response);
+
     }
 
     public function asset_template(){

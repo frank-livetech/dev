@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Events\TestPusher;
+use App\Exports\AssetFieldsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/optimize',function(){
     Artisan::call('optimize');
@@ -458,6 +460,7 @@ Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin'
     Route::post('/save-cust-card','CustomerlookupController@save_cust_card');
     Route::get('/get-customer-card','CustomerlookupController@get_customer_card');
     Route::get('/customer-profile/{id}/{type?}','CustomerlookupController@customer_profile');
+    Route::get('/logged_in_as_customer/{id}','CustomerlookupController@loggedInAsCustomer');
 
     // Route::get('/myprofile/{slug}/{type?}','CustomerlookupController@test');
 
@@ -602,6 +605,9 @@ Route::get('/detail-asset-template', 'HelpdeskController@detail_asset_template')
 Route::get('/field-set', 'HelpdeskController@field_set');
 Route::get('/asset_template_manager','HelpDesk\AssetManagerController@index')->name('asset_template_manager');
 Route::get('/asset-manager','HelpDesk\AssetManagerController@asset_manager')->name('asset_manager.index');
+Route::post('/asset-export','HelpDesk\AssetManagerController@assetExport')->name('asset-export');
+Route::post('/asset-import','HelpDesk\AssetManagerController@assetImport')->name('asset.import');
+
 Route::post('/update-asset-template','HelpDesk\AssetManagerController@update_form');
 Route::post('/update_asset_manager','HelpDesk\AssetManagerController@editAssetManager');
 

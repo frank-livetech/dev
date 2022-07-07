@@ -617,6 +617,8 @@ function getFormsTemplates() {
                     opts += `<option value="${templates[i].id}">${templates[i].title}</option>`;
                 }
                 $("#form_id").html(opts);
+                $("#excel_import_id").html(opts);
+                $("#excel_esport_id").html(opts);
             }
 
         },

@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -270,7 +270,7 @@ class HelpdeskController extends Controller
                 if(isset($data['ticket_detail'])){
                     $data['ticket_detail'] = $this->replaceBodyShortCodes($data['ticket_detail'] , $ticket);
                 }
-                
+
                 $data['updated_at'] = Carbon::now();
                 $data['updated_by'] = \Auth::user()->id;
 
@@ -3230,7 +3230,7 @@ class HelpdeskController extends Controller
                         $cc_old_arr = explode(',',$cc_old->email);
                         for($c = 0; $c<sizeof($cc_old_arr);$c++){
                             if(str_contains($cc_new, $cc_old_arr[$c])){
-                                
+
                             }else{
                                 $cc_new->email = $cc_new->email.','.$cc_old_arr[$c];
                             }
@@ -3272,7 +3272,7 @@ class HelpdeskController extends Controller
                         $bcc_old_arr = explode(',',$cc_old->email);
                         for($bcc = 0; $c<sizeof($bcc_old_arr);$bcc++){
                             if(str_contains($bcc_new, $bcc_old_arr[$bcc])){
-                                
+
                             }else{
                                 $bcc_new->email = $bcc_new->email.','.$bcc_old_arr[$bcc];
                             }
@@ -3302,7 +3302,7 @@ class HelpdeskController extends Controller
 
                 $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
                 $action_perform = 'Ticket ('.$ticket->coustom_id.') merged into Ticket ('.$data['tkt_merge_id'].') By '. $name_link;
-                
+
                 $log = new ActivitylogController();
                 $log->saveActivityLogs('Tickets' , 'tickets' , $ticket_into_merge->id , auth()->id() , $action_perform);
 
@@ -3323,10 +3323,10 @@ class HelpdeskController extends Controller
             $cus_name = $customer->first_name .' '. $customer->last_name;
             $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
             $action_perform = 'Ticket (<a href="'.url('ticket-details').'/'.$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>) properties updated by '. $name_link;
-            
+
             $log = new ActivitylogController();
             $log->saveActivityLogs('Ticket' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
-            
+
             // send notification
             $slug = '';
             $type = 'Ticket Properties';
