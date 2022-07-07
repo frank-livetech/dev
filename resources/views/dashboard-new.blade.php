@@ -183,13 +183,13 @@ table.dataTable thead .sorting_desc:after {
                 <div class="row match-height">
                     <div class="col-lg-12 col-12">
                         <div class="card card-statistics">
-                            <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;">
+                            <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;display:unset !important">
 
                                    <div class="col-md-12">
                                     <i class="fas fa-filter pull-right" onclick="openfilter()"
                                     style="position: relative;right: 10px;cursor: pointer;"></i>
                                    </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 mt-2">
                                         <div class="row pull-right openfilter" style="display: none">
                                         <div class="d-flex align-items-center pull-left">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -284,7 +284,7 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                             <div class="my-auto">
                                                 <a href="{{url('projects-list')}}">
-                                                    <h3 class="fw-bolder ">{{$project}}</h3>
+                                                    <h3 class="fw-bolder mb-0">{{$project}}</h3>
                                                     <p class="card-text font-small-10 mb-0">Total Web Projects</p>
                                                 </a>
                                             </div>
@@ -307,7 +307,7 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                             <div class="my-auto">
                                                 <a href="{{url('billing/home')}}">
-                                                    <h3 class="fw-bolder">{{$orders}}</h3>
+                                                    <h3 class="fw-bolder mb-0">{{$orders}}</h3>
                                                     <p class="card-text font-small-10 mb-0">Total Orders</p>
                                                 </a>
                                             </div>
@@ -588,7 +588,7 @@ table.dataTable thead .sorting_desc:after {
                         </div>
 
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header" style="display: unset">
                                 <h4 class="card-title">Flagged <span class="float-end"><i class="fas fa-flag"
                                             style="color:#fd7e14;"></i></span></h4>
                             </div>
