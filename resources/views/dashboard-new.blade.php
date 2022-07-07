@@ -63,20 +63,33 @@ table.dataTable thead .sorting_desc:after {
 }
 .search_result:hover {
     transform: scale(1.03);
-  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+#header-btn{
+        display: none !important
+    }
+#desktop_view{
+        display: block !important
+    }
+@media (max-width: 630px) {
+    #header-btn{
+        display: block !important
+    }
+    #desktop_view{
+        display: none !important
+    }
 }
 
-
 </style>
-@php
-$file_path = $live->sys_value == 1 ? 'public/' : '/';
-@endphp
+        @php
+            $file_path = $live->sys_value == 1 ? 'public/' : '/';
+        @endphp
 
-@if(Session('system_date'))
-<input type="hidden" id="system_date_format" value="{{Session('system_date')}}">
-@else
-<input type="hidden" id="system_date_format" value="DD-MM-YYYY">
-@endif
+        @if(Session('system_date'))
+            <input type="hidden" id="system_date_format" value="{{Session('system_date')}}">
+            @else
+            <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
+        @endif
 {{-- <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/daterangepicker.css')}}"> --}}
 
 <input type="hidden" id="curr_user_name" value="{{Auth::user()->name}}">
@@ -100,13 +113,36 @@ $file_path = $live->sys_value == 1 ? 'public/' : '/';
                     </div>
                 </div>
             </div>
-            <div class="content-header-right text-md-end col-md-7 col-12 d-md-block">
+            <div class="content-header-right text-md-end col-md-7 col-12 d-md-block" id="desktop_view">
                 <div class="d-flex justify-content-end">
                     <div>
                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i
                                 class="fa fa-cog" aria-hidden="true"></i>&nbsp; Support Dashboard</button>
                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i
                                 class="fas fa-chart-line" aria-hidden="true"></i>&nbsp; CFO Dashboard</button>
+                    </div>
+                    <div class="clock_btn_div mx-1">
+                        @if($clockin)
+                        <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
+                            onclick="staffatt('clockout' , this)">
+                            <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
+                        @else
+                        <button type="button"
+                            class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1"
+                            onclick="staffatt('clockin' , this)">
+                            <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>
+                        @endif
+                    </div>
+                </div>
+
+            </div>
+            <div class="content-header-right text-md-end col-md-7 col-12 d-md-block" id="header-btn" style="display: none !important">
+                <div class="d-flex justify-content-end">
+                    <div>
+                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i
+                                class="fa fa-cog" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i
+                                class="fas fa-chart-line" aria-hidden="true"></i></button>
                     </div>
                     <div class="clock_btn_div mx-1">
                         @if($clockin)

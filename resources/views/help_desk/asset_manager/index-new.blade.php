@@ -376,8 +376,16 @@
                 <div class="card mt-1">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <h4 class="card-title">Assets</h4>
+                            <div class="col-lg-2 col-md-2">
+                                <h4 class="">Assets</h4>
+                            </div>
+                            <div class="col-lg-10 col-md-10">
+                                <button type="button" style="float:right;" class="btn btn-outline-success waves-effect mx-1" data-bs-toggle="modal" data-bs-target="#import_asset">
+                                    <i class="fal fa-file-import"></i> Import
+                                </button>
+                                <button type="button" style="float:right;" class="btn btn-outline-info waves-effect" data-bs-toggle="modal" data-bs-target="#export_asset">
+                                    <i class="fal fa-file-export"></i> Export
+                                </button>
                             </div>
                             <!-- <div class="col-lg-3 col-md-3">
                                 <button type="button" class="btn btn-success" onclick="ShowAssetModel()"
@@ -545,7 +553,53 @@
     </div>
 </div>
 
-
+ <!-- Modal -->
+ <div class="modal fade text-start" id="import_asset" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Import Modal</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 form-group">
+                    <div class="form-group">
+                        <label for="">Asset Type</label>
+                        <select class="select2 form-select form-control" onchange="getFields(this.value)" id="form_id" name="form_id" required></select>
+                    </div>
+                </div>
+                <div class="col-md-12 form-group mt-1">
+                    <div class="form-group">
+                        <input type="file" class="form-control asset_import" id="asset_import">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success">Import</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade text-start" id="export_asset" tabindex="-1" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Export Modal</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Asset Type</label>
+                <select class="select2 form-select form-control" onchange="getFields(this.value)" id="form_id" name="form_id" required></select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary">Sample</button>
+                <button type="button" class="btn btn-success">Export</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('scripts')
 <script>
