@@ -485,7 +485,7 @@ class PayrollController extends Controller {
                     ['is_deleted', 0] ,
                     ['is_overdue', 0] ,
                     ['trashed', 0],
-                    ['status', $closeStatus->id],
+                    ['status', '!=',$closeStatus->id],
 
                 ])->whereDate('created_at', Carbon::today())->get();
 
