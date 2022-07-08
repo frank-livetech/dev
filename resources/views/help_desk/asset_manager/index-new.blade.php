@@ -579,7 +579,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Import</button>
+                    <button type="submit" class="btn btn-success" id="import_btn">Import</button>
+                    <button class="btn btn-success d-none" type="button" id="processing_btn" disabled> Processing
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="sr-only">Loading...</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -625,27 +629,37 @@
         }
     }
 
-    // $("#import_asset_form").submit(function(e) {
-    //         e.preventDefault();
-    //         var form = new FormData(this);
-    //         var url = $(this).attr('action');
+    $("#import_asset_form").submit(function(e) {
+            e.preventDefault();
+            var form = new FormData($('#upload_form')[0]);
+            var url = $(this).attr('action');
+            // Attach file
+            form.append('file', $('input[type=file]')[0].files[0]);
+            form.append('asset_type', $('#excel_import_id').val());
 
-    //         $.ajax({
-    //             type: "POST",
-    //             url: url,
-    //             data: form.serialize(),
-    //             cache:false,
-    //             contentType: false,
-    //             processData: false,
-    //             success: function(response){
-
-    //                 if(response.success == true){
-    //                     $('#import_asset').modal('hide')
-    //                     alertNotification('success', 'Success', response.message);
-    //                 }
-    //             }
-    //         });
-    //     });
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form,
+                cache:false,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                   $("#processing_btn").removeClass('d-none');
+                   $("#import_btn").addClass('d-none');
+                },
+                success: function(response){
+                    if(response.success == true){
+                        $('#import_asset').modal('hide')
+                        alertNotification('success', 'Success', response.message);
+                    }
+                },
+                complete: function() {
+                    $("#processing_btn").addClass('d-none');
+                    $("#import_btn").removeClass('d-none');
+                },
+            });
+        });
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>

@@ -95,22 +95,19 @@ class AssetManagerController extends Controller
     public function assetImport(Request $request)
     {
 
-        Excel::import(new AssetFieldsImport($request->asset_type), $request->file('file'));
-        return redirect()->back();
+        try{
+            Excel::import(new AssetFieldsImport($request->asset_type), $request->file('file'));
+            $response['success'] = true;
+            $response['message'] = "Asset Imported Successfully";
+            $response['status'] = 200;
 
-        // try{
-        //     Excel::import(new AssetFieldsImport($request->asset_type), $request->file('file'));
-        //     $response['success'] = true;
-        //     $response['messages'] = "Asset Imported Successfully";
-        //     $response['status'] = 200;
+        }catch(Exception $e){
+            $response['success'] = false;
+            $response['message'] = $e->getMessage();
+            $response['status'] = 500;
+        }
 
-        // }catch(Exception $e){
-        //     $response['success'] = false;
-        //     $response['messages'] = $e->getMessage();
-        //     $response['status'] = 500;
-        // }
-
-        // return response($response);
+        return response($response);
 
     }
 
@@ -394,7 +391,6 @@ class AssetManagerController extends Controller
     public function update_form(Request $request) {
         try {
 
-            // dd($request->all());
 
             if($request->has('title')){
                 AssetForms::find($request->template_id)->update([
@@ -435,10 +431,9 @@ class AssetManagerController extends Controller
                                         'created_by' => Auth::id(),
                                     ]);
 
-                    // Schema::create($table_name, function(Blueprint $table) use ($fieldsAdded) {
-                    //     $table->engine = 'InnoDB';
-                    //     $table->string('fl_'.$fieldsAdded->id)->after('asset_forms_id')->nullable();
-                    // });
+                    $column_name = 'fl_'.$fieldsAdded->id;
+                    DB::statement("ALTER TABLE $table_name ADD COLUMN $column_name VARCHAR(200) Null AFTER asset_id; ");
+
 
                 }else{
                     AssetFields::find($request->field_id)->update([
