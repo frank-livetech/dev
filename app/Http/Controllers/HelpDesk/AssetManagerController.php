@@ -29,6 +29,7 @@ use Carbon\Carbon;
 use App\Models\Mail;
 use App\Http\Controllers\SystemManager\MailController;
 use App\Imports\AssetFieldsImport;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -52,15 +53,45 @@ class AssetManagerController extends Controller
 
     public function assetExport(Request $request)
     {
-        $asset = DB::table('asset_records_'.$request->asset_type)
-                    ->where('is_deleted',0)->get();
+
         $assetForm = AssetForms::find($request->asset_type);
+        $query = Assets::query()->where('asset_forms_id',$request->asset_type);
+
+        $cid = $assetForm->asset->customer->id ?? 0;
+        $query->when(!empty($cid), function($q) use($cid) {
+            return $q->where('customer_id', $cid);
+        });
+
+
+        $comp_id = $assetForm->asset->company->id ?? 0;
+        $query->when(!empty($comp_id), function($q) use($comp_id) {
+            return $q->where('company_id', $comp_id);
+        });
+
+        $assets = $query->where('is_deleted', 0)->with(['template','asset_fields','customer','company'])->get();
+        $data = [];
+        $headings = [];
+        $record = DB::table("asset_records_".$request->asset_type);
+
+        foreach($assets as $i => $asset) {
+            foreach($asset->asset_fields as $in => $fl){
+                foreach($record->select('fl_'.$fl->id)->get() as $j => $d){
+                    $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? 'null';
+                    $headings[] = $fl->label;
+                    $data[$j]['asset_type'] = $fl->type ?? '';
+                    $data[$j]['customer_name'] = ($asset->customer != null ? ($asset->customer->first_name ?? '') : '').' '. ($asset->customer != null ? ($asset->customer->last_name ?? '') : '');
+                    $data[$j]['company_name'] = $asset->company->name ?? '';
+                    $data[$j]['asset_title'] = $asset->template->title ?? '';
+                }
+            }
+        }
+
         $ext = ($assetForm->title ?? 'untitled').'-'. $assetForm->id .'.csv';
 
         if($request->type == 'sample'){
-            return Excel::download(new AssetFieldsExport($request->asset_type,[]),'sample.csv');
+            return Excel::download(new AssetFieldsExport($headings,[]),'sample.csv');
         }else{
-            return Excel::download(new AssetFieldsExport($request->asset_type,$asset), $ext);
+            return Excel::download(new AssetFieldsExport($headings,$data), $ext);
         }
     }
 
@@ -393,17 +424,25 @@ class AssetManagerController extends Controller
             }else{
                 if($request->has('field_id') && $request->field_id == 0){
 
-                    AssetFields::create([
-                        'label' => $request->label,
-                        'placeholder' => $request->placeholder,
-                        'asset_forms_id' => $request->template_id,
-                        'description' => $request->desc,
-                        'required' => $request->required,
-                        'is_multi' => $request->is_multi,
-                        'copy_icon' => $request->copy_icon,
-                        'type' => $request->code,
-                        'created_by' => Auth::id(),
-                    ]);
+                    $table_name = 'asset_records_'.$request->template_id;
+
+                    $fieldsAdded =  AssetFields::create([
+                                        'label' => $request->label,
+                                        'placeholder' => $request->placeholder,
+                                        'asset_forms_id' => $request->template_id,
+                                        'description' => $request->desc,
+                                        'required' => $request->required,
+                                        'is_multi' => $request->is_multi,
+                                        'copy_icon' => $request->copy_icon,
+                                        'type' => $request->code,
+                                        'created_by' => Auth::id(),
+                                    ]);
+
+                    // Schema::create($table_name, function(Blueprint $table) use ($fieldsAdded) {
+                    //     $table->engine = 'InnoDB';
+                    //     $table->string('fl_'.$fieldsAdded->id)->after('asset_forms_id')->nullable();
+                    // });
+
                 }else{
                     AssetFields::find($request->field_id)->update([
                         'label' => $request->label,
@@ -414,8 +453,6 @@ class AssetManagerController extends Controller
                         'copy_icon' => $request->copy_icon,
                     ]);
                 }
-
-
 
                 $response['message'] = 'Asset Type Update Successfully!';
                 $response['status_code'] = 200;
