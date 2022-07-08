@@ -82,7 +82,12 @@ class AssetManagerController extends Controller
                     $data[$j]['customer_name'] = ($asset->customer != null ? ($asset->customer->first_name ?? '') : '').' '. ($asset->customer != null ? ($asset->customer->last_name ?? '') : '');
                     $data[$j]['company_name'] = $asset->company->name ?? '';
                     $data[$j]['asset_title'] = $asset->template->title ?? '';
+
+                    if($record->select('fl_'.$fl->id)->count()-1 == $j){
+                        break;
+                    }
                 }
+
             }
         }
 
