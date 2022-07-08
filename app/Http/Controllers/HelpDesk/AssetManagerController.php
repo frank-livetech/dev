@@ -74,8 +74,7 @@ class AssetManagerController extends Controller
             foreach($record->get() as $j => $d){
                 $customer = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->customer : '';
                 $company = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->company : '';
-
-                $data[$j]['Customer'] = ($customer->first_name ?? '') .' '. ($customer->last_name ?? '');
+                $data[$j]['Customer'] = $customer->email ?? '';
                 $data[$j]['Company'] = $company->name ?? '';
             }
         }
@@ -83,47 +82,12 @@ class AssetManagerController extends Controller
         $headings[] = 'Company';
 
         $assetForm = AssetForms::find($request->asset_type);
-        // $query = Assets::query()->where('asset_forms_id',$request->asset_type);
-
-        // $cid = $assetForm->asset->customer->id ?? 0;
-        // $query->when(!empty($cid), function($q) use($cid) {
-        //     return $q->where('customer_id', $cid);
-        // });
-
-
-        // $comp_id = $assetForm->asset->company->id ?? 0;
-        // $query->when(!empty($comp_id), function($q) use($comp_id) {
-        //     return $q->where('company_id', $comp_id);
-        // });
-
-        // $assets = $query->where('is_deleted', 0)->with(['template','asset_fields','customer','company'])->get();
-
-
-        // foreach($assets as $i => $asset) {
-        //     foreach($asset->asset_fields as $in => $fl){
-        //         foreach($record->select('fl_'.$fl->id)->get() as $j => $d){
-        //             $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? 'null';
-        //             // if($record->select('fl_'.$fl->id)->count()-1 == $j){
-        //                 $headings[] = $fl->label;
-        //                 dump($headings,$fl->label);
-        //             $data[$j]['asset_type'] = $fl->type ?? '';
-        //             $data[$j]['customer_name'] = ($asset->customer != null ? ($asset->customer->first_name ?? '') : '').' '. ($asset->customer != null ? ($asset->customer->last_name ?? '') : '');
-        //             $data[$j]['company_name'] = $asset->company->name ?? '';
-        //             $data[$j]['asset_title'] = $asset->template->title ?? '';
-
-        //             if($record->select('fl_'.$fl->id)->count()-1 == $j){
-        //                 break;
-        //             }
-        //         }
-
-        //     }
-        // }
 
 
         $ext = ($assetForm->title ?? 'untitled').'-'. $assetForm->id .'.csv';
 
         if($request->type == 'sample'){
-            return Excel::download(new AssetFieldsExport($headings,[]),'sample.csv');
+            return Excel::download(new AssetFieldsExport($headings,[]), ($assetForm->title ?? 'untitled').' - Sample.csv');
         }else{
             return Excel::download(new AssetFieldsExport($headings,$data), $ext);
         }
