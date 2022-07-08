@@ -55,7 +55,6 @@ class AssetManagerController extends Controller
     {
 
 
-
         $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->get();
         $record = DB::table("asset_records_".$request->asset_type);
         $asset_record = DB::table("asset_records_".$request->asset_type);
@@ -63,22 +62,23 @@ class AssetManagerController extends Controller
         $data = [];
         $headings = [];
 
+       foreach($assetFields as $i => $fl){
+            foreach($record->get() as $j => $d){
+                $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? '';
+            }
+            $headings[] = $fl->label;
+        }
+
+
         foreach($assetFields as $i => $fl){
             foreach($record->get() as $j => $d){
                 $customer = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->customer : '';
                 $company = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->company : '';
-                $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? 'null';
-                $data[$j]['Asset Type'] = AssetForms::find($request->asset_type)->title;
-                $data[$j]['Asset Title'] = Assets::find($asset_record->get()[$j]->asset_id )->asset_title ?? '';
+
                 $data[$j]['Customer'] = ($customer->first_name ?? '') .' '. ($customer->last_name ?? '');
                 $data[$j]['Company'] = $company->name ?? '';
-
             }
-            $headings[] = $fl->label;
-
         }
-        $headings[] = 'Asset Type';
-        $headings[] = 'Asset Title';
         $headings[] = 'Customer';
         $headings[] = 'Company';
 
@@ -118,7 +118,7 @@ class AssetManagerController extends Controller
 
         //     }
         // }
-        dd($data,$headings);
+
 
         $ext = ($assetForm->title ?? 'untitled').'-'. $assetForm->id .'.csv';
 
@@ -128,7 +128,6 @@ class AssetManagerController extends Controller
             return Excel::download(new AssetFieldsExport($headings,$data), $ext);
         }
     }
-
     public function assetImport(Request $request)
     {
 
