@@ -77,7 +77,9 @@ class AssetManagerController extends Controller
             foreach($asset->asset_fields as $in => $fl){
                 foreach($record->select('fl_'.$fl->id)->get() as $j => $d){
                     $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? 'null';
-                    $headings[] = $fl->label;
+                    if($j == 0){
+                        $headings[] = $fl->label;
+                    }
                     $data[$j]['asset_type'] = $fl->type ?? '';
                     $data[$j]['customer_name'] = ($asset->customer != null ? ($asset->customer->first_name ?? '') : '').' '. ($asset->customer != null ? ($asset->customer->last_name ?? '') : '');
                     $data[$j]['company_name'] = $asset->company->name ?? '';
