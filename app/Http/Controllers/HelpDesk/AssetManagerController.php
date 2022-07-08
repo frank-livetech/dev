@@ -67,11 +67,11 @@ class AssetManagerController extends Controller
             foreach($record->get() as $j => $d){
                 $customer = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->customer : '';
                 $company = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->company : '';
+                $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? 'null';
                 $data[$j]['Asset Type'] = AssetForms::find($request->asset_type)->title;
                 $data[$j]['Asset Title'] = Assets::find($asset_record->get()[$j]->asset_id )->asset_title ?? '';
                 $data[$j]['Customer'] = ($customer->first_name ?? '') .' '. ($customer->last_name ?? '');
                 $data[$j]['Company'] = $company->name ?? '';
-                $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? 'null';
 
             }
             $headings[] = $fl->label;
@@ -118,7 +118,7 @@ class AssetManagerController extends Controller
 
         //     }
         // }
-
+        dd($data,$headings);
 
         $ext = ($assetForm->title ?? 'untitled').'-'. $assetForm->id .'.csv';
 
