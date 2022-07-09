@@ -554,7 +554,6 @@ function updateAssets() {
 }
 
 function deleteAsset(id) {
-    console.log(id);
     Swal.fire({
         title: 'Are you sure?',
         text: "All data related to this asset will be removed!",

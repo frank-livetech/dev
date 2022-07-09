@@ -179,6 +179,7 @@ function fieldAdd(code) {
 
     fields_list_data[g_count] = { col_width: 12 };
 
+    active_edit_field_id = '';
     $("#sortable-row-" + g_count).sortable({
         connectWith: ".connectedSortable",
         opacity: 1,
@@ -439,19 +440,67 @@ function updateFieldSetting(field_id,temp_id,form=null){
             type: 'post',
             url: template_update_submit_route,
             data: formData,
-            success: function(data) {
-                if (data.success) {
+            success: function(response) {
+                if (response.success) {
                     $("#fields-modal").modal('hide');
-                    fields_list_data = data.data;
-                    item = data.form_field;
+                    fields_list_data = response.data;
+                    data = response.data;
+                    items = response.form_field;
+                    templateSetting(items.type, items.asset_forms_id,'update',items.id)
 
-                    templateSetting(item.type, item.asset_forms_id,'update',item.id)
+                    let single_input = ``;
+                    let row = ``;
+                    if (data != null) {
+                        $("#tempTitle").val(data.title)
+
+                        if (data != null && data.length != 0) {
+
+                            for (let i in data) {
+
+                                single_input += `
+                                    <div class="appends ui-sortable-handle col-md-${data[i].col_width}" data-id="2" data-col="12" style="opacity: 1;">
+                                        <div class="card card-hover m-1 style=" box-shadow:="" 0="" 12px="" 24px="" rgb(34="" 41="" 47="" 32%)="" !important;""="">
+                                            <div class="card-body" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="title">
+                                                        <h5 class="card-title small mb-0"><i class="fas fa-grip-vertical pr-2" style="color:grey;"></i> ${data[i].label}</h5>
+                                                    </div>
+                                                    <div class="actions" style="position:absolute; top:18px;right:8px">
+                                                        <i onclick="removeField(${data[i].asset_forms_id},${data[i].id},this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>
+                                                        <a href="javascript:templateSetting('${data[i].type}', ${data[i].asset_forms_id} , 'update' , ${data[i].id})" class="float-right">
+                                                        <i class="fas fa-cog"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                                    if(data.length-1 ==  i){
+                                        single_input +=`<div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
+                                                            <div class="appends d-none"></div>
+                                                        </div>`
+                                    }
+
+                                    if (data[i].col_width != 12) {
+                                        row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
+                                    } else {
+                                        row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
+                                    }
+
+                            }
+
+                            $('.tail').html(row);
+
+                        }
+
+                    }
+
 
                 }
                 Swal.fire({
                     position: 'center',
-                    icon: (data.success) ? 'success' : 'error',
-                    title: data.message,
+                    icon: (response.success) ? 'success' : 'error',
+                    title: response.message,
                     showConfirmButton: false,
                     timer: swal_message_time,
                 });
