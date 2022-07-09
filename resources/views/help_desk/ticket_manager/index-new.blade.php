@@ -3,6 +3,9 @@
 @section('body')
     <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
     <style>
+        .nav-pills .nav-link{
+            padding: 0.5rem !important
+        }
         a:link,
         span.MsoHyperlink {
             mso-style-priority: 99;
@@ -180,7 +183,13 @@
             }
             .btn_view_dkt{
                 display: none
-        }
+            }
+            #mobile-card{
+                display: block !important
+            }
+            #ticket-desktop-view{
+                display: none !important;
+            }
         }
     </style>
 
@@ -540,7 +549,8 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-1">
+        <div class="ticket-mobile-card" id="mobile-card" style="display: none"></div>
+        <div class="row mt-1" id="ticket-desktop-view">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -720,6 +730,7 @@
                                 </div>
                             </div>
                         </div>
+                       
                     </div>
 
                 </div>

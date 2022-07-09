@@ -483,6 +483,7 @@
             }
         }
         redrawTicketsTable(ticket_arr);
+        ticketCardView(ticket_arr);
     }
 
     function convertDate(date) {
@@ -502,6 +503,325 @@
         // return a;
         var converted_date = moment(a).format("{{Session::get('system_date')}}" + ' ' +'hh:mm A');
         return converted_date;
+    }
+
+    function ticketCardView(ticket_arr){
+        tkt_arr = ticket_arr;
+        var la_color = ``;
+        $.each(ticket_arr, function(key, val) {
+
+            let prior = '<span class="text-center">' + val['priority_name'] + '</span>';
+            if (val['priority_color']) {
+                prior = '<span class="text-center text-white badge" style="background-color: ' + val['priority_color'] + ';">' + val['priority_name'] + '</span>';
+            }
+            let status = '<span class="text-center">' + val['status_name'] + '</span>';
+            if (val['status_name']) {
+                status = '<span class="text-center text-white badge" style="background-color: ' + val['status_color'] + ';">' + val['status_name'] + '</span>';
+            }
+            let flagged = '';
+            if (val['is_flagged'] == 1) {
+                flagged = 'flagged';
+            }
+            let custom_id = val['coustom_id'];
+            if (Array.isArray(ticket_format)) {
+
+                ticket_format = ticket_format['tkt_value'];
+            }
+            if (ticket_format.tkt_value == 'sequential') {
+                custom_id = val['seq_custom_id'];
+            }
+            let name = val['subject'] ?? '';
+            let shortname = '';
+
+            if (name && name.length > 40) {
+                shortname = name.substring(0, 40) + " ...";
+            } else {
+                shortname = name;
+            }
+
+            let cust_name = val['customer_name'] ?? '';
+            let short_cust_name = '';
+
+            if (cust_name && cust_name.length > 15) {
+                short_cust_name = cust_name.substring(0, 15) + " ...";
+            } else {
+                short_cust_name = cust_name;
+            }
+
+
+            let dep_name = val['department_name'] ?? '';
+            let short_dep_name = '';
+
+            if (dep_name && dep_name.length > 15) {
+                short_dep_name = dep_name.substring(0, 15) + " ...";
+            } else {
+                short_dep_name = dep_name;
+            }
+
+            let restore_flag_btn = '';
+            // console.log(in_recycle_mode, "in_recycle_mode");
+            if (in_recycle_mode) {
+                restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-trash-restore text-primary" title="Restore" style="cursor:pointer;" onclick="restoreTicket(' + val['id'] + ');"></span></div>';
+                $('#btnMovetotrash').hide();
+                $('#btnDelete').show();
+            } else {
+                $('#btnDelete').hide();
+                restore_flag_btn = '<div class="text-center ' + flagged + '"><span class="fas fa-flag" title="Flag" style="cursor:pointer;" onclick="flagTicket(this, ' + val['id'] + ');"></span></div>';
+            }
+            let res_due = '';
+            let rep_due = '';
+
+            if (val.sla_plan.title != 'No SLA Assigned') {
+                if (val.hasOwnProperty('resolution_deadline') && val.resolution_deadline) {
+                    // use ticket reset deadlines
+                    res_due = moment(moment(val.resolution_deadline).toDate()).local();
+                } else {
+                    // use sla deadlines
+                    if (val.sla_plan.due_deadline) {
+                        let hm = val.sla_plan.due_deadline.split('.');
+                        res_due = moment(moment(val.sla_res_deadline_from).toDate()).local().add(hm[0], 'hours');
+                        if (hm.length > 1) res_due.add(hm[1], 'minutes');
+                    }
+                }
+                if (res_due) {
+                    // overdue or change format of the date
+                    if (res_due.diff(moment(), "seconds") < 0) res_due = `<div class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${res_due.format('YYYY-MM-DD hh:mm')}"><span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};cursor:pointer">Overdue</span></div>`;
+                    else {
+                        // do the date formatting
+                        // res_due = res_due.format('YYYY-MM-DD hh:mm');
+                        res_due = getClockTime(res_due, 1);
+                        // res_due = getDateDiff(res_due);
+                    }
+                }
+
+                if (val.hasOwnProperty('reply_deadline') && val.reply_deadline) {
+                    // use ticket reset deadlines
+                    if (val.reply_deadline != 'cleared') rep_due = moment(moment(val.reply_deadline).toDate()).local();
+                } else {
+
+                    // use sla deadlines
+                    // console.log(val.sla_plan.reply_deadline , "deadline");
+                    let hm = val.sla_plan.reply_deadline.split('.');
+                    rep_due = moment(moment(val.sla_rep_deadline_from).toDate()).local().add(hm[0], 'hours');
+                    if (hm.length > 1) rep_due.add(hm[1], 'minutes');
+                }
+                if (rep_due) {
+                    // overdue or change format of the date
+                    if (rep_due.diff(moment(), "seconds") < 0) {
+                        rep_due = `<span class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${rep_due.format('YYYY-MM-DD hh:mm')}">
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};cursor:pointer">Overdue</span>
+                            </span>`;
+                    } else {
+                        // do the date formatting
+                        // rep_due = rep_due.format('YYYY-MM-DD hh:mm');
+                        rep_due = getClockTime(rep_due, 1);
+                        // rep_due = getDateDiff(rep_due);
+                    }
+                }
+            }
+            let new_rep_due = ``;
+            let new_res_due = ``;
+
+            if (val['reply_deadline'] == null) {
+                new_rep_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})"> ${rep_due.replace("60m", "59m")} </span>`;
+            }
+
+            if (val['resolution_deadline'] == null) {
+                new_res_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})"> ${rep_due.replace("60m", "59m")} </span>`;
+            }
+
+
+            // this is demo comment
+            if (val['reply_deadline'] != null ) {
+
+                let currTime = new Date().toLocaleString('en-US', {
+                    timeZone: usrtimeZone
+                });
+                let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
+
+                if (val['reply_deadline'] != "cleared") {
+                    let tkt_rep_due = moment(val['reply_deadline']).format('YYYY-MM-DD hh:mm A');
+                    // let timediff_rep = moment(tkt_rep_due).diff( moment(con_currTime) , 'seconds');
+
+                    let timediff_rep = getDatesSeconds(val['reply_deadline'], con_currTime);
+
+                    if (timediff_rep <= 0) {
+                        new_rep_due = `<span class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${tkt_rep_due}">
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
+                            </span>`;
+                    } else {
+                        new_rep_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})">${getHoursMinutesAndSeconds(val['reply_deadline'], con_currTime)}</span>`;
+                        // let cal_rep_due = momentDiff(tkt_rep_due , con_currTime);
+                        // new_rep_due = cal_rep_due.replace("60m", "59m");
+                    }
+                } else {
+                    new_rep_due = ``;
+                }
+            }
+
+            if ( val['resolution_deadline'] != null) {
+
+                let currTime = new Date().toLocaleString('en-US', {
+                    timeZone: usrtimeZone
+                });
+                let con_currTime = moment(currTime).format('YYYY-MM-DD hh:mm A');
+
+                if (val['resolution_deadline'] != "cleared") {
+                    // console.log("")
+                    let tkt_res_due = moment(val['resolution_deadline']).format('YYYY-MM-DD hh:mm A');
+                    // let timediff_res = moment(tkt_res_due).diff( moment(con_currTime) , 'seconds');
+                    let timediff_res = getDatesSeconds(val['resolution_deadline'], con_currTime);
+                    if (timediff_res <= 0) {
+                        new_res_due = `<span class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="${tkt_res_due}">
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};">Overdue</span>
+                            </span>`;
+                    } else {
+                        new_res_due = `<span class="cursor" onclick="resetSLAPlan(${val['id']})">${getHoursMinutesAndSeconds(val['resolution_deadline'], con_currTime)}</span>`
+                        // let cal_res_due = momentDiff(tkt_res_due , con_currTime);
+                        // new_res_due = cal_res_due.replace("60m", "59m");
+                    }
+                } else {
+                    new_res_due = ``;
+                }
+            }
+
+            // var last_act = val.lastActivity;
+            // let region_current_date = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
+
+            let la = new Date(val.lastActivity);
+            let replies = 0
+            if (val['replies'] > 0) {
+                replies = val['replies'];
+            }
+            let replier = '---';
+
+            if (val['lastReplier'] != null) {
+                replier = val['lastReplier'];
+            }
+            // if(!replier && val['creator_name']) replier = val['creator_name'];
+
+            let short_replier = '';
+            let assignee = '-- Unassigned --';
+
+            if (val['assignee_name'] != null) {
+                assignee = val['assignee_name'];
+            }
+
+            // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
+            let last_activity = getDateDiff(val.lastActivity);
+
+            if (last_activity.includes('d')) {
+                la_color = `#FF0000`;
+            } else if (last_activity.includes('h')) {
+                la_color = `#FF8C5A`;
+            } else if (last_activity.includes('m')) {
+                la_color = `#5C83B4`;
+            } else if (last_activity.includes('s')) {
+                la_color = `#8BB467`;
+            }
+
+
+            let notes_icon = `<i class="fas fa-comment-alt-lines" style="margin-top:2px" title="This Ticket Has One or More Ticket Notes"></i>`;
+            let attachment_icon = `<i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Has Attachments"></i>`;
+            let follow_up_icon = `<span title="Has Followup"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f7b51b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></span>`;
+
+            let row = `<div class="row">
+                        <div class="col-md-6 col-12">
+                            <div class="card text-center">
+                                <div class="card-header py-2">
+                                    <ul class="nav nav-pills card-header-pills ms-0" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#ticket_card_${val['id']}" role="tab" aria-controls="pills-home" aria-selected="true">Ticket Details</a>
+                                        </li>
+                                        
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-SLA-tab" data-bs-toggle="pill" href="#ticket_cardother_${val['id']}" role="tab" aria-controls="pills-SLA" aria-selected="false">Other Details</a>
+                                        </li>
+                                        <span style="margin: 9px 5px 0px 3px">${val['is_flagged'] == 1 ? "<span class='fas fa-flag' title='Flag' style='cursor:pointer;color: red !important;'></span>" : ''}</span>
+                                        <span class="" style="margin: 9px 5px 0px 3px">${val['tkt_notes'] > 0 ? notes_icon : ''}</span> 
+                                        <span class="text-center text-white badge" style="background-color: #ea9f9f;margin: 9px 5px 0px 3px">Overdue</span>
+                                        
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="ticket_card_${val['id']}" role="tabpanel" aria-labelledby="pills-home-tab" style="text-align: left;">
+                                            <p class="card-text"><strong>Subject:</strong> 
+                                                <a href="${ticket_details_route}/${val['coustom_id']}" id="ticket_name_${val['id']}" class="ticket_name fw-bolder text-body" data-id="${val['id']}">
+                                                    ${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}
+                                                </a>
+                                                ${val['attachments'] != null ? attachment_icon : ''}${val['tkt_follow_up'] > 0 ? follow_up_icon : ''}
+                                            </p>
+                                            <p class="card-text"><strong>Ticket ID: </strong><a href="${ticket_details_route}/${val['coustom_id']}" class="text-body">${custom_id}</a> </p>
+                                            <p class="card-text"><strong>Status: </strong>${status}</p>
+                                            <p class="card-text"><strong>Priority: </strong>${prior}</p>
+                                            <p class="card-text"><strong>Department: </strong>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</p>
+                                            <p class="card-text"><strong>Customer: </strong><a href="customer-profile/${val['customer_id']}" class="text-body">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></p>
+                                            <p class="card-text"><strong>Staff Assigned: </strong>${assignee}</p>
+                                        </div>
+                                        <div class="tab-pane fade" id="ticket_cardother_${val['id']}" role="tabpanel" aria-labelledby="pills-SLA-tab" style="text-align: left;">
+                                            <p class="card-text"><strong>Replies:</strong> ${replies}</p>
+                                            <p class="card-text"><strong>Last Replier: </strong>${ val['lastReplier'] != null ? val['lastReplier'] : val['creator_name']}</p>
+                                            <p class="card-text"><strong>Last Activity: </strong><span data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</span></p>
+                                            <p class="card-text"><strong>Reply Due: </strong>${new_rep_due}</p>
+                                            <p class="card-text"><strong>Resolution Due: </strong>${new_res_due}</p>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+        //     let row = `<tr class="${val['is_flagged'] == 1 ? 'flagged-tr' : ''}">
+        //     <td>
+        //         <div class="text-center">
+        //             <input type="checkbox" id="select_single_${val['id']}" onchange="selectSingle(${val['id']})"
+        //                 class="tkt_chk" name="select_all" value="${val['id']}">
+        //                 </div>
+        //     </td>
+        //     <td>
+        //         <div class="d-flex">
+        //             ${restore_flag_btn} ${val['tkt_notes'] > 0 ? notes_icon : ''}
+        //         </div>
+        //     </td>
+        //     <td class='text-center'>${status}</td>
+        //     <td class="ticketName" id="${val['id']}">
+        //         <div class="d-flex justify-content-between">
+
+        //             <a href="${ticket_details_route}/${val['coustom_id']}" id="ticket_name_${val['id']}" class="ticket_name fw-bolder text-body" data-id="${val['id']}">
+        //                 ${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}
+        //             </a>
+
+        //             <span>
+        //                 ${val['attachments'] != null ? attachment_icon : ''}
+        //                 ${val['tkt_follow_up'] > 0 ? follow_up_icon : ''}
+        //             </span>
+
+        //             <div class="hover_content_${val['id']} bg-white border rounded p-1"
+        //                 style="position:absolute;width:clamp(auto, 80%, auto);height:auto; overflow:hidden; white-space: initial; display:none;
+        //                     z-index:999;transition:0.5s; cursor:pointer; margin-left:90px; margin-top:22px;">
+        //             </div>
+        //         </div>
+
+        //     </td>
+        //     <td>
+        //         <span class="text-dark"><a href="${ticket_details_route}/${val['coustom_id']}" class="text-body">${custom_id}</a></span>
+        //     </td>
+        //     <td class='text-center'>${prior}</td>
+        //     <td><a href="customer-profile/${val['customer_id']}" class="text-body">${(short_cust_name.length > 15 ? short_cust_name.substring(0,15) + '...' : short_cust_name)}</a></td>
+        //     <td>${ val['lastReplier'] != null ? val['lastReplier'] : val['creator_name']}</td>
+        //     <td class='text-center'>${replies}</td>
+        //     <td class='text-center' data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</td>
+        //     <td class='text-center'>${new_rep_due}</td>
+        //     <td class='text-center'>${new_res_due}</td>
+        //     <td>${assignee}</td>
+        //     <td>${(short_dep_name.length > 15 ? short_dep_name.substring(0,15) + '...' : short_dep_name)}</td>
+
+        // </tr>`;
+        $('.ticket-mobile-card').append(row);
+       
+        });
+
     }
 
     function redrawTicketsTable(ticket_arr) {
