@@ -51,6 +51,7 @@ use Genert\BBCode\BBCode;
 use App\Models\SlaPlan;
 use App\Models\SlaPlanAssoc;
 use App\Http\Controllers\ActivitylogController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\GeneralController;
 use App\Models\Activitylog;
 use App\Models\Assets;
@@ -58,8 +59,24 @@ use App\Models\Mail;
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
-class HomeController
+class HomeController extends Controller
 {
+
+    public function __construct()
+    {
+
+        if(session()->get('action_clicked_admin') == null){
+            $this->middleware('auth');
+
+            $this->middleware(function (Request $request, $next) {
+                if (Auth::user()->user_type == 5) {
+                    return redirect()->route('un_auth');
+                }
+                return $next($request);
+            });
+        }
+
+    }
 
      // *************   PROPERTIES   ****************
 
@@ -69,13 +86,18 @@ class HomeController
 
     public function profile($name,$type = null) {
 
-        if(auth()->user()->user_type == 1) {
-            return view('unauth');
+        // if(auth()->user()->user_type == 1) {
+        //     return view('unauth');
+        // }
+        if(session()->get('action_clicked_admin') != null){
+            $user = User::where('email', session()->get('action_clicked_admin'))->first();
+            $customer_id = Customer::where('email',$user->email)->first();
+            $customer = Customer::with('company')->where('id',$customer_id->id)->first();
+        }else{
+            $user = User::where('id', \Auth::user()->id)->first();
+            $customer_id = Customer::where('email',$user->email)->first();
+            $customer = Customer::with('company')->where('id',$customer_id->id)->first();
         }
-
-        $user = User::where('id', \Auth::user()->id)->first();
-        $customer_id = Customer::where('email',$user->email)->first();
-        $customer = Customer::with('company')->where('id',$customer_id->id)->first();
         // if(!empty($customer)) {
         //     $credential = User::where('email', $customer->email)->first();
         //     if(!empty($credential->alt_pwd)) {
@@ -143,23 +165,27 @@ class HomeController
     }
 
     public function asset() {
-        
+
         return view('customer.customer_asset.index');
     }
     public function getasset(){
         $query = Assets::query();
-        $customer = Customer::where('email',Auth::user()->email)->first();
+        if(session()->get('action_clicked_admin') != null){
+            $customer = Customer::where('email',session()->get('action_clicked_admin'))->first();
+        }else{
+            $customer = Customer::where('email',Auth::user()->email)->first();
+        }
         $assets = $query->where('is_deleted', 0)->where('customer_id', $customer->id)->with(['template','asset_fields','customer','company'])->get();
 
         foreach($assets as $asset) {
             $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->first();
         }
-        
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['assets']= $assets;
-        
+
         return response()->json($response);
     }
 
@@ -196,18 +222,18 @@ class HomeController
     }
 
     public function viewTicketPage() {
-        if(auth()->user()->user_type == 1) {
-            return view('unauth');
-        }
+        // if(auth()->user()->user_type == 1) {
+        //     return view('unauth');
+        // }
         return view('customer.customer_tkt.cust_ticket_view');
     }
 
     // add ticket page
     public function addTicketPage(){
 
-        if(auth()->user()->user_type == 1) {
-            return view('unauth');
-        }
+        // if(auth()->user()->user_type == 1) {
+        //     return view('unauth');
+        // }
 
         $departments = Departments::all();
         $priorities = TicketPriority::all();
@@ -224,9 +250,14 @@ class HomeController
 
     // save ticket
     function saveTicket(Request $request) {
-        $customer = Customer::where('email' , auth()->user()->email)->first();
+        if(session()->get('action_clicked_admin') != null){
+            $customer = Customer::where('email' , session()->get('action_clicked_admin'))->first();
+            $creator_idd = User::where('email', session()->get('action_clicked_admin'))->first();
+        }else{
 
-        $creator_idd = User::where('email', auth()->user()->email)->first();
+            $customer = Customer::where('email' , auth()->user()->email)->first();
+            $creator_idd = User::where('email', auth()->user()->email)->first();
+        }
         $created_by = empty($creator_idd) ? $customer->id : $creator_idd->id;
 
         $sendingMailServer = Mail::where('mail_dept_id', $request->dept_id)->where('is_deleted', 0)->where('is_default', 'yes')->first();
@@ -368,7 +399,11 @@ class HomeController
     public function saveTicketReply(Request $request) {
         // return dd($request->all());
         $req_data = $request->all();
-        $customer = Customer::where('email' , auth()->user()->email)->first();
+        if(session()->get('action_clicked_admin') !=null){
+            $customer = Customer::where('email' , session()->get('action_clicked_admin'))->first();
+        }else{
+            $customer = Customer::where('email' , auth()->user()->email)->first();
+        }
         $ticket = Tickets::where('id' , $request->ticket_id)->first();
         $name_link = "";
         $action_perform = "";
@@ -549,7 +584,11 @@ class HomeController
 
     public function getCustomerTickets() {
 
-        $customer =  Customer::where('email' , auth()->user()->email)->first();
+        if(session()->get('action_clicked_admin') != null){
+            $customer =  Customer::where('email' , session()->get('action_clicked_admin'))->first();
+        }else{
+            $customer =  Customer::where('email' , auth()->user()->email)->first();
+        }
 
         $open_status = TicketStatus::where('name','Open')->first();
 
@@ -781,7 +820,11 @@ class HomeController
 
     // save company
     public function saveCompany (Request $request) {
-        $check_company = Company::where('email',$request->email)->first();
+        if(session()->get('action_clicked_admin') != null){
+            $check_company = Company::where('email',session()->get('action_clicked_admin'))->first();
+        }else{
+            $check_company = Company::where('email',$request->email)->first();
+        }
 
         if($check_company) {
 
@@ -842,8 +885,11 @@ class HomeController
             "is_bill_add" => $request->is_bill_add,
 
         );
-
-        $customer = Customer::find($request->customer_id);
+        if(session()->get('action_clicked_admin') != null){
+            $customer = Customer::where('email',session()->get('action_clicked_admin'))->first();
+        }else{
+            $customer = Customer::find($request->customer_id);
+        }
         $old_email = $customer->email;
 
         if($old_email != $request->email) {
@@ -876,7 +922,12 @@ class HomeController
         if($request->customer_login) {
             $data['has_account'] = $request->customer_login;
         }
-        $customer = Customer::where('id', $request->customer_id)->update($data);
+
+        if(session()->get('action_clicked_admin') != null){
+            $customer = Customer::where('email', session()->get('action_clicked_admin'))->update($data);
+        }else{
+            $customer = Customer::where('id', $request->customer_id)->update($data);
+        }
         if($customer) {
             $is_user = User::where("email", $old_email)->first();
 
@@ -934,7 +985,12 @@ class HomeController
         if($request->profile_img != null) {
             if($request->hasFile('profile_img')){
 
-                $customer = Customer::where('email', auth()->user()->email)->first();
+                if(session()->get('action_clicked_admin') != null){
+                    $customer = Customer::where('email', session()->get('action_clicked_admin'))->first();
+                }else{
+
+                    $customer = Customer::where('email', auth()->user()->email)->first();
+                }
 
                 if($customer) {
 
@@ -955,9 +1011,15 @@ class HomeController
                     $customer->avatar_url = $target_dir . '/' . $imageName;
                     $customer->save();
 
-                    User::where('id' , auth()->id())->update([
-                        "profile_pic" => $target_dir . '/' . $imageName,
-                    ]);
+                    if(session()->get('action_clicked_admin') != null){
+                        User::where('email' , session()->get('action_clicked_admin'))->update([
+                            "profile_pic" => $target_dir . '/' . $imageName,
+                        ]);
+                    }else{
+                        User::where('id' , auth()->id())->update([
+                            "profile_pic" => $target_dir . '/' . $imageName,
+                        ]);
+                    }
 
                     return response()->json([
                         "status" => 200 ,

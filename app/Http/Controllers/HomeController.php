@@ -24,16 +24,15 @@ class HomeController extends Controller {
 
     public function __construct() {
 
-        $this->middleware('auth');
 
+            $this->middleware('auth');
 
-        $this->middleware(function (Request $request, $next) {
-            if (Auth::user()->user_type == 5) {
-                return redirect()->route('un_auth');
-            }
-            return $next($request);
-        });
-
+            $this->middleware(function (Request $request, $next) {
+                if (Auth::user()->user_type == 5) {
+                    return redirect()->route('un_auth');
+                }
+                return $next($request);
+            });
 
 
 
@@ -136,7 +135,7 @@ class HomeController extends Controller {
         Session::put('is_online_notif', 1);
 
         $admin_users = User::where('user_type', 1)->where('is_deleted',0)->where('status',1)->get()->toArray();
-    
+
         $notify = new NotifyController();
 
         foreach ($admin_users as $key => $value) {
@@ -150,7 +149,7 @@ class HomeController extends Controller {
             $icon = 'ti-calendar';
             $class = 'btn-success';
             $desc = 'Login In by '.Auth::user()->name;
-            
+
             $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
         }
 

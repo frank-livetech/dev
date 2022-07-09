@@ -6,6 +6,9 @@ use App\Events\TestPusher;
 use App\Exports\AssetFieldsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
+$user_login = ( (int)request()->segment(2) > 0 ? 'u/'. request()->segment(2) : '' );
+
+
 Route::get('/optimize',function(){
     Artisan::call('optimize');
 });
@@ -423,11 +426,12 @@ Route::group ( ['namespace' => 'SystemManager','middleware' => ['auth','admin']]
 
 });
 
-Route::group ( ['namespace' => 'CustomerPanel','middleware' => ['auth','customer']], function () {
+Route::group ( ['namespace' => 'CustomerPanel', 'prefix' => 'user'], function () {
 
     Route::get('/myprofile','HomeController@profile')->name('customer.myProfile');
-    Route::get('/user/get-customer-asset','HomeController@getasset');
-    Route::get('/user/assets','HomeController@asset')->name('customer.myasset');
+    Route::get('/company-profile/{id}','CompanyController@company_profile');
+    Route::get('/get-customer-asset','HomeController@getasset');
+    Route::get('/assets','HomeController@asset')->name('customer.myasset');
     Route::post('/save_profile_img','HomeController@saveProfileImage')->name('customer.saveProfileImage');
     Route::get('/submitTicket','HomeController@addTicketPage')->name('customer.addTicket');
     Route::get('tickets/list','HomeController@viewTicketPage')->name('customer.tickets');
