@@ -39,6 +39,11 @@ class TicketNote extends Model
 
         $id = $this->created_by;
         $user = User::where('id', $id)->first();
-        return $user->profile_pic;
+        if($user){
+            return $user->profile_pic;
+        }else{
+            return '---';
+        }
+        
     }
 }
