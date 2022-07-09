@@ -731,7 +731,7 @@
             let row = `<div class="row">
                         <div class="col-md-6 col-12">
                             <div class="card text-center">
-                                <div class="card-header py-2">
+                                <div class="card-header" style="padding: .5rem .5rem">
                                     <ul class="nav nav-pills card-header-pills ms-0" id="pills-tab" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#ticket_card_${val['id']}" role="tab" aria-controls="pills-home" aria-selected="true">Ticket Details</a>
