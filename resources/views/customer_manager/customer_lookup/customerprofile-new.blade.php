@@ -155,7 +155,7 @@
                                 </div>
                             @endif
 
-                            <a href="{{url('logged_in_as_customer').'/'.$customer->email}}" target="__blank" class="btn btn-sm btn-primary">Logged in as {{$customer->first_name}} {{$customer->last_name}}</a>
+                            <a href="{{url('logged_in_as_customer').'/'.$customer->email}}" target="__blank" class="btn btn-sm btn-primary">Login as {{$customer->first_name}} {{$customer->last_name}}</a>
                         </center>
                     </div>
                     <div>
