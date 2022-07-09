@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="_token" content="{{csrf_token()}}" />
-    
+
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('files/brand_files')}}/{{Session::get('site_favicon')}}">
     <title>{{Session::get('site_title')}}</title>
@@ -20,7 +20,7 @@
         $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
         $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
     @endphp
-    
+
     <link rel="stylesheet" href="{{asset( $path . 'css/bootstrap_switch.min.css')}}">
     <link rel="stylesheet" href="{{asset( $path . 'css/custom_css.css')}}">
     <link rel="stylesheet" href="{{asset( $path . 'css/flashy.min.css')}}">
@@ -40,7 +40,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        
+
     <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 
     <!-- font-awesome -->
@@ -50,8 +50,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
 
-   <?php 
-    
+   <?php
+
    if(Auth::user()->user_type == 5) {
        ?>
     <style>
@@ -61,8 +61,8 @@
     </style>
        <?php
    }
-   
-   ?>  
+
+   ?>
     <style>
         body[data-theme=dark] #main-wrapper, body[data-theme=dark] .footer, body[data-theme=dark] .blacknav,body[data-theme=dark] .top-navbar,body[data-theme=dark] .navbar,body[data-theme=dark] .nav-link, body[data-theme=dark] .collapse, body[data-theme=dark]  .nav-item, body[data-theme=dark]  #main-wrapper[data-layout=vertical] .topbar .navbar-collapse[data-navbarbg=skin1], body[data-theme=dark]  .navbar-collapse, body[data-theme=dark] .breadcrumb,body[data-theme=dark] .page-breadcrumb, body[data-theme=dark] .cke_toolbar_separator, body[data-theme=dark] .dropdown-menu, body[data-theme=dark] .email-app .list-group .list-group-item .list-group-item-action.active, body[data-theme=dark] .email-app .list-group .list-group-item .list-group-item-action:hover, body[data-theme=dark] .jumbotron, body[data-theme=dark] .page-wrapper, body[data-theme=dark] .progress, body[data-theme=dark] .wizard-content .wizard>.steps .step, body[data-theme=dark] .wizard:not(.wizard-circle)>.actions .disabled a, body[data-theme=dark] .wizard:not(.wizard-circle)>.actions .disabled a:active, body[data-theme=dark] .wizard:not(.wizard-circle)>.actions .disabled a:hover, body[data-theme=dark] .wizard:not(.wizard-circle)>.content, body[data-theme=dark] .wizard:not(.wizard-circle)>.steps .disabled a, body[data-theme=dark] .wizard:not(.wizard-circle)>.steps .disabled a:active, body[data-theme=dark] .wizard:not(.wizard-circle)>.steps .disabled a:hover {
     background-color: #323743 ;
@@ -92,14 +92,14 @@ body[data-theme=dark] .left-sidebar :not(.pcr-button):not(.on):not(.off):not(.pi
     body[data-theme=dark] .even td :not(.pcr-button):not(.on):not(.off):not(.picker):not(.pcr-save) {
         background-color:#fff ;
         color:#252629  ;
-        
+
     }
-   
+
     body[data-theme=dark] .odd td,
     body[data-theme=dark] .odd td :not(.pcr-button):not(.on):not(.off):not(.picker):not(.pcr-save) {
         background-color:#252629  ;
         color:#fff ;
-        
+
     }
     body[data-theme=dark] .ms-drop ul{
         color: #252629 !important;
@@ -349,7 +349,7 @@ body[data-theme=dark] .close{
             <?php
     } ?>
 
-     <?php if(Session('dark_mode') != null && Session('dark_mode') != "")  {  
+     <?php if(Session('dark_mode') != null && Session('dark_mode') != "")  {
       $dark_mode = Session('dark_mode');
       ?>
       body[data-theme=dark],
@@ -376,9 +376,9 @@ body[data-theme=dark] .close{
     body[data-theme=dark] .table_header{
         background:{{$dark_mode['drk_table_header']}} !important;
     }
-    body[data-theme=dark] .odd td, 
+    body[data-theme=dark] .odd td,
     body[data-theme=dark] .odd td :not(.pcr-button):not(.on):not(.off):not(.picker):not(.pcr-save),
-    body[data-theme=dark] .even td, 
+    body[data-theme=dark] .even td,
     body[data-theme=dark] .even td :not(.pcr-button):not(.on):not(.off):not(.picker):not(.pcr-save),
     body[data-theme=dark] .table td,
     body[data-theme=dark] .table_row{
@@ -405,7 +405,7 @@ body[data-theme=dark] .close{
     <?php
     } ?>
 
-<?php if(Session('button') != null && Session('button') != "")  {  
+<?php if(Session('button') != null && Session('button') != "")  {
     ?>
     .add_btn_back{
         background:#39c449 !important;
@@ -430,12 +430,12 @@ body[data-theme=dark] .close{
     }
     <?php
     } ?>
-    
-   
-    
+
+
+
 /*Color End */
 
-    
+
     /* loader code ends */
     </style>
     @stack('css')
@@ -447,7 +447,7 @@ body[data-theme=dark] .close{
         <header class="topbar head_back">
             <nav class="top-navbar navbar navbar-expand-md navbar-dark">
                 <div class="navbar-nav">
-                    <a class="navbar-brand sidebartoggler waves-effect waves-light asdabcasd"> 
+                    <a class="navbar-brand sidebartoggler waves-effect waves-light asdabcasd">
                         @if(Session::get('site_logo') != null && Session::get('site_logo') != "")
                             @if(file_exists( public_path().'/'. $file_path  . Session::get('site_logo') ))
                                 <img  src="{{asset( $file_path . Session::get('site_logo'))}}"
@@ -459,7 +459,7 @@ body[data-theme=dark] .close{
                             <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle" width="65" height="72">
                         @endif
                             &nbsp;
-                        <strong id="logo_title">{{Session::get('site_logo_title')}}</strong><span id="version"></span> 
+                        <strong id="logo_title">{{Session::get('site_logo_title')}}</strong><span id="version"></span>
                     </a>
 
                     <a class="nav-link sidebartoggler waves-effect waves-light mt-2" href="javascript:void(0)"
@@ -497,8 +497,8 @@ body[data-theme=dark] .close{
                             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell" style="font-size:25px;"></i>
                                 @if($numberAlerts > 0)
-                                    <span class="badge badge-light" id="noti_count" >{{$numberAlerts}}</span> 
-                                @else    
+                                    <span class="badge badge-light" id="noti_count" >{{$numberAlerts}}</span>
+                                @else
                                     <span class="badge badge-light" id="noti_count" style="display:none"></span>
                                 @endif
                             </a>
@@ -513,28 +513,28 @@ body[data-theme=dark] .close{
                                                 <a href="{{url('all-notifications')}}" class="small p-2">view all</a>
                                             </div>
                                         </div>
-                                        
+
                                     </li>
                                     <li>
                                         <div class="message-center notifications position-relative"
                                             style="height:250px;">
                                             <!-- Message Coming from js -->
-                                            
+
                                         </div>
                                         <div class="text-center">
                                             <button class="btn btn-success" onclick="allRead()" style="width:100%;">
                                                 Mark All as Read
-                                            </button>    
+                                            </button>
                                         </div>
                                     </li>
                                     <!-- <li>
                                         <a class="nav-link border-top text-center text-dark pt-3"
                                             href="#"> <strong>Check all notifications</strong> <i
-                                                class="fa fa-angle-right"></i> 
+                                                class="fa fa-angle-right"></i>
                                         </a>
                                     </li> -->
-                                    
-                                    
+
+
                                 </ul>
                             </div>
                         </li>
@@ -552,7 +552,7 @@ body[data-theme=dark] .close{
                                         <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle" width="65" height="72">
                                     @endif
                                 @else
-                                    <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle" width="65" height="72"> 
+                                    <img src="{{asset( $file_path . 'default_imgs/logo.png')}}" alt="'s Photo" class="rounded-circle" width="65" height="72">
                                 @endif
                             </a>
                                     <!-- <a href="#">{{ Auth::user()->name }}</a> -->
@@ -581,7 +581,7 @@ body[data-theme=dark] .close{
                                 @if(Session::get('default_cmp_id') != 0 )
                                     <a class="dropdown-item" href="{{url('company-profile')}}/{{Session::get('default_cmp_id')}}"><i class="ti-wallet mr-1 ml-1"></i> Company Profile </a>
                                 @endif
-                                
+
                                 <!--<a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet mr-1 ml-1"></i> My Balance</a>-->
                                 <!--<a class="dropdown-item" href="javascript:void(0)"><i class="ti-email mr-1 ml-1"></i> Inbox</a>-->
                                 <!--<div class="dropdown-divider"></div>-->
@@ -616,7 +616,7 @@ body[data-theme=dark] .close{
             </footer>
 
         </div>
-        
+
     </div>
     <script>
         const colorUrl = "{{asset('get-color')}}";
@@ -631,7 +631,7 @@ body[data-theme=dark] .close{
     <script src="{{asset( $path . 'js/jquery.min.js')}}"></script>
     <script src="{{asset( $path . 'js/popper.min.js')}}"></script>
     <script src="{{asset( $path . 'js/bootstrap.min.js')}}"></script>
-    
+
     <script src="{{asset( $path . 'js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset( $path . 'js/datatable_basic.init.js')}}"></script>
     <script src="{{asset( $path . 'js/custom.min.js')}}"></script>
@@ -643,13 +643,13 @@ body[data-theme=dark] .close{
 
 
     <script src="{{asset( $path . 'js/c3.min.js')}}"></script>
-    <script src="{{asset( $path . 'js/chat.js')}}"></script>    
+    <script src="{{asset( $path . 'js/chat.js')}}"></script>
     <script src="{{asset( $path . 'js/custom2.min.js')}}"></script>
     <script src="{{asset( $path . 'js/d3.min.js')}}"></script>
     <script src="{{asset( $path . 'js/feather.min.js')}}"></script>
     <script src="{{asset( $path . 'js/feather2.min.js')}}"></script>
 
-    
+
     <script src="{{asset( $path . 'js/jquery.nestable.js')}}"></script>
     <script src="{{asset( $path . 'js/jquery.sparkline.min.js')}}"></script>
 
@@ -657,7 +657,7 @@ body[data-theme=dark] .close{
     <script src="{{asset( $path . 'js/jquery.validate.min.js')}}"></script>
     <script src="{{asset( $path . 'js/moment.js')}}"></script>
     <script src="{{asset( $path . 'js/perfect_scrollbar.jquery.min.js')}}"></script>
-    
+
     <script src="{{asset( $path . 'js/select2.full.min.js')}}"></script>
     <script src="{{asset( $path . 'js/select2.init.js')}}"></script>
     <script src="{{asset( $path . 'js/select2.min.js')}}"></script>
@@ -670,7 +670,7 @@ body[data-theme=dark] .close{
     <script type="text/javascript" src="{{asset( $path . 'js/countdown.js')}}"></script>
     <script src="{{asset( $path . 'js/calendar.js')}}"></script>
     <script src="{{asset( $path . 'js/tagsinput.js')}}"></script>
- 
+
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
@@ -687,7 +687,7 @@ body[data-theme=dark] .close{
     <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
 
-  
+
 
     <script>
     $.ajaxSetup({
@@ -702,7 +702,7 @@ body[data-theme=dark] .close{
     var url = "{{url('mark_all_read')}}";
     var get_notifications = "{{url('getNotifications')}}";
     let notifications;
-       
+
 
     $(function() {
         // Nestable
@@ -758,7 +758,7 @@ body[data-theme=dark] .close{
             $(".breadcrumb").removeClass("black");
             $('input[type="date"]').removeClass('dark-calendar');
             light("{{Session::get('text_light')}}", "{{Session::get('bg_light')}}");
-            
+
         } else {
 
             $('body').attr("data-theme", 'dark');
@@ -776,7 +776,7 @@ body[data-theme=dark] .close{
         }
         $('#toggle_checkbox').change(function() {
 
-           
+
             if ($(this).is(":checked")) {
                 $('body').attr("data-theme", 'dark');
                 $(".sidna").addClass("blacknav");
@@ -799,11 +799,11 @@ body[data-theme=dark] .close{
                 $('.bread_crum_back').toggleClass("bread_crum_back drk_bread_crum_back ");
                 $('.border_thick').toggleClass("border_thick drk_border_thick ");
                 $('.card_shadow').toggleClass("card_shadow drk_card_shadow ");
-            
-            
-            
-            
-            
+
+
+
+
+
             //    Color Scheme
 
                 $.ajax({
@@ -822,7 +822,7 @@ body[data-theme=dark] .close{
                         console.log(errMsg);
                     }
                 });
-               
+
 
             } else {
 
@@ -881,7 +881,7 @@ body[data-theme=dark] .close{
                 console.log(errMsg);
             }
         });
-        
+
     }
 
     function getNotifications(){
@@ -921,7 +921,7 @@ body[data-theme=dark] .close{
                             }
 
                             var date = new Date(notifications[i].created_at);
-                            
+
                             default_icon = `<span class="btn `+notifications[i].btn_class+` rounded-circle btn-circle"">
                                             <i class="`+notifications[i].noti_icon+`"></i></span>`;
 
@@ -933,10 +933,10 @@ body[data-theme=dark] .close{
                                             class="message-item d-flex align-items-center border-bottom px-3 py-2">
                                             `+ (notifications[i].noti_type == "attendance" ? user_image : default_icon) +`
                                             <div class="w-75 d-inline-block v-middle pl-2">
-                                                <h5 class="message-title mb-0 mt-1">`+title+`</h5> 
+                                                <h5 class="message-title mb-0 mt-1">`+title+`</h5>
                                                 <span
                                                     class="font-12 d-block text-muted">`+desc+`
-                                                </span> 
+                                                </span>
                                                 <span class="font-12 text-nowrap d-block text-muted">` + moment(notifications[i].created_at).format('LT') + ` </span>
                                             </div>
                                         </a>`;
@@ -945,13 +945,13 @@ body[data-theme=dark] .close{
 
                     }else{
                         noti_div = `<li>
-                                        <span class="font-12 text-nowrap d-block text-muted text-truncate" style="text-align:center">No Unread Notifications.</span> 
+                                        <span class="font-12 text-nowrap d-block text-muted text-truncate" style="text-align:center">No Unread Notifications.</span>
                                     </li>`;
                         $('.notif_div_ul').append(noti_div)
-                        
+
                     }
                 }
-                
+
 
             },
             failure: function(errMsg) {
@@ -965,11 +965,11 @@ body[data-theme=dark] .close{
         $.ajax({
             type: 'POST',
             url: send_notification,
-            data: { 
+            data: {
                 type:type,
                 slug:slug,
                 icon:icon,
-                title: title, 
+                title: title,
                 description: description},
             success: function(data) {
                 console.log(data);
@@ -1149,7 +1149,7 @@ body[data-theme=dark] .close{
         }
     })
     </script>
-        
+
     @yield('scripts')
 </body>
 </html>

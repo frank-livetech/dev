@@ -27,15 +27,15 @@ class UserController extends Controller
     public static $mailserver_username = 'support2@mylive-tech.com';
     public static $mailserver_password = 'y7.v9jLy!JLG9!s';
 
-    // private $permissions_list = ['d_t_canreply'=>'Reply to tickets', 
-    // 'd_t_canforward'=>'Forward tickets', 
-    // 'd_t_canfollowup'=>'Schedule ticket follow-ups', 
+    // private $permissions_list = ['d_t_canreply'=>'Reply to tickets',
+    // 'd_t_canforward'=>'Forward tickets',
+    // 'd_t_canfollowup'=>'Schedule ticket follow-ups',
     // 'd_t_canbilling'=>'Time tracking and billing notes'];
 
     private $permissions_list = [
-        'd_t_canreply'=>'Reply to tickets', 
-        'd_t_canforward'=>'Forward tickets', 
-        'd_t_canfollowup'=>'Schedule ticket follow-ups', 
+        'd_t_canreply'=>'Reply to tickets',
+        'd_t_canforward'=>'Forward tickets',
+        'd_t_canfollowup'=>'Schedule ticket follow-ups',
         'd_t_canbilling'=>'Time tracking and billing notes',
         'd_t_canassignment'=>'Ticket Assignment Email Alert',
         'd_t_cannotealerts'=>'Note Alerts',
@@ -68,7 +68,7 @@ class UserController extends Controller
         // }else{
         //     dd("not");
         // }
-        
+
         // dd($users->toArray());
 
         return view('system_manager.staff_management.index-new', get_defined_vars());
@@ -115,7 +115,7 @@ class UserController extends Controller
                     $user->created_by = \Auth::user()->id;
 
                     // $user->staffProfile->role_id = $data['role_id'];
-                    
+
                     $user->staffProfile->phone = $data['phone_number'];
                     if(!empty($data['tags'])) {
                         $user->staffProfile->tags = $data['tags'];
@@ -125,7 +125,7 @@ class UserController extends Controller
                     //     $user->password = bcrypt($data['password']);
                     // }
                     if($request->has('user_photo')) {
-                        
+
                         $image = $request->file('user_photo');
                         $filenamewithextension = $data['user_photo']->getClientOriginalName();
                         //get filename without extension
@@ -142,7 +142,7 @@ class UserController extends Controller
                         $filenametostore = $user->profile_pic ? $user->profile_pic.'.'.$extension : time().'.'.$extension;
                         // $filePath = public_path('');
                         // echo $extension;
-                        
+
                         $image->move('files/user_photos/', $filenametostore);
                         $user->profile_pic = $filenametostore;
                         // return response()->json($user);
@@ -166,7 +166,7 @@ class UserController extends Controller
 
                 if($check_user) {
                     User::where('email',$data['email'])->where('is_deleted',1)->delete();
-                    
+
                     $data['alt_pwd'] = Crypt::encryptString($data['password']);
                     $data['password'] = bcrypt($data['password']);
                     $data['name'] = $data['full_name'];
@@ -193,11 +193,11 @@ class UserController extends Controller
                     $profile_data['user_id'] = $save_users->id;
                     $profile_data['phone_number'] = $data['phone_number'];
                     $profile_data['role_id'] = $data['role_id'];
-                    
+
                     $profile_data['tags'] = !empty($data['tags']) ? $data['tags'] : null;
-                    
+
                     $user_profile = StaffProfile::create($profile_data);
-                    
+
                     if($user_profile) {
                         $response['message'] = 'User Saved Successfully!';
                         // email send code
@@ -240,11 +240,11 @@ class UserController extends Controller
                         $profile_data['tags'] = null;
                     }
                     $user_profile = StaffProfile::create($profile_data);
-                    
+
                     if($user_profile){
                         $response['message'] = 'User Saved Successfully!';
                         // email send code
-                        
+
                         $mailer->UserRegisteration($data['email']);
                     }else{
                         $response['message'] = 'Some error ocurred while saving!';
@@ -295,7 +295,7 @@ class UserController extends Controller
 
     //     if(str_contains($template, '{User-Name}')) {
     //         $content = DB::table('templates')->where('code', 'new_user_signup')->first();
-            
+
     //         if(!empty($content)) {
     //             $content = $content->template_html;
     //             $this->replaceShortCodes($data_list, $content,$password,$new);
@@ -310,8 +310,8 @@ class UserController extends Controller
     //         if(str_contains($template, $value->code)) {
     //             $template = str_replace($value->code," ", $template);
     //         }
-    //     }    
-    //     return html_entity_decode($template);          
+    //     }
+    //     return html_entity_decode($template);
     // }
 
     // public function replaceShortCodes($data_list, &$template,$password,$new) {
@@ -319,7 +319,7 @@ class UserController extends Controller
     //     if($brand_setting) {
     //         // $site_logo = $brand_setting->site_logo != null && $brand_setting->site_logo != '' ? $brand_setting->site_logo : '';
     //         // $current_url = strval(URL::to('/') . "/public/files/brand_files/'.$site_logo.'");
-    //         // $img = '<img src="'.$current_url.'" width="150" height="150"/>';     
+    //         // $img = '<img src="'.$current_url.'" width="150" height="150"/>';
     //         $img = '<img src="'.GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/').'/public/files/brand_files/'.$brand_setting->site_logo .'" width="150" height="150"/>';
     //     }
 
@@ -339,15 +339,15 @@ class UserController extends Controller
     //             if($data['module'] == 'User' && str_contains($template, '{User-Name}')) {
     //                 $template = str_replace('{User-Name}',"Name : " . $data['values']['name'], $template);
     //             }
-    
+
     //             if($data['module'] == 'User' && str_contains($template, '{User-Email}')) {
     //                 $template = str_replace('{User-Email}', "Email : " . $data['values']['email'], $template);
     //             }
-    
+
     //             if($data['module'] == 'User' && str_contains($template, '{User-Password}')) {
     //                 $template = str_replace('{User-Password}', "Email : " . $password, $template);
     //             }
-    
+
     //             if($data['module'] == 'User' && str_contains($template, '{Company-Logo}')) {
     //                 $template = str_replace('{Company-Logo}', $img, $template);
     //             }
@@ -364,22 +364,22 @@ class UserController extends Controller
     //             if($data['module'] == 'User' && str_contains($template, '{User-Name}')) {
     //                 $template = str_replace('{User-Name}', " ", $template);
     //             }
-    
+
     //             if($data['module'] == 'User' && str_contains($template, '{User-Email}')) {
     //                 $template = str_replace('{User-Email}', " ", $template);
     //             }
-    
+
     //             if($data['module'] == 'User' && str_contains($template, '{User-Password}')) {
     //                 $template = str_replace('{User-Password}', " ", $template);
     //             }
-    
+
     //             if($data['module'] == 'User' && str_contains($template, '{Company-Logo}')) {
     //                 $template = str_replace('{Company-Logo}', $img, $template);
     //             }
 
     //         }
 
-           
+
 
     //         if(!is_array($data['values'])) $data['values'] = (array) $data['values'];
 
@@ -387,7 +387,7 @@ class UserController extends Controller
     //             $k = str_replace('_', ' ', $key);
     //             $k = ucwords($k);
     //             $k = str_replace(' ', '-', $k);
-    
+
     //             if(!is_array($value) && !is_object($value)) {
     //                 $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
     //             }
@@ -435,7 +435,7 @@ class UserController extends Controller
     public function update_password(Request $request){
         $data = $request->all();
         $response = array();
-        
+
         if($request->input('staff_id')){
             $validatorRule = [];
             $user = User::findOrFail($request->input('staff_id'));
@@ -482,14 +482,14 @@ class UserController extends Controller
         // if ($request->ajax()) {
         //     return Datatables::of($users)->make(true);
         // }
-        
+
         $response['message'] = 'Users List';
         $response['data'] = $users;
         $response['status_code'] = 200;
         $response['success'] = true;
         return response()->json($response);
     }
-    
+
     public function my_profile(Request $request){
         if($request->wantsJson()){
             $profile = User::with('staffProfile')->where('email',$request->input('email'))->first();
@@ -505,7 +505,7 @@ class UserController extends Controller
             ->where('assigned_to',$id)
             ->where('is_deleted', 0)->orderBy('updated_at', 'desc')
             ->get();
-        
+
         // $tickets = DB::Table('tickets')
         // ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
         // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -516,7 +516,7 @@ class UserController extends Controller
         // ->where('tickets.assigned_to',$id)
         // ->get();
 
-        
+
         $certificates = DB::table("user_certification")->where("user_id","=",$id)->get();
         $docs = DB::table("user_docs")->where("user_id","=",$id)->get();
         $staff_att_data = StaffAttendance::with('user_clocked')->where('user_id',$id)->get();
@@ -547,7 +547,7 @@ class UserController extends Controller
         if($google_api === 0) $countries = DB::Table('countries')->get();
 
         $departments = $this->listPermissions($id);
-        
+
         $date_format = Session('system_date');
 
         $general_staff_note = SystemSetting::where('sys_key', 'general_staff_note')->first();
@@ -557,7 +557,7 @@ class UserController extends Controller
         $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
-    
+
         $ticketView = TicketView::where('user_id' , $id)->first();
 
         $leaves = StaffLeaves::where('requested_by' , auth()->id())->get();
@@ -570,10 +570,10 @@ class UserController extends Controller
 
             $arr = [
                 "calender" => "Business" ,
-                "is_holiday" => 0 , 
-                "is_leave" => 0 , 
+                "is_holiday" => 0 ,
+                "is_leave" => 0 ,
             ];
-          
+
             $leave->extendedProps = $arr;
 
             $leave->start = $leave->start_date;
@@ -594,7 +594,7 @@ class UserController extends Controller
             ->where('assigned_to',$id)
             ->where('is_deleted', 0)->orderBy('updated_at', 'desc')
             ->get();
-        
+
         // $tickets = DB::Table('tickets')
         // ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
         // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -635,7 +635,7 @@ class UserController extends Controller
         if($google_api === 0) $countries = DB::Table('countries')->get();
 
         $departments = $this->listPermissions($id);
-        
+
         $date_format = Session('system_date');
 
         $general_staff_note = SystemSetting::where('sys_key', 'general_staff_note')->first();
@@ -644,7 +644,7 @@ class UserController extends Controller
         if(!empty($note_for_selected_staff)) $note_for_selected_staff = $note_for_selected_staff->sys_value;
         $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
-        else $selected_staff_members = array();  
+        else $selected_staff_members = array();
 
         $leaves = StaffLeaves::where('requested_by' , $id)->get();
 
@@ -656,10 +656,10 @@ class UserController extends Controller
 
             $arr = [
                 "calender" => "Business" ,
-                "is_holiday" => 0 , 
-                "is_leave" => 0 , 
+                "is_holiday" => 0 ,
+                "is_leave" => 0 ,
             ];
-          
+
             $leave->extendedProps = $arr;
 
             $leave->start = $leave->start_date;
@@ -667,7 +667,7 @@ class UserController extends Controller
         }
 
         $ticketView = TicketView::where('user_id' , $id)->first();
-          
+
         return view('system_manager.staff_management.user_profile_new', get_defined_vars());
     }
 
@@ -681,7 +681,7 @@ class UserController extends Controller
             ->where('assigned_to',$id)
             ->where('is_deleted', 0)->orderBy('updated_at', 'desc')
             ->get();
-        
+
         // $tickets = DB::Table('tickets')
         // ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
         // ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -722,7 +722,7 @@ class UserController extends Controller
         if($google_api === 0) $countries = DB::Table('countries')->get();
 
         $departments = $this->listPermissions($id);
-        
+
         $date_format = Session('system_date');
 
         $general_staff_note = SystemSetting::where('sys_key', 'general_staff_note')->first();
@@ -732,7 +732,7 @@ class UserController extends Controller
         $selected_staff_members = SystemSetting::where('sys_key', 'selected_staff_members')->select('sys_value')->first();
         if(!empty($selected_staff_members)) $selected_staff_members = explode(',', $selected_staff_members->sys_value);
         else $selected_staff_members = array();
-    
+
         return view('system_manager.staff_management.user_profile_new',compact('id','google','staff_state','profile','tickets','staff_att_data', 'certificates','docs', 'types', 'priorities', 'statuses', 'departments', 'users', 'customers', 'ticket_format', 'countries', 'tasks', 'google_api', 'date_format', 'selected_staff_members', 'note_for_selected_staff', 'general_staff_note'));
     }
 
@@ -748,7 +748,7 @@ class UserController extends Controller
 
         $departments = Departments::all()->toArray();
         // $webmaster_new_per = ["d_t_notifications" => ["Project manager progress report notifications"]];
-        
+
         $roles = DB::table('roles')->where([
             ['name', '!=', 'Vendor'], ['name', '!=', 'Customer']
         ])->get()->pluck('id')->toArray();
@@ -756,7 +756,7 @@ class UserController extends Controller
         $permissions = [];
         foreach ($this->permissions_list as $key => $value) {
             $permissions[$key] = [$value, 0];
-        }      
+        }
 
         foreach ($departments as $key => $value) {
 
@@ -793,13 +793,13 @@ class UserController extends Controller
     }
 
     public function departmentPermission(Request $request) {
-        
+
         $dept_permission_data =  DB::table("dept_permissions")->count();
 
         if($dept_permission_data > 0) {
 
             DB::table("dept_permissions")->where("staff_id",$request->data[0]['user_id'])->delete();
-            
+
             for($k = 0; $k < $request->length; $k++ ) {
 
                 DB::table("dept_permissions")->insert([
@@ -833,7 +833,7 @@ class UserController extends Controller
     }
 
     public function user_profile(Request $request , $id){
-        
+
         if($request->wantsJson()){
             $profile = User::with('staffProfile')->where('email',$request->input('email'))->first();
             return response()->json($profile);
@@ -850,17 +850,17 @@ class UserController extends Controller
         ->where('tickets.assigned_to',\Auth::user()->id)
         ->get();
         return view('system_manager.staff_management.user_profile',compact('profile','tickets'));
-        
+
     }
 
     public function uploadUserImage(Request $request){
-        
+
         $image = $request->file('profile_img');
         $imageName = $_FILES['profile_img']['name'];
 
         $imageName = strtolower($imageName);
         $imageName = str_replace(" ","_",$imageName);
-       
+
         $target_dir = 'storage/users';
 
         if (!File::isDirectory($target_dir)) {
@@ -872,7 +872,7 @@ class UserController extends Controller
         $user = User::where("id", $request->staff_id)->first();
         $user->profile_pic = 'storage/users/'. $imageName;
         $user->save();
-        
+
         $response['message'] = 'Staff Profile Uploaded Successfully';
         $response['status'] = 200;
         $response['success'] = true;
@@ -886,33 +886,33 @@ class UserController extends Controller
     }
 
     public function add_new_certification(Request $request){
-        
+
         $data = $request->all();
         $response = array();
 
         try{
-            
+
             $data['created_by'] = \Auth::user()->id;
-                        
+
             if($request->has('image')){
-        
+
                 $image = $request->file('image');
                 $filenamewithextension = $data['image']->getClientOriginalName();
                 //get filename without extension
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
                 //get file extension
                 $extension = $data['image']->getClientOriginalExtension();
-        
+
                 $filenametostore = time().'.'.$extension;
                 $filePath = public_path('files/user_certification/');
-        
+
                 $image->move($filePath, $filenametostore);
                 $data["image"] = $filenametostore;
-                
+
             }
-           
+
             $save_users = Usercertification::create($data);
-            
+
             $response['message'] = 'Certification Saved Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
@@ -925,14 +925,14 @@ class UserController extends Controller
                 return response()->json($response);
         }
     }
-    
+
     public function delete_user(Request $request){
         $data = $request->all();
         $response = array();
 
         $user = User::with('staffProfile')->findOrFail($data['id']);
         $user->delete();
-       
+
         // $del_department = User::destroy($data);
         $response['message'] = 'User Delete Successfully!';
         $response['status_code'] = 200;
@@ -941,44 +941,44 @@ class UserController extends Controller
     }
 
     public function change_theme_mode(Request $request){
-        
+
         $data = $request->all();
         try{
             $user = \Auth::user();
             if($data['theme'] == 'light'){
-                
+
                 $user->theme = 'light';
                 $user->save();
-                
+
             }else{
-                
+
                 $user->theme = 'dark';
                 $user->save();
-                
+
             }
             $response['message'] = 'Theme Changed Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
             return response()->json($response);
-            
+
         }catch(Exception $e){
-            
+
             $response['message'] = 'Something Went wrong!';
             $response['status_code'] = 500;
             $response['success'] = false;
             return response()->json($response);
-                
+
         }
     }
 
     public function saveColorSettings(Request $request){
-        
+
         try{
             $action = $request->input('action');
             $color = $request->input('color');
             $response = [];
             $user = \Auth::user();
-            
+
                 if($action == 'textDark'){
                     $user->text_dark = $color;
                 }else if($action == 'textLight'){
@@ -1060,11 +1060,12 @@ class UserController extends Controller
 
     }
 
-    public function customer_profile(){
+    public function customer_profile()
+    {
 
         $customer = User::where('id',\Auth::user()->id)->first();
         $company = array();
-        
+
         $tickets = DB::Table('tickets')
         ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
         ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -1093,7 +1094,7 @@ class UserController extends Controller
                 $value->replies = '';
             }
         }
-        
+
         $orders = array();
         $subscriptions = array();
 
@@ -1106,7 +1107,7 @@ class UserController extends Controller
 
         $customer = User::where('id',\Auth::user()->id)->first();
         $company = array();
-        
+
         $tickets = DB::Table('tickets')
         ->select('tickets.*','ticket_statuses.name as status_name','ticket_priorities.name as priority_name','ticket_types.name as type_name','departments.name as department_name','users.name as tech_name')
         ->join('ticket_statuses','ticket_statuses.id','=','tickets.status')
@@ -1135,7 +1136,7 @@ class UserController extends Controller
                 $value->replies = '';
             }
         }
-        
+
         $orders = array();
         $subscriptions = array();
 
@@ -1145,33 +1146,33 @@ class UserController extends Controller
     }
 
     public function add_new_documents(Request $request){
-        
+
         $data = $request->all();
         $response = array();
-        
+
         try{
-            
+
             $data['created_by'] = \Auth::user()->id;
-                        
+
             if($request->has('image')){
-        
+
                 $image = $request->file('image');
                 $filenamewithextension = $data['image']->getClientOriginalName();
                 //get filename without extension
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
                 //get file extension
                 $extension = $data['image']->getClientOriginalExtension();
-        
+
                 $filenametostore = time().'.'.$extension;
                 $filePath = public_path('files/user_docs/');
-        
+
                 $image->move($filePath, $filenametostore);
                 $data["image"] = $filenametostore;
-                
+
             }
-           
+
             $save_users = UserDocuments::create($data);
-            
+
             $response['message'] = 'Documents Saved Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
@@ -1196,7 +1197,7 @@ class UserController extends Controller
             "is_leave" => $request->is_leave,
             "created_by" => \Auth::user()->id,
         );
-        
+
         if($request->id == '' || $request->id == null) {
 
             $reserve_date = StaffSchedule::where('schedule_date',$request->schedule_date)->first();
@@ -1218,7 +1219,7 @@ class UserController extends Controller
                         "success" => true,
                         "id" => $reserve_date->id,
                     ]);
-                    
+
                 }else if($reserve_date->is_holiday == 0 && $reserve_date->is_leave == 0 && $reserve_date->start_time != "00:00:00" && $reserve_date->end_time != "00:00:00"){
 
                     if($request->is_holiday != 0 || $request->is_leave !=0) {
@@ -1226,7 +1227,7 @@ class UserController extends Controller
                             "is_holiday" => $request->is_holiday,
                             "is_leave" => $request->is_leave,
                         ]);
-    
+
                         return response()->json([
                             "message" => 'Staff Schedule Added',
                             "status_code" => 200,
@@ -1260,7 +1261,7 @@ class UserController extends Controller
                         "success" => false,
                     ]);
                 }
-                
+
             }else{
                 $staff = StaffSchedule::create($data);
 
@@ -1270,7 +1271,7 @@ class UserController extends Controller
                     "success" => true,
                     "id" => $staff->id,
                 ]);
-            }       
+            }
 
         }else{
 
@@ -1317,8 +1318,8 @@ class UserController extends Controller
 
         $data = $request->all();
 
-        try {   
-            
+        try {
+
             $user = User::where('id', $request->user_id)->first();
             $user->phone_number = $data['phone'];
             $user->country = $data['country'];
@@ -1357,19 +1358,19 @@ class UserController extends Controller
                         //         "success" => false,
                         //         "message" => 'Old password not match!',
                         //     ]);
-                        // } 
+                        // }
                     // }else{
                     //     return response()->json([
                     //         "code" => 500,
                     //         "success" => false,
                     //         "message" => 'old password not match!',
-                    //     ]);  
+                    //     ]);
                     // }
                 }
             }
 
             $user->save();
-            
+
             $mailer = new MailController();
             $mailer->UserRegisteration($user->email, false);
 
@@ -1378,8 +1379,8 @@ class UserController extends Controller
                 'message' => 'Profile Updated Successfully',
                 'code' => 200,
             ]);
-           
-            
+
+
         } catch (\Exception $th) {
             echo $th;
             return response()->json([
@@ -1420,10 +1421,10 @@ class UserController extends Controller
 
             if(!empty($template)) {
 
-                $detail = $value['email'] != auth()->user()->email ? 
-                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just Add A Leave' : 
+                $detail = $value['email'] != auth()->user()->email ?
+                    'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just Add A Leave' :
                     'Hey, you just Add a Leave into LT-CMS, here are the details';
-                
+
                 $temp = $this->leaveTemplateReplaceShortCodes($template->template_html ,$detail , $data['reason'] , $data['start_date'] , $data['end_date'] );
                 $mail = new MailController();
                 $mail->sendMail( auth()->user()->name . ' Added a Leave' , $temp , 'system_notification@mylive-tech.com', $value['email'] , $value['name']);
@@ -1472,11 +1473,11 @@ class UserController extends Controller
         // foreach($leaves as $leave) {
         //     $leave->staff = User::where('id',$leave->requested_by)->select('id','name')->first();
         // }
-        
+
         // if ($request->ajax()) {
         //     return Datatables::of($leaves)->make(true);
         // }
-        
+
         $response['message'] = 'Leaves List';
         $response['data'] = $leaves;
         $response['status_code'] = 200;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\CustomerManager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Crypt,DB, Hash, Auth, Cookie, URL};
+use Illuminate\Support\Facades\{Crypt,DB, Hash, Auth, Cookie, Date, URL};
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Models\{Departments, TicketPriority,TicketType,CustomerType,TicketStatus,TicketSettings,TicketNote,TicketView,Customer,Company,CustomerCC,Tickets,
     Subscriptions,BrandSettings,LineItem,Tax,Billing,Shipping,Orders,Integrations,CompanyActivityLog, DepartmentAssignments, TicketReply};
@@ -396,7 +396,10 @@ class CustomerlookupController extends Controller
         return view('customer_manager.service_stats.index');
     }
 
-    public function customer_profile($customer_id, $type = null) {
+    public function customer_profile($customer_id, $type = null)
+    {
+
+
         $customer = Customer::with('company')->where('id', $customer_id)->first();
         $company_id = $customer->company_id;
 
@@ -501,7 +504,8 @@ class CustomerlookupController extends Controller
         try{
             $user = User::where('email',$email)->first();
             if($user){
-                Auth::login($user);
+                session()->forget('action_clicked_admin');
+                session()->put('action_clicked_admin',$user->email);
                 return redirect()->route('customer.myProfile');
             }else{
                 return redirect()->back()->with('error','User Not Found');
