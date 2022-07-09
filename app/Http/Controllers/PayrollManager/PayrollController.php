@@ -334,12 +334,15 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{New-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
 
                 $todayTickets = Tickets::where([
                     ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['is_overdue', 0] ,
-                    ['trashed', 0]
+                    ['trashed', 0],
+                    ['status','!=', $closeStatus->id],
+
                 ])->whereDate('created_at', Carbon::today())->get();
 
                 $newTicket ='<strong> New Tickets </strong>';
@@ -475,12 +478,15 @@ class PayrollController extends Controller {
             }
 
             if(str_contains($template, '{New-Tickets}')) {
+                $closeStatus = TicketStatus::where('slug','closed')->first();
 
                 $todayTickets = Tickets::where([
                     ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
                     ['is_overdue', 0] ,
-                    ['trashed', 0]
+                    ['trashed', 0],
+                    ['status', '!=',$closeStatus->id],
+
                 ])->whereDate('created_at', Carbon::today())->get();
 
                 $newTicket ='<strong> New Tickets </strong>';

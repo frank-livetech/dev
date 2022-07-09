@@ -71,12 +71,29 @@ table.dataTable thead .sorting_desc:after {
 #desktop_view{
         display: block !important
     }
+
 @media (max-width: 630px) {
     #header-btn{
-        display: block !important
+        display: block !important;
+        margin-bottom: 1rem !important
     }
     #desktop_view{
         display: none !important
+    }
+    #dash_btns{
+        width: 40px !important;
+        height: 40px !important
+    }
+    .card-statistics .statistics-body .avatar .avatar-content .avatar-icon {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 10px;
+}
+    .card-body.statistics-body{
+        padding:0rem 2rem 0rem 0.5rem !important;
+}
+    #unassign_padd{
+        padding-left: 0px !important
     }
 }
 
@@ -136,7 +153,7 @@ table.dataTable thead .sorting_desc:after {
                 </div>
 
             </div>
-            <div class="content-header-right text-md-end col-md-7 col-12 d-md-block" id="header-btn" style="display: none !important">
+            <div class="content-header-right text-md-end col-md-7 col-12 d-md-block " id="header-btn" >
                 <div class="d-flex justify-content-end">
                     <div>
                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i
@@ -166,13 +183,13 @@ table.dataTable thead .sorting_desc:after {
                 <div class="row match-height">
                     <div class="col-lg-12 col-12">
                         <div class="card card-statistics">
-                            <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;">
+                            <div class="card-header" style="padding: 1rem 0 0.6rem 1rem;display:unset !important">
 
                                    <div class="col-md-12">
                                     <i class="fas fa-filter pull-right" onclick="openfilter()"
                                     style="position: relative;right: 10px;cursor: pointer;"></i>
                                    </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 mt-2">
                                         <div class="row pull-right openfilter" style="display: none">
                                         <div class="d-flex align-items-center pull-left">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
@@ -205,9 +222,9 @@ table.dataTable thead .sorting_desc:after {
                             <hr class="openfilter" style="display: none">
                             <div class="card-body statistics-body">
                                 <div class="row">
-                                    <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                                    <div class="col-md-3 col-sm-3 col-6 mb-2 mb-md-0">
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-primary me-2">
+                                            <div class="avatar bg-light-primary me-1" id="dash_btns">
                                                 <div class="avatar-content">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -226,9 +243,9 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                                    <div class="col-md-3 col-sm-3 col-6 mb-2 mb-md-0">
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-info me-2">
+                                            <div class="avatar bg-light-info me-1" id="dash_btns">
                                                 <div class="avatar-content">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -249,9 +266,9 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                                    <div class="col-md-3 col-sm-3 col-6 mb-2 mb-sm-0">
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-danger me-2">
+                                            <div class="avatar bg-light-danger me-1" id="dash_btns">
                                                 <div class="avatar-content">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -273,9 +290,9 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-12">
+                                    <div class="col-md-3 col-sm-3 col-6">
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-success me-2">
+                                            <div class="avatar bg-light-success me-1" id="dash_btns">
                                                 <div class="avatar-content">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -298,9 +315,9 @@ table.dataTable thead .sorting_desc:after {
                                     </div>
                                 </div>
                                 <div class="row mt-1">
-                                    <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                                    <div class="col-md-3 col-sm-3 col-6 mb-2 mb-md-0" >
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-info me-2">
+                                            <div class="avatar bg-light-info me-1" id="dash_btns">
                                                 <div class="avatar-content">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -320,9 +337,9 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-12 mb-2 mb-md-0">
+                                    <div class="col-md-3 col-sm-3 col-6 mb-2 mb-md-0" >
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-secondary me-2">
+                                            <div class="avatar bg-light-secondary me-1" id="dash_btns">
                                                 <div class="avatar-content">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -342,9 +359,9 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                                    <div class="col-md-3 col-sm-3 col-6 mb-2 mb-sm-0">
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-primary me-2">
+                                            <div class="avatar bg-light-primary me-1" id="dash_btns">
                                                 <div class="avatar-content">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -371,9 +388,9 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-12">
+                                    <div class="col-md-3 col-sm-3 col-6">
                                         <div class="d-flex flex-row">
-                                            <div class="avatar bg-light-warning me-2">
+                                            <div class="avatar bg-light-warning me-1" id="dash_btns">
                                                 <div class="avatar-content">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -394,10 +411,11 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                             
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-12">
@@ -423,11 +441,13 @@ table.dataTable thead .sorting_desc:after {
                                             </div>
                                             <div id="show_ticket_results"></div>
                                         </div>
-                                        <div class="d-grid col-4">
+                                        
+                                        {{-- <div id="full-view"> --}}
+                                        <div class="d-grid col-lg-4 col-4" >
                                             <a href="{{route('addTicketPage')}}">
                                                 <div
                                                     class="card card_shadow bg-success card_back border-dark card-hover">
-                                                    <div class="card-header">
+                                                    <div class="card-header" style="display: unset;padding: 0.5rem 0.5rem !important">
                                                         <div class="text-center">
                                                             <h2 class="fw-bolder mb-0"><span class="fas fa-plus"></span>
                                                             </h2>
@@ -438,11 +458,11 @@ table.dataTable thead .sorting_desc:after {
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="d-grid col-4">
+                                        <div class="d-grid col-lg-4 col-4" >
                                             <a href="{{asset('/ticket-manager')}}">
                                                 <div
                                                     class="card card_shadow card_back border-info card-hover text-center">
-                                                    <div class="card-header">
+                                                    <div class="card-header" style="display: unset;padding: 0.5rem 0.5rem !important">
                                                         <div class="">
                                                             <h2 class="fw-bolder mb-0">{{$total_tickets_count}}</h2>
                                                             <h5 class="card-text text-info">All Tickets</h5>
@@ -452,11 +472,11 @@ table.dataTable thead .sorting_desc:after {
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="d-grid col-4">
+                                        <div class="d-grid col-lg-4 col-4" >
                                             <a href="{{asset('/ticket-manager/self')}}">
                                                 <div
                                                     class="card card_shadow card_back border-success card-hover text-center">
-                                                    <div class="card-header">
+                                                    <div class="card-header" style="display: unset;padding: 0.5rem 0.5rem !important">
                                                         <div class="">
                                                             <h2 class="fw-bolder mb-0">{{$my_tickets_count}}</h2>
                                                             <h5 class="card-text text-success">My Tickets</h5>
@@ -466,11 +486,11 @@ table.dataTable thead .sorting_desc:after {
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="d-grid col-4">
+                                        <div class="d-grid col-lg-4 col-4" >
                                             <a href="{{asset('/ticket-manager/open')}}">
                                                 <div
                                                     class="card card_shadow card_back border-warning card-hover text-center">
-                                                    <div class="card-header">
+                                                    <div class="card-header" style="display: unset;padding: 0.5rem 0.5rem !important"> 
                                                         <div class="">
                                                             <h2 class="fw-bolder mb-0">{{$open_tickets_count}}</h2>
                                                             <h5 class="card-text text-warning">Open</h5>
@@ -480,11 +500,11 @@ table.dataTable thead .sorting_desc:after {
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="d-grid col-4">
+                                        <div class="d-grid col-lg-4 col-4" id="unassign_padd" >
                                             <a href="{{asset('/ticket-manager/unassigned')}}">
                                                 <div
                                                     class="card card_shadow card_back border-primary card-hover text-center">
-                                                    <div class="card-header">
+                                                    <div class="card-header" style="display: unset;padding: 0.5rem 0.5rem !important">
                                                         <div class="">
                                                             <h2 class="fw-bolder mb-0">{{$unassigned_tickets_count}}
                                                             </h2>
@@ -495,11 +515,11 @@ table.dataTable thead .sorting_desc:after {
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="d-grid col-4">
+                                        <div class="d-grid col-lg-4 col-4" >
                                             <a href="{{asset('/ticket-manager/overdue')}}">
                                                 <div
                                                     class="card card_shadow card_back border-danger card-hover text-center">
-                                                    <div class="card-header">
+                                                    <div class="card-header" style="display: unset;padding: 0.5rem 0.5rem !important">
                                                         <div class="">
                                                             <h2 class="fw-bolder mb-0">{{$late_tickets_count}}</h2>
                                                             <h5 class="card-text text-danger">Overdue</h5>
@@ -509,6 +529,7 @@ table.dataTable thead .sorting_desc:after {
                                                 </div>
                                             </a>
                                         </div>
+                                    {{-- </div> --}}
                                     </div>
                                 </form>
                             </div>
@@ -567,7 +588,7 @@ table.dataTable thead .sorting_desc:after {
                         </div>
 
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header" style="display: unset">
                                 <h4 class="card-title">Flagged <span class="float-end"><i class="fas fa-flag"
                                             style="color:#fd7e14;"></i></span></h4>
                             </div>
@@ -825,7 +846,7 @@ table.dataTable thead .sorting_desc:after {
                         </div>
                     </div>
                 </div>
-            </div>
+          
         </div>
     </div>
 </div>

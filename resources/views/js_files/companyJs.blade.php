@@ -260,12 +260,13 @@ function get_all_companies() {
                 },
                 {
                     render: function(data, type, full, meta) {
-                        const phone = full.phone;
 
-                        let newPhone = phone != null ? phone.replace(/[()\s-+]/g,'') : '';
-                        let copynumber= phone != null ? `<svg xmlns="http://www.w3.org/2000/svg" onclick="copyToClipBoard(` +newPhone+ `)" style="cursor: pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>` : '-';
-                        let phonenumber = phone != null ? `<a href ="tel:`+phone+`" class="text-body">` +phone+ `</a>` : '-';
-                        return ('<span>' + phonenumber + '</span>');
+                        const phone = (full.phone != null ? full.phone : '-');
+                        // let newPhone = phone.replace(/[()\s-+]/g, '');
+                        // let copynumber= phone != null ? `<svg xmlns="http://www.w3.org/2000/svg" onclick="copyToClipBoard(` +newPhone+ `)" style="cursor: pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>` : '-';
+                        // let phonenumber = phone != null ? `<a href ="tel:`+phone+`" class="text-body">` +phone+ `</a>` : '-';
+                        return (`<a href ="tel:`+ phone +`" class="text-body">` +phone+ `</a>`);
+
                     }
                 },
                 // {
