@@ -685,6 +685,7 @@
                 }
             }
 
+            
             // var last_act = val.lastActivity;
             // let region_current_date = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
 
@@ -719,8 +720,10 @@
             } else if (last_activity.includes('s')) {
                 la_color = `#8BB467`;
             }
-
-
+            let overdue_icon = '';
+            if(new_res_due.includes('Overdue') || new_rep_due.includes('Overdue')){
+               overdue_icon = `<span class="text-center text-white badge" style="background-color: #ea9f9f;margin: 9px 5px 0px 3px">Overdue</span>`
+            }
             let notes_icon = `<i class="fas fa-comment-alt-lines" style="margin-top:2px" title="This Ticket Has One or More Ticket Notes"></i>`;
             let attachment_icon = `<i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Has Attachments"></i>`;
             let follow_up_icon = `<span title="Has Followup"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f7b51b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></span>`;
@@ -739,8 +742,7 @@
                                         </li>
                                         <span style="margin: 9px 5px 0px 3px">${val['is_flagged'] == 1 ? "<span class='fas fa-flag' title='Flag' style='cursor:pointer;color: red !important;'></span>" : ''}</span>
                                         <span class="" style="margin: 9px 5px 0px 3px">${val['tkt_notes'] > 0 ? notes_icon : ''}</span> 
-                                        <span class="text-center text-white badge" style="background-color: #ea9f9f;margin: 9px 5px 0px 3px">Overdue</span>
-                                        
+                                        <div>${overdue_icon}</div>
                                     </ul>
                                 </div>
                                 <div class="card-body">
