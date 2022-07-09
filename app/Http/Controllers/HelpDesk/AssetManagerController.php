@@ -432,11 +432,11 @@ class AssetManagerController extends Controller
                                     ]);
 
                     $column_name = 'fl_'.$fieldsAdded->id;
-                    DB::statement("ALTER TABLE $table_name ADD COLUMN $column_name VARCHAR(200) Null AFTER asset_id; ");
+                    // DB::statement("ALTER TABLE $table_name ADD COLUMN $column_name VARCHAR(200) Null AFTER asset_id; ");
 
 
                 }else{
-                    AssetFields::find($request->field_id)->update([
+                     AssetFields::find($request->field_id)->update([
                         'label' => $request->label,
                         'placeholder' => $request->placeholder,
                         'description' => $request->desc,
@@ -444,13 +444,16 @@ class AssetManagerController extends Controller
                         'is_multi' => $request->is_multi,
                         'copy_icon' => $request->copy_icon,
                     ]);
+
+                    $fieldsAdded = AssetFields::find($request->field_id);
                 }
+
 
                 $response['message'] = 'Asset Type Update Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
-                $response['form_field'] = AssetFields::find($request->field_id);
-                $response['data'] = AssetFields::where('asset_forms_id', $request->template_id)->get();
+                $response['form_field'] = AssetFields::find($fieldsAdded->id);
+                $response['data'] = AssetFields::where('asset_forms_id', $request->template_id)->where('is_deleted',0)->get();
                 return response()->json($response);
             }
 
