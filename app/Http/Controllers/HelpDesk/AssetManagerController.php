@@ -432,7 +432,7 @@ class AssetManagerController extends Controller
                                     ]);
 
                     $column_name = 'fl_'.$fieldsAdded->id;
-                    // DB::statement("ALTER TABLE $table_name ADD COLUMN $column_name VARCHAR(200) Null AFTER asset_id; ");
+                    DB::statement("ALTER TABLE $table_name ADD COLUMN $column_name VARCHAR(200) Null AFTER asset_id; ");
 
 
                 }else{
