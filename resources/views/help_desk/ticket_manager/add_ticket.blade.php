@@ -2,7 +2,7 @@
 @section('body-content')
 <style>
     .customdropdown  {
-        width: 100% !important; 
+        width: 100% !important;
         height:36px !important;
     }
     .error {
@@ -58,7 +58,7 @@
                                     <label class="control-label">Select Department<span class="text-danger">*</span></label> <br>
                                     <select  class="select2 form-control customdropdown" style="width:100%" onchange="showDepartStatus(this.value)" id="dept_id" name="dept_id" required>
                                         {{-- <option value="">Select </option> --}}
-                                        @if($departments != null && $departments != "") 
+                                        @if($departments != null && $departments != "")
                                             @foreach($departments as $key => $department)
                                                 @if ($key == 0)
                                                     <option value="{{$department->id}}" selected>{{$department->name}}</option>
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <div class="row">
                                 @if(Auth::user()->user_type != 5)
@@ -80,11 +80,11 @@
                                         <label class="control-label">Select Status<span class="text-danger">*</span></label>
                                         <select class="select2 form-control dropdown" style="width:100%" id="status" name="status">
                                         </select>
-                                        <i class="fas fa-circle-notch fa-spin text-primary" id="dropdown_loader" style="position: absolute; top:34px;font-size:1.2rem; right: 34px; display:none"></i>                                 
+                                        <i class="fas fa-circle-notch fa-spin text-primary" id="dropdown_loader" style="position: absolute; top:34px;font-size:1.2rem; right: 34px; display:none"></i>
                                         <span class="text-danger small" id="status_error"></span>
                                     </div>
                                 @endif
-                                
+
                                 <div class="col-sm-4">
                                     <label class="control-label">Select Priority<span class="text-danger">*</span></label>
                                     <select class="select2 form-control dropdown" style="width:100%" id="priority" name="priority" required>
@@ -101,7 +101,7 @@
                                     </select>
                                     <span class="text-danger small" id="priority_error"></span>
                                 </div>
-                                
+
 
                                 @if(Auth::user()->user_type != 5)
                                     <div class="col-sm-4">
@@ -118,7 +118,7 @@
                             </div>
                         </div>
 
-                        
+
                         @if(Auth::user()->user_type != 5)
                             <div class="form-group">
                                 <div class="row mt-3">
@@ -140,7 +140,7 @@
                                         </select>
                                         <span class="text-danger small" id="type_error"></span>
                                     </div>
-                                
+
                                     <div class="col-sm-4" id="select_customer">
                                         <label class="control-label">Customer Select<span class="text-danger">*</span></label>
                                         <select class="select2 form-control custom-select dropdown w-100" id="customer_id" name="customer_id" style="width:100%">
@@ -171,7 +171,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <div id="new_customer_form" style="display:none" class="p-3 bg-light">
                                 <div class="form-group">
                                     <h3 class="font-weight-bold">New Customer</h3>
@@ -222,8 +222,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>                            
-                       
+                            </div>
+
 
                             <div class="form-group">
                                 <div class="row mt-3">
@@ -279,5 +279,5 @@
     {{-- <script src="{{asset('assets/libs/tinymce/tinymce.min.js')}}"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 @include('js_files.help_desk.ticket_manager.add_ticketJs')
-    
+
 @endsection

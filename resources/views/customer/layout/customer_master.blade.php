@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-   
+
 @if(\Auth::user()->theme == "dark")
         <html class="loaded light-layout dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
     @else
         <html class="loaded light-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
     @endif
-    
+
 <!-- BEGIN: Head-->
 
 <head>
@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="_token" content="{{csrf_token()}}" />
-    
+
     <title>{{Session::get('site_title')}}</title>
 
     @php
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/forms/select/select2.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/pickers/pickadate/pickadate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/file-uploaders/dropzone.min.css')}}">
- 
+
     <link rel="stylesheet" type="text/css" href="{{asset( $file_path . 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
     <!-- END: Vendor CSS-->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
@@ -72,7 +72,7 @@
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
      <link rel="stylesheet" type="text/css" href="{{asset($file_path . 'app-assets/css/pages/ui-feather.css')}}">
      <!-- End dashboard css-->
-     
+
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -111,7 +111,7 @@
                 </ul>
             </div>
             <ul class="nav navbar-nav align-items-center ms-auto">
-                
+
                 <li class="nav-item d-none d-lg-block">
                     <a class="nav-link nav-link-style">
                     @if(\Auth::user()->theme == "dark")
@@ -121,7 +121,7 @@
                         @endif
                     </a>
                 </li>
-               
+
                 <li class="nav-item dropdown dropdown-notification me-25">
                     <a class="nav-link" href="#" data-bs-toggle="dropdown">
                         <i class="ficon" data-feather="bell"></i>
@@ -130,17 +130,17 @@
                         <li class="dropdown-menu-header">
                             <div class="dropdown-header d-flex">
                                 <h4 class="notification-title mb-0 me-auto">Notifications</h4>
-                              
+
                                 <div class="badge rounded-pill badge-light-primary"><a href="{{url('all-notifications')}}" class="small p-2">view all</a></div>
                             </div>
                         </li>
                         <li class="scrollable-container media-list message-center notifications">
-                            
+
                         </li>
                         <li class="dropdown-menu-footer"><a class="btn btn-primary w-100" type="button" onclick="allRead()">Read all notifications</a></li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
@@ -168,22 +168,23 @@
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
                         <a class="dropdown-item" href="{{route('customer.myProfile')}}"><i class="me-50" data-feather="user"></i> Profile</a>
                         @if(Session::get('default_cmp_id') != 0 )
-                            <a class="dropdown-item" href="{{url('company-profile')}}/{{Session::get('default_cmp_id')}}">
+                            <a class="dropdown-item" href="{{url('user/company-profile')}}/{{Session::get('default_cmp_id')}}">
                                 <i i class="me-50" data-feather="credit-card"></i> Company Profile </a>
                         @endif
-                        
+
+                        @if(session()->get('action_clicked_admin') == null)
                         <a class="dropdown-item" type="button" href="{{ route('logout') }}">
-                            <i class="me-50" data-feather="power"></i> 
+                            <i class="me-50" data-feather="power"></i>
                             Logout
                         </a>
-                        
+                        @endif
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
     <!-- END: Header-->
-    
+
     @include('customer.layout.new-sidebar')
 
 
@@ -199,18 +200,18 @@
                                 <div class="breadcrumb-wrapper">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item active"><a href="">
-                                            
+
                                             @if(request()->is('myprofile'))
                                                 Profile
-                                            
+
                                             @elseif(request()->is('submitTicket'))
                                                 Submit Ticket
-                                           
+
                                             @elseif(request()->is('view-tkt'))
                                                 My Ticket
                                             @else
                                                 Ticket Details
-                                           
+
                                             @endif
                                         </a>
                                         </li>
@@ -222,9 +223,9 @@
                 </div>
     <div class="content-body">
     <!-- BEGIN: Content-->
-      
+
            @yield('body')
-      
+
     <!-- END: Content-->
     </div>
             </div>

@@ -17,10 +17,15 @@ class AuthenticateCustomer
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->user_type == 5){
+        $action = session()->get('action_clicked_admin');
+        if($action){
             return $next($request);
+        }else{
+            if(Auth::user()->user_type == 5){
+                return $next($request);
+            }
         }
-   
+
         return redirect()->route('user-login');
     }
 }
