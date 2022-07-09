@@ -9,7 +9,7 @@ $(document).ready(function() {
     } catch(err) {
         console.log(err);
     }
-    
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -250,8 +250,8 @@ function get_all_companies() {
                             '<a href="company-profile/' + (full.id != null ? full.id : '-') + '" class="user_name text-truncate text-body"><span class="fw-bolder">' +
                             $name +
                             '</span></a>' +
-                            '<small class="emp_post text-muted">' 
-                                 + poc_first_name + ' ' + poc_last_name + 
+                            '<small class="emp_post text-muted">'
+                                 + poc_first_name + ' ' + poc_last_name +
                             '</small>' +
                             '</div>' +
                         '</div>';
@@ -260,11 +260,13 @@ function get_all_companies() {
                 },
                 {
                     render: function(data, type, full, meta) {
+
                         const phone = (full.phone != null ? full.phone : '-');
                         // let newPhone = phone.replace(/[()\s-+]/g, '');
                         // let copynumber= phone != null ? `<svg xmlns="http://www.w3.org/2000/svg" onclick="copyToClipBoard(` +newPhone+ `)" style="cursor: pointer" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>` : '-';
                         // let phonenumber = phone != null ? `<a href ="tel:`+phone+`" class="text-body">` +phone+ `</a>` : '-';
                         return (`<a href ="tel:`+ phone +`" class="text-body">` +phone+ `</a>`);
+
                     }
                 },
                 // {
@@ -275,7 +277,7 @@ function get_all_companies() {
                 //         var st_name = full.cmp_state == null ? '' : ',' + full.cmp_state;
                 //         var ct_name = full.cmp_city == null ? '' : full.cmp_city;
                 //         var zip = full.cmp_zip == null ? '' : ',' + full.cmp_zip;
-                        
+
                 //         return  `<span>`+ address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</span>`
                 //     }
                 // },
@@ -298,14 +300,14 @@ function get_all_companies() {
                                 </div>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="email_more">
                                     <a href="company-profile/` + (full.id != null ? full.id : '-') + `" class="user_name text-truncate"> <div class="dropdown-item" ><svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text me-50"><path data-v-32017d0f="" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline data-v-32017d0f="" points="14 2 14 8 20 8"></polyline><line data-v-32017d0f="" x1="16" y1="13" x2="8" y2="13"></line><line data-v-32017d0f="" x1="16" y1="17" x2="8" y2="17"></line><polyline data-v-32017d0f="" points="10 9 9 9 8 9"></polyline></svg>Details</div></a>
-                                   
-                                    <div class="dropdown-item" onclick="showdeleteModal(` + full.id + `)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-50"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Delete</div>
+                                   `+ (full.is_default == 1 ? '' : '<div class="dropdown-item" onclick="showdeleteModal(` + full.id + `)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-50"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Delete</div>') +`
+
                                 </div>
                             </div>
                             `;
                     }
                 },
-                
+
             ],
             dom:
                 '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
@@ -450,14 +452,14 @@ function get_all_companies() {
 //                                 <label class="custom-control-label" for="customCheck_` + data[i].id + `"></label>
 //                             </div>
 //                         </td>
-//                         <!--<td>` + count + `</td>-->                        
+//                         <!--<td>` + count + `</td>-->
 //                         <td><a href="company-profile/` + (data[i].id != null ? data[i].id : '-') + `">` + (data[i].name != null ? data[i].name : '-') + `</a></td>
 //                         <td>` + (data[i].poc_first_name != null ? data[i].poc_first_name : '-') + `</td>
 //                         <td>` + (data[i].poc_last_name != null ? data[i].poc_last_name : '-') + `</td>
 //                         <td>` + (data[i].email != null ? data[i].email : '-') + `</td>
 //                         <td><a href="tel:` + (data[i].phone != null ? data[i].phone : '-') + `">` + (data[i].phone != null ? data[i].phone : '-') + `</a></td>
 //                         <td>` + address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</td>
-                        
+
 //                         <td>` + moment(data[i].created_at).format(system_date_format) + `</td>
 //                         <td>
 //                             <button type="button" onclick="showdeleteModal(` + data[i].id + `)" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
@@ -611,7 +613,7 @@ function wp_data() {
     });
 }
 function copyToClipBoard(text) {
-    
+
     let $input = $("<input>");
     $('body').append($input);
 
