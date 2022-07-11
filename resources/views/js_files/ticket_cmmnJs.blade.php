@@ -722,7 +722,9 @@
             }
             let overdue_icon = '';
             if(new_res_due.includes('Overdue') || new_rep_due.includes('Overdue')){
-               overdue_icon = `<span class="text-center text-white badge" style="background-color: #ea9f9f;margin: 6px 5px 05px 3px">Overdue</span>`
+               overdue_icon = `<span class="text-center cursor" onclick="resetSLAPlan(${val['id']})" title="">
+                                <span class="text-white badge" style="background-color: ${val.sla_plan.bg_color};margin-top:6px">Overdue</span>
+                            </span>`;
             }
             let notes_icon = `<i class="fas fa-comment-alt-lines" style="margin:0px 5px 0px 5px" title="This Ticket Has One or More Ticket Notes"></i>`;
             let attachment_icon = `<i class="fa fa-paperclip" aria-hidden="true" style="margin-top:2px; margin-left:4px; color:#5f6c73;" title="Has Attachments"></i>`;
