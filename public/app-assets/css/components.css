@@ -1313,7 +1313,15 @@ footer.footer-border {
     padding: 1.6rem 3.6rem;
     height: 55px;
   }
-.navbar-container .search-input.open, #helpdesk .search-input.open {
+  .search-input-icon {
+    z-index: 2;
+    display: none;
+    position: absolute;
+    left: 1.5rem;
+    top: 32%;
+    cursor: pointer;
+}
+.navbar-container  {
   position: absolute;
   top: 0;
   left: 0;
@@ -1322,6 +1330,17 @@ footer.footer-border {
   display: block;
   background: #fff;
   border-radius: 0.5rem; }
+
+ .search-input.open {
+    position: absolute;
+    top: 20;
+    left: 10;
+    z-index: 1000;
+    width: 91%;
+    display: block;
+    background: #fff;
+    border-radius: 0.5rem; 
+  }
 
 .navbar-container .search-input.open .search-input-close, #helpdesk .search-input.open .search-input-close
 .navbar-container .search-input.open .search-input-icon , #helpdesk .search-input.open .search-input-icon{
@@ -1407,8 +1426,8 @@ footer.footer-border {
  #helpdesk .search-input .search-input-icon{
     z-index: 2;
     position: absolute;
-    left: 2.5rem;
-    top: 20%;
+    /* left: 2.5rem; */
+    top: 30%;
     cursor: pointer;
 }
 

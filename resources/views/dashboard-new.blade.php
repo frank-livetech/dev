@@ -71,6 +71,9 @@ table.dataTable thead .sorting_desc:after {
 #desktop_view{
         display: block !important
     }
+    .mt-6{
+        margin-top: 6rem
+    }
 
 @media (max-width: 630px) {
     #header-btn{
@@ -424,15 +427,20 @@ table.dataTable thead .sorting_desc:after {
                                 <h4 class="card-title">Help Desk</h4>
                             </div>
                             <div class="card-body" id="helpdesk">
-                                <div class="search-input">
-                                    <div class="search-input-icon"><i data-feather="search"></i></div>
-                                    <input class="form-control input" type="text" placeholder="Explore Vuexy..." tabindex="-1" data-search="search">
-                                    <div class="search-input-close"><i data-feather="x"></i></div>
-                                    <ul class="search-list search-list-main"></ul>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="search-input open">
+                                            <div class="search-input-icon">
+                                                <i data-feather="search"></i>
+                                            </div>
+                                                <input class="form-control input" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
+                                                {{-- <div class="search-input-close"><i data-feather="x"></i></div> --}}
+                                                <ul class="search-list search-list-main"></ul>
+                                        </div>
+                                    </div>
                                 </div>
-
                                 <form action="javascript:void(0);" class="form">
-                                    <div class="row">
+                                    <div class="row mt-6">
                                         <div class="col-12 mb-2">
                                             <div class="mb-2">
                                                 <form class="d-flex w-100 pb-3 position-relative"
@@ -572,6 +580,18 @@ table.dataTable thead .sorting_desc:after {
                                 <h4 class="card-title">Customer Manager</h4>
                             </div>
                             <div class="card-body">
+                                 <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="search-input-1 open">
+                                            <div class="search-input-icon">
+                                                <i data-feather="search"></i>
+                                            </div>
+                                                <input class="form-control input" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search-1">
+                                                {{-- <div class="search-input-close"><i data-feather="x"></i></div> --}}
+                                                <ul class="search-list-1 search-list-main-1"></ul>
+                                        </div>
+                                    </div>
+                                </div>
                                 <form action="javascript:void(0);" class="form">
                                     <div class="row">
                                         <div class="col-12">
@@ -860,7 +880,6 @@ table.dataTable thead .sorting_desc:after {
 
 @endsection
 @section('scripts')
-<!-- <script src="{{asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js')}}"></script> -->
 <!-- <script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-utils.min.js"></script>
