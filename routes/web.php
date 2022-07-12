@@ -267,6 +267,7 @@ Route::group ( ['namespace' => 'Billing','middleware' => ['auth','admin']], func
     Route::get('/get_customer_by_id/{id}','BillingController@getCustomerById');
     Route::post('/update_customer_address','BillingController@updateCustomerById');
     Route::get('/reports','BillingController@reports')->name('reports.index');
+    Route::post('/activityLogReports','BillingController@getActivityLogReport')->name('activity.log.reports');
 
     Route::post('/save_billing_orderid_format','BillingController@BillingOrderIdFormat');
     Route::post('/save_mode_form','BillingController@SaveModeForm');

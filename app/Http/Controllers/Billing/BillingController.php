@@ -20,6 +20,8 @@ use App\User;
 use App\Models\StaffProfile;
 use App\Http\Controllers\SystemManager\MailController;
 use App\Http\Controllers\GeneralController;
+use App\Models\Activitylog;
+use Carbon\Carbon;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Illuminate\Support\Facades\DB;
@@ -80,7 +82,7 @@ class BillingController extends Controller
         $vendor = DB::table('vendors')->where('id','=',$id)->first();
         return view('billing.rfq.vendor_profile_new',compact('vendor','tags','categories','companies','countries','states'));
     }
-    
+
     public function invoice_maker($id='') {
         $google = '';
         $gooogle = 0;
@@ -88,19 +90,19 @@ class BillingController extends Controller
         if(!empty($google_api)) {
             if(!empty($google_api->details)) {
                 $google = json_decode($google_api->details, true);
-            
+
                 $detail_values = explode(",", $google_api->details);
                 $api = substr($detail_values[1], 1, -1);
                 $explode_key = explode(":", $api);
-                $key = substr($explode_key[1], 1, -1);   
-    
+                $key = substr($explode_key[1], 1, -1);
+
                 if(!empty($key)) $gooogle = 1;
             }
         }
 
         $countries = [];
         if($gooogle === 0) $countries = DB::Table('countries')->get();
-        
+
         // $sys_setting = SystemSetting::where("sys_key","bill_order_id_frmt")->first();
         $sys_setting = SystemSetting::get();
         $id_format = '';
@@ -119,7 +121,7 @@ class BillingController extends Controller
         }
 
         $order = '';
-        
+
         // if($sys_setting) {
             if($id_format == 'random') {
                 // $order = (object) array('id' => mt_rand(0,999999));
@@ -132,13 +134,13 @@ class BillingController extends Controller
         //     $order = DB::table('orders')->orderBy('id','desc')->select('id')->first();
         // }
 
-        
+
 
         if(!empty($order)) $order->id = sprintf("%0".$inv_format_size."d", $order->id);
 
         $customers = DB::table("customers")->select('id','first_name','last_name')->where("is_deleted","=",0)->get();
         $billing_statuses = DB::table("billing_statuses")->get();
-        
+
         $currency_symbol = '';
         $curr_symbol = SystemSetting::where("sys_key","currency_format")->first();
 
@@ -147,7 +149,7 @@ class BillingController extends Controller
         }else{
             $currency_symbol = "<i class='fas fa-dollar-sign'></i>";
         }
-        
+
         if(!empty($id)) {
             $order = DB::table('orders')->where('custom_id', $id)->first();
             $customer_info = DB::table("customers")->where('id', $order->customer_id)->first();
@@ -191,7 +193,7 @@ class BillingController extends Controller
             array('module' => 'Item-Name', 'values' => $line_items->toArray()),
             array('module' => 'Notes', 'values' => $notes->toArray()),
         );
-        
+
         $parse = $this->order_parser($order_input, $billing_template->template_html , $id);
 
         $dompdf = new Dompdf(array('enable_remote' => true));
@@ -216,7 +218,7 @@ class BillingController extends Controller
 
         if(str_contains($template, '{Customer-First-Name}')) {
             $content = DB::table('templates')->where('code', 'billing_invoice')->first();
-            
+
             if(!empty($content)) {
                 $content = $content->template_html;
                 $this->replaceShortCodes($data_list, $content,$id);
@@ -226,7 +228,7 @@ class BillingController extends Controller
 
         if(str_contains($template, '{Items-Row}')) {
             $content = DB::table('templates')->where('code', 'billing_invoice')->first();
-            
+
             if(!empty($content)) {
                 $content = $content->template_html;
                 $this->replaceShortCodes($data_list, $content, $id);
@@ -235,7 +237,7 @@ class BillingController extends Controller
 
         if(str_contains($template, '{Invoice-Notes}')) {
             $content = DB::table('templates')->where('code', 'billing_invoice')->first();
-            
+
             if(!empty($content)) {
                 $content = $content->template_html;
                 $this->replaceShortCodes($data_list, $content, $id);
@@ -250,21 +252,21 @@ class BillingController extends Controller
             if(str_contains($template, $value->code)) {
                 $template = str_replace($value->code," ", $template);
             }
-        }    
+        }
         return html_entity_decode($template);
-                
+
     }
 
 
     public function replaceShortCodes($data_list, &$template, $id) {
 
-        foreach ($data_list as $key => $data) {    
+        foreach ($data_list as $key => $data) {
 
             if($data['module'] == 'Customer' && str_contains($template, '{Customer-First-Name}')) {
                 $template = str_replace('{Customer-First-Name}', $data['values']['first_name'], $template);
             }
             if($data['module'] == 'Customer' && str_contains($template, '{Customer-Address}')) {
-                $full_address = $data['values']['address'] . ', ' . $data['values']['apt_address'] . ', ' . $data['values']['cust_city'] . ', ' . $data['values']['cust_state'] . ', ' .  $data['values']['cust_zip'] . ', ' .  $data['values']['country']; 
+                $full_address = $data['values']['address'] . ', ' . $data['values']['apt_address'] . ', ' . $data['values']['cust_city'] . ', ' . $data['values']['cust_state'] . ', ' .  $data['values']['cust_zip'] . ', ' .  $data['values']['country'];
                 $template = str_replace('{Customer-Address}', $full_address, $template);
             }
 
@@ -290,16 +292,16 @@ class BillingController extends Controller
                             <td> '.$data['values'][$i]->quantity .' </td>
                             <td>'. $data['values'][$i]->price.'</td>
                         </tr>
-                    ';                 
+                    ';
                 }
 
 
                 $template = str_replace('{Company-Logo}',$img, $template);
-                $template = str_replace('{Items-Row}',$html_rows, $template);                
+                $template = str_replace('{Items-Row}',$html_rows, $template);
                 $template = str_replace('{Order-ID}',$id, $template);
 
                 $template = str_replace('{Order-Date}',date_format($order->created_at,"Y/m/d"), $template);
-                
+
                 $template = str_replace('{Item-SubTotal}', $order->total, $template);
                 $template = str_replace('{Order-Fees}', $order->fees, $template);
                 $template = str_replace('{Order-tax}', $order->tax, $template);
@@ -309,15 +311,15 @@ class BillingController extends Controller
 
                 $thankyou_msg = "Thank You For Your Business!";
                 $template = str_replace('{Thank You}', $thankyou_msg, $template);
-                
+
             }
             if(!is_array($data['values'])) $data['values'] = (array) $data['values'];
-            
+
             foreach ($data['values'] as $key => $value) {
                 $k = str_replace('_', ' ', $key);
                 $k = ucwords($k);
                 $k = str_replace(' ', '-', $k);
-    
+
                 if(!is_array($value) && !is_object($value)) {
                     $template = str_replace('{'.$data['module'].'-'.$k.'}', $value, $template);
                 }
@@ -345,11 +347,11 @@ class BillingController extends Controller
                     ]);
                 }
             }
-            
+
             $response['message'] = 'Order Settings Updated Successfully!';
             $response['status_code'] = 200;
             $response['success'] = true;
-            return response()->json($response); 
+            return response()->json($response);
         } catch(Exception $e) {
             $response['message'] = $e->getMessage();
             $response['status_code'] = 500;
@@ -369,10 +371,10 @@ class BillingController extends Controller
             DB::table('visual_settings')->where('created_by',\Auth::user()->id)->where('mode',$request->mode)->delete();
             foreach($data as $key => $value){
                 DB::table('visual_settings')->insert([
-                    "vs_key" => $key, 
-                    "vs_value" => $value,	
-                    "created_by" => \Auth::user()->id,	
-                    "mode" => $request->mode,	
+                    "vs_key" => $key,
+                    "vs_value" => $value,
+                    "created_by" => \Auth::user()->id,
+                    "mode" => $request->mode,
                 ]);
 
             }
@@ -384,10 +386,10 @@ class BillingController extends Controller
         else{
             foreach($data as $key => $value){
                 DB::table('visual_settings')->insert([
-                    "vs_key" => $key, 
-                    "vs_value" => $value,	
-                    "created_by" => \Auth::user()->id,	
-                    "mode" => $request->mode,	
+                    "vs_key" => $key,
+                    "vs_value" => $value,
+                    "created_by" => \Auth::user()->id,
+                    "mode" => $request->mode,
                 ]);
 
             }
@@ -396,14 +398,14 @@ class BillingController extends Controller
             $response['success'] = true;
             return response()->json($response);
         }
-           
-      
-           
+
+
+
     }
 
     public function billing_home(Request $request){
 
- 
+
         if($request->odr_id != 0) {
 
             DB::Table("orders")->where("id","=",$request->odr_id)->update([
@@ -422,7 +424,7 @@ class BillingController extends Controller
                 $order->status =  $request->status;
                 $order->status_text = $request->status_text;
                 $order->customer_id =  $request->customer_id;
-                
+
                 if($order->save()) {
                     foreach($request->name as $key=>$name) {
                         DB::table("line_items")->insert([
@@ -435,27 +437,27 @@ class BillingController extends Controller
                         ]);
                     }
                 }
-    
+
                 $response['message'] = 'Order Saved Successfully';
                 $response['status_code'] = 200;
                 $response['success'] = true;
                 return response()->json($response);
-    
+
             }else{
-    
+
                 DB::Table("orders")->where("id","=",$request->order_id)->update([
                     "is_published" => 1,
                 ]);
-    
+
                 $response['message'] = 'Order Published Successfully';
                 $response['status_code'] = 200;
                 $response['success'] = true;
                 return response()->json($response);
-    
+
             }
         }
 
-        
+
 
     }
 
@@ -483,7 +485,7 @@ class BillingController extends Controller
         foreach($orders as $order) {
             $order->customer = DB::table('customers')->where('id',"=",$order->customer_id)->first();
             $order->lineItem = DB::table('line_items')->where('order_id',"=",$order->custom_id)->first();
-        }   
+        }
 
         // if ($request->ajax()) {
         //     return Datatables::of($orders)->make(true);
@@ -495,8 +497,8 @@ class BillingController extends Controller
         $response['success'] = true;
         return response()->json($response);
     }
-    
-    
+
+
     public function get_all_subs(Request $request) {
         $subscriptions  = DB::table('subscriptions')->orderBy('id', 'desc')->get();
         foreach($subscriptions as $sub) {
@@ -513,7 +515,7 @@ class BillingController extends Controller
 
 
     public function createInvoice(Request $request) {
-        
+
         if($request->order_id == null || $request->order_id == '') {
             $order = new Orders();
             $order->status =  $request->status;
@@ -526,7 +528,7 @@ class BillingController extends Controller
             $order->tax = $request->tax;
             $order->total = $request->sub_total;
             $order->grand_total = $request->total;
-            
+
             if($order->save()) {
                 foreach($request->name as $key=>$name) {
                     DB::table("line_items")->insert([
@@ -549,7 +551,7 @@ class BillingController extends Controller
             return response()->json($response);
 
         }else{
-            
+
 
             DB::Table("orders")->where("id","=",$request->order_id)->update([
                 "status" =>  $request->status,
@@ -611,7 +613,7 @@ class BillingController extends Controller
                 "item_end_date" => $request->end_date[$key],
             ]);
         }
-        
+
         $response['message'] = 'Order Updated Successfully';
         $response['status_code'] = 200;
         $response['success'] = true;
@@ -675,7 +677,7 @@ class BillingController extends Controller
         //     $customer->shipping_add_city = $request->cust_city;
         //     $customer->shipping_apt_add = $request->apt_address;
         //     $customer->shipping_st_add = $request->address;
-        //     $customer->save();  
+        //     $customer->save();
         // }
 
         $response['message'] = 'Customer Detail Updated Successfully';
@@ -684,22 +686,57 @@ class BillingController extends Controller
         $response['type'] = $request->address_type;
         return response()->json($response);
     }
-    
-    public function reports(){
-        return view('billing.reports.index');
 
+    public function reports(){
+
+        $staffs = User::where('user_type','!=',5)->where('is_deleted',0)->get();
+
+        return view('billing.reports.index', get_defined_vars());
     }
-    
+
+    public function getActivityLogReport(Request $request) {
+        try {
+            if($request->has('filter') && $request->filter == 'today') {
+                $logs =  Activitylog::with(['ticket','createdBy','updatedBy'])->where('module', 'Tickets')
+                ->whereDate('created_at', Carbon::today());
+
+            }
+            if($request->has('filter') && $request->filter == 'date_range') {
+                $logs =  Activitylog::with(['ticket','createdBy','updatedBy'])->where('module', 'Tickets')
+                ->whereBetween('created_at', [$request->start_date,$request->end_date]);
+            }
+
+            if($request->has('filter') && $request->filter == 'date_range' && $request->staff != null) {
+                $logs->where('created_by',$request->staff);
+            }
+
+
+            $data = $logs->orderByDesc('id')->limit(150)->get();
+
+
+
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['logs']= $data;
+            return response()->json($response);
+        } catch (Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
     public function saveRFQRquests(Request $request){
-        
+
         $data = $request->all();
         //return $request;
         $response = array();
         try{
-            
+
             $data['created_by'] = \Auth::user()->id;
             $rfq_table = RFQ::create($data);
-            
+
             if($data['to_mails'] != ''){
                 $this->mailtoTempalte($data);
             }
@@ -709,10 +746,10 @@ class BillingController extends Controller
                 for($k = 0 ; $k<sizeof($contacts_Arr);$k++){
                     $vendor = Vendors::where('id',$contacts_Arr[$k])->first();
                     $this->sendMailToVendor($data,$vendor->email);
-                    
+
                 }
             }
-            
+
 
             $response['message'] = 'RFQ Saved & Sent Successfully!';
             $response['status_code'] = 200;
@@ -730,43 +767,43 @@ class BillingController extends Controller
     }
 
     public function saveInstNotes(Request $request){
-        
+
         $data = $request->all();
         //return $request;
         $response = array();
         try{
-            
+
             $noteSetting = SystemSetting::where('sys_key','sell_inst_note')->first();
-            
+
             if($noteSetting) {
 
                 SystemSetting::where('sys_key','sell_inst_note')->delete();
-    
+
                     $sys_setting = new SystemSetting();
                     $sys_setting->sys_key = 'sell_inst_note';
                     $sys_setting->sys_value = $request->sell_inst_note;
                     $sys_setting->created_by =\Auth::user()->id;
                     $sys_setting->save();
-             
-    
+
+
                 $response['message'] = 'Notes Updated Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
-                return response()->json($response); 
-    
+                return response()->json($response);
+
             }else{
-    
+
                 $sys_setting = new SystemSetting();
                 $sys_setting->sys_key = 'sell_inst_note';
                 $sys_setting->sys_value = $request->sell_inst_note;
                 $sys_setting->created_by =\Auth::user()->id;
                 $sys_setting->save();
-    
+
                 $response['message'] = 'Notes Saved Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
-                return response()->json($response); 
-    
+                return response()->json($response);
+
             }
         }catch(Exception $e){
 
@@ -777,7 +814,7 @@ class BillingController extends Controller
         }
 
     }
-    
+
     public function sendMailToVendor($details , $contact_mail){
         $user = DB::table('users')
             ->join('staff_profiles', 'users.id', '=', 'staff_profiles.user_id')
@@ -811,9 +848,9 @@ class BillingController extends Controller
                                                 <tr>
                                                     <td>
                                                         '.$details['rfq_details'] .'
-                                                        
+
                                                         <b>Thank you<b><br>
-                                                        <b>This RFQ has been submitted by '.\Auth::user()->name.' | '.$user[0]->phone.'.</b> 
+                                                        <b>This RFQ has been submitted by '.\Auth::user()->name.' | '.$user[0]->phone.'.</b>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -835,12 +872,12 @@ class BillingController extends Controller
             $response['success'] = false;
             return response()->json($response);
         }
-        
+
     }
 
     public function mailtoTempalte($details){
         // return $details;
-        
+
         $user = DB::table('users')
             ->join('staff_profiles', 'users.id', '=', 'staff_profiles.user_id')
             ->select('users.*', 'staff_profiles.*')
@@ -874,9 +911,9 @@ class BillingController extends Controller
                                                 <tr>
                                                     <td>
                                                         '.$details['rfq_details'] .'
-                                                        
+
                                                         <b>Thank you<b><br>
-                                                        <b>This RFQ has been submitted by '.\Auth::user()->name.' | '.$user[0]->phone.'.</b> 
+                                                        <b>This RFQ has been submitted by '.\Auth::user()->name.' | '.$user[0]->phone.'.</b>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -927,10 +964,10 @@ class BillingController extends Controller
             $mail->Body = $body;
             $mail->AltBody = 'This is a plain-text message body';
             //Attach an image file
-            
+
             //send the message, check for errors
             $mail->send();
-            
+
             // $mail = new PHPMailer(true);
             // $mail->isSMTP();
             // $mail->SMTPAuth  =  true;
@@ -967,15 +1004,15 @@ class BillingController extends Controller
     }
 
     public function saveVendor(Request $request){
-        
+
         $data = $request->all();
-        
+
         $response = array();
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         // generate a pin based on 2 * 7 digits + a random character
         $pin = mt_rand(10000000, 99999999)
-            
+
             . $characters[rand(0, strlen($characters) - 1)];
 
         // shuffle the result
@@ -986,12 +1023,12 @@ class BillingController extends Controller
 
                 $data['name']= ($data['first_name'].' '.$data['last_name']);
                 $data['password']= bcrypt($string);
-                
+
             	$create_vendor_account = User::create($data);
 
-            } 
+            }
             if(!empty($request->contact_id)){
-                
+
 
                 $contacts_id = Vendors::where('id',$request->contact_id)->first();
 
@@ -1016,7 +1053,7 @@ class BillingController extends Controller
             }
          }else{
 
-                
+
                 $data['created_by'] = \Auth::user()->id;
             	$save_vendors = Vendors::create($data);
 
@@ -1037,7 +1074,7 @@ class BillingController extends Controller
 
         $data = $request->all();
         $response = array();
-    
+
         $del_department = Vendors::destroy($data);
         $response['message'] = 'Vendor Delete Successfully!';
         $response['status_code'] = 200;
@@ -1067,7 +1104,7 @@ class BillingController extends Controller
         // if ($request->ajax()) {
         //     return Datatables::of($contacts)->make(true);
         // }
-        
+
         $response['message'] = 'Contacts List';
         $response['data'] = $contacts;
         $response['status_code'] = 200;
@@ -1080,23 +1117,23 @@ class BillingController extends Controller
 
         $notes = SystemSetting::where('sys_key','sell_inst_note')->get();
         // $tags = Tags::get();
-    
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['notes'] = $notes;
-        
+
         return response()->json($response);
     }
 
     public function saveCategory(Request $request){
         $data = $request->all();
-        
+
         $response = array();
-        
+
         try{
                 $data['created_by'] = \Auth::user()->id;
-            
+
                 $save_category = Category::create($data);
                 $response['message'] = 'Category Added Successfully!';
                 $response['status_code'] = 200;
@@ -1115,12 +1152,12 @@ class BillingController extends Controller
 
     public function getCategories(){
         $categories = Category::get();
-    
+
         $response['message'] = 'Success';
         $response['status_code'] = 200;
         $response['success'] = true;
         $response['categories']= $categories;
-        
+
         return response()->json($response);
     }
 
@@ -1154,42 +1191,42 @@ class BillingController extends Controller
             'status'=> 200,
             'success' => true
         ]);
-            
-   
+
+
     }
 
     public function wp_order_create() {
         $payload = @file_get_contents('php://input');
        $payload = json_decode( $payload, true);
-       
+
        if($payload != null && $payload != '') {
            \Log::info($payload);
-           
+
            $shipping_cost = 0;
            $fee_cost = 0;
-               
+
            $shipping = $payload['shipping_lines'];
            if($shipping != '' &&  $shipping!= null ) {
                for($s = 0; $s < sizeOf($shipping); $s++) {
                    $shipping_cost = $shipping_cost + $shipping[$s]['total'];
                }
            }
-           
+
            $fees = $payload['fee_lines'];
            if($fees != '' &&  $fees != null ) {
                for($f = 0; $f < sizeOf($fees); $f++) {
                    $fee_cost = $fee_cost + $fees[$f]['total'];
                }
            }
-       
+
            DB::table("orders")->insert([
                "woo_id" => $payload['id'],
                "custom_id" => $payload['id'],
                "currency" => $payload['currency'],
                "version" => $payload['version'],
            ]);
-           
-   
+
+
            $line_items = $payload['line_items'];
            for($i = 0; $i < sizeOf($line_items); $i++) {
                DB::table("line_items")->insert([
@@ -1203,44 +1240,44 @@ class BillingController extends Controller
                    "shipping" =>  $shipping_cost,
                ]);
            }
-           
+
        }
-       
+
    }
-   
+
    public function wp_order_update() {
        $payload = @file_get_contents('php://input');
        $payload = json_decode( $payload, true);
-   
+
        if($payload != null && $payload != '') {
            \Log::info( $payload);
-           
+
            DB::table("orders")->where("custom_id",$payload['id'])->update([
                "woo_id" => $payload['id'],
                "custom_id" => $payload['id'],
                "currency" => $payload['currency'],
                "version" => $payload['version'],
            ]);
-   
+
            DB::table("line_items")->where("order_id",$payload['id'])->delete();
-       
+
            $shipping_cost = 0;
            $fee_cost = 0;
-               
+
            $shipping = $payload['shipping_lines'];
            if($shipping != '' &&  $shipping!= null ) {
                for($s = 0; $s < sizeOf($shipping); $s++) {
                    $shipping_cost = $shipping_cost + $shipping[$s]['total'];
                }
            }
-           
+
            $fees = $payload['fee_lines'];
            if($fees != '' &&  $fees != null ) {
                for($f = 0; $f < sizeOf($fees); $f++) {
                    $fee_cost = $fee_cost + $fees[$f]['total'];
                }
            }
-   
+
            $line_items = $payload['line_items'];
            for($i = 0; $i < sizeOf($line_items); $i++) {
                DB::table("line_items")->insert([
@@ -1254,25 +1291,25 @@ class BillingController extends Controller
                    "shipping" =>  $shipping_cost,
                ]);
            }
-       
+
        }
-   
-       
+
+
    }
 
    public function wp_order_delete() {
        $payload = @file_get_contents('php://input');
        $payload = json_decode( $payload, true);
-       
+
        if($payload != null && $payload != '') {
            \Log::info( $payload);
-           
+
            DB::table("orders")->where("custom_id",$payload['id'])->delete();
            DB::table("line_items")->where("order_id",$payload['id'])->delete();
-           
+
            \Log::info("success");
        }
-   
+
    }
 
 
