@@ -249,7 +249,15 @@
                         </a>
                     </li>
                 @endif
-
+                {{-- <li class="nav-item nav-search">
+                    <a class="nav-link nav-link-search"><i class="ficon" data-feather="search"></i></a>
+                    <div class="search-input">
+                        <div class="search-input-icon"><i data-feather="search"></i></div>
+                        <input class="form-control input" type="text" placeholder="Explore Vuexy..." tabindex="-1" data-search="search">
+                        <div class="search-input-close"><i data-feather="x"></i></div>
+                        <ul class="search-list search-list-main"></ul>
+                    </div>
+                </li> --}}
                 <li class="nav-item dropdown dropdown-notification me-25">
                     <a class="nav-link" href="#" data-bs-toggle="dropdown">
                         <i class="ficon" data-feather="bell"></i>
@@ -332,6 +340,10 @@
                         <a class="dropdown-item" onclick="run_parser()"><i class="me-50"
                                 data-feather="refresh-ccw"></i> Run Parser</a>
 
+                        <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#customer">
+                            <i class="me-50" data-feather="repeat"></i>
+                            Switch Customer
+                        </a>
                         <a class="dropdown-item" type="button" href="{{ route('logout') }}">
                             <i class="me-50" data-feather="power"></i> Logout
                         </a>
@@ -342,13 +354,48 @@
         </div>
     </nav>
 
+    @if(Session('system_date'))
+        <input type="hidden" id="system_date_format" value="{{Session('system_date')}}">
+        @else
+        <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
+    @endif
 
     <!-- END: Header-->
     @include('layouts.new-sidebar')
 
     <!-- BEGIN: Content-->
-
     @yield('body')
+
+    <!-- Modal -->
+    <div class="modal fade" id="customer" tabindex="-1" aria-labelledby="myModalLabel1"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel1">Switch Customer Profile</h4>
+                    <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body p-3">
+                    <select class="select2 form-control custom-select dropdown w-100"
+                        id="customer_id" name="customer_id" style="width:100%">
+                        <option value="">Select</option>
+
+                        @if(AllCustomers() != null && AllCustomers() != "")
+                            @foreach(AllCustomers() as $key => $customer)
+                            <option value="{{$customer['email']}}" >{{$customer['first_name']}}
+                                {{$customer['last_name']}} (#{{$customer['id']}}) | {{$customer['email']}}
+                            </option>
+                            @endforeach
+                        @endif
+                    </select>
+                    <div class="text-right mt-3">
+                        <button class="btn btn-primary" id="to_profile">Go to profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- END: Content-->
 
@@ -959,6 +1006,19 @@
                 timeOut: 10000,
             });
         }
+
+
+        $("#to_profile").click(function(){
+            var cust = $("#customer_id").select2("val");
+            if(cust != null){
+                var url = "{{url('/logged_in_as_customer')}}"+'/'+cust;
+                window.open(url, "_blank");
+            }
+        });
+
+
+
+
     </script>
     <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
     <script type="text/javascript">

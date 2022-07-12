@@ -72,7 +72,7 @@
                             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
                             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
                         </div> --}}
-                        <div class="carousel-inner">
+                        {{-- <div class="carousel-inner">
                             <div class="carousel-item active" data-bs-interval="10000">
                                 <div class="card card-hover border-bottom border-success">
                                     <div class="box p-2 rounded success text-center">
@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
@@ -107,7 +107,7 @@
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
-                   
+
                     <div class="row mt-3" id="full-view">
                         <div class="col-6 col-md-4">
                             <div class="card card-hover border-bottom border-success">

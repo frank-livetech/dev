@@ -1,5 +1,5 @@
 <script>
-    
+
     var system_date_format = $("#system_date_format").val();
     var timezone = $("#timezone").val();
     let ticket_attachments_count = 1;
@@ -8,18 +8,18 @@
     // var ticket_attach_path_search = 'public/files/tickets';
     var ticket_attach_path = `{{asset('storage/tickets')}}`;
     var ticket_attach_path_search = 'storage/tickets';
-    
+
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
-        
+
         window.location.href == "{{route('customer.tickets')}}" ? customer.getTickets() : '';
 
         customer.render_text_editor();
-        
+
     });
 
 
@@ -62,10 +62,10 @@
                     var obj = response.tickets;
                     console.log(system_date_format)
                     if(response.status_code == 200) {
-                        
-                        $("#my_tickets_count").text(response.total_tickets_count);
-                        $("#open_tickets_count").text(response.open_tickets_count);
-                        $("#closed_tickets_count").text(response.late_tickets_count);
+
+                        $("#my_tickets_count").html(response.total_tickets_count);
+                        $("#open_tickets_count").html(response.open_tickets_count);
+                        $("#closed_tickets_count").html(response.late_tickets_count);
 
                         $('#customer_tickets_table').DataTable().destroy();
                         $.fn.dataTable.ext.errMode = 'none';
@@ -126,7 +126,7 @@
                                     return full.department_name != null ? full.department_name : '-';
                                 }
                             },
-    
+
                             ],
                         });
                     }else{
@@ -138,16 +138,16 @@
                 }
             });
 
-        }, 
+        },
 
 
         region_wise_dateTime : (date) => {
-            
+
             let d = new Date(date);
             var day = d.getDate();
             var year = d.getFullYear();
             var month = d.getMonth();
-            
+
             var hour = d.getHours();
             var min = d.getMinutes();
             var mili = d.getMilliseconds();
@@ -234,7 +234,7 @@
                                     // toastr.success(data.message, { timeOut: 5000 });
                                     // var preivous_url = $("#previous_url").val();
                                     // window.location = preivous_url;
-                                    
+
                                     // Swal.fire({
                                     //     title: 'Success',
                                     //     text: "Ticket created successfully!",
@@ -341,7 +341,7 @@
             $('#ticket_attachments').append(`<div class="input-group mt-3">
                 <div class="custom-file text-left">
                     <input type="file" class="form-control ticket_attaches" id="ticket_attachment_${ticket_attachments_count}">
-                    
+
                 </div>
                 <div class="input-group-append">
                     <button class="btn btn-dark" type="button" title="Remove" onclick="console.log(this.parentElement.parentElement.remove())"><span class="fa fa-times"></span></button>

@@ -2,6 +2,46 @@
 @section('title', 'Customer Profile | ' . $customer->first_name . ' ' . $customer->last_name)
 
 <style>
+        table.dataTable th {
+            padding: 0.2rem 1.5rem !important;
+        }
+        table.dataTable .custom {
+            padding-right: 230px !important;
+        }
+
+        table.dataTable .pr-ticket {
+            min-width: 69px !important;
+        }
+
+        .pr-replies {
+            min-width: 95px !important;
+        }
+
+        .pr-due {
+            min-width: 125px !important;
+        }
+
+        .pr-activity {
+            min-width: 97px !important;
+            padding-right: 19px !important;
+        }
+
+        .pr-tech {
+            min-width: 109px !important;
+        }
+
+        table.dataTable .custom-cst {
+            padding-right: 37px !important;
+        }
+
+        table.dataTable th {
+            padding: 0.2rem 1.5rem;
+        }
+
+        table.dataTable td {
+            padding: 7px !important;
+            font-size: 12px;
+        }
     .float-right{
         float: right
     }
@@ -1099,13 +1139,13 @@
                                     </div>
                                 </div>
 
-                                <div class="table-responsive position-relative">
+                                <div class="table-responsive">
 
-                                    <table id="ticket-table-list" class="table table-striped table-bordered table-hover display ticket-table-list">
+                                    <table id="ticket-table-list" class="table ticket-table-list">
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    <div class="text-center">
+                                                    <div class="">
                                                         <input type="checkbox" name="select_all[]" id="select-all">
                                                     </div>
                                                 </th>
