@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Session;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\NotifyController;
-
+use App\Models\Customer;
 
 if(!function_exists('pusherCredentials')){
     function pusherCredentials($key){
@@ -100,5 +100,11 @@ if(!function_exists('system_date_format')) {
         $phpFormat = strtr($format, $replacements);
         return $phpFormat;
 
+    }
+}
+
+if(!function_exists('AllCustomers')) {
+    function AllCustomers(){
+        return  Customer::where('is_deleted', 0)->get();
     }
 }

@@ -590,6 +590,7 @@ class HomeController extends Controller
             $customer =  Customer::where('email' , auth()->user()->email)->first();
         }
 
+
         $open_status = TicketStatus::where('name','Open')->first();
 
         $open_tickets_count = 0;
@@ -605,6 +606,8 @@ class HomeController extends Controller
         ->join('customers','customers.id','=','tickets.customer_id')
         ->where('tickets.customer_id', $customer->id)
         ->where('tickets.is_deleted', 0)->where('is_enabled', 'yes')->get();
+
+
 
 
         foreach($tickets as $value) {
