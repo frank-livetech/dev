@@ -696,18 +696,26 @@ class BillingController extends Controller
 
     public function getActivityLogReport(Request $request) {
         try {
-            if($request->has('filter') && $request->filter == 'today') {
+
+            if($request->has('filter') && $request->filter == 'today' || $request->has('filter') && $request->filter == null) {
                 $logs =  Activitylog::with(['ticket','createdBy','updatedBy'])->where('module', 'Tickets')
                 ->whereDate('created_at', Carbon::today());
-
             }
             if($request->has('filter') && $request->filter == 'date_range') {
-                $logs =  Activitylog::with(['ticket','createdBy','updatedBy'])->where('module', 'Tickets')
-                ->whereBetween('created_at', [$request->start_date,$request->end_date]);
+                $logs =  Activitylog::with(['ticket','createdBy','updatedBy'])->where('module', 'Tickets');
+
+                if($request->staff != null){
+                    $logs->where('created_by',$request->staff);
+                }
+
+                if($request->start_date != 'Invalid date' && $request->end_date != 'Invalid date'){
+                    $logs->whereBetween('created_at', [$request->start_date,$request->end_date]);
+                }
+
             }
 
             if($request->has('filter') && $request->filter == 'date_range' && $request->staff != null) {
-                $logs->where('created_by',$request->staff);
+
             }
 
 
