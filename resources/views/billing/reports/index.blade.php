@@ -146,6 +146,10 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
         var tickets_logs_list = $('#ticket-logs-list').DataTable({
                 ordering: false,
+                dom: 'Bfrtip',
+                buttons: [
+                   'csv'
+                ]
             });
 
 
