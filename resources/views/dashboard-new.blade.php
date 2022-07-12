@@ -433,7 +433,7 @@ table.dataTable thead .sorting_desc:after {
                                             <div class="search-input-icon">
                                                 <i data-feather="search"></i>
                                             </div>
-                                                <input class="form-control input" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
+                                                <input class="form-control input" id="ticket_search" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
                                                 {{-- <div class="search-input-close"><i data-feather="x"></i></div> --}}
                                                 <ul class="search-list search-list-main"></ul>
                                         </div>
@@ -880,6 +880,8 @@ table.dataTable thead .sorting_desc:after {
 
 @endsection
 @section('scripts')
+
+
 <!-- <script src="{{asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js')}}"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-utils.min.js"></script>
@@ -888,6 +890,7 @@ table.dataTable thead .sorting_desc:after {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
 {{-- <script src="{{asset($file_path . 'app-assets/daterangepicker.js')}}"></script> --}}
 @include('js_files.dashboardjs')
+@include('js_files.searchInputJs')
 @include('js_files.help_desk.ticket_manager.flag_ticketJs')
 
 {{-- <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script> --}}
