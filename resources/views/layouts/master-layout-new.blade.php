@@ -354,6 +354,11 @@
         </div>
     </nav>
 
+    @if(Session('system_date'))
+        <input type="hidden" id="system_date_format" value="{{Session('system_date')}}">
+        @else
+        <input type="hidden" id="system_date_format" value="DD-MM-YYYY">
+    @endif
 
     <!-- END: Header-->
     @include('layouts.new-sidebar')
