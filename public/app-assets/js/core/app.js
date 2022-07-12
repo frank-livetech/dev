@@ -34,7 +34,7 @@ window.colors = {
   var $html = $('html');
   var $body = $('body');
   var $textcolor = '#4e5154';
-  var assetPath = 'public/dev/app-assets/';
+  var assetPath = 'public/app-assets/';
 // for local change to /app-assets/
   if ($('body').attr('data-framework') === 'laravel') {
     assetPath = $('body').attr('data-asset-path');
