@@ -1492,7 +1492,9 @@ class MailController extends Controller
                             $old_src = $tag->getAttribute('src');
                             $new_src_url = $url.$attaches[$atch_count];
                             $tag->setAttribute('src', $new_src_url);
-                            $tag->setAttribute('style', 'width:100%;');
+                            // $tag->setAttribute('style', 'width:100%;');
+                            $tag->setAttribute('width', '10%;');
+
                             $atch_count++;
                         }
                         $reply_content = $doc->saveHTML();
@@ -2375,7 +2377,9 @@ class MailController extends Controller
                                             $old_src = $tag->getAttribute('src');
                                             $new_src_url = $url.$attaches[$atch_count];
                                             $tag->setAttribute('src', $new_src_url);
-                                            $tag->setAttribute('style', 'width:100%;');
+                                            // $tag->setAttribute('style', 'width:100%;');
+                                            $tag->setAttribute('width', '10%;');
+
                                             $atch_count++;
                                         }
 

@@ -27,7 +27,11 @@ class TicketNote extends Model
 
         $id = $this->created_by;
         $user = User::where('id', $id)->first();
-        return $user->name;
+        if($user){
+            return $user->name;
+        }else{
+            return '---';
+        }
     }
     public function getTktCustIdAttribute() {
 
