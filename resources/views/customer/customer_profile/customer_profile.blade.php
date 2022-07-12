@@ -27,8 +27,8 @@
             scriptTag.setAttribute("data-tokenization-key", data_key);
         }
    }
-   
-    
+
+
 </script> -->
 
 <style>
@@ -132,7 +132,7 @@ input,
 }
 .btn-new{
     min-width: 100px;
-    
+
 }
 
 input {
@@ -275,7 +275,7 @@ blockquote {
         <!-- Column -->
         <div class="col-md-12">
         @if($errors->any())
-        
+
         <div class="alert alert-dismissable alert-danger">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -286,9 +286,9 @@ blockquote {
                 <li>{{ $error }}</li>
             @endforeach
             </ul>
-        
+
         </div>
-        
+
         @endif
 
         @if(session('success'))
@@ -314,7 +314,7 @@ blockquote {
                                 <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                             @endif
                         @else
-                        
+
                             <img src="{{asset( $path . 'default_imgs/customer.png')}}" class="rounded-circle" width="100" height="100" id="customer_curr_img" />
                         @endif
                         </a>
@@ -334,13 +334,13 @@ blockquote {
                     @endif
 
                     <small class="text-muted  db">Phone</small>
-                    <h6> <a href="tel:{{$customer->phone}}" id="cust_phone">{{$customer->phone}}</a> </h6>                    
+                    <h6> <a href="tel:{{$customer->phone}}" id="cust_phone">{{$customer->phone}}</a> </h6>
 
                     <div id="adrs">
                         <small class="text-muted  db">Email Address</small>
                         <input type="hidden" id="cust_email1" value="{{$customer->email}}">
                         <h6> <a href="mailto:{{$customer->email}}" id="cust_email"> {{$customer->email}}</a></h6>
-                    </div>                   
+                    </div>
 
 
                     <div>
@@ -358,7 +358,7 @@ blockquote {
                         @else
                             <span id="cust_state"></span>
                         @endif
-                        
+
                         <span id="cust_zip">{{$customer->cust_zip != null ? ', '.$customer->cust_zip : '' }}</span>
                         <br>
 
@@ -375,15 +375,18 @@ blockquote {
 
             </div>
 
+
+
+
             <div class="card">
                 <div class="card-body">
                     <div id="map_2" class="gmaps">
-                   
+
                     </div>
                    <input type="hidden" id="google_api_key">
                    <h2 class="mt-4 font-weight-bold text-dark">Social Links</h2>
                     <div class="d-flex justify-content-center">
-                    
+
                         <a href="{{$customer->twitter}}"  id="twt" title="Twitter" class="btn" target="_blank"
                             style="color: #009efb; font-size:24px">
                             <i class="fab fa-twitter"></i>
@@ -427,7 +430,7 @@ blockquote {
                             <h4 class="mb-0 text-info ">Domain Manager</h4>
                         </div>
                     </a>
-                </div>    
+                </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <a href="http://localhost/framework/ticket-manager/self" class="card  border-primary card-hover">
                         <div class="box p-2 rounded text-center">
@@ -602,7 +605,7 @@ blockquote {
                                 @else
                                     <select class="select2 form-control " id="prof_state" name="prof_state" style="width: 100%; height:36px;"></select>
                                 @endif
-                                
+
                             </div>
                             <div class="col-md-3 form-group">
                                 <label>Zip Code</label>
@@ -669,7 +672,7 @@ blockquote {
                                 @else
                                 <select class="select2 form-control" id="bill_add_state" name="bill_add_state" style="width: 100%; height:36px;"></select>
                                 @endif
-                                
+
                             </div>
                             <div class="col-md-3 form-group">
                                 <label>Zip Code</label>
@@ -679,7 +682,7 @@ blockquote {
                             <div class="col-md-3 form-group">
                                 <div class="form-group">
                                     <label>Country</label>
-                                    
+
                                     @if($google_key == 1)
                                     <input type="text" class="form-control" value="{{$customer->bill_add_country}}" id="bill_add_country" name="bill_add_country" style="width: 100%; height:36px;">
                                 @else
@@ -750,7 +753,7 @@ blockquote {
                             </div>
 
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -861,7 +864,7 @@ blockquote {
                                         </div>
                                     </div>
                                 </div>
-                            </div>       
+                            </div>
                         </div>
 
                         <div class="tab-pane fade" id="subscription" role="tabpanel"
@@ -942,14 +945,14 @@ blockquote {
                         <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-profile-tab">
 
                             <hr>
-                            
+
                                 <div class="row">
-                                    
+
                                     <div class="col-md-12">
                                     <label class="col-md-12">ADD New Credit Card</label>
                                     <div class="card-body">
                                         <form id="CardForm" class="CardForm" >
-                                        
+
                                         <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -1007,12 +1010,12 @@ blockquote {
                                                 <input type="hidden" name="exp" id="exp">
                                                 <input type="hidden" name="cardlastDigits" id="cardlastDigits">
 
-                                        
+
                                                 <div class="col-md-12 text-right">
                                                     <input type="submit" id="payButton" value="ADD Card" class="btn btn-success">
                                                 </div>
                                             </div>
-    
+
                                         </form>
                                         </div>
                                         <div id="paymentTokenInfo"></div>
@@ -1062,7 +1065,7 @@ blockquote {
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#assetModal" style="float:right;margin-bottom:5px;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset</button>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#assetCatModal" style="float:right;top: -35px;position: relative;"><i class="fas fa-plus"></i>&nbsp;Add Asset Category</button>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row">
 
                                     <div class="col-sm-12">
@@ -1273,7 +1276,7 @@ blockquote {
                                                         </form>
                                                     </div>
                                                 </div>
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12">
@@ -1469,7 +1472,7 @@ blockquote {
                                                         placeholder="password" class="form-control form-control-line"
                                                         value="{{$customer->password}}">
                                                     <!-- <span toggle="#password-field"
-                                                        class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span> 
+                                                        class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span>
                                                 </span>
                                             </div>
                                         </div>
@@ -1480,7 +1483,7 @@ blockquote {
                                                     type="password" placeholder="Confirm Password"
                                                     value="{{$customer->password}}">
                                                 <!-- <span toggle="#password-field"
-                                                    class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span> 
+                                                    class="fa fa-fw fa-eye field-icon show-confirm-password-btn mr-2"></span>
                                             </div>
                                         </div>
                                     @endif
@@ -1569,7 +1572,7 @@ blockquote {
                                             @else
                                                 <select class="select2 form-control " id="prof_state" name="prof_state" style="width: 100%; height:36px;"></select>
                                             @endif
-                                            
+
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>Zip Code</label>
@@ -1636,7 +1639,7 @@ blockquote {
                                             @else
                                             <select class="select2 form-control" id="bill_add_state" name="bill_add_state" style="width: 100%; height:36px;"></select>
                                             @endif
-                                            
+
                                         </div>
                                         <div class="col-md-3 form-group">
                                             <label>Zip Code</label>
@@ -1646,7 +1649,7 @@ blockquote {
                                         <div class="col-md-3 form-group">
                                             <div class="form-group">
                                                 <label>Country</label>
-                                                
+
                                                 @if($google_key == 1)
                                                 <input type="text" class="form-control" value="{{$customer->bill_add_country}}" id="bill_add_country" name="bill_add_country" style="width: 100%; height:36px;">
                                             @else
@@ -1717,7 +1720,7 @@ blockquote {
                                         </div>
 
                                     </div>
-                                    
+
                                 </form>
                             </div>
                         </div>
@@ -1804,16 +1807,16 @@ blockquote {
                                             </div>
                                         </div>
                                     </div>
-                                </div>       
+                                </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-               
+
             </div> -->
         </div>
-      
+
     </div>
 
     {{-- Details --}}
@@ -2140,12 +2143,12 @@ blockquote {
                         </div>
 
                         <!-- <div class="row mt-3">
-                        
+
                         <div class="col-md-6">
                             <label for="country" class="small">Country</label>
                             <input type="text" id="country" class="form-control">
                             <span class="text-danger small" id="err5"></span>
-                        </div> 
+                        </div>
                     </div> -->
 
                         <!-- <div class="row mt-3">
@@ -2351,7 +2354,7 @@ blockquote {
                         @endif
 
                     </div>
-                
+
                     <div class="input-group mt-1">
                         <div class="custom-file  w-100">
                             <input type="hidden" name="customer_id" id="customer_id" value="{{$customer->id}}">
@@ -2365,14 +2368,15 @@ blockquote {
                         <button type="submit" class="btn btn-primary waves-effect waves-float waves-light">Save changes</button>
                     </div>
                 </div>
-                   
+
 
             </form>
-           
+
 
         </div>
     </div>
 </div>
+
 
 <!--Domain Modal -->
 <div class="modal fade" id="domainModal" tabindex="-1" aria-labelledby="domainModalLabel" aria-hidden="true">
@@ -2406,7 +2410,7 @@ blockquote {
                 <button class="btn btn-success"> Add New Time </button>
             </div>
 
-            
+
             <div class="col-md-12">
                 <hr>
                 <button type="button" class="btn btn-warning" >Update Name Servers</button>
@@ -2482,7 +2486,7 @@ blockquote {
                         <label for="select">Asset Title</label> <span class="text-danger">*</span>
                         <input class="form-control" type="text" id="up_asset_title" required>
                         <input class="form-control" type="hidden" id="asset_title_id" required>
-                        
+
                     </div>
                     <div class="input_fields"></div>
                     <div class="address_fields"></div>

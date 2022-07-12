@@ -144,7 +144,6 @@ class HelpdeskController extends Controller
     }
 
     public function addTicketPage($id =null) {
-
         $departments = Departments::all();
         $priorities = TicketPriority::all();
         $types = TicketType::all();
