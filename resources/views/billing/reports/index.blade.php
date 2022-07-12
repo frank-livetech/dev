@@ -154,7 +154,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
             if(filterdata != null){
                 data = filterdata;
             }else{
-                data = {_token:"{{csrf_token()}}",day:"today"}
+                data = {_token:"{{csrf_token()}}",filter:"today"}
             }
 
             $('.dataTables_processing', $('#ticket-logs-list').closest('.dataTables_wrapper')).show();
