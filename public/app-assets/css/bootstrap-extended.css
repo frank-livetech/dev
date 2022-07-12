@@ -657,7 +657,7 @@ select:-webkit-autofill {
   min-height: 4.45rem;
   font-family: "Montserrat", Helvetica, Arial, serif;
   transition: 300ms ease all, background 0s;
-  z-index: 1997; }
+  z-index: 997; }
 
 .header-navbar.fixed-top, .header-navbar.floating-nav {
   left: 260px; }
