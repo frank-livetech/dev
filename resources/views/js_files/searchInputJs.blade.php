@@ -176,7 +176,7 @@
                             for (var i = 0; i < data.length; i++) {
                                     $htmlList +=
                                     '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
-                                    '<a class="d-flex align-items-center justify-content-between w-100" href="/ticket-details/' +
+                                    '<a class="d-flex align-items-center justify-content-between w-100" href="{{url("ticket-details")}}/' +
                                     data[i].coustom_id + '">' +
                                     '<div class="d-flex justify-content-start align-items-center">' +
                                     '<span>' + data[i].coustom_id + ' | ' + data[i].subject + ' | ' + data[i]
@@ -270,7 +270,7 @@
 
                                 $htmlList +=
                                 '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
-                                '<a class="d-flex align-items-center justify-content-between w-100" href="/customer-profile/' +
+                                '<a class="d-flex align-items-center justify-content-between w-100" href="{{url("customer-profile")}}/' +
                                 data[i].id + '">' +
                                 '<div class="d-flex justify-content-start align-items-center">' +
                                 '<span>' + data[i].first_name +' '+ data[i].last_name + '(ID: '+data[i].id+') | ' + data[i].company + ' | ' + data[i]
