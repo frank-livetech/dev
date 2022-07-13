@@ -428,7 +428,7 @@ table.dataTable thead .sorting_desc:after {
                             </div>
                             <div class="card-body" id="helpdesk">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="col-lg-6 col-md-6 col-12" id="helpDeskSearch">
                                         <div class="search-input open">
                                             <div class="search-input-icon">
                                                 <i data-feather="search"></i>
@@ -902,6 +902,10 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
     }
 });
+
+searchInputField("helpDeskSearch","{{url('search-ticket')}}")
+
+
 var system_date_format = $("#system_date_format").val();
 // let data = {!! json_encode($staff_att_data) !!};
 function HmsToSeconds(hms) {

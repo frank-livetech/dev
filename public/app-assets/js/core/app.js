@@ -250,19 +250,19 @@ window.colors = {
       else return true;
     }
 
-    $('.content-overlay').on('click', function () {
-      $('.search-list').removeClass('show');
-      var searchInput = $('.search-input-close').closest('.search-input');
-      if (searchInput.hasClass('open')) {
-        searchInput.removeClass('open');
-        searchInputInputfield.val('');
-        searchInputInputfield.blur();
-        searchList.removeClass('show');
-      }
+    // $('.content-overlay').on('click', function () {
+    //   $('.search-list').removeClass('show');
+    //   var searchInput = $('.search-input-close').closest('.search-input');
+    //   if (searchInput.hasClass('open')) {
+    //     searchInput.removeClass('open');
+    //     searchInputInputfield.val('');
+    //     searchInputInputfield.blur();
+    //     searchList.removeClass('show');
+    //   }
 
-      $('.app-content').removeClass('show-overlay');
-      $('.bookmark-wrapper .bookmark-input').removeClass('show');
-    });
+    //   $('.app-content').removeClass('show-overlay');
+    //   $('.bookmark-wrapper .bookmark-input').removeClass('show');
+    // });
 
     // To show shadow in main menu when menu scrolls
     var container = document.getElementsByClassName('main-menu-content');
