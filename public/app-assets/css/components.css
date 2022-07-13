@@ -1349,7 +1349,7 @@ footer.footer-border {
     position: absolute;
     top: 20;
     left: 10;
-    z-index: 1000;
+    z-index: 977;
     width: 91%;
     display: block;
     background: #fff;
@@ -1359,7 +1359,7 @@ footer.footer-border {
     position: absolute;
     top: 20;
     left: 10;
-    z-index: 1000;
+    z-index: 977;
     width: 91%;
     display: block;
     background: #fff;
@@ -1409,7 +1409,8 @@ footer.footer-border {
 
 .navbar-container .search-input .search-list.show, #helpdesk .search-input .search-list.show , #cust-mang .search-input-customer .search-list-customer.show{
   display: block;
-  min-height: 3rem; }
+  min-height: 3rem;
+  overflow: overlay; }
 
 .navbar-container .search-input .search-list li a ,#helpdesk .search-input .search-list li a, #cust-mang .search-input-customer .search-list-customer li a {
   padding: 0.9rem 1rem;
