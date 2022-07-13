@@ -3358,7 +3358,7 @@ class HelpdeskController extends Controller
 
                 }else if($request->type == 'User Organization'){
 
-                     $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$request->company_id)->get();
+                    $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$request->company_id)->get();
                 }
             }else{
                 if(!$request->has('id')) throw new Exception('Ticket id missing');
@@ -3407,11 +3407,24 @@ class HelpdeskController extends Controller
                 });
             }
 
+            $allNotes = json_decode( json_encode($notes) , true);
+
+            for($i =0; $i < count($allNotes); $i++) {
+                $cdate = new \DateTime( $allNotes[$i]['created_at'] );
+                $cdate->setTimezone(new \DateTimeZone( timeZone() ));
+                $allNotes[$i]['cdate'] = $cdate->format(system_date_format() .' h:i a');
+
+                $udate = new \DateTime( $allNotes[$i]['updated_at'] );
+                $udate->setTimezone(new \DateTimeZone( timeZone() ));
+
+                $allNotes[$i]['udate'] = $udate->format(system_date_format() .' h:i a');
+            }
+
 
             $response['message'] = 'Success';
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['notes']= json_decode( json_encode($notes) , true);
+            $response['notes']= $allNotes ;
             $response['notes_count']= count($notes);
 
             return response()->json($response);

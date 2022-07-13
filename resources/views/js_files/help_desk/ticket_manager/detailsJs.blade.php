@@ -4117,7 +4117,7 @@ function get_ticket_notes() {
                         </div>
                         <div class="w-100">
                             <div class="d-flex justify-content-between">
-                                <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${jsTimeZone(notes[i].created_at)} </span>  ${type} </h5>
+                                <h5 class="note-head" style="margin-top:10px"> <strong> ${notes[i].name} </strong> on <span class="small"> ${ notes[i].cdate } </span>  ${type} </h5>
                                 ` + autho + `
                             </div>
                             <blockquote>
