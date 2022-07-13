@@ -586,7 +586,7 @@ table.dataTable thead .sorting_desc:after {
                                             <div class="search-input-icon-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                             </div>
-                                                <input class="form-control" id="customer" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
+                                                <input class="form-control" id="customer" type="text" placeholder="Search Customer" tabindex="-1" data-search="search">
                                                 <ul class="search-list-customer search-list-main"></ul>
                                         </div>
                                     </div>
