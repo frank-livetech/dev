@@ -789,8 +789,7 @@ $("#save_asset_form").submit(function (event) {
     let url = window.location.href;
     if(url.includes('asset-manager')) {
 
-
-        if($("#company_id").val() == '' || $("#customer_id").val() == "") {
+        if($("#asset_company").select2('val') == '' || $("#asset_customer").select2('val') == "") {
             alertNotification('error', 'Error' , 'Company or Customer field is required');
             return false;
         }
