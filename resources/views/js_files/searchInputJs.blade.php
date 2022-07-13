@@ -122,6 +122,7 @@
 
 
         searchInputInputfield.on('keyup', function(e) {
+            searchInput.addClass('open');
             $(this).closest('#'+searchField +' .search-list').addClass('show');
             if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
                 if (e.keyCode == 27) {
@@ -214,6 +215,8 @@
 
 
         searchInputInputfield.on('keyup', function(e) {
+            searchInput.addClass('open');
+
             $(this).closest('#'+searchField +' .search-list-customer').addClass('show');
             if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
                 if (e.keyCode == 27) {
@@ -233,7 +236,7 @@
                 var value = $(this).val().toLowerCase(), //get values of input on keyup
                     activeClass = '',
                     bookmark = false,
-                    liList = $('#'+searchField+' ul.search-list li'); // get all the list items of the search
+                    liList = $('#'+searchField+' ul.search-list-customer li'); // get all the list items of the search
                 liList.remove();
 
                 // To check if current is bookmark input
@@ -279,7 +282,7 @@
 
                         }
 
-                        $('#'+searchField+' ul.search-list').html($htmlList);
+                        $('#'+searchField+' ul.search-list-customer').html($htmlList);
 
                     });
 
