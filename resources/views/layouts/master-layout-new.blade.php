@@ -340,7 +340,7 @@
                         <a class="dropdown-item" onclick="run_parser()"><i class="me-50"
                                 data-feather="refresh-ccw"></i> Run Parser</a>
 
-                        <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#customer">
+                        <a class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#switch-customer">
                             <i class="me-50" data-feather="repeat"></i>
                             Switch Customer
                         </a>
@@ -367,7 +367,7 @@
     @yield('body')
 
     <!-- Modal -->
-    <div class="modal fade" id="customer" tabindex="-1" aria-labelledby="myModalLabel1"  aria-hidden="true">
+    <div class="modal fade" id="switch-customer" tabindex="-1" aria-labelledby="myModalLabel1"  aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -388,9 +388,12 @@
                             @endforeach
                         @endif
                     </select>
-                    <div class="text-right mt-3">
-                        <button class="btn btn-primary" id="to_profile">Go to profile</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="to_profile" class="btn btn-primary float-end waves-effect waves-float waves-light">
+                        <span class="me-50">Go To Profile</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -476,7 +479,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{{ asset($file_path . 'app-assets/js/scripts/components/components-popovers.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/js/core/app-menu.js') }}"></script>
-    {{-- <script src="{{ asset($file_path . 'app-assets/js/core/app.js') }}"></script> --}}
+    <script src="{{ asset($file_path . 'app-assets/js/core/app.js') }}"></script>
     <!-- END: Theme JS-->
     <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/app-chat.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/js/scripts/tagsinput.js') }}"></script>

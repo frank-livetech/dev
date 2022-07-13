@@ -440,7 +440,7 @@ table.dataTable thead .sorting_desc:after {
                                 </div>
                                 <form action="javascript:void(0);" class="form">
                                     <div class="row mt-6">
-                                        <div class="col-12 mb-2">
+                                        {{-- <div class="col-12 mb-2">
                                             <div class="mb-2">
                                                 <form class="d-flex w-100 pb-3 position-relative"
                                                     action="search-ticket-result" method="post" id="search-ticket"
@@ -454,7 +454,7 @@ table.dataTable thead .sorting_desc:after {
 
                                             </div>
                                             <div id="show_ticket_results"></div>
-                                        </div>
+                                        </div> --}}
 
                                         {{-- <div id="full-view"> --}}
                                         <div class="d-grid col-lg-4 col-4" >
@@ -581,9 +581,9 @@ table.dataTable thead .sorting_desc:after {
                             <div class="card-body">
 
                                  <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12" id="Customer">
+                                    <div class="col-lg-12 col-md-12 col-12" id="cust-mang">
                                         <div class="search-input-customer open">
-                                            <div class="search-input-icon">
+                                            <div class="search-input-icon-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                             </div>
                                                 <input class="form-control" id="customer" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
@@ -913,7 +913,7 @@ $.ajaxSetup({
 });
 
 searchInputField("helpDeskSearch","ticket_search","{{url('search-ticket')}}")
-searchInputFieldCustomer("Customer","customer","{{url('search-customer')}}")
+searchInputFieldCustomer("cust-mang","customer","{{url('search-customer')}}")
 
 
 var system_date_format = $("#system_date_format").val();

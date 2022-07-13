@@ -464,7 +464,7 @@ html .navbar-sticky .nav.header-navbar .navbar-container {
   padding-right: 1.6rem; }
 
 html .navbar-static .nav.header-navbar .navbar-container .search-input .search-list.show, #helpdesk .search-input .search-list.show,
-html .navbar-sticky .nav.header-navbar .navbar-container .search-input .search-list.show, #helpdesk .search-input .search-list.show{
+html .navbar-sticky .nav.header-navbar .navbar-container .search-input .search-list.show, #cust-mang .search-input-customer .search-list-customer.show{
   width: 98%;
   left: 1%; }
 
@@ -1313,6 +1313,12 @@ footer.footer-border {
     padding: 1.6rem 3.6rem;
     height: 55px;
   }
+  input#customer{
+    transition: all 0.2s ease-out;
+    line-height: 16px;
+    padding: 1.6rem 3.6rem;
+    height: 55px;
+  }
   .search-input-icon {
     z-index: 2;
     display: none;
@@ -1320,6 +1326,14 @@ footer.footer-border {
     left: 1.5rem;
     top: 32%;
     cursor: pointer;
+}
+.search-input-icon-1 {
+  z-index: 2;
+  display: none;
+  position: absolute;
+  left: 1.5rem;
+  top: 32%;
+  cursor: pointer;
 }
 .navbar-container  {
   position: absolute;
@@ -1341,12 +1355,23 @@ footer.footer-border {
     background: #fff;
     border-radius: 0.5rem; 
   }
+  .search-input-customer.open {
+    position: absolute;
+    top: 20;
+    left: 10;
+    z-index: 1000;
+    width: 91%;
+    display: block;
+    background: #fff;
+    border-radius: 0.5rem; 
+  }
 
 .navbar-container .search-input.open .search-input-close, #helpdesk .search-input.open .search-input-close
-.navbar-container .search-input.open .search-input-icon , #helpdesk .search-input.open .search-input-icon{
+.navbar-container .search-input.open .search-input-icon , #helpdesk .search-input.open .search-input-icon, 
+#cust-mang .search-input-customer.open .search-input-icon-1{
   display: block; }
 
-.navbar-container .search-input.open input , #helpdesk .search-input.open input{
+.navbar-container .search-input.open input , #helpdesk .search-input.open input ,#cust-mang .search-input.open input, #cust-mang .search-input-customer.open input{
   width: 100%;
   outline: none;
   background: none;
@@ -1354,7 +1379,7 @@ footer.footer-border {
   box-shadow: none;
   transition: all 0.3s ease-out; }
 
-.navbar-container .search-input .search-list , #helpdesk .search-input .search-list{
+.navbar-container .search-input .search-list , #helpdesk .search-input .search-list,#cust-mang .search-input-customer .search-list-customer{
   max-height: 450px;
   height: auto;
   position: absolute;
@@ -1368,48 +1393,49 @@ footer.footer-border {
   display: none;
 }
 
+
 @media only screen and (min-device-width: 320px) and (max-device-width: 875px) and (orientation: landscape) {
-  .navbar-container .search-input .search-list , #helpdesk .search-input .search-list {
+  .navbar-container .search-input .search-list , #helpdesk .search-input .search-list,#cust-mang .search-input-customer .search-list-customer {
     max-height: 250px; } }
 
-.navbar-container .search-input .search-list.search-list-bookmark,#helpdesk .search-input .search-list.search-list-bookmark  {
+.navbar-container .search-input .search-list.search-list-bookmark,#helpdesk .search-input .search-list.search-list-bookmark,#helpdesk .search-input-customer .search-list-customer.search-list-bookmark  {
   height: auto !important; }
 
-.navbar-container .search-input .search-list.search-list-bookmark i, #helpdesk .search-input .search-list.search-list-bookmark i
-.navbar-container .search-input .search-list.search-list-bookmark svg, #helpdesk .search-list.search-list-bookmark svg {
+.navbar-container .search-input .search-list.search-list-bookmark i, #helpdesk .search-input .search-list.search-list-bookmark i,#cust-mang .search-input-customer .search-list-customer.search-list-bookmark i,
+.navbar-container .search-input .search-list.search-list-bookmark svg, #helpdesk .search-list.search-list-bookmark svg,#cust-mang .search-list-customer.search-list-bookmark svg {
   font-size: 1.2rem;
   height: 1.2rem;
   width: 1.2rem; }
 
-.navbar-container .search-input .search-list.show, #helpdesk .search-input .search-list.show {
+.navbar-container .search-input .search-list.show, #helpdesk .search-input .search-list.show , #cust-mang .search-input-customer .search-list-customer.show{
   display: block;
   min-height: 3rem; }
 
-.navbar-container .search-input .search-list li a ,#helpdesk .search-input .search-list li a {
+.navbar-container .search-input .search-list li a ,#helpdesk .search-input .search-list li a, #cust-mang .search-input-customer .search-list-customer li a {
   padding: 0.9rem 1rem;
   color: #6e6b7b; }
 
-.navbar-container .search-input .search-list li a i,#helpdesk .search-input .search-list li a i,
-.navbar-container .search-input .search-list li a svg[class*='feather feather-'],#helpdesk .search-input .search-list li a svg[class*='feather feather-']  {
+.navbar-container .search-input .search-list li a i,#helpdesk .search-input .search-list li a i,#cust-mang .search-input-customer .search-list-customer li a i,
+.navbar-container .search-input .search-list li a svg[class*='feather feather-'],#helpdesk .search-input .search-list li a svg[class*='feather feather-'] ,#cust-mang .search-input-customer .search-list-customer li a svg[class*='feather feather-'] {
   height: 1.25rem;
   width: 1.25rem;
   font-size: 1.25rem; }
 
-.navbar-container .search-input .search-list li:first-child,#helpdesk .search-input .search-list li:first-child {
+.navbar-container .search-input .search-list li:first-child,#helpdesk .search-input .search-list li:first-child,#cust-mang .search-input-customer .search-list-custmer li:first-child {
   border-top-left-radius: 0.357rem;
   border-top-right-radius: 0.357rem; }
 
-.navbar-container .search-input .search-list li:last-child,#helpdesk .search-input .search-list li:last-child {
+.navbar-container .search-input .search-list li:last-child,#helpdesk .search-input .search-list li:last-child,#cust-mang .search-input-customer .search-list-custmer li:last-child {
   border-bottom-left-radius: 0.357rem;
   border-bottom-right-radius: 0.357rem; }
 
-.navbar-container .search-input .search-list li.auto-suggestion,#helpdesk .search-input .search-list li.auto-suggestion {
+.navbar-container .search-input .search-list li.auto-suggestion,#helpdesk .search-input .search-list li.auto-suggestion,#cust-mang .search-input-customer .search-list-customer li.auto-suggestion {
   display: flex;
   align-items: center;
   cursor: pointer; }
 
-  #helpdesk .search-input .search-list li.auto-suggestion:hover, #helpdesk .search-input .search-list li.auto-suggestion.current_item {
-  background-color: #f8f8f8; }
+  #helpdesk .search-input .search-list li.auto-suggestion:hover, #cust-mang .search-input .search-list li.auto-suggestion:hover, #helpdesk .search-input .search-list li.auto-suggestion.current_item, #cust-mang .search-input-customer .search-list-customer li.auto-suggestion.current_item {
+    background-color: #f8f8f8; }
 
 
    .search-input .search-list li.auto-suggestion:hover, .navbar-container .search-input .search-list li.auto-suggestion.current_item {
@@ -1430,9 +1456,16 @@ footer.footer-border {
     top: 30%;
     cursor: pointer;
 }
+#cust-mang .search-input-customer .search-input-icon-1{
+  z-index: 2;
+  position: absolute;
+  left: 2rem;
+  top: 36%;
+  cursor: pointer;
+}
 
-.navbar-container .search-input .search-input-icon i, #helpdesk .search-input .search-input-icon i
-.navbar-container .search-input .search-input-icon svg , #helpdesk .search-input .search-input-icon svg{
+.navbar-container .search-input .search-input-icon i, #helpdesk .search-input .search-input-icon i,#cust-mang .search-input-customer .search-input-icon-1 i
+.navbar-container .search-input .search-input-icon svg , #helpdesk .search-input .search-input-icon svg,#cust-mang .search-input-customer .search-input-icon-1 svg{
   height: 1.25rem;
   width: 1.25rem;
   font-size: 1.25rem; }
