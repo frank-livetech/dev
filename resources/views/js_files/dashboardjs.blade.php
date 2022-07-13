@@ -109,7 +109,7 @@
 
                 $.ajax({
                     url: "{{asset('/search-customer')}}",
-                    type: "POST",
+                    type: "Get",
                     data: {
                         id: value
                     },

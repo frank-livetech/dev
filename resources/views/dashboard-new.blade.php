@@ -433,7 +433,7 @@ table.dataTable thead .sorting_desc:after {
                                             <div class="search-input-icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                             </div>
-                                                <input class="form-control input" id="ticket_search" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
+                                                <input class="form-control "  id="ticket_search" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
                                                 {{-- <div class="search-input-close"><i data-feather="x"></i></div> --}}
                                                 <ul class="search-list search-list-main"></ul>
                                         </div>
@@ -580,7 +580,19 @@ table.dataTable thead .sorting_desc:after {
                                 <h4 class="card-title">Customer Manager</h4>
                             </div>
                             <div class="card-body">
+
                                  <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12" id="Customer">
+                                        <div class="search-input open">
+                                            <div class="search-input-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                            </div>
+                                                <input class="form-control" id="customer" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
+                                                {{-- <div class="search-input-close"><i data-feather="x"></i></div> --}}
+                                                <ul class="search-list search-list-main"></ul>
+                                        </div>
+                                    </div>
+
                                     <div class="col-lg-6 col-md-6 col-12">
                                         <div class="search-input-1 open">
                                             <div class="search-input-icon">
@@ -903,7 +915,8 @@ $.ajaxSetup({
     }
 });
 
-searchInputField("helpDeskSearch","{{url('search-ticket')}}")
+searchInputField("helpDeskSearch","ticket_search","{{url('search-ticket')}}")
+searchInputField("Customer","customer","{{url('search-customer')}}")
 
 
 var system_date_format = $("#system_date_format").val();

@@ -473,7 +473,7 @@ Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin'
     Route::post('/update-customer','CustomerlookupController@update_customer');
     Route::post('/update_customer_profile','CustomerlookupController@update_customer_profile');
     Route::post('/update-user','CustomerlookupController@update_user');
-    Route::post('/search-customer','CustomerlookupController@search_customer');
+    Route::get('/search-customer','CustomerlookupController@search_customer');
     Route::get('/company-lookup','CompanyController@index')->name('company.lookup');
     Route::get('/company-get-staffs/{id}','CompanyController@get_staffs');
     Route::get('/get_company_lookup','CompanyController@get_company_lookup');
