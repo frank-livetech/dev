@@ -6,6 +6,21 @@
 $file_path = Session::get('is_live') == 1 ? 'public/' : '/';
 $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 @endphp
+
+@section('customtheme')
+    @php $file_path = Session::get('is_live') == 1 ? 'public/' : '/'; @endphp
+    <style>
+        .dt-buttons .buttons-csv{
+            background: #238fac;
+            color: #fff;
+            border-color: hsl(193, 66%, 41%);
+            font-weight: 700;
+        }
+    </style>
+
+
+@endsection
+
 @section('body')
     <div class="app-content content">
         <div class="content-overlay"></div>
@@ -69,7 +84,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                                                 <label class="form-label" for="">Staff</label>
                                                 <select class="select2 form-control custom-select dropdown w-100"
                                                     id="staff" name="staff" style="width:100%">
-                                                    <option value="">Select</option>
+                                                    <option value="">All</option>
 
                                                     @if($staffs != null && $staffs != "")
                                                         @foreach($staffs as $key => $staff)
@@ -146,6 +161,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
 
         var tickets_logs_list = $('#ticket-logs-list').DataTable({
                 ordering: false,
+                processing: true,
                 dom: 'Bfrtip',
                 buttons: [
                    'csv'
@@ -161,7 +177,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                 data = {_token:"{{csrf_token()}}",filter:"today"}
             }
 
-            $('.dataTables_processing', $('#ticket-logs-list').closest('.dataTables_wrapper')).show();
+            $('#resultTable_processing').show();
 
             $.ajax({
                 type: 'Post',
@@ -170,7 +186,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                 success: function(data) {
                     if (data.success) {
                         tickets_logs_list.clear().draw();
-                        $('.dataTables_processing', $('#ticket-logs-list').closest('.dataTables_wrapper')).hide();
+                        $('#resultTable_processing').hide();
 
                         for (let i = 0; i < data.logs.length; i++) {
                             const element = data.logs[i];

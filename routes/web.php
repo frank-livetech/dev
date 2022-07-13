@@ -473,7 +473,7 @@ Route::group ( ['namespace' => 'CustomerManager','middleware' => ['auth','admin'
     Route::post('/update-customer','CustomerlookupController@update_customer');
     Route::post('/update_customer_profile','CustomerlookupController@update_customer_profile');
     Route::post('/update-user','CustomerlookupController@update_user');
-    Route::post('/search-customer','CustomerlookupController@search_customer');
+    Route::get('/search-customer','CustomerlookupController@search_customer');
     Route::get('/company-lookup','CompanyController@index')->name('company.lookup');
     Route::get('/company-get-staffs/{id}','CompanyController@get_staffs');
     Route::get('/get_company_lookup','CompanyController@get_company_lookup');
@@ -550,7 +550,7 @@ Route::get('/update_ticket_followup','HelpdeskController@updateFollowupCron');
 Route::post('/ticket_refresh','HelpdeskController@ticketRefreshTime')->name('ticketRefreshTime');
 
 Route::Post('/fetch-followups','HelpdeskController@fetch_followups');
-Route::Post('/search-ticket','HelpdeskController@search_ticket');
+Route::any('/search-ticket','HelpdeskController@search_ticket');
 Route::Post('/save-ticket-note','HelpdeskController@save_ticket_note');
 Route::Post('/save-ticket-note_cc','HelpdeskController@UserORGNote');
 Route::Post('/update-ticket-customer','HelpdeskController@update_ticket_customer');

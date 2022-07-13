@@ -121,6 +121,9 @@ class HomeController extends Controller {
 
         $followUps = TicketFollowUp::where('is_deleted', 0)->where('passed', 0)->with('ticket')->get();
 
+        $tickets = Tickets::where('is_deleted',0)->get();
+
+        // dd($tickets);
         return view('dashboard-new', get_defined_vars());
     }
 
