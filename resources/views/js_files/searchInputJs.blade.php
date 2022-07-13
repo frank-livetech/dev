@@ -122,7 +122,6 @@
 
 
         searchInputInputfield.on('keyup', function(e) {
-            searchInput.addClass('open');
             $(this).closest('#'+searchField +' .search-list').addClass('show');
             if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
                 if (e.keyCode == 27) {
@@ -152,7 +151,7 @@
 
                 // If input value is blank
                 if (value != '') {
-                    appContent.addClass('show-overlay');
+                    // appContent.addClass('show-overlay');
 
                     // condition for bookmark and search input click
                     if (bookmarkInput.focus()) {
@@ -215,7 +214,6 @@
 
 
         searchInputInputfield.on('keyup', function(e) {
-            searchInput.addClass('open');
 
             $(this).closest('#'+searchField +' .search-list-customer').addClass('show');
             if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
@@ -246,7 +244,7 @@
 
                 // If input value is blank
                 if (value != '') {
-                    appContent.addClass('show-overlay');
+                    // appContent.addClass('show-overlay');
 
                     // condition for bookmark and search input click
                     if (bookmarkInput.focus()) {
