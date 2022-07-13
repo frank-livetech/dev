@@ -482,6 +482,10 @@
     <script src="{{ asset($file_path . 'app-assets/js/scripts/tagsinput.js') }}"></script>
 
     <!-- BEGIN: Page JS-->
+    <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/modal-two-factor-auth.js') }}"></script>
+    <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/modal-edit-user.js') }}"></script>
+    <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/app-user-view-security.js') }}"></script>
+    <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/app-user-view.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/app-invoice.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/app-user-list.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/js/scripts/charts/chart-apex.js') }}"></script>

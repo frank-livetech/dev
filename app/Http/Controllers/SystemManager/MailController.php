@@ -15,8 +15,8 @@ use PHPMailer\PHPMailer\{PHPMailer , SMTP , Exception};
 use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -1492,8 +1492,8 @@ class MailController extends Controller
                             $old_src = $tag->getAttribute('src');
                             $new_src_url = $url.$attaches[$atch_count];
                             $tag->setAttribute('src', $new_src_url);
-                            // $tag->setAttribute('style', 'width:100%;');
-                            $tag->setAttribute('width', '10%;');
+                            $tag->setAttribute('style', '');
+                            $tag->setAttribute('width', '50%;');
 
                             $atch_count++;
                         }
@@ -2377,8 +2377,8 @@ class MailController extends Controller
                                             $old_src = $tag->getAttribute('src');
                                             $new_src_url = $url.$attaches[$atch_count];
                                             $tag->setAttribute('src', $new_src_url);
-                                            // $tag->setAttribute('style', 'width:100%;');
-                                            $tag->setAttribute('width', '10%;');
+                                            $tag->setAttribute('style', '');
+                                            $tag->setAttribute('width', '50%;');
 
                                             $atch_count++;
                                         }
