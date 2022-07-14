@@ -282,7 +282,6 @@
             success: function(data) {
                 console.log(data);
                 atte_data = data.staff_att_data;
-                // staff_table_draw();
 
                 if (data.success == true) {
                     $('.clock_btn').remove();
@@ -405,6 +404,53 @@
             }
         });
     }
+
+    function staffbreak(btn_text, btn) {
+
+        let url = "{{asset('breakIn')}}";
+        var msg = '',
+            label = '',
+            tbreak = 0
+
+        $(btn).text("Processing..");
+        $(btn).attr('disabled', true);
+
+        if(btn_text == 'breakIn'){
+            msg = 'Take Break'
+            label = 'Break'
+            tbreak = 1
+        }else{
+            msg = 'Stop Break'
+            label = 'Break'
+            tbreak = 0
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {msg:msg,label:label,break:tbreak},
+            async: true,
+            success: function(data) {
+                if (data.success == true) {
+                    var html = ``
+                    if(data.break == 1){
+                        html += `<button type="button" onclick="staffbreak('breakOut' , this)" class="btn btn-danger waves-effect waves-float waves-light">
+                            <i class="fal fa-utensils-alt me-50"></i>Stop Break</button>`
+                        // alertNotification('success', 'Success' ,data.message );
+                    }else if(data.break == 0){
+                        html += `<button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
+                            <i class="fal fa-utensils-alt me-50"></i>Break</button>`
+                        // alertNotification('success', 'Success' ,data.message );
+                    }
+
+                    $("#breakIn_div").html(html);
+                }
+            },
+            failure: function(data) {
+                alertNotification('error', 'Error' ,data.message );
+            }
+        });
+        }
 
     function convertDate(date) {
         var d = new Date(date);
