@@ -146,9 +146,7 @@ table.dataTable thead .sorting_desc:after {
                         <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
                             onclick="staffatt('clockout' , this)">
                             <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
-                            <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
-                            onclick="staffatt('clockout' , this)">
-                            <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
+
                         @else
                         <button type="button"
                             class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1"
@@ -156,9 +154,14 @@ table.dataTable thead .sorting_desc:after {
                             <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>
                         @endif
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light">
+                    <div id="breakIn_div">
+                        @if($clockin->is_break != 1)
+                        <button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
                             <i class="fal fa-utensils-alt me-50"></i>Break</button>
+                        @else
+                        <button type="button" onclick="staffbreak('breakOut' , this)" class="btn btn-danger waves-effect waves-float waves-light">
+                            <i class="fal fa-utensils-alt me-50"></i>Stop Break</button>
+                        @endif
                     </div>
                 </div>
 
@@ -595,7 +598,7 @@ table.dataTable thead .sorting_desc:after {
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                             </div>
                                                 <input class="form-control" id="customer" type="text" placeholder="Search Customer" tabindex="-1" data-search="search">
-                                                <ul class="search-list-customer search-list-main"></ul>
+                                                <ul class="search-list-customer search-list-main-customer"></ul>
                                         </div>
                                     </div>
 
