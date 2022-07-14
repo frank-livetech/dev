@@ -456,8 +456,8 @@ $(document).on('select2:open', () => {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
 <script src="{{asset('app-assets/js/scripts/forms/form-file-uploader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
-@include('js_files.help_desk.ticket_manager.add_ticketJs')
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+@include('js_files.help_desk.ticket_manager.add_ticketJs')
 
 <script>
     jQuery(function($){

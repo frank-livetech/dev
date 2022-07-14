@@ -76,7 +76,7 @@
             var quill = new Quill('#editor', {
                             theme: 'snow',
                             modules: {
-                                    'syntax': true,
+                                    'syntax': false,
                                     'toolbar': [
                                     [{ 'font': [] }, { 'size': [] }],
                                     [ 'bold', 'italic', 'underline', 'strike' ],
