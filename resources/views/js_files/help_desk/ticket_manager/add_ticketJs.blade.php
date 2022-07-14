@@ -296,7 +296,11 @@
                 }else{
                     form_Data['company_id'] = $("#company_id").val();
                 }
+<<<<<<< HEAD
+                // form_Data["ticket_detail"] = quill.root.innerHTML;
+=======
                 form_Data["ticket_detail"] = quill.root.innerHTML;
+>>>>>>> 5052351788561865c554fa4b0f43939edc6de4b2
 
                 $.ajax({
                     type: "POST",
@@ -343,7 +347,8 @@
                             });
 
                             // update the ticket details with attachments
-                            var content = tinyMCE.activeEditor.getContent();
+                            // var content = tinyMCE.activeEditor.getContent();
+                            var content = quill.root.innerHTML;
                             tinyContentEditor(content, data.id).then(function() {
                                 content = $('#tinycontenteditor').html();
 
