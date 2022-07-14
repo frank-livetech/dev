@@ -14,16 +14,20 @@ use Session;
 use App\Models\Customer;
 use DB;
 use Genert\BBCode\BBCode;
+use Carbon\Carbon;
 
 class Tickets extends Model
 {
     protected $table = 'tickets';
-    protected $appends = ['sla_plan','is_overdue','department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity','user_pic','last_reply','tkt_notes','tkt_follow_up'];
+    protected $appends = ['sla_plan','sla_rep_deadline_from','sla_res_deadline_from','is_overdue','department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity','user_pic','last_reply','tkt_notes','tkt_follow_up'];
     protected $fillable = [
 
         'dept_id','priority','assigned_to','subject','queue_id','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','is_overdue','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments','tkt_crt_type','is_pending','cust_email','embed_attachments'
 
     ];
+    
+    const DEFAULTSLA_TITLE = 'Default SLA';
+    const NOSLAPLAN = 'No SLA Assigned';
 
     public function ticket_created_by() {
         return $this->hasOne(User::class,'id','created_by');
@@ -42,35 +46,47 @@ class Tickets extends Model
         return $this->hasMany(Activitylog::class,'ref_id','id');
     }
     public function getSlaPlanAttribute(){
+        $id = $this->id;
         $sla_plan = $this->getTicketSlaPlan($id);
         return $sla_plan;
+    }
+    public function getSlaRepDeadlineFromAttribute(){
+        $id = $this->id;
+        $dd = $this->getSlaDeadlineFrom($id);
+        $sla_rep_deadline_from = $dd[0];
+        return $sla_rep_deadline_from;
+    }
+    public function getSlaResDeadlineFromAttribute(){
+        $id = $this->id;
+        $dd = $this->getSlaDeadlineFrom($id);
+        $sla_res_deadline_from = $dd[1];
+        return $sla_res_deadline_from;
     }
 
     public function getIsOverdueAttribute(){
 
         $id = $this->id;
         $sla_plan = $this->sla_plan;
-        dd($sla_plan);
         // if($value->is_overdue == 0){
-        $dd = $this->getSlaDeadlineFrom($id);
-        $value->sla_rep_deadline_from = $dd[0];
-        $value->sla_res_deadline_from = $dd[1];
+        // $dd = $this->getSlaDeadlineFrom($id);
+        // $value->sla_rep_deadline_from = $dd[0];
+        // $value->sla_res_deadline_from = $dd[1];
 
         $lcnt = false;
-
-        if($value->sla_plan['title'] != self::NOSLAPLAN) {
-            if($value->reply_deadline != 'cleared') {
+ $tm_name = timeZone();
+        if($this->sla_plan['title'] != self::NOSLAPLAN) {
+            if($this->reply_deadline != 'cleared') {
 
                 $date = new Carbon( Carbon::now() , $tm_name);
                 $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
 
-                if(!empty($value->reply_deadline)) {
-                    $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
+                if(!empty($this->reply_deadline)) {
+                    $timediff = $nowDate->diffInSeconds(Carbon::parse($this->reply_deadline), false);
                     if($timediff < 0) $lcnt = true;
                 } else {
 
-                    $rep = Carbon::parse($value->sla_rep_deadline_from);
-                    $dt = explode('.', $value->sla_plan['reply_deadline']);
+                    $rep = Carbon::parse($this->sla_rep_deadline_from);
+                    $dt = explode('.', $this->sla_plan['reply_deadline']);
                     $rep->addHours($dt[0]);
 
                     if(strtotime($rep) < strtotime($nowDate)) {
@@ -82,16 +98,16 @@ class Tickets extends Model
             }
 
             if(!$lcnt) {
-                if($value->resolution_deadline != 'cleared') {
+                if($this->resolution_deadline != 'cleared') {
                     $date = new Carbon( Carbon::now() , $tm_name);
                     $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
 
-                    if(!empty($value->resolution_deadline)) {
-                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                    if(!empty($this->resolution_deadline)) {
+                        $timediff = $nowDate->diffInSeconds(Carbon::parse($this->resolution_deadline), false);
                         if($timediff < 0) $lcnt = true;
                     } else {
-                        $res = Carbon::parse($value->sla_res_deadline_from);
-                        $dt = explode('.', $value->sla_plan['due_deadline']);
+                        $res = Carbon::parse($this->sla_res_deadline_from);
+                        $dt = explode('.', $this->sla_plan['due_deadline']);
                         $res->addHours($dt[0]);
                         if(strtotime($res) < strtotime($nowDate)) {
                             $lcnt = true;
@@ -104,13 +120,15 @@ class Tickets extends Model
 
 
             if($lcnt) {
-                $value->is_overdue = 1;
-                $tkt = Tickets::where('id',$value->id)->first();
+                $this->is_overdue = 1;
+                $tkt = Tickets::where('id',$this->id)->first();
                 $tkt->is_overdue = 1;
                 $tkt->save();
+                return 1;
             }
-            $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
+            // $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
         }
+        return 0;
 
     }
 
