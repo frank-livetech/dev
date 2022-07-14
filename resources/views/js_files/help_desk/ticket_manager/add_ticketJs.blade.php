@@ -277,7 +277,6 @@
                 }else{
                     // form_Data["customer_login"] = 0;
                 }
-                form_Data["ticket_detail"] = quill.root.innerHTML;
 
                 var for_customer_profile_id = $("#for_customer_profile_id").val();
 
@@ -297,6 +296,7 @@
                 }else{
                     form_Data['company_id'] = $("#company_id").val();
                 }
+                form_Data["ticket_detail"] = quill.root.innerHTML;
 
                 $.ajax({
                     type: "POST",

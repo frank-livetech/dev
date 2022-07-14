@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -429,7 +429,6 @@ class HelpdeskController extends Controller
     public function save_tickets(Request $request){
         $current_date = Carbon::now();
 
-        dd($request->all());
         $data = $request->all();
         $response = array();
         try {
