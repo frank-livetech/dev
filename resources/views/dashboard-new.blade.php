@@ -146,6 +146,9 @@ table.dataTable thead .sorting_desc:after {
                         <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
                             onclick="staffatt('clockout' , this)">
                             <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
+                            <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
+                            onclick="staffatt('clockout' , this)">
+                            <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
                         @else
                         <button type="button"
                             class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1"
@@ -184,6 +187,7 @@ table.dataTable thead .sorting_desc:after {
 
             </div>
         </div>
+
 
         <div class="content-body">
             <section id="statistics-card">

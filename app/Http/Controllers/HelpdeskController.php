@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -430,7 +430,6 @@ class HelpdeskController extends Controller
         $current_date = Carbon::now();
 
         $data = $request->all();
-        // return dd($data);
         $response = array();
         try {
             if ($request->has('newcustomer')) {

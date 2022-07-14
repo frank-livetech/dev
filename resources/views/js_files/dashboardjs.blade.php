@@ -290,6 +290,7 @@
 
                     if(btn_text == 'clockin') {
                         btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
+                        btn += `<button type="button" class="btn btn-info break_btn" onclick="staffatt('breakin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Break In</button>`;
                         $('.clock_in_section').attr('style','display:none !important');
 
                         $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
