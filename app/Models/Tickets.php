@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\TicketReply;
 use App\Models\Activitylog;
+use App\Models\TicketSettings;
 use App\User;
+use App\Models\SlaPlan;
+use App\Models\SlaPlanAssoc;
 use Session;
 use App\Models\Customer;
 use DB;
@@ -15,7 +18,7 @@ use Genert\BBCode\BBCode;
 class Tickets extends Model
 {
     protected $table = 'tickets';
-    protected $appends = ['department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity','user_pic','last_reply','tkt_notes','tkt_follow_up'];
+    protected $appends = ['sla_plan','is_overdue','department_name', 'priority_name','priority_color', 'status_name','status_color', 'type_name', 'creator_name','assignee_name','customer_name','lastReplier','replies','lastActivity','user_pic','last_reply','tkt_notes','tkt_follow_up'];
     protected $fillable = [
 
         'dept_id','priority','assigned_to','subject','queue_id','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','is_overdue','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments','tkt_crt_type','is_pending','cust_email','embed_attachments'
@@ -37,6 +40,159 @@ class Tickets extends Model
     public function activityLog()
     {
         return $this->hasMany(Activitylog::class,'ref_id','id');
+    }
+    public function getSlaPlanAttribute(){
+        $sla_plan = $this->getTicketSlaPlan($id);
+        return $sla_plan;
+    }
+
+    public function getIsOverdueAttribute(){
+
+        $id = $this->id;
+        $sla_plan = $this->sla_plan;
+        dd($sla_plan);
+        // if($value->is_overdue == 0){
+        $dd = $this->getSlaDeadlineFrom($id);
+        $value->sla_rep_deadline_from = $dd[0];
+        $value->sla_res_deadline_from = $dd[1];
+
+        $lcnt = false;
+
+        if($value->sla_plan['title'] != self::NOSLAPLAN) {
+            if($value->reply_deadline != 'cleared') {
+
+                $date = new Carbon( Carbon::now() , $tm_name);
+                $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
+
+                if(!empty($value->reply_deadline)) {
+                    $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
+                    if($timediff < 0) $lcnt = true;
+                } else {
+
+                    $rep = Carbon::parse($value->sla_rep_deadline_from);
+                    $dt = explode('.', $value->sla_plan['reply_deadline']);
+                    $rep->addHours($dt[0]);
+
+                    if(strtotime($rep) < strtotime($nowDate)) {
+                        $lcnt = true;
+                    }
+
+
+                }
+            }
+
+            if(!$lcnt) {
+                if($value->resolution_deadline != 'cleared') {
+                    $date = new Carbon( Carbon::now() , $tm_name);
+                    $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
+
+                    if(!empty($value->resolution_deadline)) {
+                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+                        if($timediff < 0) $lcnt = true;
+                    } else {
+                        $res = Carbon::parse($value->sla_res_deadline_from);
+                        $dt = explode('.', $value->sla_plan['due_deadline']);
+                        $res->addHours($dt[0]);
+                        if(strtotime($res) < strtotime($nowDate)) {
+                            $lcnt = true;
+                        }
+                    }
+                }else{
+
+                }
+            }
+
+
+            if($lcnt) {
+                $value->is_overdue = 1;
+                $tkt = Tickets::where('id',$value->id)->first();
+                $tkt->is_overdue = 1;
+                $tkt->save();
+            }
+            $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
+        }
+
+    }
+
+    public function getTicketSlaPlan($ticketID) {
+        try {
+            $sla_plan = array(
+                "id" => "",
+                "title" => self::NOSLAPLAN,
+                "reply_deadline" => "",
+                "due_deadline" => "",
+                "bg_color" => "#fff"
+            );
+
+            $settings = $this->getTicketSettings(['default_reply_time_deadline', 'default_resolution_deadline', 'overdue_ticket_background_color']);
+
+            $sla_plan['bg_color'] = $settings['overdue_ticket_background_color'];
+
+            $sla_assoc = SlaPlanAssoc::where('ticket_id', $ticketID)->first();
+            if(!empty($sla_assoc)) {
+                $sla_plann = SlaPlan::where('id', $sla_assoc->sla_plan_id)->first();
+                if(!empty($sla_plann)) {
+                    $sla_plan['id'] = $sla_plann->id;
+                    $sla_plan['title'] = $sla_plann->title;
+                    $sla_plan['reply_deadline'] = $sla_plann->reply_deadline;
+                    $sla_plan['due_deadline'] = $sla_plann->due_deadline;
+
+                    // use default set deadlines in case of empty
+                    if(empty($sla_plan['reply_deadline'])) $sla_plan['reply_deadline'] = $settings['default_reply_time_deadline'];
+
+                    if(empty($sla_plan['due_deadline'])) $sla_plan['due_deadline'] = $settings['default_resolution_deadline'];
+                }
+            }
+
+            return $sla_plan;
+        } catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function getTicketSettings($settings) {
+        try{
+            $list = TicketSettings::all();
+            $ret = array();
+
+            foreach ($list->toArray() as $value) {
+                foreach ($settings as $set) {
+                    if($value['tkt_key'] == $set) {
+                        $ret[$set] = $value['tkt_value'];
+                    }
+                }
+            }
+
+            return $ret;
+        } catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function getSlaDeadlineFrom($ticketID) {
+        try {
+            // $ticket = Tickets::findOrFail($ticketID);
+            $created_at = $this->created_at;
+            $deadlines = [];
+
+            $rep_logs = Activitylog::where('ref_id', $ticketID)->where([ ['module', 'Tickets'], ['table_ref', 'sla_rep_deadline_from'] ])->orderByDesc('id')->first();
+            if(!empty($rep_logs)) {
+                $deadlines[0] =  strtotime($rep_logs->created_at) < strtotime($created_at) ? $created_at : $rep_logs->created_at;
+            }else{
+                 $deadlines[0] = $created_at;
+            }
+
+            $res_logs = Activitylog::where('ref_id', $ticketID)->where([ ['module', 'Tickets'], ['table_ref', 'sla_res_deadline_from'] ])->orderByDesc('id')->first();
+            if(!empty($res_logs)) {
+                $deadlines[1] =  strtotime($res_logs->created_at) < strtotime($created_at) ? $created_at : $res_logs->created_at;
+            }else{
+                $deadlines[1] = $created_at;
+            }
+
+            return $deadlines;
+        } catch(Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     public function getRepliesAttribute() {
