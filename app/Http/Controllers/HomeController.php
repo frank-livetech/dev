@@ -123,7 +123,6 @@ class HomeController extends Controller {
 
         $tickets = Tickets::where('is_deleted',0)->get();
 
-        // dd($tickets);
         return view('dashboard-new', get_defined_vars());
     }
 

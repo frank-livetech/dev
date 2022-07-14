@@ -429,8 +429,8 @@ class HelpdeskController extends Controller
     public function save_tickets(Request $request){
         $current_date = Carbon::now();
 
+        dd($request->all());
         $data = $request->all();
-        // return dd($data);
         $response = array();
         try {
             if ($request->has('newcustomer')) {

@@ -349,11 +349,11 @@
 
                                     @endif
                                     <div class="row mt-2">
-                                        <div class="col-md-12">
+                                        <div class="col-md-12 mb-5">
                                             <label class="control-label">Problem Details<span
                                                     class="text-danger">*</span></label>
-                                            <textarea class="form-control" rows="3" id="ticket_detail"
-                                                name="ticket_detail"></textarea>
+                                            <textarea class="form-control d-none" rows="3" id="ticket_details" name="ticket_detail"></textarea>
+                                            <div id="editor"></div>
                                             <span class="text-danger small" id="ticket_detail_error"></span>
                                         </div>
 
@@ -457,6 +457,8 @@ $(document).on('select2:open', () => {
 <script src="{{asset('app-assets/js/scripts/forms/form-file-uploader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.0.0/tinymce.min.js"></script>
 @include('js_files.help_desk.ticket_manager.add_ticketJs')
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 <script>
     jQuery(function($){
       var input = $('[type=tel]')
@@ -465,5 +467,6 @@ $(document).on('select2:open', () => {
         $('.country').text(country || '')
       })
     });
+
   </script>
 @endsection
