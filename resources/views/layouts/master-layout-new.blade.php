@@ -405,10 +405,10 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
-    <div id="image-viewer">
+    {{-- <div id="image-viewer">
         <span class="close">&times;</span>
         <img class="modal-content" id="full-image">
-    </div>
+    </div> --}}
 
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
@@ -509,7 +509,6 @@
 
     <script type="text/javascript" src="{{ asset($file_path . 'assets/dist/js/flashy.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset($file_path . 'assets/extra-libs/countdown/countdown.js') }}"></script>
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
 
         const org_path = "{{Session::get('is_live')}}";

@@ -135,15 +135,18 @@ table.dataTable thead .sorting_desc:after {
             </div>
             <div class="content-header-right text-md-end col-md-7 col-12 d-md-block" id="desktop_view">
                 <div class="d-flex justify-content-end">
-                    <div>
+                    {{-- <div>
                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i
                                 class="fa fa-cog" aria-hidden="true"></i>&nbsp; Support Dashboard</button>
                         <button type="button" class="btn btn-primary waves-effect waves-float waves-light" disabled><i
                                 class="fas fa-chart-line" aria-hidden="true"></i>&nbsp; CFO Dashboard</button>
-                    </div>
+                    </div> --}}
                     <div class="clock_btn_div mx-1">
                         @if($clockin)
                         <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
+                            onclick="staffatt('clockout' , this)">
+                            <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
+                            <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
                             onclick="staffatt('clockout' , this)">
                             <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
                         @else
@@ -152,6 +155,10 @@ table.dataTable thead .sorting_desc:after {
                             onclick="staffatt('clockin' , this)">
                             <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>
                         @endif
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light">
+                            <i class="fal fa-utensils-alt me-50"></i>Break</button>
                     </div>
                 </div>
 
@@ -180,6 +187,7 @@ table.dataTable thead .sorting_desc:after {
 
             </div>
         </div>
+
 
         <div class="content-body">
             <section id="statistics-card">

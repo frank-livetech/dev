@@ -28,6 +28,10 @@
             /*width: auto !important;*/
             /*max-width: 340px !important;*/
         }
+        
+        #ticket_details_p p{
+            margin-bottom:0px !important;
+        }
 
         a:link,
         span.MsoHyperlink {
@@ -3101,3 +3105,4 @@
 
 
 @endsection
+
