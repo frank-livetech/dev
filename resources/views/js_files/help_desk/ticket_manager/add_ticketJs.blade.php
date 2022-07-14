@@ -88,8 +88,36 @@
                                     [ 'link', 'image', 'video', 'formula' ],
                                     [ 'clean' ]
                                 ]
-                            }
+                            },
+                            modules: {
+                                keyboard: {
+                                  bindings: {
+                                    tributeSelectOnEnter: {
+                                      key: 13,
+                                      shortKey: false,
+                                      handler: (event) => {
+                                        if (tribute.isActive) {
+                                          tribute.selectItemAtIndex(tribute.menuSelected, event);
+                                          tribute.hideMenu();
+                                          return false;
+                                        }
+                            
+                                        return true;
+                                      }
+                                    },
+                                  }
+                                }
+                              }
                         });
+                        
+            let tribute = new Tribute({
+              values: [
+                {key: 'Phil Heartman', value: 'pheartman'},
+                {key: 'Gordon Ramsey', value: 'gramsey'}
+              ]
+            });
+            
+            tribute.attach($("#editor").find(".ql-editor"));
 
             $('#dept_id').trigger('change');
 
