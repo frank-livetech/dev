@@ -550,6 +550,11 @@ window.colors = {
       wheelPropagation: false
     });
   }
+  if ($('.search-list-main-customer').length) {
+    var searchListMaincustomer = new PerfectScrollbar('.search-list-main-customer', {
+      wheelPropagation: false
+    });
+  }
   if ($('.search-list-bookmark').length) {
     var searchListBookmark = new PerfectScrollbar('.search-list-bookmark', {
       wheelPropagation: false
@@ -558,6 +563,9 @@ window.colors = {
   // update Perfect Scrollbar on hover
   $('.search-list-main').mouseenter(function () {
     searchListMain.update();
+  });
+  $('.search-list-main-customer').mouseenter(function () {
+    searchListMaincustomer.update();
   });
 
 //   searchInputInputfield.on('keyup', function (e) {

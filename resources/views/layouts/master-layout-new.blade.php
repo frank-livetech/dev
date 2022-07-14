@@ -377,7 +377,7 @@
                 </div>
                 <div class="modal-body p-3">
                     <select class="select2 form-control custom-select dropdown w-100"
-                        id="customer_id" name="customer_id" style="width:100%">
+                        id="customer_switch" name="customer_switch" style="width:100%">
                         <option value="">Select</option>
 
                         @if(AllCustomers() != null && AllCustomers() != "")
@@ -1015,7 +1015,7 @@
 
 
         $("#to_profile").click(function(){
-            var cust = $("#customer_id").select2("val");
+            var cust = $("#customer_switch").select2("val");
             if(cust != null){
                 var url = "{{url('/logged_in_as_customer')}}"+'/'+cust;
                 window.open(url, "_blank");
