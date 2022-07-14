@@ -405,10 +405,10 @@
     <div class="sidenav-overlay"></div>
     <div class="drag-target"></div>
 
-    <div id="image-viewer">
+    {{-- <div id="image-viewer">
         <span class="close">&times;</span>
         <img class="modal-content" id="full-image">
-    </div>
+    </div> --}}
 
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
