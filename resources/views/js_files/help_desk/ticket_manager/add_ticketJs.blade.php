@@ -1,9 +1,9 @@
 <script>
-     $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-        }
-    });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
     // Add Ticket Script Bladde
         let res_templates_list = {!! json_encode($responseTemplates) !!};
         let attachments_src = [];
@@ -19,8 +19,8 @@
                 selector: "textarea#ticket_detail",
                 // theme: "modern",
                 mobile: {
-            theme: 'silver'
-          },
+                    theme: 'silver'
+                },
                 height: 300,
                 file_picker_types: 'image',
                 paste_data_images: true,
@@ -72,6 +72,24 @@
                     input.click();
                 },
             });
+
+            var quill = new Quill('#editor', {
+                            theme: 'snow',
+                            modules: {
+                                    'syntax': false,
+                                    'toolbar': [
+                                    [{ 'font': [] }, { 'size': [] }],
+                                    [ 'bold', 'italic', 'underline', 'strike' ],
+                                    [{ 'color': [] }, { 'background': [] }],
+                                    [{ 'script': 'super' }, { 'script': 'sub' }],
+                                    [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+                                    [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                                    [ 'direction', { 'align': [] }],
+                                    [ 'link', 'image', 'video', 'formula' ],
+                                    [ 'clean' ]
+                                ]
+                            }
+                        });
 
             $('#dept_id').trigger('change');
 
@@ -256,7 +274,6 @@
                 }
 
                 if($('#create_customer_login').prop('checked')) {
-                    form_Data["customer_login"] = 1;
                 }else{
                     // form_Data["customer_login"] = 0;
                 }
@@ -279,6 +296,7 @@
                 }else{
                     form_Data['company_id'] = $("#company_id").val();
                 }
+                // form_Data["ticket_detail"] = quill.root.innerHTML;
 
                 $.ajax({
                     type: "POST",
@@ -325,7 +343,8 @@
                             });
 
                             // update the ticket details with attachments
-                            var content = tinyMCE.activeEditor.getContent();
+                            // var content = tinyMCE.activeEditor.getContent();
+                            var content = quill.root.innerHTML;
                             tinyContentEditor(content, data.id).then(function() {
                                 content = $('#tinycontenteditor').html();
 
