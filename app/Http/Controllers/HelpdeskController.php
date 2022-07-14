@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
 
-// require 'vendor/autoload.php';
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 class HelpdeskController extends Controller
 {
@@ -892,73 +892,73 @@ class HelpdeskController extends Controller
 
         $tm_name = timeZone();
 
-        foreach($tickets as $value) {
-            // $value->last_reply = TicketReply::where('ticket_id', $value->id)->with('replyUser')->orderByDesc('id')->first();
-            // $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
-            // $value->tkt_follow_up = TicketFollowUp::where('ticket_id' , $value->id)->where('passed',0)->count();
+        // foreach($tickets as $value) {
+        //     // $value->last_reply = TicketReply::where('ticket_id', $value->id)->with('replyUser')->orderByDesc('id')->first();
+        //     // $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
+        //     // $value->tkt_follow_up = TicketFollowUp::where('ticket_id' , $value->id)->where('passed',0)->count();
 
-            $value->sla_plan = $this->getTicketSlaPlan($value->id);
-            // if($value->is_overdue == 0){
-            $dd = $this->getSlaDeadlineFrom($value->id);
-            $value->sla_rep_deadline_from = $dd[0];
-            $value->sla_res_deadline_from = $dd[1];
+        //     $value->sla_plan = $this->getTicketSlaPlan($value->id);
+        //     // if($value->is_overdue == 0){
+        //     $dd = $this->getSlaDeadlineFrom($value->id);
+        //     $value->sla_rep_deadline_from = $dd[0];
+        //     $value->sla_res_deadline_from = $dd[1];
 
-            $lcnt = false;
+        //     $lcnt = false;
 
-            if($value->sla_plan['title'] != self::NOSLAPLAN) {
-                if($value->reply_deadline != 'cleared') {
+        //     if($value->sla_plan['title'] != self::NOSLAPLAN) {
+        //         if($value->reply_deadline != 'cleared') {
 
-                    $date = new Carbon( Carbon::now() , $tm_name);
-                    $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
+        //             $date = new Carbon( Carbon::now() , $tm_name);
+        //             $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
 
-                    if(!empty($value->reply_deadline)) {
-                        $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
-                        if($timediff < 0) $lcnt = true;
-                    } else {
+        //             if(!empty($value->reply_deadline)) {
+        //                 $timediff = $nowDate->diffInSeconds(Carbon::parse($value->reply_deadline), false);
+        //                 if($timediff < 0) $lcnt = true;
+        //             } else {
 
-                        $rep = Carbon::parse($value->sla_rep_deadline_from);
-                        $dt = explode('.', $value->sla_plan['reply_deadline']);
-                        $rep->addHours($dt[0]);
+        //                 $rep = Carbon::parse($value->sla_rep_deadline_from);
+        //                 $dt = explode('.', $value->sla_plan['reply_deadline']);
+        //                 $rep->addHours($dt[0]);
 
-                        if(strtotime($rep) < strtotime($nowDate)) {
-                            $lcnt = true;
-                        }
-
-
-                    }
-                }
-
-                if(!$lcnt) {
-                    if($value->resolution_deadline != 'cleared') {
-                        $date = new Carbon( Carbon::now() , $tm_name);
-                        $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
-
-                        if(!empty($value->resolution_deadline)) {
-                            $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
-                            if($timediff < 0) $lcnt = true;
-                        } else {
-                            $res = Carbon::parse($value->sla_res_deadline_from);
-                            $dt = explode('.', $value->sla_plan['due_deadline']);
-                            $res->addHours($dt[0]);
-                            if(strtotime($res) < strtotime($nowDate)) {
-                                $lcnt = true;
-                            }
-                        }
-                    }else{
-
-                    }
-                }
+        //                 if(strtotime($rep) < strtotime($nowDate)) {
+        //                     $lcnt = true;
+        //                 }
 
 
-                if($lcnt) {
-                    $value->is_overdue = 1;
-                    $tkt = Tickets::where('id',$value->id)->first();
-                    $tkt->is_overdue = 1;
-                    $tkt->save();
-                }
-                $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
-            }
-        }
+        //             }
+        //         }
+
+        //         if(!$lcnt) {
+        //             if($value->resolution_deadline != 'cleared') {
+        //                 $date = new Carbon( Carbon::now() , $tm_name);
+        //                 $nowDate = Carbon::parse($date->format('Y-m-d h:i A'));
+
+        //                 if(!empty($value->resolution_deadline)) {
+        //                     $timediff = $nowDate->diffInSeconds(Carbon::parse($value->resolution_deadline), false);
+        //                     if($timediff < 0) $lcnt = true;
+        //                 } else {
+        //                     $res = Carbon::parse($value->sla_res_deadline_from);
+        //                     $dt = explode('.', $value->sla_plan['due_deadline']);
+        //                     $res->addHours($dt[0]);
+        //                     if(strtotime($res) < strtotime($nowDate)) {
+        //                         $lcnt = true;
+        //                     }
+        //                 }
+        //             }else{
+
+        //             }
+        //         }
+
+
+        //         if($lcnt) {
+        //             $value->is_overdue = 1;
+        //             $tkt = Tickets::where('id',$value->id)->first();
+        //             $tkt->is_overdue = 1;
+        //             $tkt->save();
+        //         }
+        //         $late_tickets_count = Tickets::where([ ['is_overdue',1], ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
+        //     }
+        // }
 
         $response['message'] = 'Success';
         $response['status_code'] = 200;
@@ -3358,7 +3358,7 @@ class HelpdeskController extends Controller
 
                 }else if($request->type == 'User Organization'){
 
-                     $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$request->company_id)->get();
+                    $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$request->company_id)->get();
                 }
             }else{
                 if(!$request->has('id')) throw new Exception('Ticket id missing');
@@ -3407,11 +3407,24 @@ class HelpdeskController extends Controller
                 });
             }
 
+            $allNotes = json_decode( json_encode($notes) , true);
+
+            for($i =0; $i < count($allNotes); $i++) {
+                $cdate = new \DateTime( $allNotes[$i]['created_at'] );
+                $cdate->setTimezone(new \DateTimeZone( timeZone() ));
+                $allNotes[$i]['cdate'] = $cdate->format(system_date_format() .' h:i a');
+
+                $udate = new \DateTime( $allNotes[$i]['updated_at'] );
+                $udate->setTimezone(new \DateTimeZone( timeZone() ));
+
+                $allNotes[$i]['udate'] = $udate->format(system_date_format() .' h:i a');
+            }
+
 
             $response['message'] = 'Success';
             $response['status_code'] = 200;
             $response['success'] = true;
-            $response['notes']= json_decode( json_encode($notes) , true);
+            $response['notes']= $allNotes ;
             $response['notes_count']= count($notes);
 
             return response()->json($response);

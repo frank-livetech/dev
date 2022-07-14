@@ -1486,18 +1486,30 @@ class MailController extends Controller
                 $atch_count = 0;
                 $bbcode = new BBCode();
                 $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets-replies/'.$ticket['id'].'/';
-                if($embed_imges != NULL){
+                if($embed_imges != NULL || $tags != ''){
                     if($tags){
-                        foreach ($tags as $tag) {
-                            $old_src = $tag->getAttribute('src');
-                            $new_src_url = $url.$attaches[$atch_count];
-                            $tag->setAttribute('src', $new_src_url);
-                            $tag->setAttribute('style', '');
-                            $tag->setAttribute('width', '50%;');
-
-                            $atch_count++;
+                        if($embed_imges){
+                            foreach ($tags as $tag) {
+                                $old_src = $tag->getAttribute('src');
+                                $new_src_url = $url.$attaches[$atch_count];
+                                $tag->setAttribute('src', $new_src_url);
+                                $tag->setAttribute('style', '');
+                                $tag->setAttribute('width', '500');
+    
+                                $atch_count++;
+                            }
+                            $reply_content = $doc->saveHTML();
+                        }else{
+                            foreach ($tags as $tag) {
+                                
+                                $tag->setAttribute('style', '');
+                                $tag->setAttribute('width', '500');
+    
+                                $atch_count++;
+                            }
+                            $reply_content = $doc->saveHTML();
                         }
-                        $reply_content = $doc->saveHTML();
+                        
                     }
                 }
 
@@ -2378,7 +2390,7 @@ class MailController extends Controller
                                             $new_src_url = $url.$attaches[$atch_count];
                                             $tag->setAttribute('src', $new_src_url);
                                             $tag->setAttribute('style', '');
-                                            $tag->setAttribute('width', '50%;');
+                                            $tag->setAttribute('width', '500');
 
                                             $atch_count++;
                                         }
@@ -2389,6 +2401,29 @@ class MailController extends Controller
                             }
 
 
+                        }else{
+                            
+                            $content = str_replace("<o:p>","",$content);
+                            $content = str_replace("</o:p>","",$content);
+
+                            $doc = new \DOMDocument();
+                            // dd($content);
+                            libxml_use_internal_errors(true);
+                            $doc->loadHTML($content);
+                            // dd('here');
+                            $tags = $doc->getElementsByTagName('img');
+                           
+
+                            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets/'.$data['values']['id'].'/';
+                           
+                            if($tags){
+                                foreach ($tags as $tag) {
+                                    $tag->setAttribute('style', '');
+                                    $tag->setAttribute('width', '500');
+                                }
+                                $content = $doc->saveHTML();
+                            }
+                            
                         }
                         $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
