@@ -146,9 +146,7 @@ table.dataTable thead .sorting_desc:after {
                         <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
                             onclick="staffatt('clockout' , this)">
                             <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
-                            <button type="button" class="btn btn-danger waves-effect waves-float waves-light clock_btn ml-1"
-                            onclick="staffatt('clockout' , this)">
-                            <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>
+
                         @else
                         <button type="button"
                             class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1"
@@ -156,9 +154,14 @@ table.dataTable thead .sorting_desc:after {
                             <i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>
                         @endif
                     </div>
-                    <div>
-                        <button type="button" class="btn btn-primary waves-effect waves-float waves-light">
+                    <div id="breakIn_div">
+                        @if($clockin->is_break != 1)
+                        <button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
                             <i class="fal fa-utensils-alt me-50"></i>Break</button>
+                        @else
+                        <button type="button" onclick="staffbreak('breakOut' , this)" class="btn btn-danger waves-effect waves-float waves-light">
+                            <i class="fal fa-utensils-alt me-50"></i>Stop Break</button>
+                        @endif
                     </div>
                 </div>
 

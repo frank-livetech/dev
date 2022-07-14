@@ -104,6 +104,7 @@ Route::group ( ['namespace' => 'Chat','middleware' => ['auth','admin']], functio
 Route::group ( ['namespace' => 'PayrollManager','middleware' => ['auth','admin']], function () {
 
     Route::post('/add_checkin','PayrollController@clockin');
+    Route::post('/breakIn','PayrollController@break');
     Route::post('/add_checkout','PayrollController@clockout');
     Route::post('/save_payroll_settings','PayrollController@save_payroll_settings');
     Route::post('/update-work-hours','PayrollController@update_work_hours');

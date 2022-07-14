@@ -199,6 +199,69 @@ class PayrollController extends Controller {
         }
     }
 
+    public function break(Request $request) {
+
+        try{
+            $clock_in = StaffAttendance::where('user_id',\Auth::user()->id)->where('clock_out', NULL)->orderBy('created_at', 'desc')->first();
+            if($clock_in){
+
+                $clock_in->is_break = $request->break;
+                $clock_in->save();
+
+                $template = DB::table("templates")->where('code','staff_clockin')->first();
+
+                $notify = new NotifyController();
+                $users_list = User::where('user_type','=',1)->where('is_deleted',0)->get();
+                foreach ($users_list as $key => $value) {
+                    $sender_id = \Auth::user()->id;
+                    $receiver_id = $value['id'];
+                    $slug = 'dashboard';
+                    $type = 'attendance';
+                    $data = 'data';
+                    $title = $request->label;
+                    $icon = 'ti-calendar';
+                    $class = 'btn-success';
+                    $desc = $request->msg.' by '.\Auth::user()->name;
+
+                    $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                    if(!empty($template)) {
+
+                        $detail = $value['email'] != auth()->user()->email ?
+                        'Hi ' . $value['name'] . ', Staff member ' . auth()->user()->name . ' just '.$request->msg  :
+                        'Hey, you just '.$request->msg.' from LT-CMS, here are the details';
+
+                        $temp = $this->templateReplaceShortCodes($template->template_html, $detail , 'clockout' , $clock_in->hours_worked);
+                        $mail = new MailController();
+                        $mail->sendMail( auth()->user()->name .$request->label , $temp , 'system_notification@mylive-tech.com', $value['email'], $value['name']);
+                    }
+                }
+
+
+                $response['message'] = 'Clocked out! Your shift time is '.$clock_in->hours_worked;
+                $response['status_code'] = 200;
+                $response['success'] = true;
+                $response['break'] = $clock_in->is_break;
+                $response['break_out_time'] = Carbon::now();
+
+                return response()->json($response);
+
+            }else{
+                $response['message'] = 'Already Clocked out!';
+                $response['status_code'] = 500;
+                $response['success'] = false;
+                $response['break'] = $clock_in->is_break;
+                $response['break_out_time'] = '';
+                return response()->json($response);
+            }
+
+        }catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            $response['break_out_time'] = '';
+            return response()->json($response);
+        }
+    }
     public function getAllStaffData(){
 
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();

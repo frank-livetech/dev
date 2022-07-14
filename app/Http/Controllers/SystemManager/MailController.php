@@ -15,8 +15,8 @@ use PHPMailer\PHPMailer\{PHPMailer , SMTP , Exception};
 use Genert\BBCode\BBCode;
 use PhpParser\Node\Stmt\Continue_;
 
-require 'vendor/autoload.php';
-// require '../vendor/autoload.php';
+// require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 class MailController extends Controller
 {
@@ -1495,21 +1495,21 @@ class MailController extends Controller
                                 $tag->setAttribute('src', $new_src_url);
                                 $tag->setAttribute('style', '');
                                 $tag->setAttribute('width', '500');
-    
+
                                 $atch_count++;
                             }
                             $reply_content = $doc->saveHTML();
                         }else{
                             foreach ($tags as $tag) {
-                                
+
                                 $tag->setAttribute('style', '');
                                 $tag->setAttribute('width', '500');
-    
+
                                 $atch_count++;
                             }
                             $reply_content = $doc->saveHTML();
                         }
-                        
+
                     }
                 }
 
@@ -2402,7 +2402,7 @@ class MailController extends Controller
 
 
                         }else{
-                            
+
                             $content = str_replace("<o:p>","",$content);
                             $content = str_replace("</o:p>","",$content);
 
@@ -2412,10 +2412,10 @@ class MailController extends Controller
                             $doc->loadHTML($content);
                             // dd('here');
                             $tags = $doc->getElementsByTagName('img');
-                           
+
 
                             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/storage/tickets/'.$data['values']['id'].'/';
-                           
+
                             if($tags){
                                 foreach ($tags as $tag) {
                                     $tag->setAttribute('style', '');
@@ -2423,7 +2423,7 @@ class MailController extends Controller
                                 }
                                 $content = $doc->saveHTML();
                             }
-                            
+
                         }
                         $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
