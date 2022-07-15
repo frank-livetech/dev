@@ -93,6 +93,9 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset($file_path . 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/css/pages/app-invoice.css') }}">
+    
+    <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/css/tribute.css') }}">
+    
     <!-- <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/vendors/css/calendars/fullcalendar.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/css/pages/app-calendar.css') }}"> -->
 
@@ -377,7 +380,7 @@
                 </div>
                 <div class="modal-body p-3">
                     <select class="select2 form-control custom-select dropdown w-100"
-                        id="customer_id" name="customer_id" style="width:100%">
+                        id="customer_switch" name="customer_switch" style="width:100%">
                         <option value="">Select</option>
 
                         @if(AllCustomers() != null && AllCustomers() != "")
@@ -457,7 +460,7 @@
     <script src="{{ asset($file_path . 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/vendors/js/file-uploaders/dropzone.min.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/vendors/js/tables/datatable/buttons.print.min.js') }}"></script>
-
+    <script src="{{ asset($file_path . 'app-assets/js/core/tribute.js') }}"></script>
     <!-- <script src="{{ asset($file_path . 'app-assets/vendors/js/calendar/fullcalendar.min.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/app-calendar-events.js') }}"></script>
     <script src="{{ asset($file_path . 'app-assets/js/scripts/pages/app-calendar.js') }}"></script> -->
@@ -809,9 +812,11 @@
         }
 
         function renderClockIn(data) {
+
             // if data is null then its clock in
             // alert("a");
             if (data == null || data.clock_out != null) {
+
 
                 let clockinbtn = `
                 <button type="button" class="btn btn-success waves-effect waves-float waves-light clock_btn ml-1" onclick="staffatt('clockin' , this)">
@@ -1015,7 +1020,7 @@
 
 
         $("#to_profile").click(function(){
-            var cust = $("#customer_id").select2("val");
+            var cust = $("#customer_switch").select2("val");
             if(cust != null){
                 var url = "{{url('/logged_in_as_customer')}}"+'/'+cust;
                 window.open(url, "_blank");

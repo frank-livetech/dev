@@ -88,8 +88,36 @@
                                     [ 'link', 'image', 'video', 'formula' ],
                                     [ 'clean' ]
                                 ]
-                            }
+                            },
+                            modules: {
+                                keyboard: {
+                                  bindings: {
+                                    tributeSelectOnEnter: {
+                                      key: 13,
+                                      shortKey: false,
+                                      handler: (event) => {
+                                        if (tribute.isActive) {
+                                          tribute.selectItemAtIndex(tribute.menuSelected, event);
+                                          tribute.hideMenu();
+                                          return false;
+                                        }
+                            
+                                        return true;
+                                      }
+                                    },
+                                  }
+                                }
+                              }
                         });
+                        
+            let tribute = new Tribute({
+              values: [
+                {key: 'Phil Heartman', value: 'pheartman'},
+                {key: 'Gordon Ramsey', value: 'gramsey'}
+              ]
+            });
+            
+            tribute.attach($("#editor").find(".ql-editor"));
 
             $('#dept_id').trigger('change');
 
@@ -296,7 +324,7 @@
                 }else{
                     form_Data['company_id'] = $("#company_id").val();
                 }
-                form_Data["ticket_detail"] = quill.root.innerHTML;
+                // form_Data["ticket_detail"] = quill.root.innerHTML;
 
                 $.ajax({
                     type: "POST",
@@ -343,7 +371,8 @@
                             });
 
                             // update the ticket details with attachments
-                            var content = tinyMCE.activeEditor.getContent();
+                            // var content = tinyMCE.activeEditor.getContent();
+                            var content = quill.root.innerHTML;
                             tinyContentEditor(content, data.id).then(function() {
                                 content = $('#tinycontenteditor').html();
 
