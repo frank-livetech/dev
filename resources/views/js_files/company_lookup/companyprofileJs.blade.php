@@ -281,7 +281,7 @@
     $("#save_ticket_note").submit(function(event) {
         event.preventDefault();
 
-        $("#note").val(tinymce.activeEditor.getContent())
+        $("#ticket_details").val(quill.root.innerHTML)
         var formData = new FormData($(this)[0]);
         formData.append('ticket_id', '');
         formData.append('color', gl_color_notes);
@@ -436,8 +436,8 @@
                                 <span class="btn btn-icon rounded-circle btn-outline-danger waves-effect fa fa-trash"
                                     style= "float:right;cursor:pointer;position:relative;bottom:25px"
                                     onclick="deleteTicketNote(this, '` + notes[i].id + `', '` + notes[i].ticket_id + `')" ></span>
-                            
-                                <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit" 
+
+                                <span class="btn btn-icon rounded-circle btn-outline-primary waves-effect fa fa-edit"
                                     style="float:right;padding-right:5px;cursor:pointer;position:relative;bottom:25px; margin-right:5px"
                                     onclick="editNote(this, ` + (i) + `)"></span>
 
@@ -465,12 +465,12 @@
 
                         if(notes[i].profile_pic != null) {
 
-                            user_img += `<img src="{{asset('${notes[i].profile_pic}')}}" 
+                            user_img += `<img src="{{asset('${notes[i].profile_pic}')}}"
                             width="40px" height="40px" class="rounded-circle" style="border-radius: 50%;"/>`;
 
                         }else{
 
-                            user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}" 
+                            user_img += `<img src="{{asset('${path}default_imgs/customer.png')}}"
                                     width="40px" height="40px" style="border-radius: 50%;" class="rounded-circle" />`;
 
                         }
