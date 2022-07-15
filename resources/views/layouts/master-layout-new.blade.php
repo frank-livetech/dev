@@ -93,9 +93,9 @@
     <link rel="stylesheet" type="text/css"
         href="{{ asset($file_path . 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/css/pages/app-invoice.css') }}">
-    
+
     <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/css/tribute.css') }}">
-    
+
     <!-- <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/vendors/css/calendars/fullcalendar.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset($file_path . 'app-assets/css/pages/app-calendar.css') }}"> -->
 
@@ -1031,6 +1031,7 @@
 
 
     </script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
     <script type="text/javascript">
         var pusher = new Pusher("{{ pusherCredentials('key') }}", {
