@@ -1779,7 +1779,9 @@
 
                         <div class="col-12 py-2">
                             <div class="form-group">
-                                <textarea name="note" id="note" class="form-control" style="background-color: #FFEFBB; color: black;"></textarea>
+                                {{-- <textarea name="note" id="note" class="form-control" style="background-color: #FFEFBB; color: black;"></textarea> --}}
+                                <textarea class="form-control d-none" rows="3" id="ticket_details" name="ticket_detail"></textarea>
+                                <div id="ticket_note_field" style="height: 200px"></div>
                                 <div id="menu" class="menu" role="listbox"></div>
                             </div>
                         </div>
@@ -1813,6 +1815,7 @@
 var asset_customer_uid = '';
 var asset_company_id = '{{$company->id}}';
 var asset_ticket_id = '';
+let noteUsers = {!! json_encode($noteUsers) !!};
 let customers = @json($all_customers);
 let companies = @json($all_companies);
 
@@ -1831,15 +1834,57 @@ let companies = @json($all_companies);
         });
     });
 
-function loadFile(event) {
-    $('.modalImg').hide();
-    $("#hung22").show()
-    var output = document.getElementById('hung22');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
-    }
-};
+    function loadFile(event) {
+        $('.modalImg').hide();
+        $("#hung22").show()
+        var output = document.getElementById('hung22');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+
+    //Quill Js On Notes
+    var quill = new Quill('#ticket_note_field', {
+        theme: 'snow',
+        modules: {
+            'toolbar': [
+                [{ 'font': [] }, { 'size': [] }],
+                [ 'bold', 'italic', 'underline', 'strike' ],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'script': 'super' }, { 'script': 'sub' }],
+                [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+                [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                [ 'direction', { 'align': [] }],
+                [ 'link', 'image', 'video', 'formula' ],
+                [ 'clean' ]
+            ],
+            keyboard: {
+                bindings: {
+                tributeSelectOnEnter: {
+                    key: 13,
+                    shortKey: false,
+                    handler: (event) => {
+                    if (note_tribute.isActive) {
+                        note_tribute.selectItemAtIndex(note_tribute.menuSelected, event);
+                        note_tribute.hideMenu();
+                        return false;
+                    }
+
+                    return true;
+                    }
+                },
+                }
+            }
+            }
+    });
+
+    let note_tribute = new Tribute({
+        values: noteUsers
+    });
+    note_tribute.attach($("#ticket_note_field").find(".ql-editor"));
+
+
 </script>
 
 @include('js_files.help_desk.asset_manager.templateJs')

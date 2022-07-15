@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use App\Models\Notification;
+use App\Models\SystemSetting;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +36,6 @@ class AppServiceProvider extends ServiceProvider
             $usr_id = \Auth::user()->id;
             $view->with('numberAlerts', Notification::numberAlert($usr_id));
         });
-        // View::share('numberAlerts',Notification::numberAlert());
 
         View::composer('*', function($view){
             if(session()->get('action_clicked_admin')){

@@ -9,6 +9,7 @@
     var ticket_details =  {!! json_encode($details) !!};
     let res_templates_list = {!! json_encode($responseTemplates) !!};
     var all_users = {!! json_encode($allusers) !!};
+    var tagUsers = {!! json_encode($tagUsers) !!};
     var g_followUps = '';
     var active_user = {!! json_encode($active_user) !!};
     var ticket =  {!! json_encode($details) !!};
@@ -66,15 +67,58 @@
         selectD();
 
         var userlist = [];
-
-        all_users.forEach(element => {
-            userlist.push(element.name + ' (' + element.email + ')');
+        all_users.forEach((element,index) => {
+            // userlist.push(element.name + ' (' + element.email + ')');
+            userlist[index] = {key: element.name,value:  element.name + ' (' + element.email + ')'};
         });
+
 
         $('#note').atwho({
             at: "@",
             data:userlist,
         });
+
+
+        //Quill Js On Composer Reply
+        var quill = new Quill('#ticket_detail_field', {
+                theme: 'snow',
+                modules: {
+                    'toolbar': [
+                        [{ 'font': [] }, { 'size': [] }],
+                        [ 'bold', 'italic', 'underline', 'strike' ],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'script': 'super' }, { 'script': 'sub' }],
+                        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                        [ 'direction', { 'align': [] }],
+                        [ 'link', 'image', 'video', 'formula' ],
+                        [ 'clean' ]
+                    ],
+                    keyboard: {
+                        bindings: {
+                        tributeSelectOnEnter: {
+                            key: 13,
+                            shortKey: false,
+                            handler: (event) => {
+                            if (tribute.isActive) {
+                                tribute.selectItemAtIndex(tribute.menuSelected, event);
+                                tribute.hideMenu();
+                                return false;
+                            }
+
+                            return true;
+                            }
+                        },
+                        }
+                    }
+                    }
+            });
+
+        let tribute = new Tribute({
+            values: tagUsers
+        });
+        tribute.attach($("#ticket_detail_field").find(".ql-editor"));
+
 
         if(ticket.customer_id != null) {
             let findCustomer = customers.find(item => item.id == ticket.customer_id);

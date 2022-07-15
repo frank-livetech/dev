@@ -280,7 +280,7 @@
             type: 'POST',
             async: true,
             success: function(data) {
-                console.log(data);
+
                 atte_data = data.staff_att_data;
 
                 if (data.success == true) {
@@ -289,12 +289,16 @@
 
                     if(btn_text == 'clockin') {
                         btn = `<button type="button" class="btn btn-danger clock_btn" onclick="staffatt('clockout', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock Out</button>`;
-                        btn += `<button type="button" class="btn btn-info break_btn" onclick="staffatt('breakin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Break In</button>`;
                         $('.clock_in_section').attr('style','display:none !important');
 
                         $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
 
                         clockintime = moment(data.clock_in_time , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+
+                        var brk_btn = `<button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
+                            <i class="fal fa-utensils-alt me-50"></i>Break</button>`
+
+                        $('#breakIn_div').html(brk_btn);
                     }else{
                         btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;
 
@@ -310,6 +314,8 @@
                         </div>`;
 
                         $('.showClockInSection').html(clockSection);
+
+                        $('#breakIn_div').html('');
                     }
 
                     $('.clock_btn_div').append(btn);
@@ -440,14 +446,13 @@
                     }else if(data.break == 0){
                         html += `<button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
                             <i class="fal fa-utensils-alt me-50"></i>Break</button>`
-                        // alertNotification('success', 'Success' ,data.message );
                     }
 
                     $("#breakIn_div").html(html);
                 }
             },
             failure: function(data) {
-                alertNotification('error', 'Error' ,data.message );
+                // alertNotification('error', 'Error' ,data.message );
             }
         });
         }

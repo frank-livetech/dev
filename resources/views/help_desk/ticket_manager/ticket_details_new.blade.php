@@ -28,7 +28,7 @@
             /*width: auto !important;*/
             /*max-width: 340px !important;*/
         }
-        
+
         #ticket_details_p p{
             margin-bottom:0px !important;
         }
@@ -406,7 +406,7 @@
             .bor-top img {
                 max-width: 160px !important
             }
-            
+
 
         }
 
@@ -469,7 +469,13 @@
                 display: none
             }
 
+            .ql-editor{
+            height: 250px;
+            max-height: 250px;
+            overflow: auto;
+            }
         }
+
     </style>
 @endsection
 
@@ -512,7 +518,7 @@
                     <div id="dropdowm_mbl">
                         <i class="fal fa-ellipsis-v dropdown-toggle" id="dropdowm_mbl" data-bs-toggle="dropdown" type="button"
                         style="float:right"></i>
-                  
+
                     <div class="dropdown-menu dropdown-menu-end" style="">
                         <a class="dropdown-item" onclick="openProModal();">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -578,7 +584,7 @@
                                             <i class="far fa-copy"></i></a> <span class="small text-success" id="c_url"
                                             style="display:none">Url Copied</span>
                                         {{-- <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle waves-effect waves-float waves-light" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></button> --}}
-                                      
+
                                         {{-- <a data-target="#pro_edit" tooltip="Edit" data-toggle="modal" class="link d-flex  font-weight-medium" style="float:right; color:#000; cursor:pointer;"><i class="mdi mdi-lead-pencil"></i></a> --}}
                                         {{-- <i data-feather='edit-3' onclick="openProModal();" style="position: absolute;right:21px;top:24px; cursor:pointer;" tooltip="Edit"></i> --}}
                                         {{-- @if ($details->trashed == 0)
@@ -587,7 +593,7 @@
                                         <button class="btn btn-outline-bt btn-sm" type="button" style="position:absolute;right:48px;cursor:pointer;" onclick="restoreTicket({{$details->id}})"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg> Restore</button>
                                         @endif --}}
                                         {{-- <button class="btn btn-outline-bt btn-sm" type="button" style="cursor:pointer;right:145px;position: absolute" onclick=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Spam</button> --}}
-        
+
                                     </h5>
                                 </button>
                             </h2>
@@ -644,17 +650,17 @@
                                                             src="{{ asset($file_path . 'default_imgs/customer.png') }}" />
                                                     @endif
                                                     <!-- <span class="badge badge-secondary type_bdge">Staff</span> -->
-        
+
                                                 @endif
                                                 <br><br>
-        
+
                                             </div>
                                             @php
-        
+
                                                 $name = '';
                                                 $phone = '';
                                                 $email = '';
-        
+
                                                 if ($details->is_staff_tkt == 0) {
                                                     $name = $ticket_customer->first_name . ' ' . $ticket_customer->last_name;
                                                     $phone = $ticket_customer->phone;
@@ -664,10 +670,10 @@
                                                     $phone = $ticket_customer->phone_number;
                                                     $email = $ticket_customer->email;
                                                 }
-        
+
                                             @endphp
                                             <div class="col-lg-9 col-md-8" id="style-5">
-        
+
                                                 <p style="margin-bottom: 0.2rem !important; font-size:13px; ">Name :
                                                     @if ($details->is_staff_tkt == 0)
                                                         <a class="text-body"
@@ -681,7 +687,7 @@
                                                     <span class="badge badge-secondary type_bdge">
                                                         {{ $details->is_staff_tkt == 0 ? 'User' : 'Staff' }} </span> </a>
                                                 </p>
-        
+
                                                 <p style="margin-bottom: 0.2rem !important; font-size:13px;" id="cst-company">
                                                 </p>
                                                 <p style="margin-bottom: 0.2rem !important; font-size:13px;">Direct Line : <a
@@ -718,7 +724,7 @@
                                                     @endif
                                                 </h6>
                                             </div>
-        
+
                                             <div class="col4"
                                                 style="    border-left: 1px solid #ebe9f1; padding-left: 80px; padding-right: 80px; border-right: 1px solid #ebe9f1;">
                                                 <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
@@ -740,7 +746,7 @@
                                                     @endif
                                                 </h6>
                                             </div>
-        
+
                                             <div class="col4">
                                                 <h3 class="font-weight-bold" style="text-align:center; font-size:14px">
                                                     @if ($details->is_staff_tkt == 0)
@@ -762,12 +768,12 @@
                                                 </h6>
                                             </div>
                                         </div>
-        
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="card" id="cust_detail_card">
                         <div class="card-body" id="adjustCard1Height" style="overflow: hidden;">
@@ -1666,7 +1672,9 @@
 
 
                                 <label style="margin-top: 10px;">Write a reply</label>
-                                <textarea id="mymce" class="mymce mt-2" name="reply"></textarea>
+                                {{-- <textarea id="mymce" class="mymce mt-2" name="reply"></textarea> --}}
+                                <textarea id="ticket_details" class="mt-2 d-none" name="reply"></textarea>
+                                <div id="ticket_detail_field" style="height: 250px"></div>
 
                                 <div class="d-flex mt-3">
                                     <div class="form-check form-check-primary">
@@ -1812,8 +1820,9 @@
 
                         <div class="col-12 py-2">
                             <div class="form-group">
-                                <textarea name="note" id="note" class="form-control"
-                                    style="background-color: #FFEFBB; color: black;"></textarea>
+                                {{-- <textarea name="note" id="note" class="form-control"style="background-color: #FFEFBB; color: black;"></textarea> --}}
+                                <textarea name="note" id="ticket_note" class="form-control d-none"></textarea>
+                                <div id="ticket_note_field" style="height: 200px"></div>
                                 <div id="menu" class="menu" role="listbox"></div>
                             </div>
                         </div>
@@ -3051,8 +3060,6 @@
 
 <script>
 
-
-
     $(document).on('select2:open', () => {
         var element = document.querySelector('[aria-controls="select2-tkt_all_customers-results"]');
 
@@ -3100,7 +3107,7 @@
         })
     });
 
-  
+
 </script>
 
 

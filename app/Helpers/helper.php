@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\NotifyController;
 use App\Models\Customer;
+use App\Models\SystemSetting;
 
 if(!function_exists('pusherCredentials')){
     function pusherCredentials($key){
@@ -108,3 +109,13 @@ if(!function_exists('AllCustomers')) {
         return  Customer::where('is_deleted', 0)->get();
     }
 }
+
+
+if(!function_exists('liveApp')) {
+    function liveApp(){
+        (SystemSetting::where('sys_key','is_live')->first()->sys_value == 1) ?
+            require 'vendor/autoload.php' :
+            require '../vendor/autoload.php';
+    }
+}
+

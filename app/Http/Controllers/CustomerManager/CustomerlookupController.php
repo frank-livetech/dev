@@ -494,6 +494,12 @@ class CustomerlookupController extends Controller
         $all_companies = Company::all();
 
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff', 0)->get();
+        $noteUsers = [];
+        foreach($users as $i => $user){
+            $noteUsers[$i]['key'] = $user->name;
+            $noteUsers[$i]['value'] = $user->name .' ('.$user->email.')';
+        }
+        $noteUsers = collect($noteUsers);
 
 
         return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
