@@ -1820,8 +1820,9 @@
 
                         <div class="col-12 py-2">
                             <div class="form-group">
-                                <textarea name="note" id="note" class="form-control"
-                                    style="background-color: #FFEFBB; color: black;"></textarea>
+                                {{-- <textarea name="note" id="note" class="form-control"style="background-color: #FFEFBB; color: black;"></textarea> --}}
+                                <textarea name="note" id="ticket_note" class="form-control d-none"></textarea>
+                                <div id="ticket_note_field" style="height: 200px"></div>
                                 <div id="menu" class="menu" role="listbox"></div>
                             </div>
                         </div>
