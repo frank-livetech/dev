@@ -13,6 +13,13 @@
         var ticket_attach_path_search = 'storage/tickets';
         let ticket_action_lvl = 'create';
         let ticket_attachments_count = 1;
+        let userlist = {!! json_encode($users) !!};
+
+        userlist.forEach(element => {
+                    userlist['key'] = element.name
+                    userlist['value'] = element.name + ' (' + element.email + ')';
+                });
+
 
         $(document).ready(function() {
             tinymce.init({
@@ -76,8 +83,7 @@
             var quill = new Quill('#editor', {
                             theme: 'snow',
                             modules: {
-                                    'syntax': false,
-                                    'toolbar': [
+                                'toolbar': [
                                     [{ 'font': [] }, { 'size': [] }],
                                     [ 'bold', 'italic', 'underline', 'strike' ],
                                     [{ 'color': [] }, { 'background': [] }],
@@ -87,9 +93,7 @@
                                     [ 'direction', { 'align': [] }],
                                     [ 'link', 'image', 'video', 'formula' ],
                                     [ 'clean' ]
-                                ]
-                            },
-                            modules: {
+                                ],
                                 keyboard: {
                                   bindings: {
                                     tributeSelectOnEnter: {
@@ -101,7 +105,7 @@
                                           tribute.hideMenu();
                                           return false;
                                         }
-                            
+
                                         return true;
                                       }
                                     },
@@ -109,14 +113,11 @@
                                 }
                               }
                         });
-                        
+
             let tribute = new Tribute({
-              values: [
-                {key: 'Phil Heartman', value: 'pheartman'},
-                {key: 'Gordon Ramsey', value: 'gramsey'}
-              ]
+              values: userlist
             });
-            
+
             tribute.attach($("#editor").find(".ql-editor"));
 
             $('#dept_id').trigger('change');

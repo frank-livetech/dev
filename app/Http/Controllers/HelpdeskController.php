@@ -146,7 +146,13 @@ class HelpdeskController extends Controller
         $priorities = TicketPriority::all();
         $types = TicketType::all();
         $companies = Company::all();
-        $users = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
+        $users = [];
+        $allusers = User::where('is_deleted', 0)->where('status', 1)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff',0)->get();
+        foreach($allusers as $i => $user){
+            $users[$i]['key'] = $user->name;
+            $users[$i]['value'] = $user->name .' ('.$user->email.')';
+        }
+        $users = collect($users);
         $customers = Customer::where('is_deleted', 0)->get();
 
         $responseTemplates = ResponseTemplate::all();
@@ -1342,6 +1348,14 @@ class HelpdeskController extends Controller
         // dd($ticket->dept_id);
         $dept_assignments = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
         $allusers = User::whereIn('id',$dept_assignments)->where('user_type','!=',4)->where('user_type','!=',5)->where('status',1)->where('is_deleted',0)->get();
+        $tagUsers = [];
+        foreach($allusers as $i => $user){
+            $users[$i]['key'] = $user->name;
+            $users[$i]['value'] = $user->name .' ('.$user->email.')';
+        }
+        $tagUsers = collect($users);
+
+
 
 
         $id = $ticket->id;

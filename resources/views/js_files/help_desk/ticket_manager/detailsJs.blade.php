@@ -44,14 +44,14 @@ $(document).ready(function() {
         $('.cc_email_field').show();
         $('#show_cc_email').prop('checked', true);
     }
-    
+
     if(shared_bcc_emails != '' && shared_bcc_emails != null){
         console.log(shared_bcc_emails);
         if(shared_bcc_emails.email != null){
             $('.bcc_email_field').show();
             $('#show_bcc_emails').prop('checked', true);
         }
-        
+
     }
 
     if(currentTime.length == 0) {
@@ -136,7 +136,6 @@ $(document).ready(function() {
 
     getAllCodes();
 
-
     tinymce.init({
         selector: 'textarea#note',
         plugins: ["advlist autolink lists charmap print preview anchor",
@@ -172,6 +171,7 @@ $(document).ready(function() {
     //       });
     //     }
     //   });
+
 
     $('#cust-creation-date').html( convertDate(ticket_customer.created_at) );
     $('#creation-date').text( convertDate(ticket.created_at)  );
@@ -2944,7 +2944,9 @@ function updateTicket(){
                 all_users = data.allusers;
                 userlist = [];
                 all_users.forEach(element => {
-                    userlist.push(element.name + ' (' + element.email + ')');
+                    // userlist.push(element.name + ' (' + element.email + ')');
+                    userlist['key'] = element.name
+                    userlist['value'] = element.name + ' (' + element.email + ')';
                 });
 
                 let closeStatus = updates_Arr.find(item => item.new_text == 'Closed');
