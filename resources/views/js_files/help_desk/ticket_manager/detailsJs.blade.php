@@ -29,7 +29,7 @@ let check_followup = [];
 var time_zone = $("#usrtimeZone").val();
 var js_path = "{{Session::get('is_live')}}";
 js_path = (js_path == 1 ? 'public/' : '');
-
+var quill = '';
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -58,11 +58,10 @@ $(document).ready(function() {
         let regiondate = convertDate(ticket.created_at);
         currentTime.push( regiondate );
 
-        // console.log(regiondate , "regiondate");
     }
 
      //Quill Js On Composer Reply
-     var quill = new Quill('#ticket_detail_field', {
+     quill = new Quill('#ticket_detail_field', {
                 theme: 'snow',
                 modules: {
                     'toolbar': [
@@ -2078,7 +2077,8 @@ function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
 
     $("."+reply_btn_id).attr('style','display:none !important');
 
-    var content = tinyMCE.editors.mymce.getContent();
+    // var content = tinyMCE.editors.mymce.getContent();
+    var content = quill.root.innerHTML;
     var queue_id = $('#queue_id').val();
 
     tinyContentEditor(content, 'tickets-replies').then(function() {
@@ -2305,7 +2305,8 @@ function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
                         // listReplies();
 
                         if (type == 'publish') {
-                            tinyMCE.editors.mymce.setContent('');
+                            // tinyMCE.editors.mymce.setContent('');
+                            quill.root.innerHTML = '';
                             document.getElementById('compose-reply').classList.toggle('d-none');
                             $('#to_mails').tagsinput()[0].removeAll();
                             if(data.hasOwnProperty('sla_updated') && data.sla_updated !== false) {
