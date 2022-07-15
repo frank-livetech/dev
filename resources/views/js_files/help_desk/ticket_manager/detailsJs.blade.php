@@ -285,6 +285,49 @@ $(document).ready(function() {
 });
 
 
+
+    //Quill Js On Notes
+    var note_quill = new Quill('#ticket_note_field', {
+    theme: 'snow',
+    modules: {
+        'toolbar': [
+            [{ 'font': [] }, { 'size': [] }],
+            [ 'bold', 'italic', 'underline', 'strike' ],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'script': 'super' }, { 'script': 'sub' }],
+            [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+            [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+            [ 'direction', { 'align': [] }],
+            [ 'link', 'image', 'video', 'formula' ],
+            [ 'clean' ]
+        ],
+        keyboard: {
+            bindings: {
+            tributeSelectOnEnter: {
+                key: 13,
+                shortKey: false,
+                handler: (event) => {
+                if (note_tribute.isActive) {
+                    note_tribute.selectItemAtIndex(note_tribute.menuSelected, event);
+                    note_tribute.hideMenu();
+                    return false;
+                }
+
+                return true;
+                }
+            },
+            }
+        }
+        }
+});
+
+let note_tribute = new Tribute({
+    values: tagUsers
+});
+note_tribute.attach($("#ticket_note_field").find(".ql-editor"));
+
+
+
 setInterval(() => {
 
     if ($(".loaded ").hasClass('dark-layout')) {
@@ -3941,9 +3984,10 @@ function updateTicketDate(){
     $("#updation-date").html(new_date);
 }
 
+
 $("#save_ticket_note").submit(function(event) {
     event.preventDefault();
-    var note = tinymce.editors.note.getContent();
+    var note = note_quill.root.innerHTML;
     // var note = $("textarea[name=note]").html();
     let extract_notes_email = note.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
 

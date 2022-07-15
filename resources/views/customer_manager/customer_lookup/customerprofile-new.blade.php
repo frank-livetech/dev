@@ -2959,7 +2959,7 @@
     $("#save_ticket_note").submit(function(event) {
         event.preventDefault();
 
-        $("#note").val(tinymce.activeEditor.getContent())
+        $("#ticket_details").val(quill.root.innerHTML)
         var formData = new FormData($(this)[0]);
         formData.append('ticket_id', '');
         formData.append('color', gl_color_notes);
