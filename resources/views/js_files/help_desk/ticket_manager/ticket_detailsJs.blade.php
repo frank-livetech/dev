@@ -79,46 +79,7 @@
         });
 
 
-        //Quill Js On Composer Reply
-        var quill = new Quill('#ticket_detail_field', {
-                theme: 'snow',
-                modules: {
-                    'toolbar': [
-                        [{ 'font': [] }, { 'size': [] }],
-                        [ 'bold', 'italic', 'underline', 'strike' ],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'script': 'super' }, { 'script': 'sub' }],
-                        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
-                        [ 'direction', { 'align': [] }],
-                        [ 'link', 'image', 'video', 'formula' ],
-                        [ 'clean' ]
-                    ],
-                    keyboard: {
-                        bindings: {
-                        tributeSelectOnEnter: {
-                            key: 13,
-                            shortKey: false,
-                            handler: (event) => {
-                            if (tribute.isActive) {
-                                tribute.selectItemAtIndex(tribute.menuSelected, event);
-                                tribute.hideMenu();
-                                return false;
-                            }
-
-                            return true;
-                            }
-                        },
-                        }
-                    }
-                    }
-            });
-
-        let tribute = new Tribute({
-            values: tagUsers
-        });
-        tribute.attach($("#ticket_detail_field").find(".ql-editor"));
-
+       
 
         if(ticket.customer_id != null) {
             let findCustomer = customers.find(item => item.id == ticket.customer_id);
