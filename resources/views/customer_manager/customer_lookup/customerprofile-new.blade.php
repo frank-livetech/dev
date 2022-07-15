@@ -116,15 +116,15 @@
                             <a class="nav-link" id="pills-timeline-tab" data-bs-toggle="pill" href="#tab-history" role="tab"
                                 aria-controls="pills-timeline" aria-selected="true">
                                 <i class="fal fa-history font-medium-3 me-50"></i>
-                              
+
                                 <span class="me-50">History</span>
                             </a>
-                        </li> 
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link loadTickets" id="pills-tickets-tab" data-bs-toggle="pill" href="#tickets" role="tab"
                             aria-controls="pills-tickets" aria-selected="false">
                             <i class="fal fa-ticket font-medium-3 me-50"></i>
-                           
+
                             <span class="me-50">Tickets</span>
                             @if($ticketsCount != 0)
                             <span id="tickets_count" class="badge bg-dark text-white fw-bold"> {{$ticketsCount}} </span>
@@ -146,7 +146,7 @@
                                     <span class="fw-bold">Assets</span>
                                 </a>
                             </li>
-                           
+
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="payment-profile-tab" data-bs-toggle="pill" href="#payment" role="tab"
@@ -175,7 +175,7 @@
                                 <i class="fal fa-bell font-medium-3 me-50"></i>
                                 <span class="me-50">Notifications</span>
                             </a>
-                        </li> 
+                        </li>
                     </ul>
                     <!--/ User Pills -->
                 </div>
@@ -192,34 +192,34 @@
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal">
 
                                         @if($customer->avatar_url != null)
-            
-            
+
+
                                             @if(is_file( getcwd() .'/'. $customer->avatar_url))
                                                 <img class="img-fluid rounded mt-3 mb-2" src="{{ request()->root() .'/'. $customer->avatar_url }}" height="110" width="110" alt="User avatar" id="customer_curr_img"/>
-                                                
+
                                             @else
                                                 <img class="img-fluid rounded mt-3 mb-2" src="{{asset( $path . 'default_imgs/customer.png')}}" height="110" width="110" alt="User avatar" id="customer_curr_img"/>
-                                               
+
                                             @endif
                                         @else
                                             <img class="img-fluid rounded mt-3 mb-2" src="{{asset( $path . 'default_imgs/customer.png')}}" height="110" width="110" alt="User avatar" id="customer_curr_img"/>
-                                           
+
                                         @endif
                                         </a>
-                                    
+
                                     <div class="user-info text-center">
                                         <h4>{{$customer->first_name}} {{$customer->last_name}}</h4>
                                         @if($customer->created_at != null)
-                                       
+
                                             @php
                                                 $date = new \DateTime($customer->created_at);
                                                 $date->setTimezone(new \DateTimeZone( timeZone() ));
                                                 $created_at =  $date->format(system_date_format() .' h:i a');
                                             @endphp
                                             <p class="badge bg-light-secondary"> Client Since: {{$created_at}} </p>
-                                       
+
                                     @endif
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -284,7 +284,7 @@
                                     <a href="javascript:;" class="btn btn-primary mt-1 me-1 text-center " style="background-color: #5e50ee !important">Create Account</a>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                 
+
                                     <a href="javascript:;" class="btn btn-outline-danger suspend-user mt-1 me-1 text-center ">Suspended</a>
                                     <a href="javascript:;" class="btn btn-outline-danger suspend-user mt-1 text-center "><i class="fal fa-trash me-50"></i>Delete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                                 </div>
@@ -329,23 +329,23 @@
 
                 <!-- User Content -->
                 <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1" id="ticket-full">
-                   
+
                     <div class="tab-content" id="pills-tabContent">
 
                         <div class="tab-pane fade" id="user-detail" role="tabpanel"
                             aria-labelledby="pills-user-detail">
-                       
+
                             <div class="card">
                                 <div class="card-body">
                                     No Data Found.
                                 </div>
                             </div>
-                           
+
                         </div>
 
                         <div class="tab-pane fade show" id="current-month" role="tabpanel"
                             aria-labelledby="pills-timeline-tab">
-                           
+
                             <div class="card">
                                 <div class="card-body">
                                     No Data Found.
@@ -354,7 +354,7 @@
                         </div>
                         <div class="tab-pane fade show" id="tab-history" role="tabpanel"
                             aria-labelledby="pills-timeline-tab">
-                           
+
                             <div class="card">
                                 <h4 class="card-header">User Activity Timeline</h4>
                                 <div class="card-body pt-1">
@@ -424,7 +424,7 @@
                                         <div class="col-md-12">
                                     <div class="d-flex justify-content-between pl-3 pr-3 mt-1">
                                         <h2 class="lead font-weight-bold">01. Orders</h2>
-        
+
                                         @if($wp_value == 1)
                                             <button class="float-right btn-sm rounded btn btn-info mr-3"><i class="fas fa-sync"></i> Sync WP Orders  </button>
                                         @endif
@@ -433,7 +433,7 @@
                                     </div>
                                     <div class="table-responsive mt-1">
                                         <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-        
+
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <table id="customer_order_table"
@@ -458,17 +458,17 @@
                                             </div>
                                         </div>
                                     </div>
-        
+
                                     <hr>
-        
+
                                     <div class="d-flex justify-content-between p-3 ">
                                         <h2 class="lead font-weight-bold">02. Subscriptions</h2>
                                     </div>
-        
+
                                     <div class="table-responsive">
                                         <div id="zero_config_wrapper"
                                             class="dataTables_wrapper container-fluid dt-bootstrap4">
-        
+
                                             <div class="row ">
                                                 <div class="col-sm-12">
                                                     <table id="customer_subscription" class="table table-striped table-bordered w-100">
@@ -515,16 +515,16 @@
                                                             </tr>
                                                             @endforeach
                                                         </tbody>
-        
+
                                                     </table>
-        
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        
+
 
 
                         </div>
@@ -1142,9 +1142,9 @@
                                             </a>
                                         </div>
                                     </div>
-    
+
                                     <div class="table-responsive">
-    
+
                                         <table id="ticket-table-list" class="table ticket-table-list">
                                             <thead>
                                                 <tr>
@@ -1170,10 +1170,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-    
+
                                             </tbody>
                                         </table>
-    
+
                                         <div class="loading__">
                                             <div class="spinner-border text-primary" role="status">
                                                 <span class="visually-hidden">Loading...</span>
@@ -1182,7 +1182,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <div class="tab-pane fade active show" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
@@ -1447,7 +1447,7 @@
                                                 <h6 class="alert-heading">Ensure that these requirements are met</h6>
                                                 <div class="alert-body fw-normal">Minimum 8 characters long, uppercase &amp; symbol</div>
                                             </div>
-    
+
                                             <div class="row">
                                                 <div class="mb-2 col-md-6 form-password-toggle">
                                                     <label class="form-label" for="newPassword">New Password</label>
@@ -1458,7 +1458,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
-    
+
                                                 <div class="mb-2 col-md-6 form-password-toggle">
                                                     <label class="form-label" for="confirmPassword">Confirm New Password</label>
                                                     <div class="input-group input-group-merge">
@@ -1567,13 +1567,13 @@
                                          data-bs-toggle="tooltip" data-bs-placement="top" title=""
                                          onclick="openNotesModal()" data-bs-original-title="Add Notes"> Add Note</button>
                                 </div>
-    
+
                                 <div class="card-body" id="show_ticket_notes">
                                     No Data Found.
                                 </div>
                             </div>
                            </div>
-                           
+
                         </div>
 
                         <div class="tab-pane fade" id="ticket_domain" role="tabpanel" aria-labelledby="domain-profile-tab">
@@ -1660,7 +1660,7 @@
                     </div>
                     <!-- Project table -->
                     <div class="card">
-                        
+
                     </div>
     </div>
 </div>
@@ -2100,8 +2100,8 @@
                                                             style="color:red !important;">*</span></label><span
                                                         id="pro-details" style="display :none; color:red !important;">Please
                                                         provide details</span>
-                                                    <textarea class="form-control" rows="3" id="ticket_detail"
-                                                        name="ticket_detail"></textarea>
+                                                    <textarea class="form-control" rows="3" id="ticket_detail" name="ticket_detail"></textarea>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -2398,7 +2398,9 @@
 
                             <div class="col-12 py-2">
                                 <div class="form-group">
-                                    <textarea name="note" id="note" class="form-control" style="background-color: #FFEFBB; color: black;"></textarea>
+                                    {{-- <textarea name="note" id="note" class="form-control" style="background-color: #FFEFBB; color: black;"></textarea> --}}
+                                    <textarea class="form-control d-none" rows="3" id="ticket_details" name="ticket_detail"></textarea>
+                                    <div id="ticket_note_field" style="height: 200px"></div>
                                     <div id="menu" class="menu" role="listbox"></div>
                                 </div>
                             </div>
@@ -2711,6 +2713,7 @@
 <script>
     let tkt_arr = [];
     let ticketLengthCount = {!! json_encode($ticketView) !!};
+    let noteUsers = {!! json_encode($noteUsers) !!};
     let customers = @json($all_customers);
     let companies = @json($all_companies);
     let cust_id = $("#customer_id").val();
@@ -2889,6 +2892,47 @@
         remove_script_host : 0,
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
     });
+
+
+    //Quill Js On Notes
+    var quill = new Quill('#ticket_note_field', {
+        theme: 'snow',
+        modules: {
+            'toolbar': [
+                [{ 'font': [] }, { 'size': [] }],
+                [ 'bold', 'italic', 'underline', 'strike' ],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'script': 'super' }, { 'script': 'sub' }],
+                [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+                [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                [ 'direction', { 'align': [] }],
+                [ 'link', 'image', 'video', 'formula' ],
+                [ 'clean' ]
+            ],
+            keyboard: {
+                bindings: {
+                tributeSelectOnEnter: {
+                    key: 13,
+                    shortKey: false,
+                    handler: (event) => {
+                    if (note_tribute.isActive) {
+                        note_tribute.selectItemAtIndex(note_tribute.menuSelected, event);
+                        note_tribute.hideMenu();
+                        return false;
+                    }
+
+                    return true;
+                    }
+                },
+                }
+            }
+            }
+    });
+
+    let note_tribute = new Tribute({
+        values: noteUsers
+    });
+    note_tribute.attach($("#ticket_note_field").find(".ql-editor"));
 
 
     function openNotesModal() {
@@ -3097,7 +3141,7 @@
         $('.country').text(country || '')
       })
     });
-   
+
     // $("#pills-tickets-tab").on('click', function(e){
     //     $("#card-1").hide();
     //     $(this).find('#ticket-full').removeClass("col-xl-8");
@@ -3108,14 +3152,14 @@
     if ($('#ticket-full').hasClass("col-xl-8")) {
         $("#ticket-full").removeClass("col-xl-8");
         $("#ticket-full").addClass("col-xl-12");
-        
+
     }else{
         $("#card-1").show();
         $("#ticket-full").removeClass("col-xl-12");
         $("#ticket-full").addClass("col-xl-8");
-        
+
     }
-    
+
 
   });
   </script>
