@@ -280,7 +280,7 @@
             type: 'POST',
             async: true,
             success: function(data) {
-                console.log(data);
+
                 atte_data = data.staff_att_data;
 
                 if (data.success == true) {
@@ -294,7 +294,11 @@
                         $(".user-status").after(`<span class="badge bg-success clockin_timer" style="margin-top:4px"></span>`);
 
                         clockintime = moment(data.clock_in_time , "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
-                        $('#breakIn_div').removeClass('d-none');
+
+                        var brk_btn = `<button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
+                            <i class="fal fa-utensils-alt me-50"></i>Break</button>`
+
+                        $('#breakIn_div').html(brk_btn);
                     }else{
                         btn = `<button type="button" class="btn btn-success clock_btn" onclick="staffatt('clockin', this)"><i class="fa fa-clock" aria-hidden="true"></i>&nbsp;Clock In</button>`;
 
@@ -310,7 +314,8 @@
                         </div>`;
 
                         $('.showClockInSection').html(clockSection);
-                        $('#breakIn_div').addClass('d-none');
+
+                        $('#breakIn_div').html('');
                     }
 
                     $('.clock_btn_div').append(btn);

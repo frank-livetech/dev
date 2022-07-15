@@ -20,9 +20,7 @@ use Faker\Calculator\Ean;
 use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
-
- require 'vendor/autoload.php';
-//require '../vendor/autoload.php';
+liveApp();
 
 class HelpdeskController extends Controller
 {
