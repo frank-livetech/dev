@@ -69,16 +69,19 @@ class ReportsController extends Controller
         
 
         foreach($attendance as $att) {
+        
             $date = new \DateTime($att->clock_in);
             $date->setTimezone(new \DateTimeZone( timeZone() ));                            
-            $att->clock_in = $date->format(system_date_format() .' h:i a');
+            $att->new_clock_in = $date->format(system_date_format() .' h:i a');
             
-            $date2 = new \DateTime($att->clock_out);
-            $date2->setTimezone(new \DateTimeZone( timeZone() ));                            
-            $att->clock_out = $date2->format(system_date_format() .' h:i a');
+            if($att->clock_out != null) {
+                $date2 = new \DateTime($att->clock_out);
+                $date2->setTimezone(new \DateTimeZone( timeZone() ));                            
+                $att->new_clock_out = $date2->format(system_date_format() .' h:i a');    
+            }
+            
 
-
-            $date3 = new \DateTime($att->clock_out);
+            $date3 = new \DateTime($att->clock_in);
             $date3->setTimezone(new \DateTimeZone( timeZone() ));                            
             $att->date = $date3->format(system_date_format());
             

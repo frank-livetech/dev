@@ -768,16 +768,10 @@ class PayrollController extends Controller {
     public function update_work_hours(Request $request) {
         try {
 
-            $clock_in = new DateTime($request->clock_in);
-            $clock_in->setTimezone(new DateTimeZone('UTC'));
-
-            $clock_out = new DateTime($request->clock_out);
-            $clock_out->setTimezone(new DateTimeZone('UTC'));
-
             $data = StaffAttendance::findOrFail($request->id);
             $data->hours_worked = $request->worked_hours_value;
-            $data->clock_in = $clock_in->format('Y-m-d H:i:s');
-            $data->clock_out = $clock_out;
+            $data->clock_in = $request->clockin;
+            $data->clock_out = $request->clockout;
             $data->updated_at = Carbon::now();
             $data->save();
 

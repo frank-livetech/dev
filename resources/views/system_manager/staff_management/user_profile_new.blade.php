@@ -1509,15 +1509,15 @@
 
                             <div class="col-md-6 mt-1">
                                 <label for="worked_hours_value">Clock In</label>
-                                <input type="datetime-local" class="form-control" id="clock_in" name="clock_in" required>
+                                <input type="datetime-local" class="form-control" id="clock_in">
                             </div>
                             <div class="col-md-6 mt-1">
                                 <label for="worked_hours_value">Clock Out</label>
-                                <input type="datetime-local" class="form-control" id="clock_out" name="clock_out" required>
+                                <input type="datetime-local" class="form-control" id="clock_out">
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 mt-2">
                                 <label for="worked_hours_value">Worked Hours</label>
-                                <input type="text" class="form-control" id="worked_hours_value" name="worked_hours_value" required>
+                                <input type="text" class="form-control" id="worked_hours_value">
                             </div>
                         </div>
                         <button class="btn btn-success rounded mt-2 float-right"><i class="fas fa-check-circle"></i> Save</button>

@@ -42,6 +42,7 @@
     let loggedInUser = {!! json_encode(\Auth::user()->id) !!};
     let date_format = $("#system_date_format").val();
     let url_type = '';
+    let staffAttendances = [];
 </script>
 
 <script type="text/javascript">
@@ -489,16 +490,22 @@
 
             let action = $(this).attr('action');
             let method = $(this).attr('method');
-            var form_data = new FormData(this);
+
+            let id = $("#attendance_id").val();
+            let clockin = $("#clock_in").val();
+            let clockout = $("#clock_out").val();
+            let worked_hours_value = $("#worked_hours_value").val();
 
             $.ajax({
                 type: method,
                 url: action,
-                data: form_data,
+                data: {
+                    "id" : id,
+                    "clockin" : jsTimeZone ( clockin ),
+                    "clockout" : jsTimeZone ( clockout ),
+                    "worked_hours_value" : worked_hours_value,
+                },
                 dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
                 beforeSend: function() {
                     $(this).find('.btn').attr('disabled', true);
                 },
@@ -510,6 +517,14 @@
                         $('#workHoursModal').modal('hide');
                         $(this).trigger('reset');
                         alertNotification('success', 'Success' , data.message);
+
+                        let date = new Date();
+                        let start = moment(date).startOf('month').format('YYYY-MM-DD');
+                        let end = moment(date).endOf('month').format('YYYY-MM-DD');
+                        let user_id = $("#user_id").val();
+
+                        getStaffWorkDetail(start, end, user_id);
+
                     } else {
                         alertNotification('error', 'Error' , data.message);
                     }
@@ -520,7 +535,7 @@
                 error: function(e) {
                     $(this).find('.btn').attr('disabled', false);
                     console.log(e);
-                    alertNotification('error', 'Error' , data.message);
+                    // alertNotification('error', 'Error' , data.message);
                 }
             });
         });
@@ -544,6 +559,7 @@
             },
             success: function(data) {
                 var obj = data.data;
+                staffAttendances = data.data;
                 // console.log(obj, "obj")
                 var total_hours = 0;
 
@@ -619,12 +635,12 @@
                         },
                         {
                             "render": function(data, type, full, meta) {
-                                return full.clock_in != null ? full.clock_in : '';
+                                return full.new_clock_in != null ? full.new_clock_in : '';
                             }
                         },
                         {
                             "render": function(data, type, full, meta) {
-                                return full.clock_out != null ? full.clock_out : '';
+                                return full.new_clock_out != null ? full.new_clock_out : '';
                             }
                         },
                         {
@@ -634,7 +650,7 @@
                         },
                         {
                             "render": function(data, type, full, meta) {
-                                return `<button  onclick="editWorkHours(${full.id}, '${full.hours_worked}','${moment(full.clock_in).format('YYYY-MM-DD HH:MM:DD')}','${full.clock_out}')" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
+                                return `<button  onclick="editWorkHours(${full.id})" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;" title="Edit Department">
                                     <i class="fas fa-pencil-alt" aria-hidden="true"></i></button>`
 
                             }
@@ -653,13 +669,40 @@
         });
     }
 
-    function editWorkHours(id, hours, clock_in, clock_out) {
-        $('#workHoursForm #attendance_id').val(id);
-        $('#workHoursForm #worked_hours_value').val(hours);
-        $('#workHoursForm #clock_in').val(clock_in);
-        $('#workHoursForm #clock_out').val(clock_out);
+    function editWorkHours(id) {
 
-        $('#workHoursModal').modal('show');
+        let item = staffAttendances.find( item => item.id == id);
+        if(item != null) {
+            console.log(item , "item");
+            $('#workHoursForm #attendance_id').val(id);
+            $('#workHoursForm #worked_hours_value').val(item.hours_worked != null ? item.hours_worked : '');
+            $('#workHoursForm #clock_in').val( moment(item.new_clock_in).format('YYYY-MM-DDThh:mm:ss.SSS') );
+
+            console.log( jsTimeZone(item.clock_in) , "clockin" )
+            console.log( jsTimeZone(item.new_clock_in) , "new_clock_in" )
+            if(item.new_clock_out != null) {
+                $('#workHoursForm #clock_out').val( moment(item.new_clock_out).format('YYYY-MM-DDThh:mm:ss.SSS') );
+            }
+
+            $('#workHoursModal').modal('show');
+        }
+    }
+
+    function jsTimeZone(date) {
+        var d = new Date(date);
+
+        var min = d.getMinutes();
+        var dt = d.getDate();
+        var d_utc = d.getUTCHours();
+
+        d.setMinutes(min);
+        d.setDate(dt);
+        d.setUTCHours(d_utc);
+
+        let a = d.toLocaleString("en-US" , {timeZone: 'UTC'});
+        // return a;
+        var converted_date = moment(a).format('YYYY-MM-DD HH:mm:ss');
+        return converted_date;
     }
 
     function openThisAccordin(dept_id) {
@@ -937,9 +980,11 @@
     $("#pills-documents-tab").click(function() {
         get_all_documents(staff_id);
     });
+
     $("#my-certifications-tab").click(function() {
         get_all_certificates(staff_id);
     });
+
     $("#my-schedule-tab").click(function() {
         get_all_leaves();
         var defaultEvents = [];
@@ -1172,14 +1217,12 @@
         getStaffWorkDetail(start, end, user_id);
     }
 
-
     function requestLeaveModal() {
         $("#leave-title").text("Request Leave");
         $("#leaveForm")[0].reset();
         $("#leaveModal").modal('show');
         $("#leave_id").val(" ");
     }
-
 
     function get_all_leaves() {
 
@@ -1286,7 +1329,6 @@
 
     }
 
-
     function delete_leave(id) {
         $.ajax({
             type: 'POST',
@@ -1308,7 +1350,6 @@
             }
         });
     }
-
 
     function openScheduleModal() {
         $("#schedule-title").text("Set Schedule");
