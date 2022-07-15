@@ -33,6 +33,10 @@
             margin-bottom:0px !important;
         }
 
+        #ticket-replies p{
+            margin-bottom:0px !important;
+        }
+
         a:link,
         span.MsoHyperlink {
             mso-style-priority: 99;
