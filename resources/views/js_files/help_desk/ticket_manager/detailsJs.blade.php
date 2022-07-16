@@ -29,7 +29,7 @@ let check_followup = [];
 var time_zone = $("#usrtimeZone").val();
 var js_path = "{{Session::get('is_live')}}";
 js_path = (js_path == 1 ? 'public/' : '');
-
+var quill = '';
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -58,81 +58,122 @@ $(document).ready(function() {
         let regiondate = convertDate(ticket.created_at);
         currentTime.push( regiondate );
 
-        // console.log(regiondate , "regiondate");
     }
-    //composer TinyMce
-    tinymce.init({
-        selector: "textarea.mymce",
-        // theme: "modern",
 
-        mobile: {
-            theme: 'silver'
-          },
-        auto_focus : "mymce",
+     //Quill Js On Composer Reply
+     quill = new Quill('#ticket_detail_field', {
+                theme: 'snow',
+                modules: {
+                    'toolbar': [
+                        [{ 'font': [] }, { 'size': [] }],
+                        [ 'bold', 'italic', 'underline', 'strike' ],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'script': 'super' }, { 'script': 'sub' }],
+                        [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                        [ 'direction', { 'align': [] }],
+                        [ 'link', 'image', 'video', 'formula' ],
+                        [ 'clean' ]
+                    ],
+                    keyboard: {
+                        bindings: {
+                        tributeSelectOnEnter: {
+                            key: 13,
+                            shortKey: false,
+                            handler: (event) => {
+                            if (tribute.isActive) {
+                                tribute.selectItemAtIndex(tribute.menuSelected, event);
+                                tribute.hideMenu();
+                                return false;
+                            }
 
-        height: 300,
-        file_picker_types: 'image',
-        plugins: [
-            "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-            "save table contextmenu directionality emoticons template paste textcolor ","tb_variables"
-        ],
-
-        contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
-        toolbar: "tb_variables | insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
-
-        spellchecker_callback: function (method, text, success, failure) {
-            var words = text.match(this.getWordCharPattern());
-            if (method === "spellcheck") {
-            var suggestions = {};
-            for (var i = 0; i < words.length; i++) {
-                suggestions[words[i]] = ["First", "Second"];
-            }
-            success({ words: suggestions, dictionary: [ ] });
-            } else if (method === "addToDictionary") {
-            // Add word to dictionary here
-            success();
-            }
-        },
-        // file_picker_types: 'file image media',
-        // media_live_embeds: true,
-        paste_data_images: true,
-        file_picker_callback: function(cb, value, meta) {
-            var input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-            // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
-
-            input.onchange = function() {
-
-                var file = this.files[0];
-
-                var reader = new FileReader();
-                reader.onload = async function() {
-                    var id = 'blobid' + (new Date()).getTime();
-                    var blobCache = tinymce.editors.mymce.editorUpload.blobCache;
-                    var base64 = reader.result.split(',')[1];
-
-                    if (reader.result.includes('/svg') || reader.result.includes('/SVG')) {
-                        base64 = await downloadPNGFromAnyImageSrc(reader.result);
+                            return true;
+                            }
+                        },
+                        }
                     }
+                    }
+            });
 
-                    var blobInfo = blobCache.create(id, file, base64);
-                    blobCache.add(blobInfo);
-                    cb(blobInfo.blobUri(), { title: file.name });
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
-        },
-    }).then(function() {
-        listReplies();
-    }).catch(function(error) {
-        listReplies();
-    });
+        let tribute = new Tribute({
+            values: tagUsers
+        });
+        tribute.attach($("#ticket_detail_field").find(".ql-editor"));
 
 
+    //composer TinyMce
+    // tinymce.init({
+    //     selector: "textarea.mymce",
+    //     // theme: "modern",
 
+    //     mobile: {
+    //         theme: 'silver'
+    //       },
+    //     auto_focus : "mymce",
+
+    //     height: 300,
+    //     file_picker_types: 'image',
+    //     plugins: [
+    //         "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+    //         "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+    //         "save table contextmenu directionality emoticons template paste textcolor ","tb_variables"
+    //     ],
+
+    //     contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
+    //     toolbar: "tb_variables | insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
+
+    //     spellchecker_callback: function (method, text, success, failure) {
+    //         var words = text.match(this.getWordCharPattern());
+    //         if (method === "spellcheck") {
+    //         var suggestions = {};
+    //         for (var i = 0; i < words.length; i++) {
+    //             suggestions[words[i]] = ["First", "Second"];
+    //         }
+    //         success({ words: suggestions, dictionary: [ ] });
+    //         } else if (method === "addToDictionary") {
+    //         // Add word to dictionary here
+    //         success();
+    //         }
+    //     },
+    //     // file_picker_types: 'file image media',
+    //     // media_live_embeds: true,
+    //     paste_data_images: true,
+    //     file_picker_callback: function(cb, value, meta) {
+    //         var input = document.createElement('input');
+    //         input.setAttribute('type', 'file');
+    //         input.setAttribute('accept', 'image/*');
+    //         // if (meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
+
+    //         input.onchange = function() {
+
+    //             var file = this.files[0];
+
+    //             var reader = new FileReader();
+    //             reader.onload = async function() {
+    //                 var id = 'blobid' + (new Date()).getTime();
+    //                 var blobCache = tinymce.editors.mymce.editorUpload.blobCache;
+    //                 var base64 = reader.result.split(',')[1];
+
+    //                 if (reader.result.includes('/svg') || reader.result.includes('/SVG')) {
+    //                     base64 = await downloadPNGFromAnyImageSrc(reader.result);
+    //                 }
+
+    //                 var blobInfo = blobCache.create(id, file, base64);
+    //                 blobCache.add(blobInfo);
+    //                 cb(blobInfo.blobUri(), { title: file.name });
+    //             };
+    //             reader.readAsDataURL(file);
+    //         };
+    //         input.click();
+    //     },
+    // }).then(function() {
+    //     listReplies();
+    // }).catch(function(error) {
+    //     listReplies();
+    // });
+
+
+    listReplies();
 
     getAllCodes();
 
@@ -2263,7 +2304,8 @@ function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
                         // listReplies();
 
                         if (type == 'publish') {
-                            tinyMCE.editors.mymce.setContent('');
+                            // tinyMCE.editors.mymce.setContent('');
+                            quill.root.innerHTML = '';
                             document.getElementById('compose-reply').classList.toggle('d-none');
                             $('#to_mails').tagsinput()[0].removeAll();
                             if(data.hasOwnProperty('sla_updated') && data.sla_updated !== false) {
