@@ -20,6 +20,8 @@ use Faker\Calculator\Ean;
 use Illuminate\Database\Eloquent\Builder;
 use PHPMailer\PHPMailer\PHPMailer;
 use Session;
+// require 'vendor/autoload.php';
+// // require '../vendor/autoload.php';
 liveApp();
 
 class HelpdeskController extends Controller
@@ -813,7 +815,8 @@ class HelpdeskController extends Controller
         if($statusOrUser == 'closed') $cnd = '=';
         if($statusOrUser == 'trash') $is_del = 1;
         $dept_assignments = DepartmentAssignments::where('user_id', \Auth::user()->id)->get()->pluck('dept_id')->toArray();
-
+// $start = microtime(true);
+// Execute the query
         if(\Auth::user()->user_type == 1) {
 
             $tickets = Tickets::select("*")->whereIn('dept_id',$dept_assignments)
@@ -880,7 +883,9 @@ class HelpdeskController extends Controller
             ->where([ ['tickets.is_deleted', 0], ['is_pending' ,0] ])->orderBy('tickets.updated_at', 'desc')->with('ticket_created_by')
             ->get();
         }
+// $time = microtime(true) - $start;
 
+// dd($time);
         if($statusOrUser == 'customer'){
             $total_tickets_count = Tickets::
             when($statusOrUser == 'customer', function($q) use ($cid) {
@@ -1735,18 +1740,37 @@ class HelpdeskController extends Controller
                 $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
                 $template = str_replace('{Go-To-Ticket}', $url , $template);
             }
-        }
 
-        if($flag_type == 'add_note'){
-            if(str_contains($template, '{Notes}')) {
-                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
-            }
-        }else{
             if(str_contains($template, '{Notes}')) {
                 $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
             }
-        }
 
+        }else{
+
+            if(str_contains($template, '{Ticket-Subject}')) {
+                $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
+            }
+
+            if(str_contains($template, '{Ticket-Detail}')) {
+
+                $date = new \DateTime($ticket['updated_at']);
+                $date->setTimezone(new \DateTimeZone( timeZone() ));
+                $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
+
+                $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
+
+                $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
+            }
+
+            if(str_contains($template, '{Go-To-Ticket}')) {
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
+                $template = str_replace('{Go-To-Ticket}', $url , $template);
+            }
+
+            if(str_contains($template, '{Notes}')) {
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
+            }
+        }
 
         return html_entity_decode($template);
     }
