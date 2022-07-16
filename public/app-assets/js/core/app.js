@@ -910,7 +910,7 @@ window.colors = {
 
   // on window scroll button show/hide
   $(window).on('scroll', function () {
-    if ($(this).scrollTop() > 400) {
+    if ($(this).scrollTop() > 60) {
       $('.scroll-top').fadeIn();
     } else {
       $('.scroll-top').fadeOut();
