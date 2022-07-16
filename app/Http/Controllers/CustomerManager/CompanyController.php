@@ -473,17 +473,17 @@ class CompanyController extends Controller
                 $note->save();
 
                 $data = $note;
-                $action_performed = 'User Note updated by '. $name_link;
+                $action_performed = 'Company Note updated by '. $name_link;
             }else{
                 $data['created_by'] = Auth::user()->id;
                 $note = TicketNote::create($data);
-                $action_performed = 'User Note added by '. $name_link;
+                $action_performed = 'Company Note added by '. $name_link;
             }
 
             $sla_updated = false;
 
             $log = new ActivitylogController();
-            $log->saveActivityLogs('Tickets' , 'ticket_notes' , $note->id , auth()->id() , $action_performed);
+            $log->saveActivityLogs('Notes' , 'notes' , $note->id , auth()->id() , $action_performed);
 
             $template = DB::table("templates")->where('code','ticket_common_notification')->first();
 
@@ -502,7 +502,7 @@ class CompanyController extends Controller
                         $sender_id = Auth::user()->id;
                         $receiver_id = $user->id;
                         $slug = $slug_url;
-                        $type = 'ticket_notes';
+                        $type = 'company_note';
                         $data = 'data';
                         $title = Auth::user()->name.' mentioned You ';
                         $icon = 'at-sign';
@@ -522,11 +522,11 @@ class CompanyController extends Controller
             // send notification
             $slug = $slug_url;
             $type = 'ticket_updated';
-            $title = ($request->id != null ? 'User Note Updated' : 'User Note Created');
+            $title = ($request->id != null ? 'Company Note Updated' : 'Company Note Created');
             $desc = 'User (<a href="'.url('/company-profile').'/' .$note->id.'">'.$note->id.'</a>)' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
             // sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
-            $response['message'] = 'User Note Saved Successfully!';
+            $response['message'] = 'Company Note Saved Successfully!';
             $response['sla_updated'] = $sla_updated;
             $response['status_code'] = 200;
             $response['success'] = true;
