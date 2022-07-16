@@ -275,7 +275,7 @@
 
     function selectColor(color) {
         gl_color_notes = color
-        tinyMCE.get(0).getBody().style.backgroundColor = color;
+        $("#save_ticket_note .ql-editor").css('background-color',color)
     }
 
     $("#save_ticket_note").submit(function(event) {
@@ -306,7 +306,7 @@
             success: function(data) {
                 // console.log(data);
                 if (data.success) {
-
+                    quill.root.innerHTML = ''
                     alertNotification('success', 'Success' , data.message);
 
                     let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
