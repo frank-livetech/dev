@@ -2946,7 +2946,7 @@
         $('#note-visibilty').prop('disabled', false);
         $("#note-visibilty").val("Everyone").trigger('change');
         $("#note-id").val("");
-        tinyMCE.get(0).getBody().style.backgroundColor = '#FFEFBB';
+        // tinyMCE.get(0).getBody().style.backgroundColor = '#FFEFBB';
         gl_color_notes = '#FFEFBB';
     }
 

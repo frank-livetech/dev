@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CustomerManager;
 
+use App\Http\Controllers\ActivitylogController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{Crypt,DB, Hash, Auth, Cookie, Date, URL};
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\File;
 use App\User;
 use App\Http\Controllers\SystemManager\MailController;
 use App\Http\Controllers\GeneralController;
+use App\Http\Controllers\NotifyController;
 use Throwable;
 use Session;
 use Carbon\Carbon;
@@ -503,6 +505,153 @@ class CustomerlookupController extends Controller
 
 
         return view('customer_manager.customer_lookup.customerprofile-new', get_defined_vars());
+    }
+
+    public function UserORGNote(Request $request) {
+        $data = $request->all();
+
+        $response = array();
+        try{
+            $action_performed = '';
+
+            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+
+            if( $request->id != null ){
+
+                $note = TicketNote::findOrFail($data['id']);
+                $note->color = $data['color'];
+                $note->type = $data['type'];
+                $note->note = $data['note'];
+                $note->visibility = (array_key_exists('visibility', $data)) ? $data['visibility'] : '';
+                $note->updated_by = Auth::user()->id;
+
+                $note->updated_at = Carbon::now();
+                $note->save();
+
+                $data = $note;
+                $action_performed = 'User Note updated by '. $name_link;
+            }else{
+                $data['created_by'] = Auth::user()->id;
+                $note = TicketNote::create($data);
+                $action_performed = 'User Note added by '. $name_link;
+            }
+
+            $sla_updated = false;
+
+            $log = new ActivitylogController();
+            $log->saveActivityLogs('Tickets' , 'ticket_notes' , $note->id , auth()->id() , $action_performed);
+
+            $template = DB::table("templates")->where('code','ticket_common_notification')->first();
+
+            if($request->tag_emails != null && $request->tag_emails != '') {
+
+                $emails = explode(',',$request->tag_emails);
+
+                for( $i = 0; $i < sizeof($emails); $i++ ) {
+
+                    $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
+                    if($user) {
+                        $ticket = Tickets::where('is_deleted', 0)->where('id',$note->id)->first();
+
+                        $slug_url = ($request->has('customer_id') ?  url('customer-profile') .'/'. $note->customer_id :  url('company-profile') .'/'. $note->company_id);
+                        $notify = new NotifyController();
+                        $sender_id = Auth::user()->id;
+                        $receiver_id = $user->id;
+                        $slug = $slug_url;
+                        $type = 'ticket_notes';
+                        $data = 'data';
+                        $title = Auth::user()->name.' mentioned You ';
+                        $icon = 'at-sign';
+                        $class = 'btn-success';
+                        $desc = 'You were mentioned by '.Auth::user()->name . ' on Note # ' . $note->id;
+
+                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $note->note,'note');
+                        $mail = new MailController();
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for Note ' . $note->id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+                    }
+                }
+            }
+
+
+
+            // send notification
+            $slug = $slug_url;
+            $type = 'ticket_updated';
+            $title = ($request->id != null ? 'User Note Updated' : 'User Note Created');
+            $desc = 'User (<a href="'.url('/customer-profile').'/' .$note->id.'">'.$note->id.'</a>)' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
+            // sendNotificationToAdmins($slug , $type , $title ,  $desc);
+
+            $response['message'] = 'User Note Saved Successfully!';
+            $response['sla_updated'] = $sla_updated;
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['tkt_update_at'] = $note->updated_at;
+            $response['data'] = $note;
+            return response()->json($response);
+
+        } catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
+    public function ticketCommonNotificationShortCodes($templateHtml , $ticket , $flag , $tempType, $notes = '', $flag_type = '') {
+
+        $template = htmlentities($templateHtml);
+
+
+        if(str_contains($template, '{Subject}')) {
+            $subject = auth()->user()->name . ' ' . ($tempType =='ticket_flag' ? $flag : ' mentioned you in ') . ' Ticket ' .  $ticket->coustom_id;
+            $template = str_replace('{Subject}', $subject , $template);
+        }
+
+        if(str_contains($template, '{Flag-Image}')) {
+
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/');
+            $flaggedImage = '<img src="'.$url.'/public/default_imgs/flagged.png" width="20" style="width:20px !important; height:20px !important" />';
+            $unflaggedImage = '<img src="'.$url.'/public/default_imgs/unflagged.png" width="20" style="width:20px !important; height:20px !important" />';
+
+            $template = str_replace('{Flag-Image}', ($tempType != 'ticket_flag' ? '' : ( $flag =='Flagged' ? $flaggedImage : $unflaggedImage ) ) , $template);
+        }
+
+
+        if($flag_type == 'add_ticket' || $flag_type == 'ticket_reply'){
+
+            if(str_contains($template, '{Ticket-Subject}')) {
+                $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
+            }
+
+            if(str_contains($template, '{Ticket-Detail}')) {
+
+                $date = new \DateTime($ticket['updated_at']);
+                $date->setTimezone(new \DateTimeZone( timeZone() ));
+                $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
+
+                $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
+
+                $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
+            }
+
+            if(str_contains($template, '{Go-To-Ticket}')) {
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
+                $template = str_replace('{Go-To-Ticket}', $url , $template);
+            }
+
+            if(str_contains($template, '{Notes}')) {
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
+            }
+
+        }else{
+
+            if(str_contains($template, '{Notes}')) {
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
+            }
+        }
+
+        return html_entity_decode($template);
     }
 
     public function loggedInAsCustomer($email)

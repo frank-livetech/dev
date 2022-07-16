@@ -265,7 +265,7 @@
         $('#note-visibilty').prop('disabled', false);
         $("#note-visibilty").val("Everyone").trigger('change');
         $("#note-id").val("");
-        tinyMCE.get(0).getBody().style.backgroundColor = '#FFEFBB';
+        // tinyMCE.get(0).getBody().style.backgroundColor = '#FFEFBB';
         gl_color_notes = '#FFEFBB';
     }
 
@@ -281,20 +281,28 @@
     $("#save_ticket_note").submit(function(event) {
         event.preventDefault();
 
-        $("#ticket_details").val(quill.root.innerHTML)
+        let note = quill.root.innerHTML;
+
         var formData = new FormData($(this)[0]);
         formData.append('ticket_id', '');
+        let extract_notes_email = note.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+        if (extract_notes_email != null && extract_notes_email != '') {
+            formData.append('tag_emails', extract_notes_email.join(','));
+        }
+
         formData.append('color', gl_color_notes);
         formData.append('type', 'User Organization');
         formData.append('visibility', all_staff_ids.toString());
         formData.append('company_id', asset_company_id);
+        formData.append('note', note);
+
         if (gl_sel_note_index !== null) {
             formData.append('id', notes[gl_sel_note_index].id);
         }
 
         $.ajax({
             type: "POST",
-            url: "{{asset('save-ticket-note_cc')}}" ,
+            url: "{{asset('save-ticket-note_cm')}}" ,
             data: formData,
             cache: false,
             contentType: false,
