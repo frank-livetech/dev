@@ -1641,27 +1641,10 @@
                     [ 'link', 'image', 'video', 'formula' ],
                     [ 'clean' ]
                 ],
-                keyboard: {
-                    bindings: {
-                    tributeSelectOnEnter: {
-                        key: 13,
-                        shortKey: false,
-                        handler: (event) => {
-                        if (tribute.isActive) {
-                            tribute.selectItemAtIndex(tribute.menuSelected, event);
-                            tribute.hideMenu();
-                            return false;
-                        }
-
-                        return true;
-                        }
-                    },
-                    }
-                }
+               
                 }
             });
-
-    quill.root.innerHTML = "{{$profile->signature}}"
+    quill.clipboard.dangerouslyPasteHTML(0, '{{$profile->signature}}');
 
   </script>
     @include('js_files.ticket_cmmnJs')
