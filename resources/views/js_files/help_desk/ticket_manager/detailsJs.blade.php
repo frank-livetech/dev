@@ -2061,6 +2061,12 @@ function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
     $("."+reply_btn_id).attr('style','display:none !important');
 
     var content = quill.root.innerHTML;
+    var tag_emails = ''
+    let extract_reply_email = content.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+    if (extract_reply_email != null && extract_reply_email != '') {
+        tag_emails = extract_reply_email.join(',');
+    }
+
     var queue_id = $('#queue_id').val();
 
     tinyContentEditor(content, 'tickets-replies').then(function() {
@@ -2142,6 +2148,7 @@ function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
                 type: type,
                 attachments: rep_attaches,
                 reply: content,
+                tag_emails: tag_emails,
                 inner_attachments: attachments_src,
                 queue_id:queue_id
             };
