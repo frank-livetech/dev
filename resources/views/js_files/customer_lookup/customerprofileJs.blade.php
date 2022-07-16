@@ -1652,6 +1652,7 @@
     }
 
     function get_ticket_notes(tkts_ids) {
+
         $.ajax({
             type: 'GET',
             url: "{{asset('/get-ticket-notes')}}",
@@ -1668,7 +1669,7 @@
                     // $('#ticket_notes .card-body').html(`<div class="col-12 px-0 text-right">
                     //     <button class="btn btn-success" data-target="#notes_manager_modal" data-toggle="modal"><i class="mdi mdi-plus-circle"></i> Add Note</button>
                     // </div>`);
-                    $('#ticket_notes .card-body').html('');
+                    $('#show_ticket_notes').html('');
 
                     notes = data.notes;
 
@@ -1688,7 +1689,6 @@
     }
 
     function render_notes(notes) {
-
         if (timeouts_list.length) {
             for (let i in timeouts_list) {
                 clearTimeout(timeouts_list[i]);
@@ -1746,7 +1746,7 @@
 
             // let tkt = ticketsList.filter(item => item.id == notes[i].ticket_id);
             tkt_subject = '<a href="{{asset("/ticket-details")}}/' + notes[i].tkt_cust_id + '">'+notes[i].tkt_cust_id+'</a>';
-           
+
             let n_type = '<i class="fas fa-clipboard-list"></i>';
             if(notes[i].type == 'Ticket') {
                 n_type = '<i class="fas fa-clipboard-list"></i>';
@@ -1773,10 +1773,10 @@
 
         if (timeOut) {
             timeouts_list.push(setTimeout(function() {
-                $('#ticket_notes .card-body').html(flup);
+                $('#show_ticket_notes').html(flup);
             }, timeOut));
         } else {
-            $('#ticket_notes .card-body').html(flup);
+            $('#show_ticket_notes').html(flup);
         }
 
     }
