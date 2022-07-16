@@ -1739,11 +1739,11 @@ class HelpdeskController extends Controller
 
         if($flag_type == 'add_note'){
             if(str_contains($template, '{Notes}')) {
-                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
             }
         }else{
             if(str_contains($template, '{Notes}')) {
-                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
             }
         }
 
