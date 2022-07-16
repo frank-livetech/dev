@@ -4028,7 +4028,9 @@ $("#save_ticket_note").submit(function(event) {
     var note = note_quill.root.innerHTML;
     // var note = $("textarea[name=note]").html();
     let extract_notes_email = note.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
-
+    if (extract_notes_email != null && extract_notes_email != '') {
+        formData.append('tag_emails', extract_notes_email.join(','));
+    }
     let vis = [];
     if (document.getElementById('note-type-user-org').checked || document.getElementById('note-type-user').checked) {
         vis = all_staff_ids;
@@ -4055,9 +4057,7 @@ $("#save_ticket_note").submit(function(event) {
         }
     }
 
-    if (extract_notes_email != null && extract_notes_email != '') {
-        formData.append('tag_emails', extract_notes_email.join(','));
-    }
+
 
     $.ajax({
         type: "POST",

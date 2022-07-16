@@ -1736,6 +1736,7 @@ class HelpdeskController extends Controller
 
         $template = htmlentities($templateHtml);
 
+
         if(str_contains($template, '{Subject}')) {
             $subject = auth()->user()->name . ' ' . ($tempType =='ticket_flag' ? $flag : ' mentioned you in ') . ' Ticket ' .  $ticket->coustom_id;
             $template = str_replace('{Subject}', $subject , $template);
@@ -1751,7 +1752,7 @@ class HelpdeskController extends Controller
         }
 
 
-        if($flag_type == 'add_ticket' || $flag_type = 'ticket_reply'){
+        if($flag_type == 'add_ticket' || $flag_type == 'ticket_reply'){
 
             if(str_contains($template, '{Ticket-Subject}')) {
                 $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
@@ -1778,26 +1779,6 @@ class HelpdeskController extends Controller
             }
 
         }else{
-
-            if(str_contains($template, '{Ticket-Subject}')) {
-                $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
-            }
-
-            if(str_contains($template, '{Ticket-Detail}')) {
-
-                $date = new \DateTime($ticket['updated_at']);
-                $date->setTimezone(new \DateTimeZone( timeZone() ));
-                $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
-
-                $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
-
-                $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
-            }
-
-            if(str_contains($template, '{Go-To-Ticket}')) {
-                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
-                $template = str_replace('{Go-To-Ticket}', $url , $template);
-            }
 
             if(str_contains($template, '{Notes}')) {
                 $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
@@ -3085,39 +3066,38 @@ class HelpdeskController extends Controller
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_notes' , $note->id , auth()->id() , $action_performed);
 
-            // $template = DB::table("templates")->where('code','ticket_common_notification')->first();
+            $template = DB::table("templates")->where('code','ticket_common_notification')->first();
 
-            // if($request->tag_emails != null && $request->tag_emails != '') {
+            if($request->tag_emails != null && $request->tag_emails != '') {
 
-            //     $emails = explode(',',$request->tag_emails);
+                $emails = explode(',',$request->tag_emails);
 
-            //     for( $i = 0; $i < sizeof($emails); $i++ ) {
+                for( $i = 0; $i < sizeof($emails); $i++ ) {
 
-            //         $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
-            //         if($user) {
-            //             $ticket = Tickets::where('is_deleted', 0)->where('id',$note->id)->first();
+                    $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
+                    if($user) {
+                        $ticket = Tickets::where('is_deleted', 0)->where('id',$note->id)->first();
 
-            //             $notify = new NotifyController();
-            //             $sender_id = \Auth::user()->id;
-            //             $receiver_id = $user->id;
-            //             $slug = url('customer-profile') .'/'.$note->coustom_id;
-            //             $type = 'ticket_notes';
-            //             $data = 'data';
-            //             $title = \Auth::user()->name.' mentioned You ';
-            //             $icon = 'at-sign';
-            //             $class = 'btn-success';
-            //             $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $note->coustom_id;
+                        $notify = new NotifyController();
+                        $sender_id = \Auth::user()->id;
+                        $receiver_id = $user->id;
+                        $slug = url('customer-profile') .'/'.$note->customer_id;
+                        $type = 'ticket_notes';
+                        $data = 'data';
+                        $title = \Auth::user()->name.' mentioned You ';
+                        $icon = 'at-sign';
+                        $class = 'btn-success';
+                        $desc = 'You were mentioned by '.\Auth::user()->name . ' on Note # ' . $note->id;
 
-            //             $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
 
-            //             // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
-
-            //             $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $request->note);
-            //             $mail = new MailController();
-            //             $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $note->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
-            //         }
-            //     }
-            // }
+                        // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $note->note,'note');
+                        $mail = new MailController();
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for Note ' . $note->id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+                    }
+                }
+            }
 
 
 
@@ -3510,10 +3490,10 @@ class HelpdeskController extends Controller
                 ->where('ticket_notes.is_deleted' , 0)
                 ->orderBy('created_at', 'desc')
                 ->get()->toArray();
-                
+
             }
             $allNotes = json_decode( json_encode($notes) , true);
-          
+
             for($i =0; $i < count($allNotes); $i++) {
                 $cdate = new \DateTime( $allNotes[$i]['created_at'] );
                 $cdate->setTimezone(new \DateTimeZone( timeZone() ));
