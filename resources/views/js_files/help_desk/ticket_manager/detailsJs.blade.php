@@ -75,6 +75,9 @@ $(document).ready(function() {
                     [ 'link', 'image', 'video', 'formula' ],
                     [ 'clean' ]
                 ],
+                imageResize: {
+                    displaySize: true
+                },
                 keyboard: {
                     bindings: {
                     tributeSelectOnEnter: {
@@ -342,6 +345,9 @@ $(document).ready(function() {
             [ 'link', 'image', 'video', 'formula' ],
             [ 'clean' ]
         ],
+        imageResize: {
+            displaySize: true
+        },
         keyboard: {
             bindings: {
             tributeSelectOnEnter: {

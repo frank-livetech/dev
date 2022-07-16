@@ -2909,6 +2909,9 @@
                 [ 'link', 'image', 'video', 'formula' ],
                 [ 'clean' ]
             ],
+            imageResize: {
+              displaySize: true
+            },
             keyboard: {
                 bindings: {
                 tributeSelectOnEnter: {
