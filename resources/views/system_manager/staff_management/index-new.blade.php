@@ -7,7 +7,7 @@
     .full_name{
         width: 400px !important;
     }
-    
+
     .ml-2{
         padding-left: 5px
     }
@@ -81,7 +81,7 @@ a {
                                 <div class="widget-main">
                                     <div class="row">
                                         <div class="col-12">
-                                            
+
                                             <div class="table-responsive">
                                             <!-- id="user-table-list" -->
                                                 <table
@@ -101,7 +101,7 @@ a {
                                                         @foreach($users as $user)
                                                             <tr class="__row_{{$user['id']}}">
                                                                 <td> {{$loop->iteration}} </td>
-                                                                <td> 
+                                                                <td>
                                                                     <div class="d-flex align-items-center">
                                                                         @if($user['profile_pic'] != null)
                                                                             @if(is_file( getcwd() .'/'. $user['profile_pic'] ))
@@ -124,7 +124,7 @@ a {
                                                                 </td>
                                                                 <td> {{$user['email'] != null ? $user['email'] : '-'}}  </td>
                                                                 <td>
-                                                                    @if($user['phone_number'] != null) 
+                                                                    @if($user['phone_number'] != null)
                                                                         <a href="tel:{{$user['phone_number']}}"> {{$user['phone_number']}} <a/>
                                                                     @else
                                                                         <span> - </span>
@@ -142,7 +142,7 @@ a {
                                                                     </button>
                                                                 </td>
                                                             </tr>
-                                                        @endforeach    
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -154,7 +154,7 @@ a {
                     </div>
                 </div>
             </div>
-    
+
         </div>
     </div> --}}
     <div class="content-body">
@@ -186,13 +186,13 @@ a {
                                 <!-- <th>Created At </th> -->
                                 <th>Actions</th>
                             </tr>
-                            
+
                         </thead>
                         <tbody>
                             @foreach($users as $user)
                             <tr class="__row_{{$user['id']}}">
                                 <td>
-                                    <div class="d-flex justify-content-left align-items-center"> 
+                                    <div class="d-flex justify-content-left align-items-center">
                                         <div class="avatar-wrapper">
                                         <div class="avatar me-1">
                                             @if($user['profile_pic'] != null)
@@ -211,21 +211,21 @@ a {
                                         <span class="fw-bold">
                                             {{$user['name'] != null ? $user['name'] : '-'}}
                                         </span></a>
-                                        <small class="emp_post text-muted"> 
+                                        <small class="emp_post text-muted">
                                         </small>
                                         </div>
                                         </div>
                                 </td>
-                               
+
                                 <td>
                                     <span class='text-truncate align-middle'>{{$user['email'] != null ? $user['email'] : '-'}} </span>
                                 </td>
-                                
+
                                 <td>
-                                    <span class='text-truncate align-middle'><svg data-v-32017d0f="" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-50 feather feather-server text-danger"><rect data-v-32017d0f="" x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect data-v-32017d0f="" x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line data-v-32017d0f="" x1="6" y1="6" x2="6.01" y2="6"></line><line data-v-32017d0f="" x1="6" y1="18" x2="6.01" y2="18"></line></svg>{{ array_key_exists('role' , $user) ? ($user['role'] == null && $user['role'] == "" ? '-' : $user['role']) : '-'}}</span> 
+                                    <span class='text-truncate align-middle'><svg data-v-32017d0f="" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-50 feather feather-server text-danger"><rect data-v-32017d0f="" x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect data-v-32017d0f="" x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line data-v-32017d0f="" x1="6" y1="6" x2="6.01" y2="6"></line><line data-v-32017d0f="" x1="6" y1="18" x2="6.01" y2="18"></line></svg>{{ array_key_exists('role' , $user) ? ($user['role'] == null && $user['role'] == "" ? '-' : $user['role']) : '-'}}</span>
                                 </td>
                                 <td>
-                                    @if($user['phone_number'] != null) 
+                                    @if($user['phone_number'] != null)
                                         <a href="tel:{{$user['phone_number']}}"> {{$user['phone_number']}} </a>
                                     @else
                                         <span> - </span>
@@ -233,10 +233,10 @@ a {
                                 <td>
                                     {{ array_key_exists('staffTags' , $user) ? ($user['staffTags'] == null && $user['staffTags'] == "" ? '-' : $user['staffTags']) : '-'}}
                                 </td>
-                                <!-- <td>
+                                {{-- <!-- <td>
                                     <div class="show_date" id="show_{{$user['id']}}" data-date="{{\Carbon\Carbon::parse($user['created_at'])}}" data-id="{{$user['id']}}">
                                     </div>
-                                </td> -->
+                                </td> --> --}}
                                 <td>
                                     <span class="badge rounded-pill badge-light-success">
                                         Active
@@ -249,7 +249,7 @@ a {
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-end">
                                         <a href="{{url('profile')}}/{{$user['id']}}" class="dropdown-item"><svg data-v-32017d0f="" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text me-50"><path data-v-32017d0f="" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline data-v-32017d0f="" points="14 2 14 8 20 8"></polyline><line data-v-32017d0f="" x1="16" y1="13" x2="8" y2="13"></line><line data-v-32017d0f="" x1="16" y1="17" x2="8" y2="17"></line><polyline data-v-32017d0f="" points="10 9 9 9 8 9"></polyline></svg> Details</a>
-                                        
+
                                         <a href="javascript:void(0)" onclick="deleteUsers({{$user['id']}})" class="dropdown-item delete-record"><svg data-v-32017d0f="" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash me-50"><polyline data-v-32017d0f="" points="3 6 5 6 21 6"></polyline><path data-v-32017d0f="" d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Delete</a></div>
                                         </div>
                                         </div>
@@ -257,8 +257,8 @@ a {
                                         <i class="fa fa-trash"  aria-hidden="true"></i>
                                     </button> --}}
                                 </td>
-                            </tr>    
-                            
+                            </tr>
+
                             @endforeach
                         </tbody>
                     </table>
@@ -376,9 +376,9 @@ a {
                                         <div class="form-group user-password-div w-100">
                                             <label class="form-label">Password <span class="text-danger">*</span></label>
                                             <span class="block input-icon input-icon-right d-flex">
-                                                
+
                                                 <div class=" input-group form-password-toggle ">
-                                                
+
                                                     <input type="password" name="password" id="staffpassword" class="form-control" value="" placeholder="" required>
                                                     <div class="input-group-text cursor-pointer">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -409,14 +409,14 @@ a {
                                             <label class="form-label">Enter Phone Number</label>
                                             <div class="d-flex">
                                             <div class="country mt-1" style="padding-right: 8px;"></div>
-                                            
+
                                             <input type="tel" class="tel form-control" value="+" name="phone_number" id="phone" placeholder="" autofocus>
-                                            
+
                                         </div>
                                         <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
                                     </div>
                                     </div>
-                                    
+
 
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -467,7 +467,7 @@ a {
                                     <div class="col-12 text-end">
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal" >Close</button>
                                     <button type="Submit" id="usr_save" class="btn waves-effect waves-light btn-sm rounded btn-success"><i class="fas fa-check-circle"></i> Save</button>
-                                    
+
                                     <button type="button" style="display:none" disabled id="usr_pro" class="btn btn-sm rounded btn-success"> <i class="fas fa-circle-notch fa-spin"></i> Processing </button>
 
                                     </div>
@@ -483,7 +483,7 @@ a {
             </div>
         </div>
     </div>
-    
+
 </div>
 @endsection
 @section('scripts')
@@ -491,7 +491,7 @@ a {
     <script>
         $('#addNewUser').draggable();
         function copyPassword() {
-            
+
             var copyText = document.getElementById("staffpassword");
             copyText.select();
             copyText.setSelectionRange(0, 99999);
@@ -504,15 +504,15 @@ a {
         //         let countryCode = $(this).find('option:selected').data('country-code');
         //         let value = "+" + $(this).val();
         //         $('#phone').val(value).intlTelInput("setCountry", countryCode);
-               
+
         //     });
-            
+
         //     var code = "+1";
         //     $('#phone').val(code).intlTelInput();
         // });
 
         $('.staff_table').DataTable();
-        
+
         // let a = "{{Session('system_date')}}";
         // console.log(a , "a");
 

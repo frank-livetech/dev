@@ -11,7 +11,7 @@ class TicketNote extends Model
 {
     /*************************
         @ Column additions
-        
+
         followup_id => int default null
 
     ************************/
@@ -51,7 +51,7 @@ class TicketNote extends Model
 
         $id = $this->ticket_id;
         $ticket = Tickets::where('id', $id)->first();
-        return $ticket->coustom_id;
+        return $ticket != null ? $ticket->coustom_id : '';
     }
 
     public function getProfilePicAttribute() {
@@ -63,6 +63,6 @@ class TicketNote extends Model
         }else{
             return '---';
         }
-        
+
     }
 }

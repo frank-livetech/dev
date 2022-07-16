@@ -406,7 +406,9 @@
                                             <label>Signature</label> <br>
                                             <small>Your Signature will be attached to all outgoing correspondence (ticket replies and email)</small>
 
-                                            <textarea class="form-control" name="signature" id="signature" cols="5" rows="5"> {{$profile->signature}} </textarea>
+                                            {{-- <textarea class="form-control" name="signature" id="signature" cols="5" rows="5"> {{$profile->signature}} </textarea> --}}
+                                            <textarea class="form-control d-none" name="signature" id="signatures" cols="5" rows="5"> {{$profile->signature}} </textarea>
+                                            <div id="profile_signature" style="height: 250px"></div>
                                         </div>
                                     </div>
 
@@ -502,12 +504,12 @@
                                         <div class="form-check-inline" style="">
                                             <!-- <label for="customRadio">To</label> -->
                                             <input type="number" id="basic-icon-default-uname" class="form-control dt-uname" placeholder="" aria-label="jdoe1" aria-describedby="basic-icon-default-uname2" name="user-name" />
-                                            
+
                                         </div>
-                                        
+
                                     </div>
                                     <div class="col-md-5">
-                                        
+
                                             <label class="form-label" for="">Term</label>
                                             <select class="select2 form-select" onchange="yesnoCheck(this);">
                                                 <option value="hourly">Hourly</option>
@@ -520,11 +522,11 @@
                                                 <input type="text" id="basic-icon-default-uname" class="form-control dt-uname" placeholder="" aria-label="jdoe1" aria-describedby="basic-icon-default-uname2" name="user-name" />
 
                                             </div>
-                                       
+
                                     </div>
                                 </div>
-                                   
-                                    
+
+
                                 <div id="daterangediv" style="display:none">
                                     <div class="row">
                                         <div class="col-md-5">
@@ -563,7 +565,7 @@
                                             <div class="box p-2 rounded text-center">
                                                 <h5 class="" id="total_hours">00</h5>
                                                 <h6 class="text-info">Total Hours</h6>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -1618,12 +1620,49 @@
       })
     });
     function yesnoCheck(that) {
-    if (that.value == "other") {
-        document.getElementById("ifYes").style.display = "block";
-    } else {
-        document.getElementById("ifYes").style.display = "none";
+        if (that.value == "other") {
+            document.getElementById("ifYes").style.display = "block";
+        } else {
+            document.getElementById("ifYes").style.display = "none";
+        }
     }
-}
+
+    quill = new Quill('#profile_signature', {
+            theme: 'snow',
+            modules: {
+                'toolbar': [
+                    [{ 'font': [] }, { 'size': [] }],
+                    [ 'bold', 'italic', 'underline', 'strike' ],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'super' }, { 'script': 'sub' }],
+                    [{ 'header': '1' }, { 'header': '2' }, 'blockquote', 'code-block' ],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet'}, { 'indent': '-1' }, { 'indent': '+1' }],
+                    [ 'direction', { 'align': [] }],
+                    [ 'link', 'image', 'video', 'formula' ],
+                    [ 'clean' ]
+                ],
+                keyboard: {
+                    bindings: {
+                    tributeSelectOnEnter: {
+                        key: 13,
+                        shortKey: false,
+                        handler: (event) => {
+                        if (tribute.isActive) {
+                            tribute.selectItemAtIndex(tribute.menuSelected, event);
+                            tribute.hideMenu();
+                            return false;
+                        }
+
+                        return true;
+                        }
+                    },
+                    }
+                }
+                }
+            });
+
+    quill.root.innerHTML = "{{$profile->signature}}"
+
   </script>
     @include('js_files.ticket_cmmnJs')
     @include('js_files.system_manager.staff_management.user_profileJs')
