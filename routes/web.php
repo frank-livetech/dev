@@ -554,7 +554,7 @@ Route::Post('/fetch-followups','HelpdeskController@fetch_followups');
 Route::any('/search-ticket','HelpdeskController@search_ticket');
 Route::Post('/save-ticket-note','HelpdeskController@save_ticket_note');
 Route::Post('/save-ticket-note_cc','CustomerManager\CustomerlookupController@UserORGNote');
-Route::Post('/save-ticket-note_cm','CustomerManager\CompanylookupController@UserORGNote');
+Route::Post('/save-ticket-note_cm','CustomerManager\CompanyController@UserORGNote');
 Route::Post('/update-ticket-customer','HelpdeskController@update_ticket_customer');
 Route::Post('/del-ticket-note','HelpdeskController@del_ticket_note');
 Route::Post('/del-UserORGNote','HelpdeskController@del_UserORGNote');
