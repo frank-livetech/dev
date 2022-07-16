@@ -5,6 +5,9 @@
 
 
 <style>
+    div#ticket-logs-list_paginate{
+        margin-top: 39px;
+    }
 table.dataTable thead .sorting:before,
 table.dataTable thead .sorting_asc:before,
 table.dataTable thead .sorting_desc:before,
