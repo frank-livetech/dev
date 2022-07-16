@@ -543,7 +543,6 @@ class HelpdeskController extends Controller
 
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                         $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'ticket_mention', $request->note,'add_ticket');
-                        $this->sendNotificationMail($ticket->toArray(), $temp, '', '', 'Ticket Create', $ticket->id,$emails[$i],'' , $request->auto_responder , $request->send_details );
 
                         $mail = new MailController();
                         $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
@@ -4083,7 +4082,40 @@ class HelpdeskController extends Controller
                     $email = \Auth::user()->email;
 
                     if($request->template == 'ticket_create') {
+
                         $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval , $request->auto_responder , $request->send_details );
+
+                        $template = DB::table("templates")->where('code','ticket_common_notification')->first();
+                        if($request->tag_emails != null && $request->tag_emails != '') {
+
+                            $emails = explode(',',$request->tag_emails);
+
+                            for( $i = 0; $i < sizeof($emails); $i++ ) {
+
+                                $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
+                                if($user) {
+
+                                    $notify = new NotifyController();
+                                    $sender_id = \Auth::user()->id;
+                                    $receiver_id = $user->id;
+                                    $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                                    $type = 'ticket_notes';
+                                    $data = 'data';
+                                    $title = \Auth::user()->name.' mentioned You ';
+                                    $icon = 'at-sign';
+                                    $class = 'btn-success';
+                                    $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
+
+                                    $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                                    $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'ticket_mention', $request->note,'add_ticket');
+
+                                    $mail = new MailController();
+                                }
+                            }
+                        }
+
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+
                     }else{
                         $this->sendNotificationMail($ticket->toArray(), $request->template, '', '', $request->action, $data_id,$email,$oldval);
                     }
