@@ -429,7 +429,6 @@ class PayrollController extends Controller {
                 $todayTickets = Tickets::where([
                     ['assigned_to', auth()->id()],
                     ['is_deleted', 0] ,
-                    ['is_overdue', 0] ,
                     ['trashed', 0] ,
                     ['status','!=', $closeStatus->id],
                 ])->get();
