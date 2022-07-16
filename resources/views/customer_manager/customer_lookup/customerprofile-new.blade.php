@@ -2963,13 +2963,21 @@
     $("#save_ticket_note").submit(function(event) {
         event.preventDefault();
 
-        $("#ticket_details").val(quill.root.innerHTML)
+        let note = quill.root.innerHTML;
+
+
         var formData = new FormData($(this)[0]);
+
+        let extract_notes_email = note.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+        if (extract_notes_email != null && extract_notes_email != '') {
+            formData.append('tag_emails', extract_notes_email.join(','));
+        }
         formData.append('ticket_id', '');
         formData.append('color', gl_color_notes);
         formData.append('type', 'user');
         formData.append('visibility', all_staff_ids.toString());
         formData.append('customer_id', cust_id);
+        formData.append('note', note);
         if (gl_sel_note_index !== null) {
             formData.append('id', notes[gl_sel_note_index].id);
         }
