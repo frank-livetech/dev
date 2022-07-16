@@ -1894,7 +1894,7 @@
 
 <div class="modal fade text-start" id="follow_up" role="dialog" data-backdrop="static"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Follow Up</h5>
@@ -1905,7 +1905,7 @@
             </div>
             <form id="save_ticket_follow_up" action="{{ asset('save-ticket-follow-up') }}" method="post"
                 novalidate>
-                <div class="modal-body">
+                <div class="modal-body" style="overflow-y: auto">
                     {{-- <input value="{{$details->id}}" name="ticket_id" hidden> --}}
 
                     <div class="form-row">
