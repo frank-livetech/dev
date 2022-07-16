@@ -298,7 +298,8 @@ $("#update_user").submit(function (event) {
   
 
     // var formData = $("#update_user").serialize()  + "&user_id=" + user_id;
-    var content = tinyMCE.activeEditor.getContent();
+    // var content = tinyMCE.activeEditor.getContent();
+    var content = quill.root.innerHTML;
     var formData = new FormData(this);
     formData.append('user_id' , user_id);
     formData.append('signature' , content);
