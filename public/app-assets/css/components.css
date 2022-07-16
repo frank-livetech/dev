@@ -1310,13 +1310,13 @@ footer.footer-border {
 
     transition: all 0.2s ease-out;
     line-height: 16px;
-    padding: 1.6rem 3.6rem;
+    padding: .9rem 3.6rem;
     height: 55px;
   }
   input#customer{
     transition: all 0.2s ease-out;
     line-height: 16px;
-    padding: 1.6rem 3.6rem;
+    padding: .9rem 3.6rem;
     height: 55px;
   }
   .search-input-icon {
@@ -1450,18 +1450,11 @@ footer.footer-border {
   top: 32%;
   cursor: pointer; }
 
- #helpdesk .search-input .search-input-icon{
-    z-index: 2;
-    position: absolute;
-    /* left: 2.5rem; */
-    top: 30%;
-    cursor: pointer;
-}
-#cust-mang .search-input-customer .search-input-icon-1{
+#cust-mang .search-input-customer .search-input-icon-1,#helpdesk .search-input .search-input-icon{
   z-index: 2;
   position: absolute;
-  left: 2rem;
-  top: 36%;
+  /* left: 2rem; */
+  top: 28%;
   cursor: pointer;
 }
 
@@ -3371,7 +3364,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 
 div.dataTables_wrapper .dataTables_info {
   padding-top: 1.25rem !important;
-  color: #b9b9c3; }
+  color: #7c7c7c; }
 
 tr.group {
   background-color: #fafafc; }
