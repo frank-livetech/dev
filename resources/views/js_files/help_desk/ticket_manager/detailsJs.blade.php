@@ -3993,8 +3993,8 @@ function createFollowUp(event) {
 
 function selectColor(color) {
     gl_color_notes = color;
-    console.log(color);
-    tinymce.editors.note.contentDocument.body.style.backgroundColor= color;
+    $("#save_ticket_note .ql-editor").css('background-color',color)
+    // tinymce.editors.note.contentDocument.body.style.backgroundColor= color;
 
 }
 
@@ -4067,7 +4067,7 @@ $("#save_ticket_note").submit(function(event) {
         success: function(data) {
             // console.log(data);
             if (data.success) {
-
+                note_quill.root.innerHTML = ''
                 alertNotification('success', 'Success' , data.message);
 
                 let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
@@ -4245,8 +4245,11 @@ function editNote(id) {
         $('#note-id').val(id);
 
         $("#note-visibilty").val("Everyone").trigger('change');
-        tinymce.activeEditor.setContent(item.note != null ? item.note : '')
-        tinyMCE.get(1).getBody().style.backgroundColor = item.color != null ? item.color : '';
+        // tinymce.activeEditor.setContent(item.note != null ? item.note : '')
+        note_quill.root.innerHTML = item.note != null ? item.note : ''
+        $("#save_ticket_note .ql-editor").css('background-color',item.color != null ? item.color : '')
+        // note_quill.style.backgroundColor = item.color != null ? item.color : ''
+        // tinyMCE.get(1).getBody().style.backgroundColor = item.color != null ? item.color : '';
         gl_color_notes = item.color != null ? item.color : '';
         if(item.type == 'Ticket') {
             $("#note-type-ticket").prop('checked',true);
