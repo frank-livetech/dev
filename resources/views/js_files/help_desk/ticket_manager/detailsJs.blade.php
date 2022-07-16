@@ -1989,7 +1989,7 @@ function listReplies() {
                             </div>
 
                             <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;">
-                                `+'Posted on' + convertDate(reply.created_at) +`
+                                `+'Posted on ' + convertDate(reply.created_at) +`
                             </span>
                             <div class="my-1 bor-top reply-htm" id="reply-html-` + reply.id + `"> ${content} </div>
                                 <span style="font-family:Rubik,sans-serif;font-size:12px;font-weight: 100;"> ${updated_msg}</span>
