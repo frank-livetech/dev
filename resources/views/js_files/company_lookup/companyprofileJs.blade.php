@@ -308,7 +308,7 @@
                 if (data.success) {
                     quill.root.innerHTML = ''
                     alertNotification('success', 'Success' , data.message);
-
+                    get_ticket_notes()
                     let b  = new Date(data.tkt_update_at).toLocaleString('en-US', { timeZone: time_zone });
                     let tkt_updted_date = moment(b).format(date_format + ' ' + 'hh:mm A');
                     // send mail notification regarding ticket action

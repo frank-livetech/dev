@@ -3126,7 +3126,7 @@ class HelpdeskController extends Controller
             $type = 'ticket_updated';
             $title = ($request->id != null ? 'User Note Updated' : 'User Note Created');
             $desc = 'User (<a href="'.url('/customer-profile').'/' .$note->id.'">'.$note->id.'</a>)' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
-            sendNotificationToAdmins($slug , $type , $title ,  $desc);
+            // sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             $response['message'] = 'User Note Saved Successfully!';
             $response['sla_updated'] = $sla_updated;
