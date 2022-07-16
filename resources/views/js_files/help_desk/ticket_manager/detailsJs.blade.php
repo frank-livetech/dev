@@ -2036,7 +2036,7 @@ function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
 
     $("."+reply_btn_id).attr('style','display:none !important');
 
-    var content = tinyMCE.editors.mymce.getContent();
+    var content = quill.root.innerHTML;
     var queue_id = $('#queue_id').val();
 
     tinyContentEditor(content, 'tickets-replies').then(function() {

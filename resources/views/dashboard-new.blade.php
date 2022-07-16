@@ -155,9 +155,14 @@ table.dataTable thead .sorting_desc:after {
                         @endif
                     </div>
                     <div id="breakIn_div">
-                        @if(isset($clockin) && $clockin->is_break != 1)
-                        <button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
-                            <i class="fal fa-utensils-alt me-50"></i>Break</button>
+                        @if(isset($clockin))
+                            @if ($clockin->is_break != 1)
+                                <button type="button" onclick="staffbreak('breakIn' , this)" class="btn btn-primary waves-effect waves-float waves-light">
+                                <i class="fal fa-utensils-alt me-50"></i>Break</button>
+                            @else
+                                <button type="button" onclick="staffbreak('breakOut' , this)" class="btn btn-danger waves-effect waves-float waves-light">
+                                <i class="fal fa-utensils-alt me-50"></i>Stop Break</button>
+                            @endif
                         @endif
                     </div>
                 </div>

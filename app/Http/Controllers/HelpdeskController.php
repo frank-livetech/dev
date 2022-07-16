@@ -431,6 +431,8 @@ class HelpdeskController extends Controller
     }
 
     public function save_tickets(Request $request){
+
+
         $current_date = Carbon::now();
 
         $data = $request->all();
@@ -472,6 +474,7 @@ class HelpdeskController extends Controller
             }
             $ticket = Tickets::create($data);
 
+            // dd($ticket);
             // ticket assoc with sla plan
             $settings = $this->getTicketSettings(['default_reply_and_resolution_deadline']);
             if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -496,6 +499,7 @@ class HelpdeskController extends Controller
             $ticket->coustom_id = $newG->randomStringFormat(self::CUSTOMID_FORMAT);
             $lt = Tickets::orderBy('created_at', 'desc')->first();
 
+
             if(!empty($lt)) {
                 $ticket->seq_custom_id = 'T-'.strval($lt->id + 1);
             }else{
@@ -508,12 +512,44 @@ class HelpdeskController extends Controller
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , auth()->id() , $action_perform);
 
-
             // saving response template
             if($request->res == 1) {
                 $resTemp = new SettingsController();
                 $resTemp->addResponseTemplate($request);
             }
+
+
+            $template = DB::table("templates")->where('code','ticket_common_notification')->first();
+
+            if($request->tag_emails != null && $request->tag_emails != '') {
+
+                $emails = explode(',',$request->tag_emails);
+
+                for( $i = 0; $i < sizeof($emails); $i++ ) {
+
+                    $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
+                    if($user) {
+
+                        $notify = new NotifyController();
+                        $sender_id = \Auth::user()->id;
+                        $receiver_id = $user->id;
+                        $slug = url('ticket-details') .'/'.$ticket->coustom_id;
+                        $type = 'ticket_notes';
+                        $data = 'data';
+                        $title = \Auth::user()->name.' mentioned You ';
+                        $icon = 'at-sign';
+                        $class = 'btn-success';
+                        $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
+
+                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'ticket_mention', $request->note,'add_ticket');
+
+                        $mail = new MailController();
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+                    }
+                }
+            }
+
 
             // send notification
             // $slug = url('ticket-details') .'/'.$ticket->coustom_id;
@@ -1660,7 +1696,7 @@ class HelpdeskController extends Controller
         }
     }
 
-    public function ticketCommonNotificationShortCodes($templateHtml , $ticket , $flag , $tempType, $notes = '') {
+    public function ticketCommonNotificationShortCodes($templateHtml , $ticket , $flag , $tempType, $notes = '', $flag_type = '') {
 
         $template = htmlentities($templateHtml);
 
@@ -1678,28 +1714,35 @@ class HelpdeskController extends Controller
             $template = str_replace('{Flag-Image}', ($tempType != 'ticket_flag' ? '' : ( $flag =='Flagged' ? $flaggedImage : $unflaggedImage ) ) , $template);
         }
 
-        if(str_contains($template, '{Ticket-Subject}')) {
-            $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
+        if($flag_type == 'add_ticket'){
+            if(str_contains($template, '{Ticket-Subject}')) {
+                $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
+            }
         }
 
-        if(str_contains($template, '{Ticket-Detail}')) {
+        if($flag_type == 'add_ticket'){
+            if(str_contains($template, '{Ticket-Detail}')) {
 
-            $date = new \DateTime($ticket['updated_at']);
-            $date->setTimezone(new \DateTimeZone( timeZone() ));
-            $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
+                $date = new \DateTime($ticket['updated_at']);
+                $date->setTimezone(new \DateTimeZone( timeZone() ));
+                $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
 
-            $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
+                $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
 
-            $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
+                $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
+            }
         }
 
-        if(str_contains($template, '{Notes}')) {
-            $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
+        if($flag_type == 'add_note'){
+            if(str_contains($template, '{Notes}')) {
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
+            }
         }
-
-        if(str_contains($template, '{Go-To-Ticket}')) {
-            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
-            $template = str_replace('{Go-To-Ticket}', $url , $template);
+        if($flag_type == 'add_ticket'){
+            if(str_contains($template, '{Go-To-Ticket}')) {
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
+                $template = str_replace('{Go-To-Ticket}', $url , $template);
+            }
         }
 
         return html_entity_decode($template);
@@ -2903,7 +2946,7 @@ class HelpdeskController extends Controller
 
                         // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
 
-                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'note_mention', $request->note);
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'note_mention', $request->note,'add_note');
                         $mail = new MailController();
                         $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
                     }

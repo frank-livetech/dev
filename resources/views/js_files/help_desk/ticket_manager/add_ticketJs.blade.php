@@ -155,10 +155,10 @@
             $("#save_tickets").submit(function(event) {
                 event.preventDefault();
 
+                var content = quill.root.innerHTML;
                 var ticket_detail = $('#ticket_detail').val();
                 let fileSizeErr = false;
                 $('.ticket_attaches').each(function(index) {
-                    console.log(this.files);
                     if(this.files.length && (this.files[0].size / (1024*1024)).toFixed(2) > 2) fileSizeErr = this.files[0].name;
                 });
                 if(fileSizeErr !== false) {
@@ -199,7 +199,11 @@
                 var deadline = $("#deadline").val();
                 var user_role = $("#for_customer_role").val();
 
-
+                var tag_emails = ''
+                let extract_notes_email = content.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+                if (extract_notes_email != null && extract_notes_email != '') {
+                    tag_emails = extract_notes_email.join(',');
+                }
                 // response template
 
 
@@ -211,6 +215,8 @@
                     assigned_to:assigned_to,
                     customer_id:customer_id,
                     type:type,
+                    ticket_detail:content,
+                    tag_emails:tag_emails,
                     deadline:deadline,
                     queue_id:queue_id,
                 };
@@ -325,7 +331,6 @@
                 }else{
                     form_Data['company_id'] = $("#company_id").val();
                 }
-                // form_Data["ticket_detail"] = quill.root.innerHTML;
 
                 $.ajax({
                     type: "POST",
@@ -373,7 +378,7 @@
 
                             // update the ticket details with attachments
                             // var content = tinyMCE.activeEditor.getContent();
-                            var content = quill.root.innerHTML;
+
                             tinyContentEditor(content, data.id).then(function() {
                                 content = $('#tinycontenteditor').html();
 
@@ -424,7 +429,8 @@
                 if( $(this).val() == "" ) {
                     // tinyMCE.activeEditor.setContent('');
                 }else{
-                    let content = tinyMCE.activeEditor.getContent();
+                    // let content = tinyMCE.activeEditor.getContent();
+                    let content = quill.root.innerHTML;
                     let res = res_templates_list.filter(item => item.id == $(this).val());
                     if(res.length) {
                         // if(!content && content != '<p></p>') {
