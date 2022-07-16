@@ -1644,7 +1644,6 @@
                
                 }
             });
-    quill.clipboard.dangerouslyPasteHTML(0, '{{$profile->signature}}');
 
   </script>
     @include('js_files.ticket_cmmnJs')
