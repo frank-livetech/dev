@@ -395,7 +395,7 @@
                                     cache: false,
                                     async:false,
                                     success: function(res) {
-                                        ticket_notify(data.id, 'ticket_create');
+                                        ticket_notify(data.id, 'ticket_create',tag_emails);
                                         alertNotification('success', 'Success' , data.message);
                                         window.location.href = "{{route('ticket_management.index')}}";
                                     }
@@ -565,13 +565,13 @@
 
         }
 
-        function ticket_notify(id, template) {
+        function ticket_notify(id, template, email=null) {
             let auto_responder = $("#send_email").is(":checked") ? 1 : 0;
             let send_details = $("#send_details").is(":checked") ? 1 : 0;
             $.ajax({
                 type: 'POST',
                 url: "{{url('ticket_notification')}}",
-                data: { id: id, template: template, action: 'Ticket Create' , auto_responder : auto_responder , send_details : send_details },
+                data: { id: id, template: template, action: 'Ticket Create' , auto_responder : auto_responder , send_details : send_details, tag_email:email },
                 async:false,
                 success: function(data) {
                     if (!data.success) {

@@ -543,6 +543,7 @@ class HelpdeskController extends Controller
 
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                         $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'ticket_mention', $request->note,'add_ticket');
+                        $this->sendNotificationMail($ticket->toArray(), $temp, '', '', 'Ticket Create', $ticket->id,$emails[$i],'' , $request->auto_responder , $request->send_details );
 
                         $mail = new MailController();
                         $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
@@ -895,7 +896,6 @@ class HelpdeskController extends Controller
             })
             ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
         }
-
 
         $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)
         ->where( [ ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ] )->count();
