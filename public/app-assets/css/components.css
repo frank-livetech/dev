@@ -1463,7 +1463,9 @@ footer.footer-border {
   height: 1.25rem;
   width: 1.25rem;
   font-size: 1.25rem; }
-
+  button.btn.btn-primary.btn-icon.scroll-top.waves-effect.waves-float.waves-light{
+    padding: 1rem 1rem !important ;
+  }
 .navbar-container .search-input .search-input-close{
   z-index: 1;
   display: none;
