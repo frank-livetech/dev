@@ -792,7 +792,11 @@ class MailController extends Controller
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' .'/' .$ticket->coustom_id;
             $action_perform = 'Ticket (<a href="'. $url .'">'.$ticket->coustom_id.'</a>) Created By CRON';
             $log = new ActivitylogController();
-            $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
+            if($is_staff_tkt == 1){
+                $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , $created_by , $action_perform);
+            }else{
+                $log->saveActivityLogs('Tickets' , 'tickets' , $ticket->id , 0 , $action_perform);
+            }
 
             try {
                 $ticket = Tickets::where('id',$ticket->id)->first();
