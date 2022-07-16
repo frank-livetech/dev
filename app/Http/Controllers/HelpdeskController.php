@@ -3049,7 +3049,6 @@ class HelpdeskController extends Controller
             if( $request->id != null ){
 
                 $note = TicketNote::findOrFail($data['id']);
-
                 $note->color = $data['color'];
                 $note->type = $data['type'];
                 $note->note = $data['note'];
@@ -3059,14 +3058,12 @@ class HelpdeskController extends Controller
                 $note->updated_at = Carbon::now();
                 $note->save();
 
-
                 $data = $note;
-                $action_performed = 'User (<a href="'.url('customer-profile').'/'.$note->coustom_id.'">'.$note->coustom_id.'</a>) Note updated by '. $name_link;
+                $action_performed = 'User Note updated by '. $name_link;
             }else{
                 $data['created_by'] = \Auth::user()->id;
                 $note = TicketNote::create($data);
-
-                $action_performed = 'User (<a href="'.url('customer-profile').'/'.$note->coustom_id.'">'.$note->coustom_id.'</a>) Note added by '. $name_link;
+                $action_performed = 'User Note added by '. $name_link;
             }
 
 
@@ -3088,47 +3085,47 @@ class HelpdeskController extends Controller
             $log = new ActivitylogController();
             $log->saveActivityLogs('Tickets' , 'ticket_notes' , $note->id , auth()->id() , $action_performed);
 
-            $template = DB::table("templates")->where('code','ticket_common_notification')->first();
+            // $template = DB::table("templates")->where('code','ticket_common_notification')->first();
 
-            if($request->tag_emails != null && $request->tag_emails != '') {
+            // if($request->tag_emails != null && $request->tag_emails != '') {
 
-                $emails = explode(',',$request->tag_emails);
+            //     $emails = explode(',',$request->tag_emails);
 
-                for( $i = 0; $i < sizeof($emails); $i++ ) {
+            //     for( $i = 0; $i < sizeof($emails); $i++ ) {
 
-                    $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
-                    if($user) {
-                        $ticket = Tickets::where('is_deleted', 0)->where('id',$note->id)->first();
+            //         $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
+            //         if($user) {
+            //             $ticket = Tickets::where('is_deleted', 0)->where('id',$note->id)->first();
 
-                        $notify = new NotifyController();
-                        $sender_id = \Auth::user()->id;
-                        $receiver_id = $user->id;
-                        $slug = url('customer-profile') .'/'.$note->coustom_id;
-                        $type = 'ticket_notes';
-                        $data = 'data';
-                        $title = \Auth::user()->name.' mentioned You ';
-                        $icon = 'at-sign';
-                        $class = 'btn-success';
-                        $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $note->coustom_id;
+            //             $notify = new NotifyController();
+            //             $sender_id = \Auth::user()->id;
+            //             $receiver_id = $user->id;
+            //             $slug = url('customer-profile') .'/'.$note->coustom_id;
+            //             $type = 'ticket_notes';
+            //             $data = 'data';
+            //             $title = \Auth::user()->name.' mentioned You ';
+            //             $icon = 'at-sign';
+            //             $class = 'btn-success';
+            //             $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $note->coustom_id;
 
-                        $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
+            //             $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
 
-                        // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
+            //             // $template->template_html,$flag_tkt , $flag , 'ticket_flag', ''
 
-                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $request->note);
-                        $mail = new MailController();
-                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $note->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
-                    }
-                }
-            }
+            //             $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $request->note);
+            //             $mail = new MailController();
+            //             $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $note->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+            //         }
+            //     }
+            // }
 
 
 
             // send notification
-            $slug = url('customer-profile') .'/'.$note->coustom_id;
+            $slug = url('customer-profile') .'/'.$note->id;
             $type = 'ticket_updated';
             $title = ($request->id != null ? 'User Note Updated' : 'User Note Created');
-            $desc = 'User (<a href="'.url('/customer-profile').'/' .$note->coustom_id.'">'.$note->coustom_id.'</a>)' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
+            $desc = 'User (<a href="'.url('/customer-profile').'/' .$note->id.'">'.$note->id.'</a>)' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
             $response['message'] = 'User Note Saved Successfully!';
