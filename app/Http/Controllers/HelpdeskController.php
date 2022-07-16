@@ -3499,7 +3499,7 @@ class HelpdeskController extends Controller
                 if(!is_array($customer)) $company_id = [$company_id];
 
 
-                $notes_arr = DB::table('users')
+                $notes = DB::table('users')
                 ->join('ticket_notes', 'users.id', '=', 'ticket_notes.created_by')
                 ->select('ticket_notes.*', 'users.name', 'users.profile_pic')->whereIn('ticket_notes.ticket_id', $id)
                 ->orWhere('ticket_notes.customer_id' , $customer_id)
@@ -3510,18 +3510,13 @@ class HelpdeskController extends Controller
                 ->when($request->has('type'), function($q) use($type) {
                     return $q->where('ticket_notes.type', $type);
                 })
+                ->where('ticket_notes.is_deleted' , 0)
                 ->orderBy('created_at', 'desc')
                 ->get()->toArray();
-
-                $notes = array_filter($notes_arr, function ($notes_arr) {
-                    if( $notes_arr->is_deleted == 0 ) {
-                        return $notes_arr;
-                    }
-                });
+                
             }
-
             $allNotes = json_decode( json_encode($notes) , true);
-
+          
             for($i =0; $i < count($allNotes); $i++) {
                 $cdate = new \DateTime( $allNotes[$i]['created_at'] );
                 $cdate->setTimezone(new \DateTimeZone( timeZone() ));
