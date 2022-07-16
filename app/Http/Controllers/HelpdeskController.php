@@ -1338,7 +1338,7 @@ class HelpdeskController extends Controller
                         $desc = 'You were mentioned by '.\Auth::user()->name . ' on Ticket # ' . $ticket->coustom_id;
 
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
-                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'ticket_mention', $request->note,'add_ticket');
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $ticket, '', 'ticket_mention', $request->note,'ticket_reply');
 
                         $mail = new MailController();
                         $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for TICKET ' . $ticket->coustom_id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
@@ -1751,7 +1751,7 @@ class HelpdeskController extends Controller
         }
 
 
-        if($flag_type == 'add_ticket'){
+        if($flag_type == 'add_ticket' || $flag_type = 'ticket_reply'){
 
             if(str_contains($template, '{Ticket-Subject}')) {
                 $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
