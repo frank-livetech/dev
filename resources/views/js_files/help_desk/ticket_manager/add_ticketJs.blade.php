@@ -94,6 +94,9 @@
                                     [ 'link', 'image', 'video', 'formula' ],
                                     [ 'clean' ]
                                 ],
+                                imageResize: {
+                                    displaySize: true
+                                },
                                 keyboard: {
                                   bindings: {
                                     tributeSelectOnEnter: {
@@ -433,7 +436,7 @@
                     quill.clipboard.dangerouslyPasteHTML(quill.getLength() - 1, `${res[0].temp_html}`);
                     $('#res-template').val('').trigger('change');
                 }
-                
+
             });
 
 

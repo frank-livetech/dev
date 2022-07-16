@@ -1032,6 +1032,7 @@
 
     </script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.rawgit.com/kensnyder/quill-image-resize-module/3411c9a7/image-resize.min.js"></script>
     <script src="https://js.pusher.com/7.0.2/pusher.min.js"></script>
     <script type="text/javascript">
         var pusher = new Pusher("{{ pusherCredentials('key') }}", {

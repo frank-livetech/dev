@@ -1859,6 +1859,9 @@ let companies = @json($all_companies);
                 [ 'link', 'image', 'video', 'formula' ],
                 [ 'clean' ]
             ],
+            imageResize: {
+              displaySize: true
+            },
             keyboard: {
                 bindings: {
                 tributeSelectOnEnter: {

@@ -1641,7 +1641,10 @@
                     [ 'link', 'image', 'video', 'formula' ],
                     [ 'clean' ]
                 ],
-               
+                imageResize: {
+                    displaySize: true
+                },
+
                 }
             });
     quill.clipboard.dangerouslyPasteHTML(0, '{{$profile->signature}}');
