@@ -192,6 +192,7 @@
     }
 
     $(document).ready(function() {
+
         try {
             if(countries_list.length) {
                 $('#country').trigger('change');
@@ -199,6 +200,7 @@
         } catch (err) {
             console.log(err);
         }
+        quill.clipboard.dangerouslyPasteHTML(quill.getLength() - 1, `${user_profile.signature}`);
 
         var googleObject = {!! json_encode($google) !!};
         // console.log(googleObject);
