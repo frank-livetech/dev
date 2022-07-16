@@ -52,63 +52,63 @@
     let address2Field;
     let postalField;
 
-    tinymce.init({
-        selector: "textarea#signature",
-        // theme: "modern",
-        height: 300,
-        mobile: {
-            theme: 'silver'
-          },
-        file_picker_types: 'image',
-        paste_data_images: true,
-        plugins: [
-            "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-            "save table contextmenu directionality emoticons template paste textcolor"
-        ],
-        contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
-        spellchecker_callback: function (method, text, success, failure) {
-            var words = text.match(this.getWordCharPattern());
-            if (method === "spellcheck") {
-            var suggestions = {};
-            for (var i = 0; i < words.length; i++) {
-                suggestions[words[i]] = ["First", "Second"];
-            }
-            success({ words: suggestions, dictionary: [ ] });
-            } else if (method === "addToDictionary") {
-            // Add word to dictionary here
-            success();
-            }
-        },
-        file_picker_callback: function(cb, value, meta) {
-            var input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/*');
-            // if(meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
+    // tinymce.init({
+    //     selector: "textarea#signature",
+    //     // theme: "modern",
+    //     height: 300,
+    //     mobile: {
+    //         theme: 'silver'
+    //       },
+    //     file_picker_types: 'image',
+    //     paste_data_images: true,
+    //     plugins: [
+    //         "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+    //         "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+    //         "save table contextmenu directionality emoticons template paste textcolor"
+    //     ],
+    //     contextmenu: "cut copy paste | link image inserttable | cell row column deletetable",
+    //     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | table | print preview fullpage | forecolor backcolor emoticons spellchecker",
+    //     spellchecker_callback: function (method, text, success, failure) {
+    //         var words = text.match(this.getWordCharPattern());
+    //         if (method === "spellcheck") {
+    //         var suggestions = {};
+    //         for (var i = 0; i < words.length; i++) {
+    //             suggestions[words[i]] = ["First", "Second"];
+    //         }
+    //         success({ words: suggestions, dictionary: [ ] });
+    //         } else if (method === "addToDictionary") {
+    //         // Add word to dictionary here
+    //         success();
+    //         }
+    //     },
+    //     file_picker_callback: function(cb, value, meta) {
+    //         var input = document.createElement('input');
+    //         input.setAttribute('type', 'file');
+    //         input.setAttribute('accept', 'image/*');
+    //         // if(meta.filetype == 'media') input.setAttribute('accept', 'audio/*,video/*');
 
-            input.onchange = function() {
-                var file = this.files[0];
+    //         input.onchange = function() {
+    //             var file = this.files[0];
 
-                var reader = new FileReader();
-                reader.onload = async function() {
-                    var id = 'blobid' + (new Date()).getTime();
-                    var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                    var base64 = reader.result.split(',')[1];
+    //             var reader = new FileReader();
+    //             reader.onload = async function() {
+    //                 var id = 'blobid' + (new Date()).getTime();
+    //                 var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+    //                 var base64 = reader.result.split(',')[1];
 
-                    if(reader.result.includes('/svg') || reader.result.includes('/SVG')) {
-                        base64 = await downloadPNGFromAnyImageSrc(reader.result);
-                    }
+    //                 if(reader.result.includes('/svg') || reader.result.includes('/SVG')) {
+    //                     base64 = await downloadPNGFromAnyImageSrc(reader.result);
+    //                 }
 
-                    var blobInfo = blobCache.create(id, file, base64);
-                    blobCache.add(blobInfo);
-                    cb(blobInfo.blobUri(), { title: file.name });
-                };
-                reader.readAsDataURL(file);
-            };
-            input.click();
-        },
-    });
+    //                 var blobInfo = blobCache.create(id, file, base64);
+    //                 blobCache.add(blobInfo);
+    //                 cb(blobInfo.blobUri(), { title: file.name });
+    //             };
+    //             reader.readAsDataURL(file);
+    //         };
+    //         input.click();
+    //     },
+    // });
 
     function initMap(){
         address1Field = document.querySelector("#address");
