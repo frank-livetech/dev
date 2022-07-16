@@ -1694,7 +1694,7 @@ class HelpdeskController extends Controller
             $flag_tkt->save();
 
 
-            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
+            $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a> ) ';
             $action_perform = 'Ticket ( <a href="'.url('ticket-details').'/'.$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> '.$msg.' '. $name_link;
 
             $log = new ActivitylogController();
@@ -1704,7 +1704,7 @@ class HelpdeskController extends Controller
             // send notification
             $slug = url('ticket-details') .'/'.$flag_tkt->coustom_id;
             $type = Str::slug($title, '-');
-            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> ' . $msg . ' ' .auth()->user()->name;
+            $desc = 'Ticket <a href="'.url('ticket-details').'/' .$flag_tkt->coustom_id.'">'.$flag_tkt->coustom_id.'</a> ) ' . $msg . ' ' .auth()->user()->name;
             sendNotificationToAdmins($slug , $type , $title ,  $desc);
 
 
