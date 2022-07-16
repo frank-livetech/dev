@@ -1713,13 +1713,13 @@ class HelpdeskController extends Controller
             $template = str_replace('{Flag-Image}', ($tempType != 'ticket_flag' ? '' : ( $flag =='Flagged' ? $flaggedImage : $unflaggedImage ) ) , $template);
         }
 
+
         if($flag_type == 'add_ticket'){
+
             if(str_contains($template, '{Ticket-Subject}')) {
                 $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
             }
-        }
 
-        if($flag_type == 'add_ticket'){
             if(str_contains($template, '{Ticket-Detail}')) {
 
                 $date = new \DateTime($ticket['updated_at']);
@@ -1730,19 +1730,23 @@ class HelpdeskController extends Controller
 
                 $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
             }
+
+            if(str_contains($template, '{Go-To-Ticket}')) {
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
+                $template = str_replace('{Go-To-Ticket}', $url , $template);
+            }
         }
 
         if($flag_type == 'add_note'){
             if(str_contains($template, '{Notes}')) {
                 $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
             }
-        }
-        if($flag_type == 'add_ticket'){
-            if(str_contains($template, '{Go-To-Ticket}')) {
-                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
-                $template = str_replace('{Go-To-Ticket}', $url , $template);
+        }else{
+            if(str_contains($template, '{Notes}')) {
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
             }
         }
+
 
         return html_entity_decode($template);
     }
