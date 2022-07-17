@@ -506,12 +506,12 @@ class CompanyController extends Controller
                         $title = Auth::user()->name.' mentioned You ';
                         $icon = 'at-sign';
                         $class = 'btn-success';
-                        $desc = 'You were mentioned by '.Auth::user()->name . ' on Note # ' . $note->id;
+                        $desc = 'You were mentioned by '.Auth::user()->name . ' on Company Profile (<a href="'.url('/company-profile').'/' .$note->company_id.'">'.$note->company->name.'</a>) Note.';
 
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
                         $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $note->note,'add_note');
                         $mail = new MailController();
-                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for Comapny Note (' . $note->company->name .')' , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you In Comapny Note (' . $note->company->name .')' , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
                     }
                 }
             }
@@ -541,72 +541,41 @@ class CompanyController extends Controller
         }
     }
 
-    public function ticketCommonNotificationShortCodes($templateHtml , $ticket , $flag , $tempType, $notes = '', $flag_type = '') {
+   public function ticketCommonNotificationShortCodes($templateHtml , $note , $flag , $tempType, $notes = '', $flag_type = '') {
 
         $template = htmlentities($templateHtml);
 
 
         if(str_contains($template, '{Subject}')) {
-            $subject = auth()->user()->name . ' ' . ($tempType =='ticket_flag' ? $flag : ' mentioned you in ') . ' Ticket ' .  $ticket->coustom_id;
-            $template = str_replace('{Subject}', $subject , $template);
+            $template = str_replace('{Subject}', '' , $template);
         }
 
         if(str_contains($template, '{Flag-Image}')) {
 
-            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/');
-            $flaggedImage = '<img src="'.$url.'/public/default_imgs/flagged.png" width="20" style="width:20px !important; height:20px !important" />';
-            $unflaggedImage = '<img src="'.$url.'/public/default_imgs/unflagged.png" width="20" style="width:20px !important; height:20px !important" />';
-
-            $template = str_replace('{Flag-Image}', ($tempType != 'ticket_flag' ? '' : ( $flag =='Flagged' ? $flaggedImage : $unflaggedImage ) ) , $template);
+            $template = str_replace('{Flag-Image}', '', $template);
         }
 
-
-        if($flag_type == 'add_ticket' || $flag_type == 'ticket_reply'){
-
-            if(str_contains($template, '{Ticket-Subject}')) {
-                $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
-            }
-
-            if(str_contains($template, '{Ticket-Detail}')) {
-
-                $date = new \DateTime($ticket['updated_at']);
-                $date->setTimezone(new \DateTimeZone( timeZone() ));
-                $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
-
-                $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
-
-                $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
-            }
-
-            if(str_contains($template, '{Go-To-Ticket}')) {
-                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
-                $template = str_replace('{Go-To-Ticket}', $url , $template);
-            }
-
-            if(str_contains($template, '{Notes}')) {
-                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
-            }
-
-        }else{
-
-            if(str_contains($template, '{Ticket-Subject}')) {
-                $template = str_replace('{Ticket-Subject}',  ' ', $template);
-            }
-
-            if(str_contains($template, '{Ticket-Detail}')) {
-                $template = str_replace('{Ticket-Detail}', ' ' , $template);
-            }
-
-            if(str_contains($template, '{Go-To-Ticket}')) {
-                $template = str_replace('{Go-To-Ticket}', ' ', $template);
-            }
-
-            if(str_contains($template, '{Notes}')) {
-                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
-                $template = str_replace('Ticket', 'Note' , $template);
-            }
-
+        if(str_contains($template, '{Ticket-Subject}')) {
+            $template = str_replace('{Ticket-Subject}',  '', $template);
         }
+
+        if(str_contains($template, '{Ticket-Detail}')) {
+            $template = str_replace('{Ticket-Detail}', '' , $template);
+        }
+
+        if(str_contains($template, '{Notes}')) {
+            $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
+        }
+
+        if(str_contains($template, '{Go-To-Ticket}')) {
+
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/company-profile' . '/' . $note->company_id;
+            $template = str_replace('{Go-To-Ticket}', $url , $template);
+            if(str_contains($template, 'Go To Ticket')) {
+                $template = str_replace('Go To Ticket', 'Go To Profile' , $template);
+            }
+        }
+        
 
         return html_entity_decode($template);
     }
