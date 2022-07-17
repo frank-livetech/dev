@@ -483,11 +483,11 @@ class CustomerlookupController extends Controller
         $tickets = Tickets::where([['customer_id' , $customer_id] ,['is_deleted',0] ])->get();
         // $company_id
 
-        $notesCount = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$customer_id)->orwhere('company_id',$company_id)->count();
-        // return $notesCount;
-        // foreach($tickets as $ticket) {
-        //     $notesCount += TicketNote::where([['ticket_id' , $ticket->id] ,['type','User'],['is_deleted',0]])->count();
-        // }
+        if($company_id == null){
+            $notesCount = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$customer_id)->count();
+        }else{
+            $notesCount = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$customer_id)->orWhere('company_id',$company_id)->count();
+        }
         $ticketsCount = $tickets->count();
 
         $ticketView = TicketView::where('user_id' , auth()->id())->first();
