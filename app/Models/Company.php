@@ -60,9 +60,13 @@ class Company extends Model
     public function staff_members(){
         return $this->hasMany(Customer::class,'company_id','id');
     }
-    
+
     public function staffs() {
         return $this->belongsToMany('App\User','company_user');
+    }
+
+    public function note(){
+        return $this->hasMany(TicketNote::class);
     }
 
     public function getCmpCountryNameAttribute($value)

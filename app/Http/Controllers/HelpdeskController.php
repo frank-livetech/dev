@@ -188,6 +188,8 @@ class HelpdeskController extends Controller
 
             $data['action_performed'] = ($request->has('action_performed')) ? $data['action_performed'] : "";
 
+
+
             if(!empty($ticket)) {
                 if(array_key_exists('attachments', $data)) {
                     // target dir for ticket files against ticket id
@@ -309,11 +311,11 @@ class HelpdeskController extends Controller
 
                 // }else{
                 //     // save activity logs
-                //     $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                //     $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '.$data['action_performed'].' Updated By '. $name_link;
+                    // $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+                    // $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] .' Updated By '. $name_link;
 
-                //     $log = new ActivitylogController();
-                //     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+                    // $log = new ActivitylogController();
+                    // $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
 
                 //     // send notification
                 //     if($request->action == 'ticket_detail_update') {
@@ -329,6 +331,13 @@ class HelpdeskController extends Controller
                 $allusers = User::whereIn('id',$dept_assignments)->where('user_type','!=',4)->where('user_type','!=',5)->where('status',1)->where('is_deleted',0)->get();
 
 
+                if($request->action == 'ticket_detail_update'){
+                    $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] .' Updated By '. $name_link;
+
+                    $log = new ActivitylogController();
+                    $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
+                }
 
 
                 $response['message'] = 'Ticket Updated Successfully!';

@@ -9,11 +9,11 @@ use DB;
 class Customer extends Model
 {
     use SoftDeletes;
-    
+
     protected $table = 'customers';
     protected $appends = ['prof_cn_name' , 'prof_st_name', 'company_name'];
     protected $fillable = [
-        'woo_id','username','first_name','last_name','email', 
+        'woo_id','username','first_name','last_name','email',
         'cust_password','is_paying_customer', 'avatar_url', 'phone', 'alt_phone', 'phone_type',
         'address','apt_address', 'company_id', 'country', 'vertical',
         'business_residential','cust_type','created_at','updated_at',
@@ -21,7 +21,7 @@ class Customer extends Model
         'bill_st_add','bill_apt_add','bill_add_country','bill_add_city','bill_add_state',
         'bill_add_zip','is_bill_add','fb','twitter','insta','pinterest','linkedin', 'po'
     ];
-    
+
     public function user() {
         return $this->belongsTo(Project::class);
     }
@@ -80,16 +80,20 @@ class Customer extends Model
             }
         }
     }
-    
+
     public function getcompanyNameAttribute($value)
     {
         $cp_id = $this->company_id;
         if($cp_id == NULL) return null;
-        
+
         $comp = DB::Table('companies')->where('id', $cp_id)->first();
 
         if(empty($comp)) return null;
         else return $comp->name;
+    }
+
+    public function note(){
+        return $this->hasMany(TicketNote::class);
     }
 
 }
