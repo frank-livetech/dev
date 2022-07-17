@@ -624,8 +624,10 @@ class CustomerlookupController extends Controller
         }
 
         if(str_contains($template, '{Go-To-Ticket}')) {
+
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-profile' . '/' . $note->customer_id;
             $template = str_replace('{Go-To-Ticket}', $url , $template);
+            str_replace('Go To Ticket', 'Go To Profile' , $template);
         }
         
 
