@@ -602,6 +602,15 @@ class CustomerlookupController extends Controller
         $template = htmlentities($templateHtml);
 
 
+        if(str_contains($template, '{Subject}')) {
+            $template = str_replace('{Subject}', '' , $template);
+        }
+
+        if(str_contains($template, '{Flag-Image}')) {
+
+            $template = str_replace('{Flag-Image}', '', $template);
+        }
+
         if(str_contains($template, '{Ticket-Subject}')) {
             $template = str_replace('{Ticket-Subject}',  '', $template);
         }
@@ -612,13 +621,13 @@ class CustomerlookupController extends Controller
 
         if(str_contains($template, '{Notes}')) {
             $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
-            $template = str_replace('Ticket', 'Customer Profile' , $template);
         }
 
         if(str_contains($template, '{Go-To-Ticket}')) {
             $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-profile' . '/' . $notes->customer_id;
             $template = str_replace('{Go-To-Ticket}', $url , $template);
         }
+        
 
         return html_entity_decode($template);
     }
