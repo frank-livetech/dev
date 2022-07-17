@@ -597,7 +597,7 @@ class CustomerlookupController extends Controller
         }
     }
 
-    public function ticketCommonNotificationShortCodes($templateHtml , $ticket , $flag , $tempType, $notes = '', $flag_type = '') {
+    public function ticketCommonNotificationShortCodes($templateHtml , $note , $flag , $tempType, $notes = '', $flag_type = '') {
 
         $template = htmlentities($templateHtml);
 
@@ -624,7 +624,7 @@ class CustomerlookupController extends Controller
         }
 
         if(str_contains($template, '{Go-To-Ticket}')) {
-            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-profile' . '/' . $notes->customer_id;
+            $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/customer-profile' . '/' . $note->customer_id;
             $template = str_replace('{Go-To-Ticket}', $url , $template);
         }
         
