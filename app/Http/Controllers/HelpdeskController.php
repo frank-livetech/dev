@@ -1761,7 +1761,7 @@ class HelpdeskController extends Controller
         }
 
 
-        if($flag_type == 'add_ticket' || $flag_type == 'ticket_reply'){
+        if($flag_type == 'add_ticket'){
 
             if(str_contains($template, '{Ticket-Subject}')) {
                 $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
@@ -1787,7 +1787,53 @@ class HelpdeskController extends Controller
                 $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
             }
 
+        }elseif($flag_type == 'ticket_reply'){
+            
+             if(str_contains($template, '{Ticket-Subject}')) {
+                $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
+            }
+
+            if(str_contains($template, '{Ticket-Detail}')) {
+
+                $date = new \DateTime($ticket['updated_at']);
+                $date->setTimezone(new \DateTimeZone( timeZone() ));
+                $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
+
+                $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
+
+                $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
+            }
+
+            if(str_contains($template, '{Go-To-Ticket}')) {
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
+                $template = str_replace('{Go-To-Ticket}', $url , $template);
+            }
+
+            if(str_contains($template, '{Notes}')) {
+                $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
+            }
+            
         }else{
+            
+            if(str_contains($template, '{Ticket-Subject}')) {
+                $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
+            }
+
+            if(str_contains($template, '{Ticket-Detail}')) {
+
+                $date = new \DateTime($ticket['updated_at']);
+                $date->setTimezone(new \DateTimeZone( timeZone() ));
+                $ticketUpdated = '<strong>Updated</strong>: ' . $date->format(system_date_format() .' h:i a');
+
+                $data = $this->getReplyDueAndResolutionDeadLine( $ticket );
+
+                $template = str_replace('{Ticket-Detail}', $data[0] .' '. $data[1] . ' '. $ticketUpdated , $template);
+            }
+
+            if(str_contains($template, '{Go-To-Ticket}')) {
+                $url = GeneralController::PROJECT_DOMAIN_NAME.'/'.basename(base_path(), '/'). '/ticket-details' . '/' . $ticket->coustom_id;
+                $template = str_replace('{Go-To-Ticket}', $url , $template);
+            }
 
             if(str_contains($template, '{Notes}')) {
                 $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
