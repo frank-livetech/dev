@@ -1394,9 +1394,7 @@ class MailController extends Controller
                 }
             } else {
                 $mail->addAddress($recipient, $recipient_name);
-
                 if(!$mail->send()) throw new Exception('Failed to send mail');
-
             }
 
         } catch(Exception $e) {

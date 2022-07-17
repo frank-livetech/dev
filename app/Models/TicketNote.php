@@ -65,4 +65,15 @@ class TicketNote extends Model
         }
 
     }
+
+
+
+    public function company() {
+        return $this->belongsTo(Company::class);
+    }
+
+
+    public function customer() {
+        return $this->belongsTo(Customer::class);
+    }
 }

@@ -495,13 +495,12 @@ class CompanyController extends Controller
 
                     $user = User::where('is_deleted',0)->where('email',$emails[$i])->first();
                     if($user) {
-                        $ticket = Tickets::where('is_deleted', 0)->where('id',$note->id)->first();
+                        $note = TicketNote::with('company')->where('is_deleted', 0)->where('id',$note->id)->first();
 
-                        $slug_url = url('company-profile') .'/'. $note->company_id;
                         $notify = new NotifyController();
                         $sender_id = Auth::user()->id;
                         $receiver_id = $user->id;
-                        $slug = $slug_url;
+                        $slug = url('company-profile') .'/'. $note->company_id;
                         $type = 'company_note';
                         $data = 'data';
                         $title = Auth::user()->name.' mentioned You ';
@@ -510,9 +509,9 @@ class CompanyController extends Controller
                         $desc = 'You were mentioned by '.Auth::user()->name . ' on Note # ' . $note->id;
 
                         $notify->sendNotification($sender_id,$receiver_id,$slug,$type,$data,$title,$icon,$class,$desc);
-                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $note->note,'note');
+                        $temp = $this->ticketCommonNotificationShortCodes($template->template_html , $note, '', 'note_mention', $note->note,'add_note');
                         $mail = new MailController();
-                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for Note ' . $note->id , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
+                        $mail->sendMail( '@'.auth()->user()->name .' has mentioned you for Comapny Note (' . $note->company->name .')' , $temp , 'system_mentioned@mylive-tech.com', $user->email , $user->name);
                     }
                 }
             }
@@ -520,7 +519,7 @@ class CompanyController extends Controller
 
 
             // send notification
-            $slug = $slug_url;
+            $slug = url('company-profile') .'/'. $note->company_id;
             $type = 'ticket_updated';
             $title = ($request->id != null ? 'Company Note Updated' : 'Company Note Created');
             $desc = 'User (<a href="'.url('/company-profile').'/' .$note->id.'">'.$note->id.'</a>)' . ($request->id != null ? ' Note Updated By ' : ' Note created by ') . auth()->user()->name;
@@ -590,9 +589,23 @@ class CompanyController extends Controller
 
         }else{
 
+            if(str_contains($template, '{Ticket-Subject}')) {
+                $template = str_replace('{Ticket-Subject}',  ' ', $template);
+            }
+
+            if(str_contains($template, '{Ticket-Detail}')) {
+                $template = str_replace('{Ticket-Detail}', ' ' , $template);
+            }
+
+            if(str_contains($template, '{Go-To-Ticket}')) {
+                $template = str_replace('{Go-To-Ticket}', ' ', $template);
+            }
+
             if(str_contains($template, '{Notes}')) {
                 $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : $notes) , $template);
+                $template = str_replace('Ticket', 'Note' , $template);
             }
+
         }
 
         return html_entity_decode($template);
