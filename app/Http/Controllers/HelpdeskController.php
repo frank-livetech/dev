@@ -1555,6 +1555,14 @@ class HelpdeskController extends Controller
         $reply = TicketReply::find($request->id);
         $reply->delete();
 
+        $ticket = Tickets::find($reply->ticket_id);
+
+        $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
+        $action_perform = 'Ticket Reply Deleted By '. $name_link.' on Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a>';
+
+        $log = new ActivitylogController();
+        $log->saveActivityLogs('Tickets' , 'ticket_reply' , $request->id , auth()->id() , $action_perform);
+
         return response()->json([
             "message" => "Ticket Reply Deleted Successfully!",
             "status_code" => 200 ,
@@ -1788,7 +1796,7 @@ class HelpdeskController extends Controller
             }
 
         }elseif($flag_type == 'ticket_reply'){
-            
+
              if(str_contains($template, '{Ticket-Subject}')) {
                 $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
             }
@@ -1812,9 +1820,9 @@ class HelpdeskController extends Controller
             if(str_contains($template, '{Notes}')) {
                 $template = str_replace('{Notes}', ($tempType =='ticket_flag' ? '' : '') , $template);
             }
-            
+
         }else{
-            
+
             if(str_contains($template, '{Ticket-Subject}')) {
                 $template = str_replace('{Ticket-Subject}',  $ticket->subject , $template);
             }
@@ -3398,7 +3406,7 @@ class HelpdeskController extends Controller
                     }else{
                         $notes = TicketNote::whereIn('type',['User','User Organization'])->where('is_deleted',0)->where('customer_id',$request->customer)->orWhere('company_id',$company_id)->get();
                     }
-                   
+
                 }else if($request->type == 'User Organization'){
 
                     $notes = TicketNote::whereIn('type',['User Organization'])->where('is_deleted',0)->where('company_id',$request->company_id)->get();
