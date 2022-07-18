@@ -17,7 +17,7 @@ class TicketReply extends Model
     ];
 
     public function ticket() {
-        return $this->belongsTo(App\Models\Tickets::class);
+        return $this->belongsTo(Tickets::class);
     }
 
     public function replyUser(){
