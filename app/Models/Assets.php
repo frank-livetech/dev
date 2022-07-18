@@ -16,11 +16,11 @@ class Assets extends Model
 
 
     public function template() {
-        return $this->hasOne(AssetForms::class, 'id', 'asset_forms_id');
+        return $this->hasOne(AssetForms::class, 'id', 'asset_forms_id')->where('is_deleted',0);
     }
 
     public function asset_fields() {
-        return $this->hasMany(AssetFields::class, 'asset_forms_id', 'asset_forms_id');
+        return $this->hasMany(AssetFields::class, 'asset_forms_id', 'asset_forms_id')->where('is_deleted',0);
     }
 
     public function customer() {
@@ -47,7 +47,7 @@ class Assets extends Model
     //             return $user->name;
     //         }
     //     }
-        
+
     //     return '---';
     // }
 
@@ -59,7 +59,7 @@ class Assets extends Model
     //             return $user->name;
     //         }
     //     }
-        
+
     //     return '---';
 
     // }
