@@ -333,7 +333,7 @@ class HelpdeskController extends Controller
 
                 if($request->action == 'ticket_detail_update'){
                     $name_link = '<a href="'.url('profile').'/' . auth()->user()->id .'">'.auth()->user()->name.'</a>';
-                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] .' Updated By '. $name_link;
+                    $action_perform = 'Ticket ID <a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> '. $data['action_performed'] .' Subject or details Updated By '. $name_link;
 
                     $log = new ActivitylogController();
                     $log->saveActivityLogs('Tickets' , 'tickets' , $request->id , auth()->id() , $action_perform);
