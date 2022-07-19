@@ -124,8 +124,8 @@
 
                         if (data.length > 0) {
                             data.forEach(element => {
-                                var phone = element.phone != null && element.phone != "" ? element.phone : 'no phone no added';
-                                var company = element.name != null && element.name != "" ? element.name : 'company not provided';
+                                var phone = element.phone != null && element.phone != "" ? element.phone : '';
+                                var company = element.name != null && element.name != "" ? element.name : '';
 
                                 result += `
                                 <a href="{{asset('customer-profile/` + element.id + `')}}">
