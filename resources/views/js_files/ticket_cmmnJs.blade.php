@@ -1040,8 +1040,8 @@
                     }
                 });
 
-                if(val['assignee_img'].length - 1 > 4){
-                    assigneeHtml += `<h6 class="align-self-center cursor-pointer ms-50 mb-0">+`+(val['assignee_img'].length - 1)+`</h6>`;
+                if(val['assignee_img'].length - 1 > 5){
+                    assigneeHtml += `<h6 class="align-self-center cursor-pointer ms-50 mb-0">+`+(val['assignee_img'].length - 5)+`</h6>`;
                 }
 
                 assigneeHtml += `</div>`;
