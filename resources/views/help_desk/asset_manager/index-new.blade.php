@@ -112,13 +112,13 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="true">Service</a>
                 </li>
-                
+
             </ul> --}}
             <ul class="nav nav-pills mb-2">
                 <li class="nav-item">
                     <a class="nav-link active" id="asset-type-tab" data-bs-toggle="tab" href="#assettype" aria-controls="profile" role="tab" aria-selected="true">
                          <i class="fal fa-history font-medium-3 me-50"></i>
-  
+
                          <span class="me-50">Asset Type</span>
                      </a>
                  </li>
@@ -128,8 +128,8 @@
                        <span class="fw-bold">Asset</span>
                    </a>
                </li>
-               
-             
+
+
            </ul>
            <!--/ User Pills -->
        </div>
@@ -226,11 +226,11 @@
                                                 Asset Template
                                             </button>
                                         </div> -->
-            
+
                                     </div>
                                     <br>
-            
-            
+
+
                                     <!-- <div class="row">
                                         <div class="col-md-12" style="text-align:right;">
                                             <select class="multiple-select mt-2 mb-2" name="as_select" id="as_select" placeholder="Show/Hide" multiple="multiple" selected="selected">
@@ -244,7 +244,7 @@
                                             </select>
                                         </div>
                                     </div> -->
-            
+
                                     <div class="table-responsive">
                                         <table id="asset-table-list"
                                             class="table table-bordered w-100 no-wrap asset-table-list">
@@ -267,7 +267,7 @@
                                     </div>
                                 </div>
                             </div>
-            
+
                         </div>
                     </div>
                     <div class="tab-pane active" id="assettype" aria-labelledby="asset-type-tab" role="tabpanel">
@@ -280,11 +280,11 @@
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="">
                                     <div class="" id="shw_assettype" style="display:none ">
                                     <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
-                                        
+
                                         <div class="row mb-2 p-2">
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -298,7 +298,7 @@
                                                 <div class="card p-1" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;background-color: #F7F8F8">
                                                     <div class="row">
                                                     <div class="col-md-6 talign">
-    
+
                                                     <a class="buttonPush " href="javascript:fieldAdd('text')" >
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
@@ -310,7 +310,7 @@
                                                     </div>
                                                     <div class="col-md-6 talign">
                                                     <a class="buttonPush" href="javascript:fieldAdd('phone')">
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-phone" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
@@ -323,100 +323,100 @@
                                             <div class="row">
                                                 <div class="col-md-6 talign">
                                                     <a class="buttonPush" href="javascript:fieldAdd('email')" >
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-envelope" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
                                                                 <span class="FieldItem_title">Email</span>
                                                             </div>
                                                         </div>
-    
+
                                                     </a>
                                                 </div>
                                                     <div class="col-md-6 talign">
                                                     <a href="javascript:fieldAdd('textbox')"  class="buttonPush">
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-indent" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
                                                                 <span class="FieldItem_title">Text Area</span>
                                                             </div>
                                                         </div>
-    
+
                                                     </a>
                                                 </div>
-    
+
                                             </div>
                                             <div class="row">
                                             <div class="col-md-6 talign">
                                                     <a class="buttonPush" href="javascript:fieldAdd('selectbox')">
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-chevron-circle-down" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
                                                                 <span class="FieldItem_title">Select</span>
                                                             </div>
                                                         </div>
-    
+
                                                     </a>
                                                 </div>
                                                 <div class="col-md-6 talign">
                                                     <a class="buttonPush" href="javascript:fieldAdd('password')" >
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-key" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
                                                                 <span class="FieldItem_title">Password</span>
                                                             </div>
                                                         </div>
-    
+
                                                     </a>
                                                 </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 talign">
                                                     <a class="buttonPush" href="javascript:fieldAdd('ipv4')" >
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-qrcode" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
                                                                 <span class="FieldItem_title">IPv4</span>
                                                             </div>
                                                         </div>
-    
+
                                                     </a>
                                                 </div>
                                                 <div class="col-md-6 talign">
                                                     <a class="buttonPush" href="javascript:fieldAdd('url')" >
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-laptop-code" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
                                                                 <span class="FieldItem_title">URL</span>
                                                             </div>
                                                         </div>
-    
+
                                                     </a>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 talign">
                                                     <a class="buttonPush" href="javascript:fieldAdd('address')" >
-    
+
                                                         <div class="FieldSettingsSideBarItem_container">
                                                             <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
                                                                 <i class="fas fa-map-marked-alt" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
                                                                 <span class="FieldItem_title">Address</span>
                                                             </div>
                                                         </div>
-    
+
                                                     </a>
                                                 </div>
                                             </div>
-    
+
                                                 </div>
                                             </div>
-    
+
                                             <div class="col-md-8">
                                                 <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
                                                     <div class="m-1">
@@ -444,7 +444,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                     </div>
                                 </div>
                                         </div>
@@ -456,7 +456,7 @@
                                                     class="table asset-temp-table-list">
                                                     <thead>
                                                         <tr>
-                                                            
+
                                                             <th>Asset Type</th>
                                                             <th>Actions</th>
                                                         </tr>
@@ -474,7 +474,7 @@
             </div>
         </div>
        </div>
-       
+
     </div>
     {{-- <div class="content-body">
         <div class="row" style="padding-bottom: 17px">
@@ -890,17 +890,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label> Customer </label>
-                                <select name="asset_customer_id" onchange="selectCustomer(this.value , 'edit_asset_customer','edit_asset_company')" id="edit_asset_customer" class="select2 asset_customer_id">
-                                    <option value=""> Choose </option>
-                                    @foreach($customers as $customer)
-                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label> Company </label>
                                 <select name="asset_company_id" onchange="selectCompany(this.value , 'edit_asset_customer','edit_asset_company')" id="edit_asset_company" class="select2 asset_company_id">
                                     <option value=""> Choose </option>
@@ -910,6 +899,19 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Customer </label>
+                                <select name="asset_customer_id" onchange="selectCustomer(this.value , 'edit_asset_customer','edit_asset_company')" id="edit_asset_customer" class="select2 asset_customer_id">
+                                    <option value=""> Choose </option>
+                                    @foreach($customers as $customer)
+                                        <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="input_fields mt-1"></div>
                     <div class="address_fields mt-1"></div>
@@ -1039,7 +1041,7 @@
        }
        function close_asset_row(){
         $("#show_assts").css("display", "none");
-      
+
        }
        function show_add_asset(){
         $('#show_assts').toggle();
@@ -1050,7 +1052,7 @@
             $('#save_asset_field_id').hide();
         }else{
             $('#save_asset_field_id').show();
-            
+
         }
         });
     //    $('#form_id').onchange(function(){
@@ -1058,10 +1060,10 @@
     //     if(opt == 'Users1'){
     //         alert('121')
     //         $('#save_asset_field_id').hide();
-            
+
     //     }else{
     //         $('#save_asset_field_id').show();
-            
+
     //     }
     // });
 </script>
