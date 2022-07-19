@@ -79,7 +79,7 @@
         });
 
 
-       
+
 
         if(ticket.customer_id != null) {
             let findCustomer = customers.find(item => item.id == ticket.customer_id);
