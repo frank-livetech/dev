@@ -4135,10 +4135,8 @@ class HelpdeskController extends Controller
         try{
             $id = $data['id'];
 
-            // $response = Tickets::where('id', 'like','%' . $id . '%')
-            // ->orWhere('seq_custom_id','like','%' . $id . '%')
-            // ->orWhere('coustom_id','like','%' . $id . '%')
-            // ->orWhere('subject','like','%' . $id . '%')->get();
+            $response = Tickets::where('is_deleted',0)
+            ->where('coustom_id','like','%' . $id . '%')->get();
 
             // $response = DB::select("SELECT * from tickets tkt INNER JOIN users user ON tkt.created_by = user.id INNER JOIN customers cust ON tkt.customer_id = cust.id WHERE cust.first_name LIKE '%$id%' OR user.name LIKE '%$id%' OR tkt.subject LIKE '%$id%' OR tkt.coustom_id LIKE '%$id%' OR tkt.seq_custom_id LIKE '%$id%'");
 
@@ -4146,7 +4144,7 @@ class HelpdeskController extends Controller
 
 
 
-            $response = (is_numeric($id)) ? DB::select("SELECT * FROM tickets WHERE is_deleted  = 0 AND (id=$id OR seq_custom_id=$id) ;") : DB::select("SELECT * FROM `tickets` WHERE is_deleted  = 0 AND ( `coustom_id` LIKE '%$id%' OR `subject` LIKE '%$id%')  ;");
+            // $response = (is_numeric($id)) ? DB::select("SELECT * FROM tickets WHERE is_deleted  = 0 AND (id=$id OR seq_custom_id=$id) ;") : DB::select("SELECT * FROM `tickets` WHERE is_deleted  = 0 AND ( `coustom_id` LIKE '%$id%' OR `subject` LIKE '%$id%')  ;");
 
             return response()->json($response);
         }catch(Exception $e){
