@@ -2456,6 +2456,35 @@ class MailController extends Controller
                             }
 
                         }
+                        
+                        // Create a DOMDocument and load the HTML.
+                        $dom = new \DOMDocument();
+                        $dom->loadHTML($content);
+                        
+                        // Get all the images. 
+                        $images = $dom->getElementsByTagName('img');
+                        
+                        // Loop the images.
+                        foreach ($images as $image) {
+                            $src = $image->getAttribute('src');
+                            // Create the span wrapper.
+                            $span = $dom->createElement('a');
+                            $span->setAttribute('target', '_blank');
+                            $span->setAttribute('href', $src);
+                            
+                            // Clone the span if we need to use it often.
+                            $span_clone = $span->cloneNode();
+                            
+                            // Replace the image tag with the span tag.
+                            $image->parentNode->replaceChild($span_clone, $image);
+                            
+                            // Add the image tag as a child of the new span tag.
+                            $span_clone->appendChild($image);
+                        }
+                        
+                        // Get your HTML with saveHTML()
+                        $content = $dom->saveHTML();
+                        
                         $content =  $bbcode->convertToHtml($content);
                         $template = str_replace('{Initial-Request}', $content, $template);
                     }
