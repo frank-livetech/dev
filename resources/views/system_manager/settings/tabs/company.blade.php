@@ -14,7 +14,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
                 <div class="form-row">
                     <div class="col-md-12 form-group">
                         <label>Company Name</label>
-                        <input type="text" id="name" name="name" placeholder="Johnathan Doe"
+                        <input type="text" id="name" name="name"
                             value="" class="form-control">
                         <span class="text-danger" id="err2"></span>
                     </div>
