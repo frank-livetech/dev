@@ -467,5 +467,9 @@ $(document).on('select2:open', () => {
       })
     });
 
+    $('#assigned_to').select2({
+      multiple:true,
+    });
+
   </script>
 @endsection

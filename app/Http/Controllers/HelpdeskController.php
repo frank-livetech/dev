@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\CustomerManager\CustomerlookupController;
 use Illuminate\Http\Request;
-use App\Models\{Departments , DepartmentAssignments , TicketStatus, TicketPriority ,TicketType, Customer, SpamUser , TicketSharedEmails , Tickets, Vendors , TicketReply , TicketFollowUp , TicketFollowupLogs, TicketNote , TicketView, Assets, Project, SystemSetting, Activitylog, TicketSettings, Company, SlaPlan, SlaPlanAssoc , ResTemplateCat , Country , ResponseTemplate, DepartmentPermissions, Mail};
+use App\Models\{Departments , DepartmentAssignments , TicketStatus, TicketPriority ,TicketType, Customer, SpamUser , TicketSharedEmails , Tickets, Vendors , TicketReply , TicketFollowUp , TicketFollowupLogs, TicketNote , TicketView, Assets, Project, SystemSetting, Activitylog, TicketSettings, Company, SlaPlan, SlaPlanAssoc , ResTemplateCat , Country , ResponseTemplate, DepartmentPermissions, Mail, UserTicket};
 use Illuminate\Support\Facades\{Crypt , Hash};
 use App\User;
 use Illuminate\Support\Facades\{DB, Auth ,File, URL};
@@ -228,9 +228,25 @@ class HelpdeskController extends Controller
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) department changed from: '.$ticket->department_name.' to: '.$dd_values[$dd]['new_text'];
                             $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';
                         }elseif($dd_values[$dd]['id'] == 2){
-                            $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
+
+                            $userTkt = UserTicket::where('tickets_id',$ticket->id);
+                            if($userTkt->get()){
+                                $userTkt->delete();
+                            }
+
+                            if(sizeof($dd_values[$dd]['new_data']) > 1){
+                                for($i = 1; $i < sizeof($dd_values[$dd]['new_data']); $i++){
+                                    UserTicket::create([
+                                        'user_id' => $dd_values[$dd]['new_data'][$i],
+                                        'tickets_id' => $ticket->id ?? 0,
+                                    ]);
+                                }
+                            }
+
+                            $data['assigned_to'] = $dd_values[$dd]['new_data'][0];
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
                             $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->assignee_name .')';
+
                         }elseif($dd_values[$dd]['id'] == 3){
                             $data['type'] = $dd_values[$dd]['new_data'] ;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
@@ -483,9 +499,21 @@ class HelpdeskController extends Controller
                 $tt = TicketType::where('name', 'Issue')->first();
                 $data['type'] = $tt->id;
             }
+
+            $data['assigned_to'] = $data['assigned_to'][0];
+
             $ticket = Tickets::create($data);
 
-            // dd($ticket);
+            if(sizeof($request->assigned_to) > 1){
+                for($i = 1; $i < sizeof($request->assigned_to); $i++){
+                    UserTicket::create([
+                        'user_id' => $request->assigned_to[$i],
+                        'tickets_id' => $ticket->id ?? 0,
+                    ]);
+                }
+            }
+
+
             // ticket assoc with sla plan
             $settings = $this->getTicketSettings(['default_reply_and_resolution_deadline']);
             if(isset($settings['default_reply_and_resolution_deadline'])) {
@@ -503,7 +531,6 @@ class HelpdeskController extends Controller
                     ]);
                 }
             }
-
 
 
             $newG = new GeneralController();
@@ -1471,6 +1498,7 @@ class HelpdeskController extends Controller
 
         $assigned_users = DepartmentAssignments::where('dept_id', $ticket->dept_id)->get()->pluck('user_id')->toArray();
         $users = User::where('is_deleted', 0)->where('user_type','!=',5)->where('user_type','!=',4)->where('is_support_staff', 0)->whereIn('id', $assigned_users)->get();
+        $assigned_ticket_users = array_merge(array($details->assigned_to),$details->staff->pluck('id')->toArray());
         // $customers = Customer::where('is_deleted', 0)->get();
         $active_user = \Auth::user();
         $projects = Project::all();
