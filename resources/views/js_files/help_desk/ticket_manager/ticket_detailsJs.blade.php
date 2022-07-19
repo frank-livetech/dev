@@ -137,8 +137,13 @@
         $("#prio-h5").text(Priority);
         var Dep =  $("#dep-label").find(".select2 option:selected").text();
         $("#dep-h5").text(Dep);
-        var Tech =  $("#tech-label").find(".select2 option:selected").text();
-        $("#tech-h5").text(Tech);
+
+        var Tech = ``
+        $("#tech-label").find(".select2 option:selected").each(function () {
+            Tech += '<span class="badge bg-primary" >' +$(this).text()+ '</span>';
+        });
+        $("#tech-h5").html(Tech);
+
         var Status =  $("#status-label").find(".select2 option:selected").text();
         $("#status-h5").text(Status);
         var Type =  $("#type-label").find(".select2 option:selected").text();

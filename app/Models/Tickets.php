@@ -46,6 +46,11 @@ class Tickets extends Model
         return $this->hasMany(Activitylog::class,'ref_id','id');
     }
 
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class,'assinged_to','id');
+    }
+
     /**
      * The users that belong to the tickwt.
      */

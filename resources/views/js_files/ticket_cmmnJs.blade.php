@@ -685,7 +685,7 @@
                 }
             }
 
-            
+
             // var last_act = val.lastActivity;
             // let region_current_date = new Date().toLocaleString('en-US', { timeZone: usrtimeZone });
 
@@ -738,7 +738,7 @@
                                         <li class="nav-item">
                                             <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#ticket_card_${val['id']}" role="tab" aria-controls="pills-home" aria-selected="true">Ticket Details</a>
                                         </li>
-                                        
+
                                         <li class="nav-item">
                                             <a class="nav-link" id="pills-SLA-tab" data-bs-toggle="pill" href="#ticket_cardother_${val['id']}" role="tab" aria-controls="pills-SLA" aria-selected="false">Other Details</a>
                                         </li>
@@ -748,7 +748,7 @@
                                 <div class="card-body">
                                     <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="ticket_card_${val['id']}" role="tabpanel" aria-labelledby="pills-home-tab" style="text-align: left;">
-                                            <p class="card-text"><strong>Subject:</strong> 
+                                            <p class="card-text"><strong>Subject:</strong>
                                                 <a href="${ticket_details_route}/${val['coustom_id']}" id="ticket_name_${val['id']}" class="ticket_name fw-bolder text-body" data-id="${val['id']}">
                                                     ${(shortname.length > 35 ? shortname.substring(0,35) + '...' : shortname)}
                                                 </a>
@@ -767,7 +767,7 @@
                                             <p class="card-text"><strong>Last Activity: </strong><span data-order="${la.getTime()}" style="color:${la_color}">${last_activity}</span></p>
                                             <p class="card-text"><strong>Reply Due: </strong>${new_rep_due}</p>
                                             <p class="card-text"><strong>Resolution Due: </strong>${new_res_due}</p>
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -821,7 +821,7 @@
 
         // </tr>`;
         $('.ticket-mobile-card').append(row);
-       
+
         });
 
     }
@@ -833,7 +833,7 @@
         if ( $.fn.dataTable.isDataTable( '#ticket-table-list' ) ) {
             tickets_table_list.clear().draw();
         }
-
+        console.log()
         $.each(ticket_arr, function(key, val) {
 
             let prior = '<div class="text-center">' + val['priority_name'] + '</div>';
@@ -1028,9 +1028,24 @@
 
             var short_replier = '';
             var assignee = '-- Unassigned --';
+            if (val['assignee_img'] != null && val['assignee_img'].length != 0) {
+                var assigneeHtml = `<div class="avatar-group">`;
+                $.each(val['assignee_img'], function(i,item){
+                    if(i <= 4){
+                        assigneeHtml += `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="bottom" title="" class="avatar pull-up" data-bs-original-title="`+val['assignee_img_name'][i]+`">
+                                                <img src="`+item+`" alt="Avatar" width="33" height="33">
+                                        </div>`
+                    }
+                });
 
-            if (val['assignee_name'] != null) {
-                assignee = val['assignee_name'];
+                if(val['assignee_img'].length - 1 > 4){
+                    assigneeHtml += `<h6 class="align-self-center cursor-pointer ms-50 mb-0">+`+(val['assignee_img'].length - 1)+`</h6>`;
+                }
+
+                assigneeHtml += `</div>`;
+                assignee = assigneeHtml;
+            }else{
+                assignee = '-- Unassigned --'
             }
 
             // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
