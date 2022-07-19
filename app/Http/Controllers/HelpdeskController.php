@@ -869,6 +869,7 @@ class HelpdeskController extends Controller
                 // get ticket according to customers
             })
             ->when($statusOrUser == 'staff', function($q) use ($sid , $closed_status_id) {
+
                 return $q->where([['tickets.assigned_to',$sid], ['tickets.trashed', 0] , ['tickets.status','!=',$closed_status_id] ]);
                 // get ticket according to customers
             })
@@ -937,8 +938,9 @@ class HelpdeskController extends Controller
             ->where([ ['is_deleted', 0], ['is_pending' ,0] ,['tickets.trashed', 0] ,['status', '!=', $closed_status_id] ])->count();
         }
 
-        $my_tickets_count = Tickets::where('assigned_to',\Auth::user()->id)
+        $my_tickets_count = Tickets::where('assigned_to',Auth::user()->id)
         ->where( [ ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ] )->count();
+        $my_tickets_count = $my_tickets_count + UserTicket::where('user_id',Auth::id())->count();
 
         $unassigned_tickets_count = Tickets::whereNull('assigned_to')
         ->where([ ['is_deleted', 0] , ['tickets.trashed', 0] , ['is_pending' ,0] , ['tickets.status', '!=', $closed_status_id] ])->count();
@@ -975,6 +977,19 @@ class HelpdeskController extends Controller
             // $value->last_reply = TicketReply::where('ticket_id', $value->id)->with('replyUser')->orderByDesc('id')->first();
             // $value->tkt_notes = TicketNote::where('ticket_id' , $value->id)->count();
             // $value->tkt_follow_up = TicketFollowUp::where('ticket_id' , $value->id)->where('passed',0)->count();
+
+            if($value->staff != null ){
+
+                $usrAssignImg = [];
+                $usrAssignImgName = [];
+                if($assingIMG = User::find($value->assigned_to)){
+                    $usrAssignImg[] =  $assingIMG->profile_pic;
+                    $usrAssignImgName[] =  $assingIMG->name;
+                }
+
+                $value->assignee_img = array_merge($usrAssignImg, $value->staff->pluck('profile_pic')->toArray());
+                $value->assignee_img_name = $value->staff != null ? array_merge($usrAssignImgName,$value->staff->pluck('name')->toArray()) : null;
+            }
 
             $value->sla_plan = $this->getTicketSlaPlan($value->id);
             // if($value->is_overdue == 0){
