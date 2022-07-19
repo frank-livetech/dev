@@ -12,6 +12,8 @@
         page_name = p_name;
         tickets_table_list = $('#ticket-table-list').DataTable({
             processing: true,
+            colReorder: true,
+            responsive: true,
             // "scrollX": true,
             pageLength: (ticketLengthCount == null ? 10 : (ticketLengthCount.per_page !=null ? ticketLengthCount.per_page : 10)),
             fixedColumns: true,
@@ -1038,8 +1040,8 @@
                     }
                 });
 
-                if(val['assignee_img'].length - 1 > 5){
-                    assigneeHtml += `<h6 class="align-self-center cursor-pointer ms-50 mb-0">+`+(val['assignee_img'].length - 5)+`</h6>`;
+                if(val['assignee_img'].length - 1 > 4){
+                    assigneeHtml += `<h6 class="align-self-center cursor-pointer ms-50 mb-0">+`+(val['assignee_img'].length - 1)+`</h6>`;
                 }
 
                 assigneeHtml += `</div>`;
