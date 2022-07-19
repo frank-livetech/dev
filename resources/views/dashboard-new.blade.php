@@ -5,6 +5,9 @@
 
 
 <style>
+    .badge-secondary {
+    color: #fff;
+    background-color: #868e96;}
     div#ticket-logs-list_paginate{
         margin-top: 39px;
     }
