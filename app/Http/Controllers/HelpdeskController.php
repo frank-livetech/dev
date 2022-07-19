@@ -857,7 +857,10 @@ class HelpdeskController extends Controller
 
             $tickets = Tickets::select("*")->whereIn('dept_id',$dept_assignments)
             ->when($statusOrUser == 'self', function($q) use($closed_status_id) {
-                return $q->where('tickets.assigned_to', \Auth::user()->id)->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
+                $assingTickt = UserTicket::where('user_id',Auth::id())->pluck('tickets_id')->toArray();
+                $assignd = Tickets::where('tickets.assigned_to', Auth::user()->id)->pluck('tickets.id')->toArray();
+
+                return $q->whereIn('tickets.id',array_merge($assingTickt,$assignd))->where('tickets.status','!=',$closed_status_id)->where('tickets.trashed', 0);
             })
             ->when($statusOrUser == 'customer', function($q) use ($cid , $closed_status_id,$type) {
                 if($type == 'closed'){
