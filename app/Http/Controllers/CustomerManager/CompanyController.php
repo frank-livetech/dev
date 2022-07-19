@@ -575,7 +575,7 @@ class CompanyController extends Controller
                 $template = str_replace('Go To Ticket', 'Go To Profile' , $template);
             }
         }
-        
+
 
         return html_entity_decode($template);
     }
@@ -773,7 +773,7 @@ class CompanyController extends Controller
             );
 
 
-            $company = Company::where('name',$request->name)->where('is_default',1)->first();
+            $company = Company::where('is_default',1)->first();
 
             if($company){
                 $company->update($data);
@@ -784,11 +784,6 @@ class CompanyController extends Controller
             }else{
 
                 $c_created = Company::create($data);
-                // if($c_created){
-                //     User::find(Auth::id())->update([
-                //         'company_id' => $c_created->id
-                //     ]);
-                // }
 
                 $response['message'] = 'Company Created Successfully!';
                 $response['status_code'] = 200;
