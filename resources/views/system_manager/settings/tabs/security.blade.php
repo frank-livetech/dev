@@ -45,10 +45,7 @@
                                 password.</p>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="blank_spacer" id="blank_spacer">
-                                <label class="form-check-label" for="blank_spacer"> Blank Spacer </label>
-                            </div>
+                            
                         </div>
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
@@ -68,10 +65,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-9 col-6">
-                                    <p class="mute">Minimum Password length</p>
+                                <div class="col-md-9 col-6 mt-2">
+                                    <span class="mute">Minimum Password length</span>
                                 </div>
-                                <div class="col-md-3 col-6 form-group my-1 ">
+                                <div class="col-md-3 col-6 form-group my-1">
                                     <input class="form-control" type="number" placeholder="6" name="minLength"
                                         id="minLength">
                                 </div>
@@ -88,10 +85,7 @@
                             <p class="mute">Staff password must be longer than this length</p>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="blank_spacer2" id="blank_spacer">
-                                <label class="form-check-label" for="blank_spacer2"> Blank Spacer </label>
-                            </div>
+                           
                         </div>
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
@@ -102,7 +96,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-9 col-6">
+                                <div class="col-md-9 col-6 mt-2">
                                     <p class="mute">Minimum number of digits</p>
                                 </div>
                                 <div class="col-md-3 col-6 form-group my-1 ">

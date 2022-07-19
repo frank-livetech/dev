@@ -216,7 +216,7 @@
                                                 $date->setTimezone(new \DateTimeZone( timeZone() ));
                                                 $created_at =  $date->format(system_date_format() .' h:i a');
                                             @endphp
-                                            <p class="badge bg-light-secondary"> Client Since: {{$created_at}} </p>
+                                            <p class="badge bg-light-secondary">{{$created_at}} </p>
 
                                     @endif
 
@@ -226,11 +226,11 @@
                             <div class="d-flex justify-content-around my-2 pt-75">
                                 <div class="d-flex align-items-start me-2">
                                     <span class="badge bg-light-primary p-75 rounded">
-                                        <i data-feather="check" class="font-medium-2"></i>
+                                        <i class="fal fa-birthday-cake font-medium-2"></i>
                                     </span>
                                     <div class="ms-75">
-                                        <h4 class="mb-0">1.23k</h4>
-                                        <small>Tasks Done</small>
+                                        <h3 class="mb-0">1/1/2022</h3>
+                                        <small>Anniversary </small>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-start">
@@ -1375,55 +1375,169 @@
                                 <div class="card-body">
                                     <h2 class="font-weight-bold text-dark">Social</h2>
 
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
+                                <div class="row mt-1">
+                                    <div class="col-md-6 form-group">
                                             <label>Twitter</label>
+                                        <div class="d-flex">
                                             <input type="text" class="form-control" id="prof_twitter"
                                                 value="{{$customer->twitter}}" placeholder="https://twitter.com/username">
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Facebook</label>
-                                            <input type="text" class="form-control" id="prof_fb" value="{{$customer->fb}}"
-                                                placeholder="https://facebook.com/yourprofile">
+                                               
+                                            <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                            </button>
                                         </div>
                                     </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Facebook</label>
+                                            
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_fb" value="{{$customer->fb}}"
+                                                        placeholder="https://facebook.com/yourprofile">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                </div>
 
                                     <div class="row mt-1">
                                         <div class="col-md-6 form-group">
                                             <label>Instagram</label>
-                                            <input type="text" class="form-control" id="prof_insta"
-                                                value="{{$customer->isnta}}" placeholder="https://instagram.com/username">
+                                            
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_insta"
+                                                        value="{{$customer->isnta}}" placeholder="https://instagram.com/username">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-6 form-group ">
                                             <label>Pinterest</label>
-                                            <input type="text" class="form-control" id="prof_pinterest"
-                                                value="{{$customer->pinterest}}"
-                                                placeholder="https://pinterest.com/@Username">
+                                           
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_pinterest"
+                                                        value="{{$customer->pinterest}}"
+                                                        placeholder="https://pinterest.com/@Username">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-6 form-group mt-1">
                                             <label>Reddit</label>
-                                            <input type="text" class="form-control" id="prof_reddit"
-                                                value=""
-                                                placeholder="https://reddit.com/@Username">
+                                            
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_reddit"
+                                                        value=""
+                                                        placeholder="https://reddit.com/@Username">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
                                         </div>
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-6 form-group mt-1">
                                             <label>Quora</label>
-                                            <input type="text" class="form-control" id="prof_quora"
-                                                value=""
-                                                placeholder="https://quora.com/@Username">
+                                            
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_quora"
+                                                        value=""
+                                                        placeholder="https://quora.com/@Username">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
                                         </div>
-                                    </div>
+                                        <div class="col-md-6 form-group mt-1">
+                                            <label>Telegram</label>
+                                           
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_tele"
+                                                        value=""
+                                                        placeholder="https://telegram.com/@Username">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-6 form-group mt-1">
+                                            <label>Discord</label>
+                                            
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_dis"
+                                                        value=""
+                                                        placeholder="https://discord.com/@Username">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-6 form-group mt-1">
+                                            <label>Twitch</label>
+                                            
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_twi"
+                                                        value=""
+                                                        placeholder="https://twitch.com/@Username">
+                                                       
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
+                                        </div>
+                                    
 
-                                    <div class="row mt-1" >
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-6 form-group mt-1">
                                             <label>Linkedin</label>
-                                            <input type="text" class="form-control" id="prof_linkedin"
-                                                value="{{$customer->linkedin}}"
-                                                placeholder="https://linkedin.com/@Username">
+                                            
+                                                <div class="d-flex">
+                                                    <input type="text" class="form-control" id="prof_linkedin"
+                                                        value="{{$customer->linkedin}}"
+                                                        placeholder="https://linkedin.com/@Username">
+                                                            
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
+                                                        <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
+                                                    </button>
+                                                </div>
                                         </div>
                                     </div>
-
-
                                     <input type="hidden" name="customer-id" id="customer-id" value="{{$customer->id}}">
                                     <div class="row mt-1 mb-2 float-right">
                                         <div class="col-md-12 form-group">
@@ -1662,7 +1776,7 @@
                     <div class="card">
 
                     </div>
-    </div>
+                </div>
 </div>
         <!--Address Book model-->
         <div class="modal fade" id="Address-Book" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel"

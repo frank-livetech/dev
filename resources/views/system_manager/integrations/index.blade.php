@@ -99,7 +99,7 @@
                 <div class="card shadow-none border cursor-pointer" >
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <img src="public/assets/images/{{$integration->image}}" alt="{{$integration->name}}" height="38" />
+                        <img src="public/assets/images/{{$integration->image}}" alt="{{$integration->name}}" height="38" width="40" />
                         <div class="form-check form-switch">
                             <input type="checkbox" class="form-check-input" id="customSwitch1" data-id="{{ $integration->id }}" {{ ($integration->status=='0') ? '' : 'checked' }} name="status" onchange="integrationStatus(this)" style="position: relative;left: 48px;bottom: 3px;">
                         </div>

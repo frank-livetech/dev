@@ -53,14 +53,7 @@
                     "fnCreatedRow": function(nRow, aData, iDataIndex) {
                         $(nRow).attr('id', 'row__' + aData.id);
                     },
-                    columns: [{
-                            "render": function(data, type, full, meta) {
-                                return '-';
-                            }
-                        }, {
-                            "data": null,
-                            "defaultContent": ""
-                        },
+                    columns: [
                         {
                             "render": function(data, type, full, meta) {
                                 return full.title != null ? full.title : '-';
