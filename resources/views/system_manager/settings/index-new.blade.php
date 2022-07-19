@@ -601,6 +601,7 @@
                 success: function(response){
                     var data = response.data;
                     if(response.success == true){
+                        $("#company_id").val(data.id);
                         $("#name").val(data.name);
                         $("#poc_first_name").val(data.poc_first_name);
                         $("#poc_last_name").val(data.poc_last_name);

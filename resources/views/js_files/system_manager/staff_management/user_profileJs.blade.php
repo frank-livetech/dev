@@ -1316,6 +1316,10 @@
         $("#schedule-title").text("Set Schedule");
         $("#scheduleModal").modal('show');
     }
+
+
+
+
 </script>
 
 @include('js_files.statesJs')

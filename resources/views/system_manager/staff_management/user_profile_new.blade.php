@@ -1475,6 +1475,8 @@
             </div>
         </div>
     </div>
+    <div style="display: none;" id="tinycontenteditor"></div>
+    <div style="display: none;" id="ticket_attachments"></div>
 
     <!-- schdule Modal -->
     <div class="modal fade" id="EventDetailModal" tabindex="-1" aria-labelledby="editPicModalLabel" aria-hidden="true">

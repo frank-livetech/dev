@@ -346,7 +346,6 @@
                         $("#status_modal").show();
                     },
                     success: function(data) {
-                        console.log(data);
 
                         if(data.success) {
                             // upload attachments
@@ -384,7 +383,6 @@
 
                             tinyContentEditor(content, data.id).then(function() {
                                 content = $('#tinycontenteditor').html();
-
                                 $.ajax({
                                     type: "post",
                                     url: "{{asset('update_ticket')}}",
@@ -404,6 +402,8 @@
                                     }
                                 });
                             });
+
+
                         } else {
                             Swal.fire({
                                 position: 'center',

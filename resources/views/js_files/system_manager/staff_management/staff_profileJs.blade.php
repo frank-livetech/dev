@@ -1,4 +1,7 @@
 <script>
+
+var ticket_attach_path = `{{asset('storage')}}`;
+
     // Staff_profile SCript Blade
     $(document).ready(function(){
         values();
@@ -36,13 +39,13 @@ function values(){
     var apartment = $("#apt_address").val();
     var city = $("#update_city").val();
     if($("#state option:selected" ).val() == ""){
-        state = "";    
+        state = "";
     }
     else{
         state = $("#state option:selected" ).text();
     }
     if($("#country option:selected" ).val() == ""){
-        country = "";    
+        country = "";
     }
     else{
         country = $("#country option:selected" ).text();
@@ -58,13 +61,13 @@ function values(){
                 '<h6>'+apartment+'</h6>'+
                 '<h6>'+city+' ' +state+' '+zip+'</h6>'+
                 '<h6>'+country+'</h6>'+
-               
-                '<hr>');       
+
+                '<hr>');
 }
 function ShowCertificateModel() {
     $("#save-certification").trigger("reset");
     $('#add-new-certificate').modal('show');
-    
+
 }
 
 $("#save-certification").submit(function (event) {
@@ -89,7 +92,7 @@ $("#save-certification").submit(function (event) {
             if (data) {
 
                 $('#add-new-certificate').modal('hide');
-                
+
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -145,7 +148,7 @@ $("#save-documents").submit(function (event) {
             if (data) {
 
                 $('#add-new-certificate').modal('hide');
-                
+
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -153,7 +156,7 @@ $("#save-documents").submit(function (event) {
                     showConfirmButton: false,
                     timer: 2500
                 })
-                get_all_documents(); 
+                get_all_documents();
                 $('#add-new-document').modal('hide');
             } else {
                 Swal.fire({
@@ -207,9 +210,9 @@ $(".user-confirm-password-div").on('click','.show-confirm-password-btn',function
 
 // change password checkbox
 $("#change_password_checkbox").click(function() {
-    
-    $(this).is(":checked") ? 
-    $('.change_password_row').show() : 
+
+    $(this).is(":checked") ?
+    $('.change_password_row').show() :
     $('.change_password_row').hide();
 
 });
@@ -221,13 +224,35 @@ $("#uploadProfilePic").click(function () {
     $("#hung22").hide()
 });
 
+
+function addAttachment() {
+    $('#ticket_attachments').append(`<div class="input-group mt-3">
+        <div class="custom-file text-left">
+            <input type="file" class="form-control ticket_attaches" id="ticket_attachment_${ticket_attachments_count}">
+
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-dark" type="button" title="Remove" onclick="console.log(this.parentElement.parentElement.remove())"><span class="fa fa-times"></span></button>
+        </div>
+    </div>`);
+
+    ticket_attachments_count++;
+}
+
+$(document).on('change', '.ticket_attaches', function(e){
+    let file = e.target.files[0];
+    $(this).parent().find('.custom-file-label').text(file.name);
+});
+
+
+
 $("#update_user").submit(function (event) {
     event.preventDefault();
     event.stopPropagation();
 
     let user_id = $("#user_id").val()
 
-    if($('.change_password_checkbox').is(":checked")){ 
+    if($('.change_password_checkbox').is(":checked")){
         var update_password = $('#update_password').val();
         let cpwd = $("#confirm_password").val();
 
@@ -236,8 +261,8 @@ $("#update_user").submit(function (event) {
             return false;
         }
     }
-    
-    
+
+
     var fb = $("#update_fb").val();
     var pin = $("#update_pinterest").val();
     var twt = $("#update_twt").val();
@@ -281,7 +306,7 @@ $("#update_user").submit(function (event) {
             return false;
         }
     }
-    
+
 
     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     var urlregex = new RegExp(pattern);
@@ -295,14 +320,40 @@ $("#update_user").submit(function (event) {
         }
     }
 
-  
+
 
     // var formData = $("#update_user").serialize()  + "&user_id=" + user_id;
     // var content = tinyMCE.activeEditor.getContent();
     var content = quill.root.innerHTML;
+
+    tinyContentEditor(content, 'signature').then(function() {
+        content = $('#tinycontenteditor').html();
+
+        $.ajax({
+            type: "post",
+            url: "{{asset('upload_editor_docs')}}",
+            data: {
+                id:user_profile.id,
+                attachments: attachments_src,
+            },
+            dataType: 'json',
+            cache: false,
+            async:false,
+            success: function(res) {
+                ticket_notify(data.id, 'ticket_create',tag_emails);
+                alertNotification('success', 'Success' , data.message);
+                window.location.href = "{{route('ticket_management.index')}}";
+            }
+        });
+
+
+    });
+
+
+
     var formData = new FormData(this);
     formData.append('user_id' , user_id);
-    formData.append('signature' , content);
+    formData.append('signature' , $('#tinycontenteditor').html());
 
     $.ajax({
         type: $(this).attr('method'),
@@ -325,12 +376,14 @@ $("#update_user").submit(function (event) {
                 values();
                 alertNotification('success', 'Success' , data.message);
 
+
+
                 // hide change password row & uncheck password checkbox
-                if($('.change_password_checkbox').is(":checked")){ 
+                if($('.change_password_checkbox').is(":checked")){
                     $('.change_password_checkbox').prop("checked" , false);
-                    $('.change_password_row').hide() 
+                    $('.change_password_row').hide()
                 }
-                
+
                 $('.change_password_checkbox').prop("checked" , false);
                 $('.change_password_row').hide();
 
@@ -396,6 +449,64 @@ $("#update_user").submit(function (event) {
 
     // if(coun && stte && cty && zp == true) {}
 });
+
+
+async function tinyContentEditor(content, action) {
+    attachments_src = [];
+    let res;
+
+    $('#tinycontenteditor').html(content);
+
+    $('#tinycontenteditor').find('img').each(function(index) {
+        let src = $(this).attr('src');
+        let ext = 'png';
+
+        let validImg = true;
+
+        let marker = '.';
+
+        if (src.includes('base64')) marker = '/';
+
+        if (src.includes(marker + 'jpg') || src.includes(marker + 'JPG')) {
+            ext = "jpg";
+        } else if (src.includes(marker + 'ico') || src.includes(marker + 'ICO')) {
+            ext = "ico";
+        } else if (src.includes(marker + 'jpeg') || src.includes(marker + 'JPEG')) {
+            ext = "jpeg";
+        } else if (src.includes(marker + 'png') || src.includes(marker + 'PNG')) {
+            ext = "png";
+        } else if (src.includes(marker + 'gif') || src.includes(marker + 'GIF')) {
+            ext = "gif";
+        } else if (src.includes(marker + 'webp') || src.includes(marker + 'WEBP')) {
+            ext = "webp";
+        } else if (src.includes(marker + 'svg') || src.includes(marker + 'SVG')) {
+            ext = "svg";
+        } else {
+            $(this).remove();
+            validImg = false;
+        }
+
+        if (src.includes('base64')) {
+            src = src.replace(/^data:.+;base64,/, '');
+        }
+
+        if (validImg) {
+            let name = 'Live-tech_' + moment().format('YYYY-MM-DD-HHmmss') + '_' + index + '.' + ext;
+
+            if (src.includes('storage/' + action + '/' + user_profile.id)) {
+                // name = baseName(src) + '.' + ext;
+            } else {
+                $(this).attr('src', ticket_attach_path + `/${action}/${user_profile.id}/${name}`);
+            }
+            attachments_src.push([name, src]);
+        }
+
+    });
+
+
+    return await res;
+}
+
 
 function checkEmptyFields(input, err) {
     if(input == '') {
@@ -525,7 +636,7 @@ $("#save_tickets").submit(function (event) {
                 $('#customer_id').val('').trigger("change");
                 $('#new-customer').css('display', 'none');
                 // get_ticket_table_list();
-            }    
+            }
             Swal.fire({
                 position: 'top-end',
                 icon: (data.success) ? 'success' : 'error',
@@ -598,7 +709,7 @@ function listTickets(){
             }else{
                 shortname = name;
             }
-            
+
             tickets_table_list.row.add([
                 '<input type="checkbox" name="chk_list[]" value= "'+val['id']+'">',
                 '<div class="text-center '+flagged+'"><span class="fas fa-flag" style="cursor:pointer;" onclick="flagTicket(this, '+val['id']+');"></span></div>',
@@ -630,7 +741,7 @@ function flagTicket(ele, id){
             if (data) {
 
                 $(ele).closest('tr').toggleClass('flagged-tr');
-                
+
             } else {
                 Swal.fire({
                     position: 'top-end',
@@ -650,7 +761,7 @@ function flagTicket(ele, id){
                 showConfirmButton: false,
                 timer: 2500
             });
-        } 
+        }
     });
 }
 

@@ -578,6 +578,7 @@ Route::Post('/save-tickets','HelpdeskController@save_tickets');
 Route::get('/create-ticket/{id}','HelpdeskController@createTicket');
 Route::get('/mark-spam-user/{mail}','HelpdeskController@markUserSpam');
 
+Route::Post('/upload_editor_docs','HelpdeskController@upload_editor_docs');
 Route::Post('/upload_attachments','HelpdeskController@upload_attachments');
 Route::Post('/delete_attachment','HelpdeskController@delete_attachment');
 

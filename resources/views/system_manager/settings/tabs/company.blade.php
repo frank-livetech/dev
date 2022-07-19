@@ -10,7 +10,7 @@ $path = Session::get('is_live') == 1 ? 'public/system_files/' : 'system_files/';
         <div class="tab-content">
 
             <form id="update_company" action="{{url('/default_company_profile')}}" onsubmit="return false">
-
+                <input type="hidden" name="company_id" id="company_id" >
                 <div class="form-row">
                     <div class="col-md-12 form-group">
                         <label>Company Name</label>

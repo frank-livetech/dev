@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Models\Role;
 use App\Models\Tags;
 use App\Models\TicketReply;
+use App\Models\Tickets;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -104,6 +105,11 @@ class User extends Authenticatable implements JWTSubject
     }
     public function ticketReply(){
         return $this->hasMany(TicketReply::class,'updated_by','id');
+    }
+
+    public function ticketss()
+    {
+        return $this->belongsToMany(Tickets::class, 'user_ticket');
     }
 
     /**
