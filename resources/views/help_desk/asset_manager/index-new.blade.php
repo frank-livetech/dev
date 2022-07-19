@@ -103,6 +103,380 @@
 
     <input type="hidden" id="usrtimeZone" value="{{Session::get('timezone')}}">
     <div class="content-body">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+            <!-- User Pills -->
+            {{-- <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="asset-tab" data-bs-toggle="tab" href="#asset" aria-controls="asset" role="tab" aria-selected="false">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="true">Service</a>
+                </li>
+                
+            </ul> --}}
+            <ul class="nav nav-pills mb-2">
+                <li class="nav-item">
+                    <a class="nav-link active" id="asset-type-tab" data-bs-toggle="tab" href="#assettype" aria-controls="profile" role="tab" aria-selected="true">
+                         <i class="fal fa-history font-medium-3 me-50"></i>
+  
+                         <span class="me-50">Asset Type</span>
+                     </a>
+                 </li>
+               <li class="nav-item">
+                    <a class="nav-link" id="asset-tab" data-bs-toggle="tab" href="#asset" aria-controls="asset" role="tab" aria-selected="false">
+                       <i class="fal fa-list font-medium-3 me-50"></i>
+                       <span class="fw-bold">Asset</span>
+                   </a>
+               </li>
+               
+             
+           </ul>
+           <!--/ User Pills -->
+       </div>
+       <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane" id="asset" aria-labelledby="asset-tab" role="tabpanel">
+                        <div class="row mb-1">
+                            <div class="col-lg-12 col-md-12">
+                                <button type="button" style="float:right;" class="btn btn-outline-success waves-effect mx-1" onclick="show_add_asset()">
+                                    <i class="fal fa-plus"></i> Add Asset
+                                </button>
+                            </div>
+                        </div>
+                       <div class="row " id="show_assts" style="display: none">
+                        <div class="col-md-12">
+                        <form class="form-horizontal" id="save_asset_form" enctype="multipart/form-data"
+                            action="{{asset('/save-asset')}}" method="post">
+                            <div class="form-row">
+                                <div class="col-md-12 form-group">
+                                    <div class="form-group">
+                                        <label>Asset Type</label>
+                                        <select class="select2 form-select form-control" onchange="getFields(this.value)" id="form_id" name="form_id" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row mt-1" id="templateTitle" style="display:none;">
+                                <div class="row">
+                                    <div class="col-md-4 form-group d-none">
+                                        <div class="form-group">
+                                            <label>Asset Title</label>
+                                                <input type="hidden" name="asset_title" id="asset_title" class="asset_title form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <div class="form-group">
+                                            <label> Company </label>
+                                            <select name="company_id" id="asset_company" onchange="selectCompany(this.value , 'asset_customer','asset_company')" class="select2 companyValue">
+                                                <option value=""> Choose </option>
+                                                @foreach($companies as $company)
+                                                    <option value="{{$company->id}}"> {{$company->name}} </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <div class="form-group">
+                                            <label> Customer </label>
+                                            <select name="customer_id" id="asset_customer" onchange="selectCustomer(this.value , 'asset_customer','asset_company')" class="select2 customerValue">
+                                                <option value=""> Choose </option>
+                                                @foreach($customers as $customer)
+                                                    <option value="{{$customer->id}}"> {{$customer->first_name}} {{$customer->last_name}} </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="row mt-1" id="form-fields"></div>
+
+                            <button type="submit" id="save_asset_field_id" class="btn btn-success mt-1" style="float:right;margin-bottom: 17px;display:none">Save</button>
+                            <button type="button" onclick="close_asset_row()" class="btn btn-danger mt-1 mx-1" style="float:right;margin-bottom: 17px">Cancel</button>
+
+                        </form>
+                        </div>
+                       </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card mt-1">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-md-2">
+                                            <h4 class="">Assets</h4>
+                                        </div>
+                                        <div class="col-lg-10 col-md-10">
+                                            <button type="button" style="float:right;" class="btn btn-outline-success waves-effect mx-1" data-bs-toggle="modal" data-bs-target="#import_asset">
+                                                <i class="fal fa-file-import"></i> Import
+                                            </button>
+                                            <button type="button" style="float:right;" class="btn btn-outline-info waves-effect" data-bs-toggle="modal" data-bs-target="#export_asset">
+                                                <i class="fal fa-file-export"></i> Export
+                                            </button>
+                                        </div>
+                                        <!-- <div class="col-lg-3 col-md-3">
+                                            <button type="button" class="btn btn-success" onclick="ShowAssetModel()"
+                                                style="float:right;"><i class="mdi mdi-plus-circle" ></i>&nbsp;Add
+                                                Asset
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3">
+                                            <button type="button" class="btn btn-success" onclick="ShowAssetModel()"
+                                                style="float:right;"><i class="mdi mdi-plus-circle"></i>&nbsp;Add
+                                                Asset Template
+                                            </button>
+                                        </div> -->
+            
+                                    </div>
+                                    <br>
+            
+            
+                                    <!-- <div class="row">
+                                        <div class="col-md-12" style="text-align:right;">
+                                            <select class="multiple-select mt-2 mb-2" name="as_select" id="as_select" placeholder="Show/Hide" multiple="multiple" selected="selected">
+                                                <option value="0">Sr#</option>
+                                                <option value="1">AssetID</option>
+                                                <option value="2">Template</option>
+                                                <option value="3">Customer</option>
+                                                <option value="4">Company</option>
+                                                <option value="5">Projects</option>
+                                                <option value="6">Actions</option>
+                                            </select>
+                                        </div>
+                                    </div> -->
+            
+                                    <div class="table-responsive">
+                                        <table id="asset-table-list"
+                                            class="table table-bordered w-100 no-wrap asset-table-list">
+                                            <thead>
+                                                <tr>
+                                                    <th width="2%">
+                                                        <div class="text-center">
+                                                            <input type="checkbox" id="checkAll" name="assets[]" value="0">
+                                                        </div>
+                                                    </th>
+                                                    <th></th>
+                                                    <th>Asset Title</th>
+                                                    <th> Asset Type</th>
+                                                    <th> Company </th>
+                                                    <th> Customer </th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                    <div class="tab-pane active" id="assettype" aria-labelledby="asset-type-tab" role="tabpanel">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row mb-1">
+                                    <div class="col-lg-12 col-md-12">
+                                        <button type="button" style="float:right;" class="btn btn-outline-success waves-effect mx-1" onclick="show_asset_type()">
+                                            <i class="fal fa-plus"></i> Add Asset Type
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="">
+                                    <div class="" id="shw_assettype" style="display:none ">
+                                    <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
+                                        
+                                        <div class="row mb-2 p-2">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="tempTitle">Asset Type Name</label>
+                                                    <input class="form-control" type="text" id="tempTitle" required="" placeholder="Title">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <div class="row " >
+                                            <div class="col-md-4">
+                                                <div class="card p-1" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;background-color: #F7F8F8">
+                                                    <div class="row">
+                                                    <div class="col-md-6 talign">
+    
+                                                    <a class="buttonPush " href="javascript:fieldAdd('text')" >
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-edit pr-2" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">Input Field</span>
+                                                            </div>
+                                                        </div>
+                                                     </a>
+                                                    </div>
+                                                    <div class="col-md-6 talign">
+                                                    <a class="buttonPush" href="javascript:fieldAdd('phone')">
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-phone" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">Phone Number</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 talign">
+                                                    <a class="buttonPush" href="javascript:fieldAdd('email')" >
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-envelope" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">Email</span>
+                                                            </div>
+                                                        </div>
+    
+                                                    </a>
+                                                </div>
+                                                    <div class="col-md-6 talign">
+                                                    <a href="javascript:fieldAdd('textbox')"  class="buttonPush">
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-indent" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">Text Area</span>
+                                                            </div>
+                                                        </div>
+    
+                                                    </a>
+                                                </div>
+    
+                                            </div>
+                                            <div class="row">
+                                            <div class="col-md-6 talign">
+                                                    <a class="buttonPush" href="javascript:fieldAdd('selectbox')">
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-chevron-circle-down" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">Select</span>
+                                                            </div>
+                                                        </div>
+    
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6 talign">
+                                                    <a class="buttonPush" href="javascript:fieldAdd('password')" >
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-key" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">Password</span>
+                                                            </div>
+                                                        </div>
+    
+                                                    </a>
+                                                </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 talign">
+                                                    <a class="buttonPush" href="javascript:fieldAdd('ipv4')" >
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-qrcode" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">IPv4</span>
+                                                            </div>
+                                                        </div>
+    
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-6 talign">
+                                                    <a class="buttonPush" href="javascript:fieldAdd('url')" >
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-laptop-code" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">URL</span>
+                                                            </div>
+                                                        </div>
+    
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 talign">
+                                                    <a class="buttonPush" href="javascript:fieldAdd('address')" >
+    
+                                                        <div class="FieldSettingsSideBarItem_container">
+                                                            <div class="FieldItem_container FieldSettingsSideBarItem_fieldItem DragHandle_handle" draggable="true">
+                                                                <i class="fas fa-map-marked-alt" style="color: rgb(69, 85, 96); height: 15px; width: 15px;"></i>
+                                                                <span class="FieldItem_title">Address</span>
+                                                            </div>
+                                                        </div>
+    
+                                                    </a>
+                                                </div>
+                                            </div>
+    
+                                                </div>
+                                            </div>
+    
+                                            <div class="col-md-8">
+                                                <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
+                                                    <div class="m-1">
+                                                        <button type="button" class="btn btn-success float-btn ml-2" onclick="saveTemplate()" style="margin-left: 5px"> Save Template </button>
+                                                        <button type="button" class="btn btn-info float-btn" onclick=""> Preview </button>
+                                                    </div>
+                                                </div>
+                                                <div class="card" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
+                                                    <div class="row p-1">
+                                                        <div class="col-md-12 pt-1 ">
+                                                            <div class="head text-center ">
+                                                                <h4> Please Insert a Field Here from Insert Field Button </h4>
+                                                            </div>
+                                                            <div id="cardycard">
+                                                            </div>
+                                                            <div class="tail" id="card-colors" style="display:;">
+                                                                <div class="row connectedSortable border" id="sortable-row-start" style="min-height:10px; display: none;">
+                                                                    <div class="appends d-none"></div>
+                                                                </div>
+                                                                <div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
+                                                                    <div class="appends d-none"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                    </div>
+                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table id="asset-temp-table-list"
+                                                    class="table asset-temp-table-list">
+                                                    <thead>
+                                                        <tr>
+                                                            
+                                                            <th>Asset Type</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                </table>
+                                            </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+       </div>
+       
+    </div>
+    {{-- <div class="content-body">
         <div class="row" style="padding-bottom: 17px">
 
             <div class="col-sm-12">
@@ -443,9 +817,9 @@
                     </div>
                 </div>
 
+            </div>
         </div>
-        </div>
-    </div>
+    </div> --}}
 </div>
 <!-- Create Template Title modal content -->
 
@@ -660,6 +1034,36 @@
                 },
             });
         });
+       function show_asset_type(){
+        $('#shw_assettype').toggle();
+       }
+       function close_asset_row(){
+        $("#show_assts").css("display", "none");
+      
+       }
+       function show_add_asset(){
+        $('#show_assts').toggle();
+       }
+       $("#form_id").on("change", function() {
+        var opt = $(this).val();
+        if(opt == ''){
+            $('#save_asset_field_id').hide();
+        }else{
+            $('#save_asset_field_id').show();
+            
+        }
+        });
+    //    $('#form_id').onchange(function(){
+    //    var opt = $(this).val();
+    //     if(opt == 'Users1'){
+    //         alert('121')
+    //         $('#save_asset_field_id').hide();
+            
+    //     }else{
+    //         $('#save_asset_field_id').show();
+            
+    //     }
+    // });
 </script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
