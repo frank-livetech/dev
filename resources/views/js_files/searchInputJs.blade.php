@@ -166,23 +166,44 @@
                     }
 
                     var $htmlList = ''
-
-
+                   
                     // getting json data from file for search results
 
                     $.getJSON(ticketsUrl, {
                             id: value
                         }, function(data) {
+                            let user_badge= (data.is_staff_tkt = 1 ? 'Staff' : 'User');
+                             let path = (root + '/' + data.user_pic);
+                             let img = `<img src="`+ path +`" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
                             for (var i = 0; i < data.length; i++) {
                                     $htmlList +=
                                     '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
-                                    '<a class="d-flex align-items-center justify-content-between w-100" href="{{url("ticket-details")}}/' +
-                                    data[i].coustom_id + '">' +
-                                    '<div class="d-flex justify-content-start align-items-center">' +
-                                    '<span>' + data[i].coustom_id + ' | ' + data[i].subject + ' | ' + data[i]
-                                    .created_at + '</span>' +
-                                    '</div></a>' +
+                                        '<a class="" href="{{url("ticket-details")}}/' + data[i].coustom_id + '">' +
+                                        '<div class="modal-first">' +
+                                            '<div class="mt-0 mt-0 rounded" style="padding:4px; ">' +
+                                                '<div class="float-start rounded me-1 bg-none" style="margin-top:5px">' +
+                                                    ' <div class="">' + img + '</div>' +
+                                                '</div>' +
+                                                '<div class="more-info">' +
+                                                    '<div class="" style="display: -webkit-box">' +
+                                                        ' <h6 class="mb-0">' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary"> '+ user_badge +'</span></h6>' +
+                                                        '<span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Posted on '+ convertDate(data[i].created_at) +'</span>' +
+                                                    '</div>' +
+                                                    '<div class="first">' +
+                                                        '<span style="font-size:14px">' + data[i].subject + ' </span>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                        '</div></a>' +
                                     '</li>';
+
+                                    // '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
+                                    // '<a class="d-flex align-items-center justify-content-between w-100" href="{{url("ticket-details")}}/' +
+                                    // data[i].coustom_id + '">' +
+                                    // '<div class="d-flex justify-content-start align-items-center">' +
+                                    // '<span>' + data[i].coustom_id + ' | ' + data[i].subject + ' | ' + data[i]
+                                    // .created_at + '</span>' +
+                                    // '</div></a>' +
+                                    // '</li>';
 
                             }
                             $('#'+searchField+' ul.search-list').html($htmlList);

@@ -1413,7 +1413,7 @@ footer.footer-border {
   overflow: overlay; }
 
 .navbar-container .search-input .search-list li a ,#helpdesk .search-input .search-list li a, #cust-mang .search-input-customer .search-list-customer li a {
-  padding: 0.9rem 1rem;
+  padding: 0.2rem .2rem;
   color: #6e6b7b; }
 
 .navbar-container .search-input .search-list li a i,#helpdesk .search-input .search-list li a i,#cust-mang .search-input-customer .search-list-customer li a i,
