@@ -1946,7 +1946,7 @@ class CustomerlookupController extends Controller
         try{
             $id = $data['id'];
 
-            $response = DB::select("SELECT cust.id,cust.username,cust.first_name,cust.last_name,cust.email,cust.phone, comp.name, comp.id as company_id FROM customers cust Left JOIN companies comp ON cust.company_id = comp.id WHERE cust.username LIKE '%$id%' OR CONCAT(cust.first_name, ' ', cust.last_name) LIKE '%$id%' OR cust.email LIKE '%$id%' OR cust.phone LIKE '%$id%' OR comp.name LIKE '%$id%' ");
+            $response = DB::select("SELECT cust.id,cust.avatar_url,cust.username,cust.first_name,cust.last_name,cust.email,cust.phone, comp.name, comp.id as company_id FROM customers cust Left JOIN companies comp ON cust.company_id = comp.id WHERE cust.username LIKE '%$id%' OR CONCAT(cust.first_name, ' ', cust.last_name) LIKE '%$id%' OR cust.email LIKE '%$id%' OR cust.phone LIKE '%$id%' OR comp.name LIKE '%$id%' ");
 
             foreach($response as $rs){
                 $rs->company = Company::where('id',$rs->company_id)->first()->name ?? "company not provided";
