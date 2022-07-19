@@ -597,7 +597,7 @@ table.dataTable thead .sorting_desc:after {
                             <div class="card-body">
 
                                  <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-12" id="cust-mang">
+                                    <div class="col-lg-12 col-md-12 col-12 mb-4" id="cust-mang">
                                         <div class="search-input-customer open">
                                             <div class="search-input-icon-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -617,7 +617,7 @@ table.dataTable thead .sorting_desc:after {
                                         </div>
                                     </div> --}}
                                 </div>
-                                <form action="javascript:void(0);" class="form">
+                                {{-- <form action="javascript:void(0);" class="form">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="mb-2">
@@ -635,7 +635,7 @@ table.dataTable thead .sorting_desc:after {
                                         </div>
 
                                     </div>
-                                </form>
+                                </form> --}}
                             </div>
                         </div>
 
