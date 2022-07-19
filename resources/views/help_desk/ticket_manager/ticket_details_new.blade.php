@@ -1469,7 +1469,7 @@
                                 </div>
                                 <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
                                     <label  class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; !important" id="tech-h5"></h5>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; line-hieght:2; !important" id="tech-h5"></h5>
                                     <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
                                         <option value="">Unassigned</option>
                                         @foreach ($users as $user)
