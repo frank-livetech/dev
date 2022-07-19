@@ -25,7 +25,7 @@ class Tickets extends Model
         'dept_id','priority','assigned_to','subject','queue_id','customer_id','res_updated_at','ticket_detail','status','type','is_flagged','coustom_id','seq_custom_id','deadline','is_staff_tkt','is_overdue','created_by','updated_by','created_at','updated_at','is_deleted','deleted_at','trashed', 'reply_deadline', 'resolution_deadline', 'attachments','tkt_crt_type','is_pending','cust_email','embed_attachments'
 
     ];
-    
+
     const DEFAULTSLA_TITLE = 'Default SLA';
     const NOSLAPLAN = 'No SLA Assigned';
 
@@ -45,7 +45,15 @@ class Tickets extends Model
     {
         return $this->hasMany(Activitylog::class,'ref_id','id');
     }
-    
+
+    /**
+     * The users that belong to the tickwt.
+     */
+    public function staff()
+    {
+        return $this->belongsToMany(User::class, 'user_ticket');
+    }
+
 
     public function getRepliesAttribute() {
 

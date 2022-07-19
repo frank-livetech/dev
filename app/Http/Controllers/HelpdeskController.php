@@ -3890,9 +3890,54 @@ class HelpdeskController extends Controller
         }
     }
 
+    public function upload_editor_docs(Request $request) {
+        try {
+            $data = $request->all();
+
+
+            if(array_key_exists('attachments', $data)) {
+                // target dir for ticket files against ticket id
+                $file_path = \Session::get('is_live') == 1 ? 'public/' : '';
+                $target_dir = 'storage/signature/'.$data['id'];
+
+                if (!File::isDirectory($target_dir)) {
+                    mkdir($target_dir, 0777, true);
+                }
+
+                // set files
+                foreach ($data['attachments'] as $key => $value) {
+                    if (filter_var($value[1], FILTER_VALIDATE_URL)) {
+                        $file = file_get_contents($value[1]);
+                    }else{
+                        $file = base64_decode($value[1]);
+                    }
+
+                    $target_src = $target_dir.'/'.$value[0];
+
+                    file_put_contents($target_src, $file);
+                }
+            }
+
+
+            $response['status_code'] = 200;
+            $response['success'] = true;
+            $response['tkt_updated_at'] = '12';
+            return response()->json($response);
+        } catch(Exception $e) {
+            $response['message'] = $e->getMessage();
+            $response['status_code'] = 500;
+            $response['success'] = false;
+            return response()->json($response);
+        }
+    }
+
     public function upload_attachments(Request $request) {
         try {
-            $ticket = Tickets::findOrFail($request->ticket_id);
+            if($request->module == 'replies' || $request->module == 'tickets'){
+                $ticket = Tickets::findOrFail($request->ticket_id);
+            }else{
+                $customer = Customer::findOrFail($request->customer_id);
+            }
 
             // target dir for ticket files against ticket id
             // $target_dir = public_path().'/files'.'/'.$request->module.'/'.$request->ticket_id;

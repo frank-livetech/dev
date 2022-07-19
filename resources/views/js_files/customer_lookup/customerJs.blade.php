@@ -258,7 +258,7 @@ function checkConfirmPassword(cpass, err, pass) {
     // if(cpass == '') {
     //     err.html("this field is required");
     //     return false;
-    // }else 
+    // }else
     if (cpass != pass) {
         err.html("password not matched..");
         return false;
@@ -272,7 +272,7 @@ function checkPassword(pass, err) {
     // if(pass == '') {
     //     err.html("this field is required");
     //     return false;
-    // } else 
+    // } else
     if (pass.length && pass.length < 8) {
         err.html("minimum 8 character required");
         return false;
@@ -408,7 +408,7 @@ function updateValue(element, column, id, old_value) {
 //                 </tr>`;
 //                 count++;
 //             }
-            
+
 //             $('#customerTbody').html(row);
 //             if(!customer_table) {
 //                 customer_table = $('#customerTable').DataTable({
@@ -483,7 +483,7 @@ function get_all_customers() {
                         $imgoutput = '<span class="avatar-content">'+ $initials +'</span>';
                         }
                         var colorClass = $image === '' ? ' bg-light-' + $state + ' ' : '';
-                        
+
                         var $row_output =
                         '<div class="d-flex justify-content-left align-items-center">' +
                             '<div class="avatar-wrapper">' +
@@ -498,7 +498,7 @@ function get_all_customers() {
                                 (full.first_name != null ? full.first_name : '-') + ' ' + (full.last_name != null ? full.last_name : '-') +
                             '</span></a>' +
                             '<small class="emp_post text-muted">'
-                                + (full.email != null ? full.email : '-') +  
+                                + (full.email != null ? full.email : '-') +
                             '</small>' +
                             '</div>' +
                         '</div>';
@@ -507,7 +507,7 @@ function get_all_customers() {
                 },
                 {
                     render: function(data, type, full, meta) {
-                       
+
                         return (full.company != null ? full.company.name : '-');
                     }
                 },
@@ -520,7 +520,7 @@ function get_all_customers() {
                         return ('<span>' + phonenumber +'</span>');
                     }
                 },
-                
+
                 // {
                 //     render: function(data, type, full, meta) {
                 //         var address = full.address != null ? full.address : '';
@@ -530,7 +530,7 @@ function get_all_customers() {
                 //         var st_name = full.cust_state == null ? '' : ',' + full.cust_state;
                 //         var ct_name = full.cust_city == null ? '' : full.cust_city;
                 //         var zip = full.cust_zip == null ? '' : ',' + full.cust_zip;
-                        
+
                 //         return  `<span>`+ address + `` + apt_address + `<br>` + ct_name + ` ` + st_name + ` ` + zip + `<br>` + cn_name + `</span>`
                 //     }
                 // },
@@ -547,7 +547,7 @@ function get_all_customers() {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                                 </div>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="email_more">
-                                    <a href="customer-profile/` + (full.id != null ? full.id : '-') + `" class="user_name text-truncate"> 
+                                    <a href="customer-profile/` + (full.id != null ? full.id : '-') + `" class="user_name text-truncate">
                                     <div class="dropdown-item" ><svg xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text me-50"><path data-v-32017d0f="" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline data-v-32017d0f="" points="14 2 14 8 20 8"></polyline><line data-v-32017d0f="" x1="16" y1="13" x2="8" y2="13"></line><line data-v-32017d0f="" x1="16" y1="17" x2="8" y2="17"></line><polyline data-v-32017d0f="" points="10 9 9 9 8 9"></polyline></svg>Details</div>
                                     </a>
                                     <div class="dropdown-item" onclick="showdeleteModal(` + full.id + `)"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 me-50"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>Delete</div>
@@ -557,7 +557,7 @@ function get_all_customers() {
                             `;
                     }
                 },
-                
+
             ],
             dom:
                 '<"d-flex justify-content-between align-items-center header-actions mx-1 row mt-75"' +
@@ -669,7 +669,7 @@ function get_all_customers() {
     });
 }
 function copyToClipBoard(text) {
-    
+
     let $input = $("<input>");
     $('body').append($input);
 
@@ -701,9 +701,9 @@ function deleteRecord() {
             $("#cust_del").show();
         },
         success: function(data) {
-            console.log(data);
             if (data.status_code == 200 && data.success == true) {
                 alertNotification('success', 'Success' , data.message );
+                get_all_customers()
                 $('#row_' + id).remove();
                 $("#delete_customer_model").modal('hide');
 

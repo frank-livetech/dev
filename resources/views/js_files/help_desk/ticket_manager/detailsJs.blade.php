@@ -1276,6 +1276,7 @@ function saveRequest() {
         }
 
         let fileSizeErr = false;
+
         $('.tickets_attaches').each(function(index) {
             if(this.files.length && (this.files[0].size / (1024*1024)).toFixed(2) > 2) fileSizeErr = this.files[0].name;
         });
@@ -2089,6 +2090,7 @@ function publishReply(ele, reply_btn_id , type = 'publish', modal=null) {
             $('#reply').css('display', 'block');
             return false;
         } else {
+
             let fileSizeErr = false;
             $('.replies_attaches').each(function(index) {
                 if(this.files.length && (this.files[0].size / (1024*1024)).toFixed(2) > 2) fileSizeErr = this.files[0].name;
