@@ -12,6 +12,8 @@
         page_name = p_name;
         tickets_table_list = $('#ticket-table-list').DataTable({
             processing: true,
+            colReorder: true,
+            responsive: true,
             // "scrollX": true,
             pageLength: (ticketLengthCount == null ? 10 : (ticketLengthCount.per_page !=null ? ticketLengthCount.per_page : 10)),
             fixedColumns: true,

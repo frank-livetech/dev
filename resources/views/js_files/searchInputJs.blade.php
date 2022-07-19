@@ -274,7 +274,7 @@
                                 data[i].id + '">' +
                                 '<div class="d-flex justify-content-start align-items-center">' +
                                 '<span class="avatar">'+
-                                '<img src="'root+data[i].avatar_url'" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">' +
+                                '<img src="'+root+'/'+data[i].avatar_url+'" class="rounded-circle" id="login_usr_logo" width="50px" height="50px">' +
                                                             
                                 '</span>'+
                                 '<span>' + data[i].first_name +' '+ data[i].last_name + '(ID: '+data[i].id+') | ' + data[i].company + ' | ' + data[i]
