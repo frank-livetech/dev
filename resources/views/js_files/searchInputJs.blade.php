@@ -183,16 +183,16 @@
                                             '<div class="mt-0 mt-0 rounded" style="padding:4px; ">' +
                                                 '<div class="float-start rounded me-1 bg-none" style="margin-top:5px">' +
                                                     ' <div class="">' + img + '</div>' +
-                                                    ' </div>' +
-                                                    ' <div class="more-info">' +
-                                                        '<div class="" style="display: -webkit-box">' +
-                                                            ' <h6 class="mb-0">' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary"> '+ user_badge +'</span></h6>' +
-                                                            '<span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Posted on '+ convertDate(data[i].created_at) +'</span>' +
                                                 '</div>' +
+                                                '<div class="more-info">' +
+                                                    '<div class="" style="display: -webkit-box">' +
+                                                        ' <h6 class="mb-0">' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary"> '+ user_badge +'</span></h6>' +
+                                                        '<span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Posted on '+ convertDate(data[i].created_at) +'</span>' +
+                                                    '</div>' +
                                                     '<div class="first">' +
                                                         '<span style="font-size:14px">' + data[i].subject + ' </span>' +
                                                     '</div>' +
-                                            '</div>' +
+                                                '</div>' +
                                         '</div></a>' +
                                     '</li>';
 
