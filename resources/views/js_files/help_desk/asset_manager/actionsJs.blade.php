@@ -357,7 +357,6 @@ function editAsset(id) {
             $(".loader_container").show();
         },
         success: function(data) {
-            console.log(data, "data");
 
             if(data.AssetForm != null) {
                 $("#modal-title").text(data.AssetForm.title);
@@ -370,13 +369,13 @@ function editAsset(id) {
                 if(data.asset.company_id != null) {
                     $('.asset_company_id').val(data.asset.company_id).trigger('change');
                 }else{
-                    $('.asset_company_id').val("").trigger('change');
+                    selectCompany(null , 'edit_asset_customer','edit_asset_company')
                 }
 
                 if(data.asset.customer_id != null) {
                     $('.asset_customer_id').val(data.asset.customer_id).trigger('change');
                 }else{
-                    $('.asset_customer_id').val("").trigger('change');
+                    selectCustomer(null , 'edit_asset_customer','edit_asset_company')
                 }
 
             }
@@ -419,13 +418,12 @@ function editAsset(id) {
 
 
                 } else {
-
                     var password = `<span style="position:absolute;top:40px;right:10px" toggle="#password-field" id="pass_icon" class="fa fa-fw fa-eye mr-2 show-password-btn pass_icon"></span>`;
                     html_input += `
                     <input type='hidden' id="field_id" class="form-control mt-2 field_id" value="` + data.AssetFields[i].id + `"/>
                     <div class="form-group" style="position:relative">
                         <label>` + data.AssetFields[i].label + `</label>  ` + (data.AssetFields[i].required == 1 ? required : '') + `
-                        <input type="` + data.AssetFields[i].type + `" value="` + data.asset_record[end_point] + `" id="input_` + data.AssetFields[i].id + `" class="form-control input_` + data.AssetFields[i].id + `" placeholder="` + data.AssetFields[i].placeholder + `"  ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
+                        <input type="` + data.AssetFields[i].type + `" value="` + (data.asset_record[end_point] != undefined  || data.asset_record[end_point] != null ? data.asset_record[end_point] : '') + `" id="input_` + data.AssetFields[i].id + `" class="form-control input_` + data.AssetFields[i].id + `" placeholder="` + (data.AssetFields[i].placeholder != null ? data.AssetFields[i].placeholder : '') + `"  ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
                         ` + (data.AssetFields[i].type == "password" ? password : '') + `
                     </div>
                 `;
@@ -1016,27 +1014,27 @@ function selectCustomer(value , customerId , companyId) {
         let root = `<option>All</option><option value="0">N/A</option>`;
         if (value != '') {
 
-            if($('#asset_customer :selected').text() == 'All'){
+            if($('#'+customerId+' :selected').text() == 'All'){
 
                 let option_company = [];
                 for (const data of companies) {
                     option_company += `<option value="${data.id}"> ${data.name} </option>`;
                 }
 
-                $('#asset_company').empty();
-                $('#asset_company').html(`<option selected disabled>Choose</option>`+option_company);
-                $('#asset_company').trigger('change');
+                $('#'+companyId).empty();
+                $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
+                $('#'+companyId).trigger('change');
 
 
                 let option_customer = [];
                 for (const data of customers) {
                     option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
                 }
-                $('#asset_customer').empty();
-                $("#asset_customer").html(`<option selected disabled>Choose</option>`+option_customer);
+                $('#'+customerId).empty();
+                $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
 
 
-            }else if($('#asset_customer :selected').text() != 'N/A'){
+            }else if($('#'+customerId+' :selected').text() != 'N/A'){
 
                 $("#"+companyId).empty();
                 let item = customers.find(item => item.id == value);
@@ -1073,23 +1071,23 @@ function selectCustomer(value , customerId , companyId) {
         if(value != '') {
             assetFlag = true;
 
-            if($('#asset_company :selected').text() == 'All'){
+            if($('#'+companyId+' :selected').text() == 'All'){
                 let option_company = [];
                 for (const data of companies) {
                     option_company += `<option value="${data.id}"> ${data.name} </option>`;
                 }
 
-                $('#asset_company').empty();
-                $('#asset_company').html(`<option selected disabled>Choose</option>`+option_company);
-                $('#asset_company').trigger('change');
+                $('#'+companyId).empty();
+                $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
+                $('#'+companyId).trigger('change');
 
 
                 let option_customer = [];
                 for (const data of customers) {
                     option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
                 }
-                $('#asset_customer').empty();
-                $("#asset_customer").html(`<option selected disabled>Choose</option>`+option_customer);
+                $('#'+customerId).empty();
+                $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
 
             }
 
@@ -1115,7 +1113,7 @@ function selectCustomer(value , customerId , companyId) {
                 $("#"+customerId).html(root + option);
             }else {
                 if($('#'+customerId+' :selected').text() != 'Choose' ){
-                    if( $('#asset_company :selected').text() !== "N/A"){
+                    if( $('#'+companyId+' :selected').text() !== "N/A"){
                         $('#'+customerId).empty();
                     }
                 }
