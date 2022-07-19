@@ -5,6 +5,9 @@
 @section('body')
 @section('customtheme')
     <style>
+        div#editor_div>p>img{
+            max-width: 550px !important;
+        }
         br+br {
             display: block !important;
         }
