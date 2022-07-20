@@ -56,6 +56,7 @@ use App\Http\Controllers\GeneralController;
 use App\Models\Activitylog;
 use App\Models\Assets;
 use App\Models\Mail;
+use Illuminate\Support\Facades\Cookie;
 // use Srmklive\PayPal\Services\ExpressCheckout;
 use PayPal;
 
@@ -64,14 +65,10 @@ class HomeController extends Controller
 
     public function __construct()
     {
-
         if(session()->get('action_clicked_admin') == null){
             $this->middleware('auth');
 
             $this->middleware(function (Request $request, $next) {
-                if (Auth::user()->user_type == 5) {
-                    return redirect()->route('un_auth');
-                }
                 return $next($request);
             });
         }
