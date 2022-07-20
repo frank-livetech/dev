@@ -172,11 +172,14 @@
                     $.getJSON(ticketsUrl, {
                             id: value
                         }, function(data) {
-                            let user_badge= (data.is_staff_tkt = 1 ? 'Staff' : 'User');
-                             let path = (root + '/' + data[i].user_pic);
-                             let img = `<img src="`+ path +`" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
-
+                            console.log(data)
+                            
                             for (var i = 0; i < data.length; i++) {
+                                
+                                let user_badge= (data[i].is_staff_tkt == 1 ? 'Staff' : 'User');
+                                let path = (root + '/' + data[i].user_pic);
+                                let img = `<img src="`+ path +`" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+
                                     $htmlList +=
                                     '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
                                         '<a class="" href="{{url("ticket-details")}}/' + data[i].coustom_id + '">' +
@@ -188,7 +191,7 @@
                                                 '<div class="more-info">' +
                                                     '<div class="" style="display: -webkit-box">' +
                                                         ' <h6 class="mb-0">' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary"> '+ user_badge +'</span></h6>' +
-                                                        '<span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Posted on '+ convertDate(data[i].created_at) +'</span>' +
+                                                        '<span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Ticket ID'+ data[i].coustom_id +'</span>' +
                                                     '</div>' +
                                                     '<div class="first">' +
                                                         '<span style="font-size:14px">' + data[i].subject + ' </span>' +
