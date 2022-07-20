@@ -31,8 +31,7 @@
 
     function editRecord() {
 
-        let template_fields =  {!! json_encode($asset_templates_fields) !!};     
-        console.log(template_fields , "template fileds");  
+        let template_fields =  {!! json_encode($asset_templates_fields) !!};
 
         var asset_id = $("#asset_id").val();
         var asset_forms_id = $("#asset_forms_id").val();
@@ -66,7 +65,7 @@
 
                 var complete_address =  address + "|" + aprtment_no + "|" + city + "|" + state + "|" + zipcode + "|" + country ;
 
-                comp_add.push(complete_address);                
+                comp_add.push(complete_address);
 
             });
 
@@ -78,8 +77,8 @@
                     data : comp_add,
                     field_id:field_ids,
                 }
-            
-            
+
+
         }else{
             form_data = {
                 data : asset_data,
@@ -90,7 +89,6 @@
             }
         }
 
-        console.log(form_data , "form_Data");
 
         $.ajax({
             type: "POST",
@@ -128,10 +126,10 @@
             }
         });
     }
-    
+
     function merger_objects(obj1,obj2){
         $.each(obj2, function(key, value) {
-            obj1[key] = value;      
+            obj1[key] = value;
         });
         return obj1;
     }
@@ -141,7 +139,7 @@
         $('#edit_request_btn').css('display','none');
         $('#save_request_btn').css('display','block');
         $('#cancel_request_btn').css('display','block');
-        
+
         $("#asset_title").css('display','block');
         $("#asset_title_text").css('display','none');
 
@@ -152,11 +150,11 @@
         $("#input_pass_icon").css('display','block');
         $("#pass_icon").css('display','none');
 
-        
+
         // $("input[name='ipv4']").inputmask({
         //     alias: "ip",
         //     greedy: false
-        // }); 
+        // });
 
 
 
@@ -221,22 +219,22 @@
 
 
         $(".field").css('display','none');
-           
+
 
         }
-       
-        
+
+
 
 
     }
 
 
     function cancelEditRequest(){
-        
+
         $('#edit_request_btn').css('display','block');
         $('#save_request_btn').css('display','none');
         $('#cancel_request_btn').css('display','none');
-        
+
         $("#asset_title").css('display','none');
         $("#asset_title_text").css('display','block');
 
@@ -264,6 +262,6 @@
 
         }
 
-    
+
     }
 </script>

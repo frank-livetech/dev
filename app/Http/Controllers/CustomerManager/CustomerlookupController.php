@@ -631,7 +631,7 @@ class CustomerlookupController extends Controller
                 $template = str_replace('Go To Ticket', 'Go To Profile' , $template);
             }
         }
-        
+
 
         return html_entity_decode($template);
     }
@@ -641,7 +641,6 @@ class CustomerlookupController extends Controller
         try{
             $user = User::where('email',$email)->first();
             if($user){
-                session()->forget('action_clicked_admin');
                 session()->put('action_clicked_admin',$user->email);
                 return redirect()->route('customer.myProfile');
             }else{

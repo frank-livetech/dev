@@ -6,9 +6,6 @@ use App\Events\TestPusher;
 use App\Exports\AssetFieldsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-$user_login = ( (int)request()->segment(2) > 0 ? 'u/'. request()->segment(2) : '' );
-
-
 Route::get('/optimize',function(){
     Artisan::call('optimize');
 });

@@ -1034,6 +1034,7 @@ function getAssetDetails(id=1) {
 //     }
 // });
 
+    var edit_cmp_id = '';
 
     function selectCustomer(value , customerId , companyId,type=null) {
 
@@ -1095,7 +1096,8 @@ function getAssetDetails(id=1) {
             $('#'+customerId).empty();
             let option_cus = ``;
             let root_onEdit = `<option>All</option>`;
-
+            let item = customers.find(item => item.company_id == edit_cmp_id);
+console.log(item,'items')
             for (let [i, data] of customers.entries()) {
                 if(data.id == value && i == 0){
                     root_onEdit += `<option value="0">N/A</option>`
@@ -1175,6 +1177,7 @@ function getAssetDetails(id=1) {
                 $("#"+companyId).html(root + option);
             }
         }else{
+                edit_cmp_id = value;
                 let option_company = '';
                 for (const [i, data] of companies.entries()) {
                     console.log(data);
