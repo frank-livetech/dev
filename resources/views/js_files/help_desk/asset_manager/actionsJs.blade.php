@@ -425,7 +425,6 @@ function editAsset(id) {
 
 
                 } else {
-                    console.log(data.asset_record[end_point])
 
                     var password = `<span style="position:absolute;top:40px;right:10px" toggle="#password-field" id="pass_icon" class="fa fa-fw fa-eye mr-2 show-password-btn pass_icon"></span>`;
                     html_input += `

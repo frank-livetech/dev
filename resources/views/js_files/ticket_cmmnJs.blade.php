@@ -1044,10 +1044,13 @@
                     assigneeHtml += `<h6 class="align-self-center cursor-pointer ms-50 mb-0">+`+(val['assignee_img'].length - 1)+`</h6>`;
                 }
 
+
                 assigneeHtml += `</div>`;
                 assignee = assigneeHtml;
             }else{
-                assignee = '-- Unassigned --'
+                assignee = `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="bottom" title="" class="avatar pull-up" data-bs-original-title="Unassigned">
+                                <img src="/default_imgs/customer.png" alt="Avatar" width="33" height="33">
+                            </div>`
             }
 
             // let c = moment(last_act).parseZone(usrtimeZone).format('MM/DD/YYYY h:mm:ss A');
