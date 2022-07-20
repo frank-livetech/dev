@@ -1047,7 +1047,7 @@
                 assignee = assigneeHtml;
             }else{
                 assignee = `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="bottom" title="" class="avatar pull-up" data-bs-original-title="Unassigned">
-                                <img src="/default_imgs/customer.png" alt="Avatar" width="33" height="33">
+                                <img src="`+root+`/public/default_imgs/customer.png" alt="Avatar" width="33" height="33">
                             </div>`
             }
 
