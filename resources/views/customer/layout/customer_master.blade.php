@@ -235,12 +235,14 @@
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item active"><a href="">
 
-                                            @if (request()->is('myprofile'))
+                                            @if (request()->is('user/myprofile'))
                                                 Profile
-                                            @elseif(request()->is('submitTicket'))
+                                            @elseif(request()->is('user/assets'))
+                                                Assets
+                                            @elseif(request()->is('user/submitTicket'))
                                                 Submit Ticket
-                                            @elseif(request()->is('view-tkt'))
-                                                My Ticket
+                                            @elseif(request()->is('user/tickets/list'))
+                                                My Tickets
                                             @else
                                                 Ticket Details
                                             @endif
