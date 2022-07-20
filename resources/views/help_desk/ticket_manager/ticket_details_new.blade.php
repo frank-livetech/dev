@@ -6,7 +6,7 @@
 @section('customtheme')
     <style>
         div#editor_div>p>img{
-            max-width: 550px !important;
+            max-width: 450px !important;
         }
         br+br {
             display: block !important;
@@ -418,6 +418,9 @@
         }
 
         @media (max-width: 650px) {
+            div#editor_div>p>img{
+            max-width: 250px !important;
+        }
             #sub-tkt {
                 margin-top: 6px !important
             }
