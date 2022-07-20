@@ -5,6 +5,27 @@
 @section('body')
 @section('customtheme')
     <style>
+        .tech-spa{
+            margin: 0px 5px 2px 5px
+        }
+        .set-tech{
+            width: 45%;
+        }
+        .set-status{
+            width: 14%;
+        }
+        .set-type{
+            width: 12%;
+        }
+        .set-flag{
+            width: 7%;
+        }
+        .set-dept{
+            width: 13%;
+        }
+        .set-priority{
+            width: 9% ;
+        }
         div#editor_div>p>img{
             max-width: 450px !important;
         }
@@ -398,6 +419,10 @@
             }
 
         @media (max-width: 897.98px) {
+           
+            .set-dept,.set-type,.set-flag,.set-status,.set-priority,.set-tech{
+                width: 100% !important;
+            }
             .webkit-box1 {
                 display: inline;
             }
@@ -418,6 +443,9 @@
         }
 
         @media (max-width: 650px) {
+            .set-dept,.set-type,.set-flag, .set-status,.set-priority,.set-tech{
+                width: 100% !important;
+            }
             div#editor_div>p>img{
             max-width: 250px !important;
         }
@@ -1457,10 +1485,9 @@
                         <div class="card-body drop-dpt"
                             style="background-color:{{ $current_status == null ? '' : ($current_status->color != null ? $current_status->color . ' !important' : ' ') }}">
                             <div class="row" id="dropD" style="margin-right:-5px;margin-bottom:0 !important;">
-                                <div class="col-md-2 br-white" id="dep-label"
+                                <div class="col-md-2 br-white set-dept" id="dep-label"
                                     style="border-right: 1px solid white;padding: 12px;">
-                                    <label
-                                        class="control-label col-sm-12 end_padding text-white"><strong>Department</strong></label>
+                                    <label class="control-label col-sm-12 end_padding text-white"><strong>Department</strong></label>
                                     <h5 class="end_padding mb-0 selected-label text-white"
                                         style="font-size: 0.87rem; !important" id="dep-h5"></h5>
                                     <select class="select2 form-select form-control form-control-line" id="dept_id"
@@ -1473,9 +1500,9 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
-                                    <label  class="control-label col-sm-12 end_padding text-white "><strong>Owner</strong></label>
-                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; line-hieght:2; !important" id="tech-h5"></h5>
+                                <div class="col-md-2 br-white set-tech" id="tech-label" style="border-right: 1px solid white;padding: 12px;">
+                                    <label  class="control-label col-sm-12 end_padding text-white " style="margin-left: 5px"><strong>Owner</strong></label>
+                                    <h5 class="end_padding mb-0 selected-label text-white" style="font-size: 0.87rem; line-height:2; !important" id="tech-h5"></h5>
                                     <select class="select2 form-control " id="assigned_to" name="assigned_to" style="width: 100%; height:36px;">
                                         <option value="">Unassigned</option>
                                         @foreach ($users as $user)
@@ -1485,7 +1512,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="type-label"
+                                <div class="col-md-2 br-white set-type" id="type-label"
                                     style="border-right: 1px solid white;padding: 12px;">
                                     <label
                                         class="control-label col-sm-12 end_padding text-white "><strong>Type</strong></label>
@@ -1500,7 +1527,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="status-label"
+                                <div class="col-md-2 br-white set-status" id="status-label"
                                     style="border-right: 1px solid white;padding: 12px;">
                                     <label
                                         class="control-label col-sm-12 end_padding text-white "><strong>Status</strong></label>
@@ -1516,7 +1543,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 br-white" id="prio-label"
+                                <div class="col-md-2 br-white set-priority" id="prio-label"
                                     style="border-right: 1px solid white;;padding: 12px;background-color:{{ $current_priority == null ? '' : ($current_priority->priority_color != null ? $current_priority->priority_color : ' ') }}">
                                     <label
                                         class="control-label col-sm-12 end_padding text-white "><strong>Priority</strong></label>
@@ -1533,7 +1560,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-2 chim text-center {{ $details->is_flagged == 1 ? 'flagSpot' : '' }}"
+                                <div class="col-md-2 set-flag chim text-center {{ $details->is_flagged == 1 ? 'flagSpot' : '' }}"
                                     style=";padding: 12px;">
                                     <a type="button" class="text-white" id="flag" style="font-size: 20px">
                                         <i class="fas fa-flag"></i>

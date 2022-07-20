@@ -140,7 +140,7 @@
 
         var Tech = ``
         $("#tech-label").find(".select2 option:selected").each(function () {
-            Tech += '<span class="badge bg-primary" >' +$(this).text()+ '</span>';
+            Tech += '<span class="badge bg-primary tech-spa" >' +$(this).text()+ '</span>';
         });
         $("#tech-h5").html(Tech);
 
