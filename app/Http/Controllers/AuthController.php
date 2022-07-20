@@ -699,7 +699,7 @@ class AuthController extends Controller
                     }
 
                     if (\Auth::user()->user_type == 5) {
-                        return redirect()->intended('myprofile/' . $user->account_id);
+                        return redirect()->intended('user/myprofile/' . $user->account_id);
                     }
 
                 } else {
