@@ -998,6 +998,8 @@
     let companies = @json($companies);
     let customers = @json($customers);
     let asset_type_arr = [];
+    var edit_comp_val = 0
+    var edit_cust_val = 0
 
     function exportAsset(type=null){
         if(type != null){
@@ -1047,6 +1049,8 @@
        }
        function show_add_asset(){
         $('#show_assts').toggle();
+        edit_comp_val = 0
+        edit_cust_val = 0
        }
        $("#form_id").on("change", function() {
         var opt = $(this).val();
@@ -1054,7 +1058,6 @@
             $('#save_asset_field_id').hide();
         }else{
             $('#save_asset_field_id').show();
-
         }
         });
     //    $('#form_id').onchange(function(){

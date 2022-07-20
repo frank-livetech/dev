@@ -2,6 +2,7 @@
     let asset_arr = [];
     let assetFlag = false;
 
+
 function get_asset_table_list() {
     $.ajax({
         type: "GET",
@@ -361,6 +362,7 @@ $("#pass_icon").on('click', function() {
 
 })
 
+
 function editAsset(id) {
 
     $("#update_asset_modal").modal('show');
@@ -385,21 +387,25 @@ function editAsset(id) {
 
                 if(data.asset.company_id != null) {
                     selectCompany(data.asset.company_id , 'edit_asset_customer','edit_asset_company','edit',data.asset.customer_id)
-                    $('#edit_asset_company').val(data.asset.company_id).trigger('change');
+                    // $('#edit_asset_company').val(data.asset.company_id).trigger('change');
+                    edit_comp_val = data.asset.company_id
                 }else{
-                    selectCompany('' , 'edit_asset_customer','edit_asset_company','edit')
+                    selectCompany('' , 'edit_asset_customer','edit_asset_company','edit',data.asset.customer_id)
                     // $('#edit_asset_company').val(0).trigger('change');
+                    edit_comp_val = null
                 }
 
 
 
 
                 if(data.asset.customer_id != null) {
-                    selectCustomer(data.asset.customer_id , 'edit_asset_customer','edit_asset_company','edit')
-                    $('#edit_asset_customer').val(data.asset.customer_id).trigger('change');
+                    selectCustomer(data.asset.customer_id , 'edit_asset_customer','edit_asset_company','edit',data.asset.company_id)
+                    // $('#edit_asset_customer').val(data.asset.customer_id).trigger('change');
+                    edit_cust_val = data.asset.customer_id
                 }else{
-                    selectCustomer('' , 'edit_asset_customer','edit_asset_company','edit')
+                    selectCustomer('' , 'edit_asset_customer','edit_asset_company','edit',data.asset.company_id)
                     // $('#edit_asset_customer').val(0).trigger('change');
+                    edit_cust_val = null
                 }
 
 
@@ -1034,9 +1040,8 @@ function getAssetDetails(id=1) {
 //     }
 // });
 
-    var edit_cmp_id = '';
 
-    function selectCustomer(value , customerId , companyId,type=null) {
+    function selectCustomer(value , customerId , companyId,type=null,comid=null) {
 
         let root = `<option>All</option><option value="0">N/A</option>`;
 
@@ -1096,17 +1101,58 @@ function getAssetDetails(id=1) {
             $('#'+customerId).empty();
             let option_cus = ``;
             let root_onEdit = `<option>All</option>`;
-            let item = customers.find(item => item.company_id == edit_cmp_id);
-console.log(item,'items')
-            for (let [i, data] of customers.entries()) {
-                if(data.id == value && i == 0){
-                    root_onEdit += `<option value="0">N/A</option>`
-                }else if(data.id != value && i == 0){
-                    root_onEdit += `<option value="0" selected>N/A</option>`
+
+            if(comid != null){
+                var item = customers.filter(item => item.company_id == comid);
+
+                for (let [i, data] of item.entries()) {
+                    if(data.id == value && i == 0){
+                        root_onEdit += `<option value="0">N/A</option>`
+                    }else if(data.id != value && i == 0){
+                        root_onEdit += `<option value="0" selected>N/A</option>`
+                    }
+                    option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
                 }
-                option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
+                $("#"+customerId).html(root_onEdit + option_cus);
+
+            }else{
+                let cust = customers.find(item => item.id == value);
+
+                if(cust != null) {
+                    if(cust.company_id != null) {
+                        $("#"+companyId).empty();
+
+                        let root_onEditCmp = `<option>All</option>`;
+                        if(comid == null){
+                            root_onEditCmp += `<option value="0" selected>N/A</option>`;
+                        }else{
+                            root_onEditCmp += `<option value="0">N/A</option>`;
+                        }
+
+                        let option = `<option value="${cust.company_id}" > ${cust.company_name} </option>`;
+                        $("#"+companyId).html(option);
+
+
+                        $('#'+customerId).empty();
+                        let option_cus = ``;
+                        let root_onEdit = `<option>All</option>`;
+                        var item = customers.filter(item => item.company_id == cust.company_id);
+
+                        for (let [i, data] of item.entries()) {
+                            if(data.id == value && i == 0){
+                                root_onEdit += `<option value="0">N/A</option>`
+                            }else if(data.id != value && i == 0){
+                                root_onEdit += `<option value="0" selected>N/A</option>`
+                            }
+                            option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
+                        }
+                        $("#"+customerId).html(root_onEdit + option_cus);
+
+
+                    }
+                }
             }
-            $("#"+customerId).html(root_onEdit + option_cus);
+
         }
     }
 
@@ -1177,16 +1223,160 @@ console.log(item,'items')
                 $("#"+companyId).html(root + option);
             }
         }else{
-                edit_cmp_id = value;
-                let option_company = '';
-                for (const [i, data] of companies.entries()) {
-                    console.log(data);
-                    option_company += `<option value="${data.id}" ${data.id == value ? 'selected' : ''}> ${data.name} </option>`;
-                }
 
-                $("#"+companyId).html(root + option_company);
-
+            let option_company = '';
+            for (const [i, data] of companies.entries()) {
+                option_company += `<option value="${data.id}" ${data.id == value ? 'selected' : ''}> ${data.name} </option>`;
             }
+
+            $("#"+companyId).html(root + option_company);
+
+        }
     }
+
+
+    // function selectCustomer(value , customerId , companyId,type=null,comid=null) {
+
+    //     let root = `<option>All</option>`;
+    //         if (value != '') {
+
+    //             if($('#'+customerId+' :selected').text() == 'All'){
+
+    //                 let option_company = [];
+    //                 for (const data of companies) {
+    //                     option_company += `<option value="${data.id}"> ${data.name} </option>`;
+    //                 }
+
+    //                 $('#'+companyId).empty();
+    //                 $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
+    //                 $('#'+companyId).trigger('change');
+
+
+    //                 let option_customer = [];
+    //                 for (const data of customers) {
+    //                     option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+    //                 }
+    //                 $('#'+customerId).empty();
+    //                 $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
+
+
+    //             }else if($('#'+customerId+' :selected').text() != 'N/A'){
+
+    //                 $("#"+companyId).empty();
+    //                 let item = customers.find(item => item.id == value);
+    //                 if(item != null) {
+    //                     if(item.company_id != null) {
+    //                         if(assetFlag) {
+    //                             $("#"+companyId).empty();
+    //                             let option = ``
+
+    //                             if(edit_comp_val == null && comid != null){
+    //                                 root += `<option value="0" selected>N/A</option>`
+    //                                 option += `<option value="${item.company_id}"> ${item.company_name} </option>`;
+    //                             }else{
+    //                                 root += `<option value="0">N/A</option>`
+    //                                 option += `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
+    //                             }
+
+    //                             $("#"+companyId).html(root+option);
+    //                         }else{
+    //                             let option = ``
+
+    //                             if(edit_comp_val == null){
+    //                                 root += `<option value="0" selected>N/A</option>`
+    //                                 option += `<option value="${item.company_id}"> ${item.company_name} </option>`;
+    //                             }else{
+    //                                 root += `<option value="0">N/A</option>`
+    //                                 option += `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
+    //                             }
+    //                             $("#"+companyId).html(root+option);
+    //                         }
+    //                     }
+    //                 }
+    //             }
+
+
+    //         } else {
+    //             assetFlag = false;
+    //             $('#'+customerId).empty();
+    //             let option = ``;
+    //             for (let [i, data] of customers.entries()) {
+    //                 option += `<option value="${data.id}" ${i == 0 ? 'selected' : ''}> ${data.first_name} ${data.last_name} </option>`;
+    //             }
+    //             $("#"+customerId).html(option);
+    //         }
+
+
+    // }
+
+
+    // function selectCompany(value , customerId , companyId, type=null,cust=null) {
+    //     let root = ``;
+
+    //         if(value != '') {
+    //             assetFlag = true;
+
+    //             if($('#'+companyId+' :selected').text() == 'All'){
+    //                 let option_company = [];
+    //                 for (const data of companies) {
+    //                     option_company += `<option value="${data.id}"> ${data.name} </option>`;
+    //                 }
+
+    //                 $('#'+companyId).empty();
+    //                 $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
+    //                 $('#'+companyId).trigger('change');
+
+
+    //                 let option_customer = [];
+    //                 for (const data of customers) {
+    //                     option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+    //                 }
+    //                 $('#'+customerId).empty();
+    //                 $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
+
+    //             }
+
+    //             let custs = customers.filter(item => item.company_id == value);
+    //             if(custs.length > 0) {
+    //                 let option = ``;
+    //                 for (let [i, data] of custs.entries()) {
+    //                     if(edit_cust_val == null && i == 0){
+    //                         root += `<option selected value="0">N/A</option>`
+    //                     }
+    //                     option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
+    //                 }
+
+    //                 if($('#'+customerId+' :selected').text() == 'All'){
+    //                     let option_company = '';
+    //                     for (const [i, data] of companies.entries()) {
+    //                             option_company += `<option value="${data.company_id}"> ${data.company_name} </option>`;
+    //                     }
+
+    //                     $("#"+companyId).html(option_company);
+    //                 }
+
+    //                 $('#'+customerId).empty();
+    //                 $("#"+customerId).html(root + option);
+
+    //             }else {
+    //                 if($('#'+customerId+' :selected').text() != 'Choose' ){
+    //                     if( $('#'+companyId+' :selected').text() !== "N/A"){
+    //                         $('#'+customerId).empty();
+    //                     }
+    //                 }
+    //             }
+
+
+    //         }else {
+    //             assetFlag = false;
+    //             $('#'+companyId).empty();
+    //             let option = ``;
+    //             for (let data of companies) {
+    //                 option += `<option value="${data.id}"> ${data.name} </option>`;
+    //             }
+    //             $("#"+companyId).html(root + option);
+    //         }
+
+    // }
 
 </script>
