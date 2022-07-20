@@ -9,10 +9,10 @@
             margin: 0px 5px 2px 5px
         }
         .set-tech{
-            width: 45%;
+            width: 38%;
         }
         .set-status{
-            width: 14%;
+            width: 17%;
         }
         .set-type{
             width: 12%;
@@ -24,7 +24,7 @@
             width: 13%;
         }
         .set-priority{
-            width: 9% ;
+            width: 13% ;
         }
         div#editor_div>p>img{
             max-width: 450px !important;
@@ -285,6 +285,9 @@
         .modal-slide-in .modal-dialog.sidebar-lg {
             width: 55rem;
         }
+        .breadcrumb-clr{
+            color: #7367f0
+        }
 
         br+br {
             display: none;
@@ -533,12 +536,12 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="javascript:location.reload()">Help Desk</a>
+                                <li class="breadcrumb-item"><a href="javascript:location.reload()"><span class="breadcrumb-clr">Help Desk</span></a>
                                 </li>
                                 <li class="breadcrumb-item active"><a href="{{ url('ticket-manager') }}">Ticket
                                         Manager</a>
                                 </li>
-                                <li class="breadcrumb-item active"><a href="javascript:location.reload()">Ticket Detail
+                                <li class="breadcrumb-item active"><a href="javascript:location.reload()"><span class="breadcrumb-clr">Ticket Detail</span>
                                     </a>
                                 </li>
                             </ol>

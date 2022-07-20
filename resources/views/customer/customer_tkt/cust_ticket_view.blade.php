@@ -11,6 +11,49 @@
     </div>
 @endsection
 <style>
+    .text-center{
+        text-align: center
+    }
+     table.dataTable .custom {
+            padding-right: 230px !important;
+        }
+
+        table.dataTable .pr-ticket {
+            min-width: 69px !important;
+        }
+
+        .pr-replies {
+            min-width: 95px !important;
+        }
+
+        .pr-due {
+            min-width: 125px !important;
+        }
+
+        .pr-activity {
+            min-width: 97px !important;
+            padding-right: 19px !important;
+        }
+
+        .pr-tech {
+            min-width: 109px !important;
+        }
+
+        table.dataTable .custom-cst {
+            padding-right: 37px !important;
+        }
+
+        table.dataTable th {
+            padding: 0.2rem 1.5rem;
+        }
+
+        table.dataTable td {
+            padding: 7px !important;
+            font-size: 12px;
+        }
+    table.dataTable .custom {
+            padding-right: 230px !important;
+        }
     .carousel-control-prev, .carousel-control-next{
         bottom: 26px !important;
     }
@@ -136,17 +179,17 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table id="customer_tickets_table" class="table display compact">
+                        <table id="customer_tickets_table" class="table table-bordered display mb-0">
                             <thead>
                                 <tr>
-                                    <th>Ticket ID</th>
-                                    <th >Subject</th>
-                                    <th>Status</th>
+                                    <th class='pr-ticket'>Ticket ID</th>
+                                    <th class='custom'>Subject</th>
+                                    <th >Status</th>
                                     <th>Priority</th>
                                     <th>Type</th>
-                                    <th>Last Activity</th>
-                                    <th>Last Replier</th>
-                                    <th>Department </th>
+                                    <th class='pr-activity'>Last Activity</th>
+                                    <th class='pr-replies custom-cst'>Last Replier</th>
+                                    <th class='custom-cst'>Department </th>
                                 </tr>
                             </thead>
                             <tbody>

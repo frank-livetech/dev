@@ -82,7 +82,7 @@
                                     let coustom_id =  full.coustom_id != null ? full.coustom_id : '-';
                                     let url = "{{route('customer.tkt_dtl', ':id')}}";
                                     url = url.replace(':id', coustom_id);
-                                    return `<div> <a href="${url}"> ${coustom_id}</a> </div>`;
+                                    return `<div> <a class="text-body fw-bolder" href="${url}"> ${coustom_id}</a> </div>`;
                                 }
                             },
                             {
@@ -91,24 +91,26 @@
                                     let coustom_id =  full.coustom_id != null ? full.coustom_id : '-';
                                     let url = "{{route('customer.tkt_dtl', ':id')}}";
                                     url = url.replace(':id', coustom_id);
-                                    return `<div> <strong> <a href="${url}">${subject}</a> </strong> </div>`;
+                                    return `<div> <a class="text-body fw-bolder" href="${url}">${subject}</a> </div>`;
                                 }
                             },
                             {
                                 "render": function (data, type, full, meta) {
-                                    let status = `<span class="badge" style="background-color:${full.status_color != null ? full.status_color : ''}"> ${full.status_name} </span>`;
+                                    
+                                    let status = `<div class="text-center"><div class="text-white badge" style="background-color:${full.status_color != null ? full.status_color : ''}">${full.status_name}</div></div>`;
                                     return full.status_name != null ? status : '-';
                                 }
                             },
                             {
                                 "render": function (data, type, full, meta) {
-                                    let priority = `<span class="badge" style="background-color:${full.priority_color != null ? full.priority_color : ''}"> ${full.priority_name} </span>`;
+                                    let priority = `<div class="text-center"><div class="badge" style="background-color:${full.priority_color != null ? full.priority_color : ''}"> ${full.priority_name} </div></div>`;
                                     return full.priority_name != null ? priority : '-';
                                 }
                             },
                             {
                                 "render": function (data, type, full, meta) {
-                                    return full.type_name != null ? full.type_name : '-';
+                                    let typetickt= `<div class="text-center"> ${full.type_name != null ? full.type_name : '-'}</div>`;
+                                    return typetickt;
                                 }
                             },
                             {
@@ -118,12 +120,14 @@
                             },
                             {
                                 "render": function (data, type, full, meta) {
-                                    return full.lastReplier != null && full.lastReplier != "" ? full.lastReplier : '-';
+                                    let lst_rep= `<div class="text-center"> ${full.lastReplier != null && full.lastReplier != "" ? full.lastReplier : '-'}</div>`;
+                                    return lst_rep;
                                 }
                             },
                             {
                                 "render": function (data, type, full, meta) {
-                                    return full.department_name != null ? full.department_name : '-';
+                                    let depttickt= `<div class="text-center"> ${full.department_name != null ? full.department_name : '-'}</div>`;
+                                    return depttickt;
                                 }
                             },
 
