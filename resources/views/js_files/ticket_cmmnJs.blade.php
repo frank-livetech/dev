@@ -1,4 +1,7 @@
 <script>
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-bs-toggle=tooltip]' });
+    });
     // Ticket CMMN Script Blade
     let tickets_table_list = '';
     let page_name = '';
@@ -1032,7 +1035,7 @@
                 var assigneeHtml = `<div class="avatar-group">`;
                 $.each(val['assignee_img'], function(i,item){
                     if(i <= 4){
-                        assigneeHtml += `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="bottom" title="" class="avatar pull-up" data-bs-original-title="`+val['assignee_img_name'][i]+`">
+                        assigneeHtml += `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="" class="avatar pull-up" data-bs-original-title="`+val['assignee_img_name'][i]+`">
                                                 <img src="`+item+`" alt="Avatar" width="33" height="33">
                                         </div>`
                     }
@@ -1046,7 +1049,7 @@
                 assigneeHtml += `</div>`;
                 assignee = assigneeHtml;
             }else{
-                assignee = `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="bottom" title="" class="avatar pull-up" data-bs-original-title="Unassigned">
+                assignee = `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="" class="avatar pull-up" data-bs-original-title="Unassigned">
                                 <img src="/default_imgs/customer.png" alt="Avatar" width="33" height="33">
                             </div>`
             }
