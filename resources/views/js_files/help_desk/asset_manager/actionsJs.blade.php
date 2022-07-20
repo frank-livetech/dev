@@ -345,7 +345,6 @@ $("#pass_icon").on('click', function() {
 
 function editAsset(id) {
 
-    console.log(id , 'id');
     $("#update_asset_modal").modal('show');
 
     $.ajax({
@@ -367,16 +366,25 @@ function editAsset(id) {
                 $("#asset_title_id").val(data.asset.id);
 
                 if(data.asset.company_id != null) {
-                    $('.asset_company_id').val(data.asset.company_id).trigger('change');
+                    selectCompany(data.asset.company_id , 'edit_asset_customer','edit_asset_company','edit',data.asset.customer_id)
+                    $('#edit_asset_company').val(data.asset.company_id).trigger('change');
                 }else{
-                    selectCompany(null , 'edit_asset_customer','edit_asset_company')
+                    selectCompany('' , 'edit_asset_customer','edit_asset_company','edit')
+                    // $('#edit_asset_company').val(0).trigger('change');
                 }
 
+
+
+
                 if(data.asset.customer_id != null) {
-                    $('.asset_customer_id').val(data.asset.customer_id).trigger('change');
+                    selectCustomer(data.asset.customer_id , 'edit_asset_customer','edit_asset_company','edit')
+                    $('#edit_asset_customer').val(data.asset.customer_id).trigger('change');
                 }else{
-                    selectCustomer(null , 'edit_asset_customer','edit_asset_company')
+                    selectCustomer('' , 'edit_asset_customer','edit_asset_company','edit')
+                    // $('#edit_asset_customer').val(0).trigger('change');
                 }
+
+
 
             }
 
@@ -391,7 +399,6 @@ function editAsset(id) {
 
 
                 if (data.AssetFields[i].type == "address") {
-
                     var full_address = data.asset_record[end_point];
                     var split_address = full_address.split("|");
 
@@ -418,12 +425,14 @@ function editAsset(id) {
 
 
                 } else {
+                    console.log(data.asset_record[end_point])
+
                     var password = `<span style="position:absolute;top:40px;right:10px" toggle="#password-field" id="pass_icon" class="fa fa-fw fa-eye mr-2 show-password-btn pass_icon"></span>`;
                     html_input += `
                     <input type='hidden' id="field_id" class="form-control mt-2 field_id" value="` + data.AssetFields[i].id + `"/>
                     <div class="form-group" style="position:relative">
                         <label>` + data.AssetFields[i].label + `</label>  ` + (data.AssetFields[i].required == 1 ? required : '') + `
-                        <input type="` + data.AssetFields[i].type + `" value="` + (data.asset_record[end_point] != undefined  || data.asset_record[end_point] != null ? data.asset_record[end_point] : '') + `" id="input_` + data.AssetFields[i].id + `" class="form-control input_` + data.AssetFields[i].id + `" placeholder="` + (data.AssetFields[i].placeholder != null ? data.AssetFields[i].placeholder : '') + `"  ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
+                        <input type="` + data.AssetFields[i].type + `" value="` + (data.asset_record != undefined  && data.asset_record != null ? (data.asset_record[end_point] != null &&  data.asset_record[end_point] != undefined ? data.asset_record[end_point] : '') : '') + `" id="input_` + data.AssetFields[i].id + `" class="form-control input_` + data.AssetFields[i].id + `" placeholder="` + (data.AssetFields[i].placeholder != null ? data.AssetFields[i].placeholder : '') + `"  ` + (data.AssetFields[i].required == 1 ? 'required' : '') + `/>
                         ` + (data.AssetFields[i].type == "password" ? password : '') + `
                     </div>
                 `;
@@ -1009,125 +1018,155 @@ function getAssetDetails(id=1) {
 // });
 
 
-function selectCustomer(value , customerId , companyId) {
+    function selectCustomer(value , customerId , companyId,type=null) {
 
         let root = `<option>All</option><option value="0">N/A</option>`;
-        if (value != '') {
 
-            if($('#'+customerId+' :selected').text() == 'All'){
+        if(type == null){
+            if (value != '') {
 
-                let option_company = [];
-                for (const data of companies) {
-                    option_company += `<option value="${data.id}"> ${data.name} </option>`;
-                }
+                if($('#'+customerId+' :selected').text() == 'All'){
 
-                $('#'+companyId).empty();
-                $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
-                $('#'+companyId).trigger('change');
+                    let option_company = [];
+                    for (const data of companies) {
+                        option_company += `<option value="${data.id}"> ${data.name} </option>`;
+                    }
 
-
-                let option_customer = [];
-                for (const data of customers) {
-                    option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
-                }
-                $('#'+customerId).empty();
-                $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
+                    $('#'+companyId).empty();
+                    $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
+                    $('#'+companyId).trigger('change');
 
 
-            }else if($('#'+customerId+' :selected').text() != 'N/A'){
+                    let option_customer = [];
+                    for (const data of customers) {
+                        option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+                    }
+                    $('#'+customerId).empty();
+                    $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
 
-                $("#"+companyId).empty();
-                let item = customers.find(item => item.id == value);
-                if(item != null) {
-                    if(item.company_id != null) {
-                        if(assetFlag) {
-                            $("#"+companyId).empty();
-                            let option = `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
-                            $("#"+companyId).html(root+option);
-                        }else{
-                            let option = `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
-                            $("#"+companyId).html(root+option);
+
+                }else if($('#'+customerId+' :selected').text() != 'N/A'){
+
+                    $("#"+companyId).empty();
+                    let item = customers.find(item => item.id == value);
+                    if(item != null) {
+                        if(item.company_id != null) {
+                            if(assetFlag) {
+                                $("#"+companyId).empty();
+                                let option = `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
+                                $("#"+companyId).html(root+option);
+                            }else{
+                                let option = `<option value="${item.company_id}" selected> ${item.company_name} </option>`;
+                                $("#"+companyId).html(root+option);
+                            }
                         }
                     }
                 }
+
+
+            } else {
+                assetFlag = false;
+                $('#'+customerId).empty();
+                let option = ``;
+                for (let [i, data] of customers.entries()) {
+                    option += `<option value="${data.id}" ${i == 0 ? 'selected' : ''}> ${data.first_name} ${data.last_name} </option>`;
+                }
+                $("#"+customerId).html(option);
             }
 
-
-        } else {
-            assetFlag = false;
+        }else{
             $('#'+customerId).empty();
-            let option = ``;
+            let option_cus = ``;
+            let root_onEdit = `<option>All</option>`;
+
             for (let [i, data] of customers.entries()) {
-                option += `<option value="${data.id}" ${i == 0 ? 'selected' : ''}> ${data.first_name} ${data.last_name} </option>`;
+                if(data.id == value && i == 0){
+                    root_onEdit += `<option value="0">N/A</option>`
+                }else if(data.id != value && i == 0){
+                    root_onEdit += `<option value="0" selected>N/A</option>`
+                }
+                option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
             }
-            $("#"+customerId).html(option);
+            $("#"+customerId).html(root_onEdit + option_cus);
         }
     }
 
 
-    function selectCompany(value , customerId , companyId) {
+    function selectCompany(value , customerId , companyId, type=null,cust=null) {
         let root = `<option selected value="0">N/A</option>`;
 
-        if(value != '') {
-            assetFlag = true;
+        if(type == null){
+            if(value != '') {
+                assetFlag = true;
 
-            if($('#'+companyId+' :selected').text() == 'All'){
-                let option_company = [];
-                for (const data of companies) {
-                    option_company += `<option value="${data.id}"> ${data.name} </option>`;
-                }
-
-                $('#'+companyId).empty();
-                $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
-                $('#'+companyId).trigger('change');
-
-
-                let option_customer = [];
-                for (const data of customers) {
-                    option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
-                }
-                $('#'+customerId).empty();
-                $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
-
-            }
-
-
-            let custs = customers.filter(item => item.company_id == value);
-            if(custs.length > 0) {
-                let option = ``;
-                for (let [i, data] of custs.entries()) {
-                    option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
-                }
-
-                if($('#'+customerId+' :selected').text() == 'All'){
-                    let option_company = '';
-                    for (const [i, data] of companies.entries()) {
-                            option_company += `<option value="${data.company_id}"> ${data.company_name} </option>`;
+                if($('#'+companyId+' :selected').text() == 'All'){
+                    let option_company = [];
+                    for (const data of companies) {
+                        option_company += `<option value="${data.id}"> ${data.name} </option>`;
                     }
 
-                    $("#"+companyId).html(option_company);
+                    $('#'+companyId).empty();
+                    $('#'+companyId).html(`<option selected disabled>Choose</option>`+option_company);
+                    $('#'+companyId).trigger('change');
+
+
+                    let option_customer = [];
+                    for (const data of customers) {
+                        option_customer += `<option value="${data.id}"> ${data.first_name} ${data.last_name}  </option>`;
+                    }
+                    $('#'+customerId).empty();
+                    $('#'+customerId).html(`<option selected disabled>Choose</option>`+option_customer);
+
+                }
+
+                let custs = customers.filter(item => item.company_id == value);
+                if(custs.length > 0) {
+                    let option = ``;
+                    for (let [i, data] of custs.entries()) {
+                        option += `<option value="${data.id}"> ${data.first_name} ${data.last_name} </option>`;
+                    }
+
+                    if($('#'+customerId+' :selected').text() == 'All'){
+                        let option_company = '';
+                        for (const [i, data] of companies.entries()) {
+                                option_company += `<option value="${data.company_id}"> ${data.company_name} </option>`;
+                        }
+
+                        $("#"+companyId).html(option_company);
+                    }
+
+
+                    $('#'+customerId).empty();
+                    $("#"+customerId).html(root + option);
+
+                }else {
+                    if($('#'+customerId+' :selected').text() != 'Choose' ){
+                        if( $('#'+companyId+' :selected').text() !== "N/A"){
+                            $('#'+customerId).empty();
+                        }
+                    }
                 }
 
 
-                $('#'+customerId).empty();
-                $("#"+customerId).html(root + option);
             }else {
-                if($('#'+customerId+' :selected').text() != 'Choose' ){
-                    if( $('#'+companyId+' :selected').text() !== "N/A"){
-                        $('#'+customerId).empty();
-                    }
+                assetFlag = false;
+                $('#'+companyId).empty();
+                let option = ``;
+                for (let data of companies) {
+                    option += `<option value="${data.id}"> ${data.name} </option>`;
                 }
+                $("#"+companyId).html(root + option);
             }
+        }else{
+                let option_company = '';
+                for (const [i, data] of companies.entries()) {
+                    console.log(data);
+                    option_company += `<option value="${data.id}" ${data.id == value ? 'selected' : ''}> ${data.name} </option>`;
+                }
 
-        }else {
-            assetFlag = false;
-            $('#'+companyId).empty();
-            let option = ``;
-            for (let data of companies) {
-                option += `<option value="${data.id}"> ${data.name} </option>`;
+                $("#"+companyId).html(root + option_company);
+
             }
-            $("#"+companyId).html(root + option);
-        }
     }
 
 </script>
