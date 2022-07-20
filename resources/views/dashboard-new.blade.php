@@ -902,10 +902,10 @@ table.dataTable thead .sorting_desc:after {
                     </div>
                 </div>
 
-        </div>
+            </div>
     </div>
 </div>
-
+</div>
 @endsection
 @section('scripts')
 
