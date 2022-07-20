@@ -260,6 +260,8 @@
                                                     <th> Asset Type</th>
                                                     <th> Company </th>
                                                     <th> Customer </th>
+                                                    <th> Created By </th>
+                                                    <th> Updated By </th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>

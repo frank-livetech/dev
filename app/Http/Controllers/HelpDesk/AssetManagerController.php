@@ -535,6 +535,8 @@ class AssetManagerController extends Controller
 
         foreach($assets as $asset) {
             $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->first();
+            $asset->created_by_name = User::find($asset->created_by) != null ? User::find($asset->created_by)->name : '';
+            $asset->updated_by_name = User::find($asset->updated_by) != null ? User::find($asset->created_by)->name : '';
         }
 
         $response['message'] = 'Success';

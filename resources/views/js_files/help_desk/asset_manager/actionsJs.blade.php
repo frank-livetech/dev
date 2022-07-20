@@ -98,6 +98,24 @@ function get_asset_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
+                            if(full.created_by_name != null) {
+                                return full.created_by_name;
+                            }else{
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
+                            if(full.updated_by_name != null) {
+                                return full.updated_by_name;
+                            }else{
+                                return '-';
+                            }
+                        }
+                    },
+                    {
+                        "render": function(data, type, full, meta) {
                             return `
                                 <div class="d-flex justify-content-center">
                                     <button onclick="editAsset(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
@@ -425,7 +443,6 @@ function editAsset(id) {
 
 
                 } else {
-                    console.log(data.asset_record[end_point])
 
                     var password = `<span style="position:absolute;top:40px;right:10px" toggle="#password-field" id="pass_icon" class="fa fa-fw fa-eye mr-2 show-password-btn pass_icon"></span>`;
                     html_input += `
