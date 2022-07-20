@@ -3,6 +3,11 @@
 @section('body')
     <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
     <style>
+        .fa-user-clock:before{
+            position: absolute;
+            top: 7px;
+            left:9px
+        }
         .nav-pills .nav-link{
             padding: 0.5rem !important
         }
@@ -208,7 +213,7 @@
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a> </li>
-                                    <li class="breadcrumb-item"><a href="javascript:location.reload()">Help Desk</a> </li>
+                                    <li class="breadcrumb-item "><a href="javascript:location.reload()">Help Desk</a> </li>
                                     <li class="breadcrumb-item active"><a href="javascript:location.reload()">Ticket Manager
                                         </a> </li>
                                     @php
