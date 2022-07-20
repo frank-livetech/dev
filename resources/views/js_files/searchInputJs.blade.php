@@ -173,8 +173,9 @@
                             id: value
                         }, function(data) {
                             let user_badge= (data.is_staff_tkt = 1 ? 'Staff' : 'User');
-                             let path = (root + '/' + data.user_pic);
+                             let path = (root + '/' + data[i].user_pic);
                              let img = `<img src="`+ path +`" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
+
                             for (var i = 0; i < data.length; i++) {
                                     $htmlList +=
                                     '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
