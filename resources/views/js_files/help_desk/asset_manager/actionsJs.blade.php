@@ -1109,10 +1109,18 @@ function getAssetDetails(id=1) {
                 var item = customers.filter(item => item.company_id == comid);
 
                 for (let [i, data] of item.entries()) {
-                    if(data.id == value && i == 0){
-                        root_onEdit += `<option value="0">N/A</option>`
-                    }else if(data.id != value && i == 0){
-                        root_onEdit += `<option value="0" selected>N/A</option>`
+
+                    if(data.id == value){
+                        console.log("inside item loop data.id == value", data.id,value)
+                        if(i == 0){
+                            root_onEdit += `<option value="0">N/A</option>`
+                        }
+                    }else if(data.id != value ){
+                        console.log("inside item loop data.id != value", data.id,value)
+
+                        if(i == 0){
+                            root_onEdit += `<option value="0" selected>N/A</option>`
+                        }
                     }
                     option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
                 }
