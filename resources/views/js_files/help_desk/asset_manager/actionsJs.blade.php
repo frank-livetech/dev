@@ -1103,7 +1103,7 @@ function getAssetDetails(id=1) {
             let option_cus = ``;
             let root_onEdit = `<option>All</option>`;
 
-            if(comid != null){
+            if(comid != null && comid != 0){
 
                 var item = customers.filter(item => item.company_id == comid);
                 console.log(comid , item, "if comid != null , not equal to null")
