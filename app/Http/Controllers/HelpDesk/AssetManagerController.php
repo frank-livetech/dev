@@ -54,15 +54,23 @@ class AssetManagerController extends Controller
     public function assetExport(Request $request)
     {
 
-        $asst = Assets::where('customer_id',$request->customer)->orWhere('company_id',$request->company)->get();
         $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->get();
 
+        if($request->customer != 'null' && $request->company != 'null'){
+            $asst = Assets::where('customer_id',$request->customer)->where('company_id',$request->company)->get()->pluck('id')->toArray();
+        }else if($request->customer != 'null'){
+            $asst = Assets::where('customer_id',$request->customer)->get()->pluck('id')->toArray();
+        }else if($request->company != 'null'){
+           $asst = Assets::where('company_id',$request->company)->get()->pluck('id')->toArray();
+        }
 
-        if($asst != null){
-            $record = DB::table("asset_records_".$request->asset_type)->whereIn('asset_id',$asst->pluck('id')->toArray());
+        if(isset($asst)){
+            $record = DB::table("asset_records_".$request->asset_type)->whereIn('asset_id',$asst);
         }else{
             $record = DB::table("asset_records_".$request->asset_type);
         }
+
+
 
         $asset_record = DB::table("asset_records_".$request->asset_type);
 
