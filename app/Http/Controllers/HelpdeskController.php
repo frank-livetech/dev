@@ -237,13 +237,13 @@ class HelpdeskController extends Controller
                             if(sizeof($dd_values[$dd]['new_data']) > 1){
                                 for($i = 1; $i < sizeof($dd_values[$dd]['new_data']); $i++){
                                     UserTicket::create([
-                                        'user_id' => $dd_values[$dd]['new_data'][$i],
+                                        'user_id' => $dd_values[$dd]['new_data'][$i] ?? '',
                                         'tickets_id' => $ticket->id ?? 0,
                                     ]);
                                 }
                             }
 
-                            $data['assigned_to'] = $dd_values[$dd]['new_data'][0];
+                            $data['assigned_to'] = $dd_values[$dd]['new_data'][0] ?? null;
                             $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
                             $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->assignee_name .')';
 
@@ -501,6 +501,7 @@ class HelpdeskController extends Controller
             }
 
             $data['assigned_to'] = $data['assigned_to'][0];
+
 
             $ticket = Tickets::create($data);
 
@@ -1100,6 +1101,7 @@ class HelpdeskController extends Controller
 
     public function save_ticket_reply(Request $request) {
         $data = $request->all();
+
         $response = array();
         $queue_id = $request->queue_id;
         // try {
@@ -1222,10 +1224,10 @@ class HelpdeskController extends Controller
                         $message .= '<strong> Department :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->department_name .')';
                         $ticket->dept_id = $dd_values[$dd]['new_data'];
                     }elseif($dd_values[$dd]['id'] == 2){
-                        $data['assigned_to'] = $dd_values[$dd]['new_data'] ;
+                        $data['assigned_to'] = $dd_values[$dd]['new_data'][0];
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) owner changed from: '. $ticket->creator_name .' to: '. $dd_values[$dd]['new_text'];
                         $message .= '<strong> Owner :</strong> '. $dd_values[$dd]['new_text'] .' (was : '. $ticket->creator_name .')';
-                        $ticket->assigned_to = $dd_values[$dd]['new_data'];
+                        $ticket->assigned_to = $dd_values[$dd]['new_data'][0];
                     }elseif($dd_values[$dd]['id'] == 3){
                         $data['type'] = $dd_values[$dd]['new_data'] ;
                         $data['action_performed'] = 'Ticket (<a href="'.url('ticket-details').'/' .$ticket->coustom_id.'">'.$ticket->coustom_id.'</a> ) type changed from: '.$ticket->type_name.' to: '.$dd_values[$dd]['new_text'];
@@ -1281,6 +1283,8 @@ class HelpdeskController extends Controller
                     $ticket->queue_id = $queue_id;
                 }
             }
+
+            // dd($ticket);
             // $ticket->assigned_to = \Auth::user()->id;
             $ticket->save();
 
@@ -1354,6 +1358,7 @@ class HelpdeskController extends Controller
                     $action = 'ticket_reply_update';
                     $content = $mail_reply;
                     sendNotificationToAdmins($slug , $note_type , $title ,  $desc);
+                    dd($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                 }else{
                     $content = $mail_reply;

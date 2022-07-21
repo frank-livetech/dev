@@ -71,7 +71,6 @@ class AssetManagerController extends Controller
         }
 
 
-
         $asset_record = DB::table("asset_records_".$request->asset_type);
 
         $data = [];
