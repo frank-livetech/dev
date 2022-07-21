@@ -1115,9 +1115,7 @@ function getAssetDetails(id=1) {
                         if(i == 0){
                             root_onEdit += `<option value="0">N/A</option>`
                         }
-                    }else if(data.id != value ){
-                        console.log("inside item loop data.id != value", data.id,value)
-
+                    }else {
                         if(i == 0){
                             root_onEdit += `<option value="0" selected>N/A</option>`
                         }
