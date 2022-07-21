@@ -1104,24 +1104,28 @@ function getAssetDetails(id=1) {
             let root_onEdit = `<option>All</option>`;
 
             if(comid != null){
-                console.log(comid , "if comid != null , not equal to null")
 
                 var item = customers.filter(item => item.company_id == comid);
+                console.log(comid , item, "if comid != null , not equal to null")
 
-                for (let [i, data] of item.entries()) {
-
-                    if(data.id == value){
-                        console.log("inside item loop data.id == value", data.id,value)
-                        if(i == 0){
-                            root_onEdit += `<option value="0">N/A</option>`
+                if(item != null){
+                    for (let [i, data] of item.entries()) {
+                        if(data.id == value){
+                            if(i == 0){
+                                root_onEdit += `<option value="0">N/A</option>`
+                            }
+                        }else {
+                            if(i == 0){
+                                root_onEdit += `<option value="0" selected>N/A</option>`
+                            }
                         }
-                    }else {
-                        if(i == 0){
-                            root_onEdit += `<option value="0" selected>N/A</option>`
-                        }
+                        option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
                     }
-                    option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
+                }else{
+                    root_onEdit += `<option value="0" selected>N/A</option>`
                 }
+
+
                 $("#"+customerId).html(root_onEdit + option_cus);
 
             }else{
