@@ -1117,9 +1117,9 @@ function getAssetDetails(id=1) {
 
             }else{
                 let cust = customers.find(item => item.id == value);
-
-                if(cust != null) {
+                if(cust != null && cust != undefined ) {
                     if(cust.company_id != null) {
+
                         $("#"+companyId).empty();
 
                         let root_onEditCmp = `<option>All</option>`;
@@ -1149,7 +1149,32 @@ function getAssetDetails(id=1) {
                         $("#"+customerId).html(root_onEdit + option_cus);
 
 
+                    }else{
+
+                        $('#'+customerId).empty();
+                        let option_cus = ``;
+                        let root_onEdit = `<option>All</option>`;
+                        var item = customers.filter(item => item.company_id == cust.company_id);
+
+                        for (let [i, data] of customers.entries()) {
+                            if(data.id == value && i == 0){
+                                root_onEdit += `<option value="0">N/A</option>`
+                            }else if(data.id != value && i == 0){
+                                root_onEdit += `<option value="0" selected>N/A</option>`
+                            }
+                            option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
+                        }
+                        $("#"+customerId).html(root_onEdit + option_cus);
+
                     }
+                }else{
+                        $('#'+customerId).empty();
+                        let option_cus = ``;
+                        let root_onEdit = `<option>All</option><option value="0" selected>N/A</option>`;
+                        for (let [i, data] of customers.entries()) {
+                            option_cus += `<option value="${data.id}" ${data.id == value ? 'selected' : '' }> ${data.first_name} ${data.last_name} </option>`;
+                        }
+                        $("#"+customerId).html(root_onEdit + option_cus);
                 }
             }
 
