@@ -1108,7 +1108,7 @@ function getAssetDetails(id=1) {
                 var item = customers.filter(item => item.company_id == comid);
                 console.log(comid , item, "if comid != null , not equal to null")
 
-                if(item != null){
+                if(item != null && item.length > 0){
                     for (let [i, data] of item.entries()) {
                         if(data.id == value){
                             if(i == 0){
@@ -1124,7 +1124,6 @@ function getAssetDetails(id=1) {
                 }else{
                     root_onEdit += `<option value="0" selected>N/A</option>`
                 }
-
 
                 $("#"+customerId).html(root_onEdit + option_cus);
 
