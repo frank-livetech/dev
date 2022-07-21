@@ -982,6 +982,24 @@
                     <label>Asset Type</label>
                     <select class="select2 form-select form-control" onchange="getFields(this.value)" id="excel_esport_id" name="asset_type" required></select>
                 </div>
+                <div class="modal-body">
+                    <label>Company</label>
+                    <select class="select2 form-select form-control" id="company_export" name="company">
+                            <option value="null">Select</option>
+                        @foreach ($companies as $company)
+                            <option value="{{$company->id}}">{{$company->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="modal-body">
+                    <label>Customer</label>
+                    <select class="select2 form-select form-control"  id="customer_export" name="customer">
+                            <option value="null">Select</option>
+                        @foreach ($customers as $customer)
+                            <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-secondary" onclick="exportAsset('sample')">Sample</button>
@@ -1031,6 +1049,7 @@
                 success: function(response){
                     if(response.success == true){
                         $('#import_asset').modal('hide')
+                        get_asset_table_list()
                         alertNotification('success', 'Success', response.message);
                     }
                 },

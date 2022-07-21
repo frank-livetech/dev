@@ -54,9 +54,24 @@ class AssetManagerController extends Controller
     public function assetExport(Request $request)
     {
 
-
         $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->get();
-        $record = DB::table("asset_records_".$request->asset_type);
+
+        if($request->customer != 'null' && $request->company != 'null'){
+            $asst = Assets::where('customer_id',$request->customer)->where('company_id',$request->company)->get()->pluck('id')->toArray();
+        }else if($request->customer != 'null'){
+            $asst = Assets::where('customer_id',$request->customer)->get()->pluck('id')->toArray();
+        }else if($request->company != 'null'){
+           $asst = Assets::where('company_id',$request->company)->get()->pluck('id')->toArray();
+        }
+
+        if(isset($asst)){
+            $record = DB::table("asset_records_".$request->asset_type)->whereIn('asset_id',$asst);
+        }else{
+            $record = DB::table("asset_records_".$request->asset_type);
+        }
+
+
+
         $asset_record = DB::table("asset_records_".$request->asset_type);
 
         $data = [];
@@ -72,10 +87,8 @@ class AssetManagerController extends Controller
 
         foreach($assetFields as $i => $fl){
             foreach($record->get() as $j => $d){
-                $customer = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->customer : '';
-                $company = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->company : '';
-                $data[$j]['Customer'] = $customer->email ?? '';
-                $data[$j]['Company'] = $company->name ?? '';
+                $data[$j]['Customer'] = Customer::find($request->customer) != null ? Customer::find($request->customer)->email : '';
+                $data[$j]['Company'] = Company::find($request->company) != null ? Company::find($request->company)->name : '';
             }
         }
         $headings[] = 'Customer';
