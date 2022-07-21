@@ -1045,6 +1045,7 @@ function getAssetDetails(id=1) {
 
         let root = `<option>All</option><option value="0">N/A</option>`;
 
+        console.log(type, comid , "outside checks")
         if(type == null){
             if (value != '') {
 
@@ -1103,6 +1104,8 @@ function getAssetDetails(id=1) {
             let root_onEdit = `<option>All</option>`;
 
             if(comid != null){
+                console.log(comid , "if comid != null , not equal to null")
+
                 var item = customers.filter(item => item.company_id == comid);
 
                 for (let [i, data] of item.entries()) {
@@ -1116,9 +1119,14 @@ function getAssetDetails(id=1) {
                 $("#"+customerId).html(root_onEdit + option_cus);
 
             }else{
+                console.log(comid , "else comid == null ,  equal to null")
+
                 let cust = customers.find(item => item.id == value);
                 if(cust != null && cust != undefined ) {
+                    console.log(comid , "if cust != null && cust != undefined ,  not equal to null | undefined")
+
                     if(cust.company_id != null) {
+                        console.log(comid , "if cust.company_id != null , cust.company_id not equal to null")
 
                         $("#"+companyId).empty();
 
@@ -1150,6 +1158,7 @@ function getAssetDetails(id=1) {
 
 
                     }else{
+                        console.log(comid , "else cust.company_id == null , cust.company_id equal to null")
 
                         $('#'+customerId).empty();
                         let option_cus = ``;
@@ -1168,6 +1177,8 @@ function getAssetDetails(id=1) {
 
                     }
                 }else{
+                    console.log(comid , "else cust != null && cust != undefined ,  equal to null | undefined")
+
                         $('#'+customerId).empty();
                         let option_cus = ``;
                         let root_onEdit = `<option>All</option><option value="0" selected>N/A</option>`;
