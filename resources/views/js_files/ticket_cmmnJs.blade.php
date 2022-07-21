@@ -1050,7 +1050,7 @@
                 assignee = assigneeHtml;
             }else{
                 assignee = `<div data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" title="" class="avatar pull-up" data-bs-original-title="Unassigned">
-                            <i class="far fa-user-clock" width="33" height="33" style="width:33px;height:33px"></i>
+                            <i class="far fa-user-clock" width="33" height="33" style="width:33px;height:33px;color:black"></i>
                             </div>`
             }
 

@@ -12,12 +12,7 @@
     .float-btn{
         float: right
     }
-     table.dataTable th{
-        padding: 15px !important
-    }
-    table.dataTable>thead>tr>th:not(.sorting_disabled), table.dataTable>thead>tr>td:not(.sorting_disabled){
-        padding-right: 14px !important
-    }
+     
     .FieldItem_container {
         font-size: 16px;
         cursor: pointer;
@@ -200,8 +195,8 @@
                         </div>
                        </div>
                         <div class="col-lg-12 col-md-12">
-                            <div class="card mt-1">
-                                <div class="card-body">
+                            <div class=" mt-1">
+                                <div class="">
                                     <div class="row">
                                         <div class="col-lg-2 col-md-2">
                                             <h4 class="">Assets</h4>
