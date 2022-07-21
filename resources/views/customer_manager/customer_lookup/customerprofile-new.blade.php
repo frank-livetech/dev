@@ -661,7 +661,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="First Name" name="fname" id="fname" value="{{$customer->first_name}}" autofocus>
+                                                            <input type="text" class="form-control" placeholder="First Name" name="fname" id="fname" value="{{$customer->first_name}}" >
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
@@ -738,7 +738,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6 mt-1">
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control" placeholder="First Name" name="" id="" value="" autofocus>
+                                                            <input type="text" class="form-control" placeholder="First Name" name="" id="" value="" >
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 mt-1">
@@ -1250,7 +1250,7 @@
                                             <label>Phone #</label>
                                             <div class="d-flex">
                                                 <div class="country mt-1" style="padding-right: 8px;"></div>
-                                                <input type="tel" class="tel form-control" name="prof_phone" id="prof_phone" value="{{$customer->phone != Null ? $customer->phone : '+'}}" placeholder="" autofocus>
+                                                <input type="tel" class="tel form-control" name="prof_phone" id="prof_phone" value="{{$customer->phone != Null ? $customer->phone : '+'}}" placeholder="" >
                                             </div>
                                             <small class="text-muted">Please add country code before number e.g (+1) for US</small>
                                             {{-- <input type="text" id="prof_phone" name="prof_phone"
@@ -1777,7 +1777,8 @@
 
                     </div>
                 </div>
-</div>
+            </div>
+        </section>
         <!--Address Book model-->
         <div class="modal fade" id="Address-Book" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myLargeModalLabel"
             aria-hidden="true">

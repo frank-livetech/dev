@@ -6,9 +6,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-    .nav-pills .nav-link{
-        padding: 0.786rem .5rem !important;
-    }
     .crd_icons img {
         width: 18%;
     }
@@ -115,240 +112,70 @@
 </div> --}}
 <div class="content-body">
     <input type="hidden" id="cmp_com_sla" value="{{$company->com_sla}}">
-    <section class="app-user-view-account">
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12">
-                 <!-- User Pills -->
-                 <ul class="nav nav-pills mb-2">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" href="#comp_profile" aria-controls="profile" role="tab" aria-selected="false">
-                            <i class="fal fa-user font-medium-3 me-50"></i>
-                            <span class="fw-bold">Profile</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" id="pills-timeline-tab" data-bs-toggle="pill" href="#current-month" role="tab"
-                            aria-controls="pills-timeline" aria-selected="true">
-                            <i class="fal fa-history font-medium-3 me-50"></i>
 
-                            <span class="me-50">History</span>
-                        </a>
-                    </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">Schedule</a>-->
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="subscription-profile-tab" data-bs-toggle="pill" href="#subscription" role="tab" aria-controls="pills-profile" aria-selected="false">Subscriptions</a>
-                    </li>  --}}
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" id="orders-profile-tab" data-bs-toggle="pill" href="#orders" role="tab"
-                            aria-controls="pills-profile" aria-selected="false">
-                            <i class="fal fa-dollar-sign font-medium-3 me-50"></i>
-                            <span class="fw-bold">Billing</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="payment-profile-tab" data-bs-toggle="pill" href="#payment" role="tab"
-                            aria-controls="pills-profile" aria-selected="false">
-                            <i class="fal fa-cash-register font-medium-3 me-50"></i>
-                            <span class="fw-bold">Payments</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <li class="nav-item">
-                            <a class="nav-link loadAssets" id="pills-assets-tab" data-bs-toggle="pill" href="#assets" role="tab"
-                                aria-controls="pills-assets" aria-selected="false">
-                                <i class="fal fa-list font-medium-3 me-50"></i>
-                                <span class="fw-bold">Assets</span>
-                            </a>
-                        </li>
-
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link loadTickets" id="pills-tickets-tab" data-bs-toggle="pill" href="#tickets" role="tab"
-                        aria-controls="pills-tickets" aria-selected="false">
-                        <i class="fal fa-ticket font-medium-3 me-50"></i>
-
-                        <span class="me-50">Tickets</span>
-                       
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-staff-tab" data-bs-toggle="pill" href="#staff" role="tab"
-                                aria-controls="pills-staff" aria-selected="false">
-                                <i class="fal fa-people-carry font-medium-3 me-50"></i>
-                               
-                                <span class="fw-bold">Staff</span>
-                            </a>
-                        </li>
-
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="getNotes()" id="notes-profile-tab" data-bs-toggle="pill" href="#ticket_notes" role="tab" aria-controls="pills-profile" aria-selected="false">
-                            <i class="fal fa-sticky-note font-medium-3 me-50"></i>
-                            <span class="me-50">Notes</span>
-                            @if($notesCount != 0)
-                            <span id="notes_count" class="badge bg-dark text-light"> {{$notesCount}} </span>
+    <div class="row">
+        <!-- Column -->
+        <div class="col-lg-3 col-xlg-3 col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <center class="mt-1">
+                        @php
+                        $path = Session::get('is_live') == 1 ? '/public/' : '/';
+                        @endphp
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal" >
+                            @if($company->com_logo != null)
+                                @if(is_file( getcwd() .'/'. $company->com_logo ))
+                                    <img src="{{ request()->root() .'/'. $company->com_logo }}" class="rounded-circle" width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
+                                @else
+                                <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
+                                    width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
+                                @endif
+                            @else
+                                <img src="{{asset( $path . 'default_imgs/company.png')}}" class="rounded-circle shadow-sm"
+                                    width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
                             @endif
                         </a>
-                    </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link" id="domain-profile-tab" data-bs-toggle="pill" href="#ticket_domain" role="tab" aria-controls="pills-profile" aria-selected="false">
-                            <i data-feather="link" class="font-medium-3 me-50"></i>
-                            <span class="fw-bold">Domain</span></a>
-                        </a>
-                    </li> --}}
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" id="settings-profile-tab" data-bs-toggle="pill" href="#ticket_settings" role="tab"
-                            aria-controls="pills-setting" aria-selected="true">
-                            <i class="fal fa-cog font-medium-3 me-50"></i>
-                           
-                            <span class="me-50">Settings</span>
-                        </a>
-                    </li>
-                </ul>
-                <input type="hidden" id="cmp_id" name="id" value="{{$company->id}}">
-                <!--/ User Pills -->
-            </div>
-            <!-- User Sidebar -->
-            <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0" id="card-1">
-                <!-- User Card -->
-                <div class="card border-primary">
-                    @php
-                        $path = Session::get('is_live') == 1 ? 'public/' : '/';
-                    @endphp
-                    <div class="card-body">
-                        <div class="user-avatar-section">
-                           
-                            <div class="d-flex align-items-center flex-column">
-
-                                @php
-                                    $path = Session::get('is_live') == 1 ? '/public/' : '/';
-                                @endphp
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#editPicModal" >
-                                    @if($company->com_logo != null)
-                                        @if(is_file( getcwd() .'/'. $company->com_logo ))
-                                            <img src="{{ request()->root() .'/'. $company->com_logo }}" class="img-fluid rounded mt-3 mb-2" width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
-                                        @else
-                                        <img src="{{asset( $path . 'default_imgs/company.png')}}" class="img-fluid rounded mt-3 mb-2"
-                                            width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
-                                        @endif
-                                    @else
-                                        <img src="{{asset( $path . 'default_imgs/company.png')}}" class="img-fluid rounded mt-3 mb-2"
-                                            width="100" height="100" id="company_curr_img" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change"/>
-                                    @endif
-                                </a>
-
-                                <div class="user-info text-center">
-                                    <h4>{{$company->name}}</h4>
-                                    @if($company->created_at != null)
-
-                                        @php
-                                            $date = new \DateTime($company->created_at);
-                                            $date->setTimezone(new \DateTimeZone( timeZone() ));
-                                            $created_at =  $date->format(system_date_format() .' h:i a');
-                                        @endphp
-                                        <p class="badge bg-light-secondary">{{$created_at}} </p>
-
-                                @endif
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-around my-2 pt-75">
-                            <div class="d-flex align-items-start me-2">
-                                <span class="badge bg-light-primary p-75 rounded">
-                                    <i class="fal fa-birthday-cake font-medium-2"></i>
-                                </span>
-                                <div class="ms-75">
-                                    <h3 class="mb-0">1/1/2022</h3>
-                                    <small>Anniversary </small>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-start">
-                                <span class="badge bg-light-primary p-75 rounded">
-                                    <i data-feather="briefcase" class="font-medium-2"></i>
-                                </span>
-                                <div class="ms-75">
-                                    <h3 class="mb-0">568</h3>
-                                    <small>Projects Done</small>
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="fw-bolder border-bottom pb-50 mb-1">Details</h4>
-                        <div class="info-container">
-                            <ul class="list-unstyled">
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Username:</span>
-                                    <span>{{$company->name}}</span>
-                                </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Email:</span>
-                                    <span><a class="text-body" href="mailto:{{$company->email}}" id="comp_email"> {{$company->email}}</a></span>
-                                </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Status:</span>
-                                    <span class="badge bg-light-success">Active</span>
-                                </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Role:</span>
-                                    <span>Company</span>
-                                </li>
-                               
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Contact:</span>
-                                    <span> <a class="text-body" href="tel:{{$company->phone}}" id="comp_phone">{{$company->phone}}</a></span>
-                                </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Language:</span>
-                                    <span>English</span>
-                                </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Country:</span>
-                                    <span>{{$company->country}}</span>
-                                </li>
-                                <li class="mb-75">
-                                    <span class="fw-bolder me-25">Address</span>
-                                    <span><span id="comp_add" class="text-dark">{{$company->address != null ?  $company->address : ''}}</span>
-                                    <span id="comp_apprt"
-                                        class="text-dark">{{$company->apt_address != null ? ','. $company->apt_address : ''}}</span>
-                
-                                    <span id="comp_strt">{{$company->cmp_city != null ?  $company->cmp_city : ''}}</span>
-                
-                                    @if($company->cmp_state != null && $company->cmp_state != '')
-                                    <span id="comp_state">{{ ', '.$company->cmp_state }}</span>
-                                    @else
-                                    <span id="comp_state"></span>
-                                    @endif
-                
-                                    <span id="comp_zip">{{$company->cmp_zip != null ? ', '. $company->cmp_zip : ''}}</span>
-                
-                                    @if($company->cmp_country != null && $company->cmp_country != '')
-                                    <span id="comp_country">{{ ', ' .$company->cmp_country}}</span>
-                                    @else
-                                    <span id="comp_country"></span>
-                                    @endif</span>
-                                </li>
-                            </ul>
-                            
-                            <div class="d-flex justify-content-center">
-
-                                <a href="javascript:;" class="btn btn-outline-danger suspend-user mt-1 me-1 text-center ">Suspended</a>
-                                <a href="javascript:;" class="btn btn-outline-danger suspend-user mt-1 text-center "><i class="fal fa-trash me-50"></i>Delete&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                            </div>
-                        </div>
-                    </div>
+                        <!-- <a type="button" data-bs-toggle="modal" data-bs-target="#editPicModal" style="position: relative;left:50px;bottom:60px"><i class="fa fa-pencil-alt picEdit"></i></a> -->
+                        <h4 class="card-title mt-2" id="comp_name">{{$company->name}}</h4>
+                    </center>
                 </div>
-                <!-- /User Card -->
-                <!-- Plan Card -->
-                <div class="card border-primary">
-                   <div class="card-body soc-card">
+                <div>
+                    <hr>
+                </div>
+                <div class="card-body pt-0 pb-0 " id="adrs">
+                    <small class="text-muted  db">Phone</small>
+                    <h6> <a href="tel:{{$company->phone}}" id="comp_phone">{{$company->phone}}</a> </h6>
+
+                    <small class="text-muted  db">Email Address</small>
+                    <h6> <a href="mailto:{{$company->email}}" id="comp_email"> {{$company->email}}</a></h6>
+
+                    <small class="text-muted  db">Address</small> <br>
+
+                    <span id="comp_add" class="text-dark">{{$company->address != null ?  $company->address : ''}}</span>
+                    <span id="comp_apprt"
+                        class="text-dark">{{$company->apt_address != null ? ','. $company->apt_address : ''}}</span>
+
+                    <span id="comp_strt">{{$company->cmp_city != null ?  $company->cmp_city : ''}}</span>
+
+                    @if($company->cmp_state != null && $company->cmp_state != '')
+                    <span id="comp_state">{{ ', '.$company->cmp_state }}</span>
+                    @else
+                    <span id="comp_state"></span>
+                    @endif
+
+                    <span id="comp_zip">{{$company->cmp_zip != null ? ', '. $company->cmp_zip : ''}}</span>
+
+                    @if($company->cmp_country != null && $company->cmp_country != '')
+                    <span id="comp_country">{{ ', ' .$company->cmp_country}}</span>
+                    @else
+                    <span id="comp_country"></span>
+                    @endif
+
+                </div>
+                <hr>
+            </div>
+            <div class="card">
+                <div class="card-body soc-card">
                     <div id="map_2" class="gmaps"></div>
                     <input type="hidden" id="google_api_key">
                     <h2 class="mt-4 font-weight-bold text-dark">Social Links</h2>
@@ -382,131 +209,184 @@
                         <span class="text-danger text-center small" style="width:100%" id="social-error"></span>
                     </div>
                 </div>
-                </div>
-                <!-- /Plan Card -->
             </div>
-            <!--/ User Sidebar -->
+        </div>
+        <!-- Column -->
+        <!-- Column -->
+        <div class="col-lg-9 col-xlg-9 col-md-7">
+            <div class="card">
+                <!-- Tabs -->
+                <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-profile-tab" data-bs-toggle="tab" href="#comp_profile" role="tab"
+                            aria-controls="pills-profile" aria-selected="false">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " id="pills-timeline-tab" data-bs-toggle="tab" href="#current-month"
+                            role="tab" aria-controls="pills-timeline" aria-selected="true">History</a>
+                    </li>
+                    <!--<li class="nav-item">-->
+                    <!--    <a class="nav-link" id="pills-profile-tab" data-bs-toggle="tab" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">Schedule</a>-->
+                    <!--</li>-->
+                    <!-- <li class="nav-item">
+                            <a class="nav-link" id="subscription-profile-tab" data-bs-toggle="tab" href="#subscription" role="tab" aria-controls="pills-profile" aria-selected="false">Subscriptions</a>
+                        </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="orders-profile-tab" data-bs-toggle="tab" href="#orders" role="tab"
+                            aria-controls="pills-profile" aria-selected="false">Billing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="payment-profile-tab" data-bs-toggle="tab" href="#payment" role="tab"
+                            aria-controls="pills-profile" aria-selected="false">Payments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link loadAssets" id="pills-assets-tab" data-bs-toggle="tab" href="#assets"
+                            role="tab" aria-controls="pills-assets" aria-selected="false">Assets</a>
+                    </li>
+                    
+                    <!-- <li class="nav-item">
+                            <a class="nav-link" id="notifications-profile-tab" data-bs-toggle="tab" href="#notification" role="tab" aria-controls="notifications-profile" aria-selected="false">Notifications</a>
+                        </li> -->
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-tickets-tab" data-bs-toggle="tab" href="#tickets" role="tab"
+                            aria-controls="pills-tickets" aria-selected="false">Tickets</a>
+                    </li>
 
-            <!-- User Content -->
-            <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1" id="ticket-full">
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-staff-tab" data-bs-toggle="tab" href="#staff" role="tab"
+                            aria-controls="pills-staff" aria-selected="false">Staff</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link loadNotes" id="notes-profile-tab"  data-bs-toggle="tab" href="#ticket_notes"
+                            role="tab" aria-controls="pills-profile" aria-selected="false">Notes
+                            @if($notesCount != 0)
+                            <span id="notes_count" class="badge bg-dark text-white mx-1"> {{$notesCount}}
+                            </span>
+                            @endif
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="settings-profile-tab" data-bs-toggle="tab" href="#ticket_settings"
+                            role="tab" aria-controls="pills-setting" aria-selected="false">Settings</a>
+                    </li>
+                </ul>
 
+                <input type="hidden" id="cmp_id" name="id" value="{{$company->id}}">
+                <!-- Tabs -->
                 <div class="tab-content" id="pills-tabContent">
 
                     <div class="tab-pane fade " id="current-month" role="tabpanel"
                         aria-labelledby="pills-timeline-tab">
-                        <div class="card">
-                            <div class="card-body">
-                                No Data Found.
-                            </div>
+                        <hr>
+                        <div class="card-body">
+                            No Data Found.
                         </div>
-                       
                     </div>
 
                     <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-profile-tab">
-                         <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="d-flex justify-content-between pr-3 pb-2">
-                                            <h2 class="lead font-weight-bold">01. Orders</h2>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <div id="zero_config_wrapper"
-                                                class="dataTables_wrapper container-fluid dt-bootstrap4">
-    
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <table id="customer_order_table"
-                                                            class="table table-striped table-bordered no-wrap dataTable"
-                                                            role="grid" aria-describedby="zero_config_info">
-                                                            <thead>
-                                                                <tr role="row">
-                                                                    <th class="sorting_asc" tabindex="0"
-                                                                        aria-controls="zero_config" rowspan="1" colspan="1"
-                                                                        aria-sort="ascending"
-                                                                        aria-label="Name: activate to sort column descending"
-                                                                        style="width: 0px;">Order Number</th>
-                                                                    <th class="sorting" tabindex="0"
-                                                                        aria-controls="zero_config" rowspan="1" colspan="1"
-                                                                        aria-label="Position: activate to sort column ascending"
-                                                                        style="width: 0px;">Client Name</th>
-                                                                    <th class="sorting" tabindex="0"
-                                                                        aria-controls="zero_config" rowspan="1" colspan="1"
-                                                                        aria-label="Office: activate to sort column ascending"
-                                                                        style="width: 0px;">Order Status</th>
-                                                                    <th class="sorting" tabindex="0"
-                                                                        aria-controls="zero_config" rowspan="1" colspan="1"
-                                                                        aria-label="Age: activate to sort column ascending"
-                                                                        style="width: 0px;">Date Created</th>
-                                                                    <th class="sorting" tabindex="0"
-                                                                        aria-controls="zero_config" rowspan="1" colspan="1"
-                                                                        aria-label="Start date: activate to sort column ascending"
-                                                                        style="width: 0px;">Total</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-    
-                                                            </tbody>
-    
-                                                        </table>
-    
-                                                    </div>
+                        <hr>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-between pr-3 pb-2">
+                                        <h2 class="lead font-weight-bold">01. Orders</h2>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <div id="zero_config_wrapper"
+                                            class="dataTables_wrapper container-fluid dt-bootstrap4">
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="customer_order_table"
+                                                        class="table table-striped table-bordered no-wrap dataTable"
+                                                        role="grid" aria-describedby="zero_config_info">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th class="sorting_asc" tabindex="0"
+                                                                    aria-controls="zero_config" rowspan="1" colspan="1"
+                                                                    aria-sort="ascending"
+                                                                    aria-label="Name: activate to sort column descending"
+                                                                    style="width: 0px;">Order Number</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="zero_config" rowspan="1" colspan="1"
+                                                                    aria-label="Position: activate to sort column ascending"
+                                                                    style="width: 0px;">Client Name</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="zero_config" rowspan="1" colspan="1"
+                                                                    aria-label="Office: activate to sort column ascending"
+                                                                    style="width: 0px;">Order Status</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="zero_config" rowspan="1" colspan="1"
+                                                                    aria-label="Age: activate to sort column ascending"
+                                                                    style="width: 0px;">Date Created</th>
+                                                                <th class="sorting" tabindex="0"
+                                                                    aria-controls="zero_config" rowspan="1" colspan="1"
+                                                                    aria-label="Start date: activate to sort column ascending"
+                                                                    style="width: 0px;">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+
+                                                    </table>
+
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr class="mt-5 mb-5">
-                                        <div class="d-flex justify-content-between pr-3 pb-2">
-                                            <h2 class="lead font-weight-bold">02. Subscriptions</h2>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <div id="zero_config_wrapper"
-                                                class="dataTables_wrapper container-fluid dt-bootstrap4">
-    
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <table id="customer_subscription"
-                                                            class="table table-striped table-bordered no-wrap dataTable"
-                                                            role="grid" aria-describedby="zero_config_info">
-                                                            <thead>
-                                                                <tr role="row">
-                                                                    <th>ID</th>
-                                                                    <th>Status</th>
-                                                                    <th>Currency</th>
-                                                                    <th>Discount Tax</th>
-                                                                    <th>Shipping Total</th>
-                                                                    <th>Shipping Tax</th>
-                                                                    <th>Total</th>
-                                                                    <th>Payment Method</th>
-                                                                    <th>Payment Method Title</th>
-                                                                    <th>Customer Note</th>
-                                                                    <th>Created Via</th>
-                                                                    <th>Billing Period</th>
-                                                                    <th>Start Date</th>
-                                                                    <th>Trial End Date</th>
-                                                                    <th>Next Payment Date</th>
-                                                                    <th>End Date</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-    
-                                                            </tbody>
-    
-                                                        </table>
-    
-                                                    </div>
+                                    </div>
+                                    <hr class="mt-5 mb-5">
+                                    <div class="d-flex justify-content-between pr-3 pb-2">
+                                        <h2 class="lead font-weight-bold">02. Subscriptions</h2>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <div id="zero_config_wrapper"
+                                            class="dataTables_wrapper container-fluid dt-bootstrap4">
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table id="customer_subscription"
+                                                        class="table table-striped table-bordered no-wrap dataTable"
+                                                        role="grid" aria-describedby="zero_config_info">
+                                                        <thead>
+                                                            <tr role="row">
+                                                                <th>ID</th>
+                                                                <th>Status</th>
+                                                                <th>Currency</th>
+                                                                <th>Discount Tax</th>
+                                                                <th>Shipping Total</th>
+                                                                <th>Shipping Tax</th>
+                                                                <th>Total</th>
+                                                                <th>Payment Method</th>
+                                                                <th>Payment Method Title</th>
+                                                                <th>Customer Note</th>
+                                                                <th>Created Via</th>
+                                                                <th>Billing Period</th>
+                                                                <th>Start Date</th>
+                                                                <th>Trial End Date</th>
+                                                                <th>Next Payment Date</th>
+                                                                <th>End Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+
+                                                    </table>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                         </div>
-                        
+                        </div>
                     </div>
 
                     <!-- <div class="tab-pane fade" id="subscription" role="tabpanel"
                             aria-labelledby="subscription-profile-tab">
-                             
+                            <hr>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
@@ -568,9 +448,9 @@
                             </div>
                         </div> -->
 
-                        <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-profile-tab">
+                    <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-profile-tab">
 
-                        <!--  
+                        <!-- <hr>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -611,7 +491,7 @@
                                     </div>
                                 </div>
                             </div> -->
-                         
+                        <hr>
 
                         <div class="row col-md-12">
 
@@ -626,7 +506,7 @@
                                                 <div class="col-md-6 mt-1">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" placeholder="First Name"
-                                                            name="fname" id="fname" value="" >
+                                                            name="fname" id="fname" value="" autofocus>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-1">
@@ -711,7 +591,7 @@
                                                 <div class="col-md-6 mt-1">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" placeholder="First Name"
-                                                            name="" id="" value="" >
+                                                            name="" id="" value="" autofocus>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 mt-1">
@@ -952,11 +832,11 @@
                             </div>
 
                         </div>
-                        </div>
+                    </div>
 
                     <!-- <div class="tab-pane fade" id="notification" role="tabpanel"
                             aria-labelledby="notifications-profile-tab">
-                             
+                            <hr>
                             <div class="card-body">
                                 <div class="row">
 
@@ -965,10 +845,7 @@
                         </div> -->
 
                     <div class="tab-pane fade" id="assets" role="tabpanel" aria-labelledby="pills-assets-tab">
-                         <div class="card">
-
-                         
-
+                        <hr>
                         <div class="card-body">
                             {{-- <div class="row">
                                     <div class="col-md-2 col-lg-2 col-xlg-2">
@@ -1117,13 +994,12 @@
                             </div>
                         </div>
                     </div>
-                    </div>
 
                     <div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="pills-tickets-tab">
-                         <div class="card">
-                            <div class="card-body">
+                        <hr>
+                        {{-- <div class="card-body">
 
-                                {{-- <table id="ticket_table" style="table-layout: fixed"
+                                <table id="ticket_table" style="table-layout: fixed"
                                     class="table table-striped table-bordered display no-wrap">
                                     <thead>
                                         <tr>
@@ -1147,265 +1023,218 @@
                                         @foreach ($tickets as $item)
                                         <tr>
                                             <td><input type="checkbox" name="select_all[]" value="{{$item->id}}"></td>
-                                    <td>{{$item->status_name}}</td>
-                                    <td><a href="{{asset("/ticket-details").'/'.$item->id}}">{{$item->subject}}</a>
-                                    </td>
-                                    <td>{{$item->id}}</td>
-                                    <td>{{$item->priority_name}}</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>---</td>
-                                    <td>{{$item->tech_name}}</td>
-                                    <td>{{$item->department_name}}</td>
-                                    <td>{{$item->created_at}}</td>
-                                    </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table> --}}
-                        </div>
-                         </div>
-                       
+                        <td>{{$item->status_name}}</td>
+                        <td><a href="{{asset("/ticket-details").'/'.$item->id}}">{{$item->subject}}</a>
+                        </td>
+                        <td>{{$item->id}}</td>
+                        <td>{{$item->priority_name}}</td>
+                        <td>---</td>
+                        <td>---</td>
+                        <td>---</td>
+                        <td>---</td>
+                        <td>---</td>
+                        <td>---</td>
+                        <td>{{$item->tech_name}}</td>
+                        <td>{{$item->department_name}}</td>
+                        <td>{{$item->created_at}}</td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                        </table>
+                    </div> --}}
                     </div>
 
                     <div class="tab-pane fade show active" id="comp_profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                         <div class="card">
-                            <div class="card-body">
-                                <form id="update_company" onsubmit="return false">
-    
-                                    <div class="form-row">
-                                        <div class="col-md-12 form-group">
-                                            <label>Company Name</label>
-                                            <input type="text" id="name" name="name" placeholder="Johnathan Doe"
-                                                value="{{$company->name}}" class="form-control">
-                                            <span class="text-danger" id="err2"></span>
+                        <hr>
+                        <div class="card-body">
+                            <form id="update_company" onsubmit="return false">
+
+                                <div class="form-row">
+                                    <div class="col-md-12 form-group">
+                                        <label>Company Name</label>
+                                        <input type="text" id="name" name="name" placeholder="Johnathan Doe"
+                                            value="{{$company->name}}" class="form-control">
+                                        <span class="text-danger" id="err2"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="col-md-6 form-group">
+                                        <label>Owner First Name :</label>
+                                        <input type="text" id="poc_first_name" name="poc_first_name"
+                                            value="{{$company->poc_first_name}}" class="form-control">
+                                        <span class="text-danger" id="err"></span>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Owner Last Name :</label>
+                                        <input type="text" id="poc_last_name" name="poc_last_name"
+                                            value="{{$company->poc_last_name}}" class="form-control">
+                                        <span class="text-danger" id="err1"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="col-md-6 form-group">
+                                        <label>Phone No</label>
+                                        <div class="d-flex">
+                                            <div class="country mt-1" style="padding-right: 8px;"></div>
+                                            <input type="tel" class="tel form-control" name="phone" id="phone" value="{{$company->phone != Null ? $company->phone : '+'}}}}   " placeholder="" autofocus>
+                                        </div>
+                                        <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
+                                        {{-- <input type="text" id="phone" name="phone" value="{{$company->phone}}"
+                                            class="form-control">
+                                        {{-- <span class="text-danger small" id="err4"></span> --}}
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="domain">Domain</label>
+                                        <input type="text" id="domain" class="form-control" name="domain"
+                                            value="{{$company->domain}}">
+                                        {{-- <span class="text-danger" id="err3"></span> --}}
+                                    </div>
+                                </div>
+
+                                @if($is_default != 1)
+                                {{-- <div class="row mt-1">
+                                    <div class="col-md-6">
+                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" name="set_default"
+                                                id="set_default">
+                                            <label class="custom-control-label" for="set_default">Set as Default</label>
                                         </div>
                                     </div>
-    
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
-                                            <label>Owner First Name :</label>
-                                            <input type="text" id="poc_first_name" name="poc_first_name"
-                                                value="{{$company->poc_first_name}}" class="form-control">
-                                            <span class="text-danger" id="err"></span>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Owner Last Name :</label>
-                                            <input type="text" id="poc_last_name" name="poc_last_name"
-                                                value="{{$company->poc_last_name}}" class="form-control">
-                                            <span class="text-danger" id="err1"></span>
-                                        </div>
-                                    </div>
-    
-                                    <div class="row mt-1">
-                                        <div class="col-md-6 form-group">
-                                            <label>Phone No</label>
-                                            <div class="d-flex">
-                                                <div class="country mt-1" style="padding-right: 8px;"></div>
-                                                <input type="tel" class="tel form-control" name="phone" id="phone" value="{{$company->phone != Null ? $company->phone : '+'}}}}   " placeholder="" >
+                                </div> --}}
+                                @endif
+
+                                <div class="row mt-1">
+                                    <h3 class="col-md-12  font-weight-bold text-dark">Company Address</h3>
+
+                                    <div class="col-md-12 form-group">
+                                        <label>Street Address</label>
+                                        <!-- <a type="button" data-toggle="modal" data-target="#Address-Book"  class="float-right" style="color:#009efb;">Address Book</a> -->
+                                        <div class="row ">
+                                            <div class="col-md-6">
+                                                <input type="text" name="address" class=" form-control"
+                                                    value="{{$company->address}}" id="address"
+                                                    placeholder="House number and street name">
                                             </div>
-                                            <small class="text-secondary">NOTE: Include country code before number e.g 1 for US</small>
-                                            {{-- <input type="text" id="phone" name="phone" value="{{$company->phone}}"
-                                                class="form-control">
-                                            {{-- <span class="text-danger small" id="err4"></span> --}}
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label for="domain">Domain</label>
-                                            <input type="text" id="domain" class="form-control" name="domain"
-                                                value="{{$company->domain}}">
-                                            {{-- <span class="text-danger" id="err3"></span> --}}
-                                        </div>
-                                    </div>
-    
-                                    @if($is_default != 1)
-                                    {{-- <div class="row mt-1">
-                                        <div class="col-md-6">
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input" name="set_default"
-                                                    id="set_default">
-                                                <label class="custom-control-label" for="set_default">Set as Default</label>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    @endif
-    
-                                    <div class="row mt-1">
-                                        <h3 class="col-md-12  font-weight-bold text-dark">Company Address</h3>
-    
-                                        <div class="col-md-12 form-group">
-                                            <label>Street Address</label>
-                                            <!-- <a type="button" data-toggle="modal" data-target="#Address-Book"  class="float-right" style="color:#009efb;">Address Book</a> -->
-                                            <div class="row ">
-                                                <div class="col-md-6">
-                                                    <input type="text" name="address" class=" form-control"
-                                                        value="{{$company->address}}" id="address"
-                                                        placeholder="House number and street name">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input type="text" name="apt_address" class=" form-control"
-                                                        value="{{$company->apt_address}}" id="apt_address"
-                                                        placeholder="Apartment, suit, unit etc. (optional)">
-                                                </div>
+                                            <div class="col-md-6">
+                                                <input type="text" name="apt_address" class=" form-control"
+                                                    value="{{$company->apt_address}}" id="apt_address"
+                                                    placeholder="Apartment, suit, unit etc. (optional)">
                                             </div>
                                         </div>
                                     </div>
-    
-                                    <div class="row mt-1">
-                                        <div class="col-md-3 form-group">
-                                            <label>City</label>
-                                            <input type="text" name="cmp_city" id="cmp_city" value="{{$company->cmp_city}}"
-                                                class="form-control form-control-line">
-                                            <span class="text-danger" id="err7"></span>
-                                        </div>
-                                        <div class="col-md-3 form-group">
-                                            <label>State</label>
-                                            @if($google_key == 1)
-                                            <input type="text" class=" form-control" id="cmp_state" name="cmp_state"
-                                                value="{{$company->cmp_state}}" style="width: 100%; height:36px;">
+                                </div>
+
+                                <div class="row mt-1">
+                                    <div class="col-md-3 form-group">
+                                        <label>City</label>
+                                        <input type="text" name="cmp_city" id="cmp_city" value="{{$company->cmp_city}}"
+                                            class="form-control form-control-line">
+                                        <span class="text-danger" id="err7"></span>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>State</label>
+                                        @if($google_key == 1)
+                                        <input type="text" class=" form-control" id="cmp_state" name="cmp_state"
+                                            value="{{$company->cmp_state}}" style="width: 100%; height:36px;">
+                                        @else
+                                        <select class="select2 form-control" id="cmp_state" name="cmp_state"
+                                            style="width: 100%; height:36px;"></select>
+                                        @endif
+                                        <span class="text-danger" id="err6"></span>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Zip Code</label>
+                                        <input type="text" name="cmp_zip" id="cmp_zip" value="{{$company->cmp_zip}}"
+                                            class="form-control form-control-line">
+                                        <span class="text-danger" id="err8"></span>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Country</label>
+                                        @if($google_key == 1)
+                                        <input type="text" class=" form-control " id="cmp_country" name="cmp_country"
+                                            value="{{$company->cmp_country}}" style="width: 100%; height:36px;">
+                                        @else
+                                        <select class="select2 form-control " id="cmp_country" name="cmp_country"
+                                            style="width: 100%; height:36px;"
+                                            onchange="listStates(this.value, 'cmp_state', 'cmp_state')">
+                                            <option value="">Select Country</option>
+                                            @foreach ($countries as $cty)
+                                            @if(!empty($company->cmp_country) && $company->cmp_country == $cty->name)
+                                            <option value="{{$cty->name}}" selected>{{$cty->name}}</option>
                                             @else
-                                            <select class="select2 form-control" id="cmp_state" name="cmp_state"
-                                                style="width: 100%; height:36px;"></select>
+                                            <option value="{{$cty->name}}" {{$cty->short_name == 'US' ? 'selected' : ''}}>
+                                                {{$cty->name}}</option>
                                             @endif
-                                            <span class="text-danger" id="err6"></span>
-                                        </div>
-                                        <div class="col-md-3 form-group">
-                                            <label>Zip Code</label>
-                                            <input type="text" name="cmp_zip" id="cmp_zip" value="{{$company->cmp_zip}}"
-                                                class="form-control form-control-line">
-                                            <span class="text-danger" id="err8"></span>
-                                        </div>
-                                        <div class="col-md-3 form-group">
-                                            <label>Country</label>
-                                            @if($google_key == 1)
-                                            <input type="text" class=" form-control " id="cmp_country" name="cmp_country"
-                                                value="{{$company->cmp_country}}" style="width: 100%; height:36px;">
-                                            @else
-                                            <select class="select2 form-control " id="cmp_country" name="cmp_country"
-                                                style="width: 100%; height:36px;"
-                                                onchange="listStates(this.value, 'cmp_state', 'cmp_state')">
-                                                <option value="">Select Country</option>
-                                                @foreach ($countries as $cty)
-                                                @if(!empty($company->cmp_country) && $company->cmp_country == $cty->name)
-                                                <option value="{{$cty->name}}" selected>{{$cty->name}}</option>
-                                                @else
-                                                <option value="{{$cty->name}}" {{$cty->short_name == 'US' ? 'selected' : ''}}>
-                                                    {{$cty->name}}</option>
-                                                @endif
-                                                @endforeach
-                                            </select>
-                                            @endif
-                                            <span class="text-danger" id="err5"></span>
-                                        </div>
+                                            @endforeach
+                                        </select>
+                                        @endif
+                                        <span class="text-danger" id="err5"></span>
                                     </div>
-    
-                                    <div class="row mt-1">
-                                        <h3 class="mt-4 col-md-12 font-weight-bold text-dark">Social Info</h3>
-                                        <div class="col-md-6 form-group">
-                                            <label class="col-md-12">Facebook</label>
-                                            <div class="d-flex">
-                                                <input type="text" id="fb" name="fb" placeholder="https://facebook.com/username"
-                                                value="{{$company->fb}}" class="form-control">
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
-                                                </button>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Pinterest</label>
-                                            <div class="d-flex">
-                                                <input type="text" name="pinterest" value="{{$company->pinterest}}"
-                                                placeholder="https://pinterest.com/username" class="form-control"
-                                                id="update_pinterest">
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
-                                                </button>
-                                            </div>
-                                           
-                                        </div>
-    
-                                        <div class="col-md-6 form-group mt-1">
-                                            <label>Twitter</label>
-                                            <div class="d-flex">
-                                                <input type="text" id="twitter" name="twitter" value="{{$company->twitter}}"
-                                                placeholder="https://twitter.com/username" class="form-control">
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
-                                                </button>
-                                               
-                                            </div>
-                                           
-                                        </div>
-                                        <div class="col-md-6 form-group mt-1">
-                                            <label>Instagram</label>
-                                            <div class="d-flex">
-                                                <input type="text" id="insta" name="insta" value="{{$company->insta}}"
-                                                placeholder="https://instagram.com/username" class="form-control">
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
-                                                </button>
-                                            </div>
-                                           
-                                        </div>
+                                </div>
+
+                                <div class="row mt-1">
+                                    <h3 class="mt-4 col-md-12 font-weight-bold text-dark">Social Info</h3>
+                                    <div class="col-md-6 form-group">
+                                        <label class="col-md-12">Facebook</label>
+                                        <input type="text" id="fb" name="fb" placeholder="https://facebook.com/username"
+                                            value="{{$company->fb}}" class="form-control">
                                     </div>
-    
-                                    <div class="form-row">
-                                        <div class="col-md-12 form-group mt-1">
-                                            <label class="small">Website</label>
-                                            <div class="d-flex">
-                                                <input type="text" name="website" value="{{$company->website}}" class="form-control"
-                                                placeholder="https://www.yourwebsite.com" id="update_website">
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-copy font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Copy"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-icon btn-outline-secondary waves-effect">
-                                                    <i class="fal fa-link font-medium-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Open"></i>
-                                                </button>
-                                            </div>
-                                           
-                                        </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Pinterest</label>
+                                        <input type="text" name="pinterest" value="{{$company->pinterest}}"
+                                            placeholder="https://pinterest.com/username" class="form-control"
+                                            id="update_pinterest">
                                     </div>
-    
-                                    <div class="form-row">
-                                        <div class="col-md-12 form-group mt-1">
-                                            <label>Notes</label>
-                                            <textarea class="form-control" name="notes" cols="30"
-                                                rows="5">{{$company->cmp_ship_add}}</textarea>
-                                        </div>
+
+                                    <div class="col-md-6 form-group mt-1">
+                                        <label>Twitter</label>
+                                        <input type="text" id="twitter" name="twitter" value="{{$company->twitter}}"
+                                            placeholder="https://twitter.com/username" class="form-control">
                                     </div>
-    
-                                    <div class="row mt-1 float-btn mb-3">
-                                        <div class="col-sm-12 ">
-                                            <button type="submit" class="btn btn-success rounded" id="comp_update_Btn"><i
-                                                    class="fas fa-save"></i> Update Profile</button>
-                                            <button style="display:none" id="comp_pro_btn" class="btn btn-success" type="button"
-                                                disabled>
-                                                <i class="fas fa-circle-notch fa-spin"></i>
-                                                Processing</button>
-                                        </div>
+                                    <div class="col-md-6 form-group mt-1">
+                                        <label>Instagram</label>
+                                        <input type="text" id="insta" name="insta" value="{{$company->insta}}"
+                                            placeholder="https://instagram.com/username" class="form-control">
                                     </div>
-                                </form>
-                            </div>
-                         </div>
-                       
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-md-12 form-group mt-1">
+                                        <label class="small">Website</label>
+                                        <input type="text" name="website" value="{{$company->website}}" class="form-control"
+                                            placeholder="https://www.yourwebsite.com" id="update_website">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-md-12 form-group mt-1">
+                                        <label>Notes</label>
+                                        <textarea class="form-control" name="notes" cols="30"
+                                            rows="5">{{$company->cmp_ship_add}}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-1 float-btn mb-3">
+                                    <div class="col-sm-12 ">
+                                        <button type="submit" class="btn btn-success rounded" id="comp_update_Btn"><i
+                                                class="fas fa-save"></i> Update Profile</button>
+                                        <button style="display:none" id="comp_pro_btn" class="btn btn-success" type="button"
+                                            disabled>
+                                            <i class="fas fa-circle-notch fa-spin"></i>
+                                            Processing</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="pills-staff-tab">
-                         
+                        <hr>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
                                     <div class="card" style="box-shadow: none;">
                                         <div class="card-body">
                                             <div class="row">
@@ -1450,9 +1279,9 @@
                                             </div>
                                         </div>
                                     </div>
-                               
-                            
-                        
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -1480,88 +1309,78 @@
                     </div>
 
                     <div class="tab-pane fade" id="ticket_notes" role="tabpanel" aria-labelledby="notes-profile-tab">
-                         <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-end ">
-                                    <button class="rounded btn btn-outline-success waves-effect fa fa-plus" style="margin-right: 20px"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title=""
-                                        onclick="openNotesModal()" data-bs-original-title="Add Notes"> Add Note</button>
-                                </div>
-                                <div class="card-body" id="show_ticket_notes">
-                                    No Data Found.
-                                </div>
-                            </div>
-                         </div>
-                        
+                        <hr>
+                        <div class="d-flex justify-content-end ">
+                            <button class="rounded btn btn-outline-success waves-effect fa fa-plus" style="margin-right: 20px"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title=""
+                                onclick="openNotesModal()" data-bs-original-title="Add Notes"> Add Note</button>
+                        </div>
+                        <div class="card-body" id="show_ticket_notes">
+                            No Data Found.
+                        </div>
                     </div>
 
                     <div class="tab-pane fade" id="ticket_settings" role="tabpanel" aria-labelledby="pills-setting-tab">
-                         <div class="card">
-                            <div class="card-body">
-                                <form id="update_company" onsubmit="return false">
-                                    <h4>Assign / Change SLAs</h4>
-                                    <div class="form-row">
-                                        <div class="col-md-12">
-                                            <label>SLA</label>
-                                            <select class="select2 form-control custom-select" id="com_sla" name="tags"
-                                                multiple="multiple" style="height: 36px;width: 100%;">
-                                                @foreach($sla_plans as $sla)
-                                                <option value="{{$sla->id}}" {{$sla->id == 2,4 ? "selected" : ''}}>
-                                                    {{$sla->title}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                        <hr>
+                        <div class="card-body">
+                            <form id="update_company" onsubmit="return false">
+                                <h4>Assign / Change SLAs</h4>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <label>SLA</label>
+                                        <select class="select2 form-control custom-select" id="com_sla" name="tags"
+                                            multiple="multiple" style="height: 36px;width: 100%;">
+                                            @foreach($sla_plans as $sla)
+                                            <option value="{{$sla->id}}" {{$sla->id == 2,4 ? "selected" : ''}}>
+                                                {{$sla->title}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-6">
-                                            <p>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                Assumenda deleniti exercitationem, repellendus corrupti
-                                                sapiente id, pariatur dolor sequi omnis et, blanditiis
-                                                eveniet vero aspernatur reiciendis dicta recusandae e
-                                                um magni! In praesentium explicabo reiciendis omnis d
-                                                istinctio.
-                                            </p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>Domain Names</label>
-                                            <select class="select2 form-control custom-select" id="domain" name="domain"
-                                                multiple="multiple" style="height: 36px;width: 100%;"></select>
-                                            <div class="row mt-3 ml-2">
-                                                <div class="custom-control custom-radio">
-                                                    <!-- <label for="customRadio">From</label> -->
-                                                    <input type="radio" id="today" onclick="filterData('today')"
-                                                        name="customRadio" class="custom-control-input" checked="">
-                                                    <label class="custom-control-label" for="today">Today</label>
-                                                </div>
-                                                <div class="custom-control custom-radio ml-3">
-                                                    <!-- <label for="customRadio">To</label> -->
-                                                    <input type="radio" id="date_range" onclick="filterData('date_range')"
-                                                        name="customRadio" class="custom-control-input">
-                                                    <label class="custom-control-label" for="date_range">Date Range</label>
-                                                </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <p>
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                            Assumenda deleniti exercitationem, repellendus corrupti
+                                            sapiente id, pariatur dolor sequi omnis et, blanditiis
+                                            eveniet vero aspernatur reiciendis dicta recusandae e
+                                            um magni! In praesentium explicabo reiciendis omnis d
+                                            istinctio.
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Domain Names</label>
+                                        <select class="select2 form-control custom-select" id="domain" name="domain"
+                                            multiple="multiple" style="height: 36px;width: 100%;"></select>
+                                        <div class="row mt-3 ml-2">
+                                            <div class="custom-control custom-radio">
+                                                <!-- <label for="customRadio">From</label> -->
+                                                <input type="radio" id="today" onclick="filterData('today')"
+                                                    name="customRadio" class="custom-control-input" checked="">
+                                                <label class="custom-control-label" for="today">Today</label>
+                                            </div>
+                                            <div class="custom-control custom-radio ml-3">
+                                                <!-- <label for="customRadio">To</label> -->
+                                                <input type="radio" id="date_range" onclick="filterData('date_range')"
+                                                    name="customRadio" class="custom-control-input">
+                                                <label class="custom-control-label" for="date_range">Date Range</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-success rounded btn-sm" onclick="saveCompanySLA()">Save</button>
-                                </form>
-                            </div>
-                         </div>
-                        
+                                </div>
+                                <button class="btn btn-success rounded btn-sm" onclick="saveCompanySLA()">Save</button>
+                            </form>
+                        </div>
                     </div>
 
                 </div>
-                <!-- Project table -->
-                <div class="card">
-
-                </div>
-            </div>
         </div>
-    </section>
-    
+    </div>
+    <!-- Column -->
+    </div>
 </div>
     </div>
-    <div class="modal fade" id="Add-new-card" tabindex="-1" role="dialog" data-backdrop="static"
+<div class="modal fade" id="Add-new-card" tabindex="-1" role="dialog" data-backdrop="static"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -1639,7 +1458,7 @@
                     </div>
 
                 </div>
-                 
+                <hr>
 
                 <div class="row">
                     <div class="col-md-6">
@@ -1661,7 +1480,7 @@
                     </div>
 
                 </div>
-                
+                <hr>
                 <button class="btn btn-success" style="float:right">Edit</button>
                 <button class="btn btn-info" style="float:right;margin-right:2px;">Duplicate</button>
                 <button class="btn btn-primary">Update Profile</button>
@@ -1985,7 +1804,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal Notes Modal -->
-
 
 @endsection
 
