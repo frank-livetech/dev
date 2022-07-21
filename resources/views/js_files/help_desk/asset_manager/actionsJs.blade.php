@@ -1137,7 +1137,7 @@ function getAssetDetails(id=1) {
                         $("#"+companyId).empty();
 
                         let root_onEditCmp = `<option>All</option>`;
-                        if(comid == null && comid == 0){
+                        if(comid == null || comid == 0){
                             root_onEditCmp += `<option value="0" selected>N/A</option>`;
                         }else{
                             root_onEditCmp += `<option value="0">N/A</option>`;
@@ -1164,7 +1164,6 @@ function getAssetDetails(id=1) {
 
 
                     }else{
-                        console.log(comid , "else cust.company_id == null , cust.company_id equal to null")
 
                         $('#'+customerId).empty();
                         let option_cus = ``;
