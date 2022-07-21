@@ -53,6 +53,9 @@ body.dark-layout {
 .dark-layout span.fc-icon.fc-icon-chevron-left,.dark-layout span.fc-icon.fc-icon-chevron-right,.dark-layout .fc .fc-daygrid-day-number{
   color: #fff !important
 }
+.dark-layout .fa-user-clock:before{
+  color: #fff !important
+}
 .dark-layout .fc .fc-day-today{
   background-color: midnightblue !important; 
   background: midnightblue !important;

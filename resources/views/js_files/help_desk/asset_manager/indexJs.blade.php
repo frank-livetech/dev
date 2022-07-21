@@ -62,7 +62,7 @@
                         {
                             "render": function(data, type, full, meta) {
                                 return `
-                                <div class="d-flex justify-content-center">
+                                <div class="d-flex">
                                     <button onclick="editTemplate(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-success waves-effect" style="padding: 0.715rem 0.936rem !important;">
                                     <i class="fas fa-pencil-alt"></i></button>&nbsp;
                                     <button onclick="deleteTemplate(${full.id})" type="button" class="btn btn-icon rounded-circle btn-outline-danger waves-effect" style="padding: 0.715rem 0.936rem !important;">
@@ -74,14 +74,14 @@
                     ],
                 });
 
-                tbl.on('order.dt search.dt', function() {
-                    tbl.column(1, {
-                        search: 'applied',
-                        order: 'applied'
-                    }).nodes().each(function(cell, i) {
-                        cell.innerHTML = i + 1;
-                    });
-                }).draw();
+                // tbl.on('order.dt search.dt', function() {
+                //     tbl.column(1, {
+                //         search: 'applied',
+                //         order: 'applied'
+                //     }).nodes().each(function(cell, i) {
+                //         cell.innerHTML = i + 1;
+                //     });
+                // }).draw();
 
             },
             error: function(f) {
@@ -91,6 +91,7 @@
     }
 
     function editTemplate(id) {
+        $('#shw_assettype').show();
         let item = asset_type_arr.find(item => item.id == id);
         let single_input = ``;
         let row = ``;
