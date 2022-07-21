@@ -1128,14 +1128,11 @@ function getAssetDetails(id=1) {
                 $("#"+customerId).html(root_onEdit + option_cus);
 
             }else{
-                console.log(comid , "else comid == null ,  equal to null")
-
                 let cust = customers.find(item => item.id == value);
-                if(cust != null && cust != undefined ) {
-                    console.log(comid , "if cust != null && cust != undefined ,  not equal to null | undefined")
+                if(cust != null && cust != undefined && cust.length != 0) {
 
                     if(cust.company_id != null) {
-                        console.log(comid , "if cust.company_id != null , cust.company_id not equal to null")
+                        console.log(comid ,cust, "if cust.company_id != null , cust.company_id not equal to null")
 
                         $("#"+companyId).empty();
 
