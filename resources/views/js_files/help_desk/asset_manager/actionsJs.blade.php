@@ -1117,7 +1117,7 @@ function getAssetDetails(id=1) {
 
             }else{
                 let cust = customers.find(item => item.id == value);
-
+                console.log(cust)
                 if(cust != null) {
                     if(cust.company_id != null) {
                         $("#"+companyId).empty();
