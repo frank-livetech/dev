@@ -1137,14 +1137,14 @@ function getAssetDetails(id=1) {
                         $("#"+companyId).empty();
 
                         let root_onEditCmp = `<option>All</option>`;
-                        if(comid == null){
+                        if(comid == null && comid == 0){
                             root_onEditCmp += `<option value="0" selected>N/A</option>`;
                         }else{
                             root_onEditCmp += `<option value="0">N/A</option>`;
                         }
 
                         let option = `<option value="${cust.company_id}" > ${cust.company_name} </option>`;
-                        $("#"+companyId).html(option);
+                        $("#"+companyId).html(root_onEditCmp + option);
 
 
                         $('#'+customerId).empty();
