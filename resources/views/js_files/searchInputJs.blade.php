@@ -181,9 +181,9 @@
                                 let img = `<img src="`+ path +`" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
 
                                 $htmlList +=
-                                    '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
+                                    '<li class="search-helpdesk-tkt auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
                                         '<a class="" href="{{url("ticket-details")}}/' + data[i].coustom_id + '">' +
-                                            '<div class="modal-first">' +
+                                            '<div class="">' +
                                                 '<div class="mt-0 mt-0 rounded" style="padding:4px; ">' +
                                                     // '<div class="float-start rounded me-1 bg-none" style="margin-top:5px">' +
                                                     //     ' <div class="">' + img + '</div>' +
@@ -197,15 +197,15 @@
                                                     '</div>' +
                                                     '<div class="first">' +
                                                         '<span style="font-size:11px"><strong>Department: </strong>' + data[i].department_name + ' </span>' +
-                                                        '<span style="font-size:11px">| <strong>Status: </strong>' + data[i].status_name + ' </span>' +
+                                                        '<span style="font-size:11px;" >| <strong>Status: </strong><span class="text-center text-white badge" style="background-color: ' + data[i].status_color + ';">' + data[i].status_name + '</span> </span>' +
                                                         '<span style="font-size:11px">| <strong>Type: </strong>' + data[i].type_name + ' </span>' +
-                                                        '<span style="font-size:11px">| <strong>Priority: </strong>' + data[i].priority_name + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Priority: </strong><span class="text-center text-white badge" style="background-color: ' + data[i].priority_color + ';">' + data[i].priority_name + ' </span></span>' +
                                                         
                                                     '</div>' +
                                                     '<div class="first">' +
                                                         '<span style="font-size:11px"><strong>Owner: </strong>' + data[i].assignee_name + ' </span>' +
                                                         '<span style="font-size:11px">| <strong>Created by: </strong>' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary mx-25"> '+ user_badge +'</span></span>' +
-                                                        '<span style="font-size:11px">| <strong>Last Replier: </strong>' + (data[i].lastReplier = null ? data[i].lastReplier ?? data[i].creator_name : data[i].customer_name) + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Last Replier: </strong>' + (data[i].lastReplier != null ? data[i].lastReplier ?? data[i].creator_name : data[i].customer_name) + ' </span>' +
                                                     '</div>' +
                                                 '</div>' +
                                             '</div>' +
@@ -272,7 +272,7 @@
 
 
         searchInputInputfield.on('keyup', function(e) {
-
+            
             $(this).closest('#'+searchField +' .search-list-customer').addClass('show');
             if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
                 if (e.keyCode == 27) {
@@ -363,5 +363,12 @@
             }
         });
     }
+$(function() {
+  $("body").click(function(event) {
+   
+    $("#search_list_ticket").removeClass('show');
+   
+  });
+});
 
 </script>
