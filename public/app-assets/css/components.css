@@ -107,8 +107,14 @@ html .navbar-floating.footer-static .app-content .kanban-wrapper {
  calc(
  calc(2rem * 1) + 4.45rem + 3.35rem + 1.3rem + 0rem
  )); }
-
+.search-helpdesk-tkt{
+  border: 1px solid #e1e1e1;
+  height: 110px
+}
 @media (max-width: 575.98px) {
+  .search-helpdesk-tkt{
+    height:unset !important
+  }
   html .navbar-floating.footer-static .app-content .content-area-wrapper,
   html .navbar-floating.footer-static .app-content .kanban-wrapper {
     height: calc(
@@ -549,6 +555,9 @@ html .pace .pace-progress {
     margin-top: 5.7rem; } }
 
 @media (max-width: 767.98px) {
+  .search-helpdesk-tkt{
+    height:unset !important
+  }
   html body .app-content {
     padding: calc(2rem - 0.8rem + 4.45rem + 1.3rem) calc(2rem - 0.8rem) 0 calc(2rem - 0.8rem) !important; }
   html body.navbar-static .app-content {
@@ -565,6 +574,9 @@ html .pace .pace-progress {
     padding-right: 0.5rem; } }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .search-helpdesk-tkt{
+    height:unset !important
+  }
   html.full-screen {
     width: 100%; }
   html.full-screen .content.app-content {
@@ -586,6 +598,9 @@ html .pace .pace-progress {
   height: 100%; }
 
 @media (min-width: 992px) {
+  .search-helpdesk-tkt{
+    height:unset !important
+  }
   .sidebar {
     vertical-align: top; } }
 
@@ -624,12 +639,16 @@ html .pace .pace-progress {
   width: 260px; }
 
 @media (min-width: 992px) {
+
   .sidebar-left {
     float: left; }
   .sidebar-right {
     float: right; } }
 
 @media (max-width: 991.98px) {
+  .search-helpdesk-tkt {
+    border: 1px solid #e1e1e1;
+    height: unset !important;}
   .sidebar-detached .sidebar {
     width: 100%; } }
 
@@ -1106,7 +1125,8 @@ footer.footer-border {
   cursor: not-allowed;
   opacity: 0.65;
   pointer-events: none; }
-
+ 
+  
 @media (max-width: 767.98px) {
   .menu-hide .main-menu,
   .menu-open .main-menu {
@@ -1119,6 +1139,7 @@ footer.footer-border {
     transform: translate3d(0, 0, 0); } }
 
 @media (min-width: 768px) {
+
   .drag-target {
     z-index: 0; } }
 
@@ -1389,12 +1410,15 @@ footer.footer-border {
   width: 100%;
   margin-top: 0.5rem;
   padding-left: 0;
-  border-radius: 0.357rem;
+  
   display: none;
 }
 
 
 @media only screen and (min-device-width: 320px) and (max-device-width: 875px) and (orientation: landscape) {
+  .search-helpdesk-tkt{
+    height:unset !important
+  }
   .navbar-container .search-input .search-list , #helpdesk .search-input .search-list,#cust-mang .search-input-customer .search-list-customer {
     max-height: 250px; } }
 
@@ -1413,7 +1437,7 @@ footer.footer-border {
   overflow: overlay; }
 
 .navbar-container .search-input .search-list li a ,#helpdesk .search-input .search-list li a, #cust-mang .search-input-customer .search-list-customer li a {
-  padding: 0.2rem .2rem;
+  /* padding: 0.2rem .2rem; */
   color: #6e6b7b; }
 
 .navbar-container .search-input .search-list li a i,#helpdesk .search-input .search-list li a i,#cust-mang .search-input-customer .search-list-customer li a i,

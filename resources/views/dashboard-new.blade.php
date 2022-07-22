@@ -5,6 +5,43 @@
 
 
 <style>
+        table.dataTable .custom {
+            padding-right: 230px !important;
+        }
+
+        table.dataTable .pr-ticket {
+            min-width: 69px !important;
+        }
+
+        .pr-replies {
+            min-width: 95px !important;
+        }
+
+        .pr-due {
+            min-width: 125px !important;
+        }
+
+        .pr-activity {
+            min-width: 97px !important;
+            padding-right: 19px !important;
+        }
+
+        .pr-tech {
+            min-width: 109px !important;
+        }
+
+        table.dataTable .custom-cst {
+            padding-right: 49px !important;
+        }
+
+        table.dataTable th {
+            padding: 0.2rem 1.5rem;
+        }
+
+        table.dataTable td {
+            padding: 7px !important;
+            font-size: 12px;
+        }
     .badge-secondary {
     color: #fff;
     background-color: #868e96;}
@@ -453,7 +490,7 @@ table.dataTable thead .sorting_desc:after {
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                             </div>
                                                 <input class="form-control "  id="ticket_search" type="text" placeholder="Search Example - ABC-123-4321" tabindex="-1" data-search="search">
-                                                <ul class="search-list search-list-main"></ul>
+                                                <ul class="search-list search-list-main" id="search_list_ticket"></ul>
                                         </div>
                                     </div>
                                 </div>
@@ -662,8 +699,8 @@ table.dataTable thead .sorting_desc:after {
                                                         </th>
                                                         <th></th>
                                                         <th>Status</th>
-                                                        <th>Subject</th>
-                                                        <th>Ticket ID</th>
+                                                        <th class="custom">Subject</th>
+                                                        <th class="custom-cst">Ticket ID</th>
                                                         <th>Priority</th>
                                                         <th>Customer</th>
                                                     </tr>
