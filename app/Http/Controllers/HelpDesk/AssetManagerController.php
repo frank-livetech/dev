@@ -88,12 +88,12 @@ class AssetManagerController extends Controller
 
         foreach($assetFields as $i => $fl){
             foreach($record->get() as $j => $d){
-                if($request->customer != 'null' && $request->company != 'null'){
+                if($request->has(['customer','company']) && $request->customer != 0 && $request->company != 0){
                     $data[$j]['Customer'] = Customer::find($request->customer) != null ? Customer::find($request->customer)->email : '';
                     $data[$j]['Company'] = Company::find($request->company) != null ? Company::find($request->company)->name : '';
-                }else if($request->customer != 'null'){
+                }else if($request->has('customer') && $request->customer != 0){
                     $data[$j]['Customer'] = Customer::find($request->customer) != null ? Customer::find($request->customer)->email : '';
-                }else if($request->company != 'null'){
+                }else if($request->has('company') && $request->company != 0){
                     $data[$j]['Company'] = Company::find($request->company) != null ? Company::find($request->company)->name : '';
                 }else{
                     $customer = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->customer : '';
