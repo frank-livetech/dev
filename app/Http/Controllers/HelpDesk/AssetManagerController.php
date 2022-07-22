@@ -56,11 +56,12 @@ class AssetManagerController extends Controller
 
         $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->get();
 
-        if($request->customer != 'null' && $request->company != 'null'){
+
+        if($request->has(['customer','company']) && $request->customer != 0 && $request->company != 0){
             $asst = Assets::where('customer_id',$request->customer)->where('company_id',$request->company)->get()->pluck('id')->toArray();
-        }else if($request->customer != 'null'){
+        }else if($request->has('customer') && $request->customer != 0){
             $asst = Assets::where('customer_id',$request->customer)->get()->pluck('id')->toArray();
-        }else if($request->company != 'null'){
+        }else if($request->has('company') && $request->company != 0){
             $asst = Assets::where('company_id',$request->company)->get()->pluck('id')->toArray();
         }
 
