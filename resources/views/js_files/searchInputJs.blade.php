@@ -180,25 +180,58 @@
                                 let path = (root + '/' + data[i].user_pic);
                                 let img = `<img src="`+ path +`" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
 
-                                    $htmlList +=
+                                $htmlList +=
                                     '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
                                         '<a class="" href="{{url("ticket-details")}}/' + data[i].coustom_id + '">' +
-                                        '<div class="modal-first">' +
-                                            '<div class="mt-0 mt-0 rounded" style="padding:4px; ">' +
-                                                '<div class="float-start rounded me-1 bg-none" style="margin-top:5px">' +
-                                                    ' <div class="">' + img + '</div>' +
-                                                '</div>' +
-                                                '<div class="more-info">' +
-                                                    '<div class="" style="display: -webkit-box">' +
-                                                        ' <h6 class="mb-0">' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary"> '+ user_badge +'</span></h6>' +
-                                                        '<span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Ticket ID ('+ data[i].coustom_id +' )</span>' +
+                                            '<div class="modal-first">' +
+                                                '<div class="mt-0 mt-0 rounded" style="padding:4px; ">' +
+                                                    // '<div class="float-start rounded me-1 bg-none" style="margin-top:5px">' +
+                                                    //     ' <div class="">' + img + '</div>' +
+                                                    // '</div>' +
+                                                    '<div class="more-info">' +
+                                                        '<div class="" style="display: -webkit-box">' +
+                                                            ' <span class="mb-0" style="font-size: 11px;"><strong>Ticket ID: </strong>' + (data[i].coustom_id) +'</span>' +
                                                     '</div>' +
                                                     '<div class="first">' +
-                                                        '<span style="font-size:14px">' + data[i].subject + ' </span>' +
+                                                        '<span style="font-size:11px"><strong>Subject: </strong>' + data[i].subject + '</span>' +
+                                                    '</div>' +
+                                                    '<div class="first">' +
+                                                        '<span style="font-size:11px"><strong>Department: </strong>' + data[i].department_name + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Status: </strong>' + data[i].status_name + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Type: </strong>' + data[i].type_name + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Priority: </strong>' + data[i].priority_name + ' </span>' +
+                                                        
+                                                    '</div>' +
+                                                    '<div class="first">' +
+                                                        '<span style="font-size:11px"><strong>Owner: </strong>' + data[i].assignee_name + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Created by: </strong>' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary mx-25"> '+ user_badge +'</span></span>' +
+                                                        '<span style="font-size:11px">| <strong>Last Replier: </strong>' + (data[i].lastReplier = null ? data[i].lastReplier ?? data[i].creator_name : data[i].customer_name) + ' </span>' +
                                                     '</div>' +
                                                 '</div>' +
-                                        '</div></a>' +
+                                            '</div>' +
+                                        '</a>' +
                                     '</li>';
+
+                                    // $htmlList +=
+                                    // '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
+                                    //     '<a class="" href="{{url("ticket-details")}}/' + data[i].coustom_id + '">' +
+                                    //         '<div class="modal-first">' +
+                                    //             '<div class="mt-0 mt-0 rounded" style="padding:4px; ">' +
+                                    //                 '<div class="float-start rounded me-1 bg-none" style="margin-top:5px">' +
+                                    //                     ' <div class="">' + img + '</div>' +
+                                    //                 '</div>' +
+                                    //                 '<div class="more-info">' +
+                                    //                     '<div class="" style="display: -webkit-box">' +
+                                    //                         ' <h6 class="mb-0">' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary"> '+ user_badge +'</span></h6>' +
+                                    //                         '<span class="ticket-timestamp3 text-muted small" style="margin-left: 9px;">Ticket ID ('+ data[i].coustom_id +' )</span>' +
+                                    //                 '</div>' +
+                                    //                 '<div class="first">' +
+                                    //                     '<span style="font-size:14px">' + data[i].subject + ' </span>' +
+                                    //                 '</div>' +
+                                    //             '</div>' +
+                                    //         '</div>' +
+                                    //     '</a>' +
+                                    // '</li>';
 
                                     // '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
                                     // '<a class="d-flex align-items-center justify-content-between w-100" href="{{url("ticket-details")}}/' +
