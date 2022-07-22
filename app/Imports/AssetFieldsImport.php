@@ -56,26 +56,6 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
             }
 
             $cols = Arr::except($rows[$i], ['customer','company']);
-            // foreach($cols->keys() as $j => $field){
-            //     $code = AssetFields::where('label','like', '%'.$field.'%')->where('asset_forms_id', $this->asset_type)->first();
-            //     if($code != null || $code != []){
-            //         // dd($row[$field],$code->id,$field,$j);
-            //         $matched = DB::table('asset_records_'.$this->asset_type)->where('fl_'.$code->id, $row[$field])->first();
-
-            //         if($matched){
-            //             $update_data[$i]['fl_'.$code->id] = $row[$field];
-            //             $update_fl_id = $matched->id;
-            //             if($rows[$i][$field]  == $row[$field]){
-            //                 $matched_index[] = $i;
-            //             }
-            //             // DB::table('asset_records_'.$this->asset_type)
-            //             //     ->where('id',$matched->id)
-            //             //     ->update(array('fl_'.$code->id => $row[$field]));
-            //         }
-            //     }
-
-            // }
-
 
             foreach($cols->keys() as $j => $field){
                 $code = AssetFields::where('label','like', '%'.$field.'%')->where('asset_forms_id', $this->asset_type)->where('is_deleted',0)->first();
@@ -98,10 +78,10 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
 
         foreach($data as $i => $dt)
         {
-
             $upd = DB::table('asset_records_'.$this->asset_type)
-                            ->where('form_id',$dt['form_id'])
+                            ->where('form_id',$dt['form_id'])->where('is_deleted',0)
                     ->where($update_fl_id,$dt[$update_fl_id]);
+
             if($upd->get()->count() != 0){
                 $upd->update($dt);
             }else{
