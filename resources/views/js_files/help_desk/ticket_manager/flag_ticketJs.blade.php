@@ -55,8 +55,8 @@
                             },
                             {
                                 "render": function (data, type, full, meta) {
-                                    let status = `<div class="text-center text-white badge"
-                                         style="background-color:${full.status_color}">${full.status_name}</div>`;
+                                    let status = `<div class="text-center"><div class="text-center text-white badge"
+                                         style="background-color:${full.status_color}">${full.status_name}</div></div>`;
                                     return full.status_name != null ? status : '-';
                                 }
                             },

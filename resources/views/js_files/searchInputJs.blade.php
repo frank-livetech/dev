@@ -175,15 +175,27 @@
                             console.log(data)
                             
                             for (var i = 0; i < data.length; i++) {
-                                
+
+                                let last_act = new Date(data[i].lastActivity);
+                                var last_activity = getDateDiff(data[i].lastActivity);
+
+                                    if (last_activity.includes('d')) {
+                                        la_color = `#FF0000`;
+                                    } else if (last_activity.includes('h')) {
+                                        la_color = `#FF8C5A`;
+                                    } else if (last_activity.includes('m')) {
+                                        la_color = `#5C83B4`;
+                                    } else if (last_activity.includes('s')) {
+                                        la_color = `#8BB467`;
+                                    }
                                 let user_badge= (data[i].is_staff_tkt == 1 ? 'Staff' : 'User');
                                 let path = (root + '/' + data[i].user_pic);
                                 let img = `<img src="`+ path +`" style="border-radius: 50%;" class="rounded-circle " width="40px" height="40px" />`;
 
                                 $htmlList +=
-                                    '<li class="auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
+                                    '<li class="search-helpdesk-tkt auto-suggestion ' + (i == 0 ? "current_item" : "") + '">' +
                                         '<a class="" href="{{url("ticket-details")}}/' + data[i].coustom_id + '">' +
-                                            '<div class="modal-first">' +
+                                            '<div class="">' +
                                                 '<div class="mt-0 mt-0 rounded" style="padding:4px; ">' +
                                                     // '<div class="float-start rounded me-1 bg-none" style="margin-top:5px">' +
                                                     //     ' <div class="">' + img + '</div>' +
@@ -197,15 +209,20 @@
                                                     '</div>' +
                                                     '<div class="first">' +
                                                         '<span style="font-size:11px"><strong>Department: </strong>' + data[i].department_name + ' </span>' +
-                                                        '<span style="font-size:11px">| <strong>Status: </strong>' + data[i].status_name + ' </span>' +
+                                                        '<span style="font-size:11px;" >| <strong>Status: </strong><span class="text-center text-white badge" style="background-color: ' + data[i].status_color + ';">' + data[i].status_name + '</span> </span>' +
                                                         '<span style="font-size:11px">| <strong>Type: </strong>' + data[i].type_name + ' </span>' +
-                                                        '<span style="font-size:11px">| <strong>Priority: </strong>' + data[i].priority_name + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Priority: </strong><span class="text-center text-white badge" style="background-color: ' + data[i].priority_color + ';">' + data[i].priority_name + ' </span></span>' +
                                                         
                                                     '</div>' +
                                                     '<div class="first">' +
-                                                        '<span style="font-size:11px"><strong>Owner: </strong>' + data[i].assignee_name + ' </span>' +
-                                                        '<span style="font-size:11px">| <strong>Created by: </strong>' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary mx-25"> '+ user_badge +'</span></span>' +
-                                                        '<span style="font-size:11px">| <strong>Last Replier: </strong>' + (data[i].lastReplier = null ? data[i].lastReplier ?? data[i].creator_name : data[i].customer_name) + ' </span>' +
+                                                        '<span style="font-size:11px"><strong>Owner: </strong>' + (data[i].assignee_name != null ? data[i].assignee_name : '-') + ' </span>' +
+                                                        '<span style="font-size:11px">| <strong>Created By: </strong>' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary mx-25"> '+ user_badge +'</span></span>' +
+                                                        '<span style="font-size:11px">| <strong>Last Replier: </strong>' + (data[i].lastReplier != null ? data[i].lastReplier ?? data[i].creator_name : data[i].customer_name) + ' </span>' +
+                                                    '</div>' +
+                                                    '<div class="first">' +
+                                                        '<span style="font-size:11px;"><strong>Last Activity: </strong><span data-order="`='+last_act.getTime()+'" style="font-size:11px;color:'+la_color+'">' + last_activity + '</span></span>' +
+                                                        '<span style="font-size:11px">| <strong>Created: </strong>' + convertDate(data[i].created_at) +'</span>' +
+                                                       
                                                     '</div>' +
                                                 '</div>' +
                                             '</div>' +
@@ -272,7 +289,7 @@
 
 
         searchInputInputfield.on('keyup', function(e) {
-
+            
             $(this).closest('#'+searchField +' .search-list-customer').addClass('show');
             if (e.keyCode !== 38 && e.keyCode !== 40 && e.keyCode !== 13) {
                 if (e.keyCode == 27) {
@@ -363,5 +380,58 @@
             }
         });
     }
+$(function() {
+  $("body").click(function(event) {
+   
+    $("#search_list_ticket").removeClass('show');
+   
+  });
+});
+function getDateDiff(date1, date2 = new Date()) {
+        var a = moment(date1);
+        var b = moment(date2);
 
+        var days = b.diff(a, 'days');
+        a.add(days, 'days');
+
+        var hours = b.diff(a, 'hours');
+        a.add(hours, 'hours');
+
+        var mins = b.diff(a, 'minutes');
+        var sec = b.diff(a, 'seconds');
+
+        let ret = '';
+
+        if (days > 0) ret += days + 'd ';
+        if (hours > 0) ret += hours + 'h ';
+        if (mins > 0) ret += mins + 'm ';
+
+        // check if day pass then seconds not shown
+        if (days == 0) {
+            var ms = moment(b).diff(moment(a));
+            let d = moment.duration(ms);
+            ret += d.seconds() + 's ';
+        }
+
+        if (ret == '') {
+            ret = '0s'
+        }
+        return ret;
+    }
+    function convertDate(date) {
+    var d = new Date(date);
+
+    var min = d.getMinutes();
+    var dt = d.getDate();
+    var d_utc = d.getUTCHours();
+
+    d.setMinutes(min);
+    d.setDate(dt);
+    d.setUTCHours(d_utc);
+
+    let a = d.toLocaleString("en-US" , {timeZone: time_zone});
+    // return a;
+    var converted_date = moment(a).format(date_format + ' ' +'hh:mm A');
+    return converted_date;
+}
 </script>
