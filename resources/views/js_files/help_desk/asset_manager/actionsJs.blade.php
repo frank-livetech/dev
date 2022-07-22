@@ -255,7 +255,7 @@ function showAssetDetails(id) {
                                     <tr>
                                         <td class="fw-bolder" width="170"> Asset Type </td>
                                         <td width="300px">${item.template.title != null ? item.template.title : '---'} </td>
-                                        <td>${item.template.title != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.template.title+'`)" style="float:left"></i>': ''}</td>
+                                        <!-- <td>${item.template.title != null ? '<i class="far fa-copy" onclick="copyToClipBoard(`'+item.template.title+'`)" style="float:left"></i>': ''}</td> -->
                                     </tr>
                                     ${asset_field_tr}
                                 </tbody>

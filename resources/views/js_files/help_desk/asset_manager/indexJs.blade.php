@@ -174,6 +174,7 @@
 
                         if (data.status == 200 && data.success == true) {
                             alertNotification('success', 'Success', data.message);
+                            getAllTemplate();
                             $("#row__" + id).remove();
                         } else {
                             alertNotification('error', 'Error', data.message);
