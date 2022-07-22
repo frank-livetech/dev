@@ -1358,7 +1358,6 @@ class HelpdeskController extends Controller
                     $action = 'ticket_reply_update';
                     $content = $mail_reply;
                     sendNotificationToAdmins($slug , $note_type , $title ,  $desc);
-                    dd($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                     $this->sendNotificationMail($ticket->toArray(), 'ticket_update', $content, $data['cc'], $action, $request->data_id,'',$request->dd_Arr);
                 }else{
                     $content = $mail_reply;

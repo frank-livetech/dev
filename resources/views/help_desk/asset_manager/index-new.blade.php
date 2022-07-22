@@ -12,7 +12,7 @@
     .float-btn{
         float: right
     }
-     
+
     .FieldItem_container {
         font-size: 16px;
         cursor: pointer;
@@ -1045,7 +1045,9 @@
                     if(response.success == true){
                         $('#import_asset').modal('hide')
                         get_asset_table_list()
+                        $('#import_asset_form').get(0).reset()
                         alertNotification('success', 'Success', response.message);
+
                     }
                 },
                 complete: function() {

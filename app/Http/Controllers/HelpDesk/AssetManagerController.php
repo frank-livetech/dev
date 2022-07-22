@@ -54,14 +54,14 @@ class AssetManagerController extends Controller
     public function assetExport(Request $request)
     {
 
-        $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->get();
+        $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->where('is_deleted',0)->get();
 
         if($request->customer != 'null' && $request->company != 'null'){
             $asst = Assets::where('customer_id',$request->customer)->where('company_id',$request->company)->get()->pluck('id')->toArray();
         }else if($request->customer != 'null'){
             $asst = Assets::where('customer_id',$request->customer)->get()->pluck('id')->toArray();
         }else if($request->company != 'null'){
-           $asst = Assets::where('company_id',$request->company)->get()->pluck('id')->toArray();
+            $asst = Assets::where('company_id',$request->company)->get()->pluck('id')->toArray();
         }
 
         if(isset($asst)){
@@ -563,8 +563,8 @@ class AssetManagerController extends Controller
 
         $asset =  Assets::find($request->id);
         $AssetForm =  AssetForms::find($asset->asset_forms_id);
-        $AssetFields = AssetFields::where("asset_forms_id","=",$asset->asset_forms_id)->get();
-        $asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$request->id)->first();
+        $AssetFields = AssetFields::where("asset_forms_id","=",$asset->asset_forms_id)->where('is_deleted',0)->get();
+        $asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$request->id)->where('is_deleted',0)->first();
 
         $response['message'] = 'Asset List';
         $response['status_code'] = 200;
