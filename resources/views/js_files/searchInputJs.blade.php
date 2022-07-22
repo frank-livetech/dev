@@ -203,7 +203,7 @@
                                                         
                                                     '</div>' +
                                                     '<div class="first">' +
-                                                        '<span style="font-size:11px"><strong>Owner: </strong>' + data[i].assignee_name + ' </span>' +
+                                                        '<span style="font-size:11px"><strong>Owner: </strong>' + (data[i].assignee_name != null ? data[i].assignee_name : '-') + ' </span>' +
                                                         '<span style="font-size:11px">| <strong>Created by: </strong>' + (data[i].creator_name != null ? data[i].creator_name : data[i].customer_name) +'<span class="badge badge-secondary mx-25"> '+ user_badge +'</span></span>' +
                                                         '<span style="font-size:11px">| <strong>Last Replier: </strong>' + (data[i].lastReplier != null ? data[i].lastReplier ?? data[i].creator_name : data[i].customer_name) + ' </span>' +
                                                     '</div>' +
