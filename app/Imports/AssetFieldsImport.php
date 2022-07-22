@@ -78,7 +78,7 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
 
 
             foreach($cols->keys() as $j => $field){
-                $code = AssetFields::where('label','like', '%'.$field.'%')->where('asset_forms_id', $this->asset_type)->first();
+                $code = AssetFields::where('label','like', '%'.$field.'%')->where('asset_forms_id', $this->asset_type)->where('is_deleted',0)->first();
                 if($code != null || $code != []){
                     if($j == 0){
                         $update_fl_id = 'fl_'. $code->id;
@@ -103,7 +103,7 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
                             ->where('form_id',$dt['form_id'])
                     ->where($update_fl_id,$dt[$update_fl_id]);
             if($upd->get()->count() != 0){
-                $upd->update($data[$i]);
+                $upd->update($dt);
             }else{
                 $asset = Assets::create([
                     'company_id' => ($comp != null) ? $comp->id : null,
@@ -111,6 +111,7 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
                     'asset_forms_id' => $this->asset_type
                 ]);
                 $dt['asset_id'] = $asset->id ?? null;
+
                 DB::table('asset_records_'.$this->asset_type)->insert($dt);
             }
         }
