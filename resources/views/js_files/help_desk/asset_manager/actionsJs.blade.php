@@ -1132,7 +1132,6 @@ function getAssetDetails(id=1) {
                 if(cust != null && cust != undefined && cust.length != 0) {
 
                     if(cust.company_id != null) {
-                        console.log(comid ,cust, "if cust.company_id != null , cust.company_id not equal to null")
 
                         $("#"+companyId).empty();
 
@@ -1182,7 +1181,6 @@ function getAssetDetails(id=1) {
 
                     }
                 }else{
-                    console.log(comid , "else cust != null && cust != undefined ,  equal to null | undefined")
 
                         $('#'+customerId).empty();
                         let option_cus = ``;
