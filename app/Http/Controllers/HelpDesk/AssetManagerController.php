@@ -65,9 +65,9 @@ class AssetManagerController extends Controller
         }
 
         if(isset($asst)){
-            $record = DB::table("asset_records_".$request->asset_type)->whereIn('asset_id',$asst);
+            $record = DB::table("asset_records_".$request->asset_type)->where('is_deleted',0)->whereIn('asset_id',$asst);
         }else{
-            $record = DB::table("asset_records_".$request->asset_type);
+            $record = DB::table("asset_records_".$request->asset_type)->where('is_deleted',0);
         }
 
 
@@ -487,7 +487,12 @@ class AssetManagerController extends Controller
         $asset->deleted_at = Carbon::now();
         $asset->is_deleted = 1;
 
-        $asset->save();
+        if($asset->save()){
+            $asst_record = DB::table('asset_records_'.$asset->asset_forms_id)->where('asset_id',$asset->id);
+            if($asst_record->get()->count() != 0){
+                $asst_record->update(['is_deleted' => 1]);
+            }
+        }
         $name_link = '<a href="'.url('profile').'/' . auth()->id() .'">'. auth()->user()->name .'</a>';
         if(!empty($asset->ticket_id)) {
             $ticket = Tickets::findOrFail($asset->ticket_id);
