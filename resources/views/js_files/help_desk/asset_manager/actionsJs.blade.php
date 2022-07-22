@@ -108,6 +108,7 @@ function get_asset_table_list() {
                     },
                     {
                         "render": function(data, type, full, meta) {
+                            console.log(full.updated_by_name)
                             if(full.updated_by_name != null) {
                                 return full.updated_by_name;
                             }else{

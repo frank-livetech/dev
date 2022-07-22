@@ -54,7 +54,7 @@ class AssetManagerController extends Controller
     public function assetExport(Request $request)
     {
 
-        $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->where('is_deleted',0)->get();
+        $assetFields = AssetFields::where('asset_forms_id',$request->asset_type)->get();
 
         if($request->customer != 'null' && $request->company != 'null'){
             $asst = Assets::where('customer_id',$request->customer)->where('company_id',$request->company)->get()->pluck('id')->toArray();
@@ -64,10 +64,11 @@ class AssetManagerController extends Controller
             $asst = Assets::where('company_id',$request->company)->get()->pluck('id')->toArray();
         }
 
+
         if(isset($asst)){
-            $record = DB::table("asset_records_".$request->asset_type)->where('is_deleted',0)->whereIn('asset_id',$asst);
+            $record = DB::table("asset_records_".$request->asset_type)->whereIn('asset_id',$asst);
         }else{
-            $record = DB::table("asset_records_".$request->asset_type)->where('is_deleted',0);
+            $record = DB::table("asset_records_".$request->asset_type);
         }
 
 
@@ -76,7 +77,7 @@ class AssetManagerController extends Controller
         $data = [];
         $headings = [];
 
-       foreach($assetFields as $i => $fl){
+        foreach($assetFields as $i => $fl){
             foreach($record->get() as $j => $d){
                 $data[$j][$fl->label] = $record->select('fl_'.$fl->id)->get()[$j]->{'fl_'.$fl->id} ?? '';
             }
@@ -86,8 +87,19 @@ class AssetManagerController extends Controller
 
         foreach($assetFields as $i => $fl){
             foreach($record->get() as $j => $d){
-                $data[$j]['Customer'] = Customer::find($request->customer) != null ? Customer::find($request->customer)->email : '';
-                $data[$j]['Company'] = Company::find($request->company) != null ? Company::find($request->company)->name : '';
+                if($request->customer != 'null' && $request->company != 'null'){
+                    $data[$j]['Customer'] = Customer::find($request->customer) != null ? Customer::find($request->customer)->email : '';
+                    $data[$j]['Company'] = Company::find($request->company) != null ? Company::find($request->company)->name : '';
+                }else if($request->customer != 'null'){
+                    $data[$j]['Customer'] = Customer::find($request->customer) != null ? Customer::find($request->customer)->email : '';
+                }else if($request->company != 'null'){
+                    $data[$j]['Company'] = Company::find($request->company) != null ? Company::find($request->company)->name : '';
+                }else{
+                    $customer = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->customer : '';
+                    $company = Assets::find($asset_record->get()[$j]->asset_id ) != null ? Assets::find($asset_record->get()[$j]->asset_id )->company : '';
+                    $data[$j]['Customer'] = $customer->email ?? '';
+                    $data[$j]['Company'] = $company->name ?? '';
+                }
             }
         }
         $headings[] = 'Customer';
@@ -553,7 +565,7 @@ class AssetManagerController extends Controller
         foreach($assets as $asset) {
             $asset->asset_record = DB::table("asset_records_".$asset->asset_forms_id)->where("asset_id",$asset->id)->first();
             $asset->created_by_name = User::find($asset->created_by) != null ? User::find($asset->created_by)->name : '';
-            $asset->updated_by_name = User::find($asset->updated_by) != null ? User::find($asset->created_by)->name : '';
+            $asset->updated_by_name = User::find($asset->updated_by) != null ? User::find($asset->updated_by)->name : '';
         }
 
         $response['message'] = 'Success';
