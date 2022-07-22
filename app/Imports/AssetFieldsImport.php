@@ -43,14 +43,23 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
         $matched_index = [];
 
         foreach($rows as $i => $row){
-            if($rows[$i]['customer'] != null || $rows[$i]['customer'] != ''){
-                $cust = Customer::where('email',$rows[$i]['customer'])->first();
+
+            if(isset($rows[$i]['customer'])){
+                if($rows[$i]['customer'] != null || $rows[$i]['customer'] != ''){
+                    $cust = Customer::where('email',$rows[$i]['customer'])->first();
+                }else{
+                    $cust = null;
+                }
             }else{
                 $cust = null;
             }
 
-            if($rows[$i]['company'] != null || $rows[$i]['company'] != ''){
-                $comp = Company::where('name',$rows[$i]['company'])->first();
+            if(isset($rows[$i]['company'])){
+                if(isset($rows[$i]['company']) && $rows[$i]['company'] != null || $rows[$i]['company'] != ''){
+                    $comp = Company::where('name',$rows[$i]['company'])->first();
+                }else{
+                    $comp = null;
+                }
             }else{
                 $comp = null;
             }
@@ -58,13 +67,17 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
             $cols = Arr::except($rows[$i], ['customer','company']);
 
             foreach($cols->keys() as $j => $field){
-                $code = AssetFields::where('label','like', '%'.$field.'%')->where('asset_forms_id', $this->asset_type)->where('is_deleted',0)->first();
-                if($code != null || $code != []){
-                    if($j == 0){
-                        $update_fl_id = 'fl_'. $code->id;
+
+                if(isset($rows[$i][$field])){
+                    $code = AssetFields::where('label','like', '%'.$field.'%')->where('asset_forms_id', $this->asset_type)->where('is_deleted',0)->first();
+                    if($code != null || $code != []){
+                        if($j == 0){
+                            $update_fl_id = 'fl_'. $code->id;
+                        }
+                        $data[$i]['fl_'. $code->id] = $row[$field] ?? null;
                     }
-                    $data[$i]['fl_'. $code->id] = $row[$field] ?? null;
                 }
+
 
                 $data[$i]['form_id'] = $this->asset_type ?? null;
                 $data[$i]['created_at'] = Carbon::now();
@@ -79,16 +92,20 @@ class AssetFieldsImport implements ToCollection, WithHeadingRow
         foreach($data as $i => $dt)
         {
             $upd = DB::table('asset_records_'.$this->asset_type)
-                            ->where('form_id',$dt['form_id'])->where('is_deleted',0)
-                    ->where($update_fl_id,$dt[$update_fl_id]);
+                        ->where('form_id',$dt['form_id'])->where('is_deleted',0)
+                        ->where($update_fl_id,$dt[$update_fl_id]);
 
             if($upd->get()->count() != 0){
-                $upd->update($dt);
+                $record_up = $upd->update($dt);
+                 $a= Assets::find($upd->get()[0]->asset_id);
+                 $a->updated_by = Auth::id();
+                 $a->save();
             }else{
                 $asset = Assets::create([
                     'company_id' => ($comp != null) ? $comp->id : null,
                     'customer_id' => ($cust != null) ? $cust->id : null,
-                    'asset_forms_id' => $this->asset_type
+                    'asset_forms_id' => $this->asset_type,
+                    'created_by' =>  Auth::id()
                 ]);
                 $dt['asset_id'] = $asset->id ?? null;
 
