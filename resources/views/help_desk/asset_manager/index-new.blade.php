@@ -979,7 +979,7 @@
                 </div>
                 <div class="modal-body">
                     <label>Company</label>
-                    <select class="select2 form-select form-control" id="company_export" name="company">
+                    <select class="select2 form-select form-control" onchange="selectCompany(this.value , 'customer_export','company_export')" id="company_export" name="company">
                             <option value="null">Select</option>
                         @foreach ($companies as $company)
                             <option value="{{$company->id}}">{{$company->name}}</option>
@@ -988,7 +988,7 @@
                 </div>
                 <div class="modal-body">
                     <label>Customer</label>
-                    <select class="select2 form-select form-control"  id="customer_export" name="customer">
+                    <select class="select2 form-select form-control"  onchange="selectCustomer(this.value , 'customer_export','company_export')" id="customer_export" name="customer">
                             <option value="null">Select</option>
                         @foreach ($customers as $customer)
                             <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</option>
@@ -1046,6 +1046,7 @@
                         $('#import_asset').modal('hide')
                         get_asset_table_list()
                         $('#import_asset_form').get(0).reset()
+                        $("#excel_import_id").val("").trigger("change");
                         alertNotification('success', 'Success', response.message);
 
                     }
