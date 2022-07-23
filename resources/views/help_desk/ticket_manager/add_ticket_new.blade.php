@@ -5,6 +5,15 @@
 .tox-collection__item-icon {
     font-size: 25px !important;
 }
+@media (max-width: 650px) {
+    #check_box_mbl{
+        margin-top:8rem !important;
+        display: inline !important;
+    }
+    .form-check-primary{
+        margin-left: 0px !important
+    }
+}
 </style>
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -357,7 +366,7 @@
                                             <span class="text-danger small" id="ticket_detail_error"></span>
                                         </div>
 
-                                        <div class="d-flex mt-3">
+                                        <div class="d-flex mt-3" id="check_box_mbl">
                                             <div class="form-check form-check-primary">
                                                 <input type="checkbox" value="1" class="form-check-input"
                                                     id="send_email" name="send_email" checked>

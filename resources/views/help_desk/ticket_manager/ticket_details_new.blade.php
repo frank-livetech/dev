@@ -446,6 +446,15 @@
         }
 
         @media (max-width: 650px) {
+            .mt-6{
+                margin-top: 6rem
+            }
+            .reply-btns{
+                margin-top: .5rem
+            }
+            .not_type{
+                justify-content: normal !important;
+            }
             .set-dept,.set-type,.set-flag, .set-status,.set-priority,.set-tech{
                 width: 100% !important;
             }
@@ -511,7 +520,7 @@
             }
 
             .ql-editor{
-            height: 250px;
+            /* height: 250px; */
             max-height: 250px;
             overflow: auto;
             }
@@ -1591,15 +1600,16 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title mb-0">Ticket Replies </h4>
-                                <div>
-                                    <a id="compose_btn" class="btn btn-success float-right" onclick="composeReply()"
-                                        style="color: #fff !important">
-                                        Compose
-                                    </a>
+                                <div class="d-flex">
                                     <a id="update_ticket" style="display:none"
                                         class="btn btn-success float-right mx-2" onclick="updateTicket()">
                                         Update
                                     </a>
+                                    <a id="compose_btn" class="btn btn-success float-right" onclick="composeReply()"
+                                        style="color: #fff !important">
+                                        Compose
+                                    </a>
+                                    
                                 </div>
                             </div>
 
@@ -1623,7 +1633,7 @@
                                     onclick="cancelReply(this)">Cancel</button>
                             </div>
 
-                            <div class="mt-5 d-none p-2" id="compose-reply">
+                            <div class="mt-6 d-none p-2" id="compose-reply">
                                 <div class="row">
                                     <div class="col-md-4" id="select_customer">
                                         <label class="form-label">From</label>
@@ -1865,7 +1875,7 @@
                         </div>
 
                         <div class="col-5"></div>
-                        <div class="d-flex justify-content-end py-2" style="">
+                        <div class="d-flex justify-content-end py-2 not_type" style="">
                             <label style="margin-right: 6px"> Note Type: </label>
                             <div class="ml-auto d-flex">
                                 <div class="form-check mr-2" style="margin-right:12px ">
@@ -2465,7 +2475,7 @@
                 <button class="btn-close ml-auto" onclick="closeModal()"></button>
             </div>
             <div class="modal-body">
-                <div class="modal-body">
+                
                     <input type="hidden" id="tkt_cust_id">
                     <input type="hidden" id="tkt_cust_comp_id">
 
@@ -2646,7 +2656,7 @@
                         </form>
                     </div>
 
-                </div>
+                
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success upt-cust-btn" onclick="newCustomer('new')">New
                         Customer</button>
