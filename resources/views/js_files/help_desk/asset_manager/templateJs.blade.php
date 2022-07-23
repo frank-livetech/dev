@@ -6,6 +6,7 @@ let g_obj_key = null;
 let g_temp_code = null;
 let temp_fields_list = [];
 let fields_list_data = [];
+let fields_list_data_edit = [];
 let check_action = null;
 let template_id = null;
 let active_edit_field_id = 0;
@@ -177,6 +178,7 @@ function fieldAdd(code) {
 
     $('.connectedSortable').show();
     fields_list_data[g_count] = { col_width: 12, label: template[code].title, type:code};
+    fields_list_data_edit[g_count] = { col_width: 12, label: template[code].title, type:code};
 
     active_edit_field_id = '';
     $("#sortable-row-" + g_count).sortable({
@@ -463,10 +465,12 @@ function updateFieldSetting(field_id,temp_id,form=null){
                     items = response.form_field;
                     templateSetting(items.type, items.asset_forms_id,'update',items.id)
 
+                    $("#tempTitle").val(response.title)
+
                     let single_input = ``;
                     let row = ``;
                     if (data != null) {
-                        $("#tempTitle").val(data.title)
+
 
                         if (data != null && data.length != 0) {
 
@@ -633,15 +637,18 @@ function saveTemplate(action=null) {
                     return false;
         }
 
-        for (let i in fields_list_data) {
-            console.log(fields_list_data[i])
-            if (!fields_list_data[i].hasOwnProperty('label')) {
-                $('#card-colors').find('div[data-id="' + i + '"]').find('.card').css('background-color', 'rgb(255, 200, 0, 0.43)');
-                return false;
-            }
-        }
+
+        // for (let i in fields_list_data) {
+        //     if (!fields_list_data[i].hasOwnProperty('label')) {
+        //         $('#card-colors').find('div[data-id="' + i + '"]').find('.card').css('background-color', 'rgb(255, 200, 0, 0.43)');
+        //         return false;
+        //     }
+        // }
 
         let fields_in_seq = [];
+        let fields_in_seq_edit = [];
+
+
         $('#card-colors').find('.appends').each(function(item) {
             if ($(this).data('id') >= 0) fields_in_seq.push(fields_list_data[$(this).data('id')]);
         });
@@ -713,7 +720,7 @@ function saveTemplate(action=null) {
         let formData = new FormData();
         formData.append('title', $('#tempTitle').val());
         formData.append('template_id', template_id);
-
+        formData.append('fields', JSON.stringify(fields_list_data));
         $.ajax({
             type: 'post',
             url: template_update_submit_route,
@@ -723,19 +730,67 @@ function saveTemplate(action=null) {
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
-            success: function(data) {
+            success: function(response) {
                 $("#tempTitle").removeAttr('style');
-                if (data.success) {
-                    getFormsTemplates();
-                    getAllTemplate();
+                if (response.success) {
+
+                    fields_list_data = response.data;
+                    data = response.data;
+                    items = response.form_field;
+
+                    let single_input = ``;
+                    let row = ``;
+                    if (data != null) {
+                        $("#tempTitle").val(response.title)
+
+                        if (data != null && data.length != 0) {
+                            for (let i in data) {
+
+                                single_input += `
+                                    <div class="appends ui-sortable-handle col-md-${data[i].col_width}" data-id="2" data-col="12" style="opacity: 1;">
+                                        <div class="card card-hover m-1 style=" box-shadow:="" 0="" 12px="" 24px="" rgb(34="" 41="" 47="" 32%)="" !important;""="">
+                                            <div class="card-body" style="box-shadow: 0 12px 24px 0 rgb(34 41 47 / 32%) !important;">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="title">
+                                                        <h5 class="card-title small mb-0"><i class="fas fa-grip-vertical pr-2" style="color:grey;"></i> ${data[i].label}</h5>
+                                                    </div>
+                                                    <div class="actions" style="position:absolute; top:18px;right:8px">
+                                                        <i onclick="removeField(${data[i].asset_forms_id},${data[i].id},this)" class="fas fa-trash-alt red float-right pl-3" style="cursor: pointer;"></i>
+                                                        <a href="javascript:templateSetting('${data[i].type}', ${data[i].asset_forms_id} , 'update' , ${data[i].id})" class="float-right">
+                                                        <i class="fas fa-cog"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                                    if(data.length-1 ==  i){
+                                        single_input +=`<div class="row connectedSortable border" id="sortable-row-last" style="min-height:10px; display: none;">
+                                                            <div class="appends d-none"></div>
+                                                        </div>`
+                                    }
+
+                                    if (data[i].col_width != 12) {
+                                        row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
+                                    } else {
+                                        row = `<div class="row connectedSortable border firstfield ui-sortable" id="sortable-row-${data.id}">${single_input}</div>`;
+                                    }
+
+                            }
+                            $('.tail').html(row);
+                        }
+
+                    }
+
                 }
                 Swal.fire({
                     position: 'center',
-                    icon: (data.success) ? 'success' : 'error',
-                    title: data.message,
+                    icon: (response.success) ? 'success' : 'error',
+                    title: response.message,
                     showConfirmButton: false,
                     timer: swal_message_time,
                 });
+
             },
             failure: function(errMsg) {
                 console.log(errMsg);
