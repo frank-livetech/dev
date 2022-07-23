@@ -5,6 +5,25 @@
 @section('body')
 @section('customtheme')
     <style>
+        input.tt-input,input.tt-hint{
+            width: 267px !important
+        }
+        .tt-dataset.tt-dataset-value{
+            background: rgb(235, 235, 235);
+            padding: 5px
+        }
+        .tt-suggestion.tt-selectable {
+            border: 1px solid #686868;
+            padding: 3px;
+            cursor: pointer;
+        }
+        .tt-suggestion.tt-selectable:hover {
+            background: rgb(105, 105, 105);
+            color:#fff;
+            padding: 3px;
+            cursor: pointer;
+            font-weight: 700
+        }
         .tech-spa{
             margin: 0px 5px 2px 5px
         }
@@ -2516,13 +2535,13 @@
                         <div class="row mt-2">
                             <div class="form-group form-group-default required">
                                 <label>CC</label>
-                                <input class="tagsinput custom-tag-input" type="text" style="display: none;">
+                                {{-- <input class="tagsinput custom-tag-input" type="text" style="display: none;"> --}}
                                 <div class="" style="display:flex !important">
                                     @if (array_key_exists(0, $shared_emails))
-                                        <input id="tkt_cc" class="meta_tags" size="2" type="text"
+                                        <input id="tkt_cc"  size="2" type="text"
                                             value="{{ $shared_emails[0]['mail_type'] == 1 ? $shared_emails[0]['email'] : '' }}">
                                     @else
-                                        <input id="tkt_cc" class="meta_tags" size="2" type="text">
+                                        <input id="tkt_cc"  size="2" type="text">
                                     @endif
                                 </div>
                             </div>
@@ -2530,13 +2549,13 @@
                         <div class="row mt-1">
                             <div class="form-group form-group-default required">
                                 <label>BCC</label>
-                                <input class="tagsinput custom-tag-input" type="text" style="display: none;">
+                                {{-- <input class="tagsinput custom-tag-input" type="text" style="display: none;"> --}}
                                 <div class="" style="display:flex !important">
                                     @if (array_key_exists(1, $shared_emails))
-                                        <input id="tkt_bcc" class="meta_tags" size="2" type="text"
+                                        <input id="tkt_bcc"  size="2" type="text"
                                             value="{{ $shared_emails[1]['mail_type'] == 2 ? $shared_emails[1]['email'] : '' }}">
                                     @else
-                                        <input id="tkt_bcc" class="meta_tags" size="2" type="text">
+                                        <input id="tkt_bcc" size="2" type="text">
                                     @endif
                                 </div>
                             </div>
@@ -3150,6 +3169,7 @@
     });
     CC.initialize();
 
+    //compose new reply
     $('#to_mails').tagsinput({
         typeaheadjs: {
             name: 'value',
@@ -3167,6 +3187,27 @@
             source: CC.ttAdapter()
         }
     });
+
+
+    //update ticket property
+    $('#tkt_cc').tagsinput({
+        typeaheadjs: {
+            name: 'value',
+            displayKey: 'value',
+            valueKey: 'value',
+            source: CC.ttAdapter()
+        }
+    });
+
+    $('#tkt_bcc').tagsinput({
+        typeaheadjs: {
+            name: 'value',
+            displayKey: 'value',
+            valueKey: 'value',
+            source: CC.ttAdapter()
+        }
+    });
+
 
 
 
