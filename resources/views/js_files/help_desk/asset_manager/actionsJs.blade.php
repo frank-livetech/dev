@@ -697,11 +697,18 @@ function getFields(id) {
             fields += `</select>`;
                 break;
             case 'password':
-                fields += `<div class="user-password-div">
-                    <span class="block input-icon input-icon-right">
-                        <input type="password" name="fl_${data[i].id}" placeholder="${placeholder}" class="form-control" ${required}>
-                        <span toggle="#password-field" class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span>
-                    </span>
+                // fields += `<div class="user-password-div">
+                //     <span class="block input-icon input-icon-right">
+                //         <input type="password" name="fl_${data[i].id}" placeholder="${placeholder}" class="form-control" ${required}>
+                //         <span toggle="#password-field" class="fa fa-fw fa-eye field-icon show-password-btn mr-2"></span>
+                //     </span>
+                // </div>`;
+
+                fields += `<div class="input-group input-group-merge form-password-toggle">
+                  <input type="password" name="fl_${data[i].id}" placeholder="${placeholder}"  class="form-control" ${required}>
+                  <span class="input-group-text cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </span>
                 </div>`;
                 break;
             case 'address':
