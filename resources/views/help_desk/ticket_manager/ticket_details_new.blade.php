@@ -422,7 +422,7 @@
             }
 
         @media (max-width: 897.98px) {
-           
+
             .set-dept,.set-type,.set-flag,.set-status,.set-priority,.set-tech{
                 width: 100% !important;
             }
@@ -550,6 +550,7 @@
                 </div>
             </div>
         </div>
+
         <input type="hidden" id="loggedInUser_id" value="{{ \Auth::user()->id }}">
         <input type="hidden" id="loggedInUser_t" value="{{ \Auth::user()->user_type }}">
         <input type="hidden" id="usrtimeZone" value="{{ Session::get('timezone') }}">
@@ -3093,6 +3094,7 @@
 @include('js_files.help_desk.asset_manager.actionsJs')
 {{-- @include('js_files.help_desk.ticket_manager.ticketsJs') --}}
 @include('js_files.help_desk.asset_manager.assetJs')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js" ></script>
 
 <script>
 
@@ -3106,7 +3108,7 @@
     });
 
     $('#assigned_to').select2({
-      multiple:true,
+         multiple:true,
     });
     $('#assigned_to').val(@json($assigned_ticket_users)).trigger('change');
 
@@ -3124,6 +3126,61 @@
     });
 
     $(".meta_tags").tagsinput('items');
+
+    // var users = new Bloodhound({
+	//   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+	//   queryTokenizer: Bloodhound.tokenizers.whitespace,
+	//   prefetch: {
+	// 	url: @json($allusers),
+	// 	filter: function(list) {
+    //         console.log(list)
+	// 	  return $.map(list, function(data) {
+	// 		return { email: data.email }; });
+	// 	}
+	//   }
+	// });
+	// users.initialize();
+
+	// $('#to_mails').tagsinput({
+	//   typeaheadjs: {
+	// 	email: 'users',
+	// 	displayKey: 'email',
+	// 	valueKey: 'email',
+	// 	source: users.ttAdapter()
+	//   }
+	// });
+    var emails = {!! json_encode($allusers->pluck('email') ) !!}
+
+    var CC = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: $.map(emails, function(item) {
+            return {
+                value: item
+            };
+        })
+    });
+    CC.initialize();
+
+    $('#to_mails').tagsinput({
+        typeaheadjs: {
+            name: 'value',
+            displayKey: 'value',
+            valueKey: 'value',
+            source: CC.ttAdapter()
+        }
+    });
+
+    $('#bcc_emails').tagsinput({
+        typeaheadjs: {
+            name: 'value',
+            displayKey: 'value',
+            valueKey: 'value',
+            source: CC.ttAdapter()
+        }
+    });
+
+
 
     function hung() {
         $("#viewFullDetails2").modal("show");
