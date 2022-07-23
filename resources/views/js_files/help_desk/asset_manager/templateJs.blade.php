@@ -464,6 +464,8 @@ function updateFieldSetting(field_id,temp_id,form=null){
                     data = response.data;
                     items = response.form_field;
                     templateSetting(items.type, items.asset_forms_id,'update',items.id)
+                    getFormsTemplates();
+                    getAllTemplate();
 
                     $("#tempTitle").val(response.title)
 
@@ -681,6 +683,7 @@ function saveTemplate(action=null) {
                     if (data.success) {
                         getFormsTemplates();
                         getAllTemplate();
+
                         $('.connectedSortable').each(function() {
                             if ($(this).attr('id') == 'sortable-row-start' || $(this).attr('id') == 'sortable-row-last') {
                                 $(this).find('.appends').each(function(i) {
@@ -733,6 +736,8 @@ function saveTemplate(action=null) {
             success: function(response) {
                 $("#tempTitle").removeAttr('style');
                 if (response.success) {
+                    getFormsTemplates();
+                    getAllTemplate();
 
                     fields_list_data = response.data;
                     data = response.data;
