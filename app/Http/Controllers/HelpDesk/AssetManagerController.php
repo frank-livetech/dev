@@ -417,17 +417,47 @@ class AssetManagerController extends Controller
         try {
 
 
-            if($request->has('title')){
-                AssetForms::find($request->template_id)->update([
-                    'title' => $request->title,
-                ]);
+            if($request->has('title') && $request->has('fields')){
+               $asstForm =  AssetForms::find($request->template_id);
+               if($asstForm->where('title','!=',$request->title)->get())
+                {
+                    $asstForm->title = $request->title;
+                    $asstForm->save();
+                }else{
+                    $asstForm = $asstForm->first();
+                }
+
+                $fields = \json_decode($request->fields, true);
+
+                $fieldsAdded = [];
+                foreach ($fields as $key => $value) {
+                    if($value != null && !isset($value['id'])){
+                        if(array_key_exists('options', $value)) {
+                            $value['options'] = $value['options'] = implode('|',$value['options']);
+                        }
+                        $value['asset_forms_id'] = $asstForm->id;
+                        $value['created_by'] = Auth::user()->id;
+                        $flds = AssetFields::create($value);
+                        $fieldsAdded[] = $flds->id;
+                    }
+                }
+
+                foreach($fieldsAdded as $field){
+                    $column_name = 'fl_'.$field;
+                    $table_name = 'asset_records_'.$asstForm->id;
+                    DB::statement("ALTER TABLE $table_name ADD COLUMN $column_name VARCHAR(200) Null AFTER asset_id; ");
+                }
+
 
                 $response['message'] = 'Asset Type Updated Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
-                $response['data'] = AssetForms::find($request->template_id);
+                $response['title'] = $asstForm->title;
+                $response['form_field'] = AssetFields::whereIn('id',$fieldsAdded)->get();
+                $response['data'] = AssetFields::where('asset_forms_id', $request->template_id)->where('is_deleted',0)->get();
                 return response()->json($response);
             }
+
 
             if($request->has('form_field')){
                 AssetFields::find($request->field_id)->update([
@@ -461,6 +491,7 @@ class AssetManagerController extends Controller
 
 
                 }else{
+
                      AssetFields::find($request->field_id)->update([
                         'label' => $request->label,
                         'placeholder' => $request->placeholder,
@@ -477,6 +508,7 @@ class AssetManagerController extends Controller
                 $response['message'] = 'Asset Type Update Successfully!';
                 $response['status_code'] = 200;
                 $response['success'] = true;
+                $response['title'] = AssetForms::find($fieldsAdded->asset_forms_id)->title ?? '';
                 $response['form_field'] = AssetFields::find($fieldsAdded->id);
                 $response['data'] = AssetFields::where('asset_forms_id', $request->template_id)->where('is_deleted',0)->get();
                 return response()->json($response);
