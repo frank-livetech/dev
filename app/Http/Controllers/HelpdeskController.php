@@ -4141,7 +4141,7 @@ class HelpdeskController extends Controller
             $closed_status = TicketStatus::where('name','Closed')->first();
 
             $response = Tickets::where('is_deleted',0)
-            ->where('coustom_id','like','%' . $id . '%')->where('status','!=',$closed_status->id)->get();
+            ->where('coustom_id','like','%' . $id . '%')->orWhere('subject' ,'LIKE', '%' .$id.'%')->orWhere('ticket_detail' ,'LIKE', '%' .$id.'%')->where('status','!=',$closed_status->id)->get();
 
             // $response = DB::select("SELECT * from tickets tkt INNER JOIN users user ON tkt.created_by = user.id INNER JOIN customers cust ON tkt.customer_id = cust.id WHERE cust.first_name LIKE '%$id%' OR user.name LIKE '%$id%' OR tkt.subject LIKE '%$id%' OR tkt.coustom_id LIKE '%$id%' OR tkt.seq_custom_id LIKE '%$id%'");
 
