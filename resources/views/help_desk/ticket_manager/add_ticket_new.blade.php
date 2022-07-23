@@ -452,6 +452,29 @@
 $(document).on('select2:open', () => {
     document.querySelector('.select2-search__field').focus();
 });
+
+$(document).on('select2:open', () => {
+    var element = document.querySelector('[aria-controls="select2-customer_id-results"]');
+    var type_elem = document.querySelector('[aria-controls="select2-type-results"]');
+    var temp_elem = document.querySelector('[aria-controls="select2-res-template-results"]');
+    var queue_elem = document.querySelector('[aria-controls="select2-queue_id-results"]'); 
+    
+    if (element) {
+        element.focus();
+         $('assigned_to').prop('focus',false);
+    }else if(type_elem){
+        type_elem.focus();
+         $('assigned_to').prop('focus',false);
+    }else if(temp_elem){
+        temp_elem.focus();
+         $('assigned_to').prop('focus',false);
+    }else if(queue_elem){
+        queue_elem.focus();
+         $('assigned_to').prop('focus',false);
+    }
+    // document.querySelector('.select2-search__field').focus();
+});
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
 <script src="{{asset('app-assets/js/scripts/forms/form-file-uploader.js')}}"></script>
