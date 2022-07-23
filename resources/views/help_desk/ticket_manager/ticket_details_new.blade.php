@@ -1609,7 +1609,7 @@
                                         style="color: #fff !important">
                                         Compose
                                     </a>
-                                    
+
                                 </div>
                             </div>
 
@@ -2475,7 +2475,7 @@
                 <button class="btn-close ml-auto" onclick="closeModal()"></button>
             </div>
             <div class="modal-body">
-                
+
                     <input type="hidden" id="tkt_cust_id">
                     <input type="hidden" id="tkt_cust_comp_id">
 
@@ -2656,7 +2656,7 @@
                         </form>
                     </div>
 
-                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success upt-cust-btn" onclick="newCustomer('new')">New
                         Customer</button>
@@ -3137,28 +3137,6 @@
 
     $(".meta_tags").tagsinput('items');
 
-    // var users = new Bloodhound({
-	//   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-	//   queryTokenizer: Bloodhound.tokenizers.whitespace,
-	//   prefetch: {
-	// 	url: @json($allusers),
-	// 	filter: function(list) {
-    //         console.log(list)
-	// 	  return $.map(list, function(data) {
-	// 		return { email: data.email }; });
-	// 	}
-	//   }
-	// });
-	// users.initialize();
-
-	// $('#to_mails').tagsinput({
-	//   typeaheadjs: {
-	// 	email: 'users',
-	// 	displayKey: 'email',
-	// 	valueKey: 'email',
-	// 	source: users.ttAdapter()
-	//   }
-	// });
     var emails = {!! json_encode($allusers->pluck('email') ) !!}
 
     var CC = new Bloodhound({
