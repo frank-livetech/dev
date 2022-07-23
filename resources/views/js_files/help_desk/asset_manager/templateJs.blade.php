@@ -176,8 +176,7 @@ function fieldAdd(code) {
     </div>`).insertBefore('#sortable-row-last');
 
     $('.connectedSortable').show();
-
-    fields_list_data[g_count] = { col_width: 12 };
+    fields_list_data[g_count] = { col_width: 12, label: template[code].title, type:code};
 
     active_edit_field_id = '';
     $("#sortable-row-" + g_count).sortable({
@@ -286,8 +285,6 @@ function templateSetting(code, obj_key , action = null , id = null) {
 
         }
 
-        console.log(code)
-
         $('#fields-modal #headinglabel').html(template[code].title + ' Setting');
         $('#fields-modal #lbl').focus();
         $('#fields-modal').modal('show');
@@ -324,16 +321,34 @@ function templateSetting(code, obj_key , action = null , id = null) {
                 });
             }
 
-            if (fields_list_data[obj_key].required) $('#fields-modal #is_required').prop('checked', true);
+
+            if (g_temp_code == 'password') {
+                $("#is_required").prop("checked", true);
+                $("#is_required").attr("disabled", true);
+            }else{
+                $("#is_required").attr("disabled", false);
+
+                if (fields_list_data[obj_key].required == 1){
+                    $("#is_required").prop("checked", true)
+                }else{
+                    $("#is_required").prop("checked", false);
+                }
+
+                if (fields_list_data[obj_key].copy_icon == 1){
+                    $("#copy_icon").prop("checked", true)
+                }else{
+                    $("#copy_icon").prop("checked", false);
+                }
+            }
+
+
+
         }
 
-        if (g_temp_code == 'password') {
-            $("#is_required").prop("checked", true);
-            $("#is_required").attr("disabled", true);
-        } else {
-            $("#is_required").prop("checked", false);
-            $("#is_required").removeAttr("disabled");
-        }
+
+
+
+
 
 
         $('#fields-modal #headinglabel').html(template[code].title + ' Setting');
@@ -619,6 +634,7 @@ function saveTemplate(action=null) {
         }
 
         for (let i in fields_list_data) {
+            console.log(fields_list_data[i])
             if (!fields_list_data[i].hasOwnProperty('label')) {
                 $('#card-colors').find('div[data-id="' + i + '"]').find('.card').css('background-color', 'rgb(255, 200, 0, 0.43)');
                 return false;
@@ -632,7 +648,6 @@ function saveTemplate(action=null) {
 
         if (!fields_in_seq.length) fields_in_seq = fields_list_data;
 
-
     if(check_action == null)
     {
 
@@ -641,6 +656,7 @@ function saveTemplate(action=null) {
         formData.append('fields', JSON.stringify(fields_in_seq));
 
         let value = $("#sortable-row-start").next().attr('class');
+
 
         if( value.includes("firstfield")  ) {
 
